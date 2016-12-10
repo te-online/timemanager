@@ -1,11 +1,11 @@
 
-OCA.Expo = {
+OCA.TimeManager = {
 	init: function() {
-		$.get(OC.generateUrl('/apps/expo/api/items'))
+		$.get(OC.generateUrl('/apps/timemanager/api/items'))
 			.success(function(items){
 				var $itemListElement = $('#item-list');
 				_.each(items, function(item){
-					OCA.Expo.prependItem($itemListElement, item);
+					OCA.TimeManager.prependItem($itemListElement, item);
 				});
 			});
 	},
@@ -20,11 +20,11 @@ OCA.Expo = {
 
 	add: function(title, text) {
 		$.post(
-			OC.generateUrl('/apps/expo/api/items'),
+			OC.generateUrl('/apps/timemanager/api/items'),
 			{ title: title, text: text }
 		).success(function(item){
 			var $itemListElement = $('#item-list');
-			OCA.Expo.prependItem($itemListElement, item);
+			OCA.TimeManager.prependItem($itemListElement, item);
 		});
 	}
 };
@@ -41,7 +41,7 @@ $(document).ready(function() {
 		$titleInput.val('');
 		$textInput.val('');
 
-		OCA.Expo.add(title, text);
+		OCA.TimeManager.add(title, text);
 	});
-	OCA.Expo.init();
+	OCA.TimeManager.init();
 });

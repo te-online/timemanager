@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Expo\Db;
+namespace OCA\TimeManager\Db;
 
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
@@ -8,12 +8,12 @@ use OCP\IDBConnection;
 /**
  * Class ItemMapper
  *
- * @package OCA\Expo\Db
+ * @package OCA\TimeManager\Db
  * @method Item insert(Item $entity)
  */
 class ItemMapper extends Mapper {
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'expo_items');
+		parent::__construct($db, 'timemanager_items');
 	}
 
 	/**

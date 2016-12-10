@@ -1,9 +1,9 @@
 <?php
 
-namespace OCA\Expo\Controller;
+namespace OCA\TimeManager\Controller;
 
-use OCA\Expo\Db\Item;
-use OCA\Expo\Db\ItemMapper;
+use OCA\TimeManager\Db\Item;
+use OCA\TimeManager\Db\ItemMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;

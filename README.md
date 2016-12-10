@@ -1,4 +1,4 @@
-# Expo app
+# TimeManager app
 
 Example app to demonstrate how to build an ownCloud app.
 

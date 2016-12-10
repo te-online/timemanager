@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\Expo\Controller;
+namespace OCA\TimeManager\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -12,6 +12,6 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function index() {
-		return new TemplateResponse('expo', 'index');
+		return new TemplateResponse('timemanager', 'index');
 	}
 }

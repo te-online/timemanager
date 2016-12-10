@@ -1,6 +1,6 @@
 <database>
 	<table>
-		<name>*dbprefix*expo_items</name>
+		<name>*dbprefix*timemanager_items</name>
 		<declaration>
 			<field>
 				<name>id</name>
@@ -28,7 +28,7 @@
 				<notnull>false</notnull>
 			</field>
 			<index>
-				<name>expo_items_user_id_index</name>
+				<name>timemanager_items_user_id_index</name>
 				<field>
 					<name>user_id</name>
 				</field>

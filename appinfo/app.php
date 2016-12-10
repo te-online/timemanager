@@ -2,12 +2,12 @@
 
 \OC::$server->getNavigationManager()->add(function () {
 	$urlGenerator = \OC::$server->getURLGenerator();
-	$l = \OC::$server->getL10N('expo');
+	$l = \OC::$server->getL10N('timemanager');
 	return [
-		'id' => 'expo_index',
+		'id' => 'timemanager_index',
 		'order' => 10,
-		'href' => $urlGenerator->linkToRoute('expo.page.index'),
-		'icon' => $urlGenerator->imagePath('expo', 'app.svg'),
-		'name' => $l->t('Expo'),
+		'href' => $urlGenerator->linkToRoute('timemanager.page.index'),
+		'icon' => $urlGenerator->imagePath('timemanager', 'app.svg'),
+		'name' => $l->t('TimeManager'),
 	];
 });

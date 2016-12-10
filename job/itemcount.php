@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\Expo\Job;
+namespace OCA\TimeManager\Job;
 
-use OCA\Expo\Db\ItemMapper;
+use OCA\TimeManager\Db\ItemMapper;
 use OCP\AppFramework\App;
 use OC\BackgroundJob\TimedJob;
 use OCP\BackgroundJob\IJob;
@@ -19,11 +19,11 @@ class ItemCount extends TimedJob implements IJob {
 
 	function run($arguments) {
 		$logger = \OC::$server->getLogger();
-		$app = new App('expo');
+		$app = new App('timemanager');
 		/** @var ItemMapper $itemMapper */
-		$itemMapper = $app->getContainer()->query('OCA\Expo\Db\ItemMapper');
+		$itemMapper = $app->getContainer()->query('OCA\TimeManager\Db\ItemMapper');
 		$items = $itemMapper->findByUser('mjob');
 
-		$logger->info('There are {count} items in the database for the user mjob', ['app' => 'expo', 'count' => count($items)]);
+		$logger->info('There are {count} items in the database for the user mjob', ['app' => 'timemanager', 'count' => count($items)]);
 	}
 }

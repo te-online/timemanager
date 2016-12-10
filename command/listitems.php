@@ -1,9 +1,9 @@
 <?php
 
-namespace OCA\Expo\Command;
+namespace OCA\TimeManager\Command;
 
-use OCA\Expo\Db\Item;
-use OCA\Expo\Db\ItemMapper;
+use OCA\TimeManager\Db\Item;
+use OCA\TimeManager\Db\ItemMapper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,12 +21,12 @@ class ListItems extends Command {
 
 	protected function configure() {
 		$this
-			->setName('expo:listitems')
-			->setDescription('List expo items by user')
+			->setName('timemanager:listitems')
+			->setDescription('List timemanager items by user')
 			->addArgument(
 				'user',
 				InputArgument::REQUIRED,
-				'owner of expo items'
+				'owner of timemanager items'
 			);
 	}
 

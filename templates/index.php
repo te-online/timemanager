@@ -1,7 +1,7 @@
 <?php
 
-script('expo', 'app');
-style('expo', 'expo');
+script('timemanager', 'app');
+style('timemanager', 'timemanager');
 
 ?>
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace OCA\Expo\Db;
+namespace OCA\TimeManager\Db;
 
 use OCP\AppFramework\Db\Entity;
 
 /**
  * Class Item
  *
- * @package OCA\Expo\Db
+ * @package OCA\TimeManager\Db
  * @method string getTitle()
  * @method void setTitle(string $value)
  * @method string getText()
