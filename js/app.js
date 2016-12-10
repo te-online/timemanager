@@ -2,46 +2,46 @@
 OCA.TimeManager = {
 	init: function() {
 		$.get(OC.generateUrl('/apps/timemanager/api/items'))
-			.success(function(items){
-				var $itemListElement = $('#item-list');
-				_.each(items, function(item){
-					OCA.TimeManager.prependItem($itemListElement, item);
+			.success(function(clients){
+				var $clientListElement = $('#client-list');
+				_.each(clients, function(client){
+					OCA.TimeManager.prependItem($clientListElement, client);
 				});
 			});
 	},
 
-	prependItem: function($element, item) {
+	prependItem: function($element, client) {
 		var element = $('<div>')
-			.append($('<h3>').text(item.title))
-			.append($('<p>').text(item.text))
-			.data('id', item.id);
+			.append($('<h3>').text(client.name))
+			.append($('<p>').text(client.note))
+			.data('id', client.uuid);
 		$element.prepend(element);
 	},
 
-	add: function(title, text) {
+	add: function(name, note) {
 		$.post(
 			OC.generateUrl('/apps/timemanager/api/items'),
-			{ title: title, text: text }
-		).success(function(item){
-			var $itemListElement = $('#item-list');
-			OCA.TimeManager.prependItem($itemListElement, item);
+			{ name: name, note: note }
+		).success(function(client){
+			var $clientListElement = $('#client-list');
+			OCA.TimeManager.prependItem($clientListElement, client);
 		});
 	}
 };
 
 $(document).ready(function() {
 	var $newItem = $('#new-item'),
-		$titleInput = $newItem.find('input[type="text"]'),
-		$textInput = $newItem.find('textarea');
+		$nameInput = $newItem.find('input[type="text"]'),
+		$noteInput = $newItem.find('textarea');
 	$newItem.find('input[type="submit"]').on('click', function() {
-		var title = $titleInput.val(),
-			text = $textInput.val();
+		var name = $nameInput.val(),
+			note = $noteInput.val();
 
 		// reset values
-		$titleInput.val('');
-		$textInput.val('');
+		$nameInput.val('');
+		$noteInput.val('');
 
-		OCA.TimeManager.add(title, text);
+		OCA.TimeManager.add(name, note);
 	});
 	OCA.TimeManager.init();
 });

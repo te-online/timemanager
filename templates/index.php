@@ -6,8 +6,8 @@ style('timemanager', 'timemanager');
 ?>
 
 <div id="new-item">
-	<input type="text" name="title" placeholder="Title">
-	<textarea name="text" placeholder="A long text ..."></textarea>
+	<input type="text" name="name" placeholder="Name">
+	<textarea name="note" placeholder="A long text ..."></textarea>
 	<input type="submit" value="Submit">
 </div>
-<div id="item-list"></div>
+<div id="client-list"></div>

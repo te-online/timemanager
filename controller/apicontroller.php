@@ -2,16 +2,16 @@
 
 namespace OCA\TimeManager\Controller;
 
-use OCA\TimeManager\Db\Item;
-use OCA\TimeManager\Db\ItemMapper;
+use OCA\TimeManager\Db\Client;
+use OCA\TimeManager\Db\ClientMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
 class ApiController extends Controller {
 
-	/** @var ItemMapper mapper for item entity */
-	protected $itemMapper;
+	/** @var ClientMapper mapper for item entity */
+	protected $clientMapper;
 	/** @var string user ID */
 	protected $userId;
 
@@ -19,15 +19,15 @@ class ApiController extends Controller {
 	 * constructor of the controller
 	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
-	 * @param ItemMapper $itemMapper mapper for item entity
+	 * @param ClientMapper $clientMapper mapper for item entity
 	 * @param string $userId user id
 	 */
 	function __construct($appName,
 								IRequest $request,
-								ItemMapper $itemMapper,
+								ClientMapper $clientMapper,
 								$userId) {
 		parent::__construct($appName, $request);
-		$this->itemMapper = $itemMapper;
+		$this->clientMapper = $clientMapper;
 		$this->userId = $userId;
 	}
 
@@ -37,11 +37,11 @@ class ApiController extends Controller {
 	 * @param Item[] $items items that should be converted
 	 * @return array[] items mapped to their array representation
 	 */
-	private function itemsToArray(array $items) {
-		$items = array_map(function(Item $item){
-			return $item->toArray();
-		}, $items);
-		return $items;
+	private function itemsToArray(array $clients) {
+		$clients = array_map(function(Client $client){
+			return $client->toArray();
+		}, $clients);
+		return $clients;
 	}
 
 	/**
@@ -50,25 +50,25 @@ class ApiController extends Controller {
 	 * @return DataResponse
 	 */
 	function get() {
-		$items = $this->itemMapper->findByUser($this->userId);
-		$items = $this->itemsToArray($items);
-		return new DataResponse($items);
+		$clients = $this->clientMapper->findByUser($this->userId);
+		$clients = $this->itemsToArray($clients);
+		return new DataResponse($clients);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 *
-	 * @param string $title the title of the item
-	 * @param string $text the text of the item
+	 * @param string $name the name of the item
+	 * @param string $note the note of the item
 	 * @return DataResponse
 	 */
-	function post($title, $text) {
-		$item = new Item();
-		$item->setTitle($title);
-		$item->setText($text);
-		$item->setUserId($this->userId);
+	function post($name, $note) {
+		$client = new Client();
+		$client->setName($name);
+		$client->setNote($note);
+		$client->setUserId($this->userId);
 
-		$item = $this->itemMapper->insert($item);
-		return new DataResponse($item->toArray());
+		$client = $this->clientMapper->insert($client);
+		return new DataResponse($client->toArray());
 	}
 }
