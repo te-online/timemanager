@@ -4,6 +4,7 @@ namespace OCA\TimeManager\Controller;
 
 use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
+use OCA\TimeManager\Db\StorageHelper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
@@ -12,6 +13,8 @@ class ApiController extends Controller {
 
 	/** @var ClientMapper mapper for item entity */
 	protected $clientMapper;
+	/** @var ClientMapper mapper for item entity */
+	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
 
@@ -25,9 +28,11 @@ class ApiController extends Controller {
 	function __construct($appName,
 								IRequest $request,
 								ClientMapper $clientMapper,
+								StorageHelper $storageHelper,
 								$userId) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
+		$this->storageHelper = $storageHelper;
 		$this->userId = $userId;
 	}
 
