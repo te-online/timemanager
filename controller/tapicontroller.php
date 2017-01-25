@@ -4,17 +4,19 @@ namespace OCA\TimeManager\Controller;
 
 use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
-use OCA\TimeManager\Db\StorageHelper;
-use OCP\AppFramework\Controller;
+// use OCA\TimeManager\Db\StorageHelper;
+use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http;
 use OCP\IRequest;
 
-class ApiController extends Controller {
+class TApiController extends ApiController {
 
 	/** @var ClientMapper mapper for item entity */
 	protected $clientMapper;
-	/** @var ClientMapper mapper for item entity */
-	protected $storageHelper;
+	/** @var StorageHelper helper for working on the stored data */
+	// protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
 
@@ -23,16 +25,18 @@ class ApiController extends Controller {
 	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
 	 * @param ClientMapper $clientMapper mapper for item entity
+	 * @param StorageHelper $storageHelper helper for working on the stored data
 	 * @param string $userId user id
 	 */
 	function __construct($appName,
 								IRequest $request,
 								ClientMapper $clientMapper,
-								StorageHelper $storageHelper,
-								$userId) {
+								// StorageHelper $storageHelper,
+								$userId
+								) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
-		$this->storageHelper = $storageHelper;
+		// $this->storageHelper = $storageHelper;
 		$this->userId = $userId;
 	}
 
@@ -79,36 +83,37 @@ class ApiController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @CORS
 	 *
 	 * @param json $data
 	 * @return DataResponse
 	 */
-	function updateObjects($postdata) {
-		$postdata = json_encode($postdata);
+	function updateObjects($data, $lastCommit) {
+		// return new JSONResponse(array('test' => "Hallo Welt"));
 		$entities = ["clients", "projects", "tasks", "times"];
 
-		if(!$postdata) {
-			return new DataResponse('404');
+		if(!$data && !$lastCommit) {
+			return new DataResponse([], Http::STATUS_NOT_FOUND);
 		}
-		if(empty($postdata->lastCommit)) {
-			return new DataResponse('500; ' . json_encode(["error" => "Commit is mandatory."]));
+		if(empty($lastCommit)) {
+			return new DataResponse(json_encode(["error" => "Commit is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
 		}
-		if(empty($postdata->data)) {
-			return new DataResponse('500; ' . json_encode(["error" => "Data is mandatory."]));
-		}
+		if(empty($data)) {
+			return new DataResponse(json_encode(["error" => "Data is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);		}
 
 		$noData = true;
 
 		foreach($entities as $entity) {
-			if(empty($postdata->data[$entity]) || empty($postdata->data[$entity]->created) || empty($postdata->data[$entity]->updated) || empty($postdata->data[$entity]->deleted)) {
-				return new DataResponse('500; ' . json_parse(["error" => $entity . " is mandatory."]));
+			if(!$data[$entity] || !$data[$entity]['created'] || !$data[$entity]['updated'] || !$data[$entity]['deleted']) {
+				return new DataResponse('Error, '. $entity . ' with created, updated and deleted subarrays is mandatory.', Http::STATUS_NOT_ACCEPTABLE);
 			}
-			if(count($postdata->data[$entity]->created) > 0 || count($postdata->data[$entity]->updated) > 0 || count($postdata->data[$entity]->deleted) > 0) {
+			if(count($data[$entity]['created']) > 0 || count($data[$entity]['updated']) > 0 || count($data[$entity]['deleted']) > 0) {
 				$noData = false;
 			}
 		}
 
-		$clientCommit = $postdata->lastCommit;
+		$clientCommit = $postdata['lastCommit'];
 		$missions = array();
 
 		if(!$noData) {
@@ -117,33 +122,33 @@ class ApiController extends Controller {
 
 			foreach($entities as $entity) {
 				// For all entities take the created objects
-				$created = $postdata->data[$entity]->created;
+				$created = $data[$entity]['created'];
 				// try to create object, if object already present -> move it to the changed array
 				foreach($created as $object) {
 					// mark with current commit
 					$object['commit'] = $commit;
 					// Add or update object here.
-					$storageHelper->addOrUpdateObject($object, $entity));
+					$storageHelper->addOrUpdateObject($object, $entity);
 				}
 				// For all entities take the changed objects
-				$updated = $postdata->data[$entity]->updated;
+				$updated = $data[$entity]['updated'];
 				// if current object commit <= last commit delivered by client
 				foreach($updated as $object) {
 					// mark with current commit
 					$object['commit'] = $clientCommit;
 					$object['desiredCommit'] = $commit;
 					// Add or update object here.
-					$storageHelper->addOrUpdateObject($object, $entity));
+					$storageHelper->addOrUpdateObject($object, $entity);
 				}
 				// For all entities take the deleted objects
-				$deleted = $postdata->data[$entity]->deleted;
+				$deleted = $data[$entity]['deleted'];
 				// if current object commit <= last commit delivered by client
 				foreach($deleted as $object) {
 					// mark with current commit
 					$object['commit'] = $clientCommit;
 					$object['desiredCommit'] = $commit;
 					// Add or update object here.
-					$storageHelper->maybeDeleteObject($object, $entity));
+					$storageHelper->maybeDeleteObject($object, $entity);
 				}
 			}
 
@@ -152,7 +157,7 @@ class ApiController extends Controller {
 		$results = array();
 
 		foreach($entities as $entity) {
-			$results[] = $cleaner->clean($storageHelper.getObjectsAfterCommit($entity, $clientCommit));
+			$results[] = $cleaner->clean($storageHelper->getObjectsAfterCommit($entity, $clientCommit));
 		}
 
 		$lastCommit = $storageHelper->getLatestCommit();
@@ -164,14 +169,14 @@ class ApiController extends Controller {
 			$index++;
 		}
 
-		if(!n$oData) {
+		if(!$noData) {
 			$response['commit'] = $commit;
 			$storageHelper->insertCommit($commit);
 		} else {
 			$response['commit'] = $lastCommit;
 		}
 
-		return new DataResponse(json_encode($response));
+		return new JSONResponse($response);
 
 
 		// .catch(function(err) {

@@ -2,11 +2,13 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\AppFramework\Db\Mapper;
+use OCP\IDBConnection;
+
 /**
- * Class ItemMapper
+ * Class StorageHelper
  *
  * @package OCA\TimeManager\Db
- * @method Client insert(Client $entity)
  */
 class StorageHelper {
 
@@ -16,7 +18,11 @@ class StorageHelper {
 	protected $timeMapper;
 	protected $commitMapper;
 
-	public function __construct() {
+	public function __construct(ClientMapper $clientMapper,
+			ProjectMapper $projectMapper,
+			TaskMapper $taskMapper,
+			TimeMapper $timeMapper,
+			CommitMapper $commitMapper) {
 		$this->clientMapper = $clientMapper;
 		$this->projectMapper = $projectMapper;
 		$this->taskMapper = $taskMapper;
@@ -49,7 +55,7 @@ class StorageHelper {
 			$desiredCommit = $object->desiredCommit;
 			$object->desiredCommit = null;
 			// if there are commits and current object's commit is in list.
-			if( count( $commits ) > 0 && commits->indexOf($currentObject->commit)) {
+			if( count( $commits ) > 0 && in_array($commits, $currentObject->commit)) {
 				// cancel
 				$error = new Error("Dropped, because commit is behind current state.");
 				$error['reason'] = "dropped";
