@@ -18,12 +18,12 @@ class ItemCount extends TimedJob implements IJob {
 	}
 
 	function run($arguments) {
-		$logger = \OC::$server->getLogger();
-		$app = new App('timemanager');
+		// $logger = \OC::$server->getLogger();
+		// $app = new App('timemanager');
 		/** @var ItemMapper $itemMapper */
-		$itemMapper = $app->getContainer()->query('OCA\TimeManager\Db\ItemMapper');
-		$items = $itemMapper->findByUser('mjob');
+		// $itemMapper = $app->getContainer()->query('OCA\TimeManager\Db\ItemMapper');
+		// $items = $itemMapper->findByUser('mjob');
 
-		$logger->info('There are {count} items in the database for the user mjob', ['app' => 'timemanager', 'count' => count($items)]);
+		// $logger->info('There are {count} items in the database for the user mjob', ['app' => 'timemanager', 'count' => count($items)]);
 	}
 }

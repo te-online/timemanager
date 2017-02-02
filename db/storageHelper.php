@@ -2,8 +2,8 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
-use OCP\IDBConnection;
+// use OCP\AppFramework\Db\Mapper;
+// use OCP\IDBConnection;
 
 /**
  * Class StorageHelper
@@ -75,5 +75,26 @@ class StorageHelper {
 	 */
 	function findEntityMapper($entity) {
 
+	}
+
+	/**
+	 * Get objects after commit.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function getObjectsAfterCommit($commit) {
+		// TODO
+		return [];
+	}
+
+	/**
+	 * Get the latest commit.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function getLatestCommit() {
+		return "abcdefg";
 	}
 }

@@ -4,7 +4,8 @@ namespace OCA\TimeManager\Controller;
 
 use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
-// use OCA\TimeManager\Db\StorageHelper;
+use OCA\TimeManager\Db\StorageHelper;
+use OCA\TimeManager\Helper\Cleaner;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -13,31 +14,33 @@ use OCP\IRequest;
 
 class TApiController extends ApiController {
 
-	/** @var ClientMapper mapper for item entity */
+	/** @var ClientMapper mapper for client entity */
 	protected $clientMapper;
 	/** @var StorageHelper helper for working on the stored data */
-	// protected $storageHelper;
+	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
+	protected $cleaner;
 
 	/**
 	 * constructor of the controller
 	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
-	 * @param ClientMapper $clientMapper mapper for item entity
+	 * @param ClientMapper $clientMapper mapper for client entity
 	 * @param StorageHelper $storageHelper helper for working on the stored data
 	 * @param string $userId user id
 	 */
 	function __construct($appName,
 								IRequest $request,
 								ClientMapper $clientMapper,
-								// StorageHelper $storageHelper,
 								$userId
 								) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
-		// $this->storageHelper = $storageHelper;
+		$this->storageHelper = $storageHelper;
 		$this->userId = $userId;
+		$this->storageHelper = new StorageHelper();
+		$this->cleaner = new Cleaner();
 	}
 
 	/**
@@ -105,15 +108,15 @@ class TApiController extends ApiController {
 		$noData = true;
 
 		foreach($entities as $entity) {
-			if(!$data[$entity] || !$data[$entity]['created'] || !$data[$entity]['updated'] || !$data[$entity]['deleted']) {
-				return new DataResponse('Error, '. $entity . ' with created, updated and deleted subarrays is mandatory.', Http::STATUS_NOT_ACCEPTABLE);
+			if($data[$entity] == null || !is_array($data[$entity]['created']) || !is_array($data[$entity]['updated']) || !is_array($data[$entity]['deleted'])) {
+				return new DataResponse($data[$entity]['created'] . 'Error, '. $entity . ' with created, updated and deleted subarrays is mandatory.', Http::STATUS_NOT_ACCEPTABLE);
 			}
 			if(count($data[$entity]['created']) > 0 || count($data[$entity]['updated']) > 0 || count($data[$entity]['deleted']) > 0) {
 				$noData = false;
 			}
 		}
 
-		$clientCommit = $postdata['lastCommit'];
+		$clientCommit = $lastCommit;
 		$missions = array();
 
 		if(!$noData) {
@@ -128,7 +131,7 @@ class TApiController extends ApiController {
 					// mark with current commit
 					$object['commit'] = $commit;
 					// Add or update object here.
-					$storageHelper->addOrUpdateObject($object, $entity);
+					$this->storageHelper->addOrUpdateObject($object, $entity);
 				}
 				// For all entities take the changed objects
 				$updated = $data[$entity]['updated'];
@@ -138,7 +141,7 @@ class TApiController extends ApiController {
 					$object['commit'] = $clientCommit;
 					$object['desiredCommit'] = $commit;
 					// Add or update object here.
-					$storageHelper->addOrUpdateObject($object, $entity);
+					$this->storageHelper->addOrUpdateObject($object, $entity);
 				}
 				// For all entities take the deleted objects
 				$deleted = $data[$entity]['deleted'];
@@ -148,7 +151,7 @@ class TApiController extends ApiController {
 					$object['commit'] = $clientCommit;
 					$object['desiredCommit'] = $commit;
 					// Add or update object here.
-					$storageHelper->maybeDeleteObject($object, $entity);
+					$this->storageHelper->maybeDeleteObject($object, $entity);
 				}
 			}
 
@@ -157,21 +160,21 @@ class TApiController extends ApiController {
 		$results = array();
 
 		foreach($entities as $entity) {
-			$results[] = $cleaner->clean($storageHelper->getObjectsAfterCommit($entity, $clientCommit));
+			$results[] = $this->cleaner->clean($this->storageHelper->getObjectsAfterCommit($entity, $clientCommit));
 		}
 
-		$lastCommit = $storageHelper->getLatestCommit();
+		$lastCommit = $this->storageHelper->getLatestCommit();
 		$response = array( "data" => [] );
 
 		$index = 0;
 		foreach($entities as $entity) {
-			$response->data[$entity] = $results[index];
+			$response['data'][$entity] = $results[$index];
 			$index++;
 		}
 
 		if(!$noData) {
 			$response['commit'] = $commit;
-			$storageHelper->insertCommit($commit);
+			$this->storageHelper->insertCommit($commit);
 		} else {
 			$response['commit'] = $lastCommit;
 		}
