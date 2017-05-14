@@ -22,13 +22,14 @@ class Cleaner {
 		$this->entities = ["clients", "projects", "tasks", "times"];
 	}
 
+	// Cast the database version of the object to the API version of the object.
 	function clean($results) {
 		// $logger = \OC::$server->getLogger();
 
 		$index = 0;
 		foreach($this->entities as $entity) {
+			// $logger->error(implode(',', $results), ['app' => 'timemanager']);
 			$results[$index] = array_map(function($key, $result) {
-				// $logger->error("var: ".var_dump($result), ['app' => 'timemanager']);
 				return array_map(function($key, $item) {
 						$struct;
 						if($entity == "clients") {
@@ -52,9 +53,11 @@ class Cleaner {
 
 						return $newItem;
 					}, $result);
-			}, $results[$index]);
+			}, ((!empty($results[$index])) ? $results[$index] : array()));
 
 			$index++;
 		}
+
+		return $results;
 	}
 }

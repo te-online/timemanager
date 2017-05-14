@@ -12,8 +12,28 @@ use OCP\IDBConnection;
  * @method Client insert(Client $entity)
  */
 class TaskMapper extends Mapper {
+	protected $userId;
+
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'timemanager_task');
+	}
+
+	function setCurrentUser($userId) {
+		$this->userId = $userId;
+	}
+
+	function getObjectById($uuid) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `uuid` = ?; LIMIT 1;';
+		return $this->findEntities($sql, [$this->userId, $uuid]);
+	}
+
+	function getObjectsAfterCommit($commit) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `changed`;';
+		return $this->findEntities($sql, [$this->userId, $commit]);
 	}
 
 	/**

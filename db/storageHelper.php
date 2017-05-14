@@ -17,17 +17,27 @@ class StorageHelper {
 	protected $taskMapper;
 	protected $timeMapper;
 	protected $commitMapper;
+	/** @var string user ID */
+	protected $userId;
 
 	public function __construct(ClientMapper $clientMapper,
 			ProjectMapper $projectMapper,
 			TaskMapper $taskMapper,
 			TimeMapper $timeMapper,
-			CommitMapper $commitMapper) {
+			CommitMapper $commitMapper,
+			$userId
+			) {
 		$this->clientMapper = $clientMapper;
+		$this->clientMapper->setCurrentUser($userId);
 		$this->projectMapper = $projectMapper;
+		$this->projectMapper->setCurrentUser($userId);
 		$this->taskMapper = $taskMapper;
+		$this->taskMapper->setCurrentUser($userId);
 		$this->timeMapper = $timeMapper;
+		$this->timeMapper->setCurrentUser($userId);
 		$this->commitMapper = $commitMapper;
+		$this->commitMapper->setCurrentUser($userId);
+		$this->userId = $userId;
 	}
 
 	/**
@@ -37,10 +47,6 @@ class StorageHelper {
 	 * @return Client[] list if matching items
 	 */
 	function addOrUpdateObject($object, $entity) {
-		// $sql = 'SELECT * ' .
-		// 		'FROM `' . $this->tableName . '` ' .
-		// 		'WHERE `user_id` = ?;';
-		// return $this->findEntities($sql, [$userId]);
 		// if(objectTypes.indexOf(objectType) < 0) {
 	  // 		return Promise.reject(Error("Object Type not supported: " + objectType));
 	  // 	}
@@ -50,21 +56,23 @@ class StorageHelper {
 			// get commits after the given commit.
 			$commits = $this->commitMapper->getCommitsAfter($object->commit);
 			// get current object by UUID.
-			$currentObject = $this->findEntityMapper($entity)->getObjectById($object->uuid, $objectType);
+			$currentObject = $this->findEntityMapper($entity)->getObjectById($object->uuid);
 
 			$desiredCommit = $object->desiredCommit;
 			$object->desiredCommit = null;
 			// if there are commits and current object's commit is in list.
-			if( count( $commits ) > 0 && in_array($commits, $currentObject->commit)) {
+			if( count( $commits ) > 0 && in_array($commits, $currentObject->commit) ) {
 				// cancel
 				$error = new Error("Dropped, because commit is behind current state.");
 				$error['reason'] = "dropped";
 				return $error;
 			}
 			$object->commit = $desiredCommit;
-		}
 
-		return $this->findEntityMapper($entity)->update($object);
+			return $this->findEntityMapper($entity)->update($object);
+		} else {
+			return $this->findEntityMapper($entity)->insert($object);
+		}
 	}
 
 	/**
@@ -74,7 +82,16 @@ class StorageHelper {
 	 * @return Client[] list if matching items
 	 */
 	function findEntityMapper($entity) {
-
+		switch($entity) {
+			case 'clients':
+				return $this->clientMapper;
+			case 'projects':
+				return $this->projectMapper;
+			case 'tasks':
+				return $this->taskMapper;
+			case 'times':
+				return $this->timeMapper;
+		}
 	}
 
 	/**
@@ -83,9 +100,10 @@ class StorageHelper {
 	 * @param string $userId the user id to filter
 	 * @return Client[] list if matching items
 	 */
-	function getObjectsAfterCommit($commit) {
-		// TODO
-		return [];
+	function getObjectsAfterCommit($entity, $commit) {
+		// $logger = \OC::$server->getLogger();
+		// $logger->error($entity, ['app' => 'timemanager']);
+		return $this->findEntityMapper($entity)->getObjectsAfterCommit($commit);
 	}
 
 	/**
@@ -95,6 +113,6 @@ class StorageHelper {
 	 * @return Client[] list if matching items
 	 */
 	function getLatestCommit() {
-		return "abcdefg";
+		return $this->commitMapper->getLatestCommit();
 	}
 }

@@ -6,34 +6,20 @@ use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 /**
- * Class ItemMapper
+ * Class CommitMapper
  *
  * @package OCA\TimeManager\Db
- * @method Client insert(Client $entity)
+ * @method Commit insert(Commit $entity)
  */
-class ProjectMapper extends Mapper {
+class CommitMapper extends Mapper {
 	protected $userId;
 
 	public function __construct(IDBConnection $db) {
-		parent::__construct($db, 'timemanager_project');
+		parent::__construct($db, 'timemanager_commit');
 	}
 
 	function setCurrentUser($userId) {
 		$this->userId = $userId;
-	}
-
-	function getObjectById($uuid) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `uuid` = ?; LIMIT 1;';
-		return $this->findEntities($sql, [$this->userId, $uuid]);
-	}
-
-	function getObjectsAfterCommit($commit) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `changed`;';
-		return $this->findEntities($sql, [$this->userId, $commit]);
 	}
 
 	/**
@@ -47,5 +33,19 @@ class ProjectMapper extends Mapper {
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ?;';
 		return $this->findEntities($sql, [$userId]);
+	}
+
+	function getLatestCommit() {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ?; LIMIT 1;';
+		return $this->findEntities($sql, [$this->userId]);
+	}
+
+	function getCommitsAfter($commit) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `created`;';
+		return $this->findEntities($sql, [$this->userId, $commit]);
 	}
 }

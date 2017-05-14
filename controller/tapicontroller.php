@@ -4,7 +4,11 @@ namespace OCA\TimeManager\Controller;
 
 use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
-use OCA\TimeManager\Db\StorageHelper;
+use OCA\TimeManager\Db\ProjectMapper;
+use OCA\TimeManager\Db\TaskMapper;
+use OCA\TimeManager\Db\TimeMapper;
+use OCA\TimeManager\Db\CommitMapper;
+use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\Cleaner;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
@@ -16,6 +20,14 @@ class TApiController extends ApiController {
 
 	/** @var ClientMapper mapper for client entity */
 	protected $clientMapper;
+	/** @var ProjectMapper mapper for project entity */
+	protected $projectMapper;
+	/** @var TaskMapper mapper for task entity */
+	protected $taskMapper;
+	/** @var TimeMapper mapper for time entity */
+	protected $timeMapper;
+	/** @var ClientMapper mapper for client entity */
+	protected $commitMapper;
 	/** @var StorageHelper helper for working on the stored data */
 	protected $storageHelper;
 	/** @var string user ID */
@@ -27,19 +39,36 @@ class TApiController extends ApiController {
 	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
 	 * @param ClientMapper $clientMapper mapper for client entity
-	 * @param StorageHelper $storageHelper helper for working on the stored data
+	 * @param ProjectMapper $projectMapper mapper for project entity
+	 * @param TaskMapper $taskMapper mapper for task entity
+	 * @param TimeMapper $timeMapper mapper for time entity
+	 * @param CommitMapper $commitMapper mapper for commit entity
 	 * @param string $userId user id
 	 */
 	function __construct($appName,
 								IRequest $request,
 								ClientMapper $clientMapper,
+								ProjectMapper $projectMapper,
+								TaskMapper $taskMapper,
+								TimeMapper $timeMapper,
+								CommitMapper $commitMapper,
 								$userId
 								) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
-		$this->storageHelper = $storageHelper;
+		$this->projectMapper = $projectMapper;
+		$this->taskMapper = $taskMapper;
+		$this->timeMapper = $timeMapper;
+		$this->commitMapper = $commitMapper;
 		$this->userId = $userId;
-		$this->storageHelper = new StorageHelper();
+		$this->storageHelper = new StorageHelper(
+			$this->clientMapper,
+			$this->projectMapper,
+			$this->taskMapper,
+			$this->timeMapper,
+			$this->commitMapper,
+			$userId
+		);
 		$this->cleaner = new Cleaner();
 	}
 
@@ -99,9 +128,9 @@ class TApiController extends ApiController {
 		if(!$data && !$lastCommit) {
 			return new DataResponse([], Http::STATUS_NOT_FOUND);
 		}
-		if(empty($lastCommit)) {
-			return new DataResponse(json_encode(["error" => "Commit is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
-		}
+		// if(empty($lastCommit)) {
+		// 	return new DataResponse(json_encode(["error" => "Commit is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
+		// }
 		if(empty($data)) {
 			return new DataResponse(json_encode(["error" => "Data is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);		}
 
@@ -120,8 +149,8 @@ class TApiController extends ApiController {
 		$missions = array();
 
 		if(!$noData) {
-
-			$commit = UUID.v4(); // TODO
+			$commit = "afafwafafawfaw";
+			// $commit = UUID.v4(); // TODO
 
 			foreach($entities as $entity) {
 				// For all entities take the created objects
@@ -164,7 +193,7 @@ class TApiController extends ApiController {
 		}
 
 		$lastCommit = $this->storageHelper->getLatestCommit();
-		$response = array( "data" => [] );
+		$response = array( "data" => array() );
 
 		$index = 0;
 		foreach($entities as $entity) {
