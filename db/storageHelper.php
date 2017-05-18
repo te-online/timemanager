@@ -71,8 +71,27 @@ class StorageHelper {
 
 			return $this->findEntityMapper($entity)->update($object);
 		} else {
-			return $this->findEntityMapper($entity)->insert($object);
+			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity));
 		}
+	}
+
+	/**
+	 * Returns an entity object from the specified entity by using the specified simple object.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function convertToEntityObject($object, $entity) {
+		switch($entity) {
+			case 'clients':
+				$client = new Client();
+				// $client->setChanged() ...
+			case 'projects':
+				return new Project();
+			case 'tasks':
+				return new Task();
+			case 'times':
+				return new Time();
 	}
 
 	/**
