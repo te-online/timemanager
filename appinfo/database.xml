@@ -70,6 +70,10 @@
 				<name>web</name>
 				<type>clob</type>
 			</field>
+			<field>
+				<name>status</name>
+				<type>clob</type>
+			</field>
 			<index>
 				<name>timemanager_client_uuid_index</name>
 				<field>
@@ -134,6 +138,10 @@
 				<name>note</name>
 				<type>clob</type>
 			</field>
+			<field>
+				<name>status</name>
+				<type>clob</type>
+			</field>
 			<index>
 				<name>timemanager_project_uuid_index</name>
 				<field>
@@ -188,6 +196,10 @@
 			</field>
 			<field>
 				<name>name</name>
+				<type>clob</type>
+			</field>
+			<field>
+				<name>status</name>
 				<type>clob</type>
 			</field>
 			<index>
@@ -254,6 +266,10 @@
 			</field>
 			<field>
 				<name>note</name>
+				<type>clob</type>
+			</field>
+			<field>
+				<name>status</name>
 				<type>clob</type>
 			</field>
 			<index>
