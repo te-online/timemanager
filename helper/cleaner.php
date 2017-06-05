@@ -24,35 +24,37 @@ class Cleaner {
 
 	// Cast the database version of the object to the API version of the object.
 	function clean($results) {
-		// $logger = \OC::$server->getLogger();
+		$logger = \OC::$server->getLogger();
 
 		$index = 0;
 		foreach($this->entities as $entity) {
-			// $logger->error(implode(',', $results), ['app' => 'timemanager']);
+			$logger->error(count($results), ['app' => 'timemanager']);
 			$results[$index] = array_map(function($key, $result) {
 				return array_map(function($key, $item) {
-						$struct;
-						if($entity == "clients") {
-							$struct = $clientsStruct;
-						}
-						if($entity == "projects") {
-							$struct = $projectsStruct;
-						}
-						if($entity == "tasks") {
-							$struct = $tasksStruct;
-						}
-						if($entity == "times") {
-							$struct = $timesStruct;
-						}
 
-						$newItem = [];
+					$struct;
+					if($entity == "clients") {
+						$struct = $clientsStruct;
+					}
+					if($entity == "projects") {
+						$struct = $projectsStruct;
+					}
+					if($entity == "tasks") {
+						$struct = $tasksStruct;
+					}
+					if($entity == "times") {
+						$struct = $timesStruct;
+					}
 
-						array_map($struct, function($structItem) {
-							$newItem[$structItem] = $item[$structItem];
-						});
+					$newItem = [];
+					$item = $item->toArray();
 
-						return $newItem;
-					}, $result);
+					array_map($struct, function($structItem) {
+						$newItem[$structItem] = $item[$structItem];
+					});
+
+					return $newItem;
+				}, $result);
 			}, ((!empty($results[$index])) ? $results[$index] : array()));
 
 			$index++;

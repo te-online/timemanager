@@ -51,23 +51,23 @@ class StorageHelper {
 	  // 		return Promise.reject(Error("Object Type not supported: " + objectType));
 	  // 	}
 		// if object is not new, but wants to update.
-		if($object->desiredCommit) {
+		if(isset($object['desiredCommit'])) {
 			// if current object commit <= last commit delivered by client
 			// get commits after the given commit.
-			$commits = $this->commitMapper->getCommitsAfter($object->commit);
+			$commits = $this->commitMapper->getCommitsAfter($object['commit']);
 			// get current object by UUID.
-			$currentObject = $this->findEntityMapper($entity)->getObjectById($object->uuid);
+			$currentObject = $this->findEntityMapper($entity)->getObjectById($object['uuid']);
 
-			$desiredCommit = $object->desiredCommit;
-			$object->desiredCommit = null;
+			$desiredCommit = $object['desiredCommit'];
+			$object['desiredCommit'] = null;
 			// if there are commits and current object's commit is in list.
-			if( count( $commits ) > 0 && in_array($commits, $currentObject->commit) ) {
+			if( count( $commits ) > 0 && in_array($commits, $currentObject['commit']) ) {
 				// cancel
 				$error = new Error("Dropped, because commit is behind current state.");
 				$error['reason'] = "dropped";
 				return $error;
 			}
-			$object->commit = $desiredCommit;
+			$object['commit'] = $desiredCommit;
 
 			return $this->findEntityMapper($entity)->update($object);
 		} else {
@@ -85,13 +85,27 @@ class StorageHelper {
 		switch($entity) {
 			case 'clients':
 				$client = new Client();
-				// $client->setChanged() ...
+				$client->setChanged($object['changed']);
+				$client->setCreated($object['created']);
+				$client->setCity($object['city']);
+				$client->setEmail($object['email']);
+				$client->setName($object['name']);
+				$client->setNote($object['note']);
+				$client->setPhone($object['phone']);
+				$client->setPostcode($object['postcode']);
+				$client->setStreet($object['street']);
+				$client->setUuid($object['uuid']);
+				$client->setWeb($object['web']);
+				$client->setCommit($object['commit']);
+				$client->setUserId($this->userId);
+				return $client;
 			case 'projects':
 				return new Project();
 			case 'tasks':
 				return new Task();
 			case 'times':
 				return new Time();
+		}
 	}
 
 	/**
@@ -133,5 +147,19 @@ class StorageHelper {
 	 */
 	function getLatestCommit() {
 		return $this->commitMapper->getLatestCommit();
+	}
+
+	/**
+	 * Insert a new commit.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function insertCommit($commit) {
+		$insertCommit = new Commit();
+		$insertCommit->setCommit($commit);
+		$insertCommit->setCreated(time()); // date('Y-m-d H:i:s')
+		$insertCommit->setUserId($this->userId);
+		return $this->commitMapper->insert($insertCommit);
 	}
 }

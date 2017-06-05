@@ -8,18 +8,11 @@ use OCP\AppFramework\Db\Entity;
  * Class Item
  *
  * @package OCA\TimeManager\Db
- * @method string getName()
- * @method void setName(string $value)
- * @method string getUuid()
- * @method void setUuid(string $value)
- * @method string getNote()
- * @method void setNote(string $value)
- * @method string getUserId()
- * @method void setUserId(string $value)
  */
 class Commit extends Entity {
 	protected $commit;
 	protected $created;
+	protected $userId;
 
 	/**
 	 * Creates an array that represents the item in array format
