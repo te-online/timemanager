@@ -13,13 +13,16 @@ use OCP\IDBConnection;
  */
 class ClientMapper extends Mapper {
 	protected $userId;
+	protected $commitMapper;
 
-	public function __construct(IDBConnection $db) {
+	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
+		$this->commitMapper = $commitMapper;
 		parent::__construct($db, 'timemanager_client');
 	}
 
 	function setCurrentUser($userId) {
 		$this->userId = $userId;
+		$this->commitMapper->setCurrentUser($this->userId);
 	}
 
 	function getObjectById($uuid) {
@@ -31,24 +34,35 @@ class ClientMapper extends Mapper {
 
 	function getObjectsAfterCommit($commit) {
 		return array(
-			$this->getCreatedObjectsAfterCommit($commit),
-			$this->getUpdatedObjectsAfterCommit($commit),
-			$this->getDeletedObjectsAfterCommit($commit)
+			"created" => $this->getCreatedObjectsAfterCommit($commit),
+			"updated" => $this->getUpdatedObjectsAfterCommit($commit),
+			"deleted" => $this->getDeletedObjectsAfterCommit($commit)
 		);
 	}
 
 	function getCreatedObjectsAfterCommit($commit) {
+		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? AND `created` = `changed` AND `status` != ?' .
+				'WHERE `user_id` = ? AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
+				'AND `created` = `changed` AND `commit` != ? ' .
 				'ORDER BY `changed`;';
-		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
+		$clients = array_map(
+			function($client) {
+				return $client->toArray();
+			},
+			$this->findEntities($sql, [$this->userId, 'deleted'])
+		);
+		$logger = \OC::$server->getLogger();
+		$logger->error("Clients:", ['app' => 'timemanager']);
+		$logger->error(json_encode($clients), ['app' => 'timemanager']);
+		return $clients;
 	}
 
 	function getUpdatedObjectsAfterCommit($commit) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? AND `created` != `changed` AND `status` != ?' .
+				'WHERE `user_id` = ? AND `commit` > ? AND `created` != `changed` AND `commit` != ? ' .
 				'ORDER BY `changed`;';
 		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
 	}
@@ -56,14 +70,9 @@ class ClientMapper extends Mapper {
 	function getDeletedObjectsAfterCommit($commit) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? AND `status` = ?' .
+				'WHERE `user_id` = ? AND `commit` > ? AND `commit` = ?' .
 				'ORDER BY `changed`;';
 		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
-	}
-
-	function createFromObject($object) {
-		// TODO
-		// Turn an object to an instance of the entity.
 	}
 
 	/**

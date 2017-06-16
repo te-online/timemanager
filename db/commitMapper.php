@@ -38,7 +38,7 @@ class CommitMapper extends Mapper {
 	function getLatestCommit() {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? LIMIT 1;';
+				'WHERE `user_id` = ? ORDER BY `created` DESC LIMIT 1;';
 		$commit = $this->findEntities($sql, [$this->userId]);
 		if(count($commit) > 0) {
 			return $commit[0]->getCommit();

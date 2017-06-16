@@ -28,7 +28,6 @@ class Cleaner {
 
 		$index = 0;
 		foreach($this->entities as $entity) {
-			$logger->error(count($results), ['app' => 'timemanager']);
 			$results[$index] = array_map(function($key, $result) {
 				return array_map(function($key, $item) {
 

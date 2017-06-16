@@ -31,7 +31,6 @@ class Client extends Entity {
 	protected $web;
 	protected $commit;
 	protected $userId;
-	protected $status;
 
 	/**
 	 * Creates an array that represents the item in array format
@@ -39,18 +38,19 @@ class Client extends Entity {
 	 * @return array item representation as array
 	 */
 	function toArray() {
-		// return [];
 		return [
-			'uuid' => $this->getUuid(),
-			'name' => $this->getName(),
-			'note' => $this->getNote()
+			"changed" => $this->getChanged(),
+			"city" 		=> $this->getCity(),
+			"commit" 	=> $this->getCommit(),
+			"created"	=> $this->getCreated(),
+			"email"		=> $this->getEmail(),
+			"name"		=> $this->getName(),
+			"note" 		=> $this->getNote(),
+			"phone" 	=> $this->getPhone(),
+			"postcode"=> $this->getPostcode(),
+			"street"	=> $this->getStreet(),
+			"uuid"		=> $this->getUuid(),
+			"web"			=> $this->getWeb()
 		];
-		// return [
-		// 	'uuid' => $this->getUuid(),
-		// 	'changed' => $this->getChanged(),
-		// 	'created' => $this->getCreated(),
-		// 	'city' => $this->getCity(),
-		// 	'commit'
-		// ];
 	}
 }

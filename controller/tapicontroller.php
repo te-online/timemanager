@@ -126,7 +126,7 @@ class TApiController extends ApiController {
 		$logger = \OC::$server->getLogger();
 		$logger->error("New API request:", ['app' => 'timemanager']);
 		$logger->error(json_encode($data), ['app' => 'timemanager']);
-		$logger->error(json_encode($this->commitMapper->getCommitsAfter($lastCommit)), ['app' => 'timemanager']);
+		$logger->error("Commit: " . $lastCommit, ['app' => 'timemanager']);
 		// return new JSONResponse(array('test' => "Hallo Welt"));
 		$entities = ["clients", "projects", "tasks", "times"];
 
@@ -137,7 +137,8 @@ class TApiController extends ApiController {
 		// 	return new DataResponse(json_encode(["error" => "Commit is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
 		// }
 		if(empty($data)) {
-			return new DataResponse(json_encode(["error" => "Data is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);		}
+			return new DataResponse(json_encode(["error" => "Data is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
+		}
 
 		$noData = true;
 
@@ -195,7 +196,7 @@ class TApiController extends ApiController {
 		$results = array();
 
 		foreach($entities as $entity) {
-			$results[] = $this->cleaner->clean($this->storageHelper->getObjectsAfterCommit($entity, $clientCommit));
+			$results[] = $this->storageHelper->getObjectsAfterCommit($entity, $clientCommit);
 		}
 
 		$lastCommit = $this->storageHelper->getLatestCommit();
@@ -214,11 +215,11 @@ class TApiController extends ApiController {
 			$response['commit'] = $lastCommit;
 		}
 
-		$response = new JSONResponse($response);
-		$response->addHeader('Test-Header', 'te-online');
-		$response->addHeader('Content-Type', 'application/json');
+		$logger->error("Sending response... " . json_encode($response), ['app' => 'timemanager']);
 
-		return $response;
+		return new JSONResponse($response);
+		// $response->addHeader('Test-Header', 'te-online');
+		// $response->addHeader('Content-Type', 'application/json');
 
 
 		// .catch(function(err) {
