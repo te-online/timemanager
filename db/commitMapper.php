@@ -38,14 +38,26 @@ class CommitMapper extends Mapper {
 	function getLatestCommit() {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ?; LIMIT 1;';
-		return $this->findEntities($sql, [$this->userId]);
+				'WHERE `user_id` = ? LIMIT 1;';
+		$commit = $this->findEntities($sql, [$this->userId]);
+		if(count($commit) > 0) {
+			return $commit[0]->getCommit();
+		} else {
+			// TODO Error
+		}
 	}
 
 	function getCommitsAfter($commit) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `created`;';
-		return $this->findEntities($sql, [$this->userId, $commit]);
+				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `created` DESC;';
+		$toString =
+		$commits = array_map(
+			function($commit) {
+				return $commit->toString();
+			},
+			$this->findEntities($sql, [$this->userId, $commit])
+		);
+		return $commits;
 	}
 }

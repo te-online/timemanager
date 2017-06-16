@@ -30,10 +30,35 @@ class TimeMapper extends Mapper {
 	}
 
 	function getObjectsAfterCommit($commit) {
+		return array(
+			$this->getCreatedObjectsAfterCommit($commit),
+			$this->getUpdatedObjectsAfterCommit($commit),
+			$this->getDeletedObjectsAfterCommit($commit)
+		);
+	}
+
+	function getCreatedObjectsAfterCommit($commit) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `changed`;';
-		return $this->findEntities($sql, [$this->userId, $commit]);
+				'WHERE `user_id` = ? AND `commit` > ? AND `created` = `changed` AND `status` != ?' .
+				'ORDER BY `changed`;';
+		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
+	}
+
+	function getUpdatedObjectsAfterCommit($commit) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `commit` > ? AND `created` != `changed` AND `status` != ?' .
+				'ORDER BY `changed`;';
+		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
+	}
+
+	function getDeletedObjectsAfterCommit($commit) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `commit` > ? AND `status` = ?' .
+				'ORDER BY `changed`;';
+		return $this->findEntities($sql, [$this->userId, $commit, 'deleted']);
 	}
 
 	/**

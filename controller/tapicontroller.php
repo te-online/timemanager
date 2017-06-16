@@ -10,6 +10,7 @@ use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\Cleaner;
+use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -122,6 +123,10 @@ class TApiController extends ApiController {
 	 * @return DataResponse
 	 */
 	function updateObjects($data, $lastCommit) {
+		$logger = \OC::$server->getLogger();
+		$logger->error("New API request:", ['app' => 'timemanager']);
+		$logger->error(json_encode($data), ['app' => 'timemanager']);
+		$logger->error(json_encode($this->commitMapper->getCommitsAfter($lastCommit)), ['app' => 'timemanager']);
 		// return new JSONResponse(array('test' => "Hallo Welt"));
 		$entities = ["clients", "projects", "tasks", "times"];
 
@@ -149,7 +154,8 @@ class TApiController extends ApiController {
 		$missions = array();
 
 		if(!$noData) {
-			$commit = "afafwafafawfaw";
+			$commit = UUID::v4();
+			// $commit = "afafwafafawfaw";
 			// $commit = UUID.v4(); // TODO
 
 			foreach($entities as $entity) {
@@ -208,7 +214,11 @@ class TApiController extends ApiController {
 			$response['commit'] = $lastCommit;
 		}
 
-		return new JSONResponse($response);
+		$response = new JSONResponse($response);
+		$response->addHeader('Test-Header', 'te-online');
+		$response->addHeader('Content-Type', 'application/json');
+
+		return $response;
 
 
 		// .catch(function(err) {

@@ -140,6 +140,17 @@ class StorageHelper {
 	}
 
 	/**
+	 * Find out if an object needs deletion
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function maybeDeleteObject($object, $entity) {
+		// TODO implement as in Storage.js:233
+		return true;
+	}
+
+	/**
 	 * Get the latest commit.
 	 *
 	 * @param string $userId the user id to filter
@@ -158,7 +169,7 @@ class StorageHelper {
 	function insertCommit($commit) {
 		$insertCommit = new Commit();
 		$insertCommit->setCommit($commit);
-		$insertCommit->setCreated(time()); // date('Y-m-d H:i:s')
+		$insertCommit->setCreated(date('Y-m-d H:i:s')); // date('Y-m-d H:i:s') // time()
 		$insertCommit->setUserId($this->userId);
 		return $this->commitMapper->insert($insertCommit);
 	}

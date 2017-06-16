@@ -33,4 +33,13 @@ class Commit extends Entity {
 		// 	'commit'
 		// ];
 	}
+
+	/**
+	 * Creates a string from the commit
+	 *
+	 * @return array item representation as array
+	 */
+	function toString() {
+		return $this->getCommit();
+	}
 }
