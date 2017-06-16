@@ -50,8 +50,9 @@ class CommitMapper extends Mapper {
 	function getCommitsAfter($commit) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` > ? ORDER BY `created` DESC;';
-		$toString =
+				'WHERE `user_id` = ? AND `created` >'.
+				' (SELECT `created` FROM `' . $this->tableName . '` WHERE `commit` = ? LIMIT 1) '.
+				'ORDER BY `created`;';
 		$commits = array_map(
 			function($commit) {
 				return $commit->toString();
