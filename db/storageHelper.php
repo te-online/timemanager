@@ -195,14 +195,14 @@ class StorageHelper {
 			if($current_object == null || (count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))) {
 				// cancel
 				$logger = \OC::$server->getLogger();
-				$logger->error("Dropped deletion of object " . $current_object->getUuid() . ", because commit is behind current state.", ['app' => 'timemanager']);
+				$logger->error("Dropped deletion of object " . $object['uuid'] . ", because commit is behind current state.", ['app' => 'timemanager']);
 				return false;
 			}
 
 			// Delete object
 			$current_object->setCommit($object['desiredCommit']);
 			$current_object->setStatus('deleted');
-			$current_object->update();
+			$this->findEntityMapper($entity)->update($current_object);
 
 			// Delete children
 			$this->findEntityMapper($entity)->deleteChildrenForEntityById($current_object->getUuid());

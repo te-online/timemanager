@@ -13,9 +13,11 @@ use OCP\IDBConnection;
  */
 class ObjectMapper extends Mapper {
 	protected $userId;
+	protected $db;
 	protected $commitMapper;
 
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper, $dbname) {
+		$this->db = $db;
 		$this->commitMapper = $commitMapper;
 		parent::__construct($db, $dbname);
 	}
@@ -28,14 +30,14 @@ class ObjectMapper extends Mapper {
 	function getObjectsByAttributeValue($attr, $value) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `?` = ?; LIMIT 1;';
-		return $this->findEntities($sql, [$this->userId, $attr, $value]);
+				'WHERE `user_id` = ? AND `' . $attr . '` = ?; LIMIT 1;';
+		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
 	function getObjectById($uuid) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `uuid` = ?; LIMIT 1;';
+				'WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;';
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
 		if(count($objects) > 0) {
 			return $objects[0];

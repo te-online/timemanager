@@ -20,7 +20,7 @@ class TimeMapper extends ObjectMapper {
 		$times = $this->getObjectsByAttributeValue('client_uuid', $uuid);
 		foreach($times as $time) {
 			$time->setStatus('deleted');
-			$time->update();
+			$this->update(time);
 		}
 	}
 

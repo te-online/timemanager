@@ -17,6 +17,7 @@ class ClientMapper extends ObjectMapper {
 	}
 
 	public function deleteChildrenForEntityById($uuid) {
-		ProjectMapper::deleteWithChildrenByClientId($uuid);
+		$projectMapper = new ProjectMapper($this->db, $this->commitMapper);
+		$projectMapper->deleteWithChildrenByClientId($uuid);
 	}
 }

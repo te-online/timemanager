@@ -20,12 +20,13 @@ class ProjectMapper extends ObjectMapper {
 		$projects = $this->getObjectsByAttributeValue('client_uuid', $uuid);
 		foreach($projects as $project) {
 			$project->setStatus('deleted');
-			$project->update();
+			$this->update($project);
 			$this->deleteChildrenForEntityById($project->getUuid());
 		}
 	}
 
 	public function deleteChildrenForEntityById($uuid) {
-		TaskMapper::deleteWithChildrenByProjectId($uuid);
+		$taskMapper = new TaskMapper($this->db, $this->commitMapper);
+		$taskMapper->deleteWithChildrenByProjectId($uuid);
 	}
 }
