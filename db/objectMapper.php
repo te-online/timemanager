@@ -25,11 +25,23 @@ class ObjectMapper extends Mapper {
 		$this->commitMapper->setCurrentUser($this->userId);
 	}
 
+	function getObjectsByAttributeValue($attr, $value) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `?` = ?; LIMIT 1;';
+		return $this->findEntities($sql, [$this->userId, $attr, $value]);
+	}
+
 	function getObjectById($uuid) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `uuid` = ?; LIMIT 1;';
-		return $this->findEntities($sql, [$this->userId, $uuid]);
+		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
+		if(count($objects) > 0) {
+			return $objects[0];
+		} else {
+			return null;
+		}
 	}
 
 	function getObjectsAfterCommit($commit) {

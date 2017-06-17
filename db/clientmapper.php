@@ -15,4 +15,8 @@ class ClientMapper extends ObjectMapper {
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
 		parent::__construct($db, $commitMapper, 'timemanager_client');
 	}
+
+	public function deleteChildrenForEntityById($uuid) {
+		ProjectMapper::deleteWithChildrenByClientId($uuid);
+	}
 }

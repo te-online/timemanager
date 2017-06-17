@@ -182,7 +182,31 @@ class StorageHelper {
 	 */
 	function maybeDeleteObject($object, $entity) {
 		// TODO implement as in Storage.js:233
-		return true;
+		// if object is not new, but wants to update.
+		if(!empty($object['desiredCommit'])) {
+			// if current object commit <= last commit delivered by client
+
+			// get commits after the given commit.
+			$commits_after = $this->commitMapper->getCommitsAfter($object['commit']);
+			// get current object by UUID.
+			$current_object = $this->findEntityMapper($entity)->getObjectById($object['uuid']);
+
+			// if there are commits and current object's commit is in list.
+			if($current_object == null || (count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))) {
+				// cancel
+				$logger = \OC::$server->getLogger();
+				$logger->error("Dropped deletion of object " . $current_object->getUuid() . ", because commit is behind current state.", ['app' => 'timemanager']);
+				return false;
+			}
+
+			// Delete object
+			$current_object->setCommit($object['desiredCommit']);
+			$current_object->setStatus('deleted');
+			$current_object->update();
+
+			// Delete children
+			$this->findEntityMapper($entity)->deleteChildrenForEntityById($current_object->getUuid());
+		}
 	}
 
 	/**
