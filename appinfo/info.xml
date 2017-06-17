@@ -8,7 +8,7 @@
 	</description>
 	<licence>WTFPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 	<dependencies>
 		<owncloud min-version="9.0" />
 	</dependencies>
