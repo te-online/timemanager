@@ -20,15 +20,11 @@ use OCP\AppFramework\Db\Entity;
 class Time extends Entity {
 	protected $changed;
 	protected $created;
-	protected $city;
-	protected $email;
-	protected $name;
+	protected $start;
+	protected $end;
+	protected $taskUuid;
 	protected $note;
-	protected $phone;
-	protected $postcode;
-	protected $street;
 	protected $uuid;
-	protected $web;
 	protected $commit;
 	protected $userId;
 	protected $status;

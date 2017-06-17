@@ -71,7 +71,7 @@ class StorageHelper {
 
 			return $this->findEntityMapper($entity)->update($object);
 		} else {
-			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity));
+			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
 		}
 	}
 
@@ -81,7 +81,7 @@ class StorageHelper {
 	 * @param string $userId the user id to filter
 	 * @return Client[] list if matching items
 	 */
-	function convertToEntityObject($object, $entity) {
+	function convertToEntityObject($object, $entity, $deleted) {
 		switch($entity) {
 			case 'clients':
 				$client = new Client();
@@ -98,13 +98,48 @@ class StorageHelper {
 				$client->setWeb($object['web']);
 				$client->setCommit($object['commit']);
 				$client->setUserId($this->userId);
+				$client->setStatus($deleted);
+				$client->setBillableDefault(true);
 				return $client;
 			case 'projects':
-				return new Project();
+				$project = new Project();
+				$project->setChanged($object['changed']);
+				$project->setCreated($object['created']);
+				$project->setName($object['name']);
+				$project->setNote($object['note']);
+				$project->setColor($object['color']);
+				$project->setClientUuid($object['client_uuid']);
+				$project->setUuid($object['uuid']);
+				$project->setCommit($object['commit']);
+				$project->setUserId($this->userId);
+				$project->setStatus($deleted);
+				$project->setBillable($object['billable']);
+				return $project;
 			case 'tasks':
-				return new Task();
+				$task = new Task();
+				$task->setChanged($object['changed']);
+				$task->setCreated($object['created']);
+				$task->setName($object['name']);
+				$task->setProjectUuid($object['project_uuid']);
+				$task->setUuid($object['uuid']);
+				$task->setCommit($object['commit']);
+				$task->setUserId($this->userId);
+				$task->setStatus($deleted);
+				$task->setBillable($object['billable']);
+				return $task;
 			case 'times':
-				return new Time();
+				$time = new Time();
+				$time->setChanged($object['changed']);
+				$time->setCreated($object['created']);
+				$time->setStart($object['start']);
+				$time->setEnd($object['end']);
+				$time->setTaskUuid($object['task_uuid']);
+				$time->setUuid($object['uuid']);
+				$time->setCommit($object['commit']);
+				$time->setUserId($this->userId);
+				$time->setStatus($deleted);
+				$time->setPaymentStatus($object['payment_status']);
+				return $time;
 		}
 	}
 

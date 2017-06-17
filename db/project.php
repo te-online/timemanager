@@ -20,15 +20,11 @@ use OCP\AppFramework\Db\Entity;
 class Project extends Entity {
 	protected $changed;
 	protected $created;
-	protected $city;
-	protected $email;
 	protected $name;
 	protected $note;
-	protected $phone;
-	protected $postcode;
-	protected $street;
+	protected $color;
+	protected $clientUuid;
 	protected $uuid;
-	protected $web;
 	protected $commit;
 	protected $userId;
 	protected $status;

@@ -20,15 +20,9 @@ use OCP\AppFramework\Db\Entity;
 class Task extends Entity {
 	protected $changed;
 	protected $created;
-	protected $city;
-	protected $email;
 	protected $name;
-	protected $note;
-	protected $phone;
-	protected $postcode;
-	protected $street;
+	protected $projectUuid;
 	protected $uuid;
-	protected $web;
 	protected $commit;
 	protected $userId;
 	protected $status;
