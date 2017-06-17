@@ -31,6 +31,8 @@ class Client extends Entity {
 	protected $web;
 	protected $commit;
 	protected $userId;
+	protected $status;
+	protected $billableDefault;
 
 	/**
 	 * Creates an array that represents the item in array format

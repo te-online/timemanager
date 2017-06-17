@@ -32,6 +32,7 @@ class Time extends Entity {
 	protected $commit;
 	protected $userId;
 	protected $status;
+	protected $payment_status;
 
 	/**
 	 * Creates an array that represents the item in array format

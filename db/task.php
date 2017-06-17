@@ -32,6 +32,7 @@ class Task extends Entity {
 	protected $commit;
 	protected $userId;
 	protected $status;
+	protected $billable;
 
 	/**
 	 * Creates an array that represents the item in array format

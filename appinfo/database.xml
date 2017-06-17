@@ -74,6 +74,10 @@
 				<name>billable_default</name>
 				<type>boolean</type>
 			</field>
+			<field>
+				<name>status</name>
+				<type>clob</type>
+			</field>
 			<index>
 				<name>timemanager_client_uuid_index</name>
 				<field>
@@ -142,6 +146,10 @@
 				<name>billable</name>
 				<type>boolean</type>
 			</field>
+			<field>
+				<name>status</name>
+				<type>clob</type>
+			</field>
 			<index>
 				<name>timemanager_project_uuid_index</name>
 				<field>
@@ -201,6 +209,10 @@
 			<field>
 				<name>billable</name>
 				<type>boolean</type>
+			</field>
+			<field>
+				<name>status</name>
+				<type>clob</type>
 			</field>
 			<index>
 				<name>timemanager_task_uuid_index</name>
@@ -270,6 +282,10 @@
 			</field>
 			<field>
 				<name>payment_status</name>
+				<type>clob</type>
+			</field>
+			<field>
+				<name>status</name>
 				<type>clob</type>
 			</field>
 			<index>
