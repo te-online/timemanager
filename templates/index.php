@@ -1,13 +1,18 @@
 <?php
-
 script('timemanager', 'app');
 style('timemanager', 'timemanager');
 
 ?>
 
-<div id="new-item">
-	<input type="text" name="name" placeholder="Name">
-	<textarea name="note" placeholder="A long text ..."></textarea>
-	<input type="submit" value="Submit">
+<div id="app">
+
+	<?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
+
+	<div id="app-content">
+
+		<h2>Dashboard</h2>
+		<p>Here go some statistics and stuff. Stay tuned!</p>
+		<!-- <div id="client-list"></div> -->
+
+	</div>
 </div>
-<div id="client-list"></div>

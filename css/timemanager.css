@@ -2,12 +2,32 @@
 	box-sizing: border-box;
 }
 
-#item-list,
-#new-item {
-	padding: 5px 10px;
-}
-
-#new-item > *{
+#new-item input,
+#new-item textarea{
 	display: block;
 	width: 300px;
+}
+
+#app-content {
+	padding: 15px;
+}
+
+.tm_item-row {
+	height: 80px;
+	width: 100%;
+	padding: 1px 10px;
+}
+
+.tm_item-row:hover {
+	background: mintcream;
+}
+
+.tm_item-row.odd {
+	/* background: lightgrey; */
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+}
+
+.tm_object-details {
+	margin-bottom: 20px;
 }
