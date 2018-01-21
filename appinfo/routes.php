@@ -6,6 +6,7 @@ return [
 		['name' => 'page#clients', 'url' => '/clients', 'verb' => 'GET'],
 		['name' => 'page#addClient', 'url' => '/clients', 'verb' => 'POST'],
 		['name' => 'page#projects', 'url' => '/projects', 'verb' => 'GET'],
+		['name' => 'page#addProject', 'url' => '/projects', 'verb' => 'POST'],
 		['name' => 'page#tasks', 'url' => '/tasks', 'verb' => 'GET'],
 		// ['name' => 'timemanager_api#preflighted_cors', 'url' => '/api/options', 'verb' => 'OPTIONS', 'requirements' => array('path' => '.+')],
 		['name' => 't_api#get', 'url' => '/api/items', 'verb' => 'GET'],

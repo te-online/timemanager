@@ -106,15 +106,15 @@ class ObjectMapper extends Mapper {
 	}
 
 	/**
-	 * Fetch all items that are associated to a user
+	 * Fetch all items that are associated to the current user
 	 *
 	 * @param string $userId the user id to filter
 	 * @return Client[] list if matching items
 	 */
-	function findByUser($userId) {
+	function findAllForCurrentUser() {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ?;';
-		return $this->findEntities($sql, [$userId]);
+		return $this->findEntities($sql, [$this->userId]);
 	}
 }

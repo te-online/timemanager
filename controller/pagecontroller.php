@@ -88,7 +88,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function clients() {
-		$clients = $this->clientMapper->findByUser($this->userId);
+		$clients = $this->clientMapper->findAllForCurrentUser();
 		$token = new CsrfToken(null);
 		return new TemplateResponse('timemanager', 'clients', array('clients' => $clients, 'csrf_token' => $token));
 	}
@@ -99,6 +99,7 @@ class PageController extends Controller {
 	 */
 	function addClient($name='Unnamed', $note='') {
 		$this->storageHelper->addOrUpdateObject(array(
+			'uuid' => UUID::v4(),
 			'name' => $name,
 			'note' => $note
 		), 'clients');
@@ -110,9 +111,29 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function projects() {
-		$projects = $this->projectMapper->findByUser($this->userId);
-		return new TemplateResponse('timemanager', 'projects', array('projects' => $projects));
+	function projects($client=null) {
+		$clients = $this->clientMapper->findAllForCurrentUser();
+		if($client) {
+			$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $client);
+			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $client);
+		} else {
+			$projects = $this->projectMapper->findAllForCurrentUser();
+		}
+		return new TemplateResponse('timemanager', 'projects', array('projects' => $projects, 'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null), 'clients' => $clients));
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	function addProject($name, $client) {
+		$this->storageHelper->addOrUpdateObject(array(
+			'uuid' => UUID::v4(),
+			'name' => $name,
+			'client_uuid' => $client
+		), 'projects');
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client);
 	}
 
 	/**
@@ -120,7 +141,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function tasks() {
-		$tasks = $this->taskMapper->findByUser($this->userId);
+		$tasks = $this->taskMapper->findAllForCurrentUser();
 		return new TemplateResponse('timemanager', 'tasks', array('tasks' => $tasks));
 	}
 }

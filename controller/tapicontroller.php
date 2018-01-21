@@ -89,17 +89,6 @@ class TApiController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 *
-	 * @return DataResponse
-	 */
-	function get() {
-		$clients = $this->clientMapper->findByUser($this->userId);
-		$clients = $this->itemsToArray($clients);
-		return new DataResponse($clients);
-	}
-
-	/**
-	 * @NoAdminRequired
-	 *
 	 * @param string $name the name of the item
 	 * @param string $note the note of the item
 	 * @return DataResponse

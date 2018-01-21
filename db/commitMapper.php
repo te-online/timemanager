@@ -22,19 +22,6 @@ class CommitMapper extends Mapper {
 		$this->userId = $userId;
 	}
 
-	/**
-	 * Fetch all items that are associated to a user
-	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
-	 */
-	function findByUser($userId) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ?;';
-		return $this->findEntities($sql, [$userId]);
-	}
-
 	function getLatestCommit() {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
