@@ -35,7 +35,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				</div>
 			<?php } ?>
 			<div class="add">
-				<h3>New</h3>
+				<h3>New Project</h3>
 				<div id="new-item">
 					<form action="" method="post">
 						<label>Project name<br />
@@ -51,24 +51,41 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								<?php } ?>
 							</select>
 						</label><br />
-						<input type="hidden" name="csrf_token" value="<?php p($_['csrf_token']); ?>" />
+						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
 						<button type="submit" class="btn primary">Add</button>
 					</form>
 				</div>
 			</div>
 			<div class="tm_item-list">
 				<h2>Projects</h2>
-				<?php if(count($_['projects']) > 0) {
-					foreach($_['projects'] as $index => $project) { ?>
-						<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-							<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
-								<h3><?php p($project->getName()); ?></h3>
-								<div class="tm_item-excerpt">
-									<span>0 tasks</span> &middot; <span>0 hrs.</span>
-								</div>
-							</a>
-						</div>
-				<?php } } ?>
+				<p>Select a client</p>
+				<form action="" method="get">
+					<?php if(count($_['clients']) > 0 ) { ?>
+						<select name="client">
+							<?php foreach($_['clients'] as $client) { ?>
+								<option value="<?php p($client->getUuid()); ?>"><?php echo p($client->getName()); ?></option>
+							<?php } ?>
+						</select>
+						<button type="submit" class="btn">Show</button>
+					<?php } else { ?>
+						<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
+					<?php } ?>
+				</form>
+				<?php if(!$_['client']) { ?>
+					<p><strong>Select a client first to show the times for this client.</strong></p>
+				<?php } else { ?>
+					<?php if(count($_['projects']) > 0) {
+						foreach($_['projects'] as $index => $project) { ?>
+							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
+								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
+									<h3><?php p($project->getName()); ?></h3>
+									<div class="tm_item-excerpt">
+										<span>0 tasks</span> &middot; <span>0 hrs.</span>
+									</div>
+								</a>
+							</div>
+					<?php } } ?>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

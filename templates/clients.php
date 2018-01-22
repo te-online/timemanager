@@ -12,16 +12,16 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="container">
 			<h2>Clients</h2>
 			<div class="add">
-				<h3>New</h3>
+				<h3>New Client</h3>
 				<div id="new-item">
-					<form action="" method="post">
+					<form action="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>" method="post">
 						<label>Client name<br />
 							<input type="text" name="name" placeholder="Evil Corp." />
 						</label>
 						<label>Note<br />
 							<textarea name="note" placeholder="A long text ..."></textarea>
 						</label>
-						<input type="hidden" name="csrf_token" value="<?php p($_['csrf_token']); ?>" />
+						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
 						<button type="submit" class="btn primary">Add</button>
 					</form>
 				</div>

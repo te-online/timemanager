@@ -10,7 +10,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 
 	<div id="app-content">
 		<div class="container">
-			<?php if($_['client'] && $_['project']) { ?>
+			<?php if($_['client'] && $_['project'] && $_['task']) { ?>
 				<div class="tm_object-details">
 					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>"><?php p($_['project']->getName()); ?></a></h2>
 					<div class="tm_object-details-item">
@@ -35,12 +35,23 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				</div>
 			<?php } ?>
 			<div class="add">
-				<h3>New Task</h3>
+				<h3>New Time</h3>
 				<div id="new-item">
 					<form action="" method="post">
 						<label>Task name<br />
 							<input type="text" name="name" placeholder="Very special task" />
 						</label>
+						<label>For task<br />
+							<?php if(count($_['tasks']) > 0 ) { ?>
+								<select name="task">
+									<?php foreach($_['tasks'] as $task) { ?>
+										<option value="<?php p($task->getUuid()); ?>"><?php echo p($task->getName()); ?></option>
+									<?php } ?>
+								</select>
+							<?php } else { ?>
+								<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
+							<?php } ?>
+						</label><br />
 						<label>For project<br />
 							<?php if(count($_['projects']) > 0 ) { ?>
 								<select name="project">
@@ -69,30 +80,30 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				</div>
 			</div>
 			<div class="tm_item-list">
-				<h2>Tasks</h2>
-				<p>Select a project</p>
+				<h2>Time Entries</h2>
+				<p>Select a task</p>
 				<form action="" method="get">
-					<?php if(count($_['projects']) > 0 ) { ?>
-						<select name="project">
-							<?php foreach($_['projects'] as $project) { ?>
-								<option value="<?php p($project->getUuid()); ?>"><?php echo p($project->getName()); ?></option>
+					<?php if(count($_['tasks']) > 0 ) { ?>
+						<select name="task">
+							<?php foreach($_['tasks'] as $task) { ?>
+								<option value="<?php p($task->getUuid()); ?>"><?php echo p($task->getName()); ?></option>
 							<?php } ?>
 						</select>
 						<button type="submit" class="btn">Show</button>
 					<?php } else { ?>
-						<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
+						<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
 					<?php } ?>
 				</form>
-				<?php if(!$_['project']) { ?>
-					<p><strong>Select a project first to show the tasks for this project.</strong></p>
+				<?php if(!$_['task']) { ?>
+					<p><strong>Select a task first to show the times for this task.</strong></p>
 				<?php } else { ?>
-					<?php if(count($_['tasks']) > 0) {
-						foreach($_['tasks'] as $index => $task) { ?>
+					<?php if(count($_['times']) > 0) {
+						foreach($_['times'] as $index => $time) { ?>
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
-									<h3><?php p($task->getName()); ?></h3>
+								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $time->getUuid(); ?>">
+									<h3><?php p($time->getStart()); ?> hrs.</h3>
 									<div class="tm_item-excerpt">
-										<span>0 hrs.</span>
+										<span><?php p($time->getStart()); ?></span>
 									</div>
 								</a>
 							</div>

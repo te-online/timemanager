@@ -2,8 +2,7 @@
 
 namespace OCA\TimeManager\Db;
 
-// use OCP\AppFramework\Db\Mapper;
-// use OCP\IDBConnection;
+use OCA\TimeManager\Helper\UUID;
 
 /**
  * Class StorageHelper
@@ -71,6 +70,7 @@ class StorageHelper {
 
 			return $this->findEntityMapper($entity)->update($object);
 		} else {
+			$object = $this->prepareObjectForInsert($object);
 			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
 		}
 	}
@@ -231,5 +231,19 @@ class StorageHelper {
 		$insertCommit->setCreated(date('Y-m-d H:i:s')); // date('Y-m-d H:i:s') // time()
 		$insertCommit->setUserId($this->userId);
 		return $this->commitMapper->insert($insertCommit);
+	}
+
+	/**
+	 * Prepares and object for inserting, prepping it with uuid and stuff.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	function prepareObjectForInsert($object) {
+		$object['uuid'] = (empty($object['uuid'])) ? UUID::v4() : $object['uuid'];
+		$today = date('Y-m-d H:i:s');
+		$object['created'] = (empty($object['created'])) ? $today : $object['created'];
+		$object['changed'] = (empty($object['changed'])) ? $today : $object['changed'];
+		return $object;
 	}
 }
