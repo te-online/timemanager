@@ -88,7 +88,17 @@ class PageController extends Controller {
 	 */
 	function clients() {
 		$clients = $this->clientMapper->findAllForCurrentUser();
-		return new TemplateResponse('timemanager', 'clients', array('clients' => $clients));
+
+		// Enhance clients with additional information.
+		if(count($clients) > 0) {
+			foreach($clients as $index => $client) {
+				$clients[$index]->project_count = $this->clientMapper->countProjects($client->getUuid());
+			}
+		}
+
+		return new TemplateResponse('timemanager', 'clients', array(
+			'clients' => $clients
+		));
 	}
 
 	/**
@@ -118,6 +128,14 @@ class PageController extends Controller {
 		} else {
 			$projects = $this->projectMapper->findAllForCurrentUser();
 		}
+
+		// Enhance clients with additional information.
+		if(count($projects) > 0) {
+			foreach($projects as $index => $project) {
+				$projects[$index]->task_count = $this->projectMapper->countTasks($project->getUuid());
+			}
+		}
+
 		return new TemplateResponse('timemanager', 'projects', array('projects' => $projects, 'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null), 'clients' => $clients));
 	}
 

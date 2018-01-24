@@ -15,7 +15,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a></h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label">Client since</span>
-						<?php p($_['client']->getCreated()); ?>
+						<?php p($_['client']->getCreatedYear()); ?>
 					</div>
 					<div class="tm_object-details-item">
 						<span class="tm_label">Note</span>
@@ -80,7 +80,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span>0 tasks</span> &middot; <span>0 hrs.</span>
+										<span><?php p($project->task_count); ?> tasks</span> &middot; <span>0 hrs.</span>
 									</div>
 								</a>
 							</div>

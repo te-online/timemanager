@@ -55,4 +55,14 @@ class Client extends Entity {
 			"web"			=> $this->getWeb()
 		];
 	}
+
+	/**
+	 * Gets the created year
+	 *
+	 * @return string
+	 */
+	function getCreatedYear() {
+		$created = date_create($this->getCreated());
+		return date_format($created, 'Y');
+	}
 }

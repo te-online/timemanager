@@ -12,8 +12,13 @@ use OCP\IDBConnection;
  * @method Project insert(Project $entity)
  */
 class ProjectMapper extends ObjectMapper {
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
+	public function __construct(
+		IDBConnection $db,
+		CommitMapper $commitMapper,
+		TaskMapper $taskMapper
+	) {
 		parent::__construct($db, $commitMapper, 'timemanager_project');
+		$this->taskMapper = $taskMapper;
 	}
 
 	public function deleteWithChildrenByClientId($uuid) {
@@ -26,7 +31,17 @@ class ProjectMapper extends ObjectMapper {
 	}
 
 	public function deleteChildrenForEntityById($uuid) {
-		$taskMapper = new TaskMapper($this->db, $this->commitMapper);
-		$taskMapper->deleteWithChildrenByProjectId($uuid);
+		$this->taskMapper->deleteWithChildrenByProjectId($uuid);
+	}
+
+	/**
+	 * Gets the number of tasks for a given object.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	public function countTasks($uuid) {
+		$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $uuid);
+		return count($tasks);
 	}
 }

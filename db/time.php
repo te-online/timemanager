@@ -50,4 +50,26 @@ class Time extends Entity {
 		// 	'commit'
 		// ];
 	}
+
+	/**
+	 * Gets the start date formatted.
+	 *
+	 * @return string
+	 */
+	function getStartFormatted() {
+		$start = date_create($this->getStart());
+		return date_format($start, 'D, j. F Y');
+	}
+
+	/**
+	 * Gets the duration formatted.
+	 *
+	 * @return string
+	 */
+	function getDurationFormatted() {
+		$start = date_create($this->getStart());
+		$end = date_create($this->getEnd());
+		$diff = date_diff($start, $end);
+		return ($diff->format('%h%') + ($diff->format('%i%') / 60));
+	}
 }

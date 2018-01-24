@@ -12,7 +12,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="container">
 			<?php if($_['client'] && $_['project'] && $_['task']) { ?>
 				<div class="tm_object-details">
-					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>"><?php p($_['project']->getName()); ?></a></h2>
+					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>"><?php p($_['project']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?project=<?php echo $_['task']->getUuid(); ?>"><?php p($_['task']->getName()); ?></a></h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label">Client since</span>
 						<?php p($_['client']->getCreated()); ?>
@@ -100,12 +100,10 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php if(count($_['times']) > 0) {
 						foreach($_['times'] as $index => $time) { ?>
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $time->getUuid(); ?>">
-									<h3><?php p($time->getStart()); ?> hrs.</h3>
-									<div class="tm_item-excerpt">
-										<span><?php p($time->getStart()); ?></span>
-									</div>
-								</a>
+								<h3><?php p($time->getDurationFormatted()); ?> hrs.</h3>
+								<div class="tm_item-excerpt">
+									<span><?php p($time->getStartFormatted()); ?></span>
+								</div>
 							</div>
 					<?php } } ?>
 				<?php } ?>

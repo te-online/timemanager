@@ -12,12 +12,29 @@ use OCP\IDBConnection;
  * @method Client insert(Client $entity)
  */
 class ClientMapper extends ObjectMapper {
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
+	protected $projectMapper;
+
+	public function __construct(
+		IDBConnection $db,
+		CommitMapper $commitMapper,
+		ProjectMapper $projectMapper
+	) {
 		parent::__construct($db, $commitMapper, 'timemanager_client');
+		$this->projectMapper = $projectMapper;
 	}
 
 	public function deleteChildrenForEntityById($uuid) {
-		$projectMapper = new ProjectMapper($this->db, $this->commitMapper);
-		$projectMapper->deleteWithChildrenByClientId($uuid);
+		$this->projectMapper->deleteWithChildrenByClientId($uuid);
+	}
+
+	/**
+	 * Gets the number of projects for a given object.
+	 *
+	 * @param string $userId the user id to filter
+	 * @return Client[] list if matching items
+	 */
+	public function countProjects($uuid) {
+		$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $uuid);
+		return count($projects);
 	}
 }

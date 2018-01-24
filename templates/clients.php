@@ -32,7 +32,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $client->getUuid(); ?>">
 							<h3><?php p($client->getName()); ?></h3>
 							<div class="tm_item-excerpt">
-								<span>0 projects</span> &middot; <span>0 hrs.</span> &middot; <span>since 2018</span>
+								<span><?php p($client->project_count); ?> projects</span> &middot; <span>0 hrs.</span> &middot; <span>since <?php p($client->getCreatedYear()); ?></span>
 							</div>
 						</a>
 					</div>

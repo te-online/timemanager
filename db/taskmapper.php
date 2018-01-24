@@ -12,8 +12,13 @@ use OCP\IDBConnection;
  * @method Task insert(Task $entity)
  */
 class TaskMapper extends ObjectMapper {
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
+	public function __construct(
+		IDBConnection $db,
+		CommitMapper $commitMapper,
+		TimeMapper $timeMapper
+	) {
 		parent::__construct($db, $commitMapper, 'timemanager_task');
+		$this->timeMapper = $timeMapper;
 	}
 
 	public function deleteWithChildrenByProjectId($uuid) {
@@ -26,7 +31,6 @@ class TaskMapper extends ObjectMapper {
 	}
 
 	public function deleteChildrenForEntityById($uuid) {
-		$timeMapper = new TimeMapper($this->db, $this->commitMapper);
-		$timeMapper->deleteWithChildrenByTaskId($uuid);
+		$this->timeMapper->deleteWithChildrenByTaskId($uuid);
 	}
 }
