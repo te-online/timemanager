@@ -12,7 +12,20 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="container">
 			<?php if($_['client'] && $_['project'] && $_['task']) { ?>
 				<div class="tm_object-details">
-					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>"><?php p($_['project']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>"><?php p($_['task']->getName()); ?></a></h2>
+					<h2>
+						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
+							<span class="tm_label">Client</span>
+							<?php p($_['client']->getName()); ?>
+						</a>&nbsp;&nbsp;
+						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
+							<span class="tm_label">Project</span>
+							<?php p($_['project']->getName()); ?>
+						</a>&nbsp;&nbsp;
+						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
+							<span class="tm_label">Task</span>
+							<?php p($_['task']->getName()); ?>
+						</a>
+					</h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label">Created</span>
 						<?php p($_['task']->getCreatedDate()); ?>
@@ -103,11 +116,11 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<?php p($_['task']->hours); ?> Hrs.
 						</p>
 						<p>
-							<span class="tm_label">Project Total</span>
+							<span class="tm_label">Project</span>
 							<?php p($_['project']->hours); ?> Hrs.
 						</p>
 						<p>
-							<span class="tm_label">Client Total</span>
+							<span class="tm_label">Client</span>
 							<?php p($_['client']->hours); ?> Hrs.
 						</p>
 					</div>

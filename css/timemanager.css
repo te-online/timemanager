@@ -34,4 +34,57 @@
 
 .tm_item-list {
 	margin-top: 20px;
+	max-width: 600px;
+}
+
+.tm_object-details a {
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 4px;
+    transition: border-color .3s ease;
+}
+
+.tm_object-details a:hover,
+.tm_object-details a:focus {
+    border-color: #666;
+}
+
+.tm_object-details h2 {
+	margin-bottom: 30px;
+	display: flex;
+}
+
+/* .tm_object-details h2 a {
+	margin-left: 10px;
+} */
+
+.tm_summary {
+	display: flex;
+	background: #f8f8f8;
+	padding: 10px;
+	margin-bottom: 50px;
+}
+
+.tm_summary p {
+	margin-left: 35px;
+}
+
+.tm_summary p:first-child {
+	margin-left: 0;
+}
+
+.tm_label {
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: #444;
+  display: block;
+  font-size: 9pt;
+}
+
+.tm_object-details-item {
+	margin-bottom: 15px;
+}
+
+.tm_object-details form {
+	display: inline;
+	margin-right: 5px;
 }

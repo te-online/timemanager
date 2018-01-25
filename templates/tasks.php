@@ -94,7 +94,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<?php p($_['project']->hours); ?> Hrs.
 						</p>
 						<p>
-							<span class="tm_label">Client Total</span>
+							<span class="tm_label">Client</span>
 							<?php p($_['client']->hours); ?> Hrs.
 						</p>
 					</div>
