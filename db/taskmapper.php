@@ -33,4 +33,15 @@ class TaskMapper extends ObjectMapper {
 	public function deleteChildrenForEntityById($uuid) {
 		$this->timeMapper->deleteWithChildrenByTaskId($uuid);
 	}
+
+	public function getHours($uuid) {
+		$times = $this->timeMapper->getObjectsByAttributeValue('task_uuid', $uuid);
+		$sum = 0;
+		if(count($times) > 0) {
+			foreach($times as $time) {
+				$sum += $time->getDurationInHours();
+			}
+		}
+		return $sum;
+	}
 }

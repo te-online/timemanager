@@ -44,4 +44,15 @@ class ProjectMapper extends ObjectMapper {
 		$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $uuid);
 		return count($tasks);
 	}
+
+	public function getHours($uuid) {
+		$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $uuid);
+		$sum = 0;
+		if(count($tasks) > 0) {
+			foreach($tasks as $task) {
+				$sum += $this->taskMapper->getHours($task->getUuid());
+			}
+		}
+		return $sum;
+	}
 }

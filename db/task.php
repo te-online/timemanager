@@ -48,4 +48,14 @@ class Task extends Entity {
 		// 	'commit'
 		// ];
 	}
+
+	/**
+	 * Gets the created date
+	 *
+	 * @return string
+	 */
+	function getCreatedDate() {
+		$created = date_create($this->getCreated());
+		return date_format($created, 'j. F Y');
+	}
 }

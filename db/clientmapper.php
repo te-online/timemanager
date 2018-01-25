@@ -37,4 +37,15 @@ class ClientMapper extends ObjectMapper {
 		$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $uuid);
 		return count($projects);
 	}
+
+	public function getHours($uuid) {
+		$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $uuid);
+		$sum = 0;
+		if(count($projects) > 0) {
+			foreach($projects as $project) {
+				$sum += $this->projectMapper->getHours($project->getUuid());
+			}
+		}
+		return $sum;
+	}
 }

@@ -80,11 +80,17 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span><?php p($project->task_count); ?> tasks</span> &middot; <span>0 hrs.</span>
+										<span><?php p($project->task_count); ?> tasks</span> &middot; <span><?php p($project->hours); ?> Hrs.</span>
 									</div>
 								</a>
 							</div>
 					<?php } } ?>
+					<div class="tm_summary">
+						<p>
+							<span class="tm_label">Client Total</span>
+							<?php p($_['client']->hours); ?> Hrs.
+						</p>
+					</div>
 				<?php } ?>
 			</div>
 		</div>

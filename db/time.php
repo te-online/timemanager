@@ -66,10 +66,10 @@ class Time extends Entity {
 	 *
 	 * @return string
 	 */
-	function getDurationFormatted() {
+	function getDurationInHours() {
 		$start = date_create($this->getStart());
 		$end = date_create($this->getEnd());
 		$diff = date_diff($start, $end);
-		return ($diff->format('%h%') + ($diff->format('%i%') / 60));
+		return round(($diff->format('%h%') + ($diff->format('%i%') / 60)), 2);
 	}
 }

@@ -92,7 +92,10 @@ class PageController extends Controller {
 		// Enhance clients with additional information.
 		if(count($clients) > 0) {
 			foreach($clients as $index => $client) {
+				// Number of projects
 				$clients[$index]->project_count = $this->clientMapper->countProjects($client->getUuid());
+				// Sum up client times
+				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
 			}
 		}
 
@@ -125,14 +128,21 @@ class PageController extends Controller {
 		if($client) {
 			$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $client);
 			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $client);
+			// Sum up client times
+			if(count($client_data) === 1) {
+				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
+			}
 		} else {
 			$projects = $this->projectMapper->findAllForCurrentUser();
 		}
 
-		// Enhance clients with additional information.
+		// Enhance projects with additional information.
 		if(count($projects) > 0) {
 			foreach($projects as $index => $project) {
+				// Count tasks
 				$projects[$index]->task_count = $this->projectMapper->countTasks($project->getUuid());
+				// Sum up project times
+				$projects[$index]->hours = $this->projectMapper->getHours($project->getUuid());
 			}
 		}
 
@@ -165,9 +175,26 @@ class PageController extends Controller {
 			$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $project);
 			$project_data = $this->projectMapper->getObjectsByAttributeValue('uuid', $project);
 			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			// Sum up project times
+			if(count($project_data) === 1) {
+				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
+			}
+			// Sum up client times
+			if(count($client_data) === 1) {
+				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
+			}
 		} else {
 			$tasks = $this->taskMapper->findAllForCurrentUser();
 		}
+
+		// Enhance tasks with additional information.
+		if(count($tasks) > 0) {
+			foreach($tasks as $index => $task) {
+				// Sum up project times
+				$tasks[$index]->hours = $this->taskMapper->getHours($task->getUuid());
+			}
+		}
+
 		return new TemplateResponse('timemanager', 'tasks', array(
 			'tasks' => $tasks,
 			'project' => (($project_data && count($project_data) > 0) ? $project_data[0] : null),
@@ -190,9 +217,22 @@ class PageController extends Controller {
 			$task_data = $this->taskMapper->getObjectsByAttributeValue('uuid', $task);
 			$project_data = $this->projectMapper->getObjectsByAttributeValue('uuid', $task_data[0]->getProjectUuid());
 			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			// Sum up task times
+			if(count($task_data) === 1) {
+				$task_data[0]->hours = $this->taskMapper->getHours($task_data[0]->getUuid());
+			}
+			// Sum up project times
+			if(count($project_data) === 1) {
+				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
+			}
+			// Sum up client times
+			if(count($client_data) === 1) {
+				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
+			}
 		} else {
 			$times = $this->timeMapper->findAllForCurrentUser();
 		}
+
 		return new TemplateResponse('timemanager', 'times', array(
 			'times' => $times,
 			'task' => (($task_data && count($task_data) > 0) ? $task_data[0] : null),

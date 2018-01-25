@@ -14,17 +14,8 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				<div class="tm_object-details">
 					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a> > <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>"><?php p($_['project']->getName()); ?></a></h2>
 					<div class="tm_object-details-item">
-						<span class="tm_label">Client since</span>
-						<?php p($_['client']->getCreated()); ?>
-					</div>
-					<div class="tm_object-details-item">
-						<span class="tm_label">Note</span>
-						<?php p($_['client']->getNote()); ?>
-					</div>
-					<div class="tm_object-details-item">
-						<span class="tm_label">Address</span>
-						<?php p($_['client']->getStreet()); ?><br />
-						<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
+						<span class="tm_label">Created</span>
+						<?php p($_['project']->getCreatedDate()); ?>
 					</div>
 					<form action="" method="post">
 						<button type="submit" name="action" value="edit" class="btn primary">Edit</button>
@@ -92,11 +83,21 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
 									<h3><?php p($task->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span>0 hrs.</span>
+										<span><?php p($task->hours); ?> Hrs.</span>
 									</div>
 								</a>
 							</div>
 					<?php } } ?>
+					<div class="tm_summary">
+						<p>
+							<span class="tm_label">Project Total</span>
+							<?php p($_['project']->hours); ?> Hrs.
+						</p>
+						<p>
+							<span class="tm_label">Client Total</span>
+							<?php p($_['client']->hours); ?> Hrs.
+						</p>
+					</div>
 				<?php } ?>
 			</div>
 		</div>
