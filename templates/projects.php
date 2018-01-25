@@ -45,7 +45,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<select name="client">
 								<?php if(count($_['clients']) > 0 ) {
 									foreach($_['clients'] as $client) { ?>
-										<option value="<?php p($client->getUuid()); ?>"><?php echo p($client->getName()); ?></option>
+										<option value="<?php p($client->getUuid()); ?>"<?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
 								<?php } } else { ?>
 									<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
 								<?php } ?>
@@ -63,7 +63,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php if(count($_['clients']) > 0 ) { ?>
 						<select name="client">
 							<?php foreach($_['clients'] as $client) { ?>
-								<option value="<?php p($client->getUuid()); ?>"><?php echo p($client->getName()); ?></option>
+								<option value="<?php p($client->getUuid()); ?>"<?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
 							<?php } ?>
 						</select>
 						<button type="submit" class="btn">Show</button>

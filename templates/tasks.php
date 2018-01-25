@@ -36,7 +36,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<?php if(count($_['projects']) > 0 ) { ?>
 								<select name="project">
 									<?php foreach($_['projects'] as $project) { ?>
-										<option value="<?php p($project->getUuid()); ?>"><?php echo p($project->getName()); ?></option>
+										<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() == $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
 									<?php } ?>
 								</select>
 							<?php } else { ?>
@@ -47,7 +47,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<?php if(count($_['clients']) > 0 ) { ?>
 								<select name="client">
 									<?php foreach($_['clients'] as $client) { ?>
-										<option value="<?php p($client->getUuid()); ?>"><?php echo p($client->getName()); ?></option>
+										<option value="<?php p($client->getUuid()); ?>"<?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
 									<?php } ?>
 								</select>
 							<?php } else { ?>
@@ -66,7 +66,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php if(count($_['projects']) > 0 ) { ?>
 						<select name="project">
 							<?php foreach($_['projects'] as $project) { ?>
-								<option value="<?php p($project->getUuid()); ?>"><?php echo p($project->getName()); ?></option>
+								<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
 							<?php } ?>
 						</select>
 						<button type="submit" class="btn">Show</button>
