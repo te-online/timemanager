@@ -31,20 +31,26 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
 					<form action="" method="post">
-						<button type="submit" name="action" value="edit" class="btn primary">Edit</button>
+						<button type="submit" name="action" value="edit" class="btn primary">Edit task</button>
 					</form>
-					<form action="" method="post">
-						<button type="submit" name="action" value="delete" class="btn">Delete</button>
+					<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.tasks')); ?>/delete" method="post">
+						<input type="hidden" name="uuid" value="<?php p($_['task']->getUuid()); ?>" />
+						<input type="hidden" name="project" value="<?php p($_['project']->getUuid()); ?>" />
+						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
+						<button type="submit" name="action" value="delete" class="btn">Delete task</button>
 					</form>
 				</div>
 			<?php } ?>
-			<div class="add">
-				<h3>New Time</h3>
-				<div id="new-item">
+			<div class="tm_add">
+				<h3>New time entry</h3>
+				<div id="new-item" class="tm_new-item">
 					<form action="" method="post">
 						<label>Duration (in hrs.)<br />
-							<input type="number" name="duration" placeholder="" />
-						</label>
+							<input type="number" name="duration" step="0.25" placeholder="" />
+						</label><br />
+						<label>Note<br />
+							<textarea name="note"></textarea>
+						</label><br />
 						<label>For task<br />
 							<?php if(count($_['tasks']) > 0 ) { ?>
 								<select name="task">
@@ -58,34 +64,30 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						</label><br />
 						<label>For project<br />
 							<?php if(count($_['projects']) > 0 ) { ?>
-								<select name="project">
-									<?php foreach($_['projects'] as $project) { ?>
-										<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
-									<?php } ?>
-								</select>
+								<?php foreach($_['projects'] as $project) { ?>
+									<strong><?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? p($project->getName()) : p(''); ?></strong>
+								<?php } ?>
 							<?php } else { ?>
 								<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
 							<?php } ?>
 						</label><br />
 						<label>For client<br />
 							<?php if(count($_['clients']) > 0 ) { ?>
-								<select name="client">
-									<?php foreach($_['clients'] as $client) { ?>
-										<option value="<?php p($client->getUuid()); ?>"<?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
-									<?php } ?>
-								</select>
+								<?php foreach($_['clients'] as $client) { ?>
+									<strong><?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? p($client->getName()) : p(''); ?></strong>
+								<?php } ?>
 							<?php } else { ?>
 								<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
 							<?php } ?>
 						</label><br />
 						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-						<button type="submit" class="btn primary">Add</button>
+						<button type="submit" class="btn primary">Add time entry</button>
 					</form>
 				</div>
 			</div>
 			<div class="tm_item-list">
 				<h2>Time Entries</h2>
-				<p>Select a task</p>
+				<p>Select a task to show time entries for</p>
 				<form action="" method="get">
 					<?php if(count($_['tasks']) > 0 ) { ?>
 						<select name="task">
@@ -106,10 +108,16 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
 								<h3><?php p($time->getDurationInHours()); ?> hrs.</h3>
 								<div class="tm_item-excerpt">
-									<span><?php p($time->getStartFormatted()); ?></span>
+									<span>
+										<?php p($time->getStartFormatted()); ?>
+									</span>
 								</div>
 							</div>
-					<?php } } ?>
+					<?php } } else { ?>
+						<div class="tm_item-row">
+							<h3>You don't have any time entries, yet. Try adding one by clicking “Add time entry”.</h3>
+						</div>
+					<?php } ?>
 					<div class="tm_summary">
 						<p>
 							<span class="tm_label">Task Total</span>

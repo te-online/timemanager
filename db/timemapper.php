@@ -16,15 +16,17 @@ class TimeMapper extends ObjectMapper {
 		parent::__construct($db, $commitMapper, 'timemanager_time');
 	}
 
-	public function deleteByTaskId($uuid) {
-		$times = $this->getObjectsByAttributeValue('client_uuid', $uuid);
+	public function deleteByTaskId($uuid, $commit) {
+		$times = $this->getObjectsByAttributeValue('task_uuid', $uuid);
 		foreach($times as $time) {
+			$time->setCommit($commit);
+			$time->setChanged(date('Y-m-d H:i:s'));
 			$time->setStatus('deleted');
-			$this->update(time);
+			$this->update($time);
 		}
 	}
 
-	public function deleteChildrenForEntityById($uuid) {
+	public function deleteChildrenForEntityById($uuid, $commit) {
 		// Do nothing here, because times have no children.
 	}
 }

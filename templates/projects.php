@@ -12,7 +12,12 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="container">
 			<?php if($_['client']) { ?>
 				<div class="tm_object-details">
-					<h2><a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>"><?php p($_['client']->getName()); ?></a></h2>
+					<h2>
+						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
+							<span class="tm_label">Client</span>
+							<?php p($_['client']->getName()); ?>
+						</a>
+					</h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label">Client since</span>
 						<?php p($_['client']->getCreatedYear()); ?>
@@ -27,20 +32,22 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
 					</div>
 					<form action="" method="post">
-						<button type="submit" name="action" value="edit" class="btn primary">Edit</button>
+						<button type="submit" name="action" value="edit" class="btn primary">Edit client</button>
 					</form>
-					<form action="" method="post">
-						<button type="submit" name="action" value="delete" class="btn">Delete</button>
+					<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.clients')); ?>/delete" method="post">
+						<input type="hidden" name="uuid" value="<?php p($_['client']->getUuid()); ?>" />
+						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
+						<button type="submit" name="action" value="delete" class="btn">Delete client</button>
 					</form>
 				</div>
 			<?php } ?>
-			<div class="add">
-				<h3>New Project</h3>
-				<div id="new-item">
+			<div class="tm_add">
+				<h3>New project</h3>
+				<div id="new-item" class="tm_new-item">
 					<form action="" method="post">
 						<label>Project name<br />
 							<input type="text" name="name" placeholder="Very special project" />
-						</label>
+						</label><br />
 						<label>For client<br />
 							<select name="client">
 								<?php if(count($_['clients']) > 0 ) {
@@ -52,13 +59,13 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							</select>
 						</label><br />
 						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-						<button type="submit" class="btn primary">Add</button>
+						<button type="submit" class="btn primary">Add project</button>
 					</form>
 				</div>
 			</div>
 			<div class="tm_item-list">
 				<h2>Projects</h2>
-				<p>Select a client</p>
+				<p>Select a client to show projects for</p>
 				<form action="" method="get">
 					<?php if(count($_['clients']) > 0 ) { ?>
 						<select name="client">
@@ -72,7 +79,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php } ?>
 				</form>
 				<?php if(!$_['client']) { ?>
-					<p><strong>Select a client first to show the times for this client.</strong></p>
+					<p><strong>Select a client first to show the project for this client.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['projects']) > 0) {
 						foreach($_['projects'] as $index => $project) { ?>
@@ -80,11 +87,15 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span><?php p($project->task_count); ?> tasks</span> &middot; <span><?php p($project->hours); ?> Hrs.</span>
+										<span><?php p($project->task_count); ?> tasks</span>&nbsp;&middot;&nbsp;<span><?php p($project->hours); ?> Hrs.</span>
 									</div>
 								</a>
 							</div>
-					<?php } } ?>
+					<?php } } else { ?>
+						<div class="tm_item-row">
+							<h3>You don't have any projects, yet. Try adding one by clicking “Add project.</h3>
+						</div>
+					<?php } ?>
 					<div class="tm_summary">
 						<p>
 							<span class="tm_label">Client Total</span>

@@ -34,6 +34,21 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
+	/**
+	 * Fetch all items that are associated to the current user
+	 * with a given attribute-value-combination and not deleted
+	 *
+	 * @param string $attr the attribute name
+	 * @param string $value the attribute value
+	 * @return Object[] list if matching items
+	 */
+	function getActiveObjectsByAttributeValue($attr, $value) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `status` != ? AND `' . $attr . '` = ?; LIMIT 1;';
+		return $this->findEntities($sql, [$this->userId, 'deleted', $value]);
+	}
+
 	function getObjectById($uuid) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
@@ -108,13 +123,25 @@ class ObjectMapper extends Mapper {
 	/**
 	 * Fetch all items that are associated to the current user
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @return Object[] list if matching items
 	 */
 	function findAllForCurrentUser() {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ?;';
 		return $this->findEntities($sql, [$this->userId]);
+	}
+
+	/**
+	 * Fetch all items that are associated to the current user
+	 * and not deleted
+	 *
+	 * @return Object[] list if matching items
+	 */
+	function findActiveForCurrentUser() {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `status` != ?;';
+		return $this->findEntities($sql, [$this->userId, 'deleted']);
 	}
 }

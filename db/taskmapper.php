@@ -21,17 +21,19 @@ class TaskMapper extends ObjectMapper {
 		$this->timeMapper = $timeMapper;
 	}
 
-	public function deleteWithChildrenByProjectId($uuid) {
+	public function deleteWithChildrenByProjectId($uuid, $commit) {
 		$tasks = $this->getObjectsByAttributeValue('project_uuid', $uuid);
 		foreach($tasks as $task) {
+			$task->setChanged(date('Y-m-d H:i:s'));
+			$task->setCommit($commit);
 			$task->setStatus('deleted');
 			$this->update($task);
-			$this->deleteChildrenForEntityById($task->getUuid());
+			$this->deleteChildrenForEntityById($task->getUuid(), $commit);
 		}
 	}
 
-	public function deleteChildrenForEntityById($uuid) {
-		$this->timeMapper->deleteWithChildrenByTaskId($uuid);
+	public function deleteChildrenForEntityById($uuid, $commit) {
+		$this->timeMapper->deleteByTaskId($uuid, $commit);
 	}
 
 	public function getHours($uuid) {

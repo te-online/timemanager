@@ -200,12 +200,13 @@ class StorageHelper {
 			}
 
 			// Delete object
+			$current_object->setChanged(date('Y-m-d H:i:s'));
 			$current_object->setCommit($object['desiredCommit']);
 			$current_object->setStatus('deleted');
 			$this->findEntityMapper($entity)->update($current_object);
 
 			// Delete children
-			$this->findEntityMapper($entity)->deleteChildrenForEntityById($current_object->getUuid());
+			$this->findEntityMapper($entity)->deleteChildrenForEntityById($current_object->getUuid(), $object['desiredCommit']);
 		}
 	}
 

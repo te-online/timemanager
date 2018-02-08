@@ -17,7 +17,6 @@ use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http;
-
 use OCP\IRequest;
 
 class PageController extends Controller {
@@ -87,7 +86,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function clients() {
-		$clients = $this->clientMapper->findAllForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser();
 
 		// Enhance clients with additional information.
 		if(count($clients) > 0) {
@@ -100,7 +99,8 @@ class PageController extends Controller {
 		}
 
 		return new TemplateResponse('timemanager', 'clients', array(
-			'clients' => $clients
+			'clients' => $clients,
+			'requesttoken' => (\OC::$server->getSession()) ? \OCP\Util::callRegister() : ''
 		));
 	}
 
@@ -121,19 +121,40 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function deleteClient($uuid) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$client = $this->clientMapper->getObjectById($uuid);
+		// Delete object
+		$client->setChanged(date('Y-m-d H:i:s'));
+		$client->setCommit($commit);
+		$client->setStatus('deleted');
+		$this->clientMapper->update($client);
+
+		// Delete children
+		$this->clientMapper->deleteChildrenForEntityById($uuid, $commit);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.clients'));
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function projects($client=null) {
-		$clients = $this->clientMapper->findAllForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser();
 		if($client) {
-			$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $client);
-			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $client);
+			$projects = $this->projectMapper->getActiveObjectsByAttributeValue('client_uuid', $client);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $client);
 			// Sum up client times
 			if(count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
-			$projects = $this->projectMapper->findAllForCurrentUser();
+			$projects = $this->projectMapper->findActiveForCurrentUser();
 		}
 
 		// Enhance projects with additional information.
@@ -166,15 +187,36 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function deleteProject($uuid, $client) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$project = $this->projectMapper->getObjectById($uuid);
+		// Delete object
+		$project->setChanged(date('Y-m-d H:i:s'));
+		$project->setCommit($commit);
+		$project->setStatus('deleted');
+		$this->projectMapper->update($project);
+
+		// Delete children
+		$this->projectMapper->deleteChildrenForEntityById($uuid, $commit);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function tasks($project) {
-		$clients = $this->clientMapper->findAllForCurrentUser();
-		$projects = $this->projectMapper->findAllForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser();
+		$projects = $this->projectMapper->findActiveForCurrentUser();
 		if($project) {
-			$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $project);
-			$project_data = $this->projectMapper->getObjectsByAttributeValue('uuid', $project);
-			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue('project_uuid', $project);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $project);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
 			// Sum up project times
 			if(count($project_data) === 1) {
 				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
@@ -184,7 +226,7 @@ class PageController extends Controller {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
-			$tasks = $this->taskMapper->findAllForCurrentUser();
+			$tasks = $this->taskMapper->findActiveForCurrentUser();
 		}
 
 		// Enhance tasks with additional information.
@@ -206,17 +248,54 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function addTask($name, $project) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		$this->storageHelper->addOrUpdateObject(array(
+			'name' => $name,
+			'project_uuid' => $project,
+			'commit' => $commit
+		), 'tasks');
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function deleteTask($uuid, $project) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$task = $this->taskMapper->getObjectById($uuid);
+		// Delete object
+		$task->setChanged(date('Y-m-d H:i:s'));
+		$task->setCommit($commit);
+		$task->setStatus('deleted');
+		$this->taskMapper->update($task);
+
+		// Delete children
+		$this->taskMapper->deleteChildrenForEntityById($uuid, $commit);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project);
+	}
+
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function times($task) {
-		$clients = $this->clientMapper->findAllForCurrentUser();
-		$projects = $this->projectMapper->findAllForCurrentUser();
-		$tasks = $this->taskMapper->findAllForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser();
+		$projects = $this->projectMapper->findActiveForCurrentUser();
+		$tasks = $this->taskMapper->findActiveForCurrentUser();
 		if($task) {
-			$times = $this->timeMapper->getObjectsByAttributeValue('task_uuid', $task);
-			$task_data = $this->taskMapper->getObjectsByAttributeValue('uuid', $task);
-			$project_data = $this->projectMapper->getObjectsByAttributeValue('uuid', $task_data[0]->getProjectUuid());
-			$client_data = $this->clientMapper->getObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			$times = $this->timeMapper->getActiveObjectsByAttributeValue('task_uuid', $task);
+			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue('uuid', $task);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $task_data[0]->getProjectUuid());
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
 			// Sum up task times
 			if(count($task_data) === 1) {
 				$task_data[0]->hours = $this->taskMapper->getHours($task_data[0]->getUuid());
@@ -230,7 +309,7 @@ class PageController extends Controller {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
-			$times = $this->timeMapper->findAllForCurrentUser();
+			$times = $this->timeMapper->findActiveForCurrentUser();
 		}
 
 		return new TemplateResponse('timemanager', 'times', array(
@@ -242,5 +321,50 @@ class PageController extends Controller {
 			'projects' => $projects,
 			'clients' => $clients
 		));
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function addTime($duration, $note, $task) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Convert 1,25 to 1.25
+		$duration = str_replace(',', '.', $duration);
+		// Cast to float
+		$duration = (float)$duration;
+		// Calculate start and end from duration
+		$end = date('Y-m-d H:i:s');
+		$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
+		$this->storageHelper->addOrUpdateObject(array(
+			'name' => $name,
+			'start' => $start, // now - duration
+			'end' => $end, // now
+			'task_uuid' => $task,
+			'commit' => $commit
+		), 'times');
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function deleteTime($uuid, $task) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$time = $this->timeMapper->getObjectById($uuid);
+		// Delete object
+		$time->setChanged(date('Y-m-d H:i:s'));
+		$time->setCommit($commit);
+		$time->setStatus('deleted');
+		$this->timeMapper->update($time);
+
+		// Delete children
+		$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
 	}
 }
