@@ -16,7 +16,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				<div id="new-item" class="tm_new-item">
 					<form action="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>" method="post">
 						<label>Client name<br />
-							<input type="text" name="name" placeholder="Evil Corp." />
+							<input type="text" name="name" placeholder="Example Corp." />
 						</label><br />
 						<label>Note<br />
 							<textarea name="note" placeholder="A long text ..."></textarea>
