@@ -326,7 +326,7 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function addTime($duration, $note, $task) {
+	function addTime($duration, $date, $note, $task) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
 		// Convert 1,25 to 1.25
@@ -334,7 +334,14 @@ class PageController extends Controller {
 		// Cast to float
 		$duration = (float)$duration;
 		// Calculate start and end from duration
-		$end = date('Y-m-d H:i:s');
+		$logger = \OC::$server->getLogger();
+		$logger->error($date, ['app' => 'timemanager']);
+		if(!empty($date)) {
+			// Add 12 hours to make it noon instead of midnight.
+			$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 12);
+		} else {
+			$end = date('Y-m-d H:i:s');
+		}
 		$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
 		$this->storageHelper->addOrUpdateObject(array(
 			'name' => $name,

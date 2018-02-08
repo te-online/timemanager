@@ -48,6 +48,9 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<label>Duration (in hrs.)<br />
 							<input type="number" name="duration" step="0.25" placeholder="" />
 						</label><br />
+						<label>Date<br />
+							<input type="date" name="date" value="<?php p(date('Y-m-d')); ?>" />
+						</label><br />
 						<label>Note<br />
 							<textarea name="note"></textarea>
 						</label><br />
