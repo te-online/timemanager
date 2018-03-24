@@ -1,3 +1,8 @@
+$(document).ready(function() {
+	if($('input[name="duration"]').length > 0) {
+		$('input[name="duration"]')[0].focus();
+	}
+});
 
 // OCA.TimeManager = {
 // 	init: function() {
