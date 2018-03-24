@@ -111,9 +111,12 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
 								<h3><?php p($time->getDurationInHours()); ?> hrs.</h3>
 								<div class="tm_item-excerpt">
-									<span>
+									<div class="tm_item-note">
+										<?php p($time->getNote()); ?>
+									</div>
+									<div class="tm_item-date">
 										<?php p($time->getStartFormatted()); ?>
-									</span>
+									</div>
 								</div>
 							</div>
 					<?php } } else { ?>
