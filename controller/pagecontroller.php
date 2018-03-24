@@ -348,7 +348,8 @@ class PageController extends Controller {
 			'start' => $start, // now - duration
 			'end' => $end, // now
 			'task_uuid' => $task,
-			'commit' => $commit
+			'commit' => $commit,
+			'note' => $note
 		), 'times');
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);

@@ -136,6 +136,7 @@ class StorageHelper {
 				$time->setTaskUuid($object['task_uuid']);
 				$time->setUuid($object['uuid']);
 				$time->setCommit($object['commit']);
+				$time->setNote($object['note']);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
 				$time->setPaymentStatus($object['payment_status']);
