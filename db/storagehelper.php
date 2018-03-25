@@ -68,9 +68,9 @@ class StorageHelper {
 			}
 			$object['commit'] = $desiredCommit;
 
-			return $this->findEntityMapper($entity)->update($object);
+			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, ''));
 		} else {
-			$object = $this->prepareObjectForInsert($this->convertToEntityObject($object, $entity, ''));
+			$object = $this->prepareObjectForInsert($object);
 			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
 		}
 	}
