@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Db;
 
 use OCP\AppFramework\Db\Entity;
+use OCA\TimeManager\Helper\ISODate;
 
 /**
  * Class Item
@@ -36,24 +37,16 @@ class Time extends Entity {
 	 * @return array item representation as array
 	 */
 	function toArray() {
-		// return [];
 		return [
-			"changed" => $this->getChanged(),
-			"commit" 	=> $this->getCommit(),
-			"created"	=> $this->getCreated(),
-			"end" 		=> $this->getEnd(),
-			"note" 		=> $this->getNote(),
-			"start"		=> $this->getStart(),
-			"task_uuid"=>$this->getTaskUuid(),
-			"uuid"		=> $this->getUuid()
+			"changed" 	=> ISODate::convert($this->getChanged()),
+			"commit" 		=> $this->getCommit(),
+			"created"		=> ISODate::convert($this->getCreated()),
+			"end" 			=> ISODate::convert($this->getEnd()),
+			"note" 			=> $this->getNote(),
+			"start"			=> ISODate::convert($this->getStart()),
+			"task_uuid"	=> $this->getTaskUuid(),
+			"uuid"			=> $this->getUuid()
 		];
-		// return [
-		// 	'uuid' => $this->getUuid(),
-		// 	'changed' => $this->getChanged(),
-		// 	'created' => $this->getCreated(),
-		// 	'city' => $this->getCity(),
-		// 	'commit'
-		// ];
 	}
 
 	/**

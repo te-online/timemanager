@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Db;
 
 use OCP\AppFramework\Db\Entity;
+use OCA\TimeManager\Helper\ISODate;
 
 /**
  * Class Item
@@ -41,10 +42,10 @@ class Client extends Entity {
 	 */
 	function toArray() {
 		return [
-			"changed" => $this->getChanged(),
+			"changed" => ISODate::convert($this->getChanged()),
 			"city" 		=> $this->getCity(),
 			"commit" 	=> $this->getCommit(),
-			"created"	=> $this->getCreated(),
+			"created"	=> ISODate::convert($this->getCreated()),
 			"email"		=> $this->getEmail(),
 			"name"		=> $this->getName(),
 			"note" 		=> $this->getNote(),
