@@ -113,9 +113,9 @@ class TApiController extends ApiController {
 	 */
 	function updateObjects($data, $lastCommit) {
 		$logger = \OC::$server->getLogger();
-		$logger->error("New API request:", ['app' => 'timemanager']);
-		$logger->error(json_encode($data), ['app' => 'timemanager']);
-		$logger->error("Commit: " . $lastCommit, ['app' => 'timemanager']);
+		// $logger->error("New API request:", ['app' => 'timemanager']);
+		// $logger->error(json_encode($data), ['app' => 'timemanager']);
+		$logger->info("API Request with commit: " . $lastCommit, ['app' => 'timemanager']);
 		// return new JSONResponse(array('test' => "Hallo Welt"));
 		$entities = ["clients", "projects", "tasks", "times"];
 
@@ -204,7 +204,8 @@ class TApiController extends ApiController {
 			$response['commit'] = $lastCommit;
 		}
 
-		$logger->error("Sending response... " . json_encode($response), ['app' => 'timemanager']);
+		// $logger->error("Sending response... " . json_encode($response), ['app' => 'timemanager']);
+		$logger->info("Sending response [omitted] and commit " . $lastCommit, ['app' => 'timemanager']);
 
 		return new JSONResponse($response);
 		// $response->addHeader('Test-Header', 'te-online');
