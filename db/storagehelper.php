@@ -70,7 +70,7 @@ class StorageHelper {
 
 			return $this->findEntityMapper($entity)->update($object);
 		} else {
-			$object = $this->prepareObjectForInsert($object);
+			$object = $this->prepareObjectForInsert($this->convertToEntityObject($object));
 			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
 		}
 	}
