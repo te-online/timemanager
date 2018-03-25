@@ -334,11 +334,9 @@ class PageController extends Controller {
 		// Cast to float
 		$duration = (float)$duration;
 		// Calculate start and end from duration
-		$logger = \OC::$server->getLogger();
-		$logger->error($date, ['app' => 'timemanager']);
 		if(!empty($date)) {
-			// Add 12 hours to make it noon instead of midnight.
-			$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 12);
+			// Add 24 hours to make it end of the day.
+			$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 24);
 		} else {
 			$end = date('Y-m-d H:i:s');
 		}
