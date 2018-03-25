@@ -68,7 +68,7 @@ class StorageHelper {
 			}
 			$object['commit'] = $desiredCommit;
 
-			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, ''));
+			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, '', true));
 		} else {
 			$object = $this->prepareObjectForInsert($object);
 			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
@@ -81,7 +81,7 @@ class StorageHelper {
 	 * @param string $userId the user id to filter
 	 * @return Client[] list if matching items
 	 */
-	function convertToEntityObject($object, $entity, $deleted) {
+	function convertToEntityObject($object, $entity, $deleted, $includeId = false) {
 		switch($entity) {
 			case 'clients':
 				$client = new Client();
@@ -100,6 +100,9 @@ class StorageHelper {
 				$client->setUserId($this->userId);
 				$client->setStatus($deleted);
 				$client->setBillableDefault(true);
+				if($includeId) {
+					$client->setId($object['id']);
+				}
 				return $client;
 			case 'projects':
 				$project = new Project();
@@ -115,6 +118,9 @@ class StorageHelper {
 				$project->setStatus($deleted);
 				// $project->setBillable($object['billable']);
 				$project->setBillable(true);
+				if($includeId) {
+					$project->setId($object['id']);
+				}
 				return $project;
 			case 'tasks':
 				$task = new Task();
@@ -128,6 +134,9 @@ class StorageHelper {
 				$task->setStatus($deleted);
 				// $task->setBillable($object['billable']);
 				$task->setBillable(true);
+				if($includeId) {
+					$task->setId($object['id']);
+				}
 				return $task;
 			case 'times':
 				$time = new Time();
@@ -142,6 +151,9 @@ class StorageHelper {
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
 				// $time->setPaymentStatus($object['payment_status']);
+				if($includeId) {
+					$time->setId($object['id']);
+				}
 				return $time;
 		}
 	}
