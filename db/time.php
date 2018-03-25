@@ -38,9 +38,15 @@ class Time extends Entity {
 	function toArray() {
 		// return [];
 		return [
-			'uuid' => $this->getUuid(),
-			'name' => $this->getName(),
-			'note' => $this->getNote()
+			"changed" => $this->getChanged(),
+			"commit" 	=> $this->getCommit(),
+			"created"	=> $this->getCreated(),
+			"start"		=> $this->getStart(),
+			"note" 		=> $this->getNote(),
+			"end" 		=> $this->getEnd(),
+			"payment_status"=> $this->getPaymentStatus(),
+			"uuid"		=> $this->getUuid(),
+			"task_uuid"=>$this->getTaskUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),

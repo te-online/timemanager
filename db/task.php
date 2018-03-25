@@ -36,9 +36,13 @@ class Task extends Entity {
 	function toArray() {
 		// return [];
 		return [
-			'uuid' => $this->getUuid(),
-			'name' => $this->getName(),
-			'note' => $this->getNote()
+			"changed" => $this->getChanged(),
+			"commit" 	=> $this->getCommit(),
+			"created"	=> $this->getCreated(),
+			"name"		=> $this->getName(),
+			"billable"=> $this->getBillable(),
+			"uuid"		=> $this->getUuid(),
+			"project_uuid"=>$this->getProjectUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),

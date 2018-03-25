@@ -38,9 +38,15 @@ class Project extends Entity {
 	function toArray() {
 		// return [];
 		return [
-			'uuid' => $this->getUuid(),
-			'name' => $this->getName(),
-			'note' => $this->getNote()
+			"changed" => $this->getChanged(),
+			"commit" 	=> $this->getCommit(),
+			"created"	=> $this->getCreated(),
+			"name"		=> $this->getName(),
+			"note" 		=> $this->getNote(),
+			"color" 	=> $this->getColor(),
+			"billable"=> $this->getBillable(),
+			"uuid"		=> $this->getUuid(),
+			"client_uuid"=>$this->getClientUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),
