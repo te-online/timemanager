@@ -60,14 +60,14 @@ class StorageHelper {
 			$desiredCommit = $object['desiredCommit'];
 			$object['desiredCommit'] = null;
 			// if there are commits and current object's commit is in list.
-			if( count( $commits ) > 0 && in_array($commits, $currentObject['commit']) ) {
+			if( count( $commits ) > 0 && in_array($commits, $currentObject->getCommit()) ) {
 				// cancel
 				$error = new Error("Dropped, because commit is behind current state.");
 				$error['reason'] = "dropped";
 				return $error;
 			}
 			$object['commit'] = $desiredCommit;
-			$object['id'] = $currentObject['id'];
+			$object['id'] = $currentObject->getId();
 
 			$logger = \OC::$server->getLogger();
 			$logger->error("Update object: " . json_encode($object) . json_encode($currentObject), ['app' => 'timemanager']);
