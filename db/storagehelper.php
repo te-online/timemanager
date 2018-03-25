@@ -113,7 +113,8 @@ class StorageHelper {
 				$project->setCommit($object['commit']);
 				$project->setUserId($this->userId);
 				$project->setStatus($deleted);
-				$project->setBillable($object['billable']);
+				// $project->setBillable($object['billable']);
+				$project->setBillable(true);
 				return $project;
 			case 'tasks':
 				$task = new Task();
@@ -125,7 +126,8 @@ class StorageHelper {
 				$task->setCommit($object['commit']);
 				$task->setUserId($this->userId);
 				$task->setStatus($deleted);
-				$task->setBillable($object['billable']);
+				// $task->setBillable($object['billable']);
+				$task->setBillable(true);
 				return $task;
 			case 'times':
 				$time = new Time();
@@ -139,7 +141,7 @@ class StorageHelper {
 				$time->setNote($object['note']);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
-				$time->setPaymentStatus($object['payment_status']);
+				// $time->setPaymentStatus($object['payment_status']);
 				return $time;
 		}
 	}
