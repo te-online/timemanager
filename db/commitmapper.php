@@ -38,7 +38,7 @@ class CommitMapper extends Mapper {
 		// Find the given commit first, see if we have it.
 		$sql = 'SELECT `commit` ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `commit` = ? LIMIT 1;';
+				'WHERE `user_id` = ? AND LOWER(`commit`) = ? LIMIT 1;';
 		$givenCommit = $this->findEntities($sql, [$this->userId, $commit]);
 
 		// The given commit is found, all fine.
@@ -46,7 +46,7 @@ class CommitMapper extends Mapper {
 			$sql = 'SELECT * ' .
 					'FROM `' . $this->tableName . '` ' .
 					'WHERE `user_id` = ? AND `created` >'.
-					' (SELECT `created` FROM `' . $this->tableName . '` WHERE `commit` = ? LIMIT 1) '.
+					' (SELECT `created` FROM `' . $this->tableName . '` WHERE LOWER(`commit`) = ? LIMIT 1) '.
 					'ORDER BY `created`;';
 			$commits = array_map(
 				function($commit) {
