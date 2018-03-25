@@ -39,14 +39,13 @@ class Project extends Entity {
 		// return [];
 		return [
 			"changed" => $this->getChanged(),
+			"client_uuid"=>$this->getClientUuid(),
+			"color" 	=> $this->getColor(),
 			"commit" 	=> $this->getCommit(),
 			"created"	=> $this->getCreated(),
 			"name"		=> $this->getName(),
 			"note" 		=> $this->getNote(),
-			"color" 	=> $this->getColor(),
-			"billable"=> $this->getBillable(),
-			"uuid"		=> $this->getUuid(),
-			"client_uuid"=>$this->getClientUuid()
+			"uuid"		=> $this->getUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),

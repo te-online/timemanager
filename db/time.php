@@ -41,12 +41,11 @@ class Time extends Entity {
 			"changed" => $this->getChanged(),
 			"commit" 	=> $this->getCommit(),
 			"created"	=> $this->getCreated(),
-			"start"		=> $this->getStart(),
-			"note" 		=> $this->getNote(),
 			"end" 		=> $this->getEnd(),
-			"payment_status"=> $this->getPaymentStatus(),
-			"uuid"		=> $this->getUuid(),
-			"task_uuid"=>$this->getTaskUuid()
+			"note" 		=> $this->getNote(),
+			"start"		=> $this->getStart(),
+			"task_uuid"=>$this->getTaskUuid(),
+			"uuid"		=> $this->getUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),

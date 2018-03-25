@@ -40,9 +40,8 @@ class Task extends Entity {
 			"commit" 	=> $this->getCommit(),
 			"created"	=> $this->getCreated(),
 			"name"		=> $this->getName(),
-			"billable"=> $this->getBillable(),
-			"uuid"		=> $this->getUuid(),
-			"project_uuid"=>$this->getProjectUuid()
+			"project_uuid"=>$this->getProjectUuid(),
+			"uuid"		=> $this->getUuid()
 		];
 		// return [
 		// 	'uuid' => $this->getUuid(),
