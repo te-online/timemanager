@@ -30,7 +30,7 @@ class ObjectMapper extends Mapper {
 	function getObjectsByAttributeValue($attr, $value) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `' . $attr . '` = ?; LIMIT 1;';
+				'WHERE `user_id` = ? AND `' . $attr . '` = ?;';
 		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
@@ -42,10 +42,11 @@ class ObjectMapper extends Mapper {
 	 * @param string $value the attribute value
 	 * @return Object[] list if matching items
 	 */
-	function getActiveObjectsByAttributeValue($attr, $value) {
+	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created") {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ? AND `' . $attr . '` = ?; LIMIT 1;';
+				'WHERE `user_id` = ? AND `status` != ? AND `' . $attr . '` = ? ' .
+				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
 		return $this->findEntities($sql, [$this->userId, 'deleted', $value]);
 	}
 
@@ -138,10 +139,11 @@ class ObjectMapper extends Mapper {
 	 *
 	 * @return Object[] list if matching items
 	 */
-	function findActiveForCurrentUser() {
+	function findActiveForCurrentUser($orderby = "created") {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ?;';
+				'WHERE `user_id` = ? AND `status` != ? ' .
+				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
 		return $this->findEntities($sql, [$this->userId, 'deleted']);
 	}
 }

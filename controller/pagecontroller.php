@@ -86,7 +86,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function clients() {
-		$clients = $this->clientMapper->findActiveForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser('name');
 
 		// Enhance clients with additional information.
 		if(count($clients) > 0) {
@@ -148,7 +148,7 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		if($client) {
 			$projects = $this->projectMapper->getActiveObjectsByAttributeValue('client_uuid', $client);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $client);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $client, 'name');
 			// Sum up client times
 			if(count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
@@ -216,7 +216,7 @@ class PageController extends Controller {
 		if($project) {
 			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue('project_uuid', $project);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $project);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid(), 'name');
 			// Sum up project times
 			if(count($project_data) === 1) {
 				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
@@ -292,10 +292,10 @@ class PageController extends Controller {
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$tasks = $this->taskMapper->findActiveForCurrentUser();
 		if($task) {
-			$times = $this->timeMapper->getActiveObjectsByAttributeValue('task_uuid', $task);
+			$times = $this->timeMapper->getActiveObjectsByAttributeValue('task_uuid', $task, 'start');
 			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue('uuid', $task);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $task_data[0]->getProjectUuid());
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid());
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid(), 'name');
 			// Sum up task times
 			if(count($task_data) === 1) {
 				$task_data[0]->hours = $this->taskMapper->getHours($task_data[0]->getUuid());
