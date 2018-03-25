@@ -10,6 +10,6 @@ class ISODate {
    */
   public static function convert($date) {
     $datetime = new \DateTime($date);
-    return $datetime->format(\DateTime::ATOM);
+    return $datetime->format('Y-m-d\TH:i:s');
   }
 }
