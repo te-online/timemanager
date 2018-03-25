@@ -67,9 +67,10 @@ class StorageHelper {
 				return $error;
 			}
 			$object['commit'] = $desiredCommit;
+			$object['id'] = $currentObject['id'];
 
 			$logger = \OC::$server->getLogger();
-			$logger->error("Update object: " . json_encode($object), ['app' => 'timemanager']);
+			$logger->error("Update object: " . json_encode($object) . json_encode($currentObject), ['app' => 'timemanager']);
 
 			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, '', true));
 		} else {
