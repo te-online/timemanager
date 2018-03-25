@@ -52,7 +52,7 @@ class ObjectMapper extends Mapper {
 	function getObjectById($uuid) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND LOWER(`uuid`) = ? LIMIT 1;';
+				'WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;';
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
 		if(count($objects) > 0) {
 			return $objects[0];
@@ -74,7 +74,7 @@ class ObjectMapper extends Mapper {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? '.
-				'AND LOWER(`commit`) IN ( "' . implode('","', $applicable_commits) . '" ) ' .
+				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
 				'AND `created` = `changed` AND `status` != ? ' .
 				'ORDER BY `changed`;';
 		$clients = array_map(
@@ -91,7 +91,7 @@ class ObjectMapper extends Mapper {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? ' .
-				'AND LOWER(`commit`) IN ( "' . implode('","', $applicable_commits) . '" ) ' .
+				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
 				'AND `created` != `changed` AND `status` != ? ' .
 				'ORDER BY `changed`;';
 		$clients = array_map(
@@ -108,7 +108,7 @@ class ObjectMapper extends Mapper {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? ' .
-				'AND LOWER(`commit`) IN ( "' . implode('","', $applicable_commits) . '" ) ' .
+				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
 				'AND `status` = ? ' .
 				'ORDER BY `changed`;';
 		$clients = array_map(
