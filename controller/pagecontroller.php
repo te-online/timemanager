@@ -373,4 +373,40 @@ class PageController extends Controller {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function payTime($uuid, $task) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$time = $this->timeMapper->getObjectById($uuid);
+		// Adjust payment status object
+		$time->setChanged(date('Y-m-d H:i:s'));
+		$time->setCommit($commit);
+		$time->setPaymentStatus('paid');
+		$this->timeMapper->update($time);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function unpayTime($uuid, $task) {
+		$commit = UUID::v4();
+		$this->storageHelper->insertCommit($commit);
+		// Get client
+		$time = $this->timeMapper->getObjectById($uuid);
+		// Adjust payment status
+		$time->setChanged(date('Y-m-d H:i:s'));
+		$time->setCommit($commit);
+		$time->setPaymentStatus('');
+		$this->timeMapper->update($time);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
+	}
 }

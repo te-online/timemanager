@@ -42,6 +42,9 @@
 
 .tm_item-date {
 	font-weight: 200;
+	min-height: 34px;
+	display: flex;
+	align-items: center;
 }
 
 .tm_object-details {
@@ -114,4 +117,31 @@
 
 .tm_add h3 {
 	margin-bottom: 20px;
+}
+
+.tm_icon-checkmark {
+	margin-top: -5px;
+  background-color: transparent;
+  border: 0;
+  padding-bottom: 4px;
+}
+
+.tm_icon-checkmark-unpaid {
+	opacity: .2;
+}
+
+.tm_inline-hover-form {
+	display: none;
+	margin-left: 5px;
+}
+
+.tm_inline-hover-form .btn {
+	padding: 3px 6px;
+  min-height: initial;
+  height: 28px;
+  margin-left: 10px;
+}
+
+.tm_item-row:hover .tm_inline-hover-form {
+	display: block;
 }

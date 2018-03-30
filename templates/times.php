@@ -109,13 +109,34 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php if(count($_['times']) > 0) {
 						foreach($_['times'] as $index => $time) { ?>
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-								<h3><?php p($time->getDurationInHours()); ?> hrs.</h3>
+								<h3><?php p($time->getDurationInHours()); ?> hrs.
+									<?php
+										$paymentStatus = 'unpaid';
+										$paymentAction = 'paid';
+										if(strtolower($time->getPaymentStatus()) === 'paid') {
+											$paymentStatus = 'paid';
+											$paymentAction = 'unpaid';
+										}
+									?>
+									<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>" method="post" style="display: inline">
+										<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
+										<input type="hidden" name="task" value="<?php p($_['task']->getUuid()); ?>" />
+										<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
+										<button type="submit" class="icon-checkmark tm_icon-checkmark tm_icon-checkmark-<?php p($paymentStatus); ?>"></button>
+									</form>
+								</h3>
 								<div class="tm_item-excerpt">
 									<div class="tm_item-note">
 										<?php p($time->getNote()); ?>
 									</div>
 									<div class="tm_item-date">
 										<?php p($time->getStartFormatted()); ?>
+										<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/delete" method="post" class="tm_inline-hover-form">
+											<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
+											<input type="hidden" name="task" value="<?php p($_['task']->getUuid()); ?>" />
+											<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
+											<button type="submit" class="btn">Delete</button>
+									</form>
 									</div>
 								</div>
 							</div>

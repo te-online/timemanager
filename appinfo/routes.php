@@ -15,6 +15,8 @@ return [
 		['name' => 'page#times', 'url' => '/times', 'verb' => 'GET'],
 		['name' => 'page#addTime', 'url' => '/times', 'verb' => 'POST'],
 		['name' => 'page#deleteTime', 'url' => '/times/delete', 'verb' => 'POST'],
+		['name' => 'page#payTime', 'url' => '/times/paid', 'verb' => 'POST'],
+		['name' => 'page#unpayTime', 'url' => '/times/unpaid', 'verb' => 'POST'],
 		['name' => 't_api#get', 'url' => '/api/items', 'verb' => 'GET'],
 		['name' => 't_api#post', 'url' => '/api/items', 'verb' => 'POST'],
 		['name' => 't_api#updateObjects', 'url' => '/api/updateObjects', 'verb' => 'POST']

@@ -151,7 +151,7 @@ class StorageHelper {
 				$time->setNote($object['note']);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
-				// $time->setPaymentStatus($object['payment_status']);
+				// $time->setPaymentStatus((isset($object['payment_status'])) ? $object['payment_status'] : '');
 				if($includeId) {
 					$time->setId($object['id']);
 				}
