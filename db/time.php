@@ -65,6 +65,10 @@ class Time extends Entity {
 	 * @return string
 	 */
 	function getDurationInHours() {
+		if($this->status === 'deleted') {
+			return 0;
+		}
+
 		$start = date_create($this->getStart());
 		$end = date_create($this->getEnd());
 		$diff = date_diff($start, $end);
