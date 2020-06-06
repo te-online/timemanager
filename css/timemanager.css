@@ -145,3 +145,8 @@
 .tm_item-row:hover .tm_inline-hover-form {
 	display: block;
 }
+
+/* For some reason this is needed to fix the icon position in the nav */
+#app-navigation img {
+	margin-bottom: -3px;
+}

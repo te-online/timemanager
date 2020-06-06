@@ -1,99 +1,51 @@
 <?php
-  $urlGenerator = \OC::$server->getURLGenerator();
-?>
+$urlGenerator = \OC::$server->getURLGenerator(); ?>
 
 <div id="app-navigation">
   <ul>
-    <li><a class="icon-category-monitoring" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>">Dashboard</a></li>
+		<li>
+			<a
+				class="<?php echo $_['page'] === 'index' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>"
+			>
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/monitoring.svg" /><span>Dashboard</span>
+			</a>
+		</li>
     <li>
-    	<a class="icon-category-social" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>">Clients</a>
-  		<div class="app-navigation-entry-utils">
-				<ul>
-					<!-- <li class="app-navigation-entry-utils-counter">1</li> -->
-  				<li class="app-navigation-entry-utils-menu-button">
-          	<button></button>
-      		</li>
-    		</ul>
-    	</div>
-    	<div class="app-navigation-entry-menu">
-		    <ul>
-	        <li>
-            <a href="#">
-              <span class="icon-add"></span>
-              <span>Add</span>
-            </a>
-	        </li>
-		    </ul>
-			</div>
+    	<a
+				class="<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>"
+			>
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/places/contacts.svg">
+				<span>Clients</span>
+			</a>
     </li>
 		<li>
-			<a class="icon-category-office" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>">Projects</a>
-			<div class="app-navigation-entry-utils">
-				<ul>
-					<!-- <li class="app-navigation-entry-utils-counter">1</li> -->
-  				<li class="app-navigation-entry-utils-menu-button">
-          	<button></button>
-      		</li>
-    		</ul>
-    	</div>
-    	<div class="app-navigation-entry-menu">
-		    <ul>
-	        <li>
-            <a href="#">
-              <span class="icon-add"></span>
-              <span>Add</span>
-            </a>
-	        </li>
-		    </ul>
-			</div>
+			<a
+				class="<?php echo $_['page'] === 'projects' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>"
+			>
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/office.svg">
+				<span>Projects</span>
+			</a>
 		</li>
 		<li>
-			<a class="icon-category-organization" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>">Tasks</a>
-			<div class="app-navigation-entry-utils">
-				<ul>
-					<!-- <li class="app-navigation-entry-utils-counter">1</li> -->
-  				<li class="app-navigation-entry-utils-menu-button">
-          	<button></button>
-      		</li>
-    		</ul>
-    	</div>
-    	<div class="app-navigation-entry-menu">
-		    <ul>
-	        <li>
-            <a href="#">
-              <span class="icon-add"></span>
-              <span>Add</span>
-            </a>
-	        </li>
-	        <li>
-            <a href="#">
-              <span class="icon-add"></span>
-              <span>Log time</span>
-            </a>
-	        </li>
-		    </ul>
-			</div>
+			<a
+				class="<?php echo $_['page'] === 'tasks' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>"
+			>
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/organization.svg">
+				<span>Tasks</span>
+			</a>
 		</li>
     <li>
-      <a class="icon-category-organization" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>">Time Entries</a>
-      <div class="app-navigation-entry-utils">
-        <ul>
-          <!-- <li class="app-navigation-entry-utils-counter">1</li> -->
-          <li class="app-navigation-entry-utils-menu-button">
-            <button></button>
-          </li>
-        </ul>
-      </div>
-      <div class="app-navigation-entry-menu">
-        <ul>
-          <li>
-            <a href="#">
-              <span class="icon-add"></span>
-              <span>Add</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+      <a
+				class="<?php echo $_['page'] === 'times' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>"
+			>
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/actions/checkmark.svg">
+				<span>Time Entries</span>
+			</a>
     </li>
   </ul>
 </div>

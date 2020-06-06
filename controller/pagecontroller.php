@@ -78,7 +78,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function index() {
-		return new TemplateResponse('timemanager', 'index');
+		return new TemplateResponse('timemanager', 'index', ['page' => 'index']);
 	}
 
 	/**
@@ -100,7 +100,8 @@ class PageController extends Controller {
 
 		return new TemplateResponse('timemanager', 'clients', array(
 			'clients' => $clients,
-			'requesttoken' => (\OC::$server->getSession()) ? \OCP\Util::callRegister() : ''
+			'requesttoken' => (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '',
+			'page' => 'clients'
 		));
 	}
 
@@ -167,7 +168,12 @@ class PageController extends Controller {
 			}
 		}
 
-		return new TemplateResponse('timemanager', 'projects', array('projects' => $projects, 'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null), 'clients' => $clients));
+		return new TemplateResponse('timemanager', 'projects', array(
+			'projects' => $projects,
+			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
+			'clients' => $clients,
+			'page' => 'projects'
+		));
 	}
 
 	/**
@@ -242,7 +248,8 @@ class PageController extends Controller {
 			'project' => (($project_data && count($project_data) > 0) ? $project_data[0] : null),
 			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
 			'projects' => $projects,
-			'clients' => $clients
+			'clients' => $clients,
+			'page' => 'tasks'
 		));
 	}
 
@@ -319,7 +326,8 @@ class PageController extends Controller {
 			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
 			'tasks' => $tasks,
 			'projects' => $projects,
-			'clients' => $clients
+			'clients' => $clients,
+			'page' => 'times'
 		));
 	}
 
