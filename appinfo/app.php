@@ -7,7 +7,7 @@
 		'id' => 'timemanager',
 		'order' => 10,
 		'href' => $urlGenerator->linkToRoute('timemanager.page.index'),
-		'icon' => $urlGenerator->imagePath('timemanager', 'app.svg'),
+		'icon' => $urlGenerator->imagePath('timemanager', 'timemanager.svg'),
 		'name' => $l->t('TimeManager'),
 	];
 });

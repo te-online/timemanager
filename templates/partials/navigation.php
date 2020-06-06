@@ -43,7 +43,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
 				class="<?php echo $_['page'] === 'times' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>"
 			>
-				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/actions/checkmark.svg">
+				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/actions/quota.svg">
 				<span>Time Entries</span>
 			</a>
     </li>
