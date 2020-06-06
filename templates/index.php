@@ -7,9 +7,10 @@ style('timemanager', 'timemanager');
 <?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
 
 <div id="app-content">
-
-	<h2>Dashboard</h2>
-	<p>Here go some statistics and stuff. Stay tuned!</p>
-	<!-- <div id="client-list"></div> -->
-
+	<div class="container">
+		<div class="section">
+			<h2>Statistics</h2>
+			<h2>Latests projects & tasks</h2>
+		</div>
+	</div>
 </div>
