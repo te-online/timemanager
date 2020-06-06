@@ -8,8 +8,8 @@ $urlGenerator = \OC::$server->getURLGenerator();
 
 <div id="app-content">
 	<div class="container">
-		<div class="section">
-			<?php if($_['client']) { ?>
+		<?php if($_['client']) { ?>
+			<div class="section">
 				<div class="tm_object-details">
 					<h2>
 						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
@@ -60,8 +60,8 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						</form>
 					</div>
 				</div>
-			<?php } ?>
-		</div>
+			</div>
+		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
 				<h2>Projects</h2>
