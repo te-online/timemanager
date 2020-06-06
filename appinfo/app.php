@@ -4,7 +4,7 @@
 	$urlGenerator = \OC::$server->getURLGenerator();
 	$l = \OC::$server->getL10N('timemanager');
 	return [
-		'id' => 'timemanager_index',
+		'id' => 'timemanager',
 		'order' => 10,
 		'href' => $urlGenerator->linkToRoute('timemanager.page.index'),
 		'icon' => $urlGenerator->imagePath('timemanager', 'app.svg'),
