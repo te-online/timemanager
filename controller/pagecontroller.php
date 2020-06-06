@@ -13,6 +13,7 @@ use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\Cleaner;
 use OCA\TimeManager\Helper\UUID;
+use OCA\TimeManager\Helper\PHP_Svelte;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -78,7 +79,12 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function index() {
-		return new TemplateResponse('timemanager', 'index', ['page' => 'index']);
+		return new TemplateResponse('timemanager', 'index', [
+			'page' => 'index',
+			'templates' => [
+				'Statistics.svelte' => PHP_Svelte::render_template('Statistics.svelte', []),
+			]
+		]);
 	}
 
 	/**

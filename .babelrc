@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": "> 0.25%, not dead, edge >= 12, safari >= 9, not ie > 0",
+        "useBuiltIns": "usage",
+        "corejs": "3"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-classes",
+    "@babel/plugin-transform-async-to-generator"
+  ]
+}

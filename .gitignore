@@ -2,3 +2,4 @@ migration/node_modules
 todo.txt
 migration/migration*.json
 dandelion.yml
+node_modules

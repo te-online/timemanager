@@ -1,5 +1,5 @@
 <?php
-script('timemanager', 'app');
+script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 
 ?>
@@ -10,6 +10,9 @@ style('timemanager', 'timemanager');
 	<div class="container">
 		<div class="section">
 			<h2>Statistics</h2>
+			<div data-svelte="statistics">
+				<?php echo $_['templates']['Statistics.svelte'] ?>
+			</div>
 			<h2>Latests projects & tasks</h2>
 		</div>
 	</div>

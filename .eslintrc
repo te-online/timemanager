@@ -1,0 +1,20 @@
+{
+	"globals": {
+    "$": true,
+    "t": true,
+    "OC": true,
+    "OCA": true,
+    "describe": true,
+    "it": true,
+    "expect": true
+  },
+  "extends": [
+    "standard",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "dot-notation": "off",
+    "camelcase": "off"
+  }
+}
