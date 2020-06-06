@@ -127,6 +127,12 @@
   function element(name) {
       return document.createElement(name);
   }
+  function attr(node, attribute, value) {
+      if (value == null)
+          node.removeAttribute(attribute);
+      else if (node.getAttribute(attribute) !== value)
+          node.setAttribute(attribute, value);
+  }
   function children(element) {
       return Array.from(element.childNodes);
   }
@@ -331,15 +337,16 @@
   }
 
   function create_fragment(ctx) {
-    var h1;
+    var section;
     return {
       c() {
-        h1 = element("h1");
-        h1.textContent = "Hello World";
+        section = element("section");
+        section.innerHTML = "<p>Coming soon</p>";
+        attr(section, "class", "section");
       },
 
       m(target, anchor) {
-        insert(target, h1, anchor);
+        insert(target, section, anchor);
       },
 
       p: noop,
@@ -347,7 +354,7 @@
       o: noop,
 
       d(detaching) {
-        if (detaching) detach(h1);
+        if (detaching) detach(section);
       }
 
     };

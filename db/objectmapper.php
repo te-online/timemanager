@@ -34,6 +34,14 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
+	function getActiveObjects($orderby = "created") {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `status` != ?' .
+				'ORDER BY LOWER(`' . $orderby . '`) DESC;';
+		return $this->findEntities($sql, [$this->userId, 'deleted']);
+	}
+
 	/**
 	 * Fetch all items that are associated to the current user
 	 * with a given attribute-value-combination and not deleted
@@ -55,6 +63,18 @@ class ObjectMapper extends Mapper {
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;';
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
+		if(count($objects) > 0) {
+			return $objects[0];
+		} else {
+			return null;
+		}
+	}
+
+	function getActiveObjectById($uuid) {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `uuid` = ? AND `status` != ? LIMIT 1;';
+		$objects = $this->findEntities($sql, [$this->userId, $uuid, 'deleted']);
 		if(count($objects) > 0) {
 			return $objects[0];
 		} else {

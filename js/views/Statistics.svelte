@@ -12,4 +12,6 @@
 	});
 </script>
 
-<h1>Hello World</h1>
+<section class="section">
+	<p>Coming soon</p>
+</section>

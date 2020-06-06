@@ -79,11 +79,37 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function index() {
+		// Find the latest time entries
+		$times = $this->timeMapper->getActiveObjects('start');
+		$entries = [];
+		$tasks = [];
+		if($times && is_array($times) && count($times) > 0) {
+			foreach($times as $time) {
+				// Don't add two times of the same task
+				if(in_array($time->getTaskUuid(), $tasks) || count($entries) >= 5) {
+					continue;
+				}
+				// Find details for parents of time entry
+				$tasks[] = $time->getTaskUuid();
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid());
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid());
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid());
+				// Compile a template object
+				$entries[] = (object) [
+					'time' => $time,
+					'task' => $task,
+					'project' => $project,
+					'client' => $client
+				];
+			}
+		}
+
 		return new TemplateResponse('timemanager', 'index', [
 			'page' => 'index',
 			'templates' => [
 				'Statistics.svelte' => PHP_Svelte::render_template('Statistics.svelte', []),
-			]
+			],
+			'latest_entries' => $entries
 		]);
 	}
 

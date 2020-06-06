@@ -13,7 +13,8 @@ style('timemanager', 'timemanager');
 			<div data-svelte="statistics">
 				<?php echo $_['templates']['Statistics.svelte'] ?>
 			</div>
-			<h2>Latests projects & tasks</h2>
+
+			<?php print_unescaped( $this->inc( 'partials/latest' ) ); ?>
 		</div>
 	</div>
 </div>

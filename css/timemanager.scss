@@ -150,3 +150,11 @@
 #app-navigation img {
 	margin-bottom: -3px;
 }
+
+.trim {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+	max-width: calc(100% - 220px);
+}
