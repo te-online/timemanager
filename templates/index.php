@@ -9,6 +9,11 @@ style('timemanager', 'timemanager');
 <div id="app-content">
 	<div class="container">
 		<div class="section">
+			<h2>Quickly add time entry</h2>
+			<section class="section">
+				<p>Coming soon</p>
+			</section>
+
 			<h2>Statistics</h2>
 			<div data-svelte="statistics">
 				<?php print_unescaped($_['templates']['Statistics.svelte']); ?>
