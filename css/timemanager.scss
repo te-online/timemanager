@@ -215,18 +215,18 @@ body.loading-error #content.app-timemanager:before {
 	.urldisplay {
 		word-wrap: break-word;
 	}
+}
 
-	label {
-    display: block;
+label {
+	display: block;
 
-    &.space-top {
-      margin-top: 5px;
-    }
-  }
+	&.space-top {
+		margin-top: 15px;
+	}
 }
 
 #content.app-timemanager {
-	h2 {
+	h2.list-title {
 		display: inline-block;
 		margin-right: 5px;
 	}
@@ -234,4 +234,8 @@ body.loading-error #content.app-timemanager:before {
 	.new {
 		display: inline-block;
 	}
+}
+
+.oc-dialog-buttonrow.reverse {
+	flex-flow: row-reverse;
 }

@@ -12,7 +12,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 			<div class="section">
 				<div class="tm_object-details">
 					<h2>
-						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" data-current-link href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
 							<span class="tm_label">Client</span>
 							<?php p($_['client']->getName()); ?>
 						</a>
@@ -39,46 +39,34 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<button type="submit" name="action" value="delete" class="btn">Delete client</button>
 					</form>
 				</div>
-				<div class="tm_add">
-					<h3>New project</h3>
+				<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">
 					<div id="new-item" class="tm_new-item">
-						<form action="" method="post">
-							<label>Project name<br />
-								<input type="text" name="name" placeholder="Very special project" />
-							</label><br />
-							<label>For client<br />
-								<?php if(count($_['clients']) > 0 ) {
-									foreach($_['clients'] as $client) { ?>
-									<strong><?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? p($client->getName()) : p(''); ?></strong>
-								<?php } } else { ?>
-									<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<input type="hidden" name="client" value="<?php echo $_['client'] ? $_['client']->getUuid() : ''; ?>">
-							<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-							<button type="submit" class="btn primary">Add project</button>
-						</form>
+						<?php print_unescaped($_['templates']['ProjectEditor.svelte']); ?>
 					</div>
 				</div>
 			</div>
 		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
-				<h2>Projects</h2>
-				<p>Select a client to show projects for</p>
-				<form action="" method="get">
-					<?php if(count($_['clients']) > 0 ) { ?>
-						<select name="client">
-							<?php foreach($_['clients'] as $client) { ?>
-								<option value="<?php p($client->getUuid()); ?>"<?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
-							<?php } ?>
-						</select>
-						<button type="submit" class="btn">Show</button>
-					<?php } else { ?>
-						<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
-					<?php } ?>
-				</form>
+				<h2 class="list-title">Projects</h2>
+				<?php if($_['client']) { ?>
+					<span data-svelte="ProjectEditorDialog.svelte"></span>
+					<span data-store="<?php p($_['store']); ?>"></span>
+				<?php } ?>
 				<?php if(!$_['client']) { ?>
+					<p>Select a client to show projects for</p>
+					<form action="" method="get">
+						<?php if(count($_['clients']) > 0 ) { ?>
+							<select name="client">
+								<?php foreach($_['clients'] as $client) { ?>
+									<option value="<?php p($client->getUuid()); ?>"<?php p($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
+								<?php } ?>
+							</select>
+							<button type="submit" class="btn">Show</button>
+						<?php } else { ?>
+							<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
+						<?php } ?>
+					</form>
 					<p><strong>Select a client first to show projects for this client.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['projects']) > 0) {
@@ -93,7 +81,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							</div>
 					<?php } } else { ?>
 						<div class="tm_item-row">
-							<h3>You don't have any projects, yet. Try adding one by clicking “Add project.</h3>
+							<h3>You don't have any projects, yet. Try adding one by clicking “Add project”.</h3>
 						</div>
 					<?php } ?>
 					<div class="tm_summary">

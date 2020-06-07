@@ -1,23 +1,23 @@
 <script>
 	export let action;
 	export let requestToken;
+	export let clientName;
 	export let isServer;
 	export let onCancel;
 	export let onSubmit;
 
 	let name;
-	let note = "";
 
 	const submit = () => {
-		onSubmit({ name, note });
+		onSubmit({ name });
 	};
 </script>
 
 <div class="inner tm_new-item">
-	<h3>New client</h3>
+	<h3>New project</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label class="space-top">
-			Client name
+			Project name
 			<br />
 			<input
 				autofocus
@@ -25,27 +25,22 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="name"
-				placeholder="Example Corp."
+				placeholder="Very special project"
 				bind:value={name}
 				required />
 		</label>
 		<label class="space-top">
-			Note
+			For client
 			<br />
-			<!-- prettier-ignore -->
-			<textarea
-				style="width: 100%;"
-				class="input-wide"
-				name="note"
-				placeholder="A long text ..."
-				on:input={(e) => (note = e.target.value)}>{note}</textarea>
+			<strong>{clientName}</strong>
 		</label>
+		<br />
 		<input type="hidden" name="requesttoken" value={requestToken} />
 		<div class="oc-dialog-buttonrow twobuttons">
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>Cancel</button>
 			{/if}
-			<button type="submit" class="button primary">Add client</button>
+			<button type="submit" class="button primary">Add project</button>
 		</div>
 	</form>
 </div>

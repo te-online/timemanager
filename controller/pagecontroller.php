@@ -212,10 +212,30 @@ class PageController extends Controller {
 			}
 		}
 
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+
+		$client_uuid = (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getUuid() : '';
+
+		$form_props = [
+			'action' => $urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client_uuid,
+			'requestToken' => $requestToken,
+			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
+			'isServer' => true
+		];
+
 		return new TemplateResponse('timemanager', 'projects', array(
 			'projects' => $projects,
-			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
+			'client' => ((isset($client_data) && count($client_data) > 0) ? $client_data[0] : null),
 			'clients' => $clients,
+			'requesttoken' => $requestToken,
+			'store' => json_encode(array_merge(
+				$form_props,
+				['isServer' => false]
+			)),
+			'templates' => [
+				'ProjectEditor.svelte' => PHP_Svelte::render_template('ProjectEditor.svelte', $form_props)
+			],
 			'page' => 'projects'
 		));
 	}
@@ -287,12 +307,33 @@ class PageController extends Controller {
 			}
 		}
 
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+
+		$project_uuid = (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getUuid() : '';
+
+		$form_props = [
+			'action' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project_uuid,
+			'requestToken' => $requestToken,
+			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
+			'projectName' => (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getName() : '',
+			'isServer' => true
+		];
+
 		return new TemplateResponse('timemanager', 'tasks', array(
 			'tasks' => $tasks,
-			'project' => (($project_data && count($project_data) > 0) ? $project_data[0] : null),
-			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
+			'project' => ((isset($project_data) && count($project_data) > 0) ? $project_data[0] : null),
+			'client' => ((isset($client_data) && count($client_data) > 0) ? $client_data[0] : null),
 			'projects' => $projects,
 			'clients' => $clients,
+			'requesttoken' => $requestToken,
+			'store' => json_encode(array_merge(
+				$form_props,
+				['isServer' => false]
+			)),
+			'templates' => [
+				'TaskEditor.svelte' => PHP_Svelte::render_template('TaskEditor.svelte', $form_props)
+			],
 			'page' => 'tasks'
 		));
 	}
@@ -363,6 +404,22 @@ class PageController extends Controller {
 			$times = $this->timeMapper->findActiveForCurrentUser();
 		}
 
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+
+		$task_uuid = (isset($task_data) && count($task_data) > 0) ? $task_data[0]->getUuid() : '';
+
+		$form_props = [
+			'action' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
+			'requestToken' => $requestToken,
+			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
+			'projectName' => (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getName() : '',
+			'taskName' => ($task_data && count($task_data) > 0) ? $task_data[0]->getName() : '',
+			'taskUuid' => $taskUuid,
+			'initialDate' => date('Y-m-d'),
+			'isServer' => true
+		];
+
 		return new TemplateResponse('timemanager', 'times', array(
 			'times' => $times,
 			'task' => (($task_data && count($task_data) > 0) ? $task_data[0] : null),
@@ -371,6 +428,14 @@ class PageController extends Controller {
 			'tasks' => $tasks,
 			'projects' => $projects,
 			'clients' => $clients,
+			'requesttoken' => $requestToken,
+			'store' => json_encode(array_merge(
+				$form_props,
+				['isServer' => false]
+			)),
+			'templates' => [
+				'TimeEditor.svelte' => PHP_Svelte::render_template('TimeEditor.svelte', $form_props)
+			],
 			'page' => 'times'
 		));
 	}

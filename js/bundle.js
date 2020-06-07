@@ -59,6 +59,55 @@
     return Constructor;
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
   function _inherits(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
       throw new TypeError("Super expression must either be null or a function");
@@ -291,8 +340,16 @@
       else if (node.getAttribute(attribute) !== value)
           node.setAttribute(attribute, value);
   }
+  function to_number(value) {
+      return value === '' ? undefined : +value;
+  }
   function children(element) {
       return Array.from(element.childNodes);
+  }
+  function set_data(text, data) {
+      data = '' + data;
+      if (text.data !== data)
+          text.data = data;
   }
   function set_input_value(input, value) {
       input.value = value == null ? '' : value;
@@ -1098,14 +1155,14 @@
   // all object keys, includes non-enumerable and symbols
 
 
-  var ownKeys = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
+  var ownKeys$1 = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
     var keys = objectGetOwnPropertyNames.f(anObject(it));
     var getOwnPropertySymbols = objectGetOwnPropertySymbols.f;
     return getOwnPropertySymbols ? keys.concat(getOwnPropertySymbols(it)) : keys;
   };
 
   var copyConstructorProperties = function (target, source) {
-    var keys = ownKeys(source);
+    var keys = ownKeys$1(source);
     var defineProperty = objectDefineProperty.f;
     var getOwnPropertyDescriptor = objectGetOwnPropertyDescriptor.f;
 
@@ -2977,7 +3034,6 @@
     var br1;
     var t6;
     var textarea;
-    var textarea_value_value;
     var t7;
     var input1;
     var t8;
@@ -3021,11 +3077,16 @@
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
         attr(input0, "placeholder", "Example Corp.");
+        input0.required = true;
+        attr(label0, "class", "space-top");
         set_style(textarea, "width", "100%");
         attr(textarea, "class", "input-wide");
         attr(textarea, "name", "note");
         attr(textarea, "placeholder", "A long text ...");
-        textarea.value = textarea_value_value = "\n\t\t\t\t" + value + "\n\t\t\t";
+        textarea.value =
+        /*note*/
+        ctx[5];
+        attr(label1, "class", "space-top");
         attr(input1, "type", "hidden");
         attr(input1, "name", "requesttoken");
         input1.value =
@@ -3038,7 +3099,7 @@
         /*action*/
         ctx[0]);
         attr(form, "method", "post");
-        attr(div1, "class", "inner");
+        attr(div1, "class", "inner tm_new-item");
       },
 
       m(target, anchor) {
@@ -3096,6 +3157,14 @@
         }
 
         if (dirty &
+        /*note*/
+        32) {
+          textarea.value =
+          /*note*/
+          ctx[5];
+        }
+
+        if (dirty &
         /*requestToken*/
         2) {
           input1.value =
@@ -3140,8 +3209,6 @@
     };
   }
 
-  var value = "";
-
   function instance$2($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
@@ -3149,7 +3216,7 @@
     var onCancel = $$props.onCancel;
     var onSubmit = $$props.onSubmit;
     var name;
-    var note;
+    var note = "";
 
     var submit = function submit() {
       onSubmit({
@@ -3775,6 +3842,2154 @@
     }
 
     return ClientEditorDialog;
+  }(SvelteComponent);
+
+  function create_if_block$2(ctx) {
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c() {
+        button = element("button");
+        button.textContent = "Cancel";
+        attr(button, "type", "reset");
+        attr(button, "class", "button");
+      },
+
+      m(target, anchor) {
+        insert(target, button, anchor);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(function () {
+            if (is_function(
+            /*onCancel*/
+            ctx[4]))
+              /*onCancel*/
+              ctx[4].apply(this, arguments);
+          }));
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+      },
+
+      d(detaching) {
+        if (detaching) detach(button);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function create_fragment$4(ctx) {
+    var div1;
+    var h3;
+    var t1;
+    var form;
+    var label0;
+    var t2;
+    var br0;
+    var t3;
+    var input0;
+    var t4;
+    var label1;
+    var t5;
+    var br1;
+    var t6;
+    var strong;
+    var t7;
+    var t8;
+    var br2;
+    var t9;
+    var input1;
+    var t10;
+    var div0;
+    var t11;
+    var button;
+    var mounted;
+    var dispose;
+    var if_block = !
+    /*isServer*/
+    ctx[3] && create_if_block$2(ctx);
+    return {
+      c() {
+        div1 = element("div");
+        h3 = element("h3");
+        h3.textContent = "New project";
+        t1 = space();
+        form = element("form");
+        label0 = element("label");
+        t2 = text("Project name\n\t\t\t");
+        br0 = element("br");
+        t3 = space();
+        input0 = element("input");
+        t4 = space();
+        label1 = element("label");
+        t5 = text("For client\n\t\t\t");
+        br1 = element("br");
+        t6 = space();
+        strong = element("strong");
+        t7 = text(
+        /*clientName*/
+        ctx[2]);
+        t8 = space();
+        br2 = element("br");
+        t9 = space();
+        input1 = element("input");
+        t10 = space();
+        div0 = element("div");
+        if (if_block) if_block.c();
+        t11 = space();
+        button = element("button");
+        button.textContent = "Add project";
+        input0.autofocus = true;
+        attr(input0, "type", "text");
+        set_style(input0, "width", "100%");
+        attr(input0, "class", "input-wide");
+        attr(input0, "name", "name");
+        attr(input0, "placeholder", "Very special project");
+        input0.required = true;
+        attr(label0, "class", "space-top");
+        attr(label1, "class", "space-top");
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "requesttoken");
+        input1.value =
+        /*requestToken*/
+        ctx[1];
+        attr(button, "type", "submit");
+        attr(button, "class", "button primary");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons");
+        attr(form, "action",
+        /*action*/
+        ctx[0]);
+        attr(form, "method", "post");
+        attr(div1, "class", "inner tm_new-item");
+      },
+
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, h3);
+        append(div1, t1);
+        append(div1, form);
+        append(form, label0);
+        append(label0, t2);
+        append(label0, br0);
+        append(label0, t3);
+        append(label0, input0);
+        set_input_value(input0,
+        /*name*/
+        ctx[5]);
+        append(form, t4);
+        append(form, label1);
+        append(label1, t5);
+        append(label1, br1);
+        append(label1, t6);
+        append(label1, strong);
+        append(strong, t7);
+        append(form, t8);
+        append(form, br2);
+        append(form, t9);
+        append(form, input1);
+        append(form, t10);
+        append(form, div0);
+        if (if_block) if_block.m(div0, null);
+        append(div0, t11);
+        append(div0, button);
+        input0.focus();
+
+        if (!mounted) {
+          dispose = [listen(input0, "input",
+          /*input0_input_handler*/
+          ctx[8]), listen(form, "submit", prevent_default(
+          /*submit*/
+          ctx[6]))];
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (dirty &
+        /*name*/
+        32 && input0.value !==
+        /*name*/
+        ctx[5]) {
+          set_input_value(input0,
+          /*name*/
+          ctx[5]);
+        }
+
+        if (dirty &
+        /*clientName*/
+        4) set_data(t7,
+        /*clientName*/
+        ctx[2]);
+
+        if (dirty &
+        /*requestToken*/
+        2) {
+          input1.value =
+          /*requestToken*/
+          ctx[1];
+        }
+
+        if (!
+        /*isServer*/
+        ctx[3]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block$2(ctx);
+            if_block.c();
+            if_block.m(div0, t11);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*action*/
+        1) {
+          attr(form, "action",
+          /*action*/
+          ctx[0]);
+        }
+      },
+
+      i: noop,
+      o: noop,
+
+      d(detaching) {
+        if (detaching) detach(div1);
+        if (if_block) if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function instance$4($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var isServer = $$props.isServer;
+    var onCancel = $$props.onCancel;
+    var onSubmit = $$props.onSubmit;
+    var name;
+
+    var submit = function submit() {
+      onSubmit({
+        name
+      });
+    };
+
+    function input0_input_handler() {
+      name = this.value;
+      $$invalidate(5, name);
+    }
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
+      if ("onCancel" in $$props) $$invalidate(4, onCancel = $$props.onCancel);
+      if ("onSubmit" in $$props) $$invalidate(7, onSubmit = $$props.onSubmit);
+    };
+
+    return [action, requestToken, clientName, isServer, onCancel, name, submit, onSubmit, input0_input_handler];
+  }
+
+  var ProjectEditor = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ProjectEditor, _SvelteComponent);
+
+    var _super = _createSuper(ProjectEditor);
+
+    function ProjectEditor(options) {
+      var _this;
+
+      _classCallCheck(this, ProjectEditor);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        isServer: 3,
+        onCancel: 4,
+        onSubmit: 7
+      });
+      return _this;
+    }
+
+    return ProjectEditor;
+  }(SvelteComponent);
+
+  function create_if_block$3(ctx) {
+    var current;
+    var overlay = new Overlay({
+      props: {
+        loading:
+        /*loading*/
+        ctx[5],
+        $$slots: {
+          default: [create_default_slot$1]
+        },
+        $$scope: {
+          ctx
+        }
+      }
+    });
+    return {
+      c() {
+        create_component(overlay.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var overlay_changes = {};
+        if (dirty &
+        /*loading*/
+        32) overlay_changes.loading =
+        /*loading*/
+        ctx[5];
+
+        if (dirty &
+        /*$$scope, action, requestToken, show, clientName, isServer*/
+        543) {
+          overlay_changes.$$scope = {
+            dirty,
+            ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+
+    };
+  } // (45:1) <Overlay {loading}>
+
+
+  function create_default_slot$1(ctx) {
+    var current;
+    var projecteditor = new ProjectEditor({
+      props: {
+        action:
+        /*action*/
+        ctx[0],
+        requestToken:
+        /*requestToken*/
+        ctx[1],
+        onCancel:
+        /*func*/
+        ctx[8],
+        onSubmit:
+        /*save*/
+        ctx[6],
+        clientName:
+        /*clientName*/
+        ctx[2],
+        isServer:
+        /*isServer*/
+        ctx[3]
+      }
+    });
+    return {
+      c() {
+        create_component(projecteditor.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(projecteditor, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var projecteditor_changes = {};
+        if (dirty &
+        /*action*/
+        1) projecteditor_changes.action =
+        /*action*/
+        ctx[0];
+        if (dirty &
+        /*requestToken*/
+        2) projecteditor_changes.requestToken =
+        /*requestToken*/
+        ctx[1];
+        if (dirty &
+        /*show*/
+        16) projecteditor_changes.onCancel =
+        /*func*/
+        ctx[8];
+        if (dirty &
+        /*clientName*/
+        4) projecteditor_changes.clientName =
+        /*clientName*/
+        ctx[2];
+        if (dirty &
+        /*isServer*/
+        8) projecteditor_changes.isServer =
+        /*isServer*/
+        ctx[3];
+        projecteditor.$set(projecteditor_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(projecteditor.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(projecteditor.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(projecteditor, detaching);
+      }
+
+    };
+  }
+
+  function create_fragment$5(ctx) {
+    var a;
+    var t1;
+    var if_block_anchor;
+    var current;
+    var mounted;
+    var dispose;
+    var if_block =
+    /*show*/
+    ctx[4] && create_if_block$3(ctx);
+    return {
+      c() {
+        a = element("a");
+        a.innerHTML = "<span>Add project</span>";
+        t1 = space();
+        if (if_block) if_block.c();
+        if_block_anchor = empty();
+        attr(a, "href", "#/");
+        attr(a, "class", "button primary new");
+      },
+
+      m(target, anchor) {
+        insert(target, a, anchor);
+        insert(target, t1, anchor);
+        if (if_block) if_block.m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+        current = true;
+
+        if (!mounted) {
+          dispose = listen(a, "click", prevent_default(
+          /*click_handler*/
+          ctx[7]));
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*show*/
+        ctx[4]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*show*/
+            16) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$3(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(a);
+        if (detaching) detach(t1);
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(if_block_anchor);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function instance$5($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var isServer = $$props.isServer;
+    onMount(function () {
+      Helpers.hideFallbacks("ProjectEditor.svelte");
+    });
+
+    var save = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
+        var name, response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                name = _ref4.name;
+                $$invalidate(5, loading = true);
+                _context.prev = 2;
+                _context.next = 5;
+                return fetch(action, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    name
+                  }),
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 5:
+                response = _context.sent;
+
+                if (response && response.ok) {
+                  $$invalidate(4, show = false);
+                  document.querySelector(".app-timemanager [data-current-link]").click();
+                }
+
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](2);
+                console.error(_context.t0);
+
+              case 12:
+                $$invalidate(5, loading = false);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 9]]);
+      }));
+
+      return function save(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var click_handler = function click_handler() {
+      return $$invalidate(4, show = !show);
+    };
+
+    var func = function func() {
+      return $$invalidate(4, show = false);
+    };
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
+    };
+
+    var show;
+    var loading;
+
+     $$invalidate(4, show = false);
+
+     $$invalidate(5, loading = false);
+
+    return [action, requestToken, clientName, isServer, show, loading, save, click_handler, func];
+  }
+
+  var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ProjectEditorDialog, _SvelteComponent);
+
+    var _super = _createSuper(ProjectEditorDialog);
+
+    function ProjectEditorDialog(options) {
+      var _this;
+
+      _classCallCheck(this, ProjectEditorDialog);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        isServer: 3
+      });
+      return _this;
+    }
+
+    return ProjectEditorDialog;
+  }(SvelteComponent);
+
+  function create_if_block$4(ctx) {
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c() {
+        button = element("button");
+        button.textContent = "Cancel";
+        attr(button, "type", "reset");
+        attr(button, "class", "button");
+      },
+
+      m(target, anchor) {
+        insert(target, button, anchor);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(function () {
+            if (is_function(
+            /*onCancel*/
+            ctx[5]))
+              /*onCancel*/
+              ctx[5].apply(this, arguments);
+          }));
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+      },
+
+      d(detaching) {
+        if (detaching) detach(button);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function create_fragment$6(ctx) {
+    var div1;
+    var h3;
+    var t1;
+    var form;
+    var label0;
+    var t2;
+    var br0;
+    var t3;
+    var input0;
+    var t4;
+    var label1;
+    var t5;
+    var br1;
+    var t6;
+    var strong0;
+    var t7;
+    var t8;
+    var label2;
+    var t9;
+    var br2;
+    var t10;
+    var strong1;
+    var t11;
+    var t12;
+    var br3;
+    var t13;
+    var input1;
+    var t14;
+    var div0;
+    var t15;
+    var button;
+    var mounted;
+    var dispose;
+    var if_block = !
+    /*isServer*/
+    ctx[4] && create_if_block$4(ctx);
+    return {
+      c() {
+        div1 = element("div");
+        h3 = element("h3");
+        h3.textContent = "New task";
+        t1 = space();
+        form = element("form");
+        label0 = element("label");
+        t2 = text("Task name\n\t\t\t");
+        br0 = element("br");
+        t3 = space();
+        input0 = element("input");
+        t4 = space();
+        label1 = element("label");
+        t5 = text("For project\n\t\t\t");
+        br1 = element("br");
+        t6 = space();
+        strong0 = element("strong");
+        t7 = text(
+        /*projectName*/
+        ctx[3]);
+        t8 = space();
+        label2 = element("label");
+        t9 = text("For client\n\t\t\t");
+        br2 = element("br");
+        t10 = space();
+        strong1 = element("strong");
+        t11 = text(
+        /*clientName*/
+        ctx[2]);
+        t12 = space();
+        br3 = element("br");
+        t13 = space();
+        input1 = element("input");
+        t14 = space();
+        div0 = element("div");
+        if (if_block) if_block.c();
+        t15 = space();
+        button = element("button");
+        button.textContent = "Add task";
+        input0.autofocus = true;
+        attr(input0, "type", "text");
+        set_style(input0, "width", "100%");
+        attr(input0, "class", "input-wide");
+        attr(input0, "name", "name");
+        attr(input0, "placeholder", "Very special task");
+        input0.required = true;
+        attr(label0, "class", "space-top");
+        attr(label1, "class", "space-top");
+        attr(label2, "class", "space-top");
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "requesttoken");
+        input1.value =
+        /*requestToken*/
+        ctx[1];
+        attr(button, "type", "submit");
+        attr(button, "class", "button primary");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons");
+        attr(form, "action",
+        /*action*/
+        ctx[0]);
+        attr(form, "method", "post");
+        attr(div1, "class", "inner tm_new-item");
+      },
+
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, h3);
+        append(div1, t1);
+        append(div1, form);
+        append(form, label0);
+        append(label0, t2);
+        append(label0, br0);
+        append(label0, t3);
+        append(label0, input0);
+        set_input_value(input0,
+        /*name*/
+        ctx[6]);
+        append(form, t4);
+        append(form, label1);
+        append(label1, t5);
+        append(label1, br1);
+        append(label1, t6);
+        append(label1, strong0);
+        append(strong0, t7);
+        append(form, t8);
+        append(form, label2);
+        append(label2, t9);
+        append(label2, br2);
+        append(label2, t10);
+        append(label2, strong1);
+        append(strong1, t11);
+        append(form, t12);
+        append(form, br3);
+        append(form, t13);
+        append(form, input1);
+        append(form, t14);
+        append(form, div0);
+        if (if_block) if_block.m(div0, null);
+        append(div0, t15);
+        append(div0, button);
+        input0.focus();
+
+        if (!mounted) {
+          dispose = [listen(input0, "input",
+          /*input0_input_handler*/
+          ctx[9]), listen(form, "submit", prevent_default(
+          /*submit*/
+          ctx[7]))];
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (dirty &
+        /*name*/
+        64 && input0.value !==
+        /*name*/
+        ctx[6]) {
+          set_input_value(input0,
+          /*name*/
+          ctx[6]);
+        }
+
+        if (dirty &
+        /*projectName*/
+        8) set_data(t7,
+        /*projectName*/
+        ctx[3]);
+        if (dirty &
+        /*clientName*/
+        4) set_data(t11,
+        /*clientName*/
+        ctx[2]);
+
+        if (dirty &
+        /*requestToken*/
+        2) {
+          input1.value =
+          /*requestToken*/
+          ctx[1];
+        }
+
+        if (!
+        /*isServer*/
+        ctx[4]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block$4(ctx);
+            if_block.c();
+            if_block.m(div0, t15);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*action*/
+        1) {
+          attr(form, "action",
+          /*action*/
+          ctx[0]);
+        }
+      },
+
+      i: noop,
+      o: noop,
+
+      d(detaching) {
+        if (detaching) detach(div1);
+        if (if_block) if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function instance$6($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var projectName = $$props.projectName;
+    var isServer = $$props.isServer;
+    var onCancel = $$props.onCancel;
+    var onSubmit = $$props.onSubmit;
+    var name;
+
+    var submit = function submit() {
+      onSubmit({
+        name
+      });
+    };
+
+    function input0_input_handler() {
+      name = this.value;
+      $$invalidate(6, name);
+    }
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ("isServer" in $$props) $$invalidate(4, isServer = $$props.isServer);
+      if ("onCancel" in $$props) $$invalidate(5, onCancel = $$props.onCancel);
+      if ("onSubmit" in $$props) $$invalidate(8, onSubmit = $$props.onSubmit);
+    };
+
+    return [action, requestToken, clientName, projectName, isServer, onCancel, name, submit, onSubmit, input0_input_handler];
+  }
+
+  var TaskEditor = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(TaskEditor, _SvelteComponent);
+
+    var _super = _createSuper(TaskEditor);
+
+    function TaskEditor(options) {
+      var _this;
+
+      _classCallCheck(this, TaskEditor);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        projectName: 3,
+        isServer: 4,
+        onCancel: 5,
+        onSubmit: 8
+      });
+      return _this;
+    }
+
+    return TaskEditor;
+  }(SvelteComponent);
+
+  function create_if_block$5(ctx) {
+    var current;
+    var overlay = new Overlay({
+      props: {
+        loading:
+        /*loading*/
+        ctx[6],
+        $$slots: {
+          default: [create_default_slot$2]
+        },
+        $$scope: {
+          ctx
+        }
+      }
+    });
+    return {
+      c() {
+        create_component(overlay.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var overlay_changes = {};
+        if (dirty &
+        /*loading*/
+        64) overlay_changes.loading =
+        /*loading*/
+        ctx[6];
+
+        if (dirty &
+        /*$$scope, action, requestToken, show, clientName, projectName, isServer*/
+        1087) {
+          overlay_changes.$$scope = {
+            dirty,
+            ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+
+    };
+  } // (46:1) <Overlay {loading}>
+
+
+  function create_default_slot$2(ctx) {
+    var current;
+    var taskeditor = new TaskEditor({
+      props: {
+        action:
+        /*action*/
+        ctx[0],
+        requestToken:
+        /*requestToken*/
+        ctx[1],
+        onCancel:
+        /*func*/
+        ctx[9],
+        onSubmit:
+        /*save*/
+        ctx[7],
+        clientName:
+        /*clientName*/
+        ctx[2],
+        projectName:
+        /*projectName*/
+        ctx[3],
+        isServer:
+        /*isServer*/
+        ctx[4]
+      }
+    });
+    return {
+      c() {
+        create_component(taskeditor.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(taskeditor, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var taskeditor_changes = {};
+        if (dirty &
+        /*action*/
+        1) taskeditor_changes.action =
+        /*action*/
+        ctx[0];
+        if (dirty &
+        /*requestToken*/
+        2) taskeditor_changes.requestToken =
+        /*requestToken*/
+        ctx[1];
+        if (dirty &
+        /*show*/
+        32) taskeditor_changes.onCancel =
+        /*func*/
+        ctx[9];
+        if (dirty &
+        /*clientName*/
+        4) taskeditor_changes.clientName =
+        /*clientName*/
+        ctx[2];
+        if (dirty &
+        /*projectName*/
+        8) taskeditor_changes.projectName =
+        /*projectName*/
+        ctx[3];
+        if (dirty &
+        /*isServer*/
+        16) taskeditor_changes.isServer =
+        /*isServer*/
+        ctx[4];
+        taskeditor.$set(taskeditor_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(taskeditor.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(taskeditor.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(taskeditor, detaching);
+      }
+
+    };
+  }
+
+  function create_fragment$7(ctx) {
+    var a;
+    var t1;
+    var if_block_anchor;
+    var current;
+    var mounted;
+    var dispose;
+    var if_block =
+    /*show*/
+    ctx[5] && create_if_block$5(ctx);
+    return {
+      c() {
+        a = element("a");
+        a.innerHTML = "<span>Add task</span>";
+        t1 = space();
+        if (if_block) if_block.c();
+        if_block_anchor = empty();
+        attr(a, "href", "#/");
+        attr(a, "class", "button primary new");
+      },
+
+      m(target, anchor) {
+        insert(target, a, anchor);
+        insert(target, t1, anchor);
+        if (if_block) if_block.m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+        current = true;
+
+        if (!mounted) {
+          dispose = listen(a, "click", prevent_default(
+          /*click_handler*/
+          ctx[8]));
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*show*/
+        ctx[5]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*show*/
+            32) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$5(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(a);
+        if (detaching) detach(t1);
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(if_block_anchor);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function instance$7($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var projectName = $$props.projectName;
+    var isServer = $$props.isServer;
+    onMount(function () {
+      Helpers.hideFallbacks("TaskEditor.svelte");
+    });
+
+    var save = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
+        var name, response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                name = _ref4.name;
+                $$invalidate(6, loading = true);
+                _context.prev = 2;
+                _context.next = 5;
+                return fetch(action, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    name
+                  }),
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 5:
+                response = _context.sent;
+
+                if (response && response.ok) {
+                  $$invalidate(5, show = false);
+                  document.querySelector(".app-timemanager [data-current-link]").click();
+                }
+
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](2);
+                console.error(_context.t0);
+
+              case 12:
+                $$invalidate(6, loading = false);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 9]]);
+      }));
+
+      return function save(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var click_handler = function click_handler() {
+      return $$invalidate(5, show = !show);
+    };
+
+    var func = function func() {
+      return $$invalidate(5, show = false);
+    };
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ("isServer" in $$props) $$invalidate(4, isServer = $$props.isServer);
+    };
+
+    var show;
+    var loading;
+
+     $$invalidate(5, show = false);
+
+     $$invalidate(6, loading = false);
+
+    return [action, requestToken, clientName, projectName, isServer, show, loading, save, click_handler, func];
+  }
+
+  var TaskEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(TaskEditorDialog, _SvelteComponent);
+
+    var _super = _createSuper(TaskEditorDialog);
+
+    function TaskEditorDialog(options) {
+      var _this;
+
+      _classCallCheck(this, TaskEditorDialog);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        projectName: 3,
+        isServer: 4
+      });
+      return _this;
+    }
+
+    return TaskEditorDialog;
+  }(SvelteComponent);
+
+  function create_if_block$6(ctx) {
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c() {
+        button = element("button");
+        button.textContent = "Cancel";
+        attr(button, "type", "reset");
+        attr(button, "class", "button");
+      },
+
+      m(target, anchor) {
+        insert(target, button, anchor);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(function () {
+            if (is_function(
+            /*onCancel*/
+            ctx[6]))
+              /*onCancel*/
+              ctx[6].apply(this, arguments);
+          }));
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+      },
+
+      d(detaching) {
+        if (detaching) detach(button);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function create_fragment$8(ctx) {
+    var div1;
+    var h3;
+    var t1;
+    var form;
+    var label0;
+    var t2;
+    var br0;
+    var t3;
+    var input0;
+    var t4;
+    var br1;
+    var t5;
+    var label1;
+    var t6;
+    var br2;
+    var t7;
+    var input1;
+    var t8;
+    var br3;
+    var t9;
+    var label2;
+    var t10;
+    var br4;
+    var t11;
+    var textarea;
+    var t12;
+    var br5;
+    var t13;
+    var label3;
+    var t14;
+    var br6;
+    var t15;
+    var strong0;
+    var t16;
+    var t17;
+    var label4;
+    var t18;
+    var br7;
+    var t19;
+    var strong1;
+    var t20;
+    var t21;
+    var label5;
+    var t22;
+    var br8;
+    var t23;
+    var strong2;
+    var t24;
+    var t25;
+    var br9;
+    var t26;
+    var input2;
+    var t27;
+    var div0;
+    var button;
+    var t29;
+    var mounted;
+    var dispose;
+    var if_block = !
+    /*isServer*/
+    ctx[5] && create_if_block$6(ctx);
+    return {
+      c() {
+        div1 = element("div");
+        h3 = element("h3");
+        h3.textContent = "New time entry";
+        t1 = space();
+        form = element("form");
+        label0 = element("label");
+        t2 = text("Duration (in hrs.)\n\t\t\t");
+        br0 = element("br");
+        t3 = space();
+        input0 = element("input");
+        t4 = space();
+        br1 = element("br");
+        t5 = space();
+        label1 = element("label");
+        t6 = text("Date\n\t\t\t");
+        br2 = element("br");
+        t7 = space();
+        input1 = element("input");
+        t8 = space();
+        br3 = element("br");
+        t9 = space();
+        label2 = element("label");
+        t10 = text("Note\n\t\t\t");
+        br4 = element("br");
+        t11 = space();
+        textarea = element("textarea");
+        t12 = space();
+        br5 = element("br");
+        t13 = space();
+        label3 = element("label");
+        t14 = text("For task\n\t\t\t");
+        br6 = element("br");
+        t15 = space();
+        strong0 = element("strong");
+        t16 = text(
+        /*taskName*/
+        ctx[4]);
+        t17 = space();
+        label4 = element("label");
+        t18 = text("For project\n\t\t\t");
+        br7 = element("br");
+        t19 = space();
+        strong1 = element("strong");
+        t20 = text(
+        /*projectName*/
+        ctx[3]);
+        t21 = space();
+        label5 = element("label");
+        t22 = text("For client\n\t\t\t");
+        br8 = element("br");
+        t23 = space();
+        strong2 = element("strong");
+        t24 = text(
+        /*clientName*/
+        ctx[2]);
+        t25 = space();
+        br9 = element("br");
+        t26 = space();
+        input2 = element("input");
+        t27 = space();
+        div0 = element("div");
+        button = element("button");
+        button.textContent = "Add time entry";
+        t29 = space();
+        if (if_block) if_block.c();
+        input0.autofocus = true;
+        attr(input0, "type", "number");
+        attr(input0, "name", "duration");
+        attr(input0, "step", "0.25");
+        attr(input0, "placeholder", "");
+        set_style(input0, "width", "100%");
+        attr(input0, "class", "input-wide");
+        input0.required = true;
+        attr(input1, "type", "date");
+        attr(input1, "name", "date");
+        set_style(input1, "width", "100%");
+        attr(input1, "class", "input-wide");
+        set_style(textarea, "width", "100%");
+        attr(textarea, "class", "input-wide");
+        attr(textarea, "name", "note");
+        attr(textarea, "placeholder", "A long text ...");
+        textarea.value =
+        /*note*/
+        ctx[9];
+        attr(label3, "class", "space-top");
+        attr(label4, "class", "space-top");
+        attr(label5, "class", "space-top");
+        attr(input2, "type", "hidden");
+        attr(input2, "name", "requesttoken");
+        input2.value =
+        /*requestToken*/
+        ctx[1];
+        attr(button, "type", "submit");
+        attr(button, "class", "button primary");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(form, "action",
+        /*action*/
+        ctx[0]);
+        attr(form, "method", "post");
+        attr(div1, "class", "inner tm_new-item");
+      },
+
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, h3);
+        append(div1, t1);
+        append(div1, form);
+        append(form, label0);
+        append(label0, t2);
+        append(label0, br0);
+        append(label0, t3);
+        append(label0, input0);
+        set_input_value(input0,
+        /*duration*/
+        ctx[7]);
+        append(form, t4);
+        append(form, br1);
+        append(form, t5);
+        append(form, label1);
+        append(label1, t6);
+        append(label1, br2);
+        append(label1, t7);
+        append(label1, input1);
+        set_input_value(input1,
+        /*date*/
+        ctx[8]);
+        append(form, t8);
+        append(form, br3);
+        append(form, t9);
+        append(form, label2);
+        append(label2, t10);
+        append(label2, br4);
+        append(label2, t11);
+        append(label2, textarea);
+        append(form, t12);
+        append(form, br5);
+        append(form, t13);
+        append(form, label3);
+        append(label3, t14);
+        append(label3, br6);
+        append(label3, t15);
+        append(label3, strong0);
+        append(strong0, t16);
+        append(form, t17);
+        append(form, label4);
+        append(label4, t18);
+        append(label4, br7);
+        append(label4, t19);
+        append(label4, strong1);
+        append(strong1, t20);
+        append(form, t21);
+        append(form, label5);
+        append(label5, t22);
+        append(label5, br8);
+        append(label5, t23);
+        append(label5, strong2);
+        append(strong2, t24);
+        append(form, t25);
+        append(form, br9);
+        append(form, t26);
+        append(form, input2);
+        append(form, t27);
+        append(form, div0);
+        append(div0, button);
+        append(div0, t29);
+        if (if_block) if_block.m(div0, null);
+        input0.focus();
+
+        if (!mounted) {
+          dispose = [listen(input0, "input",
+          /*input0_input_handler*/
+          ctx[13]), listen(input1, "input",
+          /*input1_input_handler*/
+          ctx[14]), listen(textarea, "input",
+          /*input_handler*/
+          ctx[15]), listen(form, "submit", prevent_default(
+          /*submit*/
+          ctx[10]))];
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (dirty &
+        /*duration*/
+        128 && to_number(input0.value) !==
+        /*duration*/
+        ctx[7]) {
+          set_input_value(input0,
+          /*duration*/
+          ctx[7]);
+        }
+
+        if (dirty &
+        /*date*/
+        256) {
+          set_input_value(input1,
+          /*date*/
+          ctx[8]);
+        }
+
+        if (dirty &
+        /*note*/
+        512) {
+          textarea.value =
+          /*note*/
+          ctx[9];
+        }
+
+        if (dirty &
+        /*taskName*/
+        16) set_data(t16,
+        /*taskName*/
+        ctx[4]);
+        if (dirty &
+        /*projectName*/
+        8) set_data(t20,
+        /*projectName*/
+        ctx[3]);
+        if (dirty &
+        /*clientName*/
+        4) set_data(t24,
+        /*clientName*/
+        ctx[2]);
+
+        if (dirty &
+        /*requestToken*/
+        2) {
+          input2.value =
+          /*requestToken*/
+          ctx[1];
+        }
+
+        if (!
+        /*isServer*/
+        ctx[5]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block$6(ctx);
+            if_block.c();
+            if_block.m(div0, null);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*action*/
+        1) {
+          attr(form, "action",
+          /*action*/
+          ctx[0]);
+        }
+      },
+
+      i: noop,
+      o: noop,
+
+      d(detaching) {
+        if (detaching) detach(div1);
+        if (if_block) if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function instance$8($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var projectName = $$props.projectName;
+    var taskName = $$props.taskName;
+    var initialDate = $$props.initialDate;
+    var isServer = $$props.isServer;
+    var onCancel = $$props.onCancel;
+    var onSubmit = $$props.onSubmit;
+    var duration;
+    var date = initialDate;
+    var note = "";
+
+    var submit = function submit() {
+      onSubmit({
+        duration,
+        date,
+        note
+      });
+    };
+
+    function input0_input_handler() {
+      duration = to_number(this.value);
+      $$invalidate(7, duration);
+    }
+
+    function input1_input_handler() {
+      date = this.value;
+      $$invalidate(8, date);
+    }
+
+    var input_handler = function input_handler(e) {
+      return $$invalidate(9, note = e.target.value);
+    };
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ("taskName" in $$props) $$invalidate(4, taskName = $$props.taskName);
+      if ("initialDate" in $$props) $$invalidate(11, initialDate = $$props.initialDate);
+      if ("isServer" in $$props) $$invalidate(5, isServer = $$props.isServer);
+      if ("onCancel" in $$props) $$invalidate(6, onCancel = $$props.onCancel);
+      if ("onSubmit" in $$props) $$invalidate(12, onSubmit = $$props.onSubmit);
+    };
+
+    return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, duration, date, note, submit, initialDate, onSubmit, input0_input_handler, input1_input_handler, input_handler];
+  }
+
+  var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(TimeEditor, _SvelteComponent);
+
+    var _super = _createSuper(TimeEditor);
+
+    function TimeEditor(options) {
+      var _this;
+
+      _classCallCheck(this, TimeEditor);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        projectName: 3,
+        taskName: 4,
+        initialDate: 11,
+        isServer: 5,
+        onCancel: 6,
+        onSubmit: 12
+      });
+      return _this;
+    }
+
+    return TimeEditor;
+  }(SvelteComponent);
+
+  function create_if_block$7(ctx) {
+    var current;
+    var overlay = new Overlay({
+      props: {
+        loading:
+        /*loading*/
+        ctx[8],
+        $$slots: {
+          default: [create_default_slot$3]
+        },
+        $$scope: {
+          ctx
+        }
+      }
+    });
+    return {
+      c() {
+        create_component(overlay.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var overlay_changes = {};
+        if (dirty &
+        /*loading*/
+        256) overlay_changes.loading =
+        /*loading*/
+        ctx[8];
+
+        if (dirty &
+        /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, isServer*/
+        4351) {
+          overlay_changes.$$scope = {
+            dirty,
+            ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+
+    };
+  } // (48:1) <Overlay {loading}>
+
+
+  function create_default_slot$3(ctx) {
+    var current;
+    var timeeditor = new TimeEditor({
+      props: {
+        action:
+        /*action*/
+        ctx[0],
+        requestToken:
+        /*requestToken*/
+        ctx[1],
+        onCancel:
+        /*func*/
+        ctx[11],
+        onSubmit:
+        /*save*/
+        ctx[9],
+        clientName:
+        /*clientName*/
+        ctx[2],
+        projectName:
+        /*projectName*/
+        ctx[3],
+        taskName:
+        /*taskName*/
+        ctx[4],
+        initialDate:
+        /*initialDate*/
+        ctx[5],
+        isServer:
+        /*isServer*/
+        ctx[6]
+      }
+    });
+    return {
+      c() {
+        create_component(timeeditor.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(timeeditor, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var timeeditor_changes = {};
+        if (dirty &
+        /*action*/
+        1) timeeditor_changes.action =
+        /*action*/
+        ctx[0];
+        if (dirty &
+        /*requestToken*/
+        2) timeeditor_changes.requestToken =
+        /*requestToken*/
+        ctx[1];
+        if (dirty &
+        /*show*/
+        128) timeeditor_changes.onCancel =
+        /*func*/
+        ctx[11];
+        if (dirty &
+        /*clientName*/
+        4) timeeditor_changes.clientName =
+        /*clientName*/
+        ctx[2];
+        if (dirty &
+        /*projectName*/
+        8) timeeditor_changes.projectName =
+        /*projectName*/
+        ctx[3];
+        if (dirty &
+        /*taskName*/
+        16) timeeditor_changes.taskName =
+        /*taskName*/
+        ctx[4];
+        if (dirty &
+        /*initialDate*/
+        32) timeeditor_changes.initialDate =
+        /*initialDate*/
+        ctx[5];
+        if (dirty &
+        /*isServer*/
+        64) timeeditor_changes.isServer =
+        /*isServer*/
+        ctx[6];
+        timeeditor.$set(timeeditor_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(timeeditor.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(timeeditor.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(timeeditor, detaching);
+      }
+
+    };
+  }
+
+  function create_fragment$9(ctx) {
+    var a;
+    var t1;
+    var if_block_anchor;
+    var current;
+    var mounted;
+    var dispose;
+    var if_block =
+    /*show*/
+    ctx[7] && create_if_block$7(ctx);
+    return {
+      c() {
+        a = element("a");
+        a.innerHTML = "<span>Add time entry</span>";
+        t1 = space();
+        if (if_block) if_block.c();
+        if_block_anchor = empty();
+        attr(a, "href", "#/");
+        attr(a, "class", "button primary new");
+      },
+
+      m(target, anchor) {
+        insert(target, a, anchor);
+        insert(target, t1, anchor);
+        if (if_block) if_block.m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+        current = true;
+
+        if (!mounted) {
+          dispose = listen(a, "click", prevent_default(
+          /*click_handler*/
+          ctx[10]));
+          mounted = true;
+        }
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*show*/
+        ctx[7]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*show*/
+            128) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$7(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(a);
+        if (detaching) detach(t1);
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(if_block_anchor);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function instance$9($$self, $$props, $$invalidate) {
+    var action = $$props.action;
+    var requestToken = $$props.requestToken;
+    var clientName = $$props.clientName;
+    var projectName = $$props.projectName;
+    var taskName = $$props.taskName;
+    var initialDate = $$props.initialDate;
+    var isServer = $$props.isServer;
+    onMount(function () {
+      Helpers.hideFallbacks("TimeEditor.svelte");
+    });
+
+    var save = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
+        var duration, date, note, response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                duration = _ref4.duration, date = _ref4.date, note = _ref4.note;
+                $$invalidate(8, loading = true);
+                _context.prev = 2;
+                _context.next = 5;
+                return fetch(action, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    duration,
+                    date,
+                    note
+                  }),
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 5:
+                response = _context.sent;
+
+                if (response && response.ok) {
+                  $$invalidate(7, show = false);
+                  document.querySelector(".app-timemanager [data-current-link]").click();
+                }
+
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](2);
+                console.error(_context.t0);
+
+              case 12:
+                $$invalidate(8, loading = false);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 9]]);
+      }));
+
+      return function save(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var click_handler = function click_handler() {
+      return $$invalidate(7, show = !show);
+    };
+
+    var func = function func() {
+      return $$invalidate(7, show = false);
+    };
+
+    $$self.$set = function ($$props) {
+      if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ("taskName" in $$props) $$invalidate(4, taskName = $$props.taskName);
+      if ("initialDate" in $$props) $$invalidate(5, initialDate = $$props.initialDate);
+      if ("isServer" in $$props) $$invalidate(6, isServer = $$props.isServer);
+    };
+
+    var show;
+    var loading;
+
+     $$invalidate(7, show = false);
+
+     $$invalidate(8, loading = false);
+
+    return [action, requestToken, clientName, projectName, taskName, initialDate, isServer, show, loading, save, click_handler, func];
+  }
+
+  var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(TimeEditorDialog, _SvelteComponent);
+
+    var _super = _createSuper(TimeEditorDialog);
+
+    function TimeEditorDialog(options) {
+      var _this;
+
+      _classCallCheck(this, TimeEditorDialog);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$9, create_fragment$9, safe_not_equal, {
+        action: 0,
+        requestToken: 1,
+        clientName: 2,
+        projectName: 3,
+        taskName: 4,
+        initialDate: 5,
+        isServer: 6
+      });
+      return _this;
+    }
+
+    return TimeEditorDialog;
   }(SvelteComponent);
 
   /* global HTMLCollection: true */
@@ -4818,6 +7033,17 @@
   });
 
   var init$1 = function init() {
+    var store = {};
+    var storeElement = document.querySelector("#content.app-timemanager [data-store]");
+
+    if (storeElement) {
+      try {
+        store = JSON.parse(storeElement.getAttribute("data-store"));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     components.push(new Statistics({
       target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='statistics']")),
       props: {}
@@ -4828,6 +7054,24 @@
         action: "",
         requestToken: window.OC.requestToken
       }
+    }));
+    components.push(new ProjectEditorDialog({
+      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']")),
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: window.OC.requestToken
+      })
+    }));
+    components.push(new TaskEditorDialog({
+      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']")),
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: window.OC.requestToken
+      })
+    }));
+    components.push(new TimeEditorDialog({
+      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']")),
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: window.OC.requestToken
+      })
     }));
   };
 

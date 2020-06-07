@@ -16,7 +16,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<span class="tm_label">Client</span>
 							<?php p($_['client']->getName()); ?>
 						</a>&nbsp;&nbsp;
-						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" data-current-link href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
 							<span class="tm_label">Project</span>
 							<?php p($_['project']->getName()); ?>
 						</a>
@@ -35,57 +35,34 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<button type="submit" name="action" value="delete" class="btn">Delete project</button>
 					</form>
 				</div>
-				<div class="tm_add">
-					<h3>New task</h3>
+				<div class="tm_add" data-svelte-hide="TaskEditor.svelte">
 					<div id="new-item" class="tm_new-item">
-						<form action="" method="post">
-							<label>Task name<br />
-								<input type="text" name="name" placeholder="Very special task" />
-							</label><br />
-							<label>For project<br />
-								<?php if(count($_['projects']) > 0 ) { ?>
-									<?php foreach($_['projects'] as $project) { ?>
-										<strong><?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? p($project->getName()) : p(''); ?></strong>
-									<?php } ?>
-								<?php } else { ?>
-									<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<label>For client<br />
-								<?php if(count($_['clients']) > 0 ) { ?>
-									<?php foreach($_['clients'] as $client) { ?>
-										<strong><?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? p($client->getName()) : p(''); ?></strong>
-									<?php } ?>
-								<?php } else { ?>
-									<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<input type="hidden" name="client" value="<?php echo $_['client'] ? $_['client']->getUuid() : ''; ?>">
-							<input type="hidden" name="project" value="<?php echo $_['project'] ? $_['project']->getUuid() : ''; ?>">
-							<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-							<button type="submit" class="btn primary">Add task</button>
-						</form>
+						<?php print_unescaped($_['templates']['TaskEditor.svelte']); ?>
 					</div>
 				</div>
 			</div>
 		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
-				<h2>Tasks</h2>
-				<p>Select a project to show tasks for</p>
-				<form action="" method="get">
-					<?php if(count($_['projects']) > 0 ) { ?>
-						<select name="project">
-							<?php foreach($_['projects'] as $project) { ?>
-								<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
-							<?php } ?>
-						</select>
-						<button type="submit" class="btn">Show</button>
-					<?php } else { ?>
-						<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
-					<?php } ?>
-				</form>
+				<h2 class="list-title">Tasks</h2>
+				<?php if($_['project']) { ?>
+					<span data-svelte="TaskEditorDialog.svelte"></span>
+					<span data-store="<?php p($_['store']); ?>"></span>
+				<?php } ?>
 				<?php if(!$_['project']) { ?>
+					<p>Select a project to show tasks for</p>
+					<form action="" method="get">
+						<?php if(count($_['projects']) > 0 ) { ?>
+							<select name="project">
+								<?php foreach($_['projects'] as $project) { ?>
+									<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
+								<?php } ?>
+							</select>
+							<button type="submit" class="btn">Show</button>
+						<?php } else { ?>
+							<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
+						<?php } ?>
+					</form>
 					<p><strong>Select a project first to show the tasks for this project.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['tasks']) > 0) {

@@ -20,7 +20,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 							<span class="tm_label">Project</span>
 							<?php p($_['project']->getName()); ?>
 						</a>&nbsp;&nbsp;
-						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" data-current-link href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
 							<span class="tm_label">Task</span>
 							<?php p($_['task']->getName()); ?>
 						</a>
@@ -39,73 +39,34 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<button type="submit" name="action" value="delete" class="btn">Delete task</button>
 					</form>
 				</div>
-				<div class="tm_add">
-					<h3>New time entry</h3>
+				<div class="tm_add" data-svelte-hide="TimeEditor.svelte">
 					<div id="new-item" class="tm_new-item">
-						<form action="" method="post">
-							<label>Duration (in hrs.)<br />
-								<input type="number" name="duration" step="0.25" placeholder="" />
-							</label><br />
-							<label>Date<br />
-								<input type="date" name="date" value="<?php p(date('Y-m-d')); ?>" />
-							</label><br />
-							<label>Note<br />
-								<textarea name="note"></textarea>
-							</label><br />
-							<label>For task<br />
-								<?php if(count($_['tasks']) > 0 ) { ?>
-									<?php foreach($_['tasks'] as $task) { ?>
-										<strong><?php echo ($_['task'] && $_['task']->getUuid() === $task->getUuid()) ? p($task->getName()) : p(''); ?></strong>
-									<?php } ?>
-								<?php } else { ?>
-									<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<label>For project<br />
-								<?php if(count($_['projects']) > 0 ) { ?>
-									<?php foreach($_['projects'] as $project) { ?>
-										<strong><?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? p($project->getName()) : p(''); ?></strong>
-									<?php } ?>
-								<?php } else { ?>
-									<p>No projects created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<label>For client<br />
-								<?php if(count($_['clients']) > 0 ) { ?>
-									<?php foreach($_['clients'] as $client) { ?>
-										<strong><?php echo ($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? p($client->getName()) : p(''); ?></strong>
-									<?php } ?>
-								<?php } else { ?>
-									<p>No clients created yet. Go ahead and <a href="">create one</a>.</p>
-								<?php } ?>
-							</label><br />
-							<input type="hidden" name="client" value="<?php echo $_['client'] ? $_['client']->getUuid() : ''; ?>">
-							<input type="hidden" name="project" value="<?php echo $_['project'] ? $_['project']->getUuid() : ''; ?>">
-							<input type="hidden" name="task" value="<?php echo $_['task'] ? $_['task']->getUuid() : ''; ?>">
-							<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-							<button type="submit" class="btn primary">Add time entry</button>
-						</form>
+						<?php print_unescaped($_['templates']['TimeEditor.svelte']); ?>
 					</div>
 				</div>
 			</div>
 		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
-				<h2>Time Entries</h2>
-				<p>Select a task to show time entries for</p>
-				<form action="" method="get">
-					<?php if(count($_['tasks']) > 0 ) { ?>
-						<select name="task">
-							<?php foreach($_['tasks'] as $task) { ?>
-								<option value="<?php p($task->getUuid()); ?>"<?php echo ($_['task'] && $_['task']->getUuid() === $task->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($task->getName()); ?></option>
-							<?php } ?>
-						</select>
-						<button type="submit" class="btn">Show</button>
-					<?php } else { ?>
-						<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
-					<?php } ?>
-				</form>
+				<h2 class="list-title">Time Entries</h2>
+				<?php if($_['task']) { ?>
+					<span data-svelte="TimeEditorDialog.svelte"></span>
+					<span data-store="<?php p($_['store']); ?>"></span>
+				<?php } ?>
 				<?php if(!$_['task']) { ?>
+					<p>Select a task to show time entries for</p>
+					<form action="" method="get">
+						<?php if(count($_['tasks']) > 0 ) { ?>
+							<select name="task">
+								<?php foreach($_['tasks'] as $task) { ?>
+									<option value="<?php p($task->getUuid()); ?>"<?php echo ($_['task'] && $_['task']->getUuid() === $task->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($task->getName()); ?></option>
+								<?php } ?>
+							</select>
+							<button type="submit" class="btn">Show</button>
+						<?php } else { ?>
+							<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
+						<?php } ?>
+					</form>
 					<p><strong>Select a task first to show the times for this task.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['times']) > 0) {

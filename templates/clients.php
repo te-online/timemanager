@@ -11,13 +11,13 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="section" data-svelte-hide="ClientEditor.svelte">
 			<div class="tm_add">
 				<div id="new-item" class="tm_new-item">
-					<?php echo $_['templates']['ClientEditor.svelte']; ?>
+					<?php print_unescaped($_['templates']['ClientEditor.svelte']); ?>
 				</div>
 			</div>
 		</div>
 
 		<div class="section">
-			<h2>Clients</h2>
+			<h2 class="list-title">Clients</h2>
 			<span data-svelte="ClientEditorDialog.svelte"></span>
 			<?php if(count($_['clients']) > 0) {
 				foreach($_['clients'] as $index => $client) { ?>
