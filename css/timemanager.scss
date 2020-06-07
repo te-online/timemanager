@@ -158,3 +158,40 @@
 	display: inline-block;
 	max-width: calc(100% - 220px);
 }
+
+body.loading #content.app-timemanager:before {
+	content: '';
+	position: absolute;
+	top: 50px;
+	left: -150px;
+	opacity: 0.5;
+	width: 150px;
+	height: 4px;
+	background: var(--color-primary);
+	animation: loading 5s .3s ease infinite;
+	z-index: 9999;
+}
+
+body.loading-error #content.app-timemanager:before {
+	content: '';
+	position: absolute;
+	top: 50px;
+	left: 0;
+	opacity: 0.5;
+	width: 100%;
+	height: 4px;
+	background: red;
+	z-index: 9999;
+}
+
+@keyframes loading {
+	0% {
+		left: -150px;
+	}
+	50% {
+		left: 100%;
+	}
+	100% {
+		left: 0;
+	}
+}

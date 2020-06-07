@@ -1,5 +1,5 @@
 <?php
-script('timemanager', 'app');
+script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 $urlGenerator = \OC::$server->getURLGenerator();
 ?>
@@ -12,7 +12,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 			<div class="section">
 				<div class="tm_object-details">
 					<h2>
-						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
 							<span class="tm_label">Client</span>
 							<?php p($_['client']->getName()); ?>
 						</a>
@@ -84,7 +84,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php if(count($_['projects']) > 0) {
 						foreach($_['projects'] as $index => $project) { ?>
 							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-								<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
+								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">
 										<span><?php p($project->task_count); ?> tasks</span>&nbsp;&middot;&nbsp;<span><?php p($project->hours); ?> Hrs.</span>

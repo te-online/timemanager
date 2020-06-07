@@ -5,7 +5,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
   <ul>
 		<li>
 			<a
-				class="<?php echo $_['page'] === 'index' ? ' active' : ''; ?>"
+				class="timemanager-pjax-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>"
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/monitoring.svg" /><span>Dashboard</span>
@@ -13,7 +13,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
 		</li>
     <li>
     	<a
-				class="<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>"
+				class="timemanager-pjax-link<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>"
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/places/contacts.svg">
@@ -22,7 +22,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
     </li>
 		<li>
 			<a
-				class="<?php echo $_['page'] === 'projects' ? ' active' : ''; ?>"
+				class="timemanager-pjax-link<?php echo $_['page'] === 'projects' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>"
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/office.svg">
@@ -31,7 +31,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
 		</li>
 		<li>
 			<a
-				class="<?php echo $_['page'] === 'tasks' ? ' active' : ''; ?>"
+				class="timemanager-pjax-link<?php echo $_['page'] === 'tasks' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>"
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/organization.svg">
@@ -40,7 +40,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
 		</li>
     <li>
       <a
-				class="<?php echo $_['page'] === 'times' ? ' active' : ''; ?>"
+				class="timemanager-pjax-link<?php echo $_['page'] === 'times' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>"
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/actions/quota.svg">

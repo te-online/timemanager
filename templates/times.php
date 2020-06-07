@@ -1,5 +1,5 @@
 <?php
-script('timemanager', 'app');
+script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 $urlGenerator = \OC::$server->getURLGenerator();
 ?>
@@ -12,15 +12,15 @@ $urlGenerator = \OC::$server->getURLGenerator();
 			<div class="section">
 				<div class="tm_object-details">
 					<h2>
-						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
 							<span class="tm_label">Client</span>
 							<?php p($_['client']->getName()); ?>
 						</a>&nbsp;&nbsp;
-						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
 							<span class="tm_label">Project</span>
 							<?php p($_['project']->getName()); ?>
 						</a>&nbsp;&nbsp;
-						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
+						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
 							<span class="tm_label">Task</span>
 							<?php p($_['task']->getName()); ?>
 						</a>

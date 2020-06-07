@@ -43,5 +43,7 @@
     "rollup-plugin-svelte": "^5.2.2",
     "svelte": "^3.23.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pjax": "^0.2.8"
+  }
 }

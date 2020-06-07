@@ -1,5 +1,6 @@
 import Statistics from "./views/Statistics.svelte";
 import { Helpers } from "./lib/helpers";
+import { PagePjax } from "./lib/pjax";
 const components = [];
 
 $(document).ready(function () {
@@ -14,3 +15,5 @@ components.push(
 		props: {},
 	})
 );
+
+components.push(new PagePjax(() => {}));

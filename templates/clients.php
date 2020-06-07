@@ -1,5 +1,5 @@
 <?php
-script('timemanager', 'app');
+script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 $urlGenerator = \OC::$server->getURLGenerator();
 ?>
@@ -30,7 +30,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 			<?php if(count($_['clients']) > 0) {
 				foreach($_['clients'] as $index => $client) { ?>
 					<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
-						<a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $client->getUuid(); ?>">
+						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $client->getUuid(); ?>">
 							<h3><?php p($client->getName()); ?></h3>
 							<div class="tm_item-excerpt">
 								<span><?php p($client->project_count); ?> projects</span>&nbsp;&middot;&nbsp;<span><?php p($client->hours); ?> hrs.</span>&nbsp;&middot;&nbsp;<span>since <?php p($client->getCreatedYear()); ?></span>
