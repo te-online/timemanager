@@ -6,4 +6,11 @@ export class Helpers {
 		}
 		return node;
 	}
+
+	static hideFallbacks(fileName) {
+		const nodes = document.querySelectorAll(`[data-svelte-hide="${fileName}"]`);
+		if (nodes && nodes.length) {
+			nodes.forEach((node) => node.remove());
+		}
+	}
 }

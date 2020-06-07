@@ -201,3 +201,37 @@ body.loading-error #content.app-timemanager:before {
 		left: 0;
 	}
 }
+
+.app-timemanager .oc-dialog .inner {
+	padding-left: 10px;
+	padding-right: 10px;
+	min-width: 300px;
+	max-width: 400px;
+
+	&.push-bottom {
+		margin-bottom: 15px;
+	}
+
+	.urldisplay {
+		word-wrap: break-word;
+	}
+
+	label {
+    display: block;
+
+    &.space-top {
+      margin-top: 5px;
+    }
+  }
+}
+
+#content.app-timemanager {
+	h2 {
+		display: inline-block;
+		margin-right: 5px;
+	}
+
+	.new {
+		display: inline-block;
+	}
+}

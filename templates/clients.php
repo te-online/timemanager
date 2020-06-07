@@ -8,25 +8,17 @@ $urlGenerator = \OC::$server->getURLGenerator();
 
 <div id="app-content">
 	<div class="container">
-		<div class="section">
+		<div class="section" data-svelte-hide="ClientEditor.svelte">
 			<div class="tm_add">
-				<h3>New client</h3>
 				<div id="new-item" class="tm_new-item">
-					<form action="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>" method="post">
-						<label>Client name<br />
-							<input type="text" name="name" placeholder="Example Corp." />
-						</label><br />
-						<label>Note<br />
-							<textarea name="note" placeholder="A long text ..."></textarea>
-						</label>
-						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-						<button type="submit" class="btn primary">Add client</button>
-					</form>
+					<?php echo $_['templates']['ClientEditor.svelte']; ?>
 				</div>
 			</div>
 		</div>
+
 		<div class="section">
 			<h2>Clients</h2>
+			<span data-svelte="ClientEditorDialog.svelte"></span>
 			<?php if(count($_['clients']) > 0) {
 				foreach($_['clients'] as $index => $client) { ?>
 					<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">

@@ -120,6 +120,15 @@ class PageController extends Controller {
 	function clients() {
 		$clients = $this->clientMapper->findActiveForCurrentUser('name');
 
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+
+		$form_props = [
+			'action' => $urlGenerator->linkToRoute('timemanager.page.clients'),
+			'requestToken' => $requestToken,
+			'isServer' => true
+		];
+
 		// Enhance clients with additional information.
 		if(count($clients) > 0) {
 			foreach($clients as $index => $client) {
@@ -132,7 +141,10 @@ class PageController extends Controller {
 
 		return new TemplateResponse('timemanager', 'clients', array(
 			'clients' => $clients,
-			'requesttoken' => (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '',
+			'requesttoken' => $requestToken,
+			'templates' => [
+				'ClientEditor.svelte' => PHP_Svelte::render_template('ClientEditor.svelte', $form_props)
+			],
 			'page' => 'clients'
 		));
 	}
