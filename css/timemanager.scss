@@ -16,10 +16,16 @@
 	min-height: 80px;
 	width: 100%;
 	padding: 1px 10px;
-}
 
-.tm_item-row:hover {
-	background: mintcream;
+	&:hover,
+	a:hover,
+	a:focus {
+		background: mintcream;
+	}
+
+	a {
+		display: block;
+	}
 }
 
 .tm_item-row.odd {
