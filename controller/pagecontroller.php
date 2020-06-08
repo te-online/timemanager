@@ -21,8 +21,6 @@ use OCP\AppFramework\Http;
 use OCP\IRequest;
 
 class PageController extends Controller {
-
-
 	/** @var ClientMapper mapper for client entity */
 	protected $clientMapper;
 	/** @var ProjectMapper mapper for project entity */
@@ -48,15 +46,16 @@ class PageController extends Controller {
 	 * @param TimeMapper $timeMapper mapper for time entity
 	 * @param string $userId user id
 	 */
-	function __construct($appName,
-								IRequest $request,
-								ClientMapper $clientMapper,
-								ProjectMapper $projectMapper,
-								TaskMapper $taskMapper,
-								TimeMapper $timeMapper,
-								CommitMapper $commitMapper,
-								$userId
-								) {
+	function __construct(
+		$appName,
+		IRequest $request,
+		ClientMapper $clientMapper,
+		ProjectMapper $projectMapper,
+		TaskMapper $taskMapper,
+		TimeMapper $timeMapper,
+		CommitMapper $commitMapper,
+		$userId
+	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
 		$this->projectMapper = $projectMapper;
@@ -83,10 +82,10 @@ class PageController extends Controller {
 		$times = $this->timeMapper->getActiveObjects('start');
 		$entries = [];
 		$tasks = [];
-		if($times && is_array($times) && count($times) > 0) {
-			foreach($times as $time) {
+		if ($times && is_array($times) && count($times) > 0) {
+			foreach ($times as $time) {
 				// Don't add two times of the same task
-				if(in_array($time->getTaskUuid(), $tasks) || count($entries) >= 5) {
+				if (in_array($time->getTaskUuid(), $tasks) || count($entries) >= 5) {
 					continue;
 				}
 				// Find details for parents of time entry
@@ -99,7 +98,7 @@ class PageController extends Controller {
 					'time' => $time,
 					'task' => $task,
 					'project' => $project,
-					'client' => $client
+					'client' => $client,
 				];
 			}
 		}
@@ -109,7 +108,7 @@ class PageController extends Controller {
 			'templates' => [
 				'Statistics.svelte' => PHP_Svelte::render_template('Statistics.svelte', []),
 			],
-			'latest_entries' => $entries
+			'latest_entries' => $entries,
 		]);
 	}
 
@@ -121,17 +120,17 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser('name');
 
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.clients'),
 			'requestToken' => $requestToken,
-			'isServer' => true
+			'isServer' => true,
 		];
 
 		// Enhance clients with additional information.
-		if(count($clients) > 0) {
-			foreach($clients as $index => $client) {
+		if (count($clients) > 0) {
+			foreach ($clients as $index => $client) {
 				// Number of projects
 				$clients[$index]->project_count = $this->clientMapper->countProjects($client->getUuid());
 				// Sum up client times
@@ -152,14 +151,17 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function addClient($name='Unnamed', $note='') {
+	function addClient($name = 'Unnamed', $note = '') {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
-		$this->storageHelper->addOrUpdateObject(array(
-			'name' => $name,
-			'note' => $note,
-			'commit' => $commit
-		), 'clients');
+		$this->storageHelper->addOrUpdateObject(
+			[
+				'name' => $name,
+				'note' => $note,
+				'commit' => $commit,
+			],
+			'clients'
+		);
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.clients'));
 	}
@@ -189,13 +191,13 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function projects($client=null) {
+	function projects($client = null) {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
-		if($client) {
+		if ($client) {
 			$projects = $this->projectMapper->getActiveObjectsByAttributeValue('client_uuid', $client);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $client, 'name');
 			// Sum up client times
-			if(count($client_data) === 1) {
+			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
@@ -203,8 +205,8 @@ class PageController extends Controller {
 		}
 
 		// Enhance projects with additional information.
-		if(count($projects) > 0) {
-			foreach($projects as $index => $project) {
+		if (count($projects) > 0) {
+			foreach ($projects as $index => $project) {
 				// Count tasks
 				$projects[$index]->task_count = $this->projectMapper->countTasks($project->getUuid());
 				// Sum up project times
@@ -213,9 +215,9 @@ class PageController extends Controller {
 		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
-		$client_uuid = (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getUuid() : '';
+		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client_uuid,
@@ -224,20 +226,17 @@ class PageController extends Controller {
 			'isServer' => true
 		];
 
-		return new TemplateResponse('timemanager', 'projects', array(
+		return new TemplateResponse('timemanager', 'projects', [
 			'projects' => $projects,
-			'client' => ((isset($client_data) && count($client_data) > 0) ? $client_data[0] : null),
+			'client' => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			'clients' => $clients,
 			'requesttoken' => $requestToken,
-			'store' => json_encode(array_merge(
-				$form_props,
-				['isServer' => false]
-			)),
+			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
-				'ProjectEditor.svelte' => PHP_Svelte::render_template('ProjectEditor.svelte', $form_props)
+				'ProjectEditor.svelte' => PHP_Svelte::render_template('ProjectEditor.svelte', $form_props),
 			],
-			'page' => 'projects'
-		));
+			'page' => 'projects',
+		]);
 	}
 
 	/**
@@ -246,11 +245,14 @@ class PageController extends Controller {
 	function addProject($name, $client) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
-		$this->storageHelper->addOrUpdateObject(array(
-			'name' => $name,
-			'client_uuid' => $client,
-			'commit' => $commit
-		), 'projects');
+		$this->storageHelper->addOrUpdateObject(
+			[
+				'name' => $name,
+				'client_uuid' => $client,
+				'commit' => $commit,
+			],
+			'projects'
+		);
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client);
 	}
@@ -283,16 +285,20 @@ class PageController extends Controller {
 	function tasks($project) {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
-		if($project) {
+		if ($project) {
 			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue('project_uuid', $project);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $project);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid(), 'name');
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
+				'uuid',
+				$project_data[0]->getClientUuid(),
+				'name'
+			);
 			// Sum up project times
-			if(count($project_data) === 1) {
+			if (count($project_data) === 1) {
 				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
 			}
 			// Sum up client times
-			if(count($client_data) === 1) {
+			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
@@ -300,42 +306,39 @@ class PageController extends Controller {
 		}
 
 		// Enhance tasks with additional information.
-		if(count($tasks) > 0) {
-			foreach($tasks as $index => $task) {
+		if (count($tasks) > 0) {
+			foreach ($tasks as $index => $task) {
 				// Sum up project times
 				$tasks[$index]->hours = $this->taskMapper->getHours($task->getUuid());
 			}
 		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
-		$project_uuid = (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getUuid() : '';
+		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project_uuid,
 			'requestToken' => $requestToken,
-			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
-			'projectName' => (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getName() : '',
-			'isServer' => true
+			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+			'projectName' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			'isServer' => true,
 		];
 
-		return new TemplateResponse('timemanager', 'tasks', array(
+		return new TemplateResponse('timemanager', 'tasks', [
 			'tasks' => $tasks,
-			'project' => ((isset($project_data) && count($project_data) > 0) ? $project_data[0] : null),
-			'client' => ((isset($client_data) && count($client_data) > 0) ? $client_data[0] : null),
+			'project' => isset($project_data) && count($project_data) > 0 ? $project_data[0] : null,
+			'client' => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			'projects' => $projects,
 			'clients' => $clients,
 			'requesttoken' => $requestToken,
-			'store' => json_encode(array_merge(
-				$form_props,
-				['isServer' => false]
-			)),
+			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
-				'TaskEditor.svelte' => PHP_Svelte::render_template('TaskEditor.svelte', $form_props)
+				'TaskEditor.svelte' => PHP_Svelte::render_template('TaskEditor.svelte', $form_props),
 			],
-			'page' => 'tasks'
-		));
+			'page' => 'tasks',
+		]);
 	}
 
 	/**
@@ -344,11 +347,14 @@ class PageController extends Controller {
 	function addTask($name, $project) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
-		$this->storageHelper->addOrUpdateObject(array(
-			'name' => $name,
-			'project_uuid' => $project,
-			'commit' => $commit
-		), 'tasks');
+		$this->storageHelper->addOrUpdateObject(
+			[
+				'name' => $name,
+				'project_uuid' => $project,
+				'commit' => $commit,
+			],
+			'tasks'
+		);
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project);
 	}
@@ -374,7 +380,6 @@ class PageController extends Controller {
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project);
 	}
 
-
 	/**
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -383,21 +388,25 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$tasks = $this->taskMapper->findActiveForCurrentUser();
-		if($task) {
+		if ($task) {
 			$times = $this->timeMapper->getActiveObjectsByAttributeValue('task_uuid', $task, 'start');
 			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue('uuid', $task);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue('uuid', $task_data[0]->getProjectUuid());
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue('uuid', $project_data[0]->getClientUuid(), 'name');
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
+				'uuid',
+				$project_data[0]->getClientUuid(),
+				'name'
+			);
 			// Sum up task times
-			if(count($task_data) === 1) {
+			if (count($task_data) === 1) {
 				$task_data[0]->hours = $this->taskMapper->getHours($task_data[0]->getUuid());
 			}
 			// Sum up project times
-			if(count($project_data) === 1) {
+			if (count($project_data) === 1) {
 				$project_data[0]->hours = $this->projectMapper->getHours($project_data[0]->getUuid());
 			}
 			// Sum up client times
-			if(count($client_data) === 1) {
+			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
 			}
 		} else {
@@ -405,39 +414,36 @@ class PageController extends Controller {
 		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = (\OC::$server->getSession()) ? \OCP\Util::callRegister() : '';
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
-		$task_uuid = (isset($task_data) && count($task_data) > 0) ? $task_data[0]->getUuid() : '';
+		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
 			'requestToken' => $requestToken,
-			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
-			'projectName' => (isset($project_data) && count($project_data) > 0) ? $project_data[0]->getName() : '',
-			'taskName' => ($task_data && count($task_data) > 0) ? $task_data[0]->getName() : '',
+			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+			'projectName' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			'taskName' => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : '',
 			'taskUuid' => $taskUuid,
 			'initialDate' => date('Y-m-d'),
-			'isServer' => true
+			'isServer' => true,
 		];
 
-		return new TemplateResponse('timemanager', 'times', array(
+		return new TemplateResponse('timemanager', 'times', [
 			'times' => $times,
-			'task' => (($task_data && count($task_data) > 0) ? $task_data[0] : null),
-			'project' => (($project_data && count($project_data) > 0) ? $project_data[0] : null),
-			'client' => (($client_data && count($client_data) > 0) ? $client_data[0] : null),
+			'task' => $task_data && count($task_data) > 0 ? $task_data[0] : null,
+			'project' => $project_data && count($project_data) > 0 ? $project_data[0] : null,
+			'client' => $client_data && count($client_data) > 0 ? $client_data[0] : null,
 			'tasks' => $tasks,
 			'projects' => $projects,
 			'clients' => $clients,
 			'requesttoken' => $requestToken,
-			'store' => json_encode(array_merge(
-				$form_props,
-				['isServer' => false]
-			)),
+			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
-				'TimeEditor.svelte' => PHP_Svelte::render_template('TimeEditor.svelte', $form_props)
+				'TimeEditor.svelte' => PHP_Svelte::render_template('TimeEditor.svelte', $form_props),
 			],
-			'page' => 'times'
-		));
+			'page' => 'times',
+		]);
 	}
 
 	/**
@@ -449,23 +455,26 @@ class PageController extends Controller {
 		// Convert 1,25 to 1.25
 		$duration = str_replace(',', '.', $duration);
 		// Cast to float
-		$duration = (float)$duration;
+		$duration = (float) $duration;
 		// Calculate start and end from duration
-		if(!empty($date)) {
+		if (!empty($date)) {
 			// Add 24 hours to make it end of the day.
 			$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 24);
 		} else {
 			$end = date('Y-m-d H:i:s');
 		}
 		$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
-		$this->storageHelper->addOrUpdateObject(array(
-			'name' => $name,
-			'start' => $start, // now - duration
-			'end' => $end, // now
-			'task_uuid' => $task,
-			'commit' => $commit,
-			'note' => $note
-		), 'times');
+		$this->storageHelper->addOrUpdateObject(
+			[
+				'name' => $name,
+				'start' => $start, // now - duration
+				'end' => $end, // now
+				'task_uuid' => $task,
+				'commit' => $commit,
+				'note' => $note,
+			],
+			'times'
+		);
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task);
 	}
