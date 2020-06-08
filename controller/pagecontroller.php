@@ -138,14 +138,21 @@ class PageController extends Controller {
 			}
 		}
 
-		return new TemplateResponse('timemanager', 'clients', array(
+		$form_props = [
+			'action' => $urlGenerator->linkToRoute('timemanager.page.clients'),
+			'clientEditorButtonCaption' => 'Add client',
+			'clientEditorCaption' => 'New client',
+		];
+
+		return new TemplateResponse('timemanager', 'clients', [
 			'clients' => $clients,
 			'requesttoken' => $requestToken,
 			'templates' => [
-				'ClientEditor.svelte' => PHP_Svelte::render_template('ClientEditor.svelte', $form_props)
+				'ClientEditor.svelte' => PHP_Svelte::render_template('ClientEditor.svelte', $form_props),
 			],
-			'page' => 'clients'
-		));
+			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
+			'page' => 'clients',
+		]);
 	}
 
 	/**
@@ -189,6 +196,29 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function editClient($uuid, $name = 'Unnamed', $note = '') {
+		$commit = UUID::v4();
+		$client = $this->clientMapper->getActiveObjectById($uuid);
+		if ($client) {
+			$this->storageHelper->insertCommit($commit);
+			$this->storageHelper->addOrUpdateObject(
+				[
+					'uuid' => $uuid,
+					'name' => $name,
+					'note' => $note,
+					'commit' => $client->getCommit(),
+					'desiredCommit' => $commit
+				],
+				'clients'
+			);
+			$urlGenerator = \OC::$server->getURLGenerator();
+		}
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function projects($client = null) {
@@ -221,9 +251,17 @@ class PageController extends Controller {
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client_uuid,
+			'editAction' => $urlGenerator->linkToRoute('timemanager.page.clients'),
 			'requestToken' => $requestToken,
-			'clientName' => (isset($client_data) && count($client_data) > 0) ? $client_data[0]->getName() : '',
-			'isServer' => true
+			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+			'clientEditorButtonCaption' => 'Edit client',
+			'clientEditorCaption' => 'Edit client',
+			'clientUuid' => $client_uuid,
+			'editData' => [
+				'name' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+				'note' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getNote() : '',
+			],
+			'isServer' => true,
 		];
 
 		return new TemplateResponse('timemanager', 'projects', [

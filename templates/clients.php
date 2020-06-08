@@ -19,6 +19,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<div class="section">
 			<h2 class="list-title">Clients</h2>
 			<span data-svelte="ClientEditorDialog.svelte"></span>
+			<span data-store="<?php p($_['store']); ?>"></span>
 			<?php if(count($_['clients']) > 0) {
 				foreach($_['clients'] as $index => $client) { ?>
 					<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">

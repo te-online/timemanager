@@ -1,6 +1,11 @@
 <script>
 	export let action;
+	export let editAction;
 	export let requestToken;
+	export let clientEditorButtonCaption;
+	export let clientEditorCaption;
+	export let clientUuid;
+	export let editData;
 
 	import Overlay from "./Overlay.svelte";
 	import ClientEditor from "./ClientEditor.svelte";
@@ -17,9 +22,13 @@
 	const save = async ({ name, note }) => {
 		loading = true;
 		try {
-			const response = await fetch(window.location.href, {
-				method: "POST",
-				body: JSON.stringify({ name, note }),
+			let client = { name, note };
+			if (clientUuid) {
+				client = { ...client, uuid: clientUuid };
+			}
+			const response = await fetch(clientUuid ? editAction : action, {
+				method: clientUuid ? "PATCH" : "POST",
+				body: JSON.stringify(client),
 				headers: {
 					requesttoken: requestToken,
 					"content-type": "application/json",
@@ -27,7 +36,11 @@
 			});
 			if (response && response.ok) {
 				show = false;
-				document.querySelector("#app-navigation a.active").click();
+				if (clientUuid) {
+					document.querySelector(".app-timemanager [data-current-link]").click();
+				} else {
+					document.querySelector("#app-navigation a.active").click();
+				}
 			}
 		} catch (error) {
 			console.error(error);
@@ -37,10 +50,17 @@
 </script>
 
 <a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
-	<span>Add client</span>
+	<span>{clientEditorButtonCaption}</span>
 </a>
 {#if show}
 	<Overlay {loading}>
-		<ClientEditor {action} {requestToken} onCancel={() => (show = false)} onSubmit={save} />
+		<ClientEditor
+			{action}
+			{requestToken}
+			onCancel={() => (show = false)}
+			onSubmit={save}
+			{clientEditorButtonCaption}
+			{clientEditorCaption}
+			{editData} />
 	</Overlay>
 {/if}

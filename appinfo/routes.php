@@ -5,6 +5,7 @@ return [
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'page#clients', 'url' => '/clients', 'verb' => 'GET'],
 		['name' => 'page#addClient', 'url' => '/clients', 'verb' => 'POST'],
+		['name' => 'page#editClient', 'url' => '/clients', 'verb' => 'PATCH'],
 		['name' => 'page#deleteClient', 'url' => '/clients/delete', 'verb' => 'POST'],
 		['name' => 'page#projects', 'url' => '/projects', 'verb' => 'GET'],
 		['name' => 'page#addProject', 'url' => '/projects', 'verb' => 'POST'],

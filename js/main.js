@@ -37,6 +37,7 @@ const init = () => {
 				document.querySelector("#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']")
 			),
 			props: {
+				...store,
 				action: "",
 				requestToken: window.OC.requestToken,
 			},

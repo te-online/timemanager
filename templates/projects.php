@@ -30,9 +30,9 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<?php p($_['client']->getStreet()); ?><br />
 						<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
 					</div>
-					<form action="" method="post">
-						<button type="submit" name="action" value="edit" class="btn primary">Edit client</button>
-					</form>
+					<?php if($_['client']) { ?>
+						<span data-svelte="ClientEditorDialog.svelte"></span>
+					<?php } ?>
 					<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.clients')); ?>/delete" method="post">
 						<input type="hidden" name="uuid" value="<?php p($_['client']->getUuid()); ?>" />
 						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
