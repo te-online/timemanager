@@ -25,11 +25,13 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<span class="tm_label">Note</span>
 						<?php p($_['client']->getNote()); ?>
 					</div>
-					<div class="tm_object-details-item">
-						<span class="tm_label">Address</span>
-						<?php p($_['client']->getStreet()); ?><br />
-						<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
-					</div>
+					<?php if ($_['client']->getStreet() || $_['client']->getPostcode() || $_['client']->getCity()) { ?>
+						<div class="tm_object-details-item">
+							<span class="tm_label">Address</span>
+							<?php p($_['client']->getStreet()); ?><br />
+							<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
+						</div>
+					<?php } ?>
 					<?php if($_['client']) { ?>
 						<span data-svelte="ClientEditorDialog.svelte"></span>
 					<?php } ?>
