@@ -13,6 +13,7 @@ return [
 		['name' => 'page#deleteProject', 'url' => '/projects/delete', 'verb' => 'POST'],
 		['name' => 'page#tasks', 'url' => '/tasks', 'verb' => 'GET'],
 		['name' => 'page#addTask', 'url' => '/tasks', 'verb' => 'POST'],
+		['name' => 'page#editTask', 'url' => '/tasks', 'verb' => 'PATCH'],
 		['name' => 'page#deleteTask', 'url' => '/tasks/delete', 'verb' => 'POST'],
 		['name' => 'page#times', 'url' => '/times', 'verb' => 'GET'],
 		['name' => 'page#addTime', 'url' => '/times', 'verb' => 'POST'],

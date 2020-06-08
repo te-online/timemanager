@@ -1,9 +1,14 @@
 <script>
 	export let action;
+	export let editAction;
 	export let requestToken;
 	export let clientName;
 	export let projectName;
 	export let isServer;
+	export let taskEditorButtonCaption;
+	export let taskEditorCaption;
+	export let taskUuid;
+	export let editData;
 
 	import Overlay from "./Overlay.svelte";
 	import TaskEditor from "./TaskEditor.svelte";
@@ -20,9 +25,13 @@
 	const save = async ({ name }) => {
 		loading = true;
 		try {
-			const response = await fetch(action, {
-				method: "POST",
-				body: JSON.stringify({ name }),
+			let task = { name };
+			if (taskUuid) {
+				task = { ...task, uuid: taskUuid };
+			}
+			const response = await fetch(taskUuid ? editAction : action, {
+				method: taskUuid ? "PATCH" : "POST",
+				body: JSON.stringify(task),
 				headers: {
 					requesttoken: requestToken,
 					"content-type": "application/json",
@@ -40,7 +49,7 @@
 </script>
 
 <a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
-	<span>Add task</span>
+	<span>{taskEditorButtonCaption}</span>
 </a>
 {#if show}
 	<Overlay {loading}>
@@ -51,6 +60,9 @@
 			onSubmit={save}
 			{clientName}
 			{projectName}
-			{isServer} />
+			{isServer}
+			{taskEditorButtonCaption}
+			{taskEditorCaption}
+			{editData} />
 	</Overlay>
 {/if}

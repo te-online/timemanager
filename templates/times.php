@@ -29,9 +29,9 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<span class="tm_label">Created</span>
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
-					<form action="" method="post">
-						<button type="submit" name="action" value="edit" class="btn primary">Edit task</button>
-					</form>
+					<?php if($_['task']) { ?>
+						<span data-svelte="TaskEditorDialog.svelte"></span>
+					<?php } ?>
 					<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.tasks')); ?>/delete" method="post">
 						<input type="hidden" name="uuid" value="<?php p($_['task']->getUuid()); ?>" />
 						<input type="hidden" name="project" value="<?php p($_['project']->getUuid()); ?>" />

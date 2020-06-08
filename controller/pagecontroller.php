@@ -389,6 +389,8 @@ class PageController extends Controller {
 			'projectEditorButtonCaption' => 'Edit project',
 			'projectEditorCaption' => 'Edit project',
 			'projectUuid' => $project_uuid,
+			'taskEditorButtonCaption' => 'Add task',
+			'taskEditorCaption' => 'New task',
 			'editData' => [
 				'name' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
 			],
@@ -451,6 +453,28 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function editTask($uuid, $name = 'Unnamed') {
+		$commit = UUID::v4();
+		$task = $this->taskMapper->getActiveObjectById($uuid);
+		if ($task) {
+			$this->storageHelper->insertCommit($commit);
+			$this->storageHelper->addOrUpdateObject(
+				[
+					'uuid' => $uuid,
+					'name' => $name,
+					'commit' => $task->getCommit(),
+					'desiredCommit' => $commit,
+				],
+				'tasks'
+			);
+			$urlGenerator = \OC::$server->getURLGenerator();
+		}
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function times($task) {
@@ -489,12 +513,19 @@ class PageController extends Controller {
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
+			'editAction' => $urlGenerator->linkToRoute('timemanager.page.tasks'),
 			'requestToken' => $requestToken,
 			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
 			'projectName' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
 			'taskName' => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : '',
 			'taskUuid' => $taskUuid,
 			'initialDate' => date('Y-m-d'),
+			'taskEditorButtonCaption' => 'Edit task',
+			'taskEditorCaption' => 'Edit task',
+			'taskUuid' => $task_uuid,
+			'editData' => [
+				'name' => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : '',
+			],
 			'isServer' => true,
 		];
 
