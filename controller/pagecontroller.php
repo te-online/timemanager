@@ -603,6 +603,43 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
+	function editTime($uuid, $duration, $date, $note) {
+		$commit = UUID::v4();
+		$time = $this->timeMapper->getActiveObjectById($uuid);
+		if ($time) {
+			$this->storageHelper->insertCommit($commit);
+			// Convert 1,25 to 1.25
+			$duration = str_replace(',', '.', $duration);
+			// Cast to float
+			$duration = (float) $duration;
+			// @TODO: Time range needs to be edited properly
+			// Calculate start and end from duration
+			if (!empty($date)) {
+				// Add 24 hours to make it end of the day.
+				$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 24);
+			} else {
+				$end = date('Y-m-d H:i:s');
+			}
+			$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
+			$this->storageHelper->addOrUpdateObject(
+				[
+					'name' => $name,
+					'start' => $start, // now - duration
+					'end' => $end, // now
+					'commit' => $time->getCommit(),
+					'note' => $note,
+					'desiredCommit' => $commit,
+				],
+				'times'
+			);
+			$urlGenerator = \OC::$server->getURLGenerator();
+		}
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $time->task_uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
 	function payTime($uuid, $task) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
