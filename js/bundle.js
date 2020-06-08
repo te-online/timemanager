@@ -3981,6 +3981,7 @@
   function create_fragment$4(ctx) {
     var div1;
     var h3;
+    var t0;
     var t1;
     var form;
     var label0;
@@ -4001,8 +4002,9 @@
     var input1;
     var t10;
     var div0;
-    var t11;
     var button;
+    var t11;
+    var t12;
     var mounted;
     var dispose;
     var if_block = !
@@ -4012,7 +4014,9 @@
       c() {
         div1 = element("div");
         h3 = element("h3");
-        h3.textContent = "New project";
+        t0 = text(
+        /*projectEditorCaption*/
+        ctx[6]);
         t1 = space();
         form = element("form");
         label0 = element("label");
@@ -4035,10 +4039,12 @@
         input1 = element("input");
         t10 = space();
         div0 = element("div");
-        if (if_block) if_block.c();
-        t11 = space();
         button = element("button");
-        button.textContent = "Add project";
+        t11 = text(
+        /*projectEditorButtonCaption*/
+        ctx[5]);
+        t12 = space();
+        if (if_block) if_block.c();
         input0.autofocus = true;
         attr(input0, "type", "text");
         set_style(input0, "width", "100%");
@@ -4055,7 +4061,7 @@
         ctx[1];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
-        attr(div0, "class", "oc-dialog-buttonrow twobuttons");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
         attr(form, "action",
         /*action*/
         ctx[0]);
@@ -4066,6 +4072,7 @@
       m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, h3);
+        append(h3, t0);
         append(div1, t1);
         append(div1, form);
         append(form, label0);
@@ -4075,7 +4082,7 @@
         append(label0, input0);
         set_input_value(input0,
         /*name*/
-        ctx[5]);
+        ctx[7]);
         append(form, t4);
         append(form, label1);
         append(label1, t5);
@@ -4089,17 +4096,18 @@
         append(form, input1);
         append(form, t10);
         append(form, div0);
-        if (if_block) if_block.m(div0, null);
-        append(div0, t11);
         append(div0, button);
+        append(button, t11);
+        append(div0, t12);
+        if (if_block) if_block.m(div0, null);
         input0.focus();
 
         if (!mounted) {
           dispose = [listen(input0, "input",
           /*input0_input_handler*/
-          ctx[8]), listen(form, "submit", prevent_default(
+          ctx[11]), listen(form, "submit", prevent_default(
           /*submit*/
-          ctx[6]))];
+          ctx[8]))];
           mounted = true;
         }
       },
@@ -4109,13 +4117,19 @@
             dirty = _ref2[0];
 
         if (dirty &
+        /*projectEditorCaption*/
+        64) set_data(t0,
+        /*projectEditorCaption*/
+        ctx[6]);
+
+        if (dirty &
         /*name*/
-        32 && input0.value !==
+        128 && input0.value !==
         /*name*/
-        ctx[5]) {
+        ctx[7]) {
           set_input_value(input0,
           /*name*/
-          ctx[5]);
+          ctx[7]);
         }
 
         if (dirty &
@@ -4132,6 +4146,12 @@
           ctx[1];
         }
 
+        if (dirty &
+        /*projectEditorButtonCaption*/
+        32) set_data(t11,
+        /*projectEditorButtonCaption*/
+        ctx[5]);
+
         if (!
         /*isServer*/
         ctx[3]) {
@@ -4140,7 +4160,7 @@
           } else {
             if_block = create_if_block$2(ctx);
             if_block.c();
-            if_block.m(div0, t11);
+            if_block.m(div0, null);
           }
         } else if (if_block) {
           if_block.d(1);
@@ -4176,7 +4196,10 @@
     var isServer = $$props.isServer;
     var onCancel = $$props.onCancel;
     var onSubmit = $$props.onSubmit;
-    var name;
+    var projectEditorButtonCaption = $$props.projectEditorButtonCaption;
+    var projectEditorCaption = $$props.projectEditorCaption;
+    var editData = $$props.editData;
+    var name = editData ? editData.name : "";
 
     var submit = function submit() {
       onSubmit({
@@ -4186,7 +4209,7 @@
 
     function input0_input_handler() {
       name = this.value;
-      $$invalidate(5, name);
+      $$invalidate(7, name);
     }
 
     $$self.$set = function ($$props) {
@@ -4195,10 +4218,13 @@
       if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
       if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
       if ("onCancel" in $$props) $$invalidate(4, onCancel = $$props.onCancel);
-      if ("onSubmit" in $$props) $$invalidate(7, onSubmit = $$props.onSubmit);
+      if ("onSubmit" in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
+      if ("projectEditorButtonCaption" in $$props) $$invalidate(5, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+      if ("projectEditorCaption" in $$props) $$invalidate(6, projectEditorCaption = $$props.projectEditorCaption);
+      if ("editData" in $$props) $$invalidate(10, editData = $$props.editData);
     };
 
-    return [action, requestToken, clientName, isServer, onCancel, name, submit, onSubmit, input0_input_handler];
+    return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editData, input0_input_handler];
   }
 
   var ProjectEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -4218,7 +4244,10 @@
         clientName: 2,
         isServer: 3,
         onCancel: 4,
-        onSubmit: 7
+        onSubmit: 9,
+        projectEditorButtonCaption: 5,
+        projectEditorCaption: 6,
+        editData: 10
       });
       return _this;
     }
@@ -4232,7 +4261,7 @@
       props: {
         loading:
         /*loading*/
-        ctx[5],
+        ctx[8],
         $$slots: {
           default: [create_default_slot$1]
         },
@@ -4255,13 +4284,13 @@
         var overlay_changes = {};
         if (dirty &
         /*loading*/
-        32) overlay_changes.loading =
+        256) overlay_changes.loading =
         /*loading*/
-        ctx[5];
+        ctx[8];
 
         if (dirty &
-        /*$$scope, action, requestToken, show, clientName, isServer*/
-        543) {
+        /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editData*/
+        16639) {
           overlay_changes.$$scope = {
             dirty,
             ctx
@@ -4287,7 +4316,7 @@
       }
 
     };
-  } // (45:1) <Overlay {loading}>
+  } // (54:1) <Overlay {loading}>
 
 
   function create_default_slot$1(ctx) {
@@ -4302,16 +4331,25 @@
         ctx[1],
         onCancel:
         /*func*/
-        ctx[8],
+        ctx[13],
         onSubmit:
         /*save*/
-        ctx[6],
+        ctx[9],
         clientName:
         /*clientName*/
         ctx[2],
         isServer:
         /*isServer*/
-        ctx[3]
+        ctx[3],
+        projectEditorButtonCaption:
+        /*projectEditorButtonCaption*/
+        ctx[4],
+        projectEditorCaption:
+        /*projectEditorCaption*/
+        ctx[5],
+        editData:
+        /*editData*/
+        ctx[6]
       }
     });
     return {
@@ -4338,9 +4376,9 @@
         ctx[1];
         if (dirty &
         /*show*/
-        16) projecteditor_changes.onCancel =
+        128) projecteditor_changes.onCancel =
         /*func*/
-        ctx[8];
+        ctx[13];
         if (dirty &
         /*clientName*/
         4) projecteditor_changes.clientName =
@@ -4351,6 +4389,21 @@
         8) projecteditor_changes.isServer =
         /*isServer*/
         ctx[3];
+        if (dirty &
+        /*projectEditorButtonCaption*/
+        16) projecteditor_changes.projectEditorButtonCaption =
+        /*projectEditorButtonCaption*/
+        ctx[4];
+        if (dirty &
+        /*projectEditorCaption*/
+        32) projecteditor_changes.projectEditorCaption =
+        /*projectEditorCaption*/
+        ctx[5];
+        if (dirty &
+        /*editData*/
+        64) projecteditor_changes.editData =
+        /*editData*/
+        ctx[6];
         projecteditor.$set(projecteditor_changes);
       },
 
@@ -4374,6 +4427,8 @@
 
   function create_fragment$5(ctx) {
     var a;
+    var span;
+    var t0;
     var t1;
     var if_block_anchor;
     var current;
@@ -4381,11 +4436,14 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[4] && create_if_block$3(ctx);
+    ctx[7] && create_if_block$3(ctx);
     return {
       c() {
         a = element("a");
-        a.innerHTML = "<span>Add project</span>";
+        span = element("span");
+        t0 = text(
+        /*projectEditorButtonCaption*/
+        ctx[4]);
         t1 = space();
         if (if_block) if_block.c();
         if_block_anchor = empty();
@@ -4395,6 +4453,8 @@
 
       m(target, anchor) {
         insert(target, a, anchor);
+        append(a, span);
+        append(span, t0);
         insert(target, t1, anchor);
         if (if_block) if_block.m(target, anchor);
         insert(target, if_block_anchor, anchor);
@@ -4403,7 +4463,7 @@
         if (!mounted) {
           dispose = listen(a, "click", prevent_default(
           /*click_handler*/
-          ctx[7]));
+          ctx[12]));
           mounted = true;
         }
       },
@@ -4412,15 +4472,21 @@
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
+        if (!current || dirty &
+        /*projectEditorButtonCaption*/
+        16) set_data(t0,
+        /*projectEditorButtonCaption*/
+        ctx[4]);
+
         if (
         /*show*/
-        ctx[4]) {
+        ctx[7]) {
           if (if_block) {
             if_block.p(ctx, dirty);
 
             if (dirty &
             /*show*/
-            16) {
+            128) {
               transition_in(if_block, 1);
             }
           } else {
@@ -4463,60 +4529,73 @@
 
   function instance$5($$self, $$props, $$invalidate) {
     var action = $$props.action;
+    var editAction = $$props.editAction;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
     var isServer = $$props.isServer;
+    var projectEditorButtonCaption = $$props.projectEditorButtonCaption;
+    var projectEditorCaption = $$props.projectEditorCaption;
+    var projectUuid = $$props.projectUuid;
+    var editData = $$props.editData;
     onMount(function () {
       Helpers.hideFallbacks("ProjectEditor.svelte");
     });
 
     var save = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
-        var name, response;
+        var name, project, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 name = _ref4.name;
-                $$invalidate(5, loading = true);
+                $$invalidate(8, loading = true);
                 _context.prev = 2;
-                _context.next = 5;
-                return fetch(action, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    name
-                  }),
+                project = {
+                  name
+                };
+
+                if (projectUuid) {
+                  project = _objectSpread2(_objectSpread2({}, project), {}, {
+                    uuid: projectUuid
+                  });
+                }
+
+                _context.next = 7;
+                return fetch(projectUuid ? editAction : action, {
+                  method: projectUuid ? "PATCH" : "POST",
+                  body: JSON.stringify(project),
                   headers: {
                     requesttoken: requestToken,
                     "content-type": "application/json"
                   }
                 });
 
-              case 5:
+              case 7:
                 response = _context.sent;
 
                 if (response && response.ok) {
-                  $$invalidate(4, show = false);
+                  $$invalidate(7, show = false);
                   document.querySelector(".app-timemanager [data-current-link]").click();
                 }
 
-                _context.next = 12;
+                _context.next = 14;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context["catch"](2);
                 console.error(_context.t0);
 
-              case 12:
-                $$invalidate(5, loading = false);
+              case 14:
+                $$invalidate(8, loading = false);
 
-              case 13:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[2, 9]]);
+        }, _callee, null, [[2, 11]]);
       }));
 
       return function save(_x) {
@@ -4525,28 +4604,33 @@
     }();
 
     var click_handler = function click_handler() {
-      return $$invalidate(4, show = !show);
+      return $$invalidate(7, show = !show);
     };
 
     var func = function func() {
-      return $$invalidate(4, show = false);
+      return $$invalidate(7, show = false);
     };
 
     $$self.$set = function ($$props) {
       if ("action" in $$props) $$invalidate(0, action = $$props.action);
+      if ("editAction" in $$props) $$invalidate(10, editAction = $$props.editAction);
       if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
       if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
       if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
+      if ("projectEditorButtonCaption" in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+      if ("projectEditorCaption" in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
+      if ("projectUuid" in $$props) $$invalidate(11, projectUuid = $$props.projectUuid);
+      if ("editData" in $$props) $$invalidate(6, editData = $$props.editData);
     };
 
     var show;
     var loading;
 
-     $$invalidate(4, show = false);
+     $$invalidate(7, show = false);
 
-     $$invalidate(5, loading = false);
+     $$invalidate(8, loading = false);
 
-    return [action, requestToken, clientName, isServer, show, loading, save, click_handler, func];
+    return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editData, show, loading, save, editAction, projectUuid, click_handler, func];
   }
 
   var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -4562,9 +4646,14 @@
       _this = _super.call(this);
       init(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
         action: 0,
+        editAction: 10,
         requestToken: 1,
         clientName: 2,
-        isServer: 3
+        isServer: 3,
+        projectEditorButtonCaption: 4,
+        projectEditorCaption: 5,
+        projectUuid: 11,
+        editData: 6
       });
       return _this;
     }

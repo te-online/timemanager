@@ -9,6 +9,7 @@ return [
 		['name' => 'page#deleteClient', 'url' => '/clients/delete', 'verb' => 'POST'],
 		['name' => 'page#projects', 'url' => '/projects', 'verb' => 'GET'],
 		['name' => 'page#addProject', 'url' => '/projects', 'verb' => 'POST'],
+		['name' => 'page#editProject', 'url' => '/projects', 'verb' => 'PATCH'],
 		['name' => 'page#deleteProject', 'url' => '/projects/delete', 'verb' => 'POST'],
 		['name' => 'page#tasks', 'url' => '/tasks', 'verb' => 'GET'],
 		['name' => 'page#addTask', 'url' => '/tasks', 'verb' => 'POST'],

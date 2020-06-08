@@ -208,7 +208,7 @@ class PageController extends Controller {
 					'name' => $name,
 					'note' => $note,
 					'commit' => $client->getCommit(),
-					'desiredCommit' => $commit
+					'desiredCommit' => $commit,
 				],
 				'clients'
 			);
@@ -257,6 +257,8 @@ class PageController extends Controller {
 			'clientEditorButtonCaption' => 'Edit client',
 			'clientEditorCaption' => 'Edit client',
 			'clientUuid' => $client_uuid,
+			'projectEditorButtonCaption' => 'Add project',
+			'projectEditorCaption' => 'New project',
 			'editData' => [
 				'name' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
 				'note' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getNote() : '',
@@ -318,6 +320,28 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function editProject($uuid, $name = 'Unnamed') {
+		$commit = UUID::v4();
+		$project = $this->projectMapper->getActiveObjectById($uuid);
+		if ($project) {
+			$this->storageHelper->insertCommit($commit);
+			$this->storageHelper->addOrUpdateObject(
+				[
+					'uuid' => $uuid,
+					'name' => $name,
+					'commit' => $project->getCommit(),
+					'desiredCommit' => $commit,
+				],
+				'projects'
+			);
+			$urlGenerator = \OC::$server->getURLGenerator();
+		}
+		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function tasks($project) {
@@ -358,9 +382,16 @@ class PageController extends Controller {
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project_uuid,
+			'editAction' => $urlGenerator->linkToRoute('timemanager.page.projects'),
 			'requestToken' => $requestToken,
 			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
 			'projectName' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			'projectEditorButtonCaption' => 'Edit project',
+			'projectEditorCaption' => 'Edit project',
+			'projectUuid' => $project_uuid,
+			'editData' => [
+				'name' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			],
 			'isServer' => true,
 		];
 
