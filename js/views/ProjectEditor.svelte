@@ -7,9 +7,9 @@
 	export let onSubmit;
 	export let projectEditorButtonCaption;
 	export let projectEditorCaption;
-	export let editData;
+	export let editProjectData;
 
-	let name = editData ? editData.name : "";
+	let name = editProjectData ? editProjectData.name : "";
 
 	const submit = () => {
 		onSubmit({ name });

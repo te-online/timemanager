@@ -6,10 +6,10 @@
 	export let onSubmit;
 	export let clientEditorButtonCaption;
 	export let clientEditorCaption;
-	export let editData;
+	export let editClientData;
 
-	let name = editData ? editData.name : "";
-	let note = editData ? editData.note : "";
+	let name = editClientData ? editClientData.name : "";
+	let note = editClientData ? editClientData.note : "";
 
 	const submit = () => {
 		onSubmit({ name, note });

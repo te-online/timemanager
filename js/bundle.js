@@ -3237,9 +3237,9 @@
     var onSubmit = $$props.onSubmit;
     var clientEditorButtonCaption = $$props.clientEditorButtonCaption;
     var clientEditorCaption = $$props.clientEditorCaption;
-    var editData = $$props.editData;
-    var name = editData ? editData.name : "";
-    var note = editData ? editData.note : "";
+    var editClientData = $$props.editClientData;
+    var name = editClientData ? editClientData.name : "";
+    var note = editClientData ? editClientData.note : "";
 
     var submit = function submit() {
       onSubmit({
@@ -3265,10 +3265,10 @@
       if ("onSubmit" in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
       if ("clientEditorButtonCaption" in $$props) $$invalidate(4, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
       if ("clientEditorCaption" in $$props) $$invalidate(5, clientEditorCaption = $$props.clientEditorCaption);
-      if ("editData" in $$props) $$invalidate(10, editData = $$props.editData);
+      if ("editClientData" in $$props) $$invalidate(10, editClientData = $$props.editClientData);
     };
 
-    return [action, requestToken, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, submit, onSubmit, editData, input0_input_handler, input_handler];
+    return [action, requestToken, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, submit, onSubmit, editClientData, input0_input_handler, input_handler];
   }
 
   var ClientEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -3290,7 +3290,7 @@
         onSubmit: 9,
         clientEditorButtonCaption: 4,
         clientEditorCaption: 5,
-        editData: 10
+        editClientData: 10
       });
       return _this;
     }
@@ -3582,7 +3582,7 @@
         ctx[6];
 
         if (dirty &
-        /*$$scope, action, requestToken, show, clientEditorButtonCaption, clientEditorCaption, editData*/
+        /*$$scope, action, requestToken, show, clientEditorButtonCaption, clientEditorCaption, editClientData*/
         4159) {
           overlay_changes.$$scope = {
             dirty,
@@ -3634,8 +3634,8 @@
         clientEditorCaption:
         /*clientEditorCaption*/
         ctx[3],
-        editData:
-        /*editData*/
+        editClientData:
+        /*editClientData*/
         ctx[4]
       }
     });
@@ -3677,9 +3677,9 @@
         /*clientEditorCaption*/
         ctx[3];
         if (dirty &
-        /*editData*/
-        16) clienteditor_changes.editData =
-        /*editData*/
+        /*editClientData*/
+        16) clienteditor_changes.editClientData =
+        /*editClientData*/
         ctx[4];
         clienteditor.$set(clienteditor_changes);
       },
@@ -3811,7 +3811,7 @@
     var clientEditorButtonCaption = $$props.clientEditorButtonCaption;
     var clientEditorCaption = $$props.clientEditorCaption;
     var clientUuid = $$props.clientUuid;
-    var editData = $$props.editData;
+    var editClientData = $$props.editClientData;
     onMount(function () {
       Helpers.hideFallbacks("ClientEditor.svelte");
     });
@@ -3899,7 +3899,7 @@
       if ("clientEditorButtonCaption" in $$props) $$invalidate(2, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
       if ("clientEditorCaption" in $$props) $$invalidate(3, clientEditorCaption = $$props.clientEditorCaption);
       if ("clientUuid" in $$props) $$invalidate(9, clientUuid = $$props.clientUuid);
-      if ("editData" in $$props) $$invalidate(4, editData = $$props.editData);
+      if ("editClientData" in $$props) $$invalidate(4, editClientData = $$props.editClientData);
     };
 
     var show;
@@ -3909,7 +3909,7 @@
 
      $$invalidate(6, loading = false);
 
-    return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editData, show, loading, save, editAction, clientUuid, click_handler, func];
+    return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editClientData, show, loading, save, editAction, clientUuid, click_handler, func];
   }
 
   var ClientEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -3930,7 +3930,7 @@
         clientEditorButtonCaption: 2,
         clientEditorCaption: 3,
         clientUuid: 9,
-        editData: 4
+        editClientData: 4
       });
       return _this;
     }
@@ -4198,8 +4198,8 @@
     var onSubmit = $$props.onSubmit;
     var projectEditorButtonCaption = $$props.projectEditorButtonCaption;
     var projectEditorCaption = $$props.projectEditorCaption;
-    var editData = $$props.editData;
-    var name = editData ? editData.name : "";
+    var editProjectData = $$props.editProjectData;
+    var name = editProjectData ? editProjectData.name : "";
 
     var submit = function submit() {
       onSubmit({
@@ -4221,10 +4221,10 @@
       if ("onSubmit" in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
       if ("projectEditorButtonCaption" in $$props) $$invalidate(5, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
       if ("projectEditorCaption" in $$props) $$invalidate(6, projectEditorCaption = $$props.projectEditorCaption);
-      if ("editData" in $$props) $$invalidate(10, editData = $$props.editData);
+      if ("editProjectData" in $$props) $$invalidate(10, editProjectData = $$props.editProjectData);
     };
 
-    return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editData, input0_input_handler];
+    return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editProjectData, input0_input_handler];
   }
 
   var ProjectEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -4247,7 +4247,7 @@
         onSubmit: 9,
         projectEditorButtonCaption: 5,
         projectEditorCaption: 6,
-        editData: 10
+        editProjectData: 10
       });
       return _this;
     }
@@ -4289,7 +4289,7 @@
         ctx[8];
 
         if (dirty &
-        /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editData*/
+        /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData*/
         16639) {
           overlay_changes.$$scope = {
             dirty,
@@ -4347,8 +4347,8 @@
         projectEditorCaption:
         /*projectEditorCaption*/
         ctx[5],
-        editData:
-        /*editData*/
+        editProjectData:
+        /*editProjectData*/
         ctx[6]
       }
     });
@@ -4400,9 +4400,9 @@
         /*projectEditorCaption*/
         ctx[5];
         if (dirty &
-        /*editData*/
-        64) projecteditor_changes.editData =
-        /*editData*/
+        /*editProjectData*/
+        64) projecteditor_changes.editProjectData =
+        /*editProjectData*/
         ctx[6];
         projecteditor.$set(projecteditor_changes);
       },
@@ -4536,7 +4536,7 @@
     var projectEditorButtonCaption = $$props.projectEditorButtonCaption;
     var projectEditorCaption = $$props.projectEditorCaption;
     var projectUuid = $$props.projectUuid;
-    var editData = $$props.editData;
+    var editProjectData = $$props.editProjectData;
     onMount(function () {
       Helpers.hideFallbacks("ProjectEditor.svelte");
     });
@@ -4620,7 +4620,7 @@
       if ("projectEditorButtonCaption" in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
       if ("projectEditorCaption" in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
       if ("projectUuid" in $$props) $$invalidate(11, projectUuid = $$props.projectUuid);
-      if ("editData" in $$props) $$invalidate(6, editData = $$props.editData);
+      if ("editProjectData" in $$props) $$invalidate(6, editProjectData = $$props.editProjectData);
     };
 
     var show;
@@ -4630,7 +4630,7 @@
 
      $$invalidate(8, loading = false);
 
-    return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editData, show, loading, save, editAction, projectUuid, click_handler, func];
+    return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, show, loading, save, editAction, projectUuid, click_handler, func];
   }
 
   var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -4653,7 +4653,7 @@
         projectEditorButtonCaption: 4,
         projectEditorCaption: 5,
         projectUuid: 11,
-        editData: 6
+        editProjectData: 6
       });
       return _this;
     }
@@ -4951,8 +4951,8 @@
     var onSubmit = $$props.onSubmit;
     var taskEditorButtonCaption = $$props.taskEditorButtonCaption;
     var taskEditorCaption = $$props.taskEditorCaption;
-    var editData = $$props.editData;
-    var name = editData ? editData.name : "";
+    var editTaskData = $$props.editTaskData;
+    var name = editTaskData ? editTaskData.name : "";
 
     var submit = function submit() {
       onSubmit({
@@ -4975,10 +4975,10 @@
       if ("onSubmit" in $$props) $$invalidate(10, onSubmit = $$props.onSubmit);
       if ("taskEditorButtonCaption" in $$props) $$invalidate(6, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
       if ("taskEditorCaption" in $$props) $$invalidate(7, taskEditorCaption = $$props.taskEditorCaption);
-      if ("editData" in $$props) $$invalidate(11, editData = $$props.editData);
+      if ("editTaskData" in $$props) $$invalidate(11, editTaskData = $$props.editTaskData);
     };
 
-    return [action, requestToken, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, submit, onSubmit, editData, input0_input_handler];
+    return [action, requestToken, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, submit, onSubmit, editTaskData, input0_input_handler];
   }
 
   var TaskEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -5002,7 +5002,7 @@
         onSubmit: 10,
         taskEditorButtonCaption: 6,
         taskEditorCaption: 7,
-        editData: 11
+        editTaskData: 11
       });
       return _this;
     }
@@ -5044,7 +5044,7 @@
         ctx[9];
 
         if (dirty &
-        /*$$scope, action, requestToken, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editData*/
+        /*$$scope, action, requestToken, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData*/
         33279) {
           overlay_changes.$$scope = {
             dirty,
@@ -5105,8 +5105,8 @@
         taskEditorCaption:
         /*taskEditorCaption*/
         ctx[6],
-        editData:
-        /*editData*/
+        editTaskData:
+        /*editTaskData*/
         ctx[7]
       }
     });
@@ -5163,9 +5163,9 @@
         /*taskEditorCaption*/
         ctx[6];
         if (dirty &
-        /*editData*/
-        128) taskeditor_changes.editData =
-        /*editData*/
+        /*editTaskData*/
+        128) taskeditor_changes.editTaskData =
+        /*editTaskData*/
         ctx[7];
         taskeditor.$set(taskeditor_changes);
       },
@@ -5300,7 +5300,7 @@
     var taskEditorButtonCaption = $$props.taskEditorButtonCaption;
     var taskEditorCaption = $$props.taskEditorCaption;
     var taskUuid = $$props.taskUuid;
-    var editData = $$props.editData;
+    var editTaskData = $$props.editTaskData;
     onMount(function () {
       Helpers.hideFallbacks("TaskEditor.svelte");
     });
@@ -5385,7 +5385,7 @@
       if ("taskEditorButtonCaption" in $$props) $$invalidate(5, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
       if ("taskEditorCaption" in $$props) $$invalidate(6, taskEditorCaption = $$props.taskEditorCaption);
       if ("taskUuid" in $$props) $$invalidate(12, taskUuid = $$props.taskUuid);
-      if ("editData" in $$props) $$invalidate(7, editData = $$props.editData);
+      if ("editTaskData" in $$props) $$invalidate(7, editTaskData = $$props.editTaskData);
     };
 
     var show;
@@ -5395,7 +5395,7 @@
 
      $$invalidate(9, loading = false);
 
-    return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editData, show, loading, save, editAction, taskUuid, click_handler, func];
+    return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, show, loading, save, editAction, taskUuid, click_handler, func];
   }
 
   var TaskEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -5419,7 +5419,7 @@
         taskEditorButtonCaption: 5,
         taskEditorCaption: 6,
         taskUuid: 12,
-        editData: 7
+        editTaskData: 7
       });
       return _this;
     }
@@ -6262,6 +6262,347 @@
     }
 
     return TimeEditorDialog;
+  }(SvelteComponent);
+
+  function create_if_block$8(ctx) {
+    var current;
+    var overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot$4]
+        },
+        $$scope: {
+          ctx
+        }
+      }
+    });
+    return {
+      c() {
+        create_component(overlay.$$.fragment);
+      },
+
+      m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        var overlay_changes = {};
+
+        if (dirty &
+        /*$$scope, deleteItemName*/
+        2056) {
+          overlay_changes.$$scope = {
+            dirty,
+            ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+
+    };
+  } // (37:1) <Overlay>
+
+
+  function create_default_slot$4(ctx) {
+    var div1;
+    var t0;
+    var t1;
+    var t2;
+    var div0;
+    var button0;
+    var t4;
+    var button1;
+    var mounted;
+    var dispose;
+    return {
+      c() {
+        div1 = element("div");
+        t0 = text("Do you want to delete ");
+        t1 = text(
+        /*deleteItemName*/
+        ctx[3]);
+        t2 = text("?\n\t\t\t");
+        div0 = element("div");
+        button0 = element("button");
+        button0.textContent = "Delete";
+        t4 = space();
+        button1 = element("button");
+        button1.textContent = "Cancel";
+        attr(button0, "class", "button primary");
+        attr(button1, "class", "button");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div1, "class", "inner tm_new-item");
+      },
+
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, t0);
+        append(div1, t1);
+        append(div1, t2);
+        append(div1, div0);
+        append(div0, button0);
+        append(div0, t4);
+        append(div0, button1);
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*doDelete*/
+          ctx[7])), listen(button1, "click", prevent_default(
+          /*cancelDelete*/
+          ctx[8]))];
+          mounted = true;
+        }
+      },
+
+      p(ctx, dirty) {
+        if (dirty &
+        /*deleteItemName*/
+        8) set_data(t1,
+        /*deleteItemName*/
+        ctx[3]);
+      },
+
+      d(detaching) {
+        if (detaching) detach(div1);
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function create_fragment$a(ctx) {
+    var t0;
+    var form_1;
+    var input0;
+    var t1;
+    var input1;
+    var t2;
+    var button;
+    var t3;
+    var current;
+    var if_block =
+    /*confirmation*/
+    ctx[6] && create_if_block$8(ctx);
+    return {
+      c() {
+        if (if_block) if_block.c();
+        t0 = space();
+        form_1 = element("form");
+        input0 = element("input");
+        t1 = space();
+        input1 = element("input");
+        t2 = space();
+        button = element("button");
+        t3 = text(
+        /*deleteButtonCaption*/
+        ctx[2]);
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "uuid");
+        input0.value =
+        /*deleteUuid*/
+        ctx[1];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "requesttoken");
+        input1.value =
+        /*requestToken*/
+        ctx[4];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "delete";
+        attr(button, "class", "btn");
+        attr(form_1, "action",
+        /*deleteAction*/
+        ctx[0]);
+        attr(form_1, "method", "post");
+      },
+
+      m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, form_1, anchor);
+        append(form_1, input0);
+        append(form_1, t1);
+        append(form_1, input1);
+        append(form_1, t2);
+        append(form_1, button);
+        append(button, t3);
+        /*form_1_binding*/
+
+        ctx[10](form_1);
+        current = true;
+      },
+
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*confirmation*/
+        ctx[6]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*confirmation*/
+            64) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$8(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+
+        if (!current || dirty &
+        /*deleteUuid*/
+        2) {
+          input0.value =
+          /*deleteUuid*/
+          ctx[1];
+        }
+
+        if (!current || dirty &
+        /*requestToken*/
+        16) {
+          input1.value =
+          /*requestToken*/
+          ctx[4];
+        }
+
+        if (!current || dirty &
+        /*deleteButtonCaption*/
+        4) set_data(t3,
+        /*deleteButtonCaption*/
+        ctx[2]);
+
+        if (!current || dirty &
+        /*deleteAction*/
+        1) {
+          attr(form_1, "action",
+          /*deleteAction*/
+          ctx[0]);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(form_1);
+        /*form_1_binding*/
+
+        ctx[10](null);
+      }
+
+    };
+  }
+
+  function instance$a($$self, $$props, $$invalidate) {
+    var deleteAction = $$props.deleteAction;
+    var deleteUuid = $$props.deleteUuid;
+    var deleteButtonCaption = $$props.deleteButtonCaption;
+    var deleteItemName = $$props.deleteItemName;
+    var requestToken = $$props.requestToken;
+    var form;
+    onMount(function () {
+      Helpers.hideFallbacks("DeleteButton.svelte");
+      form.addEventListener("submit", submit);
+    });
+
+    var submit = function submit(e) {
+      e.preventDefault();
+      $$invalidate(6, confirmation = true);
+    };
+
+    var doDelete = function doDelete() {
+      $$invalidate(6, confirmation = false);
+      form.removeEventListener("submit", submit);
+      form.submit();
+    };
+
+    var cancelDelete = function cancelDelete() {
+      $$invalidate(6, confirmation = false);
+    };
+
+    function form_1_binding($$value) {
+      binding_callbacks[$$value ? "unshift" : "push"](function () {
+        $$invalidate(5, form = $$value);
+      });
+    }
+
+    $$self.$set = function ($$props) {
+      if ("deleteAction" in $$props) $$invalidate(0, deleteAction = $$props.deleteAction);
+      if ("deleteUuid" in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
+      if ("deleteButtonCaption" in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
+      if ("deleteItemName" in $$props) $$invalidate(3, deleteItemName = $$props.deleteItemName);
+      if ("requestToken" in $$props) $$invalidate(4, requestToken = $$props.requestToken);
+    };
+
+    var confirmation;
+
+     $$invalidate(6, confirmation = false);
+
+    return [deleteAction, deleteUuid, deleteButtonCaption, deleteItemName, requestToken, form, confirmation, doDelete, cancelDelete, submit, form_1_binding];
+  }
+
+  var DeleteButton = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(DeleteButton, _SvelteComponent);
+
+    var _super = _createSuper(DeleteButton);
+
+    function DeleteButton(options) {
+      var _this;
+
+      _classCallCheck(this, DeleteButton);
+
+      _this = _super.call(this);
+      init(_assertThisInitialized(_this), options, instance$a, create_fragment$a, safe_not_equal, {
+        deleteAction: 0,
+        deleteUuid: 1,
+        deleteButtonCaption: 2,
+        deleteItemName: 3,
+        requestToken: 4
+      });
+      return _this;
+    }
+
+    return DeleteButton;
   }(SvelteComponent);
 
   /* global HTMLCollection: true */
@@ -7341,6 +7682,12 @@
     }));
     components.push(new TimeEditorDialog({
       target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']")),
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: window.OC.requestToken
+      })
+    }));
+    components.push(new DeleteButton({
+      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='DeleteButton.svelte']")),
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: window.OC.requestToken
       })

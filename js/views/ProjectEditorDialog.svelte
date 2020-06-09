@@ -7,7 +7,7 @@
 	export let projectEditorButtonCaption;
 	export let projectEditorCaption;
 	export let projectUuid;
-	export let editData;
+	export let editProjectData;
 
 	import Overlay from "./Overlay.svelte";
 	import ProjectEditor from "./ProjectEditor.svelte";
@@ -61,6 +61,6 @@
 			{isServer}
 			{projectEditorButtonCaption}
 			{projectEditorCaption}
-			{editData} />
+			{editProjectData} />
 	</Overlay>
 {/if}

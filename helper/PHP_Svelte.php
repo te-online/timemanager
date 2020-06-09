@@ -10,6 +10,10 @@ class PHP_Svelte {
 			if ($template) {
 				// Strip script and style tags
 				$rendered_template = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', '', $template);
+				// Remove binds
+				$rendered_template = preg_replace('/bind\:(.*?)={(.*?)}/', '', $rendered_template);
+				// Remove if statements
+				$rendered_template = preg_replace('/{\#if((?s).*){\/if}/', '', $rendered_template);
 				// Replace all variables in tag attributes and wrap in quotes
 				$rendered_template = PHP_Svelte::replace_in_template('/={(.*?)}/', $props, $rendered_template, true);
 				// Replace all other variables

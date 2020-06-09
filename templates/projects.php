@@ -34,12 +34,11 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<?php } ?>
 					<?php if($_['client']) { ?>
 						<span data-svelte="ClientEditorDialog.svelte"></span>
+						<span data-svelte="DeleteButton.svelte"></span>
+						<span data-svelte-hide="DeleteButton.svelte">
+							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
+						</span>
 					<?php } ?>
-					<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.clients')); ?>/delete" method="post">
-						<input type="hidden" name="uuid" value="<?php p($_['client']->getUuid()); ?>" />
-						<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-						<button type="submit" name="action" value="delete" class="btn">Delete client</button>
-					</form>
 				</div>
 				<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">
 					<div id="new-item" class="tm_new-item">

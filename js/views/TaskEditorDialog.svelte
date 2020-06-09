@@ -8,7 +8,7 @@
 	export let taskEditorButtonCaption;
 	export let taskEditorCaption;
 	export let taskUuid;
-	export let editData;
+	export let editTaskData;
 
 	import Overlay from "./Overlay.svelte";
 	import TaskEditor from "./TaskEditor.svelte";
@@ -63,6 +63,6 @@
 			{isServer}
 			{taskEditorButtonCaption}
 			{taskEditorCaption}
-			{editData} />
+			{editTaskData} />
 	</Overlay>
 {/if}

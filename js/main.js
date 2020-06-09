@@ -3,6 +3,7 @@ import ClientEditorDialog from "./views/ClientEditorDialog.svelte";
 import ProjectEditorDialog from "./views/ProjectEditorDialog.svelte";
 import TaskEditorDialog from "./views/TaskEditorDialog.svelte";
 import TimeEditorDialog from "./views/TimeEditorDialog.svelte";
+import DeleteButton from "./views/DeleteButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -72,6 +73,18 @@ const init = () => {
 		new TimeEditorDialog({
 			target: Helpers.replaceNode(
 				document.querySelector("#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']")
+			),
+			props: {
+				...store,
+				requestToken: window.OC.requestToken,
+			},
+		})
+	);
+
+	components.push(
+		new DeleteButton({
+			target: Helpers.replaceNode(
+				document.querySelector("#content.app-timemanager [data-svelte='DeleteButton.svelte']")
 			),
 			props: {
 				...store,

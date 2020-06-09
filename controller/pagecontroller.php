@@ -248,21 +248,26 @@ class PageController extends Controller {
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : '';
+		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client_uuid,
 			'editAction' => $urlGenerator->linkToRoute('timemanager.page.clients'),
 			'requestToken' => $requestToken,
-			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+			'clientName' => $client_name,
 			'clientEditorButtonCaption' => 'Edit client',
 			'clientEditorCaption' => 'Edit client',
 			'clientUuid' => $client_uuid,
 			'projectEditorButtonCaption' => 'Add project',
 			'projectEditorCaption' => 'New project',
-			'editData' => [
-				'name' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
+			'editClientData' => [
+				'name' => $client_name,
 				'note' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getNote() : '',
 			],
+			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.clients') . '/delete',
+			'deleteUuid' => $client_uuid,
+			'deleteButtonCaption' => 'Delete client',
+			'deleteItemName' => 'the client ' . $client_name . ' and all associated projects, tasks and time entries',
 			'isServer' => true,
 		];
 
@@ -274,6 +279,7 @@ class PageController extends Controller {
 			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
 				'ProjectEditor.svelte' => PHP_Svelte::render_template('ProjectEditor.svelte', $form_props),
+				'DeleteButton.svelte' => PHP_Svelte::render_template('DeleteButton.svelte', $form_props),
 			],
 			'page' => 'projects',
 		]);
@@ -305,14 +311,17 @@ class PageController extends Controller {
 		$this->storageHelper->insertCommit($commit);
 		// Get client
 		$project = $this->projectMapper->getObjectById($uuid);
-		// Delete object
-		$project->setChanged(date('Y-m-d H:i:s'));
-		$project->setCommit($commit);
-		$project->setStatus('deleted');
-		$this->projectMapper->update($project);
+		if ($project) {
+			$client = $client ? $client : $project->getClientUuid();
+			// Delete object
+			$project->setChanged(date('Y-m-d H:i:s'));
+			$project->setCommit($commit);
+			$project->setStatus('deleted');
+			$this->projectMapper->update($project);
 
-		// Delete children
-		$this->projectMapper->deleteChildrenForEntityById($uuid, $commit);
+			// Delete children
+			$this->projectMapper->deleteChildrenForEntityById($uuid, $commit);
+		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.projects') . '?client=' . $client);
@@ -379,20 +388,25 @@ class PageController extends Controller {
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
 		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : '';
+		$project_name = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project_uuid,
 			'editAction' => $urlGenerator->linkToRoute('timemanager.page.projects'),
 			'requestToken' => $requestToken,
 			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
-			'projectName' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			'projectName' => $project_name,
 			'projectEditorButtonCaption' => 'Edit project',
 			'projectEditorCaption' => 'Edit project',
 			'projectUuid' => $project_uuid,
 			'taskEditorButtonCaption' => 'Add task',
 			'taskEditorCaption' => 'New task',
-			'editData' => [
-				'name' => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '',
+			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.projects') . '/delete',
+			'deleteUuid' => $project_uuid,
+			'deleteButtonCaption' => 'Delete project',
+			'deleteItemName' => 'the project ' . $project_name . ' and all associated tasks and time entries',
+			'editProjectData' => [
+				'name' => $project_name,
 			],
 			'isServer' => true,
 		];
@@ -407,6 +421,7 @@ class PageController extends Controller {
 			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
 				'TaskEditor.svelte' => PHP_Svelte::render_template('TaskEditor.svelte', $form_props),
+				'DeleteButton.svelte' => PHP_Svelte::render_template('DeleteButton.svelte', $form_props),
 			],
 			'page' => 'tasks',
 		]);
@@ -436,16 +451,19 @@ class PageController extends Controller {
 	function deleteTask($uuid, $project) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
-		// Get client
+		// Get task
 		$task = $this->taskMapper->getObjectById($uuid);
-		// Delete object
-		$task->setChanged(date('Y-m-d H:i:s'));
-		$task->setCommit($commit);
-		$task->setStatus('deleted');
-		$this->taskMapper->update($task);
+		if ($task) {
+			$project = $project ? $project : $task->getProjectUuid();
+			// Delete object
+			$task->setChanged(date('Y-m-d H:i:s'));
+			$task->setCommit($commit);
+			$task->setStatus('deleted');
+			$this->taskMapper->update($task);
 
-		// Delete children
-		$this->taskMapper->deleteChildrenForEntityById($uuid, $commit);
+			// Delete children
+			$this->taskMapper->deleteChildrenForEntityById($uuid, $commit);
+		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute('timemanager.page.tasks') . '?project=' . $project);
@@ -510,6 +528,7 @@ class PageController extends Controller {
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
 
 		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : '';
+		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : '';
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
@@ -523,9 +542,13 @@ class PageController extends Controller {
 			'taskEditorButtonCaption' => 'Edit task',
 			'taskEditorCaption' => 'Edit task',
 			'taskUuid' => $task_uuid,
-			'editData' => [
-				'name' => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : '',
+			'editTaskData' => [
+				'name' => $task_name,
 			],
+			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '/delete',
+			'deleteUuid' => $task_uuid,
+			'deleteButtonCaption' => 'Delete task',
+			'deleteItemName' => 'the task ' . $task_name . ' and all associated time entries',
 			'isServer' => true,
 		];
 
@@ -541,6 +564,7 @@ class PageController extends Controller {
 			'store' => json_encode(array_merge($form_props, ['isServer' => false])),
 			'templates' => [
 				'TimeEditor.svelte' => PHP_Svelte::render_template('TimeEditor.svelte', $form_props),
+				'DeleteButton.svelte' => PHP_Svelte::render_template('DeleteButton.svelte', $form_props),
 			],
 			'page' => 'times',
 		]);

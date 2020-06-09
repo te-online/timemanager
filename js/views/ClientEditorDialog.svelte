@@ -5,7 +5,7 @@
 	export let clientEditorButtonCaption;
 	export let clientEditorCaption;
 	export let clientUuid;
-	export let editData;
+	export let editClientData;
 
 	import Overlay from "./Overlay.svelte";
 	import ClientEditor from "./ClientEditor.svelte";
@@ -61,6 +61,6 @@
 			onSubmit={save}
 			{clientEditorButtonCaption}
 			{clientEditorCaption}
-			{editData} />
+			{editClientData} />
 	</Overlay>
 {/if}

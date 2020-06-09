@@ -8,9 +8,9 @@
 	export let onSubmit;
 	export let taskEditorButtonCaption;
 	export let taskEditorCaption;
-	export let editData;
+	export let editTaskData;
 
-	let name = editData ? editData.name : "";
+	let name = editTaskData ? editTaskData.name : "";
 
 	const submit = () => {
 		onSubmit({ name });
