@@ -549,6 +549,7 @@ class PageController extends Controller {
 			'deleteUuid' => $task_uuid,
 			'deleteButtonCaption' => 'Delete task',
 			'deleteItemName' => 'the task ' . $task_name . ' and all associated time entries',
+			'deleteTimeEntryAction' => $urlGenerator->linkToRoute('timemanager.page.times') . '/delete',
 			'isServer' => true,
 		];
 

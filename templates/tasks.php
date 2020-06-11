@@ -64,8 +64,8 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<p><strong>Select a project first to show the tasks for this project.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['tasks']) > 0) {
-						foreach($_['tasks'] as $index => $task) { ?>
-							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
+						foreach($_['tasks'] as $task) { ?>
+							<div class="tm_item-row">
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
 									<h3><?php p($task->getName()); ?></h3>
 									<div class="tm_item-excerpt">

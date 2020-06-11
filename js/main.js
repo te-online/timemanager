@@ -4,6 +4,7 @@ import ProjectEditorDialog from "./views/ProjectEditorDialog.svelte";
 import TaskEditorDialog from "./views/TaskEditorDialog.svelte";
 import TimeEditorDialog from "./views/TimeEditorDialog.svelte";
 import DeleteButton from "./views/DeleteButton.svelte";
+import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -92,6 +93,24 @@ const init = () => {
 			},
 		})
 	);
+
+	const deleteTimeEntryButtons = document.querySelectorAll(
+		"#content.app-timemanager [data-svelte='DeleteTimeEntryButton.svelte']"
+	);
+	if (deleteTimeEntryButtons && deleteTimeEntryButtons.length > 0) {
+		deleteTimeEntryButtons.forEach((button) => {
+			components.push(
+				new DeleteTimeEntryButton({
+					target: Helpers.replaceNode(button),
+					props: {
+						...store,
+						deleteTimeEntryUuid: button.getAttribute("data-uuid"),
+						requestToken: window.OC.requestToken,
+					},
+				})
+			);
+		});
+	}
 };
 
 init();

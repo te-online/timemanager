@@ -3,7 +3,7 @@
 }
 
 #new-item input,
-#new-item textarea{
+#new-item textarea {
 	display: block;
 	width: 300px;
 }
@@ -26,19 +26,19 @@
 	a {
 		display: block;
 	}
-}
 
-.tm_item-row.odd {
-	/* background: lightgrey; */
-	border-top: 1px solid lightgrey;
-	border-bottom: 1px solid lightgrey;
+	&:nth-child(odd) {
+		/* background: lightgrey; */
+		border-top: 1px solid lightgrey;
+		border-bottom: 1px solid lightgrey;
+	}
 }
 
 .tm_item-excerpt {
 	display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-  flex-flow: row wrap;
+	align-items: center;
+	padding-bottom: 5px;
+	flex-flow: row wrap;
 }
 
 .tm_item-note {
@@ -63,14 +63,14 @@
 }
 
 .tm_object-details a {
-  border-bottom: 1px solid #bbb;
-  padding-bottom: 4px;
-  transition: border-color .3s ease;
+	border-bottom: 1px solid #bbb;
+	padding-bottom: 4px;
+	transition: border-color 0.3s ease;
 }
 
 .tm_object-details a:hover,
 .tm_object-details a:focus {
-    border-color: #666;
+	border-color: #666;
 }
 
 .tm_object-details h2 {
@@ -99,11 +99,11 @@
 
 .tm_label,
 .tm_new-item label {
-  text-transform: uppercase;
-  letter-spacing: .09em;
-  color: #444;
-  display: block;
-  font-size: 9pt;
+	text-transform: uppercase;
+	letter-spacing: 0.09em;
+	color: #444;
+	display: block;
+	font-size: 9pt;
 }
 
 .tm_object-details-item {
@@ -127,13 +127,13 @@
 
 .tm_icon-checkmark {
 	margin-top: -5px;
-  background-color: transparent;
-  border: 0;
-  padding-bottom: 4px;
+	background-color: transparent;
+	border: 0;
+	padding-bottom: 4px;
 }
 
 .tm_icon-checkmark-unpaid {
-	opacity: .2;
+	opacity: 0.2;
 }
 
 .tm_inline-hover-form {
@@ -143,9 +143,9 @@
 
 .tm_inline-hover-form .btn {
 	padding: 3px 6px;
-  min-height: initial;
-  height: 28px;
-  margin-left: 10px;
+	min-height: initial;
+	height: 28px;
+	margin-left: 10px;
 }
 
 .tm_item-row:hover .tm_inline-hover-form {
@@ -166,7 +166,7 @@
 }
 
 body.loading #content.app-timemanager:before {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 50px;
 	left: -150px;
@@ -174,12 +174,12 @@ body.loading #content.app-timemanager:before {
 	width: 150px;
 	height: 4px;
 	background: var(--color-primary);
-	animation: loading 5s .3s ease infinite;
+	animation: loading 5s 0.3s ease infinite;
 	z-index: 9999;
 }
 
 body.loading-error #content.app-timemanager:before {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 50px;
 	left: 0;
@@ -234,8 +234,33 @@ label {
 	.new {
 		display: inline-block;
 	}
+
+	// Waits 3 seconds for the JS to kick in, otherwise shows
+	// the SSR fallback.
+	[data-svelte-hide] {
+		@supports (animation: fallback 0.1s 3s forwards) {
+			opacity: 0;
+			overflow: hidden;
+			height: 0;
+			width: 0;
+			animation: fallback 0.1s 3s forwards;
+		}
+	}
 }
 
 .oc-dialog-buttonrow.reverse {
 	flex-flow: row-reverse;
+}
+
+@keyframes fallback {
+	0% {
+		height: 0;
+		width: 0;
+		opacity: 0;
+	}
+	100% {
+		height: 100%;
+		width: 100%;
+		opacity: 1;
+	}
 }

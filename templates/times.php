@@ -68,8 +68,11 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<p><strong>Select a task first to show the times for this task.</strong></p>
 				<?php } else { ?>
 					<?php if(count($_['times']) > 0) {
-						foreach($_['times'] as $index => $time) { ?>
-							<div class="tm_item-row<?php if($index %2 !== 0) { p(' odd'); } ?>">
+						foreach($_['times'] as $time) { ?>
+							<div
+								class="tm_item-row"
+								data-remove-on-delete="<?php p($time->getUuid()); ?>"
+							>
 								<h3><?php p($time->getDurationInHours()); ?> hrs.
 									<?php
 										$paymentStatus = 'unpaid';
@@ -92,7 +95,16 @@ $urlGenerator = \OC::$server->getURLGenerator();
 									</div>
 									<div class="tm_item-date">
 										<?php p($time->getStartFormatted()); ?>
-										<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/delete" method="post" class="tm_inline-hover-form">
+										<span
+											data-svelte="DeleteTimeEntryButton.svelte"
+											data-uuid="<?php p($time->getUuid()); ?>">
+										</span>
+										<form
+											action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/delete"
+											method="post"
+											class="tm_inline-hover-form"
+											data-svelte-hide="DeleteTimeEntryButton.svelte@<?php p($time->getUuid()); ?>"
+										>
 											<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
 											<input type="hidden" name="task" value="<?php p($_['task']->getUuid()); ?>" />
 											<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
