@@ -11,7 +11,8 @@ style('timemanager', 'timemanager');
 		<div class="section">
 			<h2>Quickly add time entry</h2>
 			<section class="section">
-				<p>Coming soon</p>
+				<span data-svelte="QuickAdd.svelte"></span>
+				<span data-store="<?php p($_['store']); ?>"></span>
 			</section>
 
 			<h2>Statistics</h2>

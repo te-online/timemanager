@@ -5,6 +5,7 @@ import TaskEditorDialog from "./views/TaskEditorDialog.svelte";
 import TimeEditorDialog from "./views/TimeEditorDialog.svelte";
 import DeleteButton from "./views/DeleteButton.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
+import QuickAdd from "./views/QuickAdd.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -132,6 +133,16 @@ const init = () => {
 			);
 		});
 	}
+
+	components.push(
+		new QuickAdd({
+			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='QuickAdd.svelte']")),
+			props: {
+				...store,
+				requestToken: window.OC.requestToken,
+			},
+		})
+	);
 };
 
 init();

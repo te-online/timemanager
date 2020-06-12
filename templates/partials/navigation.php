@@ -7,6 +7,7 @@ $urlGenerator = \OC::$server->getURLGenerator(); ?>
 			<a
 				class="timemanager-pjax-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>"
+				<?php echo $_['page'] === 'index' ? ' data-current-link' : ''; ?>
 			>
 				<img alt="" src="http://localhost:8888/nextcloud-server/core/img/categories/monitoring.svg" /><span>Dashboard</span>
 			</a>

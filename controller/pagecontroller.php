@@ -80,8 +80,15 @@ class PageController extends Controller {
 	function index() {
 		// Find the latest time entries
 		$times = $this->timeMapper->getActiveObjects('start');
+		$all_clients = $this->clientMapper->findActiveForCurrentUser('name');
+		$all_projects = $this->projectMapper->findActiveForCurrentUser('name');
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser('name');
 		$entries = [];
 		$tasks = [];
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+
 		if ($times && is_array($times) && count($times) > 0) {
 			foreach ($times as $time) {
 				// Don't add two times of the same task
@@ -109,6 +116,28 @@ class PageController extends Controller {
 				'Statistics.svelte' => PHP_Svelte::render_template('Statistics.svelte', []),
 			],
 			'latest_entries' => $entries,
+			'store' => json_encode([
+				'clients' => array_map(function ($oneClient) {
+					$oneClient = $oneClient->toArray();
+					return ['value' => $oneClient['uuid'], 'label' => $oneClient['name']];
+				}, $all_clients),
+				'projects' => array_map(function ($oneProject) {
+					$oneProject = $oneProject->toArray();
+					return [
+						'value' => $oneProject['uuid'],
+						'label' => $oneProject['name'],
+						'clientUuid' => $oneProject['client_uuid'],
+					];
+				}, $all_projects),
+				'tasks' => array_map(function ($oneTask) {
+					$oneTask = $oneTask->toArray();
+					return ['value' => $oneTask['uuid'], 'label' => $oneTask['name'], 'projectUuid' => $oneTask['project_uuid']];
+				}, $all_tasks),
+				'initialDate' => date('Y-m-d'),
+				'action' => $urlGenerator->linkToRoute('timemanager.page.times'),
+				'requestToken' => $requestToken,
+				'isServer' => true,
+			]),
 		]);
 	}
 

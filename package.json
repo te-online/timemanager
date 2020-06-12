@@ -44,6 +44,7 @@
     "svelte": "^3.23.0"
   },
   "dependencies": {
-    "pjax": "^0.2.8"
+    "pjax": "^0.2.8",
+    "svelte-select": "^3.8.1"
   }
 }

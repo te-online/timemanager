@@ -246,6 +246,60 @@ label {
 			animation: fallback 0.1s 3s forwards;
 		}
 	}
+
+	.quick-add {
+		display: grid;
+		margin-left: -30px;
+		width: calc(100% + 60px);
+		grid-template-columns: 1fr 1fr 1fr;
+
+		@media screen and (max-width: 1024px) {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@media screen and (max-width: 568px) {
+			grid-template-columns: 1fr;
+		}
+
+		> * {
+			margin-right: 12px;
+		}
+
+		.parents {
+			margin-right: 12px;
+			width: 100%;
+		}
+
+		label {
+			font-size: 12px;
+			&.error {
+				.selectContainer {
+					border-color: red;
+				}
+			}
+		}
+
+		.duration {
+			width: 80px;
+		}
+
+		.date {
+			width: 140px;
+		}
+
+		.note {
+			width: 100%;
+			min-width: 25vw;
+		}
+
+		input {
+			display: block;
+		}
+
+		button {
+			margin-top: 12px;
+		}
+	}
 }
 
 .oc-dialog-buttonrow.reverse {
