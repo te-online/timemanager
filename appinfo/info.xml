@@ -2,14 +2,25 @@
 <info>
 	<id>timemanager</id>
 	<name>TimeManager</name>
-	<description>Example app
+	<summary>An app to track how you spend your time.</summary>
+	<description><![CDATA[Time tracking in Nextcloud!
 
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-	</description>
-	<licence>WTFPL</licence>
+* 📁 **organize time entries** based on tasks, projects and clients
+* ⏱ **quickly record** a time entry for your latest tasks
+* ✅ **check or uncheck** a time entry (e.g. to save whether you've billed it)
+* 📈 make use of simple, but useful **statistics**.]]></description>
+	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.0.10</version>
+	<version>0.1.0</version>
+	<category>tools</category>
+	<documentation>
+		<user>https://github.com/te-online/nextcloud--timemanager-app/blob/master/README.md</user>
+		<admin>https://github.com/te-online/nextcloud--timemanager-app/blob/master/README.md</admin>
+	</documentation>
+	<website>https://github.com/te-online/nextcloud--timemanager-app</website>
+	<repository type="git">https://github.com/te-online/nextcloud--timemanager-app.git</repository>
+	<bugs>https://github.com/te-online/nextcloud--timemanager-app/issues</bugs>
 	<dependencies>
-		<owncloud min-version="9.0" />
+		<nextcloud min-version="13" />
 	</dependencies>
 </info>
