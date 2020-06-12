@@ -96,8 +96,19 @@ $urlGenerator = \OC::$server->getURLGenerator();
 									<div class="tm_item-date">
 										<?php p($time->getStartFormatted()); ?>
 										<span
+											data-svelte="EditTimeEntryButton.svelte"
+											data-uuid="<?php p($time->getUuid()); ?>"
+											data-edit-data="<?php p(json_encode([
+												"duration" => $time->getDurationInHours(),
+												"date" => $time->getStartFormatted('Y-m-d'),
+												"note" => $time->getNote()
+											])); ?>"
+										>
+										</span>
+										<span
 											data-svelte="DeleteTimeEntryButton.svelte"
-											data-uuid="<?php p($time->getUuid()); ?>">
+											data-uuid="<?php p($time->getUuid()); ?>"
+										>
 										</span>
 										<form
 											action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/delete"

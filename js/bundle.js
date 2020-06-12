@@ -5470,6 +5470,7 @@
 	function create_fragment$8(ctx) {
 	  var div1;
 	  var h3;
+	  var t0;
 	  var t1;
 	  var form;
 	  var label0;
@@ -5523,6 +5524,7 @@
 	  var t27;
 	  var div0;
 	  var button;
+	  var t28;
 	  var t29;
 	  var mounted;
 	  var dispose;
@@ -5533,7 +5535,9 @@
 	    c() {
 	      div1 = element("div");
 	      h3 = element("h3");
-	      h3.textContent = "New time entry";
+	      t0 = text(
+	      /*timeEditorCaption*/
+	      ctx[7]);
 	      t1 = space();
 	      form = element("form");
 	      label0 = element("label");
@@ -5593,7 +5597,9 @@
 	      t27 = space();
 	      div0 = element("div");
 	      button = element("button");
-	      button.textContent = "Add time entry";
+	      t28 = text(
+	      /*timeEditorButtonCaption*/
+	      ctx[8]);
 	      t29 = space();
 	      if (if_block) if_block.c();
 	      input0.autofocus = true;
@@ -5614,7 +5620,7 @@
 	      attr(textarea, "placeholder", "A long text ...");
 	      textarea.value =
 	      /*note*/
-	      ctx[9];
+	      ctx[11];
 	      attr(label3, "class", "space-top");
 	      attr(label4, "class", "space-top");
 	      attr(label5, "class", "space-top");
@@ -5636,6 +5642,7 @@
 	    m(target, anchor) {
 	      insert(target, div1, anchor);
 	      append(div1, h3);
+	      append(h3, t0);
 	      append(div1, t1);
 	      append(div1, form);
 	      append(form, label0);
@@ -5645,7 +5652,7 @@
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*duration*/
-	      ctx[7]);
+	      ctx[9]);
 	      append(form, t4);
 	      append(form, br1);
 	      append(form, t5);
@@ -5656,7 +5663,7 @@
 	      append(label1, input1);
 	      set_input_value(input1,
 	      /*date*/
-	      ctx[8]);
+	      ctx[10]);
 	      append(form, t8);
 	      append(form, br3);
 	      append(form, t9);
@@ -5695,6 +5702,7 @@
 	      append(form, t27);
 	      append(form, div0);
 	      append(div0, button);
+	      append(button, t28);
 	      append(div0, t29);
 	      if (if_block) if_block.m(div0, null);
 	      input0.focus();
@@ -5702,13 +5710,13 @@
 	      if (!mounted) {
 	        dispose = [listen(input0, "input",
 	        /*input0_input_handler*/
-	        ctx[13]), listen(input1, "input",
+	        ctx[16]), listen(input1, "input",
 	        /*input1_input_handler*/
-	        ctx[14]), listen(textarea, "input",
+	        ctx[17]), listen(textarea, "input",
 	        /*input_handler*/
-	        ctx[15]), listen(form, "submit", prevent_default(
+	        ctx[18]), listen(form, "submit", prevent_default(
 	        /*submit*/
-	        ctx[10]))];
+	        ctx[12]))];
 	        mounted = true;
 	      }
 	    },
@@ -5718,29 +5726,35 @@
 	          dirty = _ref2[0];
 
 	      if (dirty &
+	      /*timeEditorCaption*/
+	      128) set_data(t0,
+	      /*timeEditorCaption*/
+	      ctx[7]);
+
+	      if (dirty &
 	      /*duration*/
-	      128 && to_number(input0.value) !==
+	      512 && to_number(input0.value) !==
 	      /*duration*/
-	      ctx[7]) {
+	      ctx[9]) {
 	        set_input_value(input0,
 	        /*duration*/
-	        ctx[7]);
+	        ctx[9]);
 	      }
 
 	      if (dirty &
 	      /*date*/
-	      256) {
+	      1024) {
 	        set_input_value(input1,
 	        /*date*/
-	        ctx[8]);
+	        ctx[10]);
 	      }
 
 	      if (dirty &
 	      /*note*/
-	      512) {
+	      2048) {
 	        textarea.value =
 	        /*note*/
-	        ctx[9];
+	        ctx[11];
 	      }
 
 	      if (dirty &
@@ -5766,6 +5780,12 @@
 	        /*requestToken*/
 	        ctx[1];
 	      }
+
+	      if (dirty &
+	      /*timeEditorButtonCaption*/
+	      256) set_data(t28,
+	      /*timeEditorButtonCaption*/
+	      ctx[8]);
 
 	      if (!
 	      /*isServer*/
@@ -5814,9 +5834,13 @@
 	  var isServer = $$props.isServer;
 	  var onCancel = $$props.onCancel;
 	  var onSubmit = $$props.onSubmit;
-	  var duration;
-	  var date = initialDate;
-	  var note = "";
+	  var _$$props$editTimeEntr = $$props.editTimeEntryData,
+	      editTimeEntryData = _$$props$editTimeEntr === void 0 ? {} : _$$props$editTimeEntr;
+	  var timeEditorCaption = $$props.timeEditorCaption;
+	  var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
+	  var duration = editTimeEntryData.duration;
+	  var date = editTimeEntryData.date || initialDate;
+	  var note = editTimeEntryData.note || "";
 
 	  var submit = function submit() {
 	    onSubmit({
@@ -5828,16 +5852,16 @@
 
 	  function input0_input_handler() {
 	    duration = to_number(this.value);
-	    $$invalidate(7, duration);
+	    $$invalidate(9, duration);
 	  }
 
 	  function input1_input_handler() {
 	    date = this.value;
-	    $$invalidate(8, date);
+	    $$invalidate(10, date);
 	  }
 
 	  var input_handler = function input_handler(e) {
-	    return $$invalidate(9, note = e.target.value);
+	    return $$invalidate(11, note = e.target.value);
 	  };
 
 	  $$self.$set = function ($$props) {
@@ -5846,13 +5870,16 @@
 	    if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
 	    if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
 	    if ("taskName" in $$props) $$invalidate(4, taskName = $$props.taskName);
-	    if ("initialDate" in $$props) $$invalidate(11, initialDate = $$props.initialDate);
+	    if ("initialDate" in $$props) $$invalidate(13, initialDate = $$props.initialDate);
 	    if ("isServer" in $$props) $$invalidate(5, isServer = $$props.isServer);
 	    if ("onCancel" in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-	    if ("onSubmit" in $$props) $$invalidate(12, onSubmit = $$props.onSubmit);
+	    if ("onSubmit" in $$props) $$invalidate(14, onSubmit = $$props.onSubmit);
+	    if ("editTimeEntryData" in $$props) $$invalidate(15, editTimeEntryData = $$props.editTimeEntryData);
+	    if ("timeEditorCaption" in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
+	    if ("timeEditorButtonCaption" in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
 	  };
 
-	  return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, duration, date, note, submit, initialDate, onSubmit, input0_input_handler, input1_input_handler, input_handler];
+	  return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, duration, date, note, submit, initialDate, onSubmit, editTimeEntryData, input0_input_handler, input1_input_handler, input_handler];
 	}
 
 	var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -5872,10 +5899,13 @@
 	      clientName: 2,
 	      projectName: 3,
 	      taskName: 4,
-	      initialDate: 11,
+	      initialDate: 13,
 	      isServer: 5,
 	      onCancel: 6,
-	      onSubmit: 12
+	      onSubmit: 14,
+	      editTimeEntryData: 15,
+	      timeEditorCaption: 7,
+	      timeEditorButtonCaption: 8
 	    });
 	    return _this;
 	  }
@@ -5883,13 +5913,110 @@
 	  return TimeEditor;
 	}(SvelteComponent);
 
+	function create_else_block(ctx) {
+	  var div;
+	  var button;
+	  var t;
+	  var mounted;
+	  var dispose;
+	  return {
+	    c() {
+	      div = element("div");
+	      button = element("button");
+	      t = text(
+	      /*timeEditorButtonCaption*/
+	      ctx[7]);
+	      attr(button, "type", "button");
+	      attr(button, "class", "btn");
+	      attr(div, "class", "tm_inline-hover-form");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, div, anchor);
+	      append(div, button);
+	      append(button, t);
+
+	      if (!mounted) {
+	        dispose = listen(button, "click", prevent_default(
+	        /*click_handler_1*/
+	        ctx[16]));
+	        mounted = true;
+	      }
+	    },
+
+	    p(ctx, dirty) {
+	      if (dirty &
+	      /*timeEditorButtonCaption*/
+	      128) set_data(t,
+	      /*timeEditorButtonCaption*/
+	      ctx[7]);
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(div);
+	      mounted = false;
+	      dispose();
+	    }
+
+	  };
+	} // (53:0) {#if !timeUuid}
+
+
+	function create_if_block_1(ctx) {
+	  var a;
+	  var span;
+	  var t;
+	  var mounted;
+	  var dispose;
+	  return {
+	    c() {
+	      a = element("a");
+	      span = element("span");
+	      t = text(
+	      /*timeEditorButtonCaption*/
+	      ctx[7]);
+	      attr(a, "href", "#/");
+	      attr(a, "class", "button primary new");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, a, anchor);
+	      append(a, span);
+	      append(span, t);
+
+	      if (!mounted) {
+	        dispose = listen(a, "click", prevent_default(
+	        /*click_handler*/
+	        ctx[15]));
+	        mounted = true;
+	      }
+	    },
+
+	    p(ctx, dirty) {
+	      if (dirty &
+	      /*timeEditorButtonCaption*/
+	      128) set_data(t,
+	      /*timeEditorButtonCaption*/
+	      ctx[7]);
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(a);
+	      mounted = false;
+	      dispose();
+	    }
+
+	  };
+	} // (62:0) {#if show}
+
+
 	function create_if_block$7(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
 	      loading:
 	      /*loading*/
-	      ctx[8],
+	      ctx[12],
 	      $$slots: {
 	        default: [create_default_slot$3]
 	      },
@@ -5912,13 +6039,13 @@
 	      var overlay_changes = {};
 	      if (dirty &
 	      /*loading*/
-	      256) overlay_changes.loading =
+	      4096) overlay_changes.loading =
 	      /*loading*/
-	      ctx[8];
+	      ctx[12];
 
 	      if (dirty &
-	      /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, isServer*/
-	      4351) {
+	      /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/
+	      266237) {
 	        overlay_changes.$$scope = {
 	          dirty,
 	          ctx
@@ -5944,7 +6071,7 @@
 	    }
 
 	  };
-	} // (48:1) <Overlay {loading}>
+	} // (63:1) <Overlay {loading}>
 
 
 	function create_default_slot$3(ctx) {
@@ -5956,28 +6083,37 @@
 	      ctx[0],
 	      requestToken:
 	      /*requestToken*/
-	      ctx[1],
+	      ctx[2],
 	      onCancel:
 	      /*func*/
-	      ctx[11],
+	      ctx[17],
 	      onSubmit:
 	      /*save*/
-	      ctx[9],
+	      ctx[13],
 	      clientName:
 	      /*clientName*/
-	      ctx[2],
+	      ctx[3],
 	      projectName:
 	      /*projectName*/
-	      ctx[3],
+	      ctx[4],
 	      taskName:
 	      /*taskName*/
-	      ctx[4],
+	      ctx[5],
 	      initialDate:
 	      /*initialDate*/
-	      ctx[5],
+	      ctx[6],
+	      timeEditorButtonCaption:
+	      /*timeEditorButtonCaption*/
+	      ctx[7],
+	      timeEditorCaption:
+	      /*timeEditorCaption*/
+	      ctx[8],
+	      editTimeEntryData:
+	      /*editTimeEntryData*/
+	      ctx[9],
 	      isServer:
 	      /*isServer*/
-	      ctx[6]
+	      ctx[10]
 	    }
 	  });
 	  return {
@@ -5999,39 +6135,54 @@
 	      ctx[0];
 	      if (dirty &
 	      /*requestToken*/
-	      2) timeeditor_changes.requestToken =
+	      4) timeeditor_changes.requestToken =
 	      /*requestToken*/
-	      ctx[1];
-	      if (dirty &
-	      /*show*/
-	      128) timeeditor_changes.onCancel =
-	      /*func*/
-	      ctx[11];
-	      if (dirty &
-	      /*clientName*/
-	      4) timeeditor_changes.clientName =
-	      /*clientName*/
 	      ctx[2];
 	      if (dirty &
-	      /*projectName*/
-	      8) timeeditor_changes.projectName =
-	      /*projectName*/
+	      /*show*/
+	      2048) timeeditor_changes.onCancel =
+	      /*func*/
+	      ctx[17];
+	      if (dirty &
+	      /*clientName*/
+	      8) timeeditor_changes.clientName =
+	      /*clientName*/
 	      ctx[3];
 	      if (dirty &
-	      /*taskName*/
-	      16) timeeditor_changes.taskName =
-	      /*taskName*/
+	      /*projectName*/
+	      16) timeeditor_changes.projectName =
+	      /*projectName*/
 	      ctx[4];
 	      if (dirty &
-	      /*initialDate*/
-	      32) timeeditor_changes.initialDate =
-	      /*initialDate*/
+	      /*taskName*/
+	      32) timeeditor_changes.taskName =
+	      /*taskName*/
 	      ctx[5];
 	      if (dirty &
-	      /*isServer*/
-	      64) timeeditor_changes.isServer =
-	      /*isServer*/
+	      /*initialDate*/
+	      64) timeeditor_changes.initialDate =
+	      /*initialDate*/
 	      ctx[6];
+	      if (dirty &
+	      /*timeEditorButtonCaption*/
+	      128) timeeditor_changes.timeEditorButtonCaption =
+	      /*timeEditorButtonCaption*/
+	      ctx[7];
+	      if (dirty &
+	      /*timeEditorCaption*/
+	      256) timeeditor_changes.timeEditorCaption =
+	      /*timeEditorCaption*/
+	      ctx[8];
+	      if (dirty &
+	      /*editTimeEntryData*/
+	      512) timeeditor_changes.editTimeEntryData =
+	      /*editTimeEntryData*/
+	      ctx[9];
+	      if (dirty &
+	      /*isServer*/
+	      1024) timeeditor_changes.isServer =
+	      /*isServer*/
+	      ctx[10];
 	      timeeditor.$set(timeeditor_changes);
 	    },
 
@@ -6054,66 +6205,75 @@
 	}
 
 	function create_fragment$9(ctx) {
-	  var a;
-	  var t1;
-	  var if_block_anchor;
+	  var t;
+	  var if_block1_anchor;
 	  var current;
-	  var mounted;
-	  var dispose;
-	  var if_block =
+
+	  function select_block_type(ctx, dirty) {
+	    if (!
+	    /*timeUuid*/
+	    ctx[1]) return create_if_block_1;
+	    return create_else_block;
+	  }
+
+	  var current_block_type = select_block_type(ctx);
+	  var if_block0 = current_block_type(ctx);
+	  var if_block1 =
 	  /*show*/
-	  ctx[7] && create_if_block$7(ctx);
+	  ctx[11] && create_if_block$7(ctx);
 	  return {
 	    c() {
-	      a = element("a");
-	      a.innerHTML = "<span>Add time entry</span>";
-	      t1 = space();
-	      if (if_block) if_block.c();
-	      if_block_anchor = empty();
-	      attr(a, "href", "#/");
-	      attr(a, "class", "button primary new");
+	      if_block0.c();
+	      t = space();
+	      if (if_block1) if_block1.c();
+	      if_block1_anchor = empty();
 	    },
 
 	    m(target, anchor) {
-	      insert(target, a, anchor);
-	      insert(target, t1, anchor);
-	      if (if_block) if_block.m(target, anchor);
-	      insert(target, if_block_anchor, anchor);
+	      if_block0.m(target, anchor);
+	      insert(target, t, anchor);
+	      if (if_block1) if_block1.m(target, anchor);
+	      insert(target, if_block1_anchor, anchor);
 	      current = true;
-
-	      if (!mounted) {
-	        dispose = listen(a, "click", prevent_default(
-	        /*click_handler*/
-	        ctx[10]));
-	        mounted = true;
-	      }
 	    },
 
 	    p(ctx, _ref) {
 	      var _ref2 = _slicedToArray(_ref, 1),
 	          dirty = _ref2[0];
 
+	      if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+	        if_block0.p(ctx, dirty);
+	      } else {
+	        if_block0.d(1);
+	        if_block0 = current_block_type(ctx);
+
+	        if (if_block0) {
+	          if_block0.c();
+	          if_block0.m(t.parentNode, t);
+	        }
+	      }
+
 	      if (
 	      /*show*/
-	      ctx[7]) {
-	        if (if_block) {
-	          if_block.p(ctx, dirty);
+	      ctx[11]) {
+	        if (if_block1) {
+	          if_block1.p(ctx, dirty);
 
 	          if (dirty &
 	          /*show*/
-	          128) {
-	            transition_in(if_block, 1);
+	          2048) {
+	            transition_in(if_block1, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$7(ctx);
-	          if_block.c();
-	          transition_in(if_block, 1);
-	          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+	          if_block1 = create_if_block$7(ctx);
+	          if_block1.c();
+	          transition_in(if_block1, 1);
+	          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
 	        }
-	      } else if (if_block) {
+	      } else if (if_block1) {
 	        group_outros();
-	        transition_out(if_block, 1, 1, function () {
-	          if_block = null;
+	        transition_out(if_block1, 1, 1, function () {
+	          if_block1 = null;
 	        });
 	        check_outros();
 	      }
@@ -6121,22 +6281,20 @@
 
 	    i(local) {
 	      if (current) return;
-	      transition_in(if_block);
+	      transition_in(if_block1);
 	      current = true;
 	    },
 
 	    o(local) {
-	      transition_out(if_block);
+	      transition_out(if_block1);
 	      current = false;
 	    },
 
 	    d(detaching) {
-	      if (detaching) detach(a);
-	      if (detaching) detach(t1);
-	      if (if_block) if_block.d(detaching);
-	      if (detaching) detach(if_block_anchor);
-	      mounted = false;
-	      dispose();
+	      if_block0.d(detaching);
+	      if (detaching) detach(t);
+	      if (if_block1) if_block1.d(detaching);
+	      if (detaching) detach(if_block1_anchor);
 	    }
 
 	  };
@@ -6144,11 +6302,16 @@
 
 	function instance$9($$self, $$props, $$invalidate) {
 	  var action = $$props.action;
+	  var editTimeEntryAction = $$props.editTimeEntryAction;
+	  var timeUuid = $$props.timeUuid;
 	  var requestToken = $$props.requestToken;
 	  var clientName = $$props.clientName;
 	  var projectName = $$props.projectName;
 	  var taskName = $$props.taskName;
 	  var initialDate = $$props.initialDate;
+	  var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
+	  var timeEditorCaption = $$props.timeEditorCaption;
+	  var editTimeEntryData = $$props.editTimeEntryData;
 	  var isServer = $$props.isServer;
 	  onMount(function () {
 	    Helpers.hideFallbacks("TimeEditor.svelte");
@@ -6156,53 +6319,59 @@
 
 	  var save = /*#__PURE__*/function () {
 	    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
-	      var duration, date, note, response;
+	      var duration, date, note, entry, response;
 	      return regeneratorRuntime.wrap(function _callee$(_context) {
 	        while (1) {
 	          switch (_context.prev = _context.next) {
 	            case 0:
 	              duration = _ref4.duration, date = _ref4.date, note = _ref4.note;
-	              $$invalidate(8, loading = true);
+	              $$invalidate(12, loading = true);
 	              _context.prev = 2;
-	              _context.next = 5;
-	              return fetch(action, {
-	                method: "POST",
-	                body: JSON.stringify({
-	                  duration,
-	                  date,
-	                  note
-	                }),
+	              entry = {
+	                duration,
+	                date,
+	                note
+	              };
+
+	              if (timeUuid) {
+	                entry.uuid = timeUuid;
+	              }
+
+	              _context.next = 7;
+	              return fetch(timeUuid ? editTimeEntryAction : action, {
+	                method: timeUuid ? "PATCH" : "POST",
+	                body: JSON.stringify(entry),
 	                headers: {
 	                  requesttoken: requestToken,
 	                  "content-type": "application/json"
 	                }
 	              });
 
-	            case 5:
+	            case 7:
 	              response = _context.sent;
 
 	              if (response && response.ok) {
-	                $$invalidate(7, show = false);
+	                $$invalidate(11, show = false);
 	                document.querySelector(".app-timemanager [data-current-link]").click();
 	              }
 
-	              _context.next = 12;
+	              _context.next = 14;
 	              break;
 
-	            case 9:
-	              _context.prev = 9;
+	            case 11:
+	              _context.prev = 11;
 	              _context.t0 = _context["catch"](2);
 	              console.error(_context.t0);
 
-	            case 12:
-	              $$invalidate(8, loading = false);
+	            case 14:
+	              $$invalidate(12, loading = false);
 
-	            case 13:
+	            case 15:
 	            case "end":
 	              return _context.stop();
 	          }
 	        }
-	      }, _callee, null, [[2, 9]]);
+	      }, _callee, null, [[2, 11]]);
 	    }));
 
 	    return function save(_x) {
@@ -6211,31 +6380,40 @@
 	  }();
 
 	  var click_handler = function click_handler() {
-	    return $$invalidate(7, show = !show);
+	    return $$invalidate(11, show = !show);
+	  };
+
+	  var click_handler_1 = function click_handler_1() {
+	    return $$invalidate(11, show = !show);
 	  };
 
 	  var func = function func() {
-	    return $$invalidate(7, show = false);
+	    return $$invalidate(11, show = false);
 	  };
 
 	  $$self.$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
-	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-	    if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-	    if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
-	    if ("taskName" in $$props) $$invalidate(4, taskName = $$props.taskName);
-	    if ("initialDate" in $$props) $$invalidate(5, initialDate = $$props.initialDate);
-	    if ("isServer" in $$props) $$invalidate(6, isServer = $$props.isServer);
+	    if ("editTimeEntryAction" in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
+	    if ("timeUuid" in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
+	    if ("requestToken" in $$props) $$invalidate(2, requestToken = $$props.requestToken);
+	    if ("clientName" in $$props) $$invalidate(3, clientName = $$props.clientName);
+	    if ("projectName" in $$props) $$invalidate(4, projectName = $$props.projectName);
+	    if ("taskName" in $$props) $$invalidate(5, taskName = $$props.taskName);
+	    if ("initialDate" in $$props) $$invalidate(6, initialDate = $$props.initialDate);
+	    if ("timeEditorButtonCaption" in $$props) $$invalidate(7, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+	    if ("timeEditorCaption" in $$props) $$invalidate(8, timeEditorCaption = $$props.timeEditorCaption);
+	    if ("editTimeEntryData" in $$props) $$invalidate(9, editTimeEntryData = $$props.editTimeEntryData);
+	    if ("isServer" in $$props) $$invalidate(10, isServer = $$props.isServer);
 	  };
 
 	  var show;
 	  var loading;
 
-	   $$invalidate(7, show = false);
+	   $$invalidate(11, show = false);
 
-	   $$invalidate(8, loading = false);
+	   $$invalidate(12, loading = false);
 
-	  return [action, requestToken, clientName, projectName, taskName, initialDate, isServer, show, loading, save, click_handler, func];
+	  return [action, timeUuid, requestToken, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, show, loading, save, editTimeEntryAction, click_handler, click_handler_1, func];
 	}
 
 	var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -6251,12 +6429,17 @@
 	    _this = _super.call(this);
 	    init(_assertThisInitialized(_this), options, instance$9, create_fragment$9, safe_not_equal, {
 	      action: 0,
-	      requestToken: 1,
-	      clientName: 2,
-	      projectName: 3,
-	      taskName: 4,
-	      initialDate: 5,
-	      isServer: 6
+	      editTimeEntryAction: 14,
+	      timeUuid: 1,
+	      requestToken: 2,
+	      clientName: 3,
+	      projectName: 4,
+	      taskName: 5,
+	      initialDate: 6,
+	      timeEditorButtonCaption: 7,
+	      timeEditorCaption: 8,
+	      editTimeEntryData: 9,
+	      isServer: 10
 	    });
 	    return _this;
 	  }
@@ -8061,6 +8244,23 @@
 	        target: Helpers.replaceNode(button),
 	        props: _objectSpread2(_objectSpread2({}, store), {}, {
 	          deleteTimeEntryUuid: button.getAttribute("data-uuid"),
+	          requestToken: window.OC.requestToken
+	        })
+	      }));
+	    });
+	  }
+
+	  var editTimeEntryButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='EditTimeEntryButton.svelte']");
+
+	  if (editTimeEntryButtons && editTimeEntryButtons.length > 0) {
+	    editTimeEntryButtons.forEach(function (button) {
+	      components.push(new TimeEditorDialog({
+	        target: Helpers.replaceNode(button),
+	        props: _objectSpread2(_objectSpread2({}, store), {}, {
+	          timeUuid: button.getAttribute("data-uuid"),
+	          editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
+	          timeEditorButtonCaption: "Edit",
+	          timeEditorCaption: "Edit time entry",
 	          requestToken: window.OC.requestToken
 	        })
 	      }));

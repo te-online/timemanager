@@ -550,6 +550,9 @@ class PageController extends Controller {
 			'deleteButtonCaption' => 'Delete task',
 			'deleteItemName' => 'the task ' . $task_name . ' and all associated time entries',
 			'deleteTimeEntryAction' => $urlGenerator->linkToRoute('timemanager.page.times') . '/delete',
+			'timeEditorButtonCaption' => 'Add time entry',
+			'timeEditorCaption' => 'New time entry',
+			'editTimeEntryAction' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
 			'isServer' => true,
 		];
 
@@ -637,22 +640,33 @@ class PageController extends Controller {
 			$duration = str_replace(',', '.', $duration);
 			// Cast to float
 			$duration = (float) $duration;
-			// @TODO: Time range needs to be edited properly
-			// Calculate start and end from duration
-			if (!empty($date)) {
-				// Add 24 hours to make it end of the day.
-				$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 24);
+			// Date has changed
+			if ($date !== $time->getStartFormatted('Y-m-D H:i:s')) {
+				// Calculate start and end from duration
+				if (!empty($date)) {
+					// Add 24 hours to make it end of the day.
+					$end = date('Y-m-d H:i:s', strtotime($date) + 60 * 60 * 24);
+				} else {
+					$end = date('Y-m-d H:i:s');
+				}
+				$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
+			} elseif ($duration !== $time->getDurationInHours()) {
+				// Date has not changed, just edit end with new duration
+				$start = $time->getStartFormatted('Y-m-d H:i:s');
+				$end = date('Y-m-d H:i:s', strtotime($start) + 60 * 60 * $duration);
 			} else {
-				$end = date('Y-m-d H:i:s');
+				// Date and duration have not changed
+				$start = $time->getStartFormatted('Y-m-d H:i:s');
+				$end = $time->getEndFormatted('Y-m-d H:i:s');
 			}
-			$start = date('Y-m-d H:i:s', strtotime($end) - 60 * 60 * $duration);
+
 			$this->storageHelper->addOrUpdateObject(
 				[
-					'name' => $name,
-					'start' => $start, // now - duration
-					'end' => $end, // now
-					'commit' => $time->getCommit(),
+					'uuid' => $uuid,
+					'start' => $start, // given date
+					'end' => $end, // date + duration
 					'note' => $note,
+					'commit' => $time->getCommit(),
 					'desiredCommit' => $commit,
 				],
 				'times'

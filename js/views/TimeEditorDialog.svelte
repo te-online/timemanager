@@ -1,10 +1,15 @@
 <script>
 	export let action;
+	export let editTimeEntryAction;
+	export let timeUuid;
 	export let requestToken;
 	export let clientName;
 	export let projectName;
 	export let taskName;
 	export let initialDate;
+	export let timeEditorButtonCaption;
+	export let timeEditorCaption;
+	export let editTimeEntryData;
 	export let isServer;
 
 	import Overlay from "./Overlay.svelte";
@@ -22,9 +27,13 @@
 	const save = async ({ duration, date, note }) => {
 		loading = true;
 		try {
-			const response = await fetch(action, {
-				method: "POST",
-				body: JSON.stringify({ duration, date, note }),
+			let entry = { duration, date, note };
+			if (timeUuid) {
+				entry.uuid = timeUuid;
+			}
+			const response = await fetch(timeUuid ? editTimeEntryAction : action, {
+				method: timeUuid ? "PATCH" : "POST",
+				body: JSON.stringify(entry),
 				headers: {
 					requesttoken: requestToken,
 					"content-type": "application/json",
@@ -41,9 +50,15 @@
 	};
 </script>
 
-<a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
-	<span>Add time entry</span>
-</a>
+{#if !timeUuid}
+	<a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
+		<span>{timeEditorButtonCaption}</span>
+	</a>
+{:else}
+	<div class="tm_inline-hover-form">
+		<button type="button" class="btn" on:click|preventDefault={() => (show = !show)}>{timeEditorButtonCaption}</button>
+	</div>
+{/if}
 {#if show}
 	<Overlay {loading}>
 		<TimeEditor
@@ -55,6 +70,9 @@
 			{projectName}
 			{taskName}
 			{initialDate}
+			{timeEditorButtonCaption}
+			{timeEditorCaption}
+			{editTimeEntryData}
 			{isServer} />
 	</Overlay>
 {/if}

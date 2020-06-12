@@ -8,10 +8,13 @@
 	export let isServer;
 	export let onCancel;
 	export let onSubmit;
+	export let editTimeEntryData = {};
+	export let timeEditorCaption;
+	export let timeEditorButtonCaption;
 
-	let duration;
-	let date = initialDate;
-	let note = "";
+	let duration = editTimeEntryData.duration;
+	let date = editTimeEntryData.date || initialDate;
+	let note = editTimeEntryData.note || "";
 
 	const submit = () => {
 		onSubmit({ duration, date, note });
@@ -19,7 +22,7 @@
 </script>
 
 <div class="inner tm_new-item">
-	<h3>New time entry</h3>
+	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label>
 			Duration (in hrs.)
@@ -72,7 +75,7 @@
 		<br />
 		<input type="hidden" name="requesttoken" value={requestToken} />
 		<div class="oc-dialog-buttonrow twobuttons reverse">
-			<button type="submit" class="button primary">Add time entry</button>
+			<button type="submit" class="button primary">{timeEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>Cancel</button>
 			{/if}

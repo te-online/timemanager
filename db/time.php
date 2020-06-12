@@ -54,9 +54,19 @@ class Time extends Entity {
 	 *
 	 * @return string
 	 */
-	function getStartFormatted() {
+	function getStartFormatted($format = 'D, j. F Y') {
 		$start = date_create($this->getStart());
-		return date_format($start, 'D, j. F Y');
+		return date_format($start, $format);
+	}
+
+	/**
+	 * Gets the end date formatted.
+	 *
+	 * @return string
+	 */
+	function getEndFormatted($format = 'D, j. F Y') {
+		$end = date_create($this->getEnd());
+		return date_format($end, $format);
 	}
 
 	/**

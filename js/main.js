@@ -111,6 +111,27 @@ const init = () => {
 			);
 		});
 	}
+
+	const editTimeEntryButtons = document.querySelectorAll(
+		"#content.app-timemanager [data-svelte='EditTimeEntryButton.svelte']"
+	);
+	if (editTimeEntryButtons && editTimeEntryButtons.length > 0) {
+		editTimeEntryButtons.forEach((button) => {
+			components.push(
+				new TimeEditorDialog({
+					target: Helpers.replaceNode(button),
+					props: {
+						...store,
+						timeUuid: button.getAttribute("data-uuid"),
+						editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
+						timeEditorButtonCaption: "Edit",
+						timeEditorCaption: "Edit time entry",
+						requestToken: window.OC.requestToken,
+					},
+				})
+			);
+		});
+	}
 };
 
 init();
