@@ -52,8 +52,16 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<form action="" method="get">
 						<?php if(count($_['projects']) > 0 ) { ?>
 							<select name="project">
-								<?php foreach($_['projects'] as $project) { ?>
-									<option value="<?php p($project->getUuid()); ?>"<?php echo ($_['project'] && $_['project']->getUuid() === $project->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($project->getName()); ?></option>
+								<?php foreach(array_reverse($_['projects']) as $project) {
+									// Look up client for project
+									$client = array_reduce($_['clients'], function ($carry, $oneClient) use(&$project) {
+										if ($oneClient->getUuid() === $project->getClientUuid()) {
+											$carry = $oneClient;
+										}
+										return $carry;
+									});
+									?>
+									<option value="<?php p($project->getUuid()); ?>"><?php p($client->getName() . ' › ' . $project->getName()); ?></option>
 								<?php } ?>
 							</select>
 							<button type="submit" class="btn">Show</button>

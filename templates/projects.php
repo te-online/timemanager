@@ -59,8 +59,8 @@ $urlGenerator = \OC::$server->getURLGenerator();
 					<form action="" method="get">
 						<?php if(count($_['clients']) > 0 ) { ?>
 							<select name="client">
-								<?php foreach($_['clients'] as $client) { ?>
-									<option value="<?php p($client->getUuid()); ?>"<?php p($_['client'] && $_['client']->getUuid() === $client->getUuid()) ? ' selected="selected"' : ''; ?>><?php p($client->getName()); ?></option>
+								<?php foreach(array_reverse($_['clients']) as $client) { ?>
+									<option value="<?php p($client->getUuid()); ?>"><?php p($client->getName()); ?></option>
 								<?php } ?>
 							</select>
 							<button type="submit" class="btn">Show</button>
