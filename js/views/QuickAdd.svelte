@@ -18,8 +18,12 @@
 	let date = initialDate;
 	let note;
 	let client;
-	let project;
 	let task;
+
+	const tasksWithProject = tasks.map((aTask) => {
+		aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
+		return aTask;
+	});
 
 	const save = async () => {
 		loading = true;
@@ -52,13 +56,13 @@
 
 <form class={`quick-add${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={save}>
 	<label>
-		Note
-		<input type="text" name="note" class="note" bind:value={note} placeholder="Describe what you did..." />
-	</label>
-	<label>
 		Duration (in hrs.)
 		<br />
 		<input type="number" name="duration" step="0.25" placeholder="" class="duration" bind:value={duration} required />
+	</label>
+	<label>
+		Note
+		<input type="text" name="note" class="note" bind:value={note} placeholder="Describe what you did..." />
 	</label>
 	<label>
 		Date
@@ -69,19 +73,15 @@
 		Client
 		<Select items={clients} bind:selectedValue={client} />
 	</label>
-	<label>
-		Project
-		<Select
-			items={projects && projects.filter((oneProject) => client && oneProject.clientUuid === client.value)}
-			bind:selectedValue={project} />
-	</label>
 	<label class={`${taskError ? 'error' : ''}`}>
-		Tasks
+		Project & Task
 		<Select
-			items={tasks && tasks.filter((oneTask) => project && oneTask.projectUuid === project.value)}
+			items={tasksWithProject && tasksWithProject.filter((oneTask) => client && oneTask.project.clientUuid === client.value)}
+			groupBy={(item) => item.project.label}
+			noOptionsMessage="No projects/tasks or no client selected."
 			bind:selectedValue={task} />
 	</label>
-	<span>
+	<span class="actions">
 		<button disabled={loading} type="submit" class="button primary">Add</button>
 	</span>
 </form>

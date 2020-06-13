@@ -7442,6 +7442,180 @@
 	  }
 	});
 
+	// `Object.keys` method
+	// https://tc39.github.io/ecma262/#sec-object.keys
+
+
+	var objectKeys = Object.keys || function keys(O) {
+	  return objectKeysInternal(O, enumBugKeys);
+	};
+
+	// `Object.defineProperties` method
+	// https://tc39.github.io/ecma262/#sec-object.defineproperties
+
+
+	var objectDefineProperties = descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
+	  anObject(O);
+	  var keys = objectKeys(Properties);
+	  var length = keys.length;
+	  var index = 0;
+	  var key;
+
+	  while (length > index) objectDefineProperty.f(O, key = keys[index++], Properties[key]);
+
+	  return O;
+	};
+
+	var GT = '>';
+	var LT = '<';
+	var PROTOTYPE = 'prototype';
+	var SCRIPT = 'script';
+	var IE_PROTO = sharedKey('IE_PROTO');
+
+	var EmptyConstructor = function () {
+	  /* empty */
+	};
+
+	var scriptTag = function (content) {
+	  return LT + SCRIPT + GT + content + LT + '/' + SCRIPT + GT;
+	}; // Create object with fake `null` prototype: use ActiveX Object with cleared prototype
+
+
+	var NullProtoObjectViaActiveX = function (activeXDocument) {
+	  activeXDocument.write(scriptTag(''));
+	  activeXDocument.close();
+	  var temp = activeXDocument.parentWindow.Object;
+	  activeXDocument = null; // avoid memory leak
+
+	  return temp;
+	}; // Create object with fake `null` prototype: use iframe Object with cleared prototype
+
+
+	var NullProtoObjectViaIFrame = function () {
+	  // Thrash, waste and sodomy: IE GC bug
+	  var iframe = documentCreateElement('iframe');
+	  var JS = 'java' + SCRIPT + ':';
+	  var iframeDocument;
+	  iframe.style.display = 'none';
+	  html.appendChild(iframe); // https://github.com/zloirock/core-js/issues/475
+
+	  iframe.src = String(JS);
+	  iframeDocument = iframe.contentWindow.document;
+	  iframeDocument.open();
+	  iframeDocument.write(scriptTag('document.F=Object'));
+	  iframeDocument.close();
+	  return iframeDocument.F;
+	}; // Check for document.domain and active x support
+	// No need to use active x approach when document.domain is not set
+	// see https://github.com/es-shims/es5-shim/issues/150
+	// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
+	// avoid IE GC bug
+
+
+	var activeXDocument;
+
+	var NullProtoObject = function () {
+	  try {
+	    /* global ActiveXObject */
+	    activeXDocument = document.domain && new ActiveXObject('htmlfile');
+	  } catch (error) {
+	    /* ignore */
+	  }
+
+	  NullProtoObject = activeXDocument ? NullProtoObjectViaActiveX(activeXDocument) : NullProtoObjectViaIFrame();
+	  var length = enumBugKeys.length;
+
+	  while (length--) delete NullProtoObject[PROTOTYPE][enumBugKeys[length]];
+
+	  return NullProtoObject();
+	};
+
+	hiddenKeys[IE_PROTO] = true; // `Object.create` method
+	// https://tc39.github.io/ecma262/#sec-object.create
+
+	var objectCreate = Object.create || function create(O, Properties) {
+	  var result;
+
+	  if (O !== null) {
+	    EmptyConstructor[PROTOTYPE] = anObject(O);
+	    result = new EmptyConstructor();
+	    EmptyConstructor[PROTOTYPE] = null; // add "__proto__" for Object.getPrototypeOf polyfill
+
+	    result[IE_PROTO] = O;
+	  } else result = NullProtoObject();
+
+	  return Properties === undefined ? result : objectDefineProperties(result, Properties);
+	};
+
+	var UNSCOPABLES = wellKnownSymbol('unscopables');
+	var ArrayPrototype$1 = Array.prototype; // Array.prototype[@@unscopables]
+	// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+
+	if (ArrayPrototype$1[UNSCOPABLES] == undefined) {
+	  objectDefineProperty.f(ArrayPrototype$1, UNSCOPABLES, {
+	    configurable: true,
+	    value: objectCreate(null)
+	  });
+	} // add a key to Array.prototype[@@unscopables]
+
+
+	var addToUnscopables = function (key) {
+	  ArrayPrototype$1[UNSCOPABLES][key] = true;
+	};
+
+	var $find = arrayIteration.find;
+
+
+
+
+
+	var FIND = 'find';
+	var SKIPS_HOLES = true;
+	var USES_TO_LENGTH$2 = arrayMethodUsesToLength(FIND); // Shouldn't skip holes
+
+	if (FIND in []) Array(1)[FIND](function () {
+	  SKIPS_HOLES = false;
+	}); // `Array.prototype.find` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.find
+
+	_export({
+	  target: 'Array',
+	  proto: true,
+	  forced: SKIPS_HOLES || !USES_TO_LENGTH$2
+	}, {
+	  find: function find(callbackfn
+	  /* , that = undefined */
+	  ) {
+	    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+	  }
+	}); // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+
+	addToUnscopables(FIND);
+
+	var $map = arrayIteration.map;
+
+
+
+
+
+	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('map'); // FF49- issue
+
+	var USES_TO_LENGTH$3 = arrayMethodUsesToLength('map'); // `Array.prototype.map` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.map
+	// with adding support of @@species
+
+	_export({
+	  target: 'Array',
+	  proto: true,
+	  forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$3
+	}, {
+	  map: function map(callbackfn
+	  /* , thisArg */
+	  ) {
+	    return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+	  }
+	});
+
 	/* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.23.0 */
 
 	function add_css() {
@@ -11419,11 +11593,11 @@
 	  var form;
 	  var label0;
 	  var t0;
-	  var input0;
-	  var t1;
-	  var label1;
-	  var t2;
 	  var br0;
+	  var t1;
+	  var input0;
+	  var t2;
+	  var label1;
 	  var t3;
 	  var input1;
 	  var t4;
@@ -11440,15 +11614,11 @@
 	  var label4;
 	  var t10;
 	  var updating_selectedValue_1;
+	  var label4_class_value;
 	  var t11;
-	  var label5;
-	  var t12;
-	  var updating_selectedValue_2;
-	  var label5_class_value;
-	  var t13;
 	  var span;
 	  var button;
-	  var t14;
+	  var t12;
 	  var form_class_value;
 	  var current;
 	  var mounted;
@@ -11467,10 +11637,10 @@
 
 	  if (
 	  /*client*/
-	  ctx[6] !== void 0) {
+	  ctx[4] !== void 0) {
 	    select0_props.selectedValue =
 	    /*client*/
-	    ctx[6];
+	    ctx[4];
 	  }
 
 	  var select0 = new Select({
@@ -11487,20 +11657,22 @@
 
 	  var select1_props = {
 	    items:
-	    /*projects*/
-	    ctx[1] &&
-	    /*projects*/
-	    ctx[1].filter(
+	    /*tasksWithProject*/
+	    ctx[8] &&
+	    /*tasksWithProject*/
+	    ctx[8].filter(
 	    /*func*/
-	    ctx[20])
+	    ctx[20]),
+	    groupBy: func_1,
+	    noOptionsMessage: "No projects/tasks or no client selected."
 	  };
 
 	  if (
-	  /*project*/
-	  ctx[7] !== void 0) {
+	  /*task*/
+	  ctx[5] !== void 0) {
 	    select1_props.selectedValue =
-	    /*project*/
-	    ctx[7];
+	    /*task*/
+	    ctx[5];
 	  }
 
 	  var select1 = new Select({
@@ -11509,47 +11681,17 @@
 	  binding_callbacks.push(function () {
 	    return bind(select1, "selectedValue", select1_selectedValue_binding);
 	  });
-
-	  function select2_selectedValue_binding(value) {
-	    /*select2_selectedValue_binding*/
-	    ctx[23].call(null, value);
-	  }
-
-	  var select2_props = {
-	    items:
-	    /*tasks*/
-	    ctx[2] &&
-	    /*tasks*/
-	    ctx[2].filter(
-	    /*func_1*/
-	    ctx[22])
-	  };
-
-	  if (
-	  /*task*/
-	  ctx[8] !== void 0) {
-	    select2_props.selectedValue =
-	    /*task*/
-	    ctx[8];
-	  }
-
-	  var select2 = new Select({
-	    props: select2_props
-	  });
-	  binding_callbacks.push(function () {
-	    return bind(select2, "selectedValue", select2_selectedValue_binding);
-	  });
 	  return {
 	    c() {
 	      form = element("form");
 	      label0 = element("label");
-	      t0 = text("Note\n\t\t");
-	      input0 = element("input");
-	      t1 = space();
-	      label1 = element("label");
-	      t2 = text("Duration (in hrs.)\n\t\t");
+	      t0 = text("Duration (in hrs.)\n\t\t");
 	      br0 = element("br");
-	      t3 = space();
+	      t1 = space();
+	      input0 = element("input");
+	      t2 = space();
+	      label1 = element("label");
+	      t3 = text("Note\n\t\t");
 	      input1 = element("input");
 	      t4 = space();
 	      label2 = element("label");
@@ -11563,58 +11705,55 @@
 	      create_component(select0.$$.fragment);
 	      t9 = space();
 	      label4 = element("label");
-	      t10 = text("Project\n\t\t");
+	      t10 = text("Project & Task\n\t\t");
 	      create_component(select1.$$.fragment);
 	      t11 = space();
-	      label5 = element("label");
-	      t12 = text("Tasks\n\t\t");
-	      create_component(select2.$$.fragment);
-	      t13 = space();
 	      span = element("span");
 	      button = element("button");
-	      t14 = text("Add");
-	      attr(input0, "type", "text");
-	      attr(input0, "name", "note");
-	      attr(input0, "class", "note");
-	      attr(input0, "placeholder", "Describe what you did...");
-	      attr(input1, "type", "number");
-	      attr(input1, "name", "duration");
-	      attr(input1, "step", "0.25");
-	      attr(input1, "placeholder", "");
-	      attr(input1, "class", "duration");
-	      input1.required = true;
+	      t12 = text("Add");
+	      attr(input0, "type", "number");
+	      attr(input0, "name", "duration");
+	      attr(input0, "step", "0.25");
+	      attr(input0, "placeholder", "");
+	      attr(input0, "class", "duration");
+	      input0.required = true;
+	      attr(input1, "type", "text");
+	      attr(input1, "name", "note");
+	      attr(input1, "class", "note");
+	      attr(input1, "placeholder", "Describe what you did...");
 	      attr(input2, "type", "date");
 	      attr(input2, "name", "date");
 	      attr(input2, "class", "date");
-	      attr(label5, "class", label5_class_value = "".concat(
+	      attr(label4, "class", label4_class_value = "".concat(
 	      /*taskError*/
-	      ctx[10] ? "error" : ""));
+	      ctx[7] ? "error" : ""));
 	      button.disabled =
 	      /*loading*/
-	      ctx[9];
+	      ctx[6];
 	      attr(button, "type", "submit");
 	      attr(button, "class", "button primary");
+	      attr(span, "class", "actions");
 	      attr(form, "class", form_class_value = "quick-add".concat(
 	      /*loading*/
-	      ctx[9] ? " icon-loading" : ""));
+	      ctx[6] ? " icon-loading" : ""));
 	    },
 
 	    m(target, anchor) {
 	      insert(target, form, anchor);
 	      append(form, label0);
 	      append(label0, t0);
+	      append(label0, br0);
+	      append(label0, t1);
 	      append(label0, input0);
 	      set_input_value(input0,
-	      /*note*/
-	      ctx[5]);
-	      append(form, t1);
+	      /*duration*/
+	      ctx[1]);
+	      append(form, t2);
 	      append(form, label1);
-	      append(label1, t2);
-	      append(label1, br0);
 	      append(label1, t3);
 	      append(label1, input1);
 	      set_input_value(input1,
-	      /*duration*/
+	      /*note*/
 	      ctx[3]);
 	      append(form, t4);
 	      append(form, label2);
@@ -11624,7 +11763,7 @@
 	      append(label2, input2);
 	      set_input_value(input2,
 	      /*date*/
-	      ctx[4]);
+	      ctx[2]);
 	      append(form, t7);
 	      append(form, label3);
 	      append(label3, t8);
@@ -11634,13 +11773,9 @@
 	      append(label4, t10);
 	      mount_component(select1, label4, null);
 	      append(form, t11);
-	      append(form, label5);
-	      append(label5, t12);
-	      mount_component(select2, label5, null);
-	      append(form, t13);
 	      append(form, span);
 	      append(span, button);
-	      append(button, t14);
+	      append(button, t12);
 	      current = true;
 
 	      if (!mounted) {
@@ -11652,7 +11787,7 @@
 	        /*input2_input_handler*/
 	        ctx[18]), listen(form, "submit", prevent_default(
 	        /*save*/
-	        ctx[11]))];
+	        ctx[9]))];
 	        mounted = true;
 	      }
 	    },
@@ -11662,31 +11797,31 @@
 	          dirty = _ref2[0];
 
 	      if (dirty &
-	      /*note*/
-	      32 && input0.value !==
-	      /*note*/
-	      ctx[5]) {
+	      /*duration*/
+	      2 && to_number(input0.value) !==
+	      /*duration*/
+	      ctx[1]) {
 	        set_input_value(input0,
-	        /*note*/
-	        ctx[5]);
+	        /*duration*/
+	        ctx[1]);
 	      }
 
 	      if (dirty &
-	      /*duration*/
-	      8 && to_number(input1.value) !==
-	      /*duration*/
+	      /*note*/
+	      8 && input1.value !==
+	      /*note*/
 	      ctx[3]) {
 	        set_input_value(input1,
-	        /*duration*/
+	        /*note*/
 	        ctx[3]);
 	      }
 
 	      if (dirty &
 	      /*date*/
-	      16) {
+	      4) {
 	        set_input_value(input2,
 	        /*date*/
-	        ctx[4]);
+	        ctx[2]);
 	      }
 
 	      var select0_changes = {};
@@ -11698,11 +11833,11 @@
 
 	      if (!updating_selectedValue && dirty &
 	      /*client*/
-	      64) {
+	      16) {
 	        updating_selectedValue = true;
 	        select0_changes.selectedValue =
 	        /*client*/
-	        ctx[6];
+	        ctx[4];
 	        add_flush_callback(function () {
 	          return updating_selectedValue = false;
 	        });
@@ -11711,74 +11846,50 @@
 	      select0.$set(select0_changes);
 	      var select1_changes = {};
 	      if (dirty &
-	      /*projects, client*/
-	      66) select1_changes.items =
-	      /*projects*/
-	      ctx[1] &&
-	      /*projects*/
-	      ctx[1].filter(
+	      /*client*/
+	      16) select1_changes.items =
+	      /*tasksWithProject*/
+	      ctx[8] &&
+	      /*tasksWithProject*/
+	      ctx[8].filter(
 	      /*func*/
 	      ctx[20]);
 
 	      if (!updating_selectedValue_1 && dirty &
-	      /*project*/
-	      128) {
+	      /*task*/
+	      32) {
 	        updating_selectedValue_1 = true;
 	        select1_changes.selectedValue =
-	        /*project*/
-	        ctx[7];
+	        /*task*/
+	        ctx[5];
 	        add_flush_callback(function () {
 	          return updating_selectedValue_1 = false;
 	        });
 	      }
 
 	      select1.$set(select1_changes);
-	      var select2_changes = {};
-	      if (dirty &
-	      /*tasks, project*/
-	      132) select2_changes.items =
-	      /*tasks*/
-	      ctx[2] &&
-	      /*tasks*/
-	      ctx[2].filter(
-	      /*func_1*/
-	      ctx[22]);
-
-	      if (!updating_selectedValue_2 && dirty &
-	      /*task*/
-	      256) {
-	        updating_selectedValue_2 = true;
-	        select2_changes.selectedValue =
-	        /*task*/
-	        ctx[8];
-	        add_flush_callback(function () {
-	          return updating_selectedValue_2 = false;
-	        });
-	      }
-
-	      select2.$set(select2_changes);
 
 	      if (!current || dirty &
 	      /*taskError*/
-	      1024 && label5_class_value !== (label5_class_value = "".concat(
+	      128 && label4_class_value !== (label4_class_value = "".concat(
 	      /*taskError*/
-	      ctx[10] ? "error" : ""))) {
-	        attr(label5, "class", label5_class_value);
+	      ctx[7] ? "error" : ""))) {
+	        attr(label4, "class", label4_class_value);
 	      }
 
 	      if (!current || dirty &
 	      /*loading*/
-	      512) {
+	      64) {
 	        button.disabled =
 	        /*loading*/
-	        ctx[9];
+	        ctx[6];
 	      }
 
 	      if (!current || dirty &
 	      /*loading*/
-	      512 && form_class_value !== (form_class_value = "quick-add".concat(
+	      64 && form_class_value !== (form_class_value = "quick-add".concat(
 	      /*loading*/
-	      ctx[9] ? " icon-loading" : ""))) {
+	      ctx[6] ? " icon-loading" : ""))) {
 	        attr(form, "class", form_class_value);
 	      }
 	    },
@@ -11787,14 +11898,12 @@
 	      if (current) return;
 	      transition_in(select0.$$.fragment, local);
 	      transition_in(select1.$$.fragment, local);
-	      transition_in(select2.$$.fragment, local);
 	      current = true;
 	    },
 
 	    o(local) {
 	      transition_out(select0.$$.fragment, local);
 	      transition_out(select1.$$.fragment, local);
-	      transition_out(select2.$$.fragment, local);
 	      current = false;
 	    },
 
@@ -11802,13 +11911,16 @@
 	      if (detaching) detach(form);
 	      destroy_component(select0);
 	      destroy_component(select1);
-	      destroy_component(select2);
 	      mounted = false;
 	      run_all(dispose);
 	    }
 
 	  };
 	}
+
+	var func_1 = function func_1(item) {
+	  return item.project.label;
+	};
 
 	function instance$i($$self, $$props, $$invalidate) {
 	  var action = $$props.action;
@@ -11821,8 +11933,13 @@
 	  var date = initialDate;
 	  var note;
 	  var client;
-	  var project;
 	  var task;
+	  var tasksWithProject = tasks.map(function (aTask) {
+	    aTask.project = projects.find(function (aProject) {
+	      return aProject.value === aTask.projectUuid;
+	    });
+	    return aTask;
+	  });
 
 	  var save = /*#__PURE__*/function () {
 	    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -11831,16 +11948,16 @@
 	        while (1) {
 	          switch (_context.prev = _context.next) {
 	            case 0:
-	              $$invalidate(9, loading = true);
-	              $$invalidate(10, taskError = false);
+	              $$invalidate(6, loading = true);
+	              $$invalidate(7, taskError = false);
 
 	              if (task) {
 	                _context.next = 6;
 	                break;
 	              }
 
-	              $$invalidate(9, loading = false);
-	              $$invalidate(10, taskError = true);
+	              $$invalidate(6, loading = false);
+	              $$invalidate(7, taskError = true);
 	              return _context.abrupt("return");
 
 	            case 6:
@@ -11878,7 +11995,7 @@
 	              console.error(_context.t0);
 
 	            case 17:
-	              $$invalidate(9, loading = false);
+	              $$invalidate(6, loading = false);
 
 	            case 18:
 	            case "end":
@@ -11894,49 +12011,40 @@
 	  }();
 
 	  function input0_input_handler() {
-	    note = this.value;
-	    $$invalidate(5, note);
+	    duration = to_number(this.value);
+	    $$invalidate(1, duration);
 	  }
 
 	  function input1_input_handler() {
-	    duration = to_number(this.value);
-	    $$invalidate(3, duration);
+	    note = this.value;
+	    $$invalidate(3, note);
 	  }
 
 	  function input2_input_handler() {
 	    date = this.value;
-	    $$invalidate(4, date);
+	    $$invalidate(2, date);
 	  }
 
 	  function select0_selectedValue_binding(value) {
 	    client = value;
-	    $$invalidate(6, client);
+	    $$invalidate(4, client);
 	  }
 
-	  var func = function func(oneProject) {
-	    return client && oneProject.clientUuid === client.value;
+	  var func = function func(oneTask) {
+	    return client && oneTask.project.clientUuid === client.value;
 	  };
 
 	  function select1_selectedValue_binding(value) {
-	    project = value;
-	    $$invalidate(7, project);
-	  }
-
-	  var func_1 = function func_1(oneTask) {
-	    return project && oneTask.projectUuid === project.value;
-	  };
-
-	  function select2_selectedValue_binding(value) {
 	    task = value;
-	    $$invalidate(8, task);
+	    $$invalidate(5, task);
 	  }
 
 	  $$self.$set = function ($$props) {
-	    if ("action" in $$props) $$invalidate(12, action = $$props.action);
-	    if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+	    if ("action" in $$props) $$invalidate(10, action = $$props.action);
+	    if ("requestToken" in $$props) $$invalidate(11, requestToken = $$props.requestToken);
 	    if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-	    if ("projects" in $$props) $$invalidate(1, projects = $$props.projects);
-	    if ("tasks" in $$props) $$invalidate(2, tasks = $$props.tasks);
+	    if ("projects" in $$props) $$invalidate(12, projects = $$props.projects);
+	    if ("tasks" in $$props) $$invalidate(13, tasks = $$props.tasks);
 	    if ("initialDate" in $$props) $$invalidate(14, initialDate = $$props.initialDate);
 	  };
 
@@ -11946,11 +12054,11 @@
 
 	   show = false;
 
-	   $$invalidate(9, loading = false);
+	   $$invalidate(6, loading = false);
 
-	   $$invalidate(10, taskError = false);
+	   $$invalidate(7, taskError = false);
 
-	  return [clients, projects, tasks, duration, date, note, client, project, task, loading, taskError, save, action, requestToken, initialDate, show, input0_input_handler, input1_input_handler, input2_input_handler, select0_selectedValue_binding, func, select1_selectedValue_binding, func_1, select2_selectedValue_binding];
+	  return [clients, duration, date, note, client, task, loading, taskError, tasksWithProject, save, action, requestToken, projects, tasks, initialDate, show, input0_input_handler, input1_input_handler, input2_input_handler, select0_selectedValue_binding, func, select1_selectedValue_binding];
 	}
 
 	var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -11965,11 +12073,11 @@
 
 	    _this = _super.call(this);
 	    init(_assertThisInitialized(_this), options, instance$i, create_fragment$i, safe_not_equal, {
-	      action: 12,
-	      requestToken: 13,
+	      action: 10,
+	      requestToken: 11,
 	      clients: 0,
-	      projects: 1,
-	      tasks: 2,
+	      projects: 12,
+	      tasks: 13,
 	      initialDate: 14
 	    });
 	    return _this;

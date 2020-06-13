@@ -265,6 +265,16 @@ label {
 			margin-right: 12px;
 		}
 
+		> .actions {
+			display: flex;
+			align-items: flex-end;
+
+			button {
+				flex-shrink: 0;
+				margin-bottom: 0;
+			}
+		}
+
 		.parents {
 			margin-right: 12px;
 			width: 100%;
