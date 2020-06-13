@@ -1691,14 +1691,12 @@
 	}
 
 	function instance($$self) {
-	  onMount(function () {
-	    // Subscribe to changes of the viewmode
-	    console.log("Mount");
-	  });
-	  onDestroy(function () {
-	    // Unsubscribe from store to avoid memory leaks
-	    console.log("Unmount");
-	  });
+	  onMount(function () {}); // Subscribe to changes of the viewmode
+	  // console.log("Mount")
+
+	  onDestroy(function () {}); // Unsubscribe from store to avoid memory leaks
+	  // console.log("Unmount")
+
 	  return [];
 	}
 

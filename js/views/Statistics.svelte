@@ -3,12 +3,12 @@
 
 	onMount(() => {
 		// Subscribe to changes of the viewmode
-		console.log("Mount")
+		// console.log("Mount")
 	});
 
 	onDestroy(() => {
 		// Unsubscribe from store to avoid memory leaks
-		console.log("Unmount")
+		// console.log("Unmount")
 	});
 </script>
 
