@@ -6,6 +6,7 @@ import TimeEditorDialog from "./views/TimeEditorDialog.svelte";
 import DeleteButton from "./views/DeleteButton.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
 import QuickAdd from "./views/QuickAdd.svelte";
+import Checkmark from "./views/Checkmark.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -143,6 +144,24 @@ const init = () => {
 			},
 		})
 	);
+
+	const checkmarkButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='Checkmark.svelte']");
+	if (checkmarkButtons && checkmarkButtons.length > 0) {
+		checkmarkButtons.forEach((button) => {
+			components.push(
+				new Checkmark({
+					target: Helpers.replaceNode(button),
+					props: {
+						...store,
+						uuid: button.getAttribute("data-uuid"),
+						action: button.getAttribute("data-action"),
+						initialState: button.getAttribute("data-initialState"),
+						requestToken: window.OC.requestToken,
+					},
+				})
+			);
+		});
+	}
 };
 
 init();

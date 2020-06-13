@@ -88,7 +88,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 								class="tm_item-row"
 								data-remove-on-delete="<?php p($time->getUuid()); ?>"
 							>
-								<h3><?php p($time->getDurationInHours()); ?> hrs.
+								<h3>
 									<?php
 										$paymentStatus = 'unpaid';
 										$paymentAction = 'paid';
@@ -97,7 +97,20 @@ $urlGenerator = \OC::$server->getURLGenerator();
 											$paymentAction = 'unpaid';
 										}
 									?>
-									<form action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>" method="post" style="display: inline">
+									<span
+										data-svelte="Checkmark.svelte"
+										data-uuid="<?php p($time->getUuid()); ?>"
+										data-action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>"
+										data-initialState="<?php p($paymentStatus); ?>"
+									>
+									</span>
+									<?php p($time->getDurationInHours()); ?> hrs.
+									<form
+										action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>"
+										method="post"
+										style="display: inline"
+										data-svelte-hide="Checkmark.svelte"
+									>
 										<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
 										<input type="hidden" name="task" value="<?php p($_['task']->getUuid()); ?>" />
 										<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />

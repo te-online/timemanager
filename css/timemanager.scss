@@ -310,6 +310,16 @@ label {
 			margin-top: 12px;
 		}
 	}
+
+	.checkbox-action label {
+		display: inline;
+	}
+
+	.checkbox-action-loading.icon-loading:after {
+		height: 8px;
+		width: 8px;
+		margin: -6px 0 0 -44px;
+	}
 }
 
 .oc-dialog-buttonrow.reverse {

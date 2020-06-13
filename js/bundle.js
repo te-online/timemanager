@@ -11934,12 +11934,12 @@
 	  var note;
 	  var client;
 	  var task;
-	  var tasksWithProject = tasks.map(function (aTask) {
+	  var tasksWithProject = tasks && tasks.length ? tasks.map(function (aTask) {
 	    aTask.project = projects.find(function (aProject) {
 	      return aProject.value === aTask.projectUuid;
 	    });
 	    return aTask;
-	  });
+	  }) : [];
 
 	  var save = /*#__PURE__*/function () {
 	    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -12084,6 +12084,286 @@
 	  }
 
 	  return QuickAdd;
+	}(SvelteComponent);
+
+	var createProperty = function (object, key, value) {
+	  var propertyKey = toPrimitive(key);
+	  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));else object[propertyKey] = value;
+	};
+
+	var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
+	var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
+	var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded'; // We can't use this feature detection in V8 since it causes
+	// deoptimization and serious performance degradation
+	// https://github.com/zloirock/core-js/issues/679
+
+	var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
+	  var array = [];
+	  array[IS_CONCAT_SPREADABLE] = false;
+	  return array.concat()[0] !== array;
+	});
+	var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
+
+	var isConcatSpreadable = function (O) {
+	  if (!isObject(O)) return false;
+	  var spreadable = O[IS_CONCAT_SPREADABLE];
+	  return spreadable !== undefined ? !!spreadable : isArray(O);
+	};
+
+	var FORCED$1 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT; // `Array.prototype.concat` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.concat
+	// with adding support of @@isConcatSpreadable and @@species
+
+	_export({
+	  target: 'Array',
+	  proto: true,
+	  forced: FORCED$1
+	}, {
+	  concat: function concat(arg) {
+	    // eslint-disable-line no-unused-vars
+	    var O = toObject(this);
+	    var A = arraySpeciesCreate(O, 0);
+	    var n = 0;
+	    var i, k, length, len, E;
+
+	    for (i = -1, length = arguments.length; i < length; i++) {
+	      E = i === -1 ? O : arguments[i];
+
+	      if (isConcatSpreadable(E)) {
+	        len = toLength(E.length);
+	        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+
+	        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
+	      } else {
+	        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+	        createProperty(A, n++, E);
+	      }
+	    }
+
+	    A.length = n;
+	    return A;
+	  }
+	});
+
+	function create_fragment$j(ctx) {
+	  var span0;
+	  var input;
+	  var input_id_value;
+	  var input_checked_value;
+	  var t0;
+	  var label;
+	  var label_for_value;
+	  var t1;
+	  var span1;
+	  var span1_class_value;
+	  var mounted;
+	  var dispose;
+	  return {
+	    c() {
+	      span0 = element("span");
+	      input = element("input");
+	      t0 = space();
+	      label = element("label");
+	      t1 = space();
+	      span1 = element("span");
+	      attr(input, "type", "checkbox");
+	      attr(input, "id", input_id_value = "check_".concat(
+	      /*uuid*/
+	      ctx[0]));
+	      attr(input, "class", "checkbox");
+	      input.checked = input_checked_value =
+	      /*initialState*/
+	      ctx[1] === "paid";
+	      input.disabled =
+	      /*loading*/
+	      ctx[3];
+	      attr(label, "for", label_for_value = "check_".concat(
+	      /*uuid*/
+	      ctx[0]));
+	      attr(span0, "class", "checkbox-action");
+	      attr(span1, "class", span1_class_value = "checkbox-action-loading".concat(
+	      /*loading*/
+	      ctx[3] ? " icon-loading" : ""));
+	    },
+
+	    m(target, anchor) {
+	      insert(target, span0, anchor);
+	      append(span0, input);
+	      append(span0, t0);
+	      append(span0, label);
+	      insert(target, t1, anchor);
+	      insert(target, span1, anchor);
+
+	      if (!mounted) {
+	        dispose = listen(input, "change", prevent_default(
+	        /*change_handler*/
+	        ctx[7]));
+	        mounted = true;
+	      }
+	    },
+
+	    p(ctx, _ref) {
+	      var _ref2 = _slicedToArray(_ref, 1),
+	          dirty = _ref2[0];
+
+	      if (dirty &
+	      /*uuid*/
+	      1 && input_id_value !== (input_id_value = "check_".concat(
+	      /*uuid*/
+	      ctx[0]))) {
+	        attr(input, "id", input_id_value);
+	      }
+
+	      if (dirty &
+	      /*initialState*/
+	      2 && input_checked_value !== (input_checked_value =
+	      /*initialState*/
+	      ctx[1] === "paid")) {
+	        input.checked = input_checked_value;
+	      }
+
+	      if (dirty &
+	      /*loading*/
+	      8) {
+	        input.disabled =
+	        /*loading*/
+	        ctx[3];
+	      }
+
+	      if (dirty &
+	      /*uuid*/
+	      1 && label_for_value !== (label_for_value = "check_".concat(
+	      /*uuid*/
+	      ctx[0]))) {
+	        attr(label, "for", label_for_value);
+	      }
+
+	      if (dirty &
+	      /*loading*/
+	      8 && span1_class_value !== (span1_class_value = "checkbox-action-loading".concat(
+	      /*loading*/
+	      ctx[3] ? " icon-loading" : ""))) {
+	        attr(span1, "class", span1_class_value);
+	      }
+	    },
+
+	    i: noop,
+	    o: noop,
+
+	    d(detaching) {
+	      if (detaching) detach(span0);
+	      if (detaching) detach(t1);
+	      if (detaching) detach(span1);
+	      mounted = false;
+	      dispose();
+	    }
+
+	  };
+	}
+
+	function instance$j($$self, $$props, $$invalidate) {
+	  var uuid = $$props.uuid;
+	  var initialState = $$props.initialState;
+	  var action = $$props.action;
+	  var requestToken = $$props.requestToken;
+	  var state = initialState;
+	  onMount(function () {
+	    Helpers.hideFallbacks("Checkmark.svelte");
+	  });
+
+	  var save = /*#__PURE__*/function () {
+	    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+	      var response;
+	      return regeneratorRuntime.wrap(function _callee$(_context) {
+	        while (1) {
+	          switch (_context.prev = _context.next) {
+	            case 0:
+	              $$invalidate(3, loading = true);
+	              _context.prev = 1;
+	              _context.next = 4;
+	              return fetch("".concat(action, "/").concat(state), {
+	                method: "POST",
+	                body: JSON.stringify({
+	                  uuid
+	                }),
+	                headers: {
+	                  requesttoken: requestToken,
+	                  "content-type": "application/json"
+	                }
+	              });
+
+	            case 4:
+	              response = _context.sent;
+
+	              if (!response || !response.ok) {
+	                // Roll back selection
+	                $$invalidate(2, state = state === "paid" ? "unpaid" : "paid");
+	              }
+
+	              _context.next = 11;
+	              break;
+
+	            case 8:
+	              _context.prev = 8;
+	              _context.t0 = _context["catch"](1);
+	              console.error(_context.t0);
+
+	            case 11:
+	              $$invalidate(3, loading = false);
+
+	            case 12:
+	            case "end":
+	              return _context.stop();
+	          }
+	        }
+	      }, _callee, null, [[1, 8]]);
+	    }));
+
+	    return function save() {
+	      return _ref3.apply(this, arguments);
+	    };
+	  }();
+
+	  var change_handler = function change_handler() {
+	    $$invalidate(2, state = state === "paid" ? "unpaid" : "paid");
+	    save();
+	  };
+
+	  $$self.$set = function ($$props) {
+	    if ("uuid" in $$props) $$invalidate(0, uuid = $$props.uuid);
+	    if ("initialState" in $$props) $$invalidate(1, initialState = $$props.initialState);
+	    if ("action" in $$props) $$invalidate(5, action = $$props.action);
+	    if ("requestToken" in $$props) $$invalidate(6, requestToken = $$props.requestToken);
+	  };
+
+	  var loading;
+
+	   $$invalidate(3, loading = false);
+
+	  return [uuid, initialState, state, loading, save, action, requestToken, change_handler];
+	}
+
+	var Checkmark = /*#__PURE__*/function (_SvelteComponent) {
+	  _inherits(Checkmark, _SvelteComponent);
+
+	  var _super = _createSuper(Checkmark);
+
+	  function Checkmark(options) {
+	    var _this;
+
+	    _classCallCheck(this, Checkmark);
+
+	    _this = _super.call(this);
+	    init(_assertThisInitialized(_this), options, instance$j, create_fragment$j, safe_not_equal, {
+	      uuid: 0,
+	      initialState: 1,
+	      action: 5,
+	      requestToken: 6
+	    });
+	    return _this;
+	  }
+
+	  return Checkmark;
 	}(SvelteComponent);
 
 	/* global HTMLCollection: true */
@@ -13210,6 +13490,21 @@
 	      requestToken: window.OC.requestToken
 	    })
 	  }));
+	  var checkmarkButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='Checkmark.svelte']");
+
+	  if (checkmarkButtons && checkmarkButtons.length > 0) {
+	    checkmarkButtons.forEach(function (button) {
+	      components.push(new Checkmark({
+	        target: Helpers.replaceNode(button),
+	        props: _objectSpread2(_objectSpread2({}, store), {}, {
+	          uuid: button.getAttribute("data-uuid"),
+	          action: button.getAttribute("data-action"),
+	          initialState: button.getAttribute("data-initialState"),
+	          requestToken: window.OC.requestToken
+	        })
+	      }));
+	    });
+	  }
 	};
 
 	init$1();
