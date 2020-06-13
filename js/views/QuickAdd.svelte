@@ -20,10 +20,13 @@
 	let client;
 	let task;
 
-	const tasksWithProject = tasks.map((aTask) => {
-		aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
-		return aTask;
-	});
+	const tasksWithProject =
+		tasks && tasks.length
+			? tasks.map((aTask) => {
+					aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
+					return aTask;
+			  })
+			: [];
 
 	const save = async () => {
 		loading = true;
