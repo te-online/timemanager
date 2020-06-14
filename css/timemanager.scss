@@ -320,6 +320,52 @@ label {
 		width: 8px;
 		margin: -6px 0 0 -44px;
 	}
+
+	.statistics {
+		.top-stats {
+			display: flex;
+			justify-content: space-around;
+
+			figure {
+				font-size: 28px;
+
+				figcaption {
+					padding-bottom: 12px;
+				}
+			}
+		}
+
+		.hours-per-week {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			height: 40vh;
+			width: 100%;
+			margin-top: 12px;
+
+			.column {
+				height: calc(100% - 75px);
+				align-self: flex-end;
+				width: 100%;
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				flex-flow: column;
+				// .column-inner
+				&-inner {
+					background: var(--color-primary-element);
+					margin-bottom: 12px;
+					flex-shrink: 0;
+					flex-grow: 0;
+					width: calc(100% - 24px);
+				}
+			}
+
+			.date-label,
+			.hours-label {
+				opacity: 0.57;
+			}
+		}
+	}
 }
 
 .oc-dialog-buttonrow.reverse {

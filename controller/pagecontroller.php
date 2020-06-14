@@ -135,6 +135,7 @@ class PageController extends Controller {
 				}, $all_tasks),
 				'initialDate' => date('Y-m-d'),
 				'action' => $urlGenerator->linkToRoute('timemanager.page.times'),
+				'statsApiUrl' => $urlGenerator->linkToRoute('timemanager.t_api.getHoursInPeriodStats'),
 				'requestToken' => $requestToken,
 				'isServer' => true,
 			]),

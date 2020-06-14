@@ -217,4 +217,20 @@ class TApiController extends ApiController {
 		// 	res.status(500).send(JSON.stringify([{ "error": err.error }], null, 2));
 		// });
 	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function getHoursInPeriodStats($start, $end) {
+		// Get all time entries for time period
+		$times = $this->timeMapper->getActiveObjectsByDateRange($start, $end);
+		$sum = 0;
+
+		// Calculate sum
+		foreach ($times as $time) {
+			$sum += $time->getDurationInHours();
+		}
+
+		return new DataResponse(['total' => $sum]);
+	}
 }

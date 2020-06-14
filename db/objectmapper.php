@@ -58,6 +58,23 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, [$this->userId, 'deleted', $value]);
 	}
 
+	/**
+	 * Fetch all items that are associated to the current user
+	 * with a given attribute-value-combination and not deleted
+	 *
+	 * @param string $attr the attribute name
+	 * @param string $value the attribute value
+	 * @return Object[] list if matching items
+	 */
+	function getActiveObjectsByDateRange($date_start, $date_end, $orderby = "start") {
+		$sql = 'SELECT * ' .
+				'FROM `' . $this->tableName . '` ' .
+				'WHERE `user_id` = ? AND `status` != ? ' .
+				'AND start >= ? AND start <= ? ' .
+				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
+		return $this->findEntities($sql, [$this->userId, 'deleted', $date_start, $date_end]);
+	}
+
 	function getObjectById($uuid) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .

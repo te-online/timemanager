@@ -1070,653 +1070,154 @@
 	  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	}
 
-	function noop() { }
-	function assign(tar, src) {
-	    // @ts-ignore
-	    for (const k in src)
-	        tar[k] = src[k];
-	    return tar;
-	}
-	function run(fn) {
-	    return fn();
-	}
-	function blank_object() {
-	    return Object.create(null);
-	}
-	function run_all(fns) {
-	    fns.forEach(run);
-	}
-	function is_function(thing) {
-	    return typeof thing === 'function';
-	}
-	function safe_not_equal(a, b) {
-	    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
-	}
-	function create_slot(definition, ctx, $$scope, fn) {
-	    if (definition) {
-	        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
-	        return definition[0](slot_ctx);
-	    }
-	}
-	function get_slot_context(definition, ctx, $$scope, fn) {
-	    return definition[1] && fn
-	        ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
-	        : $$scope.ctx;
-	}
-	function get_slot_changes(definition, $$scope, dirty, fn) {
-	    if (definition[2] && fn) {
-	        const lets = definition[2](fn(dirty));
-	        if ($$scope.dirty === undefined) {
-	            return lets;
-	        }
-	        if (typeof lets === 'object') {
-	            const merged = [];
-	            const len = Math.max($$scope.dirty.length, lets.length);
-	            for (let i = 0; i < len; i += 1) {
-	                merged[i] = $$scope.dirty[i] | lets[i];
-	            }
-	            return merged;
-	        }
-	        return $$scope.dirty | lets;
-	    }
-	    return $$scope.dirty;
-	}
-	function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
-	    const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
-	    if (slot_changes) {
-	        const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
-	        slot.p(slot_context, slot_changes);
-	    }
-	}
+	var createProperty = function (object, key, value) {
+	  var propertyKey = toPrimitive(key);
+	  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));else object[propertyKey] = value;
+	};
 
-	function append(target, node) {
-	    target.appendChild(node);
-	}
-	function insert(target, node, anchor) {
-	    target.insertBefore(node, anchor || null);
-	}
-	function detach(node) {
-	    node.parentNode.removeChild(node);
-	}
-	function destroy_each(iterations, detaching) {
-	    for (let i = 0; i < iterations.length; i += 1) {
-	        if (iterations[i])
-	            iterations[i].d(detaching);
-	    }
-	}
-	function element(name) {
-	    return document.createElement(name);
-	}
-	function text(data) {
-	    return document.createTextNode(data);
-	}
-	function space() {
-	    return text(' ');
-	}
-	function empty() {
-	    return text('');
-	}
-	function listen(node, event, handler, options) {
-	    node.addEventListener(event, handler, options);
-	    return () => node.removeEventListener(event, handler, options);
-	}
-	function prevent_default(fn) {
-	    return function (event) {
-	        event.preventDefault();
-	        // @ts-ignore
-	        return fn.call(this, event);
-	    };
-	}
-	function attr(node, attribute, value) {
-	    if (value == null)
-	        node.removeAttribute(attribute);
-	    else if (node.getAttribute(attribute) !== value)
-	        node.setAttribute(attribute, value);
-	}
-	function set_attributes(node, attributes) {
-	    // @ts-ignore
-	    const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
-	    for (const key in attributes) {
-	        if (attributes[key] == null) {
-	            node.removeAttribute(key);
-	        }
-	        else if (key === 'style') {
-	            node.style.cssText = attributes[key];
-	        }
-	        else if (key === '__value') {
-	            node.value = node[key] = attributes[key];
-	        }
-	        else if (descriptors[key] && descriptors[key].set) {
-	            node[key] = attributes[key];
-	        }
-	        else {
-	            attr(node, key, attributes[key]);
-	        }
-	    }
-	}
-	function set_custom_element_data(node, prop, value) {
-	    if (prop in node) {
-	        node[prop] = value;
-	    }
-	    else {
-	        attr(node, prop, value);
-	    }
-	}
-	function to_number(value) {
-	    return value === '' ? undefined : +value;
-	}
-	function children(element) {
-	    return Array.from(element.childNodes);
-	}
-	function set_data(text, data) {
-	    data = '' + data;
-	    if (text.data !== data)
-	        text.data = data;
-	}
-	function set_input_value(input, value) {
-	    input.value = value == null ? '' : value;
-	}
-	function set_style(node, key, value, important) {
-	    node.style.setProperty(key, value, important ? 'important' : '');
-	}
-	// unfortunately this can't be a constant as that wouldn't be tree-shakeable
-	// so we cache the result instead
-	let crossorigin;
-	function is_crossorigin() {
-	    if (crossorigin === undefined) {
-	        crossorigin = false;
-	        try {
-	            if (typeof window !== 'undefined' && window.parent) {
-	                void window.parent.document;
-	            }
-	        }
-	        catch (error) {
-	            crossorigin = true;
-	        }
-	    }
-	    return crossorigin;
-	}
-	function add_resize_listener(node, fn) {
-	    const computed_style = getComputedStyle(node);
-	    const z_index = (parseInt(computed_style.zIndex) || 0) - 1;
-	    if (computed_style.position === 'static') {
-	        node.style.position = 'relative';
-	    }
-	    const iframe = element('iframe');
-	    iframe.setAttribute('style', `display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ` +
-	        `overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: ${z_index};`);
-	    iframe.setAttribute('aria-hidden', 'true');
-	    iframe.tabIndex = -1;
-	    const crossorigin = is_crossorigin();
-	    let unsubscribe;
-	    if (crossorigin) {
-	        iframe.src = `data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>`;
-	        unsubscribe = listen(window, 'message', (event) => {
-	            if (event.source === iframe.contentWindow)
-	                fn();
-	        });
-	    }
-	    else {
-	        iframe.src = 'about:blank';
-	        iframe.onload = () => {
-	            unsubscribe = listen(iframe.contentWindow, 'resize', fn);
-	        };
-	    }
-	    append(node, iframe);
-	    return () => {
-	        if (crossorigin) {
-	            unsubscribe();
-	        }
-	        else if (unsubscribe && iframe.contentWindow) {
-	            unsubscribe();
-	        }
-	        detach(iframe);
-	    };
-	}
-	function toggle_class(element, name, toggle) {
-	    element.classList[toggle ? 'add' : 'remove'](name);
-	}
-	function custom_event(type, detail) {
-	    const e = document.createEvent('CustomEvent');
-	    e.initCustomEvent(type, false, false, detail);
-	    return e;
-	}
+	var engineUserAgent = getBuiltIn('navigator', 'userAgent') || '';
 
-	let current_component;
-	function set_current_component(component) {
-	    current_component = component;
-	}
-	function get_current_component() {
-	    if (!current_component)
-	        throw new Error(`Function called outside component initialization`);
-	    return current_component;
-	}
-	function beforeUpdate(fn) {
-	    get_current_component().$$.before_update.push(fn);
-	}
-	function onMount(fn) {
-	    get_current_component().$$.on_mount.push(fn);
-	}
-	function onDestroy(fn) {
-	    get_current_component().$$.on_destroy.push(fn);
-	}
-	function createEventDispatcher() {
-	    const component = get_current_component();
-	    return (type, detail) => {
-	        const callbacks = component.$$.callbacks[type];
-	        if (callbacks) {
-	            // TODO are there situations where events could be dispatched
-	            // in a server (non-DOM) environment?
-	            const event = custom_event(type, detail);
-	            callbacks.slice().forEach(fn => {
-	                fn.call(component, event);
-	            });
-	        }
-	    };
-	}
+	var process = global_1.process;
+	var versions = process && process.versions;
+	var v8 = versions && versions.v8;
+	var match, version;
 
-	const dirty_components = [];
-	const binding_callbacks = [];
-	const render_callbacks = [];
-	const flush_callbacks = [];
-	const resolved_promise = Promise.resolve();
-	let update_scheduled = false;
-	function schedule_update() {
-	    if (!update_scheduled) {
-	        update_scheduled = true;
-	        resolved_promise.then(flush);
-	    }
-	}
-	function tick() {
-	    schedule_update();
-	    return resolved_promise;
-	}
-	function add_render_callback(fn) {
-	    render_callbacks.push(fn);
-	}
-	function add_flush_callback(fn) {
-	    flush_callbacks.push(fn);
-	}
-	let flushing = false;
-	const seen_callbacks = new Set();
-	function flush() {
-	    if (flushing)
-	        return;
-	    flushing = true;
-	    do {
-	        // first, call beforeUpdate functions
-	        // and update components
-	        for (let i = 0; i < dirty_components.length; i += 1) {
-	            const component = dirty_components[i];
-	            set_current_component(component);
-	            update(component.$$);
-	        }
-	        dirty_components.length = 0;
-	        while (binding_callbacks.length)
-	            binding_callbacks.pop()();
-	        // then, once components are updated, call
-	        // afterUpdate functions. This may cause
-	        // subsequent updates...
-	        for (let i = 0; i < render_callbacks.length; i += 1) {
-	            const callback = render_callbacks[i];
-	            if (!seen_callbacks.has(callback)) {
-	                // ...so guard against infinite loops
-	                seen_callbacks.add(callback);
-	                callback();
-	            }
-	        }
-	        render_callbacks.length = 0;
-	    } while (dirty_components.length);
-	    while (flush_callbacks.length) {
-	        flush_callbacks.pop()();
-	    }
-	    update_scheduled = false;
-	    flushing = false;
-	    seen_callbacks.clear();
-	}
-	function update($$) {
-	    if ($$.fragment !== null) {
-	        $$.update();
-	        run_all($$.before_update);
-	        const dirty = $$.dirty;
-	        $$.dirty = [-1];
-	        $$.fragment && $$.fragment.p($$.ctx, dirty);
-	        $$.after_update.forEach(add_render_callback);
-	    }
-	}
-	const outroing = new Set();
-	let outros;
-	function group_outros() {
-	    outros = {
-	        r: 0,
-	        c: [],
-	        p: outros // parent group
-	    };
-	}
-	function check_outros() {
-	    if (!outros.r) {
-	        run_all(outros.c);
-	    }
-	    outros = outros.p;
-	}
-	function transition_in(block, local) {
-	    if (block && block.i) {
-	        outroing.delete(block);
-	        block.i(local);
-	    }
-	}
-	function transition_out(block, local, detach, callback) {
-	    if (block && block.o) {
-	        if (outroing.has(block))
-	            return;
-	        outroing.add(block);
-	        outros.c.push(() => {
-	            outroing.delete(block);
-	            if (callback) {
-	                if (detach)
-	                    block.d(1);
-	                callback();
-	            }
-	        });
-	        block.o(local);
-	    }
-	}
+	if (v8) {
+	  match = v8.split('.');
+	  version = match[0] + match[1];
+	} else if (engineUserAgent) {
+	  match = engineUserAgent.match(/Edge\/(\d+)/);
 
-	const globals = (typeof window !== 'undefined'
-	    ? window
-	    : typeof globalThis !== 'undefined'
-	        ? globalThis
-	        : global);
-	function outro_and_destroy_block(block, lookup) {
-	    transition_out(block, 1, 1, () => {
-	        lookup.delete(block.key);
-	    });
-	}
-	function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
-	    let o = old_blocks.length;
-	    let n = list.length;
-	    let i = o;
-	    const old_indexes = {};
-	    while (i--)
-	        old_indexes[old_blocks[i].key] = i;
-	    const new_blocks = [];
-	    const new_lookup = new Map();
-	    const deltas = new Map();
-	    i = n;
-	    while (i--) {
-	        const child_ctx = get_context(ctx, list, i);
-	        const key = get_key(child_ctx);
-	        let block = lookup.get(key);
-	        if (!block) {
-	            block = create_each_block(key, child_ctx);
-	            block.c();
-	        }
-	        else if (dynamic) {
-	            block.p(child_ctx, dirty);
-	        }
-	        new_lookup.set(key, new_blocks[i] = block);
-	        if (key in old_indexes)
-	            deltas.set(key, Math.abs(i - old_indexes[key]));
-	    }
-	    const will_move = new Set();
-	    const did_move = new Set();
-	    function insert(block) {
-	        transition_in(block, 1);
-	        block.m(node, next);
-	        lookup.set(block.key, block);
-	        next = block.first;
-	        n--;
-	    }
-	    while (o && n) {
-	        const new_block = new_blocks[n - 1];
-	        const old_block = old_blocks[o - 1];
-	        const new_key = new_block.key;
-	        const old_key = old_block.key;
-	        if (new_block === old_block) {
-	            // do nothing
-	            next = new_block.first;
-	            o--;
-	            n--;
-	        }
-	        else if (!new_lookup.has(old_key)) {
-	            // remove old block
-	            destroy(old_block, lookup);
-	            o--;
-	        }
-	        else if (!lookup.has(new_key) || will_move.has(new_key)) {
-	            insert(new_block);
-	        }
-	        else if (did_move.has(old_key)) {
-	            o--;
-	        }
-	        else if (deltas.get(new_key) > deltas.get(old_key)) {
-	            did_move.add(new_key);
-	            insert(new_block);
-	        }
-	        else {
-	            will_move.add(old_key);
-	            o--;
-	        }
-	    }
-	    while (o--) {
-	        const old_block = old_blocks[o];
-	        if (!new_lookup.has(old_block.key))
-	            destroy(old_block, lookup);
-	    }
-	    while (n)
-	        insert(new_blocks[n - 1]);
-	    return new_blocks;
-	}
-
-	function get_spread_update(levels, updates) {
-	    const update = {};
-	    const to_null_out = {};
-	    const accounted_for = { $$scope: 1 };
-	    let i = levels.length;
-	    while (i--) {
-	        const o = levels[i];
-	        const n = updates[i];
-	        if (n) {
-	            for (const key in o) {
-	                if (!(key in n))
-	                    to_null_out[key] = 1;
-	            }
-	            for (const key in n) {
-	                if (!accounted_for[key]) {
-	                    update[key] = n[key];
-	                    accounted_for[key] = 1;
-	                }
-	            }
-	            levels[i] = n;
-	        }
-	        else {
-	            for (const key in o) {
-	                accounted_for[key] = 1;
-	            }
-	        }
-	    }
-	    for (const key in to_null_out) {
-	        if (!(key in update))
-	            update[key] = undefined;
-	    }
-	    return update;
-	}
-
-	function bind(component, name, callback) {
-	    const index = component.$$.props[name];
-	    if (index !== undefined) {
-	        component.$$.bound[index] = callback;
-	        callback(component.$$.ctx[index]);
-	    }
-	}
-	function create_component(block) {
-	    block && block.c();
-	}
-	function mount_component(component, target, anchor) {
-	    const { fragment, on_mount, on_destroy, after_update } = component.$$;
-	    fragment && fragment.m(target, anchor);
-	    // onMount happens before the initial afterUpdate
-	    add_render_callback(() => {
-	        const new_on_destroy = on_mount.map(run).filter(is_function);
-	        if (on_destroy) {
-	            on_destroy.push(...new_on_destroy);
-	        }
-	        else {
-	            // Edge case - component was destroyed immediately,
-	            // most likely as a result of a binding initialising
-	            run_all(new_on_destroy);
-	        }
-	        component.$$.on_mount = [];
-	    });
-	    after_update.forEach(add_render_callback);
-	}
-	function destroy_component(component, detaching) {
-	    const $$ = component.$$;
-	    if ($$.fragment !== null) {
-	        run_all($$.on_destroy);
-	        $$.fragment && $$.fragment.d(detaching);
-	        // TODO null out other refs, including component.$$ (but need to
-	        // preserve final state?)
-	        $$.on_destroy = $$.fragment = null;
-	        $$.ctx = [];
-	    }
-	}
-	function make_dirty(component, i) {
-	    if (component.$$.dirty[0] === -1) {
-	        dirty_components.push(component);
-	        schedule_update();
-	        component.$$.dirty.fill(0);
-	    }
-	    component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
-	}
-	function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
-	    const parent_component = current_component;
-	    set_current_component(component);
-	    const prop_values = options.props || {};
-	    const $$ = component.$$ = {
-	        fragment: null,
-	        ctx: null,
-	        // state
-	        props,
-	        update: noop,
-	        not_equal,
-	        bound: blank_object(),
-	        // lifecycle
-	        on_mount: [],
-	        on_destroy: [],
-	        before_update: [],
-	        after_update: [],
-	        context: new Map(parent_component ? parent_component.$$.context : []),
-	        // everything else
-	        callbacks: blank_object(),
-	        dirty
-	    };
-	    let ready = false;
-	    $$.ctx = instance
-	        ? instance(component, prop_values, (i, ret, ...rest) => {
-	            const value = rest.length ? rest[0] : ret;
-	            if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-	                if ($$.bound[i])
-	                    $$.bound[i](value);
-	                if (ready)
-	                    make_dirty(component, i);
-	            }
-	            return ret;
-	        })
-	        : [];
-	    $$.update();
-	    ready = true;
-	    run_all($$.before_update);
-	    // `false` as a special case of no DOM component
-	    $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
-	    if (options.target) {
-	        if (options.hydrate) {
-	            const nodes = children(options.target);
-	            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	            $$.fragment && $$.fragment.l(nodes);
-	            nodes.forEach(detach);
-	        }
-	        else {
-	            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	            $$.fragment && $$.fragment.c();
-	        }
-	        if (options.intro)
-	            transition_in(component.$$.fragment);
-	        mount_component(component, options.target, options.anchor);
-	        flush();
-	    }
-	    set_current_component(parent_component);
-	}
-	class SvelteComponent {
-	    $destroy() {
-	        destroy_component(this, 1);
-	        this.$destroy = noop;
-	    }
-	    $on(type, callback) {
-	        const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-	        callbacks.push(callback);
-	        return () => {
-	            const index = callbacks.indexOf(callback);
-	            if (index !== -1)
-	                callbacks.splice(index, 1);
-	        };
-	    }
-	    $set() {
-	        // overridden by instance, if it has props
-	    }
-	}
-
-	function create_fragment(ctx) {
-	  var section;
-	  return {
-	    c() {
-	      section = element("section");
-	      section.innerHTML = "<p>Coming soon</p>";
-	      attr(section, "class", "section");
-	    },
-
-	    m(target, anchor) {
-	      insert(target, section, anchor);
-	    },
-
-	    p: noop,
-	    i: noop,
-	    o: noop,
-
-	    d(detaching) {
-	      if (detaching) detach(section);
-	    }
-
-	  };
-	}
-
-	function instance($$self) {
-	  onMount(function () {}); // Subscribe to changes of the viewmode
-	  // console.log("Mount")
-
-	  onDestroy(function () {}); // Unsubscribe from store to avoid memory leaks
-	  // console.log("Unmount")
-
-	  return [];
-	}
-
-	var Statistics = /*#__PURE__*/function (_SvelteComponent) {
-	  _inherits(Statistics, _SvelteComponent);
-
-	  var _super = _createSuper(Statistics);
-
-	  function Statistics(options) {
-	    var _this;
-
-	    _classCallCheck(this, Statistics);
-
-	    _this = _super.call(this);
-	    init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {});
-	    return _this;
+	  if (!match || match[1] >= 74) {
+	    match = engineUserAgent.match(/Chrome\/(\d+)/);
+	    if (match) version = match[1];
 	  }
+	}
 
-	  return Statistics;
-	}(SvelteComponent);
+	var engineV8Version = version && +version;
+
+	var SPECIES$1 = wellKnownSymbol('species');
+
+	var arrayMethodHasSpeciesSupport = function (METHOD_NAME) {
+	  // We can't use this feature detection in V8 since it causes
+	  // deoptimization and serious performance degradation
+	  // https://github.com/zloirock/core-js/issues/677
+	  return engineV8Version >= 51 || !fails(function () {
+	    var array = [];
+	    var constructor = array.constructor = {};
+
+	    constructor[SPECIES$1] = function () {
+	      return {
+	        foo: 1
+	      };
+	    };
+
+	    return array[METHOD_NAME](Boolean).foo !== 1;
+	  });
+	};
+
+	var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
+	var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
+	var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded'; // We can't use this feature detection in V8 since it causes
+	// deoptimization and serious performance degradation
+	// https://github.com/zloirock/core-js/issues/679
+
+	var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
+	  var array = [];
+	  array[IS_CONCAT_SPREADABLE] = false;
+	  return array.concat()[0] !== array;
+	});
+	var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
+
+	var isConcatSpreadable = function (O) {
+	  if (!isObject(O)) return false;
+	  var spreadable = O[IS_CONCAT_SPREADABLE];
+	  return spreadable !== undefined ? !!spreadable : isArray(O);
+	};
+
+	var FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT; // `Array.prototype.concat` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.concat
+	// with adding support of @@isConcatSpreadable and @@species
+
+	_export({
+	  target: 'Array',
+	  proto: true,
+	  forced: FORCED
+	}, {
+	  concat: function concat(arg) {
+	    // eslint-disable-line no-unused-vars
+	    var O = toObject(this);
+	    var A = arraySpeciesCreate(O, 0);
+	    var n = 0;
+	    var i, k, length, len, E;
+
+	    for (i = -1, length = arguments.length; i < length; i++) {
+	      E = i === -1 ? O : arguments[i];
+
+	      if (isConcatSpreadable(E)) {
+	        len = toLength(E.length);
+	        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+
+	        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
+	      } else {
+	        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+	        createProperty(A, n++, E);
+	      }
+	    }
+
+	    A.length = n;
+	    return A;
+	  }
+	});
+
+	var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('slice');
+	var USES_TO_LENGTH$1 = arrayMethodUsesToLength('slice', {
+	  ACCESSORS: true,
+	  0: 0,
+	  1: 2
+	});
+	var SPECIES$2 = wellKnownSymbol('species');
+	var nativeSlice = [].slice;
+	var max$1 = Math.max; // `Array.prototype.slice` method
+	// https://tc39.github.io/ecma262/#sec-array.prototype.slice
+	// fallback for not array-like ES3 strings and DOM objects
+
+	_export({
+	  target: 'Array',
+	  proto: true,
+	  forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH$1
+	}, {
+	  slice: function slice(start, end) {
+	    var O = toIndexedObject(this);
+	    var length = toLength(O.length);
+	    var k = toAbsoluteIndex(start, length);
+	    var fin = toAbsoluteIndex(end === undefined ? length : end, length); // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
+
+	    var Constructor, result, n;
+
+	    if (isArray(O)) {
+	      Constructor = O.constructor; // cross-realm fallback
+
+	      if (typeof Constructor == 'function' && (Constructor === Array || isArray(Constructor.prototype))) {
+	        Constructor = undefined;
+	      } else if (isObject(Constructor)) {
+	        Constructor = Constructor[SPECIES$2];
+	        if (Constructor === null) Constructor = undefined;
+	      }
+
+	      if (Constructor === Array || Constructor === undefined) {
+	        return nativeSlice.call(O, k, fin);
+	      }
+	    }
+
+	    result = new (Constructor === undefined ? Array : Constructor)(max$1(fin - k, 0));
+
+	    for (n = 0; k < fin; k++, n++) if (k in O) createProperty(result, n, O[k]);
+
+	    result.length = n;
+	    return result;
+	  }
+	});
 
 	var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 	var test = {};
@@ -1789,14 +1290,14 @@
 	  }
 	};
 
-	var SPECIES$1 = wellKnownSymbol('species');
+	var SPECIES$3 = wellKnownSymbol('species');
 
 	var setSpecies = function (CONSTRUCTOR_NAME) {
 	  var Constructor = getBuiltIn(CONSTRUCTOR_NAME);
 	  var defineProperty = objectDefineProperty.f;
 
-	  if (descriptors && Constructor && !Constructor[SPECIES$1]) {
-	    defineProperty(Constructor, SPECIES$1, {
+	  if (descriptors && Constructor && !Constructor[SPECIES$3]) {
+	    defineProperty(Constructor, SPECIES$3, {
 	      configurable: true,
 	      get: function () {
 	        return this;
@@ -1937,25 +1438,23 @@
 	  return ITERATION_SUPPORT;
 	};
 
-	var SPECIES$2 = wellKnownSymbol('species'); // `SpeciesConstructor` abstract operation
+	var SPECIES$4 = wellKnownSymbol('species'); // `SpeciesConstructor` abstract operation
 	// https://tc39.github.io/ecma262/#sec-speciesconstructor
 
 	var speciesConstructor = function (O, defaultConstructor) {
 	  var C = anObject(O).constructor;
 	  var S;
-	  return C === undefined || (S = anObject(C)[SPECIES$2]) == undefined ? defaultConstructor : aFunction$1(S);
+	  return C === undefined || (S = anObject(C)[SPECIES$4]) == undefined ? defaultConstructor : aFunction$1(S);
 	};
 
 	var html = getBuiltIn('document', 'documentElement');
-
-	var engineUserAgent = getBuiltIn('navigator', 'userAgent') || '';
 
 	var engineIsIos = /(iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent);
 
 	var location$1 = global_1.location;
 	var set$1 = global_1.setImmediate;
 	var clear = global_1.clearImmediate;
-	var process = global_1.process;
+	var process$1 = global_1.process;
 	var MessageChannel = global_1.MessageChannel;
 	var Dispatch = global_1.Dispatch;
 	var counter = 0;
@@ -1963,7 +1462,7 @@
 	var ONREADYSTATECHANGE = 'onreadystatechange';
 	var defer, channel, port;
 
-	var run$1 = function (id) {
+	var run = function (id) {
 	  // eslint-disable-next-line no-prototype-builtins
 	  if (queue.hasOwnProperty(id)) {
 	    var fn = queue[id];
@@ -1974,12 +1473,12 @@
 
 	var runner = function (id) {
 	  return function () {
-	    run$1(id);
+	    run(id);
 	  };
 	};
 
 	var listener = function (event) {
-	  run$1(event.data);
+	  run(event.data);
 	};
 
 	var post = function (id) {
@@ -2009,9 +1508,9 @@
 	  }; // Node.js 0.8-
 
 
-	  if (classofRaw(process) == 'process') {
+	  if (classofRaw(process$1) == 'process') {
 	    defer = function (id) {
-	      process.nextTick(runner(id));
+	      process$1.nextTick(runner(id));
 	    }; // Sphere (JS game engine) Dispatch API
 
 	  } else if (Dispatch && Dispatch.now) {
@@ -2033,7 +1532,7 @@
 	    defer = function (id) {
 	      html.appendChild(documentCreateElement('script'))[ONREADYSTATECHANGE] = function () {
 	        html.removeChild(this);
-	        run$1(id);
+	        run(id);
 	      };
 	    }; // Rest old browsers
 
@@ -2058,18 +1557,18 @@
 
 
 	var MutationObserver = global_1.MutationObserver || global_1.WebKitMutationObserver;
-	var process$1 = global_1.process;
+	var process$2 = global_1.process;
 	var Promise$1 = global_1.Promise;
-	var IS_NODE = classofRaw(process$1) == 'process'; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
+	var IS_NODE = classofRaw(process$2) == 'process'; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
 
 	var queueMicrotaskDescriptor = getOwnPropertyDescriptor$2(global_1, 'queueMicrotask');
 	var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
-	var flush$1, head, last, notify, toggle, node, promise, then; // modern engines have queueMicrotask method
+	var flush, head, last, notify, toggle, node, promise, then; // modern engines have queueMicrotask method
 
 	if (!queueMicrotask) {
-	  flush$1 = function () {
+	  flush = function () {
 	    var parent, fn;
-	    if (IS_NODE && (parent = process$1.domain)) parent.exit();
+	    if (IS_NODE && (parent = process$2.domain)) parent.exit();
 
 	    while (head) {
 	      fn = head.fn;
@@ -2090,13 +1589,13 @@
 
 	  if (IS_NODE) {
 	    notify = function () {
-	      process$1.nextTick(flush$1);
+	      process$2.nextTick(flush);
 	    }; // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
 
 	  } else if (MutationObserver && !engineIsIos) {
 	    toggle = true;
 	    node = document.createTextNode('');
-	    new MutationObserver(flush$1).observe(node, {
+	    new MutationObserver(flush).observe(node, {
 	      characterData: true
 	    });
 
@@ -2110,7 +1609,7 @@
 	    then = promise.then;
 
 	    notify = function () {
-	      then.call(promise, flush$1);
+	      then.call(promise, flush);
 	    }; // for other environments - macrotask based on:
 	    // - setImmediate
 	    // - MessageChannel
@@ -2121,7 +1620,7 @@
 	  } else {
 	    notify = function () {
 	      // strange IE + webpack dev server bug - use .call(global)
-	      macrotask.call(global_1, flush$1);
+	      macrotask.call(global_1, flush);
 	    };
 	  }
 	}
@@ -2192,25 +1691,6 @@
 	  }
 	};
 
-	var process$2 = global_1.process;
-	var versions = process$2 && process$2.versions;
-	var v8 = versions && versions.v8;
-	var match, version;
-
-	if (v8) {
-	  match = v8.split('.');
-	  version = match[0] + match[1];
-	} else if (engineUserAgent) {
-	  match = engineUserAgent.match(/Edge\/(\d+)/);
-
-	  if (!match || match[1] >= 74) {
-	    match = engineUserAgent.match(/Chrome\/(\d+)/);
-	    if (match) version = match[1];
-	  }
-	}
-
-	var engineV8Version = version && +version;
-
 	var task$1 = task.set;
 
 
@@ -2231,7 +1711,7 @@
 
 
 
-	var SPECIES$3 = wellKnownSymbol('species');
+	var SPECIES$5 = wellKnownSymbol('species');
 	var PROMISE = 'Promise';
 	var getInternalState = internalState.get;
 	var setInternalState = internalState.set;
@@ -2253,7 +1733,7 @@
 	var HANDLED = 1;
 	var UNHANDLED = 2;
 	var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
-	var FORCED = isForced_1(PROMISE, function () {
+	var FORCED$1 = isForced_1(PROMISE, function () {
 	  var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
 
 	  if (!GLOBAL_CORE_JS_PROMISE) {
@@ -2280,12 +1760,12 @@
 	  };
 
 	  var constructor = promise.constructor = {};
-	  constructor[SPECIES$3] = FakePromise;
+	  constructor[SPECIES$5] = FakePromise;
 	  return !(promise.then(function () {
 	    /* empty */
 	  }) instanceof FakePromise);
 	});
-	var INCORRECT_ITERATION = FORCED || !checkCorrectnessOfIteration(function (iterable) {
+	var INCORRECT_ITERATION = FORCED$1 || !checkCorrectnessOfIteration(function (iterable) {
 	  PromiseConstructor.all(iterable)['catch'](function () {
 	    /* empty */
 	  });
@@ -2396,7 +1876,7 @@
 	  });
 	};
 
-	var bind$1 = function (fn, promise, state, unwrap) {
+	var bind = function (fn, promise, state, unwrap) {
 	  return function (value) {
 	    fn(promise, state, value, unwrap);
 	  };
@@ -2427,7 +1907,7 @@
 	        };
 
 	        try {
-	          then.call(value, bind$1(internalResolve, promise, wrapper, state), bind$1(internalReject, promise, wrapper, state));
+	          then.call(value, bind(internalResolve, promise, wrapper, state), bind(internalReject, promise, wrapper, state));
 	        } catch (error) {
 	          internalReject(promise, wrapper, error, state);
 	        }
@@ -2445,7 +1925,7 @@
 	}; // constructor polyfill
 
 
-	if (FORCED) {
+	if (FORCED$1) {
 	  // 25.4.3.1 Promise(executor)
 	  PromiseConstructor = function Promise(executor) {
 	    anInstance(this, PromiseConstructor, PROMISE);
@@ -2454,7 +1934,7 @@
 	    var state = getInternalState(this);
 
 	    try {
-	      executor(bind$1(internalResolve, this, state), bind$1(internalReject, this, state));
+	      executor(bind(internalResolve, this, state), bind(internalReject, this, state));
 	    } catch (error) {
 	      internalReject(this, state, error);
 	    }
@@ -2499,8 +1979,8 @@
 	    var promise = new Internal();
 	    var state = getInternalState(promise);
 	    this.promise = promise;
-	    this.resolve = bind$1(internalResolve, promise, state);
-	    this.reject = bind$1(internalReject, promise, state);
+	    this.resolve = bind(internalResolve, promise, state);
+	    this.reject = bind(internalReject, promise, state);
 	  };
 
 	  newPromiseCapability.f = newPromiseCapability$1 = function (C) {
@@ -2537,7 +2017,7 @@
 	_export({
 	  global: true,
 	  wrap: true,
-	  forced: FORCED
+	  forced: FORCED$1
 	}, {
 	  Promise: PromiseConstructor
 	});
@@ -2548,7 +2028,7 @@
 	_export({
 	  target: PROMISE,
 	  stat: true,
-	  forced: FORCED
+	  forced: FORCED$1
 	}, {
 	  // `Promise.reject` method
 	  // https://tc39.github.io/ecma262/#sec-promise.reject
@@ -2561,7 +2041,7 @@
 	_export({
 	  target: PROMISE,
 	  stat: true,
-	  forced:  FORCED
+	  forced:  FORCED$1
 	}, {
 	  // `Promise.resolve` method
 	  // https://tc39.github.io/ecma262/#sec-promise.resolve
@@ -3328,6 +2808,3662 @@
 	}
 	});
 
+	function noop() { }
+	function assign(tar, src) {
+	    // @ts-ignore
+	    for (const k in src)
+	        tar[k] = src[k];
+	    return tar;
+	}
+	function run$1(fn) {
+	    return fn();
+	}
+	function blank_object() {
+	    return Object.create(null);
+	}
+	function run_all(fns) {
+	    fns.forEach(run$1);
+	}
+	function is_function(thing) {
+	    return typeof thing === 'function';
+	}
+	function safe_not_equal(a, b) {
+	    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+	function create_slot(definition, ctx, $$scope, fn) {
+	    if (definition) {
+	        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+	        return definition[0](slot_ctx);
+	    }
+	}
+	function get_slot_context(definition, ctx, $$scope, fn) {
+	    return definition[1] && fn
+	        ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+	        : $$scope.ctx;
+	}
+	function get_slot_changes(definition, $$scope, dirty, fn) {
+	    if (definition[2] && fn) {
+	        const lets = definition[2](fn(dirty));
+	        if ($$scope.dirty === undefined) {
+	            return lets;
+	        }
+	        if (typeof lets === 'object') {
+	            const merged = [];
+	            const len = Math.max($$scope.dirty.length, lets.length);
+	            for (let i = 0; i < len; i += 1) {
+	                merged[i] = $$scope.dirty[i] | lets[i];
+	            }
+	            return merged;
+	        }
+	        return $$scope.dirty | lets;
+	    }
+	    return $$scope.dirty;
+	}
+	function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+	    const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+	    if (slot_changes) {
+	        const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+	        slot.p(slot_context, slot_changes);
+	    }
+	}
+
+	function append(target, node) {
+	    target.appendChild(node);
+	}
+	function insert(target, node, anchor) {
+	    target.insertBefore(node, anchor || null);
+	}
+	function detach(node) {
+	    node.parentNode.removeChild(node);
+	}
+	function destroy_each(iterations, detaching) {
+	    for (let i = 0; i < iterations.length; i += 1) {
+	        if (iterations[i])
+	            iterations[i].d(detaching);
+	    }
+	}
+	function element(name) {
+	    return document.createElement(name);
+	}
+	function text(data) {
+	    return document.createTextNode(data);
+	}
+	function space() {
+	    return text(' ');
+	}
+	function empty() {
+	    return text('');
+	}
+	function listen(node, event, handler, options) {
+	    node.addEventListener(event, handler, options);
+	    return () => node.removeEventListener(event, handler, options);
+	}
+	function prevent_default(fn) {
+	    return function (event) {
+	        event.preventDefault();
+	        // @ts-ignore
+	        return fn.call(this, event);
+	    };
+	}
+	function attr(node, attribute, value) {
+	    if (value == null)
+	        node.removeAttribute(attribute);
+	    else if (node.getAttribute(attribute) !== value)
+	        node.setAttribute(attribute, value);
+	}
+	function set_attributes(node, attributes) {
+	    // @ts-ignore
+	    const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
+	    for (const key in attributes) {
+	        if (attributes[key] == null) {
+	            node.removeAttribute(key);
+	        }
+	        else if (key === 'style') {
+	            node.style.cssText = attributes[key];
+	        }
+	        else if (key === '__value') {
+	            node.value = node[key] = attributes[key];
+	        }
+	        else if (descriptors[key] && descriptors[key].set) {
+	            node[key] = attributes[key];
+	        }
+	        else {
+	            attr(node, key, attributes[key]);
+	        }
+	    }
+	}
+	function set_custom_element_data(node, prop, value) {
+	    if (prop in node) {
+	        node[prop] = value;
+	    }
+	    else {
+	        attr(node, prop, value);
+	    }
+	}
+	function to_number(value) {
+	    return value === '' ? undefined : +value;
+	}
+	function children(element) {
+	    return Array.from(element.childNodes);
+	}
+	function set_data(text, data) {
+	    data = '' + data;
+	    if (text.data !== data)
+	        text.data = data;
+	}
+	function set_input_value(input, value) {
+	    input.value = value == null ? '' : value;
+	}
+	function set_style(node, key, value, important) {
+	    node.style.setProperty(key, value, important ? 'important' : '');
+	}
+	// unfortunately this can't be a constant as that wouldn't be tree-shakeable
+	// so we cache the result instead
+	let crossorigin;
+	function is_crossorigin() {
+	    if (crossorigin === undefined) {
+	        crossorigin = false;
+	        try {
+	            if (typeof window !== 'undefined' && window.parent) {
+	                void window.parent.document;
+	            }
+	        }
+	        catch (error) {
+	            crossorigin = true;
+	        }
+	    }
+	    return crossorigin;
+	}
+	function add_resize_listener(node, fn) {
+	    const computed_style = getComputedStyle(node);
+	    const z_index = (parseInt(computed_style.zIndex) || 0) - 1;
+	    if (computed_style.position === 'static') {
+	        node.style.position = 'relative';
+	    }
+	    const iframe = element('iframe');
+	    iframe.setAttribute('style', `display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ` +
+	        `overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: ${z_index};`);
+	    iframe.setAttribute('aria-hidden', 'true');
+	    iframe.tabIndex = -1;
+	    const crossorigin = is_crossorigin();
+	    let unsubscribe;
+	    if (crossorigin) {
+	        iframe.src = `data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>`;
+	        unsubscribe = listen(window, 'message', (event) => {
+	            if (event.source === iframe.contentWindow)
+	                fn();
+	        });
+	    }
+	    else {
+	        iframe.src = 'about:blank';
+	        iframe.onload = () => {
+	            unsubscribe = listen(iframe.contentWindow, 'resize', fn);
+	        };
+	    }
+	    append(node, iframe);
+	    return () => {
+	        if (crossorigin) {
+	            unsubscribe();
+	        }
+	        else if (unsubscribe && iframe.contentWindow) {
+	            unsubscribe();
+	        }
+	        detach(iframe);
+	    };
+	}
+	function toggle_class(element, name, toggle) {
+	    element.classList[toggle ? 'add' : 'remove'](name);
+	}
+	function custom_event(type, detail) {
+	    const e = document.createEvent('CustomEvent');
+	    e.initCustomEvent(type, false, false, detail);
+	    return e;
+	}
+
+	let current_component;
+	function set_current_component(component) {
+	    current_component = component;
+	}
+	function get_current_component() {
+	    if (!current_component)
+	        throw new Error(`Function called outside component initialization`);
+	    return current_component;
+	}
+	function beforeUpdate(fn) {
+	    get_current_component().$$.before_update.push(fn);
+	}
+	function onMount(fn) {
+	    get_current_component().$$.on_mount.push(fn);
+	}
+	function onDestroy(fn) {
+	    get_current_component().$$.on_destroy.push(fn);
+	}
+	function createEventDispatcher() {
+	    const component = get_current_component();
+	    return (type, detail) => {
+	        const callbacks = component.$$.callbacks[type];
+	        if (callbacks) {
+	            // TODO are there situations where events could be dispatched
+	            // in a server (non-DOM) environment?
+	            const event = custom_event(type, detail);
+	            callbacks.slice().forEach(fn => {
+	                fn.call(component, event);
+	            });
+	        }
+	    };
+	}
+
+	const dirty_components = [];
+	const binding_callbacks = [];
+	const render_callbacks = [];
+	const flush_callbacks = [];
+	const resolved_promise = Promise.resolve();
+	let update_scheduled = false;
+	function schedule_update() {
+	    if (!update_scheduled) {
+	        update_scheduled = true;
+	        resolved_promise.then(flush$1);
+	    }
+	}
+	function tick() {
+	    schedule_update();
+	    return resolved_promise;
+	}
+	function add_render_callback(fn) {
+	    render_callbacks.push(fn);
+	}
+	function add_flush_callback(fn) {
+	    flush_callbacks.push(fn);
+	}
+	let flushing = false;
+	const seen_callbacks = new Set();
+	function flush$1() {
+	    if (flushing)
+	        return;
+	    flushing = true;
+	    do {
+	        // first, call beforeUpdate functions
+	        // and update components
+	        for (let i = 0; i < dirty_components.length; i += 1) {
+	            const component = dirty_components[i];
+	            set_current_component(component);
+	            update(component.$$);
+	        }
+	        dirty_components.length = 0;
+	        while (binding_callbacks.length)
+	            binding_callbacks.pop()();
+	        // then, once components are updated, call
+	        // afterUpdate functions. This may cause
+	        // subsequent updates...
+	        for (let i = 0; i < render_callbacks.length; i += 1) {
+	            const callback = render_callbacks[i];
+	            if (!seen_callbacks.has(callback)) {
+	                // ...so guard against infinite loops
+	                seen_callbacks.add(callback);
+	                callback();
+	            }
+	        }
+	        render_callbacks.length = 0;
+	    } while (dirty_components.length);
+	    while (flush_callbacks.length) {
+	        flush_callbacks.pop()();
+	    }
+	    update_scheduled = false;
+	    flushing = false;
+	    seen_callbacks.clear();
+	}
+	function update($$) {
+	    if ($$.fragment !== null) {
+	        $$.update();
+	        run_all($$.before_update);
+	        const dirty = $$.dirty;
+	        $$.dirty = [-1];
+	        $$.fragment && $$.fragment.p($$.ctx, dirty);
+	        $$.after_update.forEach(add_render_callback);
+	    }
+	}
+	const outroing = new Set();
+	let outros;
+	function group_outros() {
+	    outros = {
+	        r: 0,
+	        c: [],
+	        p: outros // parent group
+	    };
+	}
+	function check_outros() {
+	    if (!outros.r) {
+	        run_all(outros.c);
+	    }
+	    outros = outros.p;
+	}
+	function transition_in(block, local) {
+	    if (block && block.i) {
+	        outroing.delete(block);
+	        block.i(local);
+	    }
+	}
+	function transition_out(block, local, detach, callback) {
+	    if (block && block.o) {
+	        if (outroing.has(block))
+	            return;
+	        outroing.add(block);
+	        outros.c.push(() => {
+	            outroing.delete(block);
+	            if (callback) {
+	                if (detach)
+	                    block.d(1);
+	                callback();
+	            }
+	        });
+	        block.o(local);
+	    }
+	}
+
+	const globals = (typeof window !== 'undefined'
+	    ? window
+	    : typeof globalThis !== 'undefined'
+	        ? globalThis
+	        : global);
+	function outro_and_destroy_block(block, lookup) {
+	    transition_out(block, 1, 1, () => {
+	        lookup.delete(block.key);
+	    });
+	}
+	function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
+	    let o = old_blocks.length;
+	    let n = list.length;
+	    let i = o;
+	    const old_indexes = {};
+	    while (i--)
+	        old_indexes[old_blocks[i].key] = i;
+	    const new_blocks = [];
+	    const new_lookup = new Map();
+	    const deltas = new Map();
+	    i = n;
+	    while (i--) {
+	        const child_ctx = get_context(ctx, list, i);
+	        const key = get_key(child_ctx);
+	        let block = lookup.get(key);
+	        if (!block) {
+	            block = create_each_block(key, child_ctx);
+	            block.c();
+	        }
+	        else if (dynamic) {
+	            block.p(child_ctx, dirty);
+	        }
+	        new_lookup.set(key, new_blocks[i] = block);
+	        if (key in old_indexes)
+	            deltas.set(key, Math.abs(i - old_indexes[key]));
+	    }
+	    const will_move = new Set();
+	    const did_move = new Set();
+	    function insert(block) {
+	        transition_in(block, 1);
+	        block.m(node, next);
+	        lookup.set(block.key, block);
+	        next = block.first;
+	        n--;
+	    }
+	    while (o && n) {
+	        const new_block = new_blocks[n - 1];
+	        const old_block = old_blocks[o - 1];
+	        const new_key = new_block.key;
+	        const old_key = old_block.key;
+	        if (new_block === old_block) {
+	            // do nothing
+	            next = new_block.first;
+	            o--;
+	            n--;
+	        }
+	        else if (!new_lookup.has(old_key)) {
+	            // remove old block
+	            destroy(old_block, lookup);
+	            o--;
+	        }
+	        else if (!lookup.has(new_key) || will_move.has(new_key)) {
+	            insert(new_block);
+	        }
+	        else if (did_move.has(old_key)) {
+	            o--;
+	        }
+	        else if (deltas.get(new_key) > deltas.get(old_key)) {
+	            did_move.add(new_key);
+	            insert(new_block);
+	        }
+	        else {
+	            will_move.add(old_key);
+	            o--;
+	        }
+	    }
+	    while (o--) {
+	        const old_block = old_blocks[o];
+	        if (!new_lookup.has(old_block.key))
+	            destroy(old_block, lookup);
+	    }
+	    while (n)
+	        insert(new_blocks[n - 1]);
+	    return new_blocks;
+	}
+
+	function get_spread_update(levels, updates) {
+	    const update = {};
+	    const to_null_out = {};
+	    const accounted_for = { $$scope: 1 };
+	    let i = levels.length;
+	    while (i--) {
+	        const o = levels[i];
+	        const n = updates[i];
+	        if (n) {
+	            for (const key in o) {
+	                if (!(key in n))
+	                    to_null_out[key] = 1;
+	            }
+	            for (const key in n) {
+	                if (!accounted_for[key]) {
+	                    update[key] = n[key];
+	                    accounted_for[key] = 1;
+	                }
+	            }
+	            levels[i] = n;
+	        }
+	        else {
+	            for (const key in o) {
+	                accounted_for[key] = 1;
+	            }
+	        }
+	    }
+	    for (const key in to_null_out) {
+	        if (!(key in update))
+	            update[key] = undefined;
+	    }
+	    return update;
+	}
+
+	function bind$1(component, name, callback) {
+	    const index = component.$$.props[name];
+	    if (index !== undefined) {
+	        component.$$.bound[index] = callback;
+	        callback(component.$$.ctx[index]);
+	    }
+	}
+	function create_component(block) {
+	    block && block.c();
+	}
+	function mount_component(component, target, anchor) {
+	    const { fragment, on_mount, on_destroy, after_update } = component.$$;
+	    fragment && fragment.m(target, anchor);
+	    // onMount happens before the initial afterUpdate
+	    add_render_callback(() => {
+	        const new_on_destroy = on_mount.map(run$1).filter(is_function);
+	        if (on_destroy) {
+	            on_destroy.push(...new_on_destroy);
+	        }
+	        else {
+	            // Edge case - component was destroyed immediately,
+	            // most likely as a result of a binding initialising
+	            run_all(new_on_destroy);
+	        }
+	        component.$$.on_mount = [];
+	    });
+	    after_update.forEach(add_render_callback);
+	}
+	function destroy_component(component, detaching) {
+	    const $$ = component.$$;
+	    if ($$.fragment !== null) {
+	        run_all($$.on_destroy);
+	        $$.fragment && $$.fragment.d(detaching);
+	        // TODO null out other refs, including component.$$ (but need to
+	        // preserve final state?)
+	        $$.on_destroy = $$.fragment = null;
+	        $$.ctx = [];
+	    }
+	}
+	function make_dirty(component, i) {
+	    if (component.$$.dirty[0] === -1) {
+	        dirty_components.push(component);
+	        schedule_update();
+	        component.$$.dirty.fill(0);
+	    }
+	    component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+	}
+	function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+	    const parent_component = current_component;
+	    set_current_component(component);
+	    const prop_values = options.props || {};
+	    const $$ = component.$$ = {
+	        fragment: null,
+	        ctx: null,
+	        // state
+	        props,
+	        update: noop,
+	        not_equal,
+	        bound: blank_object(),
+	        // lifecycle
+	        on_mount: [],
+	        on_destroy: [],
+	        before_update: [],
+	        after_update: [],
+	        context: new Map(parent_component ? parent_component.$$.context : []),
+	        // everything else
+	        callbacks: blank_object(),
+	        dirty
+	    };
+	    let ready = false;
+	    $$.ctx = instance
+	        ? instance(component, prop_values, (i, ret, ...rest) => {
+	            const value = rest.length ? rest[0] : ret;
+	            if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+	                if ($$.bound[i])
+	                    $$.bound[i](value);
+	                if (ready)
+	                    make_dirty(component, i);
+	            }
+	            return ret;
+	        })
+	        : [];
+	    $$.update();
+	    ready = true;
+	    run_all($$.before_update);
+	    // `false` as a special case of no DOM component
+	    $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+	    if (options.target) {
+	        if (options.hydrate) {
+	            const nodes = children(options.target);
+	            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	            $$.fragment && $$.fragment.l(nodes);
+	            nodes.forEach(detach);
+	        }
+	        else {
+	            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	            $$.fragment && $$.fragment.c();
+	        }
+	        if (options.intro)
+	            transition_in(component.$$.fragment);
+	        mount_component(component, options.target, options.anchor);
+	        flush$1();
+	    }
+	    set_current_component(parent_component);
+	}
+	class SvelteComponent {
+	    $destroy() {
+	        destroy_component(this, 1);
+	        this.$destroy = noop;
+	    }
+	    $on(type, callback) {
+	        const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+	        callbacks.push(callback);
+	        return () => {
+	            const index = callbacks.indexOf(callback);
+	            if (index !== -1)
+	                callbacks.splice(index, 1);
+	        };
+	    }
+	    $set() {
+	        // overridden by instance, if it has props
+	    }
+	}
+
+	function toInteger$1(dirtyNumber) {
+	  if (dirtyNumber === null || dirtyNumber === true || dirtyNumber === false) {
+	    return NaN;
+	  }
+
+	  var number = Number(dirtyNumber);
+
+	  if (isNaN(number)) {
+	    return number;
+	  }
+
+	  return number < 0 ? Math.ceil(number) : Math.floor(number);
+	}
+
+	function requiredArgs(required, args) {
+	  if (args.length < required) {
+	    throw new TypeError(required + ' argument' + (required > 1 ? 's' : '') + ' required, but only ' + args.length + ' present');
+	  }
+	}
+
+	/**
+	 * @name toDate
+	 * @category Common Helpers
+	 * @summary Convert the given argument to an instance of Date.
+	 *
+	 * @description
+	 * Convert the given argument to an instance of Date.
+	 *
+	 * If the argument is an instance of Date, the function returns its clone.
+	 *
+	 * If the argument is a number, it is treated as a timestamp.
+	 *
+	 * If the argument is none of the above, the function returns Invalid Date.
+	 *
+	 * **Note**: *all* Date arguments passed to any *date-fns* function is processed by `toDate`.
+	 *
+	 * @param {Date|Number} argument - the value to convert
+	 * @returns {Date} the parsed date in the local time zone
+	 * @throws {TypeError} 1 argument required
+	 *
+	 * @example
+	 * // Clone the date:
+	 * const result = toDate(new Date(2014, 1, 11, 11, 30, 30))
+	 * //=> Tue Feb 11 2014 11:30:30
+	 *
+	 * @example
+	 * // Convert the timestamp to date:
+	 * const result = toDate(1392098430000)
+	 * //=> Tue Feb 11 2014 11:30:30
+	 */
+
+	function toDate(argument) {
+	  requiredArgs(1, arguments);
+	  var argStr = Object.prototype.toString.call(argument); // Clone the date
+
+	  if (argument instanceof Date || typeof argument === 'object' && argStr === '[object Date]') {
+	    // Prevent the date to lose the milliseconds when passed to new Date() in IE10
+	    return new Date(argument.getTime());
+	  } else if (typeof argument === 'number' || argStr === '[object Number]') {
+	    return new Date(argument);
+	  } else {
+	    if ((typeof argument === 'string' || argStr === '[object String]') && typeof console !== 'undefined') {
+	      // eslint-disable-next-line no-console
+	      console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as arguments. Please use `parseISO` to parse strings. See: https://git.io/fjule"); // eslint-disable-next-line no-console
+
+	      console.warn(new Error().stack);
+	    }
+
+	    return new Date(NaN);
+	  }
+	}
+
+	/**
+	 * @name addDays
+	 * @category Day Helpers
+	 * @summary Add the specified number of days to the given date.
+	 *
+	 * @description
+	 * Add the specified number of days to the given date.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the date to be changed
+	 * @param {Number} amount - the amount of days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+	 * @returns {Date} the new date with the days added
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Add 10 days to 1 September 2014:
+	 * var result = addDays(new Date(2014, 8, 1), 10)
+	 * //=> Thu Sep 11 2014 00:00:00
+	 */
+
+	function addDays(dirtyDate, dirtyAmount) {
+	  requiredArgs(2, arguments);
+	  var date = toDate(dirtyDate);
+	  var amount = toInteger$1(dirtyAmount);
+
+	  if (isNaN(amount)) {
+	    return new Date(NaN);
+	  }
+
+	  if (!amount) {
+	    // If 0 days, no-op to avoid changing times in the hour before end of DST
+	    return date;
+	  }
+
+	  date.setDate(date.getDate() + amount);
+	  return date;
+	}
+
+	/**
+	 * @name addMilliseconds
+	 * @category Millisecond Helpers
+	 * @summary Add the specified number of milliseconds to the given date.
+	 *
+	 * @description
+	 * Add the specified number of milliseconds to the given date.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the date to be changed
+	 * @param {Number} amount - the amount of milliseconds to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+	 * @returns {Date} the new date with the milliseconds added
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Add 750 milliseconds to 10 July 2014 12:45:30.000:
+	 * var result = addMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
+	 * //=> Thu Jul 10 2014 12:45:30.750
+	 */
+
+	function addMilliseconds(dirtyDate, dirtyAmount) {
+	  requiredArgs(2, arguments);
+	  var timestamp = toDate(dirtyDate).getTime();
+	  var amount = toInteger$1(dirtyAmount);
+	  return new Date(timestamp + amount);
+	}
+
+	/**
+	 * @name startOfWeek
+	 * @category Week Helpers
+	 * @summary Return the start of a week for the given date.
+	 *
+	 * @description
+	 * Return the start of a week for the given date.
+	 * The result will be in the local timezone.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @returns {Date} the start of a week
+	 * @throws {TypeError} 1 argument required
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 *
+	 * @example
+	 * // The start of a week for 2 September 2014 11:55:00:
+	 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+	 * //=> Sun Aug 31 2014 00:00:00
+	 *
+	 * @example
+	 * // If the week starts on Monday, the start of the week for 2 September 2014 11:55:00:
+	 * var result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), { weekStartsOn: 1 })
+	 * //=> Mon Sep 01 2014 00:00:00
+	 */
+
+	function startOfWeek(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
+	  var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
+	  var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+
+	  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+	    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+	  }
+
+	  var date = toDate(dirtyDate);
+	  var day = date.getDay();
+	  var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+	  date.setDate(date.getDate() - diff);
+	  date.setHours(0, 0, 0, 0);
+	  return date;
+	}
+
+	var MILLISECONDS_IN_MINUTE = 60000;
+
+	function getDateMillisecondsPart(date) {
+	  return date.getTime() % MILLISECONDS_IN_MINUTE;
+	}
+	/**
+	 * Google Chrome as of 67.0.3396.87 introduced timezones with offset that includes seconds.
+	 * They usually appear for dates that denote time before the timezones were introduced
+	 * (e.g. for 'Europe/Prague' timezone the offset is GMT+00:57:44 before 1 October 1891
+	 * and GMT+01:00:00 after that date)
+	 *
+	 * Date#getTimezoneOffset returns the offset in minutes and would return 57 for the example above,
+	 * which would lead to incorrect calculations.
+	 *
+	 * This function returns the timezone offset in milliseconds that takes seconds in account.
+	 */
+
+
+	function getTimezoneOffsetInMilliseconds(dirtyDate) {
+	  var date = new Date(dirtyDate.getTime());
+	  var baseTimezoneOffset = Math.ceil(date.getTimezoneOffset());
+	  date.setSeconds(0, 0);
+	  var hasNegativeUTCOffset = baseTimezoneOffset > 0;
+	  var millisecondsPartOfTimezoneOffset = hasNegativeUTCOffset ? (MILLISECONDS_IN_MINUTE + getDateMillisecondsPart(date)) % MILLISECONDS_IN_MINUTE : getDateMillisecondsPart(date);
+	  return baseTimezoneOffset * MILLISECONDS_IN_MINUTE + millisecondsPartOfTimezoneOffset;
+	}
+
+	/**
+	 * @name startOfDay
+	 * @category Day Helpers
+	 * @summary Return the start of a day for the given date.
+	 *
+	 * @description
+	 * Return the start of a day for the given date.
+	 * The result will be in the local timezone.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @returns {Date} the start of a day
+	 * @throws {TypeError} 1 argument required
+	 *
+	 * @example
+	 * // The start of a day for 2 September 2014 11:55:00:
+	 * var result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
+	 * //=> Tue Sep 02 2014 00:00:00
+	 */
+
+	function startOfDay(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  date.setHours(0, 0, 0, 0);
+	  return date;
+	}
+
+	/**
+	 * @name isValid
+	 * @category Common Helpers
+	 * @summary Is the given date valid?
+	 *
+	 * @description
+	 * Returns false if argument is Invalid Date and true otherwise.
+	 * Argument is converted to Date using `toDate`. See [toDate]{@link https://date-fns.org/docs/toDate}
+	 * Invalid Date is a Date, whose time value is NaN.
+	 *
+	 * Time value of Date: http://es5.github.io/#x15.9.1.1
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * - Now `isValid` doesn't throw an exception
+	 *   if the first argument is not an instance of Date.
+	 *   Instead, argument is converted beforehand using `toDate`.
+	 *
+	 *   Examples:
+	 *
+	 *   | `isValid` argument        | Before v2.0.0 | v2.0.0 onward |
+	 *   |---------------------------|---------------|---------------|
+	 *   | `new Date()`              | `true`        | `true`        |
+	 *   | `new Date('2016-01-01')`  | `true`        | `true`        |
+	 *   | `new Date('')`            | `false`       | `false`       |
+	 *   | `new Date(1488370835081)` | `true`        | `true`        |
+	 *   | `new Date(NaN)`           | `false`       | `false`       |
+	 *   | `'2016-01-01'`            | `TypeError`   | `false`       |
+	 *   | `''`                      | `TypeError`   | `false`       |
+	 *   | `1488370835081`           | `TypeError`   | `true`        |
+	 *   | `NaN`                     | `TypeError`   | `false`       |
+	 *
+	 *   We introduce this change to make *date-fns* consistent with ECMAScript behavior
+	 *   that try to coerce arguments to the expected type
+	 *   (which is also the case with other *date-fns* functions).
+	 *
+	 * @param {*} date - the date to check
+	 * @returns {Boolean} the date is valid
+	 * @throws {TypeError} 1 argument required
+	 *
+	 * @example
+	 * // For the valid date:
+	 * var result = isValid(new Date(2014, 1, 31))
+	 * //=> true
+	 *
+	 * @example
+	 * // For the value, convertable into a date:
+	 * var result = isValid(1393804800000)
+	 * //=> true
+	 *
+	 * @example
+	 * // For the invalid date:
+	 * var result = isValid(new Date(''))
+	 * //=> false
+	 */
+
+	function isValid(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  return !isNaN(date);
+	}
+
+	/**
+	 * @name isSameDay
+	 * @category Day Helpers
+	 * @summary Are the given dates in the same day?
+	 *
+	 * @description
+	 * Are the given dates in the same day?
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} dateLeft - the first date to check
+	 * @param {Date|Number} dateRight - the second date to check
+	 * @returns {Boolean} the dates are in the same day
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
+	 * var result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
+	 * //=> true
+	 */
+
+	function isSameDay(dirtyDateLeft, dirtyDateRight) {
+	  requiredArgs(2, arguments);
+	  var dateLeftStartOfDay = startOfDay(dirtyDateLeft);
+	  var dateRightStartOfDay = startOfDay(dirtyDateRight);
+	  return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
+	}
+
+	/**
+	 * @name endOfDay
+	 * @category Day Helpers
+	 * @summary Return the end of a day for the given date.
+	 *
+	 * @description
+	 * Return the end of a day for the given date.
+	 * The result will be in the local timezone.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @returns {Date} the end of a day
+	 * @throws {TypeError} 1 argument required
+	 *
+	 * @example
+	 * // The end of a day for 2 September 2014 11:55:00:
+	 * var result = endOfDay(new Date(2014, 8, 2, 11, 55, 0))
+	 * //=> Tue Sep 02 2014 23:59:59.999
+	 */
+
+	function endOfDay(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  date.setHours(23, 59, 59, 999);
+	  return date;
+	}
+
+	var formatDistanceLocale = {
+	  lessThanXSeconds: {
+	    one: 'less than a second',
+	    other: 'less than {{count}} seconds'
+	  },
+	  xSeconds: {
+	    one: '1 second',
+	    other: '{{count}} seconds'
+	  },
+	  halfAMinute: 'half a minute',
+	  lessThanXMinutes: {
+	    one: 'less than a minute',
+	    other: 'less than {{count}} minutes'
+	  },
+	  xMinutes: {
+	    one: '1 minute',
+	    other: '{{count}} minutes'
+	  },
+	  aboutXHours: {
+	    one: 'about 1 hour',
+	    other: 'about {{count}} hours'
+	  },
+	  xHours: {
+	    one: '1 hour',
+	    other: '{{count}} hours'
+	  },
+	  xDays: {
+	    one: '1 day',
+	    other: '{{count}} days'
+	  },
+	  aboutXWeeks: {
+	    one: 'about 1 week',
+	    other: 'about {{count}} weeks'
+	  },
+	  xWeeks: {
+	    one: '1 week',
+	    other: '{{count}} weeks'
+	  },
+	  aboutXMonths: {
+	    one: 'about 1 month',
+	    other: 'about {{count}} months'
+	  },
+	  xMonths: {
+	    one: '1 month',
+	    other: '{{count}} months'
+	  },
+	  aboutXYears: {
+	    one: 'about 1 year',
+	    other: 'about {{count}} years'
+	  },
+	  xYears: {
+	    one: '1 year',
+	    other: '{{count}} years'
+	  },
+	  overXYears: {
+	    one: 'over 1 year',
+	    other: 'over {{count}} years'
+	  },
+	  almostXYears: {
+	    one: 'almost 1 year',
+	    other: 'almost {{count}} years'
+	  }
+	};
+	function formatDistance(token, count, options) {
+	  options = options || {};
+	  var result;
+
+	  if (typeof formatDistanceLocale[token] === 'string') {
+	    result = formatDistanceLocale[token];
+	  } else if (count === 1) {
+	    result = formatDistanceLocale[token].one;
+	  } else {
+	    result = formatDistanceLocale[token].other.replace('{{count}}', count);
+	  }
+
+	  if (options.addSuffix) {
+	    if (options.comparison > 0) {
+	      return 'in ' + result;
+	    } else {
+	      return result + ' ago';
+	    }
+	  }
+
+	  return result;
+	}
+
+	function buildFormatLongFn(args) {
+	  return function (dirtyOptions) {
+	    var options = dirtyOptions || {};
+	    var width = options.width ? String(options.width) : args.defaultWidth;
+	    var format = args.formats[width] || args.formats[args.defaultWidth];
+	    return format;
+	  };
+	}
+
+	var dateFormats = {
+	  full: 'EEEE, MMMM do, y',
+	  long: 'MMMM do, y',
+	  medium: 'MMM d, y',
+	  short: 'MM/dd/yyyy'
+	};
+	var timeFormats = {
+	  full: 'h:mm:ss a zzzz',
+	  long: 'h:mm:ss a z',
+	  medium: 'h:mm:ss a',
+	  short: 'h:mm a'
+	};
+	var dateTimeFormats = {
+	  full: "{{date}} 'at' {{time}}",
+	  long: "{{date}} 'at' {{time}}",
+	  medium: '{{date}}, {{time}}',
+	  short: '{{date}}, {{time}}'
+	};
+	var formatLong = {
+	  date: buildFormatLongFn({
+	    formats: dateFormats,
+	    defaultWidth: 'full'
+	  }),
+	  time: buildFormatLongFn({
+	    formats: timeFormats,
+	    defaultWidth: 'full'
+	  }),
+	  dateTime: buildFormatLongFn({
+	    formats: dateTimeFormats,
+	    defaultWidth: 'full'
+	  })
+	};
+
+	var formatRelativeLocale = {
+	  lastWeek: "'last' eeee 'at' p",
+	  yesterday: "'yesterday at' p",
+	  today: "'today at' p",
+	  tomorrow: "'tomorrow at' p",
+	  nextWeek: "eeee 'at' p",
+	  other: 'P'
+	};
+	function formatRelative(token, _date, _baseDate, _options) {
+	  return formatRelativeLocale[token];
+	}
+
+	function buildLocalizeFn(args) {
+	  return function (dirtyIndex, dirtyOptions) {
+	    var options = dirtyOptions || {};
+	    var context = options.context ? String(options.context) : 'standalone';
+	    var valuesArray;
+
+	    if (context === 'formatting' && args.formattingValues) {
+	      var defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
+	      var width = options.width ? String(options.width) : defaultWidth;
+	      valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
+	    } else {
+	      var _defaultWidth = args.defaultWidth;
+
+	      var _width = options.width ? String(options.width) : args.defaultWidth;
+
+	      valuesArray = args.values[_width] || args.values[_defaultWidth];
+	    }
+
+	    var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
+	    return valuesArray[index];
+	  };
+	}
+
+	var eraValues = {
+	  narrow: ['B', 'A'],
+	  abbreviated: ['BC', 'AD'],
+	  wide: ['Before Christ', 'Anno Domini']
+	};
+	var quarterValues = {
+	  narrow: ['1', '2', '3', '4'],
+	  abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
+	  wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter'] // Note: in English, the names of days of the week and months are capitalized.
+	  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+	  // Generally, formatted dates should look like they are in the middle of a sentence,
+	  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+
+	};
+	var monthValues = {
+	  narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+	  abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+	  wide: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	};
+	var dayValues = {
+	  narrow: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+	  short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+	  abbreviated: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+	  wide: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+	};
+	var dayPeriodValues = {
+	  narrow: {
+	    am: 'a',
+	    pm: 'p',
+	    midnight: 'mi',
+	    noon: 'n',
+	    morning: 'morning',
+	    afternoon: 'afternoon',
+	    evening: 'evening',
+	    night: 'night'
+	  },
+	  abbreviated: {
+	    am: 'AM',
+	    pm: 'PM',
+	    midnight: 'midnight',
+	    noon: 'noon',
+	    morning: 'morning',
+	    afternoon: 'afternoon',
+	    evening: 'evening',
+	    night: 'night'
+	  },
+	  wide: {
+	    am: 'a.m.',
+	    pm: 'p.m.',
+	    midnight: 'midnight',
+	    noon: 'noon',
+	    morning: 'morning',
+	    afternoon: 'afternoon',
+	    evening: 'evening',
+	    night: 'night'
+	  }
+	};
+	var formattingDayPeriodValues = {
+	  narrow: {
+	    am: 'a',
+	    pm: 'p',
+	    midnight: 'mi',
+	    noon: 'n',
+	    morning: 'in the morning',
+	    afternoon: 'in the afternoon',
+	    evening: 'in the evening',
+	    night: 'at night'
+	  },
+	  abbreviated: {
+	    am: 'AM',
+	    pm: 'PM',
+	    midnight: 'midnight',
+	    noon: 'noon',
+	    morning: 'in the morning',
+	    afternoon: 'in the afternoon',
+	    evening: 'in the evening',
+	    night: 'at night'
+	  },
+	  wide: {
+	    am: 'a.m.',
+	    pm: 'p.m.',
+	    midnight: 'midnight',
+	    noon: 'noon',
+	    morning: 'in the morning',
+	    afternoon: 'in the afternoon',
+	    evening: 'in the evening',
+	    night: 'at night'
+	  }
+	};
+
+	function ordinalNumber(dirtyNumber, _dirtyOptions) {
+	  var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
+	  // if they are different for different grammatical genders,
+	  // use `options.unit`:
+	  //
+	  //   var options = dirtyOptions || {}
+	  //   var unit = String(options.unit)
+	  //
+	  // where `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+	  // 'day', 'hour', 'minute', 'second'
+
+	  var rem100 = number % 100;
+
+	  if (rem100 > 20 || rem100 < 10) {
+	    switch (rem100 % 10) {
+	      case 1:
+	        return number + 'st';
+
+	      case 2:
+	        return number + 'nd';
+
+	      case 3:
+	        return number + 'rd';
+	    }
+	  }
+
+	  return number + 'th';
+	}
+
+	var localize = {
+	  ordinalNumber: ordinalNumber,
+	  era: buildLocalizeFn({
+	    values: eraValues,
+	    defaultWidth: 'wide'
+	  }),
+	  quarter: buildLocalizeFn({
+	    values: quarterValues,
+	    defaultWidth: 'wide',
+	    argumentCallback: function (quarter) {
+	      return Number(quarter) - 1;
+	    }
+	  }),
+	  month: buildLocalizeFn({
+	    values: monthValues,
+	    defaultWidth: 'wide'
+	  }),
+	  day: buildLocalizeFn({
+	    values: dayValues,
+	    defaultWidth: 'wide'
+	  }),
+	  dayPeriod: buildLocalizeFn({
+	    values: dayPeriodValues,
+	    defaultWidth: 'wide',
+	    formattingValues: formattingDayPeriodValues,
+	    defaultFormattingWidth: 'wide'
+	  })
+	};
+
+	function buildMatchPatternFn(args) {
+	  return function (dirtyString, dirtyOptions) {
+	    var string = String(dirtyString);
+	    var options = dirtyOptions || {};
+	    var matchResult = string.match(args.matchPattern);
+
+	    if (!matchResult) {
+	      return null;
+	    }
+
+	    var matchedString = matchResult[0];
+	    var parseResult = string.match(args.parsePattern);
+
+	    if (!parseResult) {
+	      return null;
+	    }
+
+	    var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+	    value = options.valueCallback ? options.valueCallback(value) : value;
+	    return {
+	      value: value,
+	      rest: string.slice(matchedString.length)
+	    };
+	  };
+	}
+
+	function buildMatchFn(args) {
+	  return function (dirtyString, dirtyOptions) {
+	    var string = String(dirtyString);
+	    var options = dirtyOptions || {};
+	    var width = options.width;
+	    var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
+	    var matchResult = string.match(matchPattern);
+
+	    if (!matchResult) {
+	      return null;
+	    }
+
+	    var matchedString = matchResult[0];
+	    var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+	    var value;
+
+	    if (Object.prototype.toString.call(parsePatterns) === '[object Array]') {
+	      value = findIndex(parsePatterns, function (pattern) {
+	        return pattern.test(matchedString);
+	      });
+	    } else {
+	      value = findKey(parsePatterns, function (pattern) {
+	        return pattern.test(matchedString);
+	      });
+	    }
+
+	    value = args.valueCallback ? args.valueCallback(value) : value;
+	    value = options.valueCallback ? options.valueCallback(value) : value;
+	    return {
+	      value: value,
+	      rest: string.slice(matchedString.length)
+	    };
+	  };
+	}
+
+	function findKey(object, predicate) {
+	  for (var key in object) {
+	    if (object.hasOwnProperty(key) && predicate(object[key])) {
+	      return key;
+	    }
+	  }
+	}
+
+	function findIndex(array, predicate) {
+	  for (var key = 0; key < array.length; key++) {
+	    if (predicate(array[key])) {
+	      return key;
+	    }
+	  }
+	}
+
+	var matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i;
+	var parseOrdinalNumberPattern = /\d+/i;
+	var matchEraPatterns = {
+	  narrow: /^(b|a)/i,
+	  abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
+	  wide: /^(before christ|before common era|anno domini|common era)/i
+	};
+	var parseEraPatterns = {
+	  any: [/^b/i, /^(a|c)/i]
+	};
+	var matchQuarterPatterns = {
+	  narrow: /^[1234]/i,
+	  abbreviated: /^q[1234]/i,
+	  wide: /^[1234](th|st|nd|rd)? quarter/i
+	};
+	var parseQuarterPatterns = {
+	  any: [/1/i, /2/i, /3/i, /4/i]
+	};
+	var matchMonthPatterns = {
+	  narrow: /^[jfmasond]/i,
+	  abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
+	  wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
+	};
+	var parseMonthPatterns = {
+	  narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
+	  any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^may/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
+	};
+	var matchDayPatterns = {
+	  narrow: /^[smtwf]/i,
+	  short: /^(su|mo|tu|we|th|fr|sa)/i,
+	  abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
+	  wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
+	};
+	var parseDayPatterns = {
+	  narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
+	  any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
+	};
+	var matchDayPeriodPatterns = {
+	  narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
+	  any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
+	};
+	var parseDayPeriodPatterns = {
+	  any: {
+	    am: /^a/i,
+	    pm: /^p/i,
+	    midnight: /^mi/i,
+	    noon: /^no/i,
+	    morning: /morning/i,
+	    afternoon: /afternoon/i,
+	    evening: /evening/i,
+	    night: /night/i
+	  }
+	};
+	var match$1 = {
+	  ordinalNumber: buildMatchPatternFn({
+	    matchPattern: matchOrdinalNumberPattern,
+	    parsePattern: parseOrdinalNumberPattern,
+	    valueCallback: function (value) {
+	      return parseInt(value, 10);
+	    }
+	  }),
+	  era: buildMatchFn({
+	    matchPatterns: matchEraPatterns,
+	    defaultMatchWidth: 'wide',
+	    parsePatterns: parseEraPatterns,
+	    defaultParseWidth: 'any'
+	  }),
+	  quarter: buildMatchFn({
+	    matchPatterns: matchQuarterPatterns,
+	    defaultMatchWidth: 'wide',
+	    parsePatterns: parseQuarterPatterns,
+	    defaultParseWidth: 'any',
+	    valueCallback: function (index) {
+	      return index + 1;
+	    }
+	  }),
+	  month: buildMatchFn({
+	    matchPatterns: matchMonthPatterns,
+	    defaultMatchWidth: 'wide',
+	    parsePatterns: parseMonthPatterns,
+	    defaultParseWidth: 'any'
+	  }),
+	  day: buildMatchFn({
+	    matchPatterns: matchDayPatterns,
+	    defaultMatchWidth: 'wide',
+	    parsePatterns: parseDayPatterns,
+	    defaultParseWidth: 'any'
+	  }),
+	  dayPeriod: buildMatchFn({
+	    matchPatterns: matchDayPeriodPatterns,
+	    defaultMatchWidth: 'any',
+	    parsePatterns: parseDayPeriodPatterns,
+	    defaultParseWidth: 'any'
+	  })
+	};
+
+	/**
+	 * @type {Locale}
+	 * @category Locales
+	 * @summary English locale (United States).
+	 * @language English
+	 * @iso-639-2 eng
+	 * @author Sasha Koss [@kossnocorp]{@link https://github.com/kossnocorp}
+	 * @author Lesha Koss [@leshakoss]{@link https://github.com/leshakoss}
+	 */
+
+	var locale = {
+	  code: 'en-US',
+	  formatDistance: formatDistance,
+	  formatLong: formatLong,
+	  formatRelative: formatRelative,
+	  localize: localize,
+	  match: match$1,
+	  options: {
+	    weekStartsOn: 0
+	    /* Sunday */
+	    ,
+	    firstWeekContainsDate: 1
+	  }
+	};
+
+	/**
+	 * @name subMilliseconds
+	 * @category Millisecond Helpers
+	 * @summary Subtract the specified number of milliseconds from the given date.
+	 *
+	 * @description
+	 * Subtract the specified number of milliseconds from the given date.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the date to be changed
+	 * @param {Number} amount - the amount of milliseconds to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+	 * @returns {Date} the new date with the milliseconds subtracted
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Subtract 750 milliseconds from 10 July 2014 12:45:30.000:
+	 * var result = subMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
+	 * //=> Thu Jul 10 2014 12:45:29.250
+	 */
+
+	function subMilliseconds(dirtyDate, dirtyAmount) {
+	  requiredArgs(2, arguments);
+	  var amount = toInteger$1(dirtyAmount);
+	  return addMilliseconds(dirtyDate, -amount);
+	}
+
+	function addLeadingZeros(number, targetLength) {
+	  var sign = number < 0 ? '-' : '';
+	  var output = Math.abs(number).toString();
+
+	  while (output.length < targetLength) {
+	    output = '0' + output;
+	  }
+
+	  return sign + output;
+	}
+
+	/*
+	 * |     | Unit                           |     | Unit                           |
+	 * |-----|--------------------------------|-----|--------------------------------|
+	 * |  a  | AM, PM                         |  A* |                                |
+	 * |  d  | Day of month                   |  D  |                                |
+	 * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
+	 * |  m  | Minute                         |  M  | Month                          |
+	 * |  s  | Second                         |  S  | Fraction of second             |
+	 * |  y  | Year (abs)                     |  Y  |                                |
+	 *
+	 * Letters marked by * are not implemented but reserved by Unicode standard.
+	 */
+
+	var formatters = {
+	  // Year
+	  y: function (date, token) {
+	    // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_tokens
+	    // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
+	    // |----------|-------|----|-------|-------|-------|
+	    // | AD 1     |     1 | 01 |   001 |  0001 | 00001 |
+	    // | AD 12    |    12 | 12 |   012 |  0012 | 00012 |
+	    // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
+	    // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
+	    // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
+	    var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
+
+	    var year = signedYear > 0 ? signedYear : 1 - signedYear;
+	    return addLeadingZeros(token === 'yy' ? year % 100 : year, token.length);
+	  },
+	  // Month
+	  M: function (date, token) {
+	    var month = date.getUTCMonth();
+	    return token === 'M' ? String(month + 1) : addLeadingZeros(month + 1, 2);
+	  },
+	  // Day of the month
+	  d: function (date, token) {
+	    return addLeadingZeros(date.getUTCDate(), token.length);
+	  },
+	  // AM or PM
+	  a: function (date, token) {
+	    var dayPeriodEnumValue = date.getUTCHours() / 12 >= 1 ? 'pm' : 'am';
+
+	    switch (token) {
+	      case 'a':
+	      case 'aa':
+	      case 'aaa':
+	        return dayPeriodEnumValue.toUpperCase();
+
+	      case 'aaaaa':
+	        return dayPeriodEnumValue[0];
+
+	      case 'aaaa':
+	      default:
+	        return dayPeriodEnumValue === 'am' ? 'a.m.' : 'p.m.';
+	    }
+	  },
+	  // Hour [1-12]
+	  h: function (date, token) {
+	    return addLeadingZeros(date.getUTCHours() % 12 || 12, token.length);
+	  },
+	  // Hour [0-23]
+	  H: function (date, token) {
+	    return addLeadingZeros(date.getUTCHours(), token.length);
+	  },
+	  // Minute
+	  m: function (date, token) {
+	    return addLeadingZeros(date.getUTCMinutes(), token.length);
+	  },
+	  // Second
+	  s: function (date, token) {
+	    return addLeadingZeros(date.getUTCSeconds(), token.length);
+	  },
+	  // Fraction of second
+	  S: function (date, token) {
+	    var numberOfDigits = token.length;
+	    var milliseconds = date.getUTCMilliseconds();
+	    var fractionalSeconds = Math.floor(milliseconds * Math.pow(10, numberOfDigits - 3));
+	    return addLeadingZeros(fractionalSeconds, token.length);
+	  }
+	};
+
+	var MILLISECONDS_IN_DAY = 86400000; // This function will be a part of public API when UTC function will be implemented.
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function getUTCDayOfYear(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var timestamp = date.getTime();
+	  date.setUTCMonth(0, 1);
+	  date.setUTCHours(0, 0, 0, 0);
+	  var startOfYearTimestamp = date.getTime();
+	  var difference = timestamp - startOfYearTimestamp;
+	  return Math.floor(difference / MILLISECONDS_IN_DAY) + 1;
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function startOfUTCISOWeek(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var weekStartsOn = 1;
+	  var date = toDate(dirtyDate);
+	  var day = date.getUTCDay();
+	  var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+	  date.setUTCDate(date.getUTCDate() - diff);
+	  date.setUTCHours(0, 0, 0, 0);
+	  return date;
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function getUTCISOWeekYear(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var year = date.getUTCFullYear();
+	  var fourthOfJanuaryOfNextYear = new Date(0);
+	  fourthOfJanuaryOfNextYear.setUTCFullYear(year + 1, 0, 4);
+	  fourthOfJanuaryOfNextYear.setUTCHours(0, 0, 0, 0);
+	  var startOfNextYear = startOfUTCISOWeek(fourthOfJanuaryOfNextYear);
+	  var fourthOfJanuaryOfThisYear = new Date(0);
+	  fourthOfJanuaryOfThisYear.setUTCFullYear(year, 0, 4);
+	  fourthOfJanuaryOfThisYear.setUTCHours(0, 0, 0, 0);
+	  var startOfThisYear = startOfUTCISOWeek(fourthOfJanuaryOfThisYear);
+
+	  if (date.getTime() >= startOfNextYear.getTime()) {
+	    return year + 1;
+	  } else if (date.getTime() >= startOfThisYear.getTime()) {
+	    return year;
+	  } else {
+	    return year - 1;
+	  }
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function startOfUTCISOWeekYear(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var year = getUTCISOWeekYear(dirtyDate);
+	  var fourthOfJanuary = new Date(0);
+	  fourthOfJanuary.setUTCFullYear(year, 0, 4);
+	  fourthOfJanuary.setUTCHours(0, 0, 0, 0);
+	  var date = startOfUTCISOWeek(fourthOfJanuary);
+	  return date;
+	}
+
+	var MILLISECONDS_IN_WEEK = 604800000; // This function will be a part of public API when UTC function will be implemented.
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function getUTCISOWeek(dirtyDate) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var diff = startOfUTCISOWeek(date).getTime() - startOfUTCISOWeekYear(date).getTime(); // Round the number of days to the nearest integer
+	  // because the number of milliseconds in a week is not constant
+	  // (e.g. it's different in the week of the daylight saving time clock shift)
+
+	  return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function startOfUTCWeek(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
+	  var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
+	  var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+
+	  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+	    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+	  }
+
+	  var date = toDate(dirtyDate);
+	  var day = date.getUTCDay();
+	  var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
+	  date.setUTCDate(date.getUTCDate() - diff);
+	  date.setUTCHours(0, 0, 0, 0);
+	  return date;
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function getUTCWeekYear(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate, dirtyOptions);
+	  var year = date.getUTCFullYear();
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
+	  var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
+	  var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+
+	  if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
+	    throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
+	  }
+
+	  var firstWeekOfNextYear = new Date(0);
+	  firstWeekOfNextYear.setUTCFullYear(year + 1, 0, firstWeekContainsDate);
+	  firstWeekOfNextYear.setUTCHours(0, 0, 0, 0);
+	  var startOfNextYear = startOfUTCWeek(firstWeekOfNextYear, dirtyOptions);
+	  var firstWeekOfThisYear = new Date(0);
+	  firstWeekOfThisYear.setUTCFullYear(year, 0, firstWeekContainsDate);
+	  firstWeekOfThisYear.setUTCHours(0, 0, 0, 0);
+	  var startOfThisYear = startOfUTCWeek(firstWeekOfThisYear, dirtyOptions);
+
+	  if (date.getTime() >= startOfNextYear.getTime()) {
+	    return year + 1;
+	  } else if (date.getTime() >= startOfThisYear.getTime()) {
+	    return year;
+	  } else {
+	    return year - 1;
+	  }
+	}
+
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function startOfUTCWeekYear(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
+	  var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
+	  var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate);
+	  var year = getUTCWeekYear(dirtyDate, dirtyOptions);
+	  var firstWeek = new Date(0);
+	  firstWeek.setUTCFullYear(year, 0, firstWeekContainsDate);
+	  firstWeek.setUTCHours(0, 0, 0, 0);
+	  var date = startOfUTCWeek(firstWeek, dirtyOptions);
+	  return date;
+	}
+
+	var MILLISECONDS_IN_WEEK$1 = 604800000; // This function will be a part of public API when UTC function will be implemented.
+	// See issue: https://github.com/date-fns/date-fns/issues/376
+
+	function getUTCWeek(dirtyDate, options) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var diff = startOfUTCWeek(date, options).getTime() - startOfUTCWeekYear(date, options).getTime(); // Round the number of days to the nearest integer
+	  // because the number of milliseconds in a week is not constant
+	  // (e.g. it's different in the week of the daylight saving time clock shift)
+
+	  return Math.round(diff / MILLISECONDS_IN_WEEK$1) + 1;
+	}
+
+	var dayPeriodEnum = {
+	  am: 'am',
+	  pm: 'pm',
+	  midnight: 'midnight',
+	  noon: 'noon',
+	  morning: 'morning',
+	  afternoon: 'afternoon',
+	  evening: 'evening',
+	  night: 'night'
+	  /*
+	   * |     | Unit                           |     | Unit                           |
+	   * |-----|--------------------------------|-----|--------------------------------|
+	   * |  a  | AM, PM                         |  A* | Milliseconds in day            |
+	   * |  b  | AM, PM, noon, midnight         |  B  | Flexible day period            |
+	   * |  c  | Stand-alone local day of week  |  C* | Localized hour w/ day period   |
+	   * |  d  | Day of month                   |  D  | Day of year                    |
+	   * |  e  | Local day of week              |  E  | Day of week                    |
+	   * |  f  |                                |  F* | Day of week in month           |
+	   * |  g* | Modified Julian day            |  G  | Era                            |
+	   * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
+	   * |  i! | ISO day of week                |  I! | ISO week of year               |
+	   * |  j* | Localized hour w/ day period   |  J* | Localized hour w/o day period  |
+	   * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
+	   * |  l* | (deprecated)                   |  L  | Stand-alone month              |
+	   * |  m  | Minute                         |  M  | Month                          |
+	   * |  n  |                                |  N  |                                |
+	   * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
+	   * |  p! | Long localized time            |  P! | Long localized date            |
+	   * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
+	   * |  r* | Related Gregorian year         |  R! | ISO week-numbering year        |
+	   * |  s  | Second                         |  S  | Fraction of second             |
+	   * |  t! | Seconds timestamp              |  T! | Milliseconds timestamp         |
+	   * |  u  | Extended year                  |  U* | Cyclic year                    |
+	   * |  v* | Timezone (generic non-locat.)  |  V* | Timezone (location)            |
+	   * |  w  | Local week of year             |  W* | Week of month                  |
+	   * |  x  | Timezone (ISO-8601 w/o Z)      |  X  | Timezone (ISO-8601)            |
+	   * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
+	   * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
+	   *
+	   * Letters marked by * are not implemented but reserved by Unicode standard.
+	   *
+	   * Letters marked by ! are non-standard, but implemented by date-fns:
+	   * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
+	   * - `i` is ISO day of week. For `i` and `ii` is returns numeric ISO week days,
+	   *   i.e. 7 for Sunday, 1 for Monday, etc.
+	   * - `I` is ISO week of year, as opposed to `w` which is local week of year.
+	   * - `R` is ISO week-numbering year, as opposed to `Y` which is local week-numbering year.
+	   *   `R` is supposed to be used in conjunction with `I` and `i`
+	   *   for universal ISO week-numbering date, whereas
+	   *   `Y` is supposed to be used in conjunction with `w` and `e`
+	   *   for week-numbering date specific to the locale.
+	   * - `P` is long localized date format
+	   * - `p` is long localized time format
+	   */
+
+	};
+	var formatters$1 = {
+	  // Era
+	  G: function (date, token, localize) {
+	    var era = date.getUTCFullYear() > 0 ? 1 : 0;
+
+	    switch (token) {
+	      // AD, BC
+	      case 'G':
+	      case 'GG':
+	      case 'GGG':
+	        return localize.era(era, {
+	          width: 'abbreviated'
+	        });
+	      // A, B
+
+	      case 'GGGGG':
+	        return localize.era(era, {
+	          width: 'narrow'
+	        });
+	      // Anno Domini, Before Christ
+
+	      case 'GGGG':
+	      default:
+	        return localize.era(era, {
+	          width: 'wide'
+	        });
+	    }
+	  },
+	  // Year
+	  y: function (date, token, localize) {
+	    // Ordinal number
+	    if (token === 'yo') {
+	      var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
+
+	      var year = signedYear > 0 ? signedYear : 1 - signedYear;
+	      return localize.ordinalNumber(year, {
+	        unit: 'year'
+	      });
+	    }
+
+	    return formatters.y(date, token);
+	  },
+	  // Local week-numbering year
+	  Y: function (date, token, localize, options) {
+	    var signedWeekYear = getUTCWeekYear(date, options); // Returns 1 for 1 BC (which is year 0 in JavaScript)
+
+	    var weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear; // Two digit year
+
+	    if (token === 'YY') {
+	      var twoDigitYear = weekYear % 100;
+	      return addLeadingZeros(twoDigitYear, 2);
+	    } // Ordinal number
+
+
+	    if (token === 'Yo') {
+	      return localize.ordinalNumber(weekYear, {
+	        unit: 'year'
+	      });
+	    } // Padding
+
+
+	    return addLeadingZeros(weekYear, token.length);
+	  },
+	  // ISO week-numbering year
+	  R: function (date, token) {
+	    var isoWeekYear = getUTCISOWeekYear(date); // Padding
+
+	    return addLeadingZeros(isoWeekYear, token.length);
+	  },
+	  // Extended year. This is a single number designating the year of this calendar system.
+	  // The main difference between `y` and `u` localizers are B.C. years:
+	  // | Year | `y` | `u` |
+	  // |------|-----|-----|
+	  // | AC 1 |   1 |   1 |
+	  // | BC 1 |   1 |   0 |
+	  // | BC 2 |   2 |  -1 |
+	  // Also `yy` always returns the last two digits of a year,
+	  // while `uu` pads single digit years to 2 characters and returns other years unchanged.
+	  u: function (date, token) {
+	    var year = date.getUTCFullYear();
+	    return addLeadingZeros(year, token.length);
+	  },
+	  // Quarter
+	  Q: function (date, token, localize) {
+	    var quarter = Math.ceil((date.getUTCMonth() + 1) / 3);
+
+	    switch (token) {
+	      // 1, 2, 3, 4
+	      case 'Q':
+	        return String(quarter);
+	      // 01, 02, 03, 04
+
+	      case 'QQ':
+	        return addLeadingZeros(quarter, 2);
+	      // 1st, 2nd, 3rd, 4th
+
+	      case 'Qo':
+	        return localize.ordinalNumber(quarter, {
+	          unit: 'quarter'
+	        });
+	      // Q1, Q2, Q3, Q4
+
+	      case 'QQQ':
+	        return localize.quarter(quarter, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+	      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
+	      case 'QQQQQ':
+	        return localize.quarter(quarter, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+	      // 1st quarter, 2nd quarter, ...
+
+	      case 'QQQQ':
+	      default:
+	        return localize.quarter(quarter, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // Stand-alone quarter
+	  q: function (date, token, localize) {
+	    var quarter = Math.ceil((date.getUTCMonth() + 1) / 3);
+
+	    switch (token) {
+	      // 1, 2, 3, 4
+	      case 'q':
+	        return String(quarter);
+	      // 01, 02, 03, 04
+
+	      case 'qq':
+	        return addLeadingZeros(quarter, 2);
+	      // 1st, 2nd, 3rd, 4th
+
+	      case 'qo':
+	        return localize.ordinalNumber(quarter, {
+	          unit: 'quarter'
+	        });
+	      // Q1, Q2, Q3, Q4
+
+	      case 'qqq':
+	        return localize.quarter(quarter, {
+	          width: 'abbreviated',
+	          context: 'standalone'
+	        });
+	      // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
+	      case 'qqqqq':
+	        return localize.quarter(quarter, {
+	          width: 'narrow',
+	          context: 'standalone'
+	        });
+	      // 1st quarter, 2nd quarter, ...
+
+	      case 'qqqq':
+	      default:
+	        return localize.quarter(quarter, {
+	          width: 'wide',
+	          context: 'standalone'
+	        });
+	    }
+	  },
+	  // Month
+	  M: function (date, token, localize) {
+	    var month = date.getUTCMonth();
+
+	    switch (token) {
+	      case 'M':
+	      case 'MM':
+	        return formatters.M(date, token);
+	      // 1st, 2nd, ..., 12th
+
+	      case 'Mo':
+	        return localize.ordinalNumber(month + 1, {
+	          unit: 'month'
+	        });
+	      // Jan, Feb, ..., Dec
+
+	      case 'MMM':
+	        return localize.month(month, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+	      // J, F, ..., D
+
+	      case 'MMMMM':
+	        return localize.month(month, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+	      // January, February, ..., December
+
+	      case 'MMMM':
+	      default:
+	        return localize.month(month, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // Stand-alone month
+	  L: function (date, token, localize) {
+	    var month = date.getUTCMonth();
+
+	    switch (token) {
+	      // 1, 2, ..., 12
+	      case 'L':
+	        return String(month + 1);
+	      // 01, 02, ..., 12
+
+	      case 'LL':
+	        return addLeadingZeros(month + 1, 2);
+	      // 1st, 2nd, ..., 12th
+
+	      case 'Lo':
+	        return localize.ordinalNumber(month + 1, {
+	          unit: 'month'
+	        });
+	      // Jan, Feb, ..., Dec
+
+	      case 'LLL':
+	        return localize.month(month, {
+	          width: 'abbreviated',
+	          context: 'standalone'
+	        });
+	      // J, F, ..., D
+
+	      case 'LLLLL':
+	        return localize.month(month, {
+	          width: 'narrow',
+	          context: 'standalone'
+	        });
+	      // January, February, ..., December
+
+	      case 'LLLL':
+	      default:
+	        return localize.month(month, {
+	          width: 'wide',
+	          context: 'standalone'
+	        });
+	    }
+	  },
+	  // Local week of year
+	  w: function (date, token, localize, options) {
+	    var week = getUTCWeek(date, options);
+
+	    if (token === 'wo') {
+	      return localize.ordinalNumber(week, {
+	        unit: 'week'
+	      });
+	    }
+
+	    return addLeadingZeros(week, token.length);
+	  },
+	  // ISO week of year
+	  I: function (date, token, localize) {
+	    var isoWeek = getUTCISOWeek(date);
+
+	    if (token === 'Io') {
+	      return localize.ordinalNumber(isoWeek, {
+	        unit: 'week'
+	      });
+	    }
+
+	    return addLeadingZeros(isoWeek, token.length);
+	  },
+	  // Day of the month
+	  d: function (date, token, localize) {
+	    if (token === 'do') {
+	      return localize.ordinalNumber(date.getUTCDate(), {
+	        unit: 'date'
+	      });
+	    }
+
+	    return formatters.d(date, token);
+	  },
+	  // Day of year
+	  D: function (date, token, localize) {
+	    var dayOfYear = getUTCDayOfYear(date);
+
+	    if (token === 'Do') {
+	      return localize.ordinalNumber(dayOfYear, {
+	        unit: 'dayOfYear'
+	      });
+	    }
+
+	    return addLeadingZeros(dayOfYear, token.length);
+	  },
+	  // Day of week
+	  E: function (date, token, localize) {
+	    var dayOfWeek = date.getUTCDay();
+
+	    switch (token) {
+	      // Tue
+	      case 'E':
+	      case 'EE':
+	      case 'EEE':
+	        return localize.day(dayOfWeek, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+	      // T
+
+	      case 'EEEEE':
+	        return localize.day(dayOfWeek, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+	      // Tu
+
+	      case 'EEEEEE':
+	        return localize.day(dayOfWeek, {
+	          width: 'short',
+	          context: 'formatting'
+	        });
+	      // Tuesday
+
+	      case 'EEEE':
+	      default:
+	        return localize.day(dayOfWeek, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // Local day of week
+	  e: function (date, token, localize, options) {
+	    var dayOfWeek = date.getUTCDay();
+	    var localDayOfWeek = (dayOfWeek - options.weekStartsOn + 8) % 7 || 7;
+
+	    switch (token) {
+	      // Numerical value (Nth day of week with current locale or weekStartsOn)
+	      case 'e':
+	        return String(localDayOfWeek);
+	      // Padded numerical value
+
+	      case 'ee':
+	        return addLeadingZeros(localDayOfWeek, 2);
+	      // 1st, 2nd, ..., 7th
+
+	      case 'eo':
+	        return localize.ordinalNumber(localDayOfWeek, {
+	          unit: 'day'
+	        });
+
+	      case 'eee':
+	        return localize.day(dayOfWeek, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+	      // T
+
+	      case 'eeeee':
+	        return localize.day(dayOfWeek, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+	      // Tu
+
+	      case 'eeeeee':
+	        return localize.day(dayOfWeek, {
+	          width: 'short',
+	          context: 'formatting'
+	        });
+	      // Tuesday
+
+	      case 'eeee':
+	      default:
+	        return localize.day(dayOfWeek, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // Stand-alone local day of week
+	  c: function (date, token, localize, options) {
+	    var dayOfWeek = date.getUTCDay();
+	    var localDayOfWeek = (dayOfWeek - options.weekStartsOn + 8) % 7 || 7;
+
+	    switch (token) {
+	      // Numerical value (same as in `e`)
+	      case 'c':
+	        return String(localDayOfWeek);
+	      // Padded numerical value
+
+	      case 'cc':
+	        return addLeadingZeros(localDayOfWeek, token.length);
+	      // 1st, 2nd, ..., 7th
+
+	      case 'co':
+	        return localize.ordinalNumber(localDayOfWeek, {
+	          unit: 'day'
+	        });
+
+	      case 'ccc':
+	        return localize.day(dayOfWeek, {
+	          width: 'abbreviated',
+	          context: 'standalone'
+	        });
+	      // T
+
+	      case 'ccccc':
+	        return localize.day(dayOfWeek, {
+	          width: 'narrow',
+	          context: 'standalone'
+	        });
+	      // Tu
+
+	      case 'cccccc':
+	        return localize.day(dayOfWeek, {
+	          width: 'short',
+	          context: 'standalone'
+	        });
+	      // Tuesday
+
+	      case 'cccc':
+	      default:
+	        return localize.day(dayOfWeek, {
+	          width: 'wide',
+	          context: 'standalone'
+	        });
+	    }
+	  },
+	  // ISO day of week
+	  i: function (date, token, localize) {
+	    var dayOfWeek = date.getUTCDay();
+	    var isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+	    switch (token) {
+	      // 2
+	      case 'i':
+	        return String(isoDayOfWeek);
+	      // 02
+
+	      case 'ii':
+	        return addLeadingZeros(isoDayOfWeek, token.length);
+	      // 2nd
+
+	      case 'io':
+	        return localize.ordinalNumber(isoDayOfWeek, {
+	          unit: 'day'
+	        });
+	      // Tue
+
+	      case 'iii':
+	        return localize.day(dayOfWeek, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+	      // T
+
+	      case 'iiiii':
+	        return localize.day(dayOfWeek, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+	      // Tu
+
+	      case 'iiiiii':
+	        return localize.day(dayOfWeek, {
+	          width: 'short',
+	          context: 'formatting'
+	        });
+	      // Tuesday
+
+	      case 'iiii':
+	      default:
+	        return localize.day(dayOfWeek, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // AM or PM
+	  a: function (date, token, localize) {
+	    var hours = date.getUTCHours();
+	    var dayPeriodEnumValue = hours / 12 >= 1 ? 'pm' : 'am';
+
+	    switch (token) {
+	      case 'a':
+	      case 'aa':
+	      case 'aaa':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+
+	      case 'aaaaa':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+
+	      case 'aaaa':
+	      default:
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // AM, PM, midnight, noon
+	  b: function (date, token, localize) {
+	    var hours = date.getUTCHours();
+	    var dayPeriodEnumValue;
+
+	    if (hours === 12) {
+	      dayPeriodEnumValue = dayPeriodEnum.noon;
+	    } else if (hours === 0) {
+	      dayPeriodEnumValue = dayPeriodEnum.midnight;
+	    } else {
+	      dayPeriodEnumValue = hours / 12 >= 1 ? 'pm' : 'am';
+	    }
+
+	    switch (token) {
+	      case 'b':
+	      case 'bb':
+	      case 'bbb':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+
+	      case 'bbbbb':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+
+	      case 'bbbb':
+	      default:
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // in the morning, in the afternoon, in the evening, at night
+	  B: function (date, token, localize) {
+	    var hours = date.getUTCHours();
+	    var dayPeriodEnumValue;
+
+	    if (hours >= 17) {
+	      dayPeriodEnumValue = dayPeriodEnum.evening;
+	    } else if (hours >= 12) {
+	      dayPeriodEnumValue = dayPeriodEnum.afternoon;
+	    } else if (hours >= 4) {
+	      dayPeriodEnumValue = dayPeriodEnum.morning;
+	    } else {
+	      dayPeriodEnumValue = dayPeriodEnum.night;
+	    }
+
+	    switch (token) {
+	      case 'B':
+	      case 'BB':
+	      case 'BBB':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'abbreviated',
+	          context: 'formatting'
+	        });
+
+	      case 'BBBBB':
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'narrow',
+	          context: 'formatting'
+	        });
+
+	      case 'BBBB':
+	      default:
+	        return localize.dayPeriod(dayPeriodEnumValue, {
+	          width: 'wide',
+	          context: 'formatting'
+	        });
+	    }
+	  },
+	  // Hour [1-12]
+	  h: function (date, token, localize) {
+	    if (token === 'ho') {
+	      var hours = date.getUTCHours() % 12;
+	      if (hours === 0) hours = 12;
+	      return localize.ordinalNumber(hours, {
+	        unit: 'hour'
+	      });
+	    }
+
+	    return formatters.h(date, token);
+	  },
+	  // Hour [0-23]
+	  H: function (date, token, localize) {
+	    if (token === 'Ho') {
+	      return localize.ordinalNumber(date.getUTCHours(), {
+	        unit: 'hour'
+	      });
+	    }
+
+	    return formatters.H(date, token);
+	  },
+	  // Hour [0-11]
+	  K: function (date, token, localize) {
+	    var hours = date.getUTCHours() % 12;
+
+	    if (token === 'Ko') {
+	      return localize.ordinalNumber(hours, {
+	        unit: 'hour'
+	      });
+	    }
+
+	    return addLeadingZeros(hours, token.length);
+	  },
+	  // Hour [1-24]
+	  k: function (date, token, localize) {
+	    var hours = date.getUTCHours();
+	    if (hours === 0) hours = 24;
+
+	    if (token === 'ko') {
+	      return localize.ordinalNumber(hours, {
+	        unit: 'hour'
+	      });
+	    }
+
+	    return addLeadingZeros(hours, token.length);
+	  },
+	  // Minute
+	  m: function (date, token, localize) {
+	    if (token === 'mo') {
+	      return localize.ordinalNumber(date.getUTCMinutes(), {
+	        unit: 'minute'
+	      });
+	    }
+
+	    return formatters.m(date, token);
+	  },
+	  // Second
+	  s: function (date, token, localize) {
+	    if (token === 'so') {
+	      return localize.ordinalNumber(date.getUTCSeconds(), {
+	        unit: 'second'
+	      });
+	    }
+
+	    return formatters.s(date, token);
+	  },
+	  // Fraction of second
+	  S: function (date, token) {
+	    return formatters.S(date, token);
+	  },
+	  // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
+	  X: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timezoneOffset = originalDate.getTimezoneOffset();
+
+	    if (timezoneOffset === 0) {
+	      return 'Z';
+	    }
+
+	    switch (token) {
+	      // Hours and optional minutes
+	      case 'X':
+	        return formatTimezoneWithOptionalMinutes(timezoneOffset);
+	      // Hours, minutes and optional seconds without `:` delimiter
+	      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+	      // so this token always has the same output as `XX`
+
+	      case 'XXXX':
+	      case 'XX':
+	        // Hours and minutes without `:` delimiter
+	        return formatTimezone(timezoneOffset);
+	      // Hours, minutes and optional seconds with `:` delimiter
+	      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+	      // so this token always has the same output as `XXX`
+
+	      case 'XXXXX':
+	      case 'XXX': // Hours and minutes with `:` delimiter
+
+	      default:
+	        return formatTimezone(timezoneOffset, ':');
+	    }
+	  },
+	  // Timezone (ISO-8601. If offset is 0, output is `'+00:00'` or equivalent)
+	  x: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timezoneOffset = originalDate.getTimezoneOffset();
+
+	    switch (token) {
+	      // Hours and optional minutes
+	      case 'x':
+	        return formatTimezoneWithOptionalMinutes(timezoneOffset);
+	      // Hours, minutes and optional seconds without `:` delimiter
+	      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+	      // so this token always has the same output as `xx`
+
+	      case 'xxxx':
+	      case 'xx':
+	        // Hours and minutes without `:` delimiter
+	        return formatTimezone(timezoneOffset);
+	      // Hours, minutes and optional seconds with `:` delimiter
+	      // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
+	      // so this token always has the same output as `xxx`
+
+	      case 'xxxxx':
+	      case 'xxx': // Hours and minutes with `:` delimiter
+
+	      default:
+	        return formatTimezone(timezoneOffset, ':');
+	    }
+	  },
+	  // Timezone (GMT)
+	  O: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timezoneOffset = originalDate.getTimezoneOffset();
+
+	    switch (token) {
+	      // Short
+	      case 'O':
+	      case 'OO':
+	      case 'OOO':
+	        return 'GMT' + formatTimezoneShort(timezoneOffset, ':');
+	      // Long
+
+	      case 'OOOO':
+	      default:
+	        return 'GMT' + formatTimezone(timezoneOffset, ':');
+	    }
+	  },
+	  // Timezone (specific non-location)
+	  z: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timezoneOffset = originalDate.getTimezoneOffset();
+
+	    switch (token) {
+	      // Short
+	      case 'z':
+	      case 'zz':
+	      case 'zzz':
+	        return 'GMT' + formatTimezoneShort(timezoneOffset, ':');
+	      // Long
+
+	      case 'zzzz':
+	      default:
+	        return 'GMT' + formatTimezone(timezoneOffset, ':');
+	    }
+	  },
+	  // Seconds timestamp
+	  t: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timestamp = Math.floor(originalDate.getTime() / 1000);
+	    return addLeadingZeros(timestamp, token.length);
+	  },
+	  // Milliseconds timestamp
+	  T: function (date, token, _localize, options) {
+	    var originalDate = options._originalDate || date;
+	    var timestamp = originalDate.getTime();
+	    return addLeadingZeros(timestamp, token.length);
+	  }
+	};
+
+	function formatTimezoneShort(offset, dirtyDelimiter) {
+	  var sign = offset > 0 ? '-' : '+';
+	  var absOffset = Math.abs(offset);
+	  var hours = Math.floor(absOffset / 60);
+	  var minutes = absOffset % 60;
+
+	  if (minutes === 0) {
+	    return sign + String(hours);
+	  }
+
+	  var delimiter = dirtyDelimiter || '';
+	  return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
+	}
+
+	function formatTimezoneWithOptionalMinutes(offset, dirtyDelimiter) {
+	  if (offset % 60 === 0) {
+	    var sign = offset > 0 ? '-' : '+';
+	    return sign + addLeadingZeros(Math.abs(offset) / 60, 2);
+	  }
+
+	  return formatTimezone(offset, dirtyDelimiter);
+	}
+
+	function formatTimezone(offset, dirtyDelimiter) {
+	  var delimiter = dirtyDelimiter || '';
+	  var sign = offset > 0 ? '-' : '+';
+	  var absOffset = Math.abs(offset);
+	  var hours = addLeadingZeros(Math.floor(absOffset / 60), 2);
+	  var minutes = addLeadingZeros(absOffset % 60, 2);
+	  return sign + hours + delimiter + minutes;
+	}
+
+	function dateLongFormatter(pattern, formatLong) {
+	  switch (pattern) {
+	    case 'P':
+	      return formatLong.date({
+	        width: 'short'
+	      });
+
+	    case 'PP':
+	      return formatLong.date({
+	        width: 'medium'
+	      });
+
+	    case 'PPP':
+	      return formatLong.date({
+	        width: 'long'
+	      });
+
+	    case 'PPPP':
+	    default:
+	      return formatLong.date({
+	        width: 'full'
+	      });
+	  }
+	}
+
+	function timeLongFormatter(pattern, formatLong) {
+	  switch (pattern) {
+	    case 'p':
+	      return formatLong.time({
+	        width: 'short'
+	      });
+
+	    case 'pp':
+	      return formatLong.time({
+	        width: 'medium'
+	      });
+
+	    case 'ppp':
+	      return formatLong.time({
+	        width: 'long'
+	      });
+
+	    case 'pppp':
+	    default:
+	      return formatLong.time({
+	        width: 'full'
+	      });
+	  }
+	}
+
+	function dateTimeLongFormatter(pattern, formatLong) {
+	  var matchResult = pattern.match(/(P+)(p+)?/);
+	  var datePattern = matchResult[1];
+	  var timePattern = matchResult[2];
+
+	  if (!timePattern) {
+	    return dateLongFormatter(pattern, formatLong);
+	  }
+
+	  var dateTimeFormat;
+
+	  switch (datePattern) {
+	    case 'P':
+	      dateTimeFormat = formatLong.dateTime({
+	        width: 'short'
+	      });
+	      break;
+
+	    case 'PP':
+	      dateTimeFormat = formatLong.dateTime({
+	        width: 'medium'
+	      });
+	      break;
+
+	    case 'PPP':
+	      dateTimeFormat = formatLong.dateTime({
+	        width: 'long'
+	      });
+	      break;
+
+	    case 'PPPP':
+	    default:
+	      dateTimeFormat = formatLong.dateTime({
+	        width: 'full'
+	      });
+	      break;
+	  }
+
+	  return dateTimeFormat.replace('{{date}}', dateLongFormatter(datePattern, formatLong)).replace('{{time}}', timeLongFormatter(timePattern, formatLong));
+	}
+
+	var longFormatters = {
+	  p: timeLongFormatter,
+	  P: dateTimeLongFormatter
+	};
+
+	var protectedDayOfYearTokens = ['D', 'DD'];
+	var protectedWeekYearTokens = ['YY', 'YYYY'];
+	function isProtectedDayOfYearToken(token) {
+	  return protectedDayOfYearTokens.indexOf(token) !== -1;
+	}
+	function isProtectedWeekYearToken(token) {
+	  return protectedWeekYearTokens.indexOf(token) !== -1;
+	}
+	function throwProtectedError(token) {
+	  if (token === 'YYYY') {
+	    throw new RangeError('Use `yyyy` instead of `YYYY` for formatting years; see: https://git.io/fxCyr');
+	  } else if (token === 'YY') {
+	    throw new RangeError('Use `yy` instead of `YY` for formatting years; see: https://git.io/fxCyr');
+	  } else if (token === 'D') {
+	    throw new RangeError('Use `d` instead of `D` for formatting days of the month; see: https://git.io/fxCyr');
+	  } else if (token === 'DD') {
+	    throw new RangeError('Use `dd` instead of `DD` for formatting days of the month; see: https://git.io/fxCyr');
+	  }
+	}
+
+	// - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
+	//   (one of the certain letters followed by `o`)
+	// - (\w)\1* matches any sequences of the same letter
+	// - '' matches two quote characters in a row
+	// - '(''|[^'])+('|$) matches anything surrounded by two quote characters ('),
+	//   except a single quote symbol, which ends the sequence.
+	//   Two quote characters do not end the sequence.
+	//   If there is no matching single quote
+	//   then the sequence will continue until the end of the string.
+	// - . matches any single character unmatched by previous parts of the RegExps
+
+	var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g; // This RegExp catches symbols escaped by quotes, and also
+	// sequences of symbols P, p, and the combinations like `PPPPPPPppppp`
+
+	var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
+	var escapedStringRegExp = /^'([^]*?)'?$/;
+	var doubleQuoteRegExp = /''/g;
+	var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
+	/**
+	 * @name format
+	 * @category Common Helpers
+	 * @summary Format the date.
+	 *
+	 * @description
+	 * Return the formatted date string in the given format. The result may vary by locale.
+	 *
+	 * > ⚠️ Please note that the `format` tokens differ from Moment.js and other libraries.
+	 * > See: https://git.io/fxCyr
+	 *
+	 * The characters wrapped between two single quotes characters (') are escaped.
+	 * Two single quotes in a row, whether inside or outside a quoted sequence, represent a 'real' single quote.
+	 * (see the last example)
+	 *
+	 * Format of the string is based on Unicode Technical Standard #35:
+	 * https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+	 * with a few additions (see note 7 below the table).
+	 *
+	 * Accepted patterns:
+	 * | Unit                            | Pattern | Result examples                   | Notes |
+	 * |---------------------------------|---------|-----------------------------------|-------|
+	 * | Era                             | G..GGG  | AD, BC                            |       |
+	 * |                                 | GGGG    | Anno Domini, Before Christ        | 2     |
+	 * |                                 | GGGGG   | A, B                              |       |
+	 * | Calendar year                   | y       | 44, 1, 1900, 2017                 | 5     |
+	 * |                                 | yo      | 44th, 1st, 0th, 17th              | 5,7   |
+	 * |                                 | yy      | 44, 01, 00, 17                    | 5     |
+	 * |                                 | yyy     | 044, 001, 1900, 2017              | 5     |
+	 * |                                 | yyyy    | 0044, 0001, 1900, 2017            | 5     |
+	 * |                                 | yyyyy   | ...                               | 3,5   |
+	 * | Local week-numbering year       | Y       | 44, 1, 1900, 2017                 | 5     |
+	 * |                                 | Yo      | 44th, 1st, 1900th, 2017th         | 5,7   |
+	 * |                                 | YY      | 44, 01, 00, 17                    | 5,8   |
+	 * |                                 | YYY     | 044, 001, 1900, 2017              | 5     |
+	 * |                                 | YYYY    | 0044, 0001, 1900, 2017            | 5,8   |
+	 * |                                 | YYYYY   | ...                               | 3,5   |
+	 * | ISO week-numbering year         | R       | -43, 0, 1, 1900, 2017             | 5,7   |
+	 * |                                 | RR      | -43, 00, 01, 1900, 2017           | 5,7   |
+	 * |                                 | RRR     | -043, 000, 001, 1900, 2017        | 5,7   |
+	 * |                                 | RRRR    | -0043, 0000, 0001, 1900, 2017     | 5,7   |
+	 * |                                 | RRRRR   | ...                               | 3,5,7 |
+	 * | Extended year                   | u       | -43, 0, 1, 1900, 2017             | 5     |
+	 * |                                 | uu      | -43, 01, 1900, 2017               | 5     |
+	 * |                                 | uuu     | -043, 001, 1900, 2017             | 5     |
+	 * |                                 | uuuu    | -0043, 0001, 1900, 2017           | 5     |
+	 * |                                 | uuuuu   | ...                               | 3,5   |
+	 * | Quarter (formatting)            | Q       | 1, 2, 3, 4                        |       |
+	 * |                                 | Qo      | 1st, 2nd, 3rd, 4th                | 7     |
+	 * |                                 | QQ      | 01, 02, 03, 04                    |       |
+	 * |                                 | QQQ     | Q1, Q2, Q3, Q4                    |       |
+	 * |                                 | QQQQ    | 1st quarter, 2nd quarter, ...     | 2     |
+	 * |                                 | QQQQQ   | 1, 2, 3, 4                        | 4     |
+	 * | Quarter (stand-alone)           | q       | 1, 2, 3, 4                        |       |
+	 * |                                 | qo      | 1st, 2nd, 3rd, 4th                | 7     |
+	 * |                                 | qq      | 01, 02, 03, 04                    |       |
+	 * |                                 | qqq     | Q1, Q2, Q3, Q4                    |       |
+	 * |                                 | qqqq    | 1st quarter, 2nd quarter, ...     | 2     |
+	 * |                                 | qqqqq   | 1, 2, 3, 4                        | 4     |
+	 * | Month (formatting)              | M       | 1, 2, ..., 12                     |       |
+	 * |                                 | Mo      | 1st, 2nd, ..., 12th               | 7     |
+	 * |                                 | MM      | 01, 02, ..., 12                   |       |
+	 * |                                 | MMM     | Jan, Feb, ..., Dec                |       |
+	 * |                                 | MMMM    | January, February, ..., December  | 2     |
+	 * |                                 | MMMMM   | J, F, ..., D                      |       |
+	 * | Month (stand-alone)             | L       | 1, 2, ..., 12                     |       |
+	 * |                                 | Lo      | 1st, 2nd, ..., 12th               | 7     |
+	 * |                                 | LL      | 01, 02, ..., 12                   |       |
+	 * |                                 | LLL     | Jan, Feb, ..., Dec                |       |
+	 * |                                 | LLLL    | January, February, ..., December  | 2     |
+	 * |                                 | LLLLL   | J, F, ..., D                      |       |
+	 * | Local week of year              | w       | 1, 2, ..., 53                     |       |
+	 * |                                 | wo      | 1st, 2nd, ..., 53th               | 7     |
+	 * |                                 | ww      | 01, 02, ..., 53                   |       |
+	 * | ISO week of year                | I       | 1, 2, ..., 53                     | 7     |
+	 * |                                 | Io      | 1st, 2nd, ..., 53th               | 7     |
+	 * |                                 | II      | 01, 02, ..., 53                   | 7     |
+	 * | Day of month                    | d       | 1, 2, ..., 31                     |       |
+	 * |                                 | do      | 1st, 2nd, ..., 31st               | 7     |
+	 * |                                 | dd      | 01, 02, ..., 31                   |       |
+	 * | Day of year                     | D       | 1, 2, ..., 365, 366               | 9     |
+	 * |                                 | Do      | 1st, 2nd, ..., 365th, 366th       | 7     |
+	 * |                                 | DD      | 01, 02, ..., 365, 366             | 9     |
+	 * |                                 | DDD     | 001, 002, ..., 365, 366           |       |
+	 * |                                 | DDDD    | ...                               | 3     |
+	 * | Day of week (formatting)        | E..EEE  | Mon, Tue, Wed, ..., Su            |       |
+	 * |                                 | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
+	 * |                                 | EEEEE   | M, T, W, T, F, S, S               |       |
+	 * |                                 | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+	 * | ISO day of week (formatting)    | i       | 1, 2, 3, ..., 7                   | 7     |
+	 * |                                 | io      | 1st, 2nd, ..., 7th                | 7     |
+	 * |                                 | ii      | 01, 02, ..., 07                   | 7     |
+	 * |                                 | iii     | Mon, Tue, Wed, ..., Su            | 7     |
+	 * |                                 | iiii    | Monday, Tuesday, ..., Sunday      | 2,7   |
+	 * |                                 | iiiii   | M, T, W, T, F, S, S               | 7     |
+	 * |                                 | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 7     |
+	 * | Local day of week (formatting)  | e       | 2, 3, 4, ..., 1                   |       |
+	 * |                                 | eo      | 2nd, 3rd, ..., 1st                | 7     |
+	 * |                                 | ee      | 02, 03, ..., 01                   |       |
+	 * |                                 | eee     | Mon, Tue, Wed, ..., Su            |       |
+	 * |                                 | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
+	 * |                                 | eeeee   | M, T, W, T, F, S, S               |       |
+	 * |                                 | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+	 * | Local day of week (stand-alone) | c       | 2, 3, 4, ..., 1                   |       |
+	 * |                                 | co      | 2nd, 3rd, ..., 1st                | 7     |
+	 * |                                 | cc      | 02, 03, ..., 01                   |       |
+	 * |                                 | ccc     | Mon, Tue, Wed, ..., Su            |       |
+	 * |                                 | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
+	 * |                                 | ccccc   | M, T, W, T, F, S, S               |       |
+	 * |                                 | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+	 * | AM, PM                          | a..aaa  | AM, PM                            |       |
+	 * |                                 | aaaa    | a.m., p.m.                        | 2     |
+	 * |                                 | aaaaa   | a, p                              |       |
+	 * | AM, PM, noon, midnight          | b..bbb  | AM, PM, noon, midnight            |       |
+	 * |                                 | bbbb    | a.m., p.m., noon, midnight        | 2     |
+	 * |                                 | bbbbb   | a, p, n, mi                       |       |
+	 * | Flexible day period             | B..BBB  | at night, in the morning, ...     |       |
+	 * |                                 | BBBB    | at night, in the morning, ...     | 2     |
+	 * |                                 | BBBBB   | at night, in the morning, ...     |       |
+	 * | Hour [1-12]                     | h       | 1, 2, ..., 11, 12                 |       |
+	 * |                                 | ho      | 1st, 2nd, ..., 11th, 12th         | 7     |
+	 * |                                 | hh      | 01, 02, ..., 11, 12               |       |
+	 * | Hour [0-23]                     | H       | 0, 1, 2, ..., 23                  |       |
+	 * |                                 | Ho      | 0th, 1st, 2nd, ..., 23rd          | 7     |
+	 * |                                 | HH      | 00, 01, 02, ..., 23               |       |
+	 * | Hour [0-11]                     | K       | 1, 2, ..., 11, 0                  |       |
+	 * |                                 | Ko      | 1st, 2nd, ..., 11th, 0th          | 7     |
+	 * |                                 | KK      | 01, 02, ..., 11, 00               |       |
+	 * | Hour [1-24]                     | k       | 24, 1, 2, ..., 23                 |       |
+	 * |                                 | ko      | 24th, 1st, 2nd, ..., 23rd         | 7     |
+	 * |                                 | kk      | 24, 01, 02, ..., 23               |       |
+	 * | Minute                          | m       | 0, 1, ..., 59                     |       |
+	 * |                                 | mo      | 0th, 1st, ..., 59th               | 7     |
+	 * |                                 | mm      | 00, 01, ..., 59                   |       |
+	 * | Second                          | s       | 0, 1, ..., 59                     |       |
+	 * |                                 | so      | 0th, 1st, ..., 59th               | 7     |
+	 * |                                 | ss      | 00, 01, ..., 59                   |       |
+	 * | Fraction of second              | S       | 0, 1, ..., 9                      |       |
+	 * |                                 | SS      | 00, 01, ..., 99                   |       |
+	 * |                                 | SSS     | 000, 0001, ..., 999               |       |
+	 * |                                 | SSSS    | ...                               | 3     |
+	 * | Timezone (ISO-8601 w/ Z)        | X       | -08, +0530, Z                     |       |
+	 * |                                 | XX      | -0800, +0530, Z                   |       |
+	 * |                                 | XXX     | -08:00, +05:30, Z                 |       |
+	 * |                                 | XXXX    | -0800, +0530, Z, +123456          | 2     |
+	 * |                                 | XXXXX   | -08:00, +05:30, Z, +12:34:56      |       |
+	 * | Timezone (ISO-8601 w/o Z)       | x       | -08, +0530, +00                   |       |
+	 * |                                 | xx      | -0800, +0530, +0000               |       |
+	 * |                                 | xxx     | -08:00, +05:30, +00:00            | 2     |
+	 * |                                 | xxxx    | -0800, +0530, +0000, +123456      |       |
+	 * |                                 | xxxxx   | -08:00, +05:30, +00:00, +12:34:56 |       |
+	 * | Timezone (GMT)                  | O...OOO | GMT-8, GMT+5:30, GMT+0            |       |
+	 * |                                 | OOOO    | GMT-08:00, GMT+05:30, GMT+00:00   | 2     |
+	 * | Timezone (specific non-locat.)  | z...zzz | GMT-8, GMT+5:30, GMT+0            | 6     |
+	 * |                                 | zzzz    | GMT-08:00, GMT+05:30, GMT+00:00   | 2,6   |
+	 * | Seconds timestamp               | t       | 512969520                         | 7     |
+	 * |                                 | tt      | ...                               | 3,7   |
+	 * | Milliseconds timestamp          | T       | 512969520900                      | 7     |
+	 * |                                 | TT      | ...                               | 3,7   |
+	 * | Long localized date             | P       | 05/29/1453                        | 7     |
+	 * |                                 | PP      | May 29, 1453                      | 7     |
+	 * |                                 | PPP     | May 29th, 1453                    | 7     |
+	 * |                                 | PPPP    | Sunday, May 29th, 1453            | 2,7   |
+	 * | Long localized time             | p       | 12:00 AM                          | 7     |
+	 * |                                 | pp      | 12:00:00 AM                       | 7     |
+	 * |                                 | ppp     | 12:00:00 AM GMT+2                 | 7     |
+	 * |                                 | pppp    | 12:00:00 AM GMT+02:00             | 2,7   |
+	 * | Combination of date and time    | Pp      | 05/29/1453, 12:00 AM              | 7     |
+	 * |                                 | PPpp    | May 29, 1453, 12:00:00 AM         | 7     |
+	 * |                                 | PPPppp  | May 29th, 1453 at ...             | 7     |
+	 * |                                 | PPPPpppp| Sunday, May 29th, 1453 at ...     | 2,7   |
+	 * Notes:
+	 * 1. "Formatting" units (e.g. formatting quarter) in the default en-US locale
+	 *    are the same as "stand-alone" units, but are different in some languages.
+	 *    "Formatting" units are declined according to the rules of the language
+	 *    in the context of a date. "Stand-alone" units are always nominative singular:
+	 *
+	 *    `format(new Date(2017, 10, 6), 'do LLLL', {locale: cs}) //=> '6. listopad'`
+	 *
+	 *    `format(new Date(2017, 10, 6), 'do MMMM', {locale: cs}) //=> '6. listopadu'`
+	 *
+	 * 2. Any sequence of the identical letters is a pattern, unless it is escaped by
+	 *    the single quote characters (see below).
+	 *    If the sequence is longer than listed in table (e.g. `EEEEEEEEEEE`)
+	 *    the output will be the same as default pattern for this unit, usually
+	 *    the longest one (in case of ISO weekdays, `EEEE`). Default patterns for units
+	 *    are marked with "2" in the last column of the table.
+	 *
+	 *    `format(new Date(2017, 10, 6), 'MMM') //=> 'Nov'`
+	 *
+	 *    `format(new Date(2017, 10, 6), 'MMMM') //=> 'November'`
+	 *
+	 *    `format(new Date(2017, 10, 6), 'MMMMM') //=> 'N'`
+	 *
+	 *    `format(new Date(2017, 10, 6), 'MMMMMM') //=> 'November'`
+	 *
+	 *    `format(new Date(2017, 10, 6), 'MMMMMMM') //=> 'November'`
+	 *
+	 * 3. Some patterns could be unlimited length (such as `yyyyyyyy`).
+	 *    The output will be padded with zeros to match the length of the pattern.
+	 *
+	 *    `format(new Date(2017, 10, 6), 'yyyyyyyy') //=> '00002017'`
+	 *
+	 * 4. `QQQQQ` and `qqqqq` could be not strictly numerical in some locales.
+	 *    These tokens represent the shortest form of the quarter.
+	 *
+	 * 5. The main difference between `y` and `u` patterns are B.C. years:
+	 *
+	 *    | Year | `y` | `u` |
+	 *    |------|-----|-----|
+	 *    | AC 1 |   1 |   1 |
+	 *    | BC 1 |   1 |   0 |
+	 *    | BC 2 |   2 |  -1 |
+	 *
+	 *    Also `yy` always returns the last two digits of a year,
+	 *    while `uu` pads single digit years to 2 characters and returns other years unchanged:
+	 *
+	 *    | Year | `yy` | `uu` |
+	 *    |------|------|------|
+	 *    | 1    |   01 |   01 |
+	 *    | 14   |   14 |   14 |
+	 *    | 376  |   76 |  376 |
+	 *    | 1453 |   53 | 1453 |
+	 *
+	 *    The same difference is true for local and ISO week-numbering years (`Y` and `R`),
+	 *    except local week-numbering years are dependent on `options.weekStartsOn`
+	 *    and `options.firstWeekContainsDate` (compare [getISOWeekYear]{@link https://date-fns.org/docs/getISOWeekYear}
+	 *    and [getWeekYear]{@link https://date-fns.org/docs/getWeekYear}).
+	 *
+	 * 6. Specific non-location timezones are currently unavailable in `date-fns`,
+	 *    so right now these tokens fall back to GMT timezones.
+	 *
+	 * 7. These patterns are not in the Unicode Technical Standard #35:
+	 *    - `i`: ISO day of week
+	 *    - `I`: ISO week of year
+	 *    - `R`: ISO week-numbering year
+	 *    - `t`: seconds timestamp
+	 *    - `T`: milliseconds timestamp
+	 *    - `o`: ordinal number modifier
+	 *    - `P`: long localized date
+	 *    - `p`: long localized time
+	 *
+	 * 8. `YY` and `YYYY` tokens represent week-numbering years but they are often confused with years.
+	 *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://git.io/fxCyr
+	 *
+	 * 9. `D` and `DD` tokens represent days of the year but they are ofthen confused with days of the month.
+	 *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://git.io/fxCyr
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * - The second argument is now required for the sake of explicitness.
+	 *
+	 *   ```javascript
+	 *   // Before v2.0.0
+	 *   format(new Date(2016, 0, 1))
+	 *
+	 *   // v2.0.0 onward
+	 *   format(new Date(2016, 0, 1), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+	 *   ```
+	 *
+	 * - New format string API for `format` function
+	 *   which is based on [Unicode Technical Standard #35](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
+	 *   See [this post](https://blog.date-fns.org/post/unicode-tokens-in-date-fns-v2-sreatyki91jg) for more details.
+	 *
+	 * - Characters are now escaped using single quote symbols (`'`) instead of square brackets.
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @param {String} format - the string of tokens
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @param {Number} [options.firstWeekContainsDate=1] - the day of January, which is
+	 * @param {Boolean} [options.useAdditionalWeekYearTokens=false] - if true, allows usage of the week-numbering year tokens `YY` and `YYYY`;
+	 *   see: https://git.io/fxCyr
+	 * @param {Boolean} [options.useAdditionalDayOfYearTokens=false] - if true, allows usage of the day of year tokens `D` and `DD`;
+	 *   see: https://git.io/fxCyr
+	 * @returns {String} the formatted date string
+	 * @throws {TypeError} 2 arguments required
+	 * @throws {RangeError} `date` must not be Invalid Date
+	 * @throws {RangeError} `options.locale` must contain `localize` property
+	 * @throws {RangeError} `options.locale` must contain `formatLong` property
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
+	 * @throws {RangeError} use `yyyy` instead of `YYYY` for formatting years; see: https://git.io/fxCyr
+	 * @throws {RangeError} use `yy` instead of `YY` for formatting years; see: https://git.io/fxCyr
+	 * @throws {RangeError} use `d` instead of `D` for formatting days of the month; see: https://git.io/fxCyr
+	 * @throws {RangeError} use `dd` instead of `DD` for formatting days of the month; see: https://git.io/fxCyr
+	 * @throws {RangeError} format string contains an unescaped latin alphabet character
+	 *
+	 * @example
+	 * // Represent 11 February 2014 in middle-endian format:
+	 * var result = format(new Date(2014, 1, 11), 'MM/dd/yyyy')
+	 * //=> '02/11/2014'
+	 *
+	 * @example
+	 * // Represent 2 July 2014 in Esperanto:
+	 * import { eoLocale } from 'date-fns/locale/eo'
+	 * var result = format(new Date(2014, 6, 2), "do 'de' MMMM yyyy", {
+	 *   locale: eoLocale
+	 * })
+	 * //=> '2-a de julio 2014'
+	 *
+	 * @example
+	 * // Escape string by single quote characters:
+	 * var result = format(new Date(2014, 6, 2, 15), "h 'o''clock'")
+	 * //=> "3 o'clock"
+	 */
+
+	function format(dirtyDate, dirtyFormatStr, dirtyOptions) {
+	  requiredArgs(2, arguments);
+	  var formatStr = String(dirtyFormatStr);
+	  var options = dirtyOptions || {};
+	  var locale$1 = options.locale || locale;
+	  var localeFirstWeekContainsDate = locale$1.options && locale$1.options.firstWeekContainsDate;
+	  var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
+	  var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+
+	  if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
+	    throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
+	  }
+
+	  var localeWeekStartsOn = locale$1.options && locale$1.options.weekStartsOn;
+	  var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
+	  var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+
+	  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+	    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+	  }
+
+	  if (!locale$1.localize) {
+	    throw new RangeError('locale must contain localize property');
+	  }
+
+	  if (!locale$1.formatLong) {
+	    throw new RangeError('locale must contain formatLong property');
+	  }
+
+	  var originalDate = toDate(dirtyDate);
+
+	  if (!isValid(originalDate)) {
+	    throw new RangeError('Invalid time value');
+	  } // Convert the date in system timezone to the same date in UTC+00:00 timezone.
+	  // This ensures that when UTC functions will be implemented, locales will be compatible with them.
+	  // See an issue about UTC functions: https://github.com/date-fns/date-fns/issues/376
+
+
+	  var timezoneOffset = getTimezoneOffsetInMilliseconds(originalDate);
+	  var utcDate = subMilliseconds(originalDate, timezoneOffset);
+	  var formatterOptions = {
+	    firstWeekContainsDate: firstWeekContainsDate,
+	    weekStartsOn: weekStartsOn,
+	    locale: locale$1,
+	    _originalDate: originalDate
+	  };
+	  var result = formatStr.match(longFormattingTokensRegExp).map(function (substring) {
+	    var firstCharacter = substring[0];
+
+	    if (firstCharacter === 'p' || firstCharacter === 'P') {
+	      var longFormatter = longFormatters[firstCharacter];
+	      return longFormatter(substring, locale$1.formatLong, formatterOptions);
+	    }
+
+	    return substring;
+	  }).join('').match(formattingTokensRegExp).map(function (substring) {
+	    // Replace two single quote characters with one single quote character
+	    if (substring === "''") {
+	      return "'";
+	    }
+
+	    var firstCharacter = substring[0];
+
+	    if (firstCharacter === "'") {
+	      return cleanEscapedString(substring);
+	    }
+
+	    var formatter = formatters$1[firstCharacter];
+
+	    if (formatter) {
+	      if (!options.useAdditionalWeekYearTokens && isProtectedWeekYearToken(substring)) {
+	        throwProtectedError(substring);
+	      }
+
+	      if (!options.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(substring)) {
+	        throwProtectedError(substring);
+	      }
+
+	      return formatter(utcDate, substring, locale$1.localize, formatterOptions);
+	    }
+
+	    if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
+	      throw new RangeError('Format string contains an unescaped latin alphabet character `' + firstCharacter + '`');
+	    }
+
+	    return substring;
+	  }).join('');
+	  return result;
+	}
+
+	function cleanEscapedString(input) {
+	  return input.match(escapedStringRegExp)[1].replace(doubleQuoteRegExp, "'");
+	}
+
+	/**
+	 * @name startOfToday
+	 * @category Day Helpers
+	 * @summary Return the start of today.
+	 * @pure false
+	 *
+	 * @description
+	 * Return the start of today.
+	 *
+	 * > ⚠️ Please note that this function is not present in the FP submodule as
+	 * > it uses `Date.now()` internally hence impure and can't be safely curried.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @returns {Date} the start of today
+	 *
+	 * @example
+	 * // If today is 6 October 2014:
+	 * var result = startOfToday()
+	 * //=> Mon Oct 6 2014 00:00:00
+	 */
+
+	function startOfToday() {
+	  return startOfDay(Date.now());
+	}
+
+	function get_each_context(ctx, list, i) {
+	  var child_ctx = ctx.slice();
+	  child_ctx[8] = list[i];
+	  return child_ctx;
+	} // (77:5) {#if day && day.stats}
+
+
+	function create_if_block(ctx) {
+	  var t0;
+	  var div;
+	  var div_style_value;
+	  var t1;
+	  var span;
+	  var t2_value = format(
+	  /*day*/
+	  ctx[8].date, "iiiiii d.M.") + "";
+	  var t2;
+	  var if_block =
+	  /*day*/
+	  ctx[8].stats.total > 0 && create_if_block_1(ctx);
+	  return {
+	    c() {
+	      if (if_block) if_block.c();
+	      t0 = space();
+	      div = element("div");
+	      t1 = space();
+	      span = element("span");
+	      t2 = text(t2_value);
+	      attr(div, "class", "column-inner");
+	      attr(div, "style", div_style_value = "height: ".concat(
+	      /*day*/
+	      ctx[8].stats.total /
+	      /*highest*/
+	      ctx[4] * 100, "%"));
+	      attr(span, "class", "date-label");
+	    },
+
+	    m(target, anchor) {
+	      if (if_block) if_block.m(target, anchor);
+	      insert(target, t0, anchor);
+	      insert(target, div, anchor);
+	      insert(target, t1, anchor);
+	      insert(target, span, anchor);
+	      append(span, t2);
+	    },
+
+	    p(ctx, dirty) {
+	      if (
+	      /*day*/
+	      ctx[8].stats.total > 0) {
+	        if (if_block) {
+	          if_block.p(ctx, dirty);
+	        } else {
+	          if_block = create_if_block_1(ctx);
+	          if_block.c();
+	          if_block.m(t0.parentNode, t0);
+	        }
+	      } else if (if_block) {
+	        if_block.d(1);
+	        if_block = null;
+	      }
+
+	      if (dirty &
+	      /*days, highest*/
+	      18 && div_style_value !== (div_style_value = "height: ".concat(
+	      /*day*/
+	      ctx[8].stats.total /
+	      /*highest*/
+	      ctx[4] * 100, "%"))) {
+	        attr(div, "style", div_style_value);
+	      }
+
+	      if (dirty &
+	      /*days*/
+	      2 && t2_value !== (t2_value = format(
+	      /*day*/
+	      ctx[8].date, "iiiiii d.M.") + "")) set_data(t2, t2_value);
+	    },
+
+	    d(detaching) {
+	      if (if_block) if_block.d(detaching);
+	      if (detaching) detach(t0);
+	      if (detaching) detach(div);
+	      if (detaching) detach(t1);
+	      if (detaching) detach(span);
+	    }
+
+	  };
+	} // (78:6) {#if day.stats.total > 0}
+
+
+	function create_if_block_1(ctx) {
+	  var span;
+	  var t0_value =
+	  /*day*/
+	  ctx[8].stats.total + "";
+	  var t0;
+	  var t1;
+	  return {
+	    c() {
+	      span = element("span");
+	      t0 = text(t0_value);
+	      t1 = text(" hrs.");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, span, anchor);
+	      append(span, t0);
+	      append(span, t1);
+	    },
+
+	    p(ctx, dirty) {
+	      if (dirty &
+	      /*days*/
+	      2 && t0_value !== (t0_value =
+	      /*day*/
+	      ctx[8].stats.total + "")) set_data(t0, t0_value);
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(span);
+	    }
+
+	  };
+	} // (75:3) {#each days as day}
+
+
+	function create_each_block(ctx) {
+	  var div;
+	  var t;
+	  var if_block =
+	  /*day*/
+	  ctx[8] &&
+	  /*day*/
+	  ctx[8].stats && create_if_block(ctx);
+	  return {
+	    c() {
+	      div = element("div");
+	      if (if_block) if_block.c();
+	      t = space();
+	      attr(div, "class", "column");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, div, anchor);
+	      if (if_block) if_block.m(div, null);
+	      append(div, t);
+	    },
+
+	    p(ctx, dirty) {
+	      if (
+	      /*day*/
+	      ctx[8] &&
+	      /*day*/
+	      ctx[8].stats) {
+	        if (if_block) {
+	          if_block.p(ctx, dirty);
+	        } else {
+	          if_block = create_if_block(ctx);
+	          if_block.c();
+	          if_block.m(div, t);
+	        }
+	      } else if (if_block) {
+	        if_block.d(1);
+	        if_block = null;
+	      }
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(div);
+	      if (if_block) if_block.d();
+	    }
+
+	  };
+	}
+
+	function create_fragment(ctx) {
+	  var div3;
+	  var div0;
+	  var figure0;
+	  var figcaption0;
+	  var t1;
+	  var t2;
+	  var t3;
+	  var t4;
+	  var figure1;
+	  var figcaption1;
+	  var t6;
+	  var t7;
+	  var t8;
+	  var t9;
+	  var div2;
+	  var div1;
+	  var div3_class_value;
+	  var each_value =
+	  /*days*/
+	  ctx[1];
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value.length; i += 1) {
+	    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	  }
+
+	  return {
+	    c() {
+	      div3 = element("div");
+	      div0 = element("div");
+	      figure0 = element("figure");
+	      figcaption0 = element("figcaption");
+	      figcaption0.textContent = "Today";
+	      t1 = space();
+	      t2 = text(
+	      /*todayTotal*/
+	      ctx[3]);
+	      t3 = text(" hrs.");
+	      t4 = space();
+	      figure1 = element("figure");
+	      figcaption1 = element("figcaption");
+	      figcaption1.textContent = "Week";
+	      t6 = space();
+	      t7 = text(
+	      /*weekTotal*/
+	      ctx[2]);
+	      t8 = text(" hrs.");
+	      t9 = space();
+	      div2 = element("div");
+	      div1 = element("div");
+
+	      for (var _i = 0; _i < each_blocks.length; _i += 1) {
+	        each_blocks[_i].c();
+	      }
+
+	      attr(figcaption0, "class", "tm_label");
+	      attr(figcaption1, "class", "tm_label");
+	      attr(div0, "class", "top-stats");
+	      attr(div1, "class", "hours-per-week");
+	      attr(div2, "class", "graphs");
+	      attr(div3, "class", div3_class_value = "".concat(
+	      /*loading*/
+	      ctx[0] ? "icon-loading" : ""));
+	    },
+
+	    m(target, anchor) {
+	      insert(target, div3, anchor);
+	      append(div3, div0);
+	      append(div0, figure0);
+	      append(figure0, figcaption0);
+	      append(figure0, t1);
+	      append(figure0, t2);
+	      append(figure0, t3);
+	      append(div0, t4);
+	      append(div0, figure1);
+	      append(figure1, figcaption1);
+	      append(figure1, t6);
+	      append(figure1, t7);
+	      append(figure1, t8);
+	      append(div3, t9);
+	      append(div3, div2);
+	      append(div2, div1);
+
+	      for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+	        each_blocks[_i2].m(div1, null);
+	      }
+	    },
+
+	    p(ctx, _ref) {
+	      var _ref2 = _slicedToArray(_ref, 1),
+	          dirty = _ref2[0];
+
+	      if (dirty &
+	      /*todayTotal*/
+	      8) set_data(t2,
+	      /*todayTotal*/
+	      ctx[3]);
+	      if (dirty &
+	      /*weekTotal*/
+	      4) set_data(t7,
+	      /*weekTotal*/
+	      ctx[2]);
+
+	      if (dirty &
+	      /*format, days, highest*/
+	      18) {
+	        each_value =
+	        /*days*/
+	        ctx[1];
+
+	        var _i3;
+
+	        for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+	          var child_ctx = get_each_context(ctx, each_value, _i3);
+
+	          if (each_blocks[_i3]) {
+	            each_blocks[_i3].p(child_ctx, dirty);
+	          } else {
+	            each_blocks[_i3] = create_each_block(child_ctx);
+
+	            each_blocks[_i3].c();
+
+	            each_blocks[_i3].m(div1, null);
+	          }
+	        }
+
+	        for (; _i3 < each_blocks.length; _i3 += 1) {
+	          each_blocks[_i3].d(1);
+	        }
+
+	        each_blocks.length = each_value.length;
+	      }
+
+	      if (dirty &
+	      /*loading*/
+	      1 && div3_class_value !== (div3_class_value = "".concat(
+	      /*loading*/
+	      ctx[0] ? "icon-loading" : ""))) {
+	        attr(div3, "class", div3_class_value);
+	      }
+	    },
+
+	    i: noop,
+	    o: noop,
+
+	    d(detaching) {
+	      if (detaching) detach(div3);
+	      destroy_each(each_blocks, detaching);
+	    }
+
+	  };
+	}
+
+	function instance($$self, $$props, $$invalidate) {
+	  var statsApiUrl = $$props.statsApiUrl;
+	  var requestToken = $$props.requestToken;
+	  var loading = false;
+	  var days = [];
+	  var weekTotal = 0;
+	  var todayTotal = 0;
+	  var highest = 0;
+	  onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+	    var monday, _i4, _days, day;
+
+	    return regeneratorRuntime.wrap(function _callee$(_context) {
+	      while (1) {
+	        switch (_context.prev = _context.next) {
+	          case 0:
+	            $$invalidate(0, loading = true);
+	            monday = startOfWeek(startOfToday(), {
+	              weekStartsOn: 1
+	            });
+	            $$invalidate(1, days = [{
+	              date: monday
+	            }, {
+	              date: addDays(monday, 1)
+	            }, {
+	              date: addDays(monday, 2)
+	            }, {
+	              date: addDays(monday, 3)
+	            }, {
+	              date: addDays(monday, 4)
+	            }, {
+	              date: addDays(monday, 5)
+	            }, {
+	              date: addDays(monday, 6)
+	            }]);
+	            _i4 = 0, _days = days;
+
+	          case 4:
+	            if (!(_i4 < _days.length)) {
+	              _context.next = 12;
+	              break;
+	            }
+
+	            day = _days[_i4];
+	            _context.next = 8;
+	            return loadStatsForDay(day);
+
+	          case 8:
+	            day.stats = _context.sent;
+
+	          case 9:
+	            _i4++;
+	            _context.next = 4;
+	            break;
+
+	          case 12:
+	            days.forEach(function (day) {
+	              if (day.stats && day.stats.total) {
+	                // Find highest value
+	                if (day.stats.total > highest) {
+	                  $$invalidate(4, highest = day.stats.total);
+	                } // Sum up total
+
+
+	                $$invalidate(2, weekTotal += day.stats.total); // Day total
+
+	                if (isSameDay(day.date, startOfToday())) {
+	                  $$invalidate(3, todayTotal += day.stats.total);
+	                }
+	              }
+	            });
+	            $$invalidate(0, loading = false);
+
+	          case 14:
+	          case "end":
+	            return _context.stop();
+	        }
+	      }
+	    }, _callee);
+	  })));
+
+	  var loadStatsForDay = /*#__PURE__*/function () {
+	    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(day) {
+	      var start, end, stats;
+	      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	        while (1) {
+	          switch (_context2.prev = _context2.next) {
+	            case 0:
+	              start = format(startOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
+	              end = format(endOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
+	              _context2.next = 4;
+	              return fetch("".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end), {
+	                method: "GET",
+	                headers: {
+	                  requesttoken: requestToken,
+	                  "content-type": "application/json"
+	                }
+	              });
+
+	            case 4:
+	              stats = _context2.sent;
+	              _context2.next = 7;
+	              return stats.json();
+
+	            case 7:
+	              return _context2.abrupt("return", _context2.sent);
+
+	            case 8:
+	            case "end":
+	              return _context2.stop();
+	          }
+	        }
+	      }, _callee2);
+	    }));
+
+	    return function loadStatsForDay(_x) {
+	      return _ref4.apply(this, arguments);
+	    };
+	  }();
+
+	  $$self.$set = function ($$props) {
+	    if ("statsApiUrl" in $$props) $$invalidate(5, statsApiUrl = $$props.statsApiUrl);
+	    if ("requestToken" in $$props) $$invalidate(6, requestToken = $$props.requestToken);
+	  };
+
+	  return [loading, days, weekTotal, todayTotal, highest, statsApiUrl, requestToken];
+	}
+
+	var Statistics = /*#__PURE__*/function (_SvelteComponent) {
+	  _inherits(Statistics, _SvelteComponent);
+
+	  var _super = _createSuper(Statistics);
+
+	  function Statistics(options) {
+	    var _this;
+
+	    _classCallCheck(this, Statistics);
+
+	    _this = _super.call(this);
+	    init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+	      statsApiUrl: 5,
+	      requestToken: 6
+	    });
+	    return _this;
+	  }
+
+	  return Statistics;
+	}(SvelteComponent);
+
 	function create_fragment$1(ctx) {
 	  var div0;
 	  var t;
@@ -3444,7 +6580,7 @@
 	  return Overlay;
 	}(SvelteComponent);
 
-	function create_if_block(ctx) {
+	function create_if_block$1(ctx) {
 	  var button;
 	  var mounted;
 	  var dispose;
@@ -3512,7 +6648,7 @@
 	  var dispose;
 	  var if_block = !
 	  /*isServer*/
-	  ctx[2] && create_if_block(ctx);
+	  ctx[2] && create_if_block$1(ctx);
 	  return {
 	    c() {
 	      div1 = element("div");
@@ -3664,7 +6800,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block(ctx);
+	          if_block = create_if_block$1(ctx);
 	          if_block.c();
 	          if_block.m(div0, null);
 	        }
@@ -3795,7 +6931,7 @@
 	  return Helpers;
 	}();
 
-	function create_if_block$1(ctx) {
+	function create_if_block$2(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -3960,7 +7096,7 @@
 	  var dispose;
 	  var if_block =
 	  /*show*/
-	  ctx[5] && create_if_block$1(ctx);
+	  ctx[5] && create_if_block$2(ctx);
 	  return {
 	    c() {
 	      a = element("a");
@@ -4014,7 +7150,7 @@
 	            transition_in(if_block, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$1(ctx);
+	          if_block = create_if_block$2(ctx);
 	          if_block.c();
 	          transition_in(if_block, 1);
 	          if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -4185,7 +7321,7 @@
 	  return ClientEditorDialog;
 	}(SvelteComponent);
 
-	function create_if_block$2(ctx) {
+	function create_if_block$3(ctx) {
 	  var button;
 	  var mounted;
 	  var dispose;
@@ -4256,7 +7392,7 @@
 	  var dispose;
 	  var if_block = !
 	  /*isServer*/
-	  ctx[3] && create_if_block$2(ctx);
+	  ctx[3] && create_if_block$3(ctx);
 	  return {
 	    c() {
 	      div1 = element("div");
@@ -4405,7 +7541,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block$2(ctx);
+	          if_block = create_if_block$3(ctx);
 	          if_block.c();
 	          if_block.m(div0, null);
 	        }
@@ -4502,7 +7638,7 @@
 	  return ProjectEditor;
 	}(SvelteComponent);
 
-	function create_if_block$3(ctx) {
+	function create_if_block$4(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -4683,7 +7819,7 @@
 	  var dispose;
 	  var if_block =
 	  /*show*/
-	  ctx[7] && create_if_block$3(ctx);
+	  ctx[7] && create_if_block$4(ctx);
 	  return {
 	    c() {
 	      a = element("a");
@@ -4737,7 +7873,7 @@
 	            transition_in(if_block, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$3(ctx);
+	          if_block = create_if_block$4(ctx);
 	          if_block.c();
 	          transition_in(if_block, 1);
 	          if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -4908,7 +8044,7 @@
 	  return ProjectEditorDialog;
 	}(SvelteComponent);
 
-	function create_if_block$4(ctx) {
+	function create_if_block$5(ctx) {
 	  var button;
 	  var mounted;
 	  var dispose;
@@ -4986,7 +8122,7 @@
 	  var dispose;
 	  var if_block = !
 	  /*isServer*/
-	  ctx[4] && create_if_block$4(ctx);
+	  ctx[4] && create_if_block$5(ctx);
 	  return {
 	    c() {
 	      div1 = element("div");
@@ -5157,7 +8293,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block$4(ctx);
+	          if_block = create_if_block$5(ctx);
 	          if_block.c();
 	          if_block.m(div0, null);
 	        }
@@ -5257,7 +8393,7 @@
 	  return TaskEditor;
 	}(SvelteComponent);
 
-	function create_if_block$5(ctx) {
+	function create_if_block$6(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -5446,7 +8582,7 @@
 	  var dispose;
 	  var if_block =
 	  /*show*/
-	  ctx[8] && create_if_block$5(ctx);
+	  ctx[8] && create_if_block$6(ctx);
 	  return {
 	    c() {
 	      a = element("a");
@@ -5500,7 +8636,7 @@
 	            transition_in(if_block, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$5(ctx);
+	          if_block = create_if_block$6(ctx);
 	          if_block.c();
 	          transition_in(if_block, 1);
 	          if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -5674,7 +8810,7 @@
 	  return TaskEditorDialog;
 	}(SvelteComponent);
 
-	function create_if_block$6(ctx) {
+	function create_if_block$7(ctx) {
 	  var button;
 	  var mounted;
 	  var dispose;
@@ -5777,7 +8913,7 @@
 	  var dispose;
 	  var if_block = !
 	  /*isServer*/
-	  ctx[5] && create_if_block$6(ctx);
+	  ctx[5] && create_if_block$7(ctx);
 	  return {
 	    c() {
 	      div1 = element("div");
@@ -6040,7 +9176,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block$6(ctx);
+	          if_block = create_if_block$7(ctx);
 	          if_block.c();
 	          if_block.m(div0, null);
 	        }
@@ -6209,7 +9345,7 @@
 	} // (53:0) {#if !timeUuid}
 
 
-	function create_if_block_1(ctx) {
+	function create_if_block_1$1(ctx) {
 	  var a;
 	  var span;
 	  var t;
@@ -6257,7 +9393,7 @@
 	} // (62:0) {#if show}
 
 
-	function create_if_block$7(ctx) {
+	function create_if_block$8(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -6459,7 +9595,7 @@
 	  function select_block_type(ctx, dirty) {
 	    if (!
 	    /*timeUuid*/
-	    ctx[1]) return create_if_block_1;
+	    ctx[1]) return create_if_block_1$1;
 	    return create_else_block;
 	  }
 
@@ -6467,7 +9603,7 @@
 	  var if_block0 = current_block_type(ctx);
 	  var if_block1 =
 	  /*show*/
-	  ctx[11] && create_if_block$7(ctx);
+	  ctx[11] && create_if_block$8(ctx);
 	  return {
 	    c() {
 	      if_block0.c();
@@ -6512,7 +9648,7 @@
 	            transition_in(if_block1, 1);
 	          }
 	        } else {
-	          if_block1 = create_if_block$7(ctx);
+	          if_block1 = create_if_block$8(ctx);
 	          if_block1.c();
 	          transition_in(if_block1, 1);
 	          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -6694,7 +9830,7 @@
 	  return TimeEditorDialog;
 	}(SvelteComponent);
 
-	function create_if_block$8(ctx) {
+	function create_if_block$9(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -6830,7 +9966,7 @@
 	  var current;
 	  var if_block =
 	  /*confirmation*/
-	  ctx[6] && create_if_block$8(ctx);
+	  ctx[6] && create_if_block$9(ctx);
 	  return {
 	    c() {
 	      if (if_block) if_block.c();
@@ -6896,7 +10032,7 @@
 	            transition_in(if_block, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$8(ctx);
+	          if_block = create_if_block$9(ctx);
 	          if_block.c();
 	          transition_in(if_block, 1);
 	          if_block.m(t0.parentNode, t0);
@@ -7035,7 +10171,7 @@
 	  return DeleteButton;
 	}(SvelteComponent);
 
-	function create_if_block$9(ctx) {
+	function create_if_block$a(ctx) {
 	  var current;
 	  var overlay = new Overlay({
 	    props: {
@@ -7158,7 +10294,7 @@
 	  var dispose;
 	  var if_block =
 	  /*confirmation*/
-	  ctx[3] && create_if_block$9(ctx);
+	  ctx[3] && create_if_block$a(ctx);
 	  return {
 	    c() {
 	      if (if_block) if_block.c();
@@ -7226,7 +10362,7 @@
 	            transition_in(if_block, 1);
 	          }
 	        } else {
-	          if_block = create_if_block$9(ctx);
+	          if_block = create_if_block$a(ctx);
 	          if_block.c();
 	          transition_in(if_block, 1);
 	          if_block.m(t0.parentNode, t0);
@@ -7396,42 +10532,22 @@
 	  return DeleteTimeEntryButton;
 	}(SvelteComponent);
 
-	var SPECIES$4 = wellKnownSymbol('species');
-
-	var arrayMethodHasSpeciesSupport = function (METHOD_NAME) {
-	  // We can't use this feature detection in V8 since it causes
-	  // deoptimization and serious performance degradation
-	  // https://github.com/zloirock/core-js/issues/677
-	  return engineV8Version >= 51 || !fails(function () {
-	    var array = [];
-	    var constructor = array.constructor = {};
-
-	    constructor[SPECIES$4] = function () {
-	      return {
-	        foo: 1
-	      };
-	    };
-
-	    return array[METHOD_NAME](Boolean).foo !== 1;
-	  });
-	};
-
 	var $filter = arrayIteration.filter;
 
 
 
 
 
-	var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter'); // Edge 14- issue
+	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter'); // Edge 14- issue
 
-	var USES_TO_LENGTH$1 = arrayMethodUsesToLength('filter'); // `Array.prototype.filter` method
+	var USES_TO_LENGTH$2 = arrayMethodUsesToLength('filter'); // `Array.prototype.filter` method
 	// https://tc39.github.io/ecma262/#sec-array.prototype.filter
 	// with adding support of @@species
 
 	_export({
 	  target: 'Array',
 	  proto: true,
-	  forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH$1
+	  forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$2
 	}, {
 	  filter: function filter(callbackfn
 	  /* , thisArg */
@@ -7569,7 +10685,7 @@
 
 	var FIND = 'find';
 	var SKIPS_HOLES = true;
-	var USES_TO_LENGTH$2 = arrayMethodUsesToLength(FIND); // Shouldn't skip holes
+	var USES_TO_LENGTH$3 = arrayMethodUsesToLength(FIND); // Shouldn't skip holes
 
 	if (FIND in []) Array(1)[FIND](function () {
 	  SKIPS_HOLES = false;
@@ -7579,7 +10695,7 @@
 	_export({
 	  target: 'Array',
 	  proto: true,
-	  forced: SKIPS_HOLES || !USES_TO_LENGTH$2
+	  forced: SKIPS_HOLES || !USES_TO_LENGTH$3
 	}, {
 	  find: function find(callbackfn
 	  /* , that = undefined */
@@ -7596,16 +10712,16 @@
 
 
 
-	var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('map'); // FF49- issue
+	var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('map'); // FF49- issue
 
-	var USES_TO_LENGTH$3 = arrayMethodUsesToLength('map'); // `Array.prototype.map` method
+	var USES_TO_LENGTH$4 = arrayMethodUsesToLength('map'); // `Array.prototype.map` method
 	// https://tc39.github.io/ecma262/#sec-array.prototype.map
 	// with adding support of @@species
 
 	_export({
 	  target: 'Array',
 	  proto: true,
-	  forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$3
+	  forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$4
 	}, {
 	  map: function map(callbackfn
 	  /* , thisArg */
@@ -7790,7 +10906,7 @@
 	  ctx[1]
 	});
 
-	function get_each_context(ctx, list, i) {
+	function get_each_context$1(ctx, list, i) {
 	  const child_ctx = ctx.slice();
 	  child_ctx[23] = list[i];
 	  return child_ctx;
@@ -7816,7 +10932,7 @@
 	} // (158:2) {#each visible as row (row.index)}
 
 
-	function create_each_block(key_1, ctx) {
+	function create_each_block$1(key_1, ctx) {
 	  let svelte_virtual_list_row;
 	  let t;
 	  let current;
@@ -7899,9 +11015,9 @@
 	  ctx[23].index;
 
 	  for (let i = 0; i < each_value.length; i += 1) {
-	    let child_ctx = get_each_context(ctx, each_value, i);
+	    let child_ctx = get_each_context$1(ctx, each_value, i);
 	    let key = get_key(child_ctx);
-	    each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+	    each_1_lookup.set(key, each_blocks[i] = create_each_block$1(key, child_ctx));
 	  }
 
 	  return {
@@ -7964,7 +11080,7 @@
 	        /*visible*/
 	        ctx[5];
 	        group_outros();
-	        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block, null, get_each_context);
+	        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$1, null, get_each_context$1);
 	        check_outros();
 	      }
 
@@ -8240,7 +11356,7 @@
 	  append(document.head, style);
 	}
 
-	function get_each_context$1(ctx, list, i) {
+	function get_each_context$2(ctx, list, i) {
 	  const child_ctx = ctx.slice();
 	  child_ctx[34] = list[i];
 	  child_ctx[36] = i;
@@ -8527,7 +11643,7 @@
 	} // (232:0) {#if !isVirtualList}
 
 
-	function create_if_block$a(ctx) {
+	function create_if_block$b(ctx) {
 	  let div;
 	  let current;
 	  let each_value =
@@ -8536,7 +11652,7 @@
 	  let each_blocks = [];
 
 	  for (let i = 0; i < each_value.length; i += 1) {
-	    each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+	    each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
 	  }
 
 	  const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -8591,13 +11707,13 @@
 	        let i;
 
 	        for (i = 0; i < each_value.length; i += 1) {
-	          const child_ctx = get_each_context$1(ctx, each_value, i);
+	          const child_ctx = get_each_context$2(ctx, each_value, i);
 
 	          if (each_blocks[i]) {
 	            each_blocks[i].p(child_ctx, dirty);
 	            transition_in(each_blocks[i], 1);
 	          } else {
-	            each_blocks[i] = create_each_block$1(child_ctx);
+	            each_blocks[i] = create_each_block$2(child_ctx);
 	            each_blocks[i].c();
 	            transition_in(each_blocks[i], 1);
 	            each_blocks[i].m(div, null);
@@ -8912,7 +12028,7 @@
 	} // (235:4) {#if item.isGroupHeader && !item.isSelectable}
 
 
-	function create_if_block_1$1(ctx) {
+	function create_if_block_1$2(ctx) {
 	  let div;
 	  let t_value =
 	  /*getGroupHeaderLabel*/
@@ -8953,12 +12069,12 @@
 	} // (234:2) {#each items as item, i}
 
 
-	function create_each_block$1(ctx) {
+	function create_each_block$2(ctx) {
 	  let current_block_type_index;
 	  let if_block;
 	  let if_block_anchor;
 	  let current;
-	  const if_block_creators = [create_if_block_1$1, create_else_block$1];
+	  const if_block_creators = [create_if_block_1$2, create_else_block$1];
 	  const if_blocks = [];
 
 	  function select_block_type(ctx, dirty) {
@@ -9038,7 +12154,7 @@
 	  ctx[3] && create_if_block_3(ctx);
 	  let if_block1 = !
 	  /*isVirtualList*/
-	  ctx[3] && create_if_block$a(ctx);
+	  ctx[3] && create_if_block$b(ctx);
 	  return {
 	    c() {
 	      if (if_block0) if_block0.c();
@@ -9100,7 +12216,7 @@
 	            transition_in(if_block1, 1);
 	          }
 	        } else {
-	          if_block1 = create_if_block$a(ctx);
+	          if_block1 = create_if_block$b(ctx);
 	          if_block1.c();
 	          transition_in(if_block1, 1);
 	          if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -9512,7 +12628,7 @@
 	  append(document.head, style);
 	}
 
-	function get_each_context$2(ctx, list, i) {
+	function get_each_context$3(ctx, list, i) {
 	  const child_ctx = ctx.slice();
 	  child_ctx[7] = list[i];
 	  child_ctx[9] = i;
@@ -9520,7 +12636,7 @@
 	} // (22:2) {#if !isDisabled}
 
 
-	function create_if_block$b(ctx) {
+	function create_if_block$c(ctx) {
 	  let div;
 	  let mounted;
 	  let dispose;
@@ -9564,7 +12680,7 @@
 	} // (17:0) {#each selectedValue as value, i}
 
 
-	function create_each_block$2(ctx) {
+	function create_each_block$3(ctx) {
 	  let div1;
 	  let div0;
 	  let raw_value =
@@ -9577,7 +12693,7 @@
 	  let div1_class_value;
 	  let if_block = !
 	  /*isDisabled*/
-	  ctx[2] && create_if_block$b(ctx);
+	  ctx[2] && create_if_block$c(ctx);
 	  return {
 	    c() {
 	      div1 = element("div");
@@ -9619,7 +12735,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block$b(ctx);
+	          if_block = create_if_block$c(ctx);
 	          if_block.c();
 	          if_block.m(div1, t1);
 	        }
@@ -9657,7 +12773,7 @@
 	  let each_blocks = [];
 
 	  for (let i = 0; i < each_value.length; i += 1) {
-	    each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+	    each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
 	  }
 
 	  return {
@@ -9687,12 +12803,12 @@
 	        let i;
 
 	        for (i = 0; i < each_value.length; i += 1) {
-	          const child_ctx = get_each_context$2(ctx, each_value, i);
+	          const child_ctx = get_each_context$3(ctx, each_value, i);
 
 	          if (each_blocks[i]) {
 	            each_blocks[i].p(child_ctx, dirty);
 	          } else {
-	            each_blocks[i] = create_each_block$2(child_ctx);
+	            each_blocks[i] = create_each_block$3(child_ctx);
 	            each_blocks[i].c();
 	            each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
 	          }
@@ -10339,7 +13455,7 @@
 	} // (848:2) {#if showChevron && !selectedValue || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem))}
 
 
-	function create_if_block_1$2(ctx) {
+	function create_if_block_1$3(ctx) {
 	  let div;
 	  return {
 	    c() {
@@ -10364,7 +13480,7 @@
 	} // (866:2) {#if isWaiting}
 
 
-	function create_if_block$c(ctx) {
+	function create_if_block$d(ctx) {
 	  let div;
 	  return {
 	    c() {
@@ -10446,10 +13562,10 @@
 	  /*isClearable*/
 	  ctx[15] || !
 	  /*showSelectedItem*/
-	  ctx[22])) && create_if_block_1$2();
+	  ctx[22])) && create_if_block_1$3();
 	  let if_block6 =
 	  /*isWaiting*/
-	  ctx[5] && create_if_block$c();
+	  ctx[5] && create_if_block$d();
 	  return {
 	    c() {
 	      div = element("div");
@@ -10653,7 +13769,7 @@
 	      /*showSelectedItem*/
 	      ctx[22])) {
 	        if (if_block5) ; else {
-	          if_block5 = create_if_block_1$2();
+	          if_block5 = create_if_block_1$3();
 	          if_block5.c();
 	          if_block5.m(div, t5);
 	        }
@@ -10666,7 +13782,7 @@
 	      /*isWaiting*/
 	      ctx[5]) {
 	        if (if_block6) ; else {
-	          if_block6 = create_if_block$c();
+	          if_block6 = create_if_block$d();
 	          if_block6.c();
 	          if_block6.m(div, null);
 	        }
@@ -11645,7 +14761,7 @@
 	    props: select0_props
 	  });
 	  binding_callbacks.push(function () {
-	    return bind(select0, "selectedValue", select0_selectedValue_binding);
+	    return bind$1(select0, "selectedValue", select0_selectedValue_binding);
 	  });
 
 	  function select1_selectedValue_binding(value) {
@@ -11677,7 +14793,7 @@
 	    props: select1_props
 	  });
 	  binding_callbacks.push(function () {
-	    return bind(select1, "selectedValue", select1_selectedValue_binding);
+	    return bind$1(select1, "selectedValue", select1_selectedValue_binding);
 	  });
 	  return {
 	    c() {
@@ -12083,65 +15199,6 @@
 
 	  return QuickAdd;
 	}(SvelteComponent);
-
-	var createProperty = function (object, key, value) {
-	  var propertyKey = toPrimitive(key);
-	  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));else object[propertyKey] = value;
-	};
-
-	var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
-	var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
-	var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded'; // We can't use this feature detection in V8 since it causes
-	// deoptimization and serious performance degradation
-	// https://github.com/zloirock/core-js/issues/679
-
-	var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
-	  var array = [];
-	  array[IS_CONCAT_SPREADABLE] = false;
-	  return array.concat()[0] !== array;
-	});
-	var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
-
-	var isConcatSpreadable = function (O) {
-	  if (!isObject(O)) return false;
-	  var spreadable = O[IS_CONCAT_SPREADABLE];
-	  return spreadable !== undefined ? !!spreadable : isArray(O);
-	};
-
-	var FORCED$1 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT; // `Array.prototype.concat` method
-	// https://tc39.github.io/ecma262/#sec-array.prototype.concat
-	// with adding support of @@isConcatSpreadable and @@species
-
-	_export({
-	  target: 'Array',
-	  proto: true,
-	  forced: FORCED$1
-	}, {
-	  concat: function concat(arg) {
-	    // eslint-disable-line no-unused-vars
-	    var O = toObject(this);
-	    var A = arraySpeciesCreate(O, 0);
-	    var n = 0;
-	    var i, k, length, len, E;
-
-	    for (i = -1, length = arguments.length; i < length; i++) {
-	      E = i === -1 ? O : arguments[i];
-
-	      if (isConcatSpreadable(E)) {
-	        len = toLength(E.length);
-	        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
-
-	        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
-	      } else {
-	        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
-	        createProperty(A, n++, E);
-	      }
-	    }
-
-	    A.length = n;
-	    return A;
-	  }
-	});
 
 	function create_fragment$j(ctx) {
 	  var span0;
@@ -13417,8 +16474,8 @@
 	  }
 
 	  components.push(new Statistics({
-	    target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='statistics']")),
-	    props: {}
+	    target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Statistics.svelte']")),
+	    props: _objectSpread2({}, store)
 	  }));
 	  components.push(new ClientEditorDialog({
 	    target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']")),

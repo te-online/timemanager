@@ -30,8 +30,8 @@ const init = () => {
 
 	components.push(
 		new Statistics({
-			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='statistics']")),
-			props: {},
+			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Statistics.svelte']")),
+			props: { ...store },
 		})
 	);
 

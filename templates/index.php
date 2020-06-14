@@ -16,9 +16,7 @@ style('timemanager', 'timemanager');
 			</section>
 
 			<h2>Statistics</h2>
-			<div data-svelte="statistics">
-				<?php print_unescaped($_['templates']['Statistics.svelte']); ?>
-			</div>
+			<section class="section statistics" data-svelte="Statistics.svelte"></section>
 
 			<?php print_unescaped( $this->inc( 'partials/latest' ) ); ?>
 		</div>
