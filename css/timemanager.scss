@@ -322,6 +322,10 @@ label {
 	}
 
 	.statistics {
+		margin-left: -30px;
+		width: calc(100% + 45px);
+		max-width: 768px;
+
 		.top-stats {
 			display: flex;
 			justify-content: space-around;
@@ -357,6 +361,7 @@ label {
 					flex-shrink: 0;
 					flex-grow: 0;
 					width: calc(100% - 24px);
+					max-width: 60px;
 				}
 			}
 
