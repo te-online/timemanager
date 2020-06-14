@@ -76,10 +76,10 @@
 				<div class="column">
 					{#if day && day.stats}
 						{#if day.stats.total > 0}
-							<span>{day.stats.total} hrs.</span>
+							<span class="hours-label">{day.stats.total} hrs.</span>
+							<div class="column-inner" style={`height: ${(day.stats.total / highest) * 100}%`} />
 						{/if}
-						<div class="column-inner" style={`height: ${(day.stats.total / highest) * 100}%`} />
-						<span class="date-label">{format(day.date, 'iiiiii d.M.')}</span>
+						<div class="date-label">{format(day.date, 'iiiiii d.M.')}</div>
 					{/if}
 				</div>
 			{/each}

@@ -356,7 +356,8 @@ label {
 				flex-flow: column;
 				// .column-inner
 				&-inner {
-					background: var(--color-primary-element);
+					background: var(--color-primary);
+					opacity: 0.57;
 					margin-bottom: 12px;
 					flex-shrink: 0;
 					flex-grow: 0;
@@ -365,9 +366,24 @@ label {
 				}
 			}
 
-			.date-label,
+			.date-label {
+				color: var(--color-text-lighter);
+				position: relative;
+
+				&:before {
+					content: "";
+					position: absolute;
+					top: -8px;
+					left: calc(50% - 2px);
+					height: 8px;
+					width: 1px;
+					background: var(--color-background-darker);
+				}
+			}
+
 			.hours-label {
-				opacity: 0.57;
+				color: var(--color-text-light);
+				margin-bottom: 4px;
 			}
 		}
 	}

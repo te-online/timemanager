@@ -5996,13 +5996,10 @@
 	function create_if_block(ctx) {
 	  var t0;
 	  var div;
-	  var div_style_value;
-	  var t1;
-	  var span;
-	  var t2_value = format(
+	  var t1_value = format(
 	  /*day*/
 	  ctx[8].date, "iiiiii d.M.") + "";
-	  var t2;
+	  var t1;
 	  var if_block =
 	  /*day*/
 	  ctx[8].stats.total > 0 && create_if_block_1(ctx);
@@ -6011,25 +6008,15 @@
 	      if (if_block) if_block.c();
 	      t0 = space();
 	      div = element("div");
-	      t1 = space();
-	      span = element("span");
-	      t2 = text(t2_value);
-	      attr(div, "class", "column-inner");
-	      attr(div, "style", div_style_value = "height: ".concat(
-	      /*day*/
-	      ctx[8].stats.total /
-	      /*highest*/
-	      ctx[4] * 100, "%"));
-	      attr(span, "class", "date-label");
+	      t1 = text(t1_value);
+	      attr(div, "class", "date-label");
 	    },
 
 	    m(target, anchor) {
 	      if (if_block) if_block.m(target, anchor);
 	      insert(target, t0, anchor);
 	      insert(target, div, anchor);
-	      insert(target, t1, anchor);
-	      insert(target, span, anchor);
-	      append(span, t2);
+	      append(div, t1);
 	    },
 
 	    p(ctx, dirty) {
@@ -6049,28 +6036,16 @@
 	      }
 
 	      if (dirty &
-	      /*days, highest*/
-	      18 && div_style_value !== (div_style_value = "height: ".concat(
-	      /*day*/
-	      ctx[8].stats.total /
-	      /*highest*/
-	      ctx[4] * 100, "%"))) {
-	        attr(div, "style", div_style_value);
-	      }
-
-	      if (dirty &
 	      /*days*/
-	      2 && t2_value !== (t2_value = format(
+	      2 && t1_value !== (t1_value = format(
 	      /*day*/
-	      ctx[8].date, "iiiiii d.M.") + "")) set_data(t2, t2_value);
+	      ctx[8].date, "iiiiii d.M.") + "")) set_data(t1, t1_value);
 	    },
 
 	    d(detaching) {
 	      if (if_block) if_block.d(detaching);
 	      if (detaching) detach(t0);
 	      if (detaching) detach(div);
-	      if (detaching) detach(t1);
-	      if (detaching) detach(span);
 	    }
 
 	  };
@@ -6084,17 +6059,31 @@
 	  ctx[8].stats.total + "";
 	  var t0;
 	  var t1;
+	  var t2;
+	  var div;
+	  var div_style_value;
 	  return {
 	    c() {
 	      span = element("span");
 	      t0 = text(t0_value);
 	      t1 = text(" hrs.");
+	      t2 = space();
+	      div = element("div");
+	      attr(span, "class", "hours-label");
+	      attr(div, "class", "column-inner");
+	      attr(div, "style", div_style_value = "height: ".concat(
+	      /*day*/
+	      ctx[8].stats.total /
+	      /*highest*/
+	      ctx[4] * 100, "%"));
 	    },
 
 	    m(target, anchor) {
 	      insert(target, span, anchor);
 	      append(span, t0);
 	      append(span, t1);
+	      insert(target, t2, anchor);
+	      insert(target, div, anchor);
 	    },
 
 	    p(ctx, dirty) {
@@ -6103,10 +6092,22 @@
 	      2 && t0_value !== (t0_value =
 	      /*day*/
 	      ctx[8].stats.total + "")) set_data(t0, t0_value);
+
+	      if (dirty &
+	      /*days, highest*/
+	      18 && div_style_value !== (div_style_value = "height: ".concat(
+	      /*day*/
+	      ctx[8].stats.total /
+	      /*highest*/
+	      ctx[4] * 100, "%"))) {
+	        attr(div, "style", div_style_value);
+	      }
 	    },
 
 	    d(detaching) {
 	      if (detaching) detach(span);
+	      if (detaching) detach(t2);
+	      if (detaching) detach(div);
 	    }
 
 	  };
