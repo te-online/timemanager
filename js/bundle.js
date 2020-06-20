@@ -3657,6 +3657,36 @@
 	}
 
 	/**
+	 * @name addWeeks
+	 * @category Week Helpers
+	 * @summary Add the specified number of weeks to the given date.
+	 *
+	 * @description
+	 * Add the specified number of week to the given date.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the date to be changed
+	 * @param {Number} amount - the amount of weeks to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+	 * @returns {Date} the new date with the weeks added
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Add 4 weeks to 1 September 2014:
+	 * var result = addWeeks(new Date(2014, 8, 1), 4)
+	 * //=> Mon Sep 29 2014 00:00:00
+	 */
+
+	function addWeeks(dirtyDate, dirtyAmount) {
+	  requiredArgs(2, arguments);
+	  var amount = toInteger$1(dirtyAmount);
+	  var days = amount * 7;
+	  return addDays(dirtyDate, days);
+	}
+
+	/**
 	 * @name isValid
 	 * @category Common Helpers
 	 * @summary Is the given date valid?
@@ -3776,6 +3806,58 @@
 	function endOfDay(dirtyDate) {
 	  requiredArgs(1, arguments);
 	  var date = toDate(dirtyDate);
+	  date.setHours(23, 59, 59, 999);
+	  return date;
+	}
+
+	/**
+	 * @name endOfWeek
+	 * @category Week Helpers
+	 * @summary Return the end of a week for the given date.
+	 *
+	 * @description
+	 * Return the end of a week for the given date.
+	 * The result will be in the local timezone.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @returns {Date} the end of a week
+	 * @throws {TypeError} 1 argument required
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 *
+	 * @example
+	 * // The end of a week for 2 September 2014 11:55:00:
+	 * var result = endOfWeek(new Date(2014, 8, 2, 11, 55, 0))
+	 * //=> Sat Sep 06 2014 23:59:59.999
+	 *
+	 * @example
+	 * // If the week starts on Monday, the end of the week for 2 September 2014 11:55:00:
+	 * var result = endOfWeek(new Date(2014, 8, 2, 11, 55, 0), { weekStartsOn: 1 })
+	 * //=> Sun Sep 07 2014 23:59:59.999
+	 */
+
+	function endOfWeek(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
+	  var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
+	  var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+
+	  if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+	    throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+	  }
+
+	  var date = toDate(dirtyDate);
+	  var day = date.getDay();
+	  var diff = (day < weekStartsOn ? -7 : 0) + 6 - (day - weekStartsOn);
+	  date.setDate(date.getDate() + diff);
 	  date.setHours(23, 59, 59, 999);
 	  return date;
 	}
@@ -5959,6 +6041,195 @@
 	}
 
 	/**
+	 * @name getWeekYear
+	 * @category Week-Numbering Year Helpers
+	 * @summary Get the local week-numbering year of the given date.
+	 *
+	 * @description
+	 * Get the local week-numbering year of the given date.
+	 * The exact calculation depends on the values of
+	 * `options.weekStartsOn` (which is the index of the first day of the week)
+	 * and `options.firstWeekContainsDate` (which is the day of January, which is always in
+	 * the first week of the week-numbering year)
+	 *
+	 * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the given date
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @param {1|2|3|4|5|6|7} [options.firstWeekContainsDate=1] - the day of January, which is always in the first week of the year
+	 * @returns {Number} the local week-numbering year
+	 * @throws {TypeError} 1 argument required
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
+	 *
+	 * @example
+	 * // Which week numbering year is 26 December 2004 with the default settings?
+	 * var result = getWeekYear(new Date(2004, 11, 26))
+	 * //=> 2005
+	 *
+	 * @example
+	 * // Which week numbering year is 26 December 2004 if week starts on Saturday?
+	 * var result = getWeekYear(new Date(2004, 11, 26), { weekStartsOn: 6 })
+	 * //=> 2004
+	 *
+	 * @example
+	 * // Which week numbering year is 26 December 2004 if the first week contains 4 January?
+	 * var result = getWeekYear(new Date(2004, 11, 26), { firstWeekContainsDate: 4 })
+	 * //=> 2004
+	 */
+
+	function getWeekYear(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var year = date.getFullYear();
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
+	  var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
+	  var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+
+	  if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
+	    throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
+	  }
+
+	  var firstWeekOfNextYear = new Date(0);
+	  firstWeekOfNextYear.setFullYear(year + 1, 0, firstWeekContainsDate);
+	  firstWeekOfNextYear.setHours(0, 0, 0, 0);
+	  var startOfNextYear = startOfWeek(firstWeekOfNextYear, dirtyOptions);
+	  var firstWeekOfThisYear = new Date(0);
+	  firstWeekOfThisYear.setFullYear(year, 0, firstWeekContainsDate);
+	  firstWeekOfThisYear.setHours(0, 0, 0, 0);
+	  var startOfThisYear = startOfWeek(firstWeekOfThisYear, dirtyOptions);
+
+	  if (date.getTime() >= startOfNextYear.getTime()) {
+	    return year + 1;
+	  } else if (date.getTime() >= startOfThisYear.getTime()) {
+	    return year;
+	  } else {
+	    return year - 1;
+	  }
+	}
+
+	/**
+	 * @name startOfWeekYear
+	 * @category Week-Numbering Year Helpers
+	 * @summary Return the start of a local week-numbering year for the given date.
+	 *
+	 * @description
+	 * Return the start of a local week-numbering year.
+	 * The exact calculation depends on the values of
+	 * `options.weekStartsOn` (which is the index of the first day of the week)
+	 * and `options.firstWeekContainsDate` (which is the day of January, which is always in
+	 * the first week of the week-numbering year)
+	 *
+	 * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the original date
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @param {1|2|3|4|5|6|7} [options.firstWeekContainsDate=1] - the day of January, which is always in the first week of the year
+	 * @returns {Date} the start of a week-numbering year
+	 * @throws {TypeError} 1 argument required
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
+	 *
+	 * @example
+	 * // The start of an a week-numbering year for 2 July 2005 with default settings:
+	 * var result = startOfWeekYear(new Date(2005, 6, 2))
+	 * //=> Sun Dec 26 2004 00:00:00
+	 *
+	 * @example
+	 * // The start of a week-numbering year for 2 July 2005
+	 * // if Monday is the first day of week
+	 * // and 4 January is always in the first week of the year:
+	 * var result = startOfWeekYear(new Date(2005, 6, 2), {
+	 *   weekStartsOn: 1,
+	 *   firstWeekContainsDate: 4
+	 * })
+	 * //=> Mon Jan 03 2005 00:00:00
+	 */
+
+	function startOfWeekYear(dirtyDate, dirtyOptions) {
+	  requiredArgs(1, arguments);
+	  var options = dirtyOptions || {};
+	  var locale = options.locale;
+	  var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
+	  var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
+	  var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate);
+	  var year = getWeekYear(dirtyDate, dirtyOptions);
+	  var firstWeek = new Date(0);
+	  firstWeek.setFullYear(year, 0, firstWeekContainsDate);
+	  firstWeek.setHours(0, 0, 0, 0);
+	  var date = startOfWeek(firstWeek, dirtyOptions);
+	  return date;
+	}
+
+	var MILLISECONDS_IN_WEEK$2 = 604800000;
+	/**
+	 * @name getWeek
+	 * @category Week Helpers
+	 * @summary Get the local week index of the given date.
+	 *
+	 * @description
+	 * Get the local week index of the given date.
+	 * The exact calculation depends on the values of
+	 * `options.weekStartsOn` (which is the index of the first day of the week)
+	 * and `options.firstWeekContainsDate` (which is the day of January, which is always in
+	 * the first week of the week-numbering year)
+	 *
+	 * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the given date
+	 * @param {Object} [options] - an object with options.
+	 * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
+	 * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
+	 * @param {1|2|3|4|5|6|7} [options.firstWeekContainsDate=1] - the day of January, which is always in the first week of the year
+	 * @returns {Number} the week
+	 * @throws {TypeError} 1 argument required
+	 * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
+	 * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
+	 *
+	 * @example
+	 * // Which week of the local week numbering year is 2 January 2005 with default options?
+	 * var result = getISOWeek(new Date(2005, 0, 2))
+	 * //=> 2
+	 *
+	 * // Which week of the local week numbering year is 2 January 2005,
+	 * // if Monday is the first day of the week,
+	 * // and the first week of the year always contains 4 January?
+	 * var result = getISOWeek(new Date(2005, 0, 2), {
+	 *   weekStartsOn: 1,
+	 *   firstWeekContainsDate: 4
+	 * })
+	 * //=> 53
+	 */
+
+	function getWeek(dirtyDate, options) {
+	  requiredArgs(1, arguments);
+	  var date = toDate(dirtyDate);
+	  var diff = startOfWeek(date, options).getTime() - startOfWeekYear(date, options).getTime(); // Round the number of days to the nearest integer
+	  // because the number of milliseconds in a week is not constant
+	  // (e.g. it's different in the week of the daylight saving time clock shift)
+
+	  return Math.round(diff / MILLISECONDS_IN_WEEK$2) + 1;
+	}
+
+	/**
 	 * @name startOfToday
 	 * @category Day Helpers
 	 * @summary Return the start of today.
@@ -5986,23 +6257,52 @@
 	  return startOfDay(Date.now());
 	}
 
+	/**
+	 * @name subWeeks
+	 * @category Week Helpers
+	 * @summary Subtract the specified number of weeks from the given date.
+	 *
+	 * @description
+	 * Subtract the specified number of weeks from the given date.
+	 *
+	 * ### v2.0.0 breaking changes:
+	 *
+	 * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+	 *
+	 * @param {Date|Number} date - the date to be changed
+	 * @param {Number} amount - the amount of weeks to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+	 * @returns {Date} the new date with the weeks subtracted
+	 * @throws {TypeError} 2 arguments required
+	 *
+	 * @example
+	 * // Subtract 4 weeks from 1 September 2014:
+	 * var result = subWeeks(new Date(2014, 8, 1), 4)
+	 * //=> Mon Aug 04 2014 00:00:00
+	 */
+
+	function subWeeks(dirtyDate, dirtyAmount) {
+	  requiredArgs(2, arguments);
+	  var amount = toInteger$1(dirtyAmount);
+	  return addWeeks(dirtyDate, -amount);
+	}
+
 	function get_each_context(ctx, list, i) {
 	  var child_ctx = ctx.slice();
-	  child_ctx[8] = list[i];
+	  child_ctx[17] = list[i];
 	  return child_ctx;
-	} // (77:5) {#if day && day.stats}
+	} // (116:5) {#if day && day.stats}
 
 
-	function create_if_block(ctx) {
+	function create_if_block_2(ctx) {
 	  var t0;
 	  var div;
 	  var t1_value = format(
 	  /*day*/
-	  ctx[8].date, "iiiiii d.M.") + "";
+	  ctx[17].date, "iiiiii d.M.") + "";
 	  var t1;
 	  var if_block =
 	  /*day*/
-	  ctx[8].stats.total > 0 && create_if_block_1(ctx);
+	  ctx[17].stats.total > 0 && create_if_block_3(ctx);
 	  return {
 	    c() {
 	      if (if_block) if_block.c();
@@ -6022,11 +6322,11 @@
 	    p(ctx, dirty) {
 	      if (
 	      /*day*/
-	      ctx[8].stats.total > 0) {
+	      ctx[17].stats.total > 0) {
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block_1(ctx);
+	          if_block = create_if_block_3(ctx);
 	          if_block.c();
 	          if_block.m(t0.parentNode, t0);
 	        }
@@ -6039,7 +6339,7 @@
 	      /*days*/
 	      2 && t1_value !== (t1_value = format(
 	      /*day*/
-	      ctx[8].date, "iiiiii d.M.") + "")) set_data(t1, t1_value);
+	      ctx[17].date, "iiiiii d.M.") + "")) set_data(t1, t1_value);
 	    },
 
 	    d(detaching) {
@@ -6049,14 +6349,14 @@
 	    }
 
 	  };
-	} // (78:6) {#if day.stats.total > 0}
+	} // (117:6) {#if day.stats.total > 0}
 
 
-	function create_if_block_1(ctx) {
+	function create_if_block_3(ctx) {
 	  var span;
 	  var t0_value =
 	  /*day*/
-	  ctx[8].stats.total + "";
+	  ctx[17].stats.total + "";
 	  var t0;
 	  var t1;
 	  var t2;
@@ -6073,7 +6373,7 @@
 	      attr(div, "class", "column-inner");
 	      attr(div, "style", div_style_value = "height: ".concat(
 	      /*day*/
-	      ctx[8].stats.total /
+	      ctx[17].stats.total /
 	      /*highest*/
 	      ctx[4] * 100, "%"));
 	    },
@@ -6091,13 +6391,13 @@
 	      /*days*/
 	      2 && t0_value !== (t0_value =
 	      /*day*/
-	      ctx[8].stats.total + "")) set_data(t0, t0_value);
+	      ctx[17].stats.total + "")) set_data(t0, t0_value);
 
 	      if (dirty &
 	      /*days, highest*/
 	      18 && div_style_value !== (div_style_value = "height: ".concat(
 	      /*day*/
-	      ctx[8].stats.total /
+	      ctx[17].stats.total /
 	      /*highest*/
 	      ctx[4] * 100, "%"))) {
 	        attr(div, "style", div_style_value);
@@ -6111,43 +6411,40 @@
 	    }
 
 	  };
-	} // (75:3) {#each days as day}
+	} // (114:3) {#each days as day}
 
 
 	function create_each_block(ctx) {
 	  var div;
-	  var t;
 	  var if_block =
 	  /*day*/
-	  ctx[8] &&
+	  ctx[17] &&
 	  /*day*/
-	  ctx[8].stats && create_if_block(ctx);
+	  ctx[17].stats && create_if_block_2(ctx);
 	  return {
 	    c() {
 	      div = element("div");
 	      if (if_block) if_block.c();
-	      t = space();
 	      attr(div, "class", "column");
 	    },
 
 	    m(target, anchor) {
 	      insert(target, div, anchor);
 	      if (if_block) if_block.m(div, null);
-	      append(div, t);
 	    },
 
 	    p(ctx, dirty) {
 	      if (
 	      /*day*/
-	      ctx[8] &&
+	      ctx[17] &&
 	      /*day*/
-	      ctx[8].stats) {
+	      ctx[17].stats) {
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block(ctx);
+	          if_block = create_if_block_2(ctx);
 	          if_block.c();
-	          if_block.m(div, t);
+	          if_block.m(div, null);
 	        }
 	      } else if (if_block) {
 	        if_block.d(1);
@@ -6161,26 +6458,116 @@
 	    }
 
 	  };
+	} // (125:3) {#if !loading && weekTotal === 0}
+
+
+	function create_if_block_1(ctx) {
+	  var p;
+	  return {
+	    c() {
+	      p = element("p");
+	      p.textContent = "When you add entries for this week graphs will appear here.";
+	      attr(p, "class", "empty");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, p, anchor);
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(p);
+	    }
+
+	  };
+	} // (138:3) {#if !isSameDay(startOfToday(), dayCursor)}
+
+
+	function create_if_block(ctx) {
+	  var button;
+	  var mounted;
+	  var dispose;
+	  return {
+	    c() {
+	      button = element("button");
+	      button.textContent = "Current week";
+	      attr(button, "class", "current");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, button, anchor);
+
+	      if (!mounted) {
+	        dispose = listen(button, "click", prevent_default(
+	        /*click_handler_2*/
+	        ctx[16]));
+	        mounted = true;
+	      }
+	    },
+
+	    p: noop,
+
+	    d(detaching) {
+	      if (detaching) detach(button);
+	      mounted = false;
+	      dispose();
+	    }
+
+	  };
 	}
 
 	function create_fragment(ctx) {
+	  var h2;
+	  var t1;
 	  var div3;
 	  var div0;
 	  var figure0;
 	  var figcaption0;
-	  var t1;
-	  var t2;
 	  var t3;
 	  var t4;
+	  var t5;
+	  var t6;
 	  var figure1;
 	  var figcaption1;
-	  var t6;
-	  var t7;
 	  var t8;
 	  var t9;
+	  var t10;
+	  var t11;
 	  var div2;
 	  var div1;
+	  var t12;
+	  var t13;
+	  var nav;
+	  var button0;
+	  var t15;
+	  var span1;
+	  var t16;
+	  var t17;
+	  var t18;
+	  var span0;
+	  var t19;
+	  var t20_value = format(startOfWeek(
+	  /*dayCursor*/
+	  ctx[5],
+	  /*localeOptions*/
+	  ctx[7]), "iiiiii d.MM.Y") + "";
+	  var t20;
+	  var t21;
+	  var t22_value = format(endOfWeek(
+	  /*dayCursor*/
+	  ctx[5],
+	  /*localeOptions*/
+	  ctx[7]), "iiiiii d.MM.Y") + "";
+	  var t22;
+	  var t23;
+	  var t24;
+	  var button1;
+	  var t26;
+	  var show_if = !isSameDay(startOfToday(),
+	  /*dayCursor*/
+	  ctx[5]);
 	  var div3_class_value;
+	  var mounted;
+	  var dispose;
 	  var each_value =
 	  /*days*/
 	  ctx[1];
@@ -6190,28 +6577,37 @@
 	    each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
 	  }
 
+	  var if_block0 = !
+	  /*loading*/
+	  ctx[0] &&
+	  /*weekTotal*/
+	  ctx[2] === 0 && create_if_block_1();
+	  var if_block1 = show_if && create_if_block(ctx);
 	  return {
 	    c() {
+	      h2 = element("h2");
+	      h2.textContent = "Statistics";
+	      t1 = space();
 	      div3 = element("div");
 	      div0 = element("div");
 	      figure0 = element("figure");
 	      figcaption0 = element("figcaption");
 	      figcaption0.textContent = "Today";
-	      t1 = space();
-	      t2 = text(
+	      t3 = space();
+	      t4 = text(
 	      /*todayTotal*/
 	      ctx[3]);
-	      t3 = text(" hrs.");
-	      t4 = space();
+	      t5 = text(" hrs.");
+	      t6 = space();
 	      figure1 = element("figure");
 	      figcaption1 = element("figcaption");
 	      figcaption1.textContent = "Week";
-	      t6 = space();
-	      t7 = text(
+	      t8 = space();
+	      t9 = text(
 	      /*weekTotal*/
 	      ctx[2]);
-	      t8 = text(" hrs.");
-	      t9 = space();
+	      t10 = text(" hrs.");
+	      t11 = space();
 	      div2 = element("div");
 	      div1 = element("div");
 
@@ -6219,10 +6615,38 @@
 	        each_blocks[_i].c();
 	      }
 
+	      t12 = space();
+	      if (if_block0) if_block0.c();
+	      t13 = space();
+	      nav = element("nav");
+	      button0 = element("button");
+	      button0.textContent = "Previous week";
+	      t15 = space();
+	      span1 = element("span");
+	      t16 = text("Week ");
+	      t17 = text(
+	      /*currentWeek*/
+	      ctx[6]);
+	      t18 = space();
+	      span0 = element("span");
+	      t19 = text("(");
+	      t20 = text(t20_value);
+	      t21 = text(" – ");
+	      t22 = text(t22_value);
+	      t23 = text(")");
+	      t24 = space();
+	      button1 = element("button");
+	      button1.textContent = "Next week";
+	      t26 = space();
+	      if (if_block1) if_block1.c();
 	      attr(figcaption0, "class", "tm_label");
 	      attr(figcaption1, "class", "tm_label");
 	      attr(div0, "class", "top-stats");
 	      attr(div1, "class", "hours-per-week");
+	      attr(button0, "class", "previous");
+	      attr(span0, "class", "dates");
+	      attr(button1, "class", "next");
+	      attr(nav, "class", "week-navigation");
 	      attr(div2, "class", "graphs");
 	      attr(div3, "class", div3_class_value = "".concat(
 	      /*loading*/
@@ -6230,25 +6654,57 @@
 	    },
 
 	    m(target, anchor) {
+	      insert(target, h2, anchor);
+	      insert(target, t1, anchor);
 	      insert(target, div3, anchor);
 	      append(div3, div0);
 	      append(div0, figure0);
 	      append(figure0, figcaption0);
-	      append(figure0, t1);
-	      append(figure0, t2);
 	      append(figure0, t3);
-	      append(div0, t4);
+	      append(figure0, t4);
+	      append(figure0, t5);
+	      append(div0, t6);
 	      append(div0, figure1);
 	      append(figure1, figcaption1);
-	      append(figure1, t6);
-	      append(figure1, t7);
 	      append(figure1, t8);
-	      append(div3, t9);
+	      append(figure1, t9);
+	      append(figure1, t10);
+	      append(div3, t11);
 	      append(div3, div2);
 	      append(div2, div1);
 
 	      for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
 	        each_blocks[_i2].m(div1, null);
+	      }
+
+	      append(div1, t12);
+	      if (if_block0) if_block0.m(div1, null);
+	      append(div2, t13);
+	      append(div2, nav);
+	      append(nav, button0);
+	      append(nav, t15);
+	      append(nav, span1);
+	      append(span1, t16);
+	      append(span1, t17);
+	      append(span1, t18);
+	      append(span1, span0);
+	      append(span0, t19);
+	      append(span0, t20);
+	      append(span0, t21);
+	      append(span0, t22);
+	      append(span0, t23);
+	      append(nav, t24);
+	      append(nav, button1);
+	      append(nav, t26);
+	      if (if_block1) if_block1.m(nav, null);
+
+	      if (!mounted) {
+	        dispose = [listen(button0, "click", prevent_default(
+	        /*click_handler*/
+	        ctx[14])), listen(button1, "click", prevent_default(
+	        /*click_handler_1*/
+	        ctx[15]))];
+	        mounted = true;
 	      }
 	    },
 
@@ -6258,12 +6714,12 @@
 
 	      if (dirty &
 	      /*todayTotal*/
-	      8) set_data(t2,
+	      8) set_data(t4,
 	      /*todayTotal*/
 	      ctx[3]);
 	      if (dirty &
 	      /*weekTotal*/
-	      4) set_data(t7,
+	      4) set_data(t9,
 	      /*weekTotal*/
 	      ctx[2]);
 
@@ -6286,7 +6742,7 @@
 
 	            each_blocks[_i3].c();
 
-	            each_blocks[_i3].m(div1, null);
+	            each_blocks[_i3].m(div1, t12);
 	          }
 	        }
 
@@ -6295,6 +6751,59 @@
 	        }
 
 	        each_blocks.length = each_value.length;
+	      }
+
+	      if (!
+	      /*loading*/
+	      ctx[0] &&
+	      /*weekTotal*/
+	      ctx[2] === 0) {
+	        if (if_block0) ; else {
+	          if_block0 = create_if_block_1();
+	          if_block0.c();
+	          if_block0.m(div1, null);
+	        }
+	      } else if (if_block0) {
+	        if_block0.d(1);
+	        if_block0 = null;
+	      }
+
+	      if (dirty &
+	      /*currentWeek*/
+	      64) set_data(t17,
+	      /*currentWeek*/
+	      ctx[6]);
+	      if (dirty &
+	      /*dayCursor*/
+	      32 && t20_value !== (t20_value = format(startOfWeek(
+	      /*dayCursor*/
+	      ctx[5],
+	      /*localeOptions*/
+	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t20, t20_value);
+	      if (dirty &
+	      /*dayCursor*/
+	      32 && t22_value !== (t22_value = format(endOfWeek(
+	      /*dayCursor*/
+	      ctx[5],
+	      /*localeOptions*/
+	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t22, t22_value);
+	      if (dirty &
+	      /*dayCursor*/
+	      32) show_if = !isSameDay(startOfToday(),
+	      /*dayCursor*/
+	      ctx[5]);
+
+	      if (show_if) {
+	        if (if_block1) {
+	          if_block1.p(ctx, dirty);
+	        } else {
+	          if_block1 = create_if_block(ctx);
+	          if_block1.c();
+	          if_block1.m(nav, null);
+	        }
+	      } else if (if_block1) {
+	        if_block1.d(1);
+	        if_block1 = null;
 	      }
 
 	      if (dirty &
@@ -6310,8 +6819,14 @@
 	    o: noop,
 
 	    d(detaching) {
+	      if (detaching) detach(h2);
+	      if (detaching) detach(t1);
 	      if (detaching) detach(div3);
 	      destroy_each(each_blocks, detaching);
+	      if (if_block0) if_block0.d();
+	      if (if_block1) if_block1.d();
+	      mounted = false;
+	      run_all(dispose);
 	    }
 
 	  };
@@ -6320,76 +6835,32 @@
 	function instance($$self, $$props, $$invalidate) {
 	  var statsApiUrl = $$props.statsApiUrl;
 	  var requestToken = $$props.requestToken;
+	  var localeOptions = {
+	    weekStartsOn: 1
+	  };
 	  var loading = false;
 	  var days = [];
 	  var weekTotal = 0;
 	  var todayTotal = 0;
 	  var highest = 0;
-	  onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-	    var monday, _i4, _days, day;
+	  var dayCursor = startOfToday();
+	  var currentWeek;
 
+	  var updateWeek = function updateWeek() {
+	    $$invalidate(2, weekTotal = 0);
+	    $$invalidate(3, todayTotal = 0);
+	    $$invalidate(6, currentWeek = getWeek(dayCursor, localeOptions));
+	  };
+
+	  onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
 	    return regeneratorRuntime.wrap(function _callee$(_context) {
 	      while (1) {
 	        switch (_context.prev = _context.next) {
 	          case 0:
-	            $$invalidate(0, loading = true);
-	            monday = startOfWeek(startOfToday(), {
-	              weekStartsOn: 1
-	            });
-	            $$invalidate(1, days = [{
-	              date: monday
-	            }, {
-	              date: addDays(monday, 1)
-	            }, {
-	              date: addDays(monday, 2)
-	            }, {
-	              date: addDays(monday, 3)
-	            }, {
-	              date: addDays(monday, 4)
-	            }, {
-	              date: addDays(monday, 5)
-	            }, {
-	              date: addDays(monday, 6)
-	            }]);
-	            _i4 = 0, _days = days;
+	            updateWeek();
+	            loadData();
 
-	          case 4:
-	            if (!(_i4 < _days.length)) {
-	              _context.next = 12;
-	              break;
-	            }
-
-	            day = _days[_i4];
-	            _context.next = 8;
-	            return loadStatsForDay(day);
-
-	          case 8:
-	            day.stats = _context.sent;
-
-	          case 9:
-	            _i4++;
-	            _context.next = 4;
-	            break;
-
-	          case 12:
-	            days.forEach(function (day) {
-	              if (day.stats && day.stats.total) {
-	                // Find highest value
-	                if (day.stats.total > highest) {
-	                  $$invalidate(4, highest = day.stats.total);
-	                } // Sum up total
-
-
-	                $$invalidate(2, weekTotal += day.stats.total); // Day total
-
-	                if (isSameDay(day.date, startOfToday())) {
-	                  $$invalidate(3, todayTotal += day.stats.total);
-	                }
-	              }
-	            });
-	            $$invalidate(0, loading = false);
-
-	          case 14:
+	          case 2:
 	          case "end":
 	            return _context.stop();
 	        }
@@ -6397,16 +6868,92 @@
 	    }, _callee);
 	  })));
 
-	  var loadStatsForDay = /*#__PURE__*/function () {
-	    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(day) {
-	      var start, end, stats;
+	  var loadData = /*#__PURE__*/function () {
+	    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+	      var monday, _i4, _days, day;
+
 	      return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	        while (1) {
 	          switch (_context2.prev = _context2.next) {
 	            case 0:
+	              $$invalidate(0, loading = true);
+	              monday = startOfWeek(dayCursor, localeOptions);
+	              $$invalidate(1, days = [{
+	                date: monday
+	              }, {
+	                date: addDays(monday, 1)
+	              }, {
+	                date: addDays(monday, 2)
+	              }, {
+	                date: addDays(monday, 3)
+	              }, {
+	                date: addDays(monday, 4)
+	              }, {
+	                date: addDays(monday, 5)
+	              }, {
+	                date: addDays(monday, 6)
+	              }]);
+	              _i4 = 0, _days = days;
+
+	            case 4:
+	              if (!(_i4 < _days.length)) {
+	                _context2.next = 12;
+	                break;
+	              }
+
+	              day = _days[_i4];
+	              _context2.next = 8;
+	              return loadStatsForDay(day);
+
+	            case 8:
+	              day.stats = _context2.sent;
+
+	            case 9:
+	              _i4++;
+	              _context2.next = 4;
+	              break;
+
+	            case 12:
+	              days.forEach(function (day) {
+	                if (day.stats && day.stats.total) {
+	                  // Find highest value
+	                  if (day.stats.total > highest) {
+	                    $$invalidate(4, highest = day.stats.total);
+	                  } // Sum up total
+
+
+	                  $$invalidate(2, weekTotal += day.stats.total); // Day total
+
+	                  if (isSameDay(day.date, startOfToday())) {
+	                    $$invalidate(3, todayTotal += day.stats.total);
+	                  }
+	                }
+	              });
+	              $$invalidate(0, loading = false);
+
+	            case 14:
+	            case "end":
+	              return _context2.stop();
+	          }
+	        }
+	      }, _callee2);
+	    }));
+
+	    return function loadData() {
+	      return _ref4.apply(this, arguments);
+	    };
+	  }();
+
+	  var loadStatsForDay = /*#__PURE__*/function () {
+	    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(day) {
+	      var start, end, stats;
+	      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	        while (1) {
+	          switch (_context3.prev = _context3.next) {
+	            case 0:
 	              start = format(startOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
 	              end = format(endOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
-	              _context2.next = 4;
+	              _context3.next = 4;
 	              return fetch("".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end), {
 	                method: "GET",
 	                headers: {
@@ -6416,32 +6963,57 @@
 	              });
 
 	            case 4:
-	              stats = _context2.sent;
-	              _context2.next = 7;
+	              stats = _context3.sent;
+	              _context3.next = 7;
 	              return stats.json();
 
 	            case 7:
-	              return _context2.abrupt("return", _context2.sent);
+	              return _context3.abrupt("return", _context3.sent);
 
 	            case 8:
 	            case "end":
-	              return _context2.stop();
+	              return _context3.stop();
 	          }
 	        }
-	      }, _callee2);
+	      }, _callee3);
 	    }));
 
 	    return function loadStatsForDay(_x) {
-	      return _ref4.apply(this, arguments);
+	      return _ref5.apply(this, arguments);
 	    };
 	  }();
 
-	  $$self.$set = function ($$props) {
-	    if ("statsApiUrl" in $$props) $$invalidate(5, statsApiUrl = $$props.statsApiUrl);
-	    if ("requestToken" in $$props) $$invalidate(6, requestToken = $$props.requestToken);
+	  var weekNavigation = function weekNavigation(mode) {
+	    if (mode === "reset") {
+	      $$invalidate(5, dayCursor = startOfToday());
+	    } else if (mode === "next") {
+	      $$invalidate(5, dayCursor = addWeeks(dayCursor, 1));
+	    } else {
+	      $$invalidate(5, dayCursor = subWeeks(dayCursor, 1));
+	    }
+
+	    updateWeek();
+	    loadData();
 	  };
 
-	  return [loading, days, weekTotal, todayTotal, highest, statsApiUrl, requestToken];
+	  var click_handler = function click_handler() {
+	    return weekNavigation("previous");
+	  };
+
+	  var click_handler_1 = function click_handler_1() {
+	    return weekNavigation("next");
+	  };
+
+	  var click_handler_2 = function click_handler_2() {
+	    return weekNavigation("reset");
+	  };
+
+	  $$self.$set = function ($$props) {
+	    if ("statsApiUrl" in $$props) $$invalidate(9, statsApiUrl = $$props.statsApiUrl);
+	    if ("requestToken" in $$props) $$invalidate(10, requestToken = $$props.requestToken);
+	  };
+
+	  return [loading, days, weekTotal, todayTotal, highest, dayCursor, currentWeek, localeOptions, weekNavigation, statsApiUrl, requestToken, updateWeek, loadData, loadStatsForDay, click_handler, click_handler_1, click_handler_2];
 	}
 
 	var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -6456,8 +7028,8 @@
 
 	    _this = _super.call(this);
 	    init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-	      statsApiUrl: 5,
-	      requestToken: 6
+	      statsApiUrl: 9,
+	      requestToken: 10
 	    });
 	    return _this;
 	  }
@@ -11365,7 +11937,7 @@
 	} // (210:0) {#if isVirtualList}
 
 
-	function create_if_block_3(ctx) {
+	function create_if_block_3$1(ctx) {
 	  let div;
 	  let current;
 	  const virtuallist = new VirtualList({
@@ -11779,7 +12351,7 @@
 	  let if_block_anchor;
 	  let if_block = !
 	  /*hideEmptyState*/
-	  ctx[10] && create_if_block_2(ctx);
+	  ctx[10] && create_if_block_2$1(ctx);
 	  return {
 	    c() {
 	      if (if_block) if_block.c();
@@ -11798,7 +12370,7 @@
 	        if (if_block) {
 	          if_block.p(ctx, dirty);
 	        } else {
-	          if_block = create_if_block_2(ctx);
+	          if_block = create_if_block_2$1(ctx);
 	          if_block.c();
 	          if_block.m(if_block_anchor.parentNode, if_block_anchor);
 	        }
@@ -11817,7 +12389,7 @@
 	} // (255:4) {#if !hideEmptyState}
 
 
-	function create_if_block_2(ctx) {
+	function create_if_block_2$1(ctx) {
 	  let div;
 	  let t;
 	  return {
@@ -12152,7 +12724,7 @@
 	  let dispose;
 	  let if_block0 =
 	  /*isVirtualList*/
-	  ctx[3] && create_if_block_3(ctx);
+	  ctx[3] && create_if_block_3$1(ctx);
 	  let if_block1 = !
 	  /*isVirtualList*/
 	  ctx[3] && create_if_block$b(ctx);
@@ -12192,7 +12764,7 @@
 	            transition_in(if_block0, 1);
 	          }
 	        } else {
-	          if_block0 = create_if_block_3(ctx);
+	          if_block0 = create_if_block_3$1(ctx);
 	          if_block0.c();
 	          transition_in(if_block0, 1);
 	          if_block0.m(t.parentNode, t);
@@ -13311,7 +13883,7 @@
 	} // (823:2) {#if !isMulti && showSelectedItem}
 
 
-	function create_if_block_3$1(ctx) {
+	function create_if_block_3$2(ctx) {
 	  let div;
 	  let current;
 	  let mounted;
@@ -13421,7 +13993,7 @@
 	} // (832:2) {#if showSelectedItem && isClearable && !isDisabled && !isWaiting}
 
 
-	function create_if_block_2$1(ctx) {
+	function create_if_block_2$2(ctx) {
 	  let div;
 	  let mounted;
 	  let dispose;
@@ -13537,7 +14109,7 @@
 	  /*isMulti*/
 	  ctx[8] &&
 	  /*showSelectedItem*/
-	  ctx[22] && create_if_block_3$1(ctx);
+	  ctx[22] && create_if_block_3$2(ctx);
 	  let if_block4 =
 	  /*showSelectedItem*/
 	  ctx[22] &&
@@ -13546,7 +14118,7 @@
 	  /*isDisabled*/
 	  ctx[9] && !
 	  /*isWaiting*/
-	  ctx[5] && create_if_block_2$1(ctx);
+	  ctx[5] && create_if_block_2$2(ctx);
 	  let if_block5 = (
 	  /*showChevron*/
 	  ctx[17] && !
@@ -13718,7 +14290,7 @@
 	            transition_in(if_block3, 1);
 	          }
 	        } else {
-	          if_block3 = create_if_block_3$1(ctx);
+	          if_block3 = create_if_block_3$2(ctx);
 	          if_block3.c();
 	          transition_in(if_block3, 1);
 	          if_block3.m(div, t3);
@@ -13743,7 +14315,7 @@
 	        if (if_block4) {
 	          if_block4.p(ctx, dirty);
 	        } else {
-	          if_block4 = create_if_block_2$1(ctx);
+	          if_block4 = create_if_block_2$2(ctx);
 	          if_block4.c();
 	          if_block4.m(div, t4);
 	        }
@@ -14708,32 +15280,39 @@
 	  var form;
 	  var label0;
 	  var t0;
-	  var br0;
-	  var t1;
 	  var input0;
-	  var t2;
+	  var t1;
 	  var label1;
-	  var t3;
+	  var t2;
+	  var span0;
 	  var input1;
+	  var t3;
+	  var input2;
 	  var t4;
 	  var label2;
 	  var t5;
-	  var br1;
-	  var t6;
-	  var input2;
-	  var t7;
-	  var label3;
-	  var t8;
 	  var updating_selectedValue;
+	  var label2_class_value;
+	  var t6;
+	  var label3;
+	  var span1;
+	  var t7;
+	  var strong;
+	  var t8_value = (
+	  /*client*/
+	  ctx[4] &&
+	  /*client*/
+	  ctx[4].label) + "";
+	  var t8;
 	  var t9;
-	  var label4;
-	  var t10;
-	  var updating_selectedValue_1;
-	  var label4_class_value;
+	  var a;
 	  var t11;
-	  var span;
-	  var button;
+	  var updating_selectedValue_1;
+	  var label3_class_value;
 	  var t12;
+	  var span2;
+	  var button;
+	  var t13;
 	  var form_class_value;
 	  var current;
 	  var mounted;
@@ -14741,7 +15320,7 @@
 
 	  function select0_selectedValue_binding(value) {
 	    /*select0_selectedValue_binding*/
-	    ctx[19].call(null, value);
+	    ctx[22].call(null, value);
 	  }
 
 	  var select0_props = {
@@ -14764,20 +15343,23 @@
 	  binding_callbacks.push(function () {
 	    return bind$1(select0, "selectedValue", select0_selectedValue_binding);
 	  });
+	  select0.$on("select",
+	  /*clientSelected*/
+	  ctx[11]);
 
 	  function select1_selectedValue_binding(value) {
 	    /*select1_selectedValue_binding*/
-	    ctx[21].call(null, value);
+	    ctx[25].call(null, value);
 	  }
 
 	  var select1_props = {
 	    items:
 	    /*tasksWithProject*/
-	    ctx[8] &&
+	    ctx[9] &&
 	    /*tasksWithProject*/
-	    ctx[8].filter(
+	    ctx[9].filter(
 	    /*func*/
-	    ctx[20]),
+	    ctx[24]),
 	    groupBy: func_1,
 	    noOptionsMessage: "No projects/tasks or no client selected."
 	  };
@@ -14800,109 +15382,128 @@
 	    c() {
 	      form = element("form");
 	      label0 = element("label");
-	      t0 = text("Duration (in hrs.)\n\t\t");
-	      br0 = element("br");
-	      t1 = space();
+	      t0 = text("Note\n\t\t");
 	      input0 = element("input");
-	      t2 = space();
+	      t1 = space();
 	      label1 = element("label");
-	      t3 = text("Note\n\t\t");
+	      t2 = text("Duration (in hrs.) / Date\n\t\t");
+	      span0 = element("span");
 	      input1 = element("input");
+	      t3 = space();
+	      input2 = element("input");
 	      t4 = space();
 	      label2 = element("label");
-	      t5 = text("Date\n\t\t");
-	      br1 = element("br");
-	      t6 = space();
-	      input2 = element("input");
-	      t7 = space();
-	      label3 = element("label");
-	      t8 = text("Client\n\t\t");
+	      t5 = text("Client\n\t\t");
 	      create_component(select0.$$.fragment);
+	      t6 = space();
+	      label3 = element("label");
+	      span1 = element("span");
+	      t7 = text("Project & Task for\n\t\t\t");
+	      strong = element("strong");
+	      t8 = text(t8_value);
 	      t9 = space();
-	      label4 = element("label");
-	      t10 = text("Project & Task\n\t\t");
-	      create_component(select1.$$.fragment);
+	      a = element("a");
+	      a.textContent = "Change client";
 	      t11 = space();
-	      span = element("span");
+	      create_component(select1.$$.fragment);
+	      t12 = space();
+	      span2 = element("span");
 	      button = element("button");
-	      t12 = text("Add");
-	      attr(input0, "type", "number");
-	      attr(input0, "name", "duration");
-	      attr(input0, "step", "0.25");
-	      attr(input0, "placeholder", "");
-	      attr(input0, "class", "duration");
-	      input0.required = true;
-	      attr(input1, "type", "text");
-	      attr(input1, "name", "note");
-	      attr(input1, "class", "note");
-	      attr(input1, "placeholder", "Describe what you did...");
+	      t13 = text("Add");
+	      attr(input0, "type", "text");
+	      attr(input0, "name", "note");
+	      attr(input0, "class", "note");
+	      attr(input0, "placeholder", "Describe what you did...");
+	      attr(label0, "class", "note");
+	      attr(input1, "type", "number");
+	      attr(input1, "name", "duration");
+	      attr(input1, "step", "0.25");
+	      attr(input1, "placeholder", "");
+	      attr(input1, "class", "duration-input");
 	      attr(input2, "type", "date");
 	      attr(input2, "name", "date");
-	      attr(input2, "class", "date");
-	      attr(label4, "class", label4_class_value = "".concat(
+	      attr(input2, "class", "date-input");
+	      attr(span0, "class", "double");
+	      attr(label2, "class", label2_class_value = "client".concat(
 	      /*taskError*/
-	      ctx[7] ? "error" : ""));
+	      ctx[8] ? " error" : "").concat(
+	      /*client*/
+	      ctx[4] ? " hidden-visually" : ""));
+	      attr(a, "href", "#/");
+	      attr(a, "class", "change");
+	      attr(span1, "class", "task-caption");
+	      attr(label3, "class", label3_class_value = "task".concat(
+	      /*taskError*/
+	      ctx[8] ? " error" : "").concat(!
+	      /*client*/
+	      ctx[4] ? " hidden-visually" : ""));
 	      button.disabled =
 	      /*loading*/
-	      ctx[6];
+	      ctx[7];
 	      attr(button, "type", "submit");
 	      attr(button, "class", "button primary");
-	      attr(span, "class", "actions");
+	      attr(span2, "class", "actions");
 	      attr(form, "class", form_class_value = "quick-add".concat(
 	      /*loading*/
-	      ctx[6] ? " icon-loading" : ""));
+	      ctx[7] ? " icon-loading" : ""));
 	    },
 
 	    m(target, anchor) {
 	      insert(target, form, anchor);
 	      append(form, label0);
 	      append(label0, t0);
-	      append(label0, br0);
-	      append(label0, t1);
 	      append(label0, input0);
 	      set_input_value(input0,
-	      /*duration*/
-	      ctx[1]);
-	      append(form, t2);
-	      append(form, label1);
-	      append(label1, t3);
-	      append(label1, input1);
-	      set_input_value(input1,
 	      /*note*/
 	      ctx[3]);
-	      append(form, t4);
-	      append(form, label2);
-	      append(label2, t5);
-	      append(label2, br1);
-	      append(label2, t6);
-	      append(label2, input2);
+	      /*input0_binding*/
+
+	      ctx[19](input0);
+	      append(form, t1);
+	      append(form, label1);
+	      append(label1, t2);
+	      append(label1, span0);
+	      append(span0, input1);
+	      set_input_value(input1,
+	      /*duration*/
+	      ctx[1]);
+	      append(span0, t3);
+	      append(span0, input2);
 	      set_input_value(input2,
 	      /*date*/
 	      ctx[2]);
-	      append(form, t7);
+	      append(form, t4);
+	      append(form, label2);
+	      append(label2, t5);
+	      mount_component(select0, label2, null);
+	      append(form, t6);
 	      append(form, label3);
-	      append(label3, t8);
-	      mount_component(select0, label3, null);
-	      append(form, t9);
-	      append(form, label4);
-	      append(label4, t10);
-	      mount_component(select1, label4, null);
-	      append(form, t11);
-	      append(form, span);
-	      append(span, button);
-	      append(button, t12);
+	      append(label3, span1);
+	      append(span1, t7);
+	      append(span1, strong);
+	      append(strong, t8);
+	      append(span1, t9);
+	      append(span1, a);
+	      append(label3, t11);
+	      mount_component(select1, label3, null);
+	      append(form, t12);
+	      append(form, span2);
+	      append(span2, button);
+	      append(button, t13);
 	      current = true;
 
 	      if (!mounted) {
 	        dispose = [listen(input0, "input",
 	        /*input0_input_handler*/
-	        ctx[16]), listen(input1, "input",
+	        ctx[18]), listen(input1, "input",
 	        /*input1_input_handler*/
-	        ctx[17]), listen(input2, "input",
+	        ctx[20]), listen(input2, "input",
 	        /*input2_input_handler*/
-	        ctx[18]), listen(form, "submit", prevent_default(
+	        ctx[21]), listen(a, "click", prevent_default(
+	        /*click_handler*/
+	        ctx[23])), listen(form, "submit", prevent_default(
 	        /*save*/
-	        ctx[9]))];
+	        ctx[10]))];
 	        mounted = true;
 	      }
 	    },
@@ -14912,23 +15513,23 @@
 	          dirty = _ref2[0];
 
 	      if (dirty &
-	      /*duration*/
-	      2 && to_number(input0.value) !==
-	      /*duration*/
-	      ctx[1]) {
+	      /*note*/
+	      8 && input0.value !==
+	      /*note*/
+	      ctx[3]) {
 	        set_input_value(input0,
-	        /*duration*/
-	        ctx[1]);
+	        /*note*/
+	        ctx[3]);
 	      }
 
 	      if (dirty &
-	      /*note*/
-	      8 && input1.value !==
-	      /*note*/
-	      ctx[3]) {
+	      /*duration*/
+	      2 && to_number(input1.value) !==
+	      /*duration*/
+	      ctx[1]) {
 	        set_input_value(input1,
-	        /*note*/
-	        ctx[3]);
+	        /*duration*/
+	        ctx[1]);
 	      }
 
 	      if (dirty &
@@ -14959,16 +15560,34 @@
 	      }
 
 	      select0.$set(select0_changes);
+
+	      if (!current || dirty &
+	      /*taskError, client*/
+	      272 && label2_class_value !== (label2_class_value = "client".concat(
+	      /*taskError*/
+	      ctx[8] ? " error" : "").concat(
+	      /*client*/
+	      ctx[4] ? " hidden-visually" : ""))) {
+	        attr(label2, "class", label2_class_value);
+	      }
+
+	      if ((!current || dirty &
+	      /*client*/
+	      16) && t8_value !== (t8_value = (
+	      /*client*/
+	      ctx[4] &&
+	      /*client*/
+	      ctx[4].label) + "")) set_data(t8, t8_value);
 	      var select1_changes = {};
 	      if (dirty &
 	      /*client*/
 	      16) select1_changes.items =
 	      /*tasksWithProject*/
-	      ctx[8] &&
+	      ctx[9] &&
 	      /*tasksWithProject*/
-	      ctx[8].filter(
+	      ctx[9].filter(
 	      /*func*/
-	      ctx[20]);
+	      ctx[24]);
 
 	      if (!updating_selectedValue_1 && dirty &
 	      /*task*/
@@ -14985,26 +15604,28 @@
 	      select1.$set(select1_changes);
 
 	      if (!current || dirty &
+	      /*taskError, client*/
+	      272 && label3_class_value !== (label3_class_value = "task".concat(
 	      /*taskError*/
-	      128 && label4_class_value !== (label4_class_value = "".concat(
-	      /*taskError*/
-	      ctx[7] ? "error" : ""))) {
-	        attr(label4, "class", label4_class_value);
+	      ctx[8] ? " error" : "").concat(!
+	      /*client*/
+	      ctx[4] ? " hidden-visually" : ""))) {
+	        attr(label3, "class", label3_class_value);
 	      }
 
 	      if (!current || dirty &
 	      /*loading*/
-	      64) {
+	      128) {
 	        button.disabled =
 	        /*loading*/
-	        ctx[6];
+	        ctx[7];
 	      }
 
 	      if (!current || dirty &
 	      /*loading*/
-	      64 && form_class_value !== (form_class_value = "quick-add".concat(
+	      128 && form_class_value !== (form_class_value = "quick-add".concat(
 	      /*loading*/
-	      ctx[6] ? " icon-loading" : ""))) {
+	      ctx[7] ? " icon-loading" : ""))) {
 	        attr(form, "class", form_class_value);
 	      }
 	    },
@@ -15024,6 +15645,9 @@
 
 	    d(detaching) {
 	      if (detaching) detach(form);
+	      /*input0_binding*/
+
+	      ctx[19](null);
 	      destroy_component(select0);
 	      destroy_component(select1);
 	      mounted = false;
@@ -15044,17 +15668,29 @@
 	  var projects = $$props.projects;
 	  var tasks = $$props.tasks;
 	  var initialDate = $$props.initialDate;
-	  var duration;
+	  var duration = 1;
 	  var date = initialDate;
 	  var note;
 	  var client;
 	  var task;
+	  var noteInput;
 	  var tasksWithProject = tasks && tasks.length ? tasks.map(function (aTask) {
 	    aTask.project = projects.find(function (aProject) {
 	      return aProject.value === aTask.projectUuid;
 	    });
 	    return aTask;
 	  }) : [];
+	  onMount(function () {
+	    document.addEventListener("DOMContentLoaded", function () {
+	      if (noteInput) {
+	        noteInput.focus();
+	      }
+	    });
+
+	    if (noteInput) {
+	      noteInput.focus();
+	    }
+	  });
 
 	  var save = /*#__PURE__*/function () {
 	    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -15063,16 +15699,16 @@
 	        while (1) {
 	          switch (_context.prev = _context.next) {
 	            case 0:
-	              $$invalidate(6, loading = true);
-	              $$invalidate(7, taskError = false);
+	              $$invalidate(7, loading = true);
+	              $$invalidate(8, taskError = false);
 
 	              if (task) {
 	                _context.next = 6;
 	                break;
 	              }
 
-	              $$invalidate(6, loading = false);
-	              $$invalidate(7, taskError = true);
+	              $$invalidate(7, loading = false);
+	              $$invalidate(8, taskError = true);
 	              return _context.abrupt("return");
 
 	            case 6:
@@ -15110,7 +15746,7 @@
 	              console.error(_context.t0);
 
 	            case 17:
-	              $$invalidate(6, loading = false);
+	              $$invalidate(7, loading = false);
 
 	            case 18:
 	            case "end":
@@ -15125,14 +15761,28 @@
 	    };
 	  }();
 
+	  var clientSelected = function clientSelected() {
+	    var input = document.querySelector(".task input");
+
+	    if (input) {
+	      input.focus();
+	    }
+	  };
+
 	  function input0_input_handler() {
-	    duration = to_number(this.value);
-	    $$invalidate(1, duration);
+	    note = this.value;
+	    $$invalidate(3, note);
+	  }
+
+	  function input0_binding($$value) {
+	    binding_callbacks[$$value ? "unshift" : "push"](function () {
+	      $$invalidate(6, noteInput = $$value);
+	    });
 	  }
 
 	  function input1_input_handler() {
-	    note = this.value;
-	    $$invalidate(3, note);
+	    duration = to_number(this.value);
+	    $$invalidate(1, duration);
 	  }
 
 	  function input2_input_handler() {
@@ -15145,6 +15795,10 @@
 	    $$invalidate(4, client);
 	  }
 
+	  var click_handler = function click_handler() {
+	    return $$invalidate(4, client = null);
+	  };
+
 	  var func = function func(oneTask) {
 	    return client && oneTask.project.clientUuid === client.value;
 	  };
@@ -15155,12 +15809,12 @@
 	  }
 
 	  $$self.$set = function ($$props) {
-	    if ("action" in $$props) $$invalidate(10, action = $$props.action);
-	    if ("requestToken" in $$props) $$invalidate(11, requestToken = $$props.requestToken);
+	    if ("action" in $$props) $$invalidate(12, action = $$props.action);
+	    if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
 	    if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-	    if ("projects" in $$props) $$invalidate(12, projects = $$props.projects);
-	    if ("tasks" in $$props) $$invalidate(13, tasks = $$props.tasks);
-	    if ("initialDate" in $$props) $$invalidate(14, initialDate = $$props.initialDate);
+	    if ("projects" in $$props) $$invalidate(14, projects = $$props.projects);
+	    if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
+	    if ("initialDate" in $$props) $$invalidate(16, initialDate = $$props.initialDate);
 	  };
 
 	  var show;
@@ -15169,11 +15823,11 @@
 
 	   show = false;
 
-	   $$invalidate(6, loading = false);
+	   $$invalidate(7, loading = false);
 
-	   $$invalidate(7, taskError = false);
+	   $$invalidate(8, taskError = false);
 
-	  return [clients, duration, date, note, client, task, loading, taskError, tasksWithProject, save, action, requestToken, projects, tasks, initialDate, show, input0_input_handler, input1_input_handler, input2_input_handler, select0_selectedValue_binding, func, select1_selectedValue_binding];
+	  return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, show, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_selectedValue_binding, click_handler, func, select1_selectedValue_binding];
 	}
 
 	var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -15188,12 +15842,12 @@
 
 	    _this = _super.call(this);
 	    init(_assertThisInitialized(_this), options, instance$i, create_fragment$i, safe_not_equal, {
-	      action: 10,
-	      requestToken: 11,
+	      action: 12,
+	      requestToken: 13,
 	      clients: 0,
-	      projects: 12,
-	      tasks: 13,
-	      initialDate: 14
+	      projects: 14,
+	      tasks: 15,
+	      initialDate: 16
 	    });
 	    return _this;
 	  }

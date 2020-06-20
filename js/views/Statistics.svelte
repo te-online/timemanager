@@ -3,17 +3,43 @@
 	export let requestToken;
 
 	import { onMount } from "svelte";
-	import { startOfWeek, addDays, startOfDay, endOfDay, format, isSameDay, startOfToday } from "date-fns";
+	import {
+		startOfWeek,
+		addDays,
+		startOfDay,
+		endOfDay,
+		format,
+		isSameDay,
+		startOfToday,
+		getWeek,
+		addWeeks,
+		subWeeks,
+		getYear,
+		endOfWeek,
+	} from "date-fns";
 
+	const localeOptions = { weekStartsOn: 1 };
 	let loading = false;
 	let days = [];
 	let weekTotal = 0;
 	let todayTotal = 0;
 	let highest = 0;
+	let dayCursor = startOfToday();
+	let currentWeek;
+	const updateWeek = () => {
+		weekTotal = 0;
+		todayTotal = 0;
+		currentWeek = getWeek(dayCursor, localeOptions);
+	};
 
 	onMount(async () => {
+		updateWeek();
+		loadData();
+	});
+
+	const loadData = async () => {
 		loading = true;
-		const monday = startOfWeek(startOfToday(), { weekStartsOn: 1 });
+		const monday = startOfWeek(dayCursor, localeOptions);
 		days = [
 			{ date: monday },
 			{ date: addDays(monday, 1) },
@@ -43,7 +69,7 @@
 			}
 		});
 		loading = false;
-	});
+	};
 
 	const loadStatsForDay = async (day) => {
 		const start = format(startOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
@@ -57,8 +83,21 @@
 		});
 		return await stats.json();
 	};
+
+	const weekNavigation = (mode) => {
+		if (mode === "reset") {
+			dayCursor = startOfToday();
+		} else if (mode === "next") {
+			dayCursor = addWeeks(dayCursor, 1);
+		} else {
+			dayCursor = subWeeks(dayCursor, 1);
+		}
+		updateWeek();
+		loadData();
+	};
 </script>
 
+<h2>Statistics</h2>
 <div class={`${loading ? 'icon-loading' : ''}`}>
 	<div class="top-stats">
 		<figure>
@@ -83,6 +122,22 @@
 					{/if}
 				</div>
 			{/each}
+			{#if !loading && weekTotal === 0}
+				<p class="empty">When you add entries for this week graphs will appear here.</p>
+			{/if}
 		</div>
+		<nav class="week-navigation">
+			<button class="previous" on:click|preventDefault={() => weekNavigation('previous')}>Previous week</button>
+			<span>
+				Week {currentWeek}
+				<span class="dates">
+					({format(startOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')} &ndash; {format(endOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')})
+				</span>
+			</span>
+			<button class="next" on:click|preventDefault={() => weekNavigation('next')}>Next week</button>
+			{#if !isSameDay(startOfToday(), dayCursor)}
+				<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>Current week</button>
+			{/if}
+		</nav>
 	</div>
 </div>

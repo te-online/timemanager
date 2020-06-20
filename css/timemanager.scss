@@ -251,23 +251,17 @@ label {
 		display: grid;
 		margin-left: -30px;
 		width: calc(100% + 60px);
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
+		column-gap: 12px;
 
 		@media screen and (max-width: 1024px) {
-			grid-template-columns: 1fr 1fr;
-		}
-
-		@media screen and (max-width: 568px) {
-			grid-template-columns: 1fr;
-		}
-
-		> * {
-			margin-right: 12px;
+			grid-template-columns: 100%;
 		}
 
 		> .actions {
 			display: flex;
-			align-items: flex-end;
+			align-items: center;
+			padding-top: 20px;
 
 			button {
 				flex-shrink: 0;
@@ -282,32 +276,80 @@ label {
 
 		label {
 			font-size: 12px;
+			display: flex;
+			flex-flow: column;
 			&.error {
 				.selectContainer {
 					border-color: red;
 				}
 			}
+
+			.double {
+				display: flex;
+			}
 		}
 
-		.duration {
-			width: 80px;
+		.duration-input {
+			width: 60px;
 		}
 
-		.date {
+		.date-input {
 			width: 140px;
 		}
 
 		.note {
-			width: 100%;
-			min-width: 25vw;
+			input {
+				width: 100%;
+			}
+		}
+
+		.client,
+		.task {
+			.selectContainer {
+				width: 100%;
+			}
+		}
+
+		.task {
+			display: flex;
+		}
+
+		.task-caption {
+			position: relative;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			transition: color 0.3s ease;
+			display: inline-block;
+			max-width: 70vw;
+
+			.change {
+				padding: 0;
+				min-height: initial;
+				height: 28px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				transition: opacity 0.3s ease;
+				width: 100%;
+				text-transform: underline;
+			}
+
+			&:hover {
+				color: transparent;
+				.change {
+					opacity: 1;
+				}
+			}
 		}
 
 		input {
-			display: block;
+			height: 42px;
 		}
 
-		button {
-			margin-top: 12px;
+		.selectContainer {
+			margin: 3px 3px 3px 0;
 		}
 	}
 
@@ -326,9 +368,19 @@ label {
 		width: calc(100% + 45px);
 		max-width: 768px;
 
+		.week-navigation {
+			margin-top: 24px;
+			color: var(--color-text-light);
+
+			.dates {
+				color: var(--color-text-lighter);
+			}
+		}
+
 		.top-stats {
 			display: flex;
 			justify-content: space-around;
+			margin-top: 48px;
 
 			figure {
 				font-size: 28px;
@@ -345,6 +397,13 @@ label {
 			height: 40vh;
 			width: 100%;
 			margin-top: 12px;
+
+			.empty {
+				color: var(--color-text-lighter);
+				grid-column-start: 1;
+				grid-column-end: 8;
+				text-align: center;
+			}
 
 			.column {
 				height: calc(100% - 75px);

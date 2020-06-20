@@ -9,16 +9,18 @@
 	import Select from "svelte-select";
 	import Overlay from "./Overlay.svelte";
 	import TimeEditor from "./TimeEditor.svelte";
+	import { onMount } from "svelte";
 
 	$: show = false;
 	$: loading = false;
 	$: taskError = false;
 
-	let duration;
+	let duration = 1;
 	let date = initialDate;
 	let note;
 	let client;
 	let task;
+	let noteInput;
 
 	const tasksWithProject =
 		tasks && tasks.length
@@ -27,6 +29,17 @@
 					return aTask;
 			  })
 			: [];
+
+	onMount(() => {
+		document.addEventListener("DOMContentLoaded", () => {
+			if (noteInput) {
+				noteInput.focus();
+			}
+		});
+		if (noteInput) {
+			noteInput.focus();
+		}
+	});
 
 	const save = async () => {
 		loading = true;
@@ -55,29 +68,43 @@
 		}
 		loading = false;
 	};
+
+	const clientSelected = () => {
+		const input = document.querySelector(".task input");
+		if (input) {
+			input.focus();
+		}
+	};
 </script>
 
 <form class={`quick-add${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={save}>
-	<label>
-		Duration (in hrs.)
-		<br />
-		<input type="number" name="duration" step="0.25" placeholder="" class="duration" bind:value={duration} required />
-	</label>
-	<label>
+	<label class="note">
 		Note
-		<input type="text" name="note" class="note" bind:value={note} placeholder="Describe what you did..." />
+		<input
+			type="text"
+			name="note"
+			class="note"
+			bind:value={note}
+			placeholder="Describe what you did..."
+			bind:this={noteInput} />
 	</label>
 	<label>
-		Date
-		<br />
-		<input type="date" name="date" class="date" bind:value={date} />
+		Duration (in hrs.) / Date
+		<span class="double">
+			<input type="number" name="duration" step="0.25" placeholder="" class="duration-input" bind:value={duration} />
+			<input type="date" name="date" class="date-input" bind:value={date} />
+		</span>
 	</label>
-	<label>
+	<label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
 		Client
-		<Select items={clients} bind:selectedValue={client} />
+		<Select items={clients} bind:selectedValue={client} on:select={clientSelected} />
 	</label>
-	<label class={`${taskError ? 'error' : ''}`}>
-		Project & Task
+	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
+		<span class="task-caption">
+			Project & Task for
+			<strong>{client && client.label}</strong>
+			<a href="#/" class="change" on:click|preventDefault={() => (client = null)}>Change client</a>
+		</span>
 		<Select
 			items={tasksWithProject && tasksWithProject.filter((oneTask) => client && oneTask.project.clientUuid === client.value)}
 			groupBy={(item) => item.project.label}
