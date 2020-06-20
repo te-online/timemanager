@@ -89,7 +89,7 @@
 			bind:this={noteInput} />
 	</label>
 	<label>
-		{window.t('timemanager', 'Duration (in hrs.) & Date')}
+		{@html window.t('timemanager', 'Duration (in hrs.) & Date')}
 		<span class="double">
 			<input type="number" name="duration" step="0.25" placeholder="" class="duration-input" bind:value={duration} />
 			<input type="date" name="date" class="date-input" bind:value={date} />
@@ -101,9 +101,11 @@
 	</label>
 	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
 		<span class="task-caption">
-			{window.t('timemanager', 'Project & Task for')}
+			{@html window.t('timemanager', 'Project & Task for')}
 			<strong>{client && client.label}</strong>
-			<a href="#/" class="change" on:click|preventDefault={() => (client = null)}>Change client</a>
+			<a href="#/" class="change" on:click|preventDefault={() => (client = null)}>
+				{window.t('timemanager', 'Change client')}
+			</a>
 		</span>
 		<Select
 			items={tasksWithProject && tasksWithProject.filter((oneTask) => client && oneTask.project.clientUuid === client.value)}

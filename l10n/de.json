@@ -25,14 +25,15 @@
 		"Next week": "Nächste Woche",
 		"Previous week": "Vorherige Woche",
 		"Week": "Woche",
-		"When you add entries for this week graphs will appear here.": "Wenn du Zeiteinträge für diese Woche hinzufügst, wird hier ein Diagram angezeigt.",
+		"When you add entries for this week graphs will appear here.": "Wenn du Zeiteinträge für diese Woche hinzufügst, wird hier ein Diagramm angezeigt.",
 		"hrs.": "Std.",
 		"Today": "heute",
 		"Statistics": "Statistik",
 		"Duration (in hrs.)": "Dauer (in Std.)",
 		"Date": "Datum",
 		"Edit": "Bearbeiten",
-		"Edit time entry": "Zeiteintrag bearbeiten"
+		"Edit time entry": "Zeiteintrag bearbeiten",
+		"Change client": "Kunde wechseln"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

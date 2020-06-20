@@ -3019,6 +3019,37 @@
 	    e.initCustomEvent(type, false, false, detail);
 	    return e;
 	}
+	class HtmlTag {
+	    constructor(anchor = null) {
+	        this.a = anchor;
+	        this.e = this.n = null;
+	    }
+	    m(html, target, anchor = null) {
+	        if (!this.e) {
+	            this.e = element(target.nodeName);
+	            this.t = target;
+	            this.h(html);
+	        }
+	        this.i(anchor);
+	    }
+	    h(html) {
+	        this.e.innerHTML = html;
+	        this.n = Array.from(this.e.childNodes);
+	    }
+	    i(anchor) {
+	        for (let i = 0; i < this.n.length; i += 1) {
+	            insert(this.t, this.n[i], anchor);
+	        }
+	    }
+	    p(html) {
+	        this.d();
+	        this.h(html);
+	        this.i(this.a);
+	    }
+	    d() {
+	        this.n.forEach(detach);
+	    }
+	}
 
 	let current_component;
 	function set_current_component(component) {
@@ -15369,43 +15400,43 @@
 	  var input0_placeholder_value;
 	  var t2;
 	  var label1;
-	  var t3_value = window.t("timemanager", "Duration (in hrs.) & Date") + "";
+	  var html_tag;
+	  var raw0_value = window.t("timemanager", "Duration (in hrs.) & Date") + "";
 	  var t3;
-	  var t4;
 	  var span0;
 	  var input1;
-	  var t5;
+	  var t4;
 	  var input2;
-	  var t6;
+	  var t5;
 	  var label2;
-	  var t7_value = window.t("timemanager", "Client") + "";
+	  var t6_value = window.t("timemanager", "Client") + "";
+	  var t6;
 	  var t7;
-	  var t8;
 	  var updating_selectedValue;
 	  var label2_class_value;
-	  var t9;
+	  var t8;
 	  var label3;
 	  var span1;
-	  var t10_value = window.t("timemanager", "Project & Task for") + "";
-	  var t10;
-	  var t11;
+	  var html_tag_1;
+	  var raw1_value = window.t("timemanager", "Project & Task for") + "";
+	  var t9;
 	  var strong;
-	  var t12_value = (
+	  var t10_value = (
 	  /*client*/
 	  ctx[4] &&
 	  /*client*/
 	  ctx[4].label) + "";
-	  var t12;
-	  var t13;
+	  var t10;
+	  var t11;
 	  var a;
-	  var t15;
+	  var t13;
 	  var updating_selectedValue_1;
 	  var label3_class_value;
-	  var t16;
+	  var t14;
 	  var span2;
 	  var button;
-	  var t17_value = window.t("timemanager", "Add") + "";
-	  var t17;
+	  var t15_value = window.t("timemanager", "Add") + "";
+	  var t15;
 	  var form_class_value;
 	  var current;
 	  var mounted;
@@ -15480,38 +15511,37 @@
 	      input0 = element("input");
 	      t2 = space();
 	      label1 = element("label");
-	      t3 = text(t3_value);
-	      t4 = space();
+	      t3 = space();
 	      span0 = element("span");
 	      input1 = element("input");
-	      t5 = space();
+	      t4 = space();
 	      input2 = element("input");
-	      t6 = space();
+	      t5 = space();
 	      label2 = element("label");
-	      t7 = text(t7_value);
-	      t8 = space();
+	      t6 = text(t6_value);
+	      t7 = space();
 	      create_component(select0.$$.fragment);
-	      t9 = space();
+	      t8 = space();
 	      label3 = element("label");
 	      span1 = element("span");
+	      t9 = space();
+	      strong = element("strong");
 	      t10 = text(t10_value);
 	      t11 = space();
-	      strong = element("strong");
-	      t12 = text(t12_value);
-	      t13 = space();
 	      a = element("a");
-	      a.textContent = "Change client";
-	      t15 = space();
+	      a.textContent = "".concat(window.t("timemanager", "Change client"));
+	      t13 = space();
 	      create_component(select1.$$.fragment);
-	      t16 = space();
+	      t14 = space();
 	      span2 = element("span");
 	      button = element("button");
-	      t17 = text(t17_value);
+	      t15 = text(t15_value);
 	      attr(input0, "type", "text");
 	      attr(input0, "name", "note");
 	      attr(input0, "class", "note");
 	      attr(input0, "placeholder", input0_placeholder_value = window.t("timemanager", "Describe what you did..."));
 	      attr(label0, "class", "note");
+	      html_tag = new HtmlTag(t3);
 	      attr(input1, "type", "number");
 	      attr(input1, "name", "duration");
 	      attr(input1, "step", "0.25");
@@ -15526,6 +15556,7 @@
 	      ctx[8] ? " error" : "").concat(
 	      /*client*/
 	      ctx[4] ? " hidden-visually" : ""));
+	      html_tag_1 = new HtmlTag(t9);
 	      attr(a, "href", "#/");
 	      attr(a, "class", "change");
 	      attr(span1, "class", "task-caption");
@@ -15559,38 +15590,38 @@
 	      ctx[19](input0);
 	      append(form, t2);
 	      append(form, label1);
+	      html_tag.m(raw0_value, label1);
 	      append(label1, t3);
-	      append(label1, t4);
 	      append(label1, span0);
 	      append(span0, input1);
 	      set_input_value(input1,
 	      /*duration*/
 	      ctx[1]);
-	      append(span0, t5);
+	      append(span0, t4);
 	      append(span0, input2);
 	      set_input_value(input2,
 	      /*date*/
 	      ctx[2]);
-	      append(form, t6);
+	      append(form, t5);
 	      append(form, label2);
+	      append(label2, t6);
 	      append(label2, t7);
-	      append(label2, t8);
 	      mount_component(select0, label2, null);
-	      append(form, t9);
+	      append(form, t8);
 	      append(form, label3);
 	      append(label3, span1);
-	      append(span1, t10);
-	      append(span1, t11);
+	      html_tag_1.m(raw1_value, span1);
+	      append(span1, t9);
 	      append(span1, strong);
-	      append(strong, t12);
-	      append(span1, t13);
+	      append(strong, t10);
+	      append(span1, t11);
 	      append(span1, a);
-	      append(label3, t15);
+	      append(label3, t13);
 	      mount_component(select1, label3, null);
-	      append(form, t16);
+	      append(form, t14);
 	      append(form, span2);
 	      append(span2, button);
-	      append(button, t17);
+	      append(button, t15);
 	      current = true;
 
 	      if (!mounted) {
@@ -15674,11 +15705,11 @@
 
 	      if ((!current || dirty &
 	      /*client*/
-	      16) && t12_value !== (t12_value = (
+	      16) && t10_value !== (t10_value = (
 	      /*client*/
 	      ctx[4] &&
 	      /*client*/
-	      ctx[4].label) + "")) set_data(t12, t12_value);
+	      ctx[4].label) + "")) set_data(t10, t10_value);
 	      var select1_changes = {};
 	      if (dirty &
 	      /*client*/

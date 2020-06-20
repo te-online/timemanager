@@ -27,7 +27,7 @@ OC.L10N.register(
 		"Previous week": "Vorherige Woche",
 		Week: "Woche",
 		"When you add entries for this week graphs will appear here.":
-			"Wenn Sie Zeiteinträge für diese Woche hinzufügen, wird hier ein Diagram angezeigt.",
+			"Wenn Sie Zeiteinträge für diese Woche hinzufügen, wird hier ein Diagramm angezeigt.",
 		"hrs.": "Std.",
 		Today: "heute",
 		Statistics: "Statistik",
@@ -35,6 +35,7 @@ OC.L10N.register(
 		Date: "Datum",
 		Edit: "Bearbeiten",
 		"Edit time entry": "Zeiteintrag bearbeiten",
+		"Change client": "Kunde wechseln",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
