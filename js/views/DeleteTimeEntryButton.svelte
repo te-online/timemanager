@@ -54,10 +54,10 @@
 {#if confirmation}
 	<Overlay>
 		<div class="inner tm_new-item">
-			Do you want to delete this time entry?
+			{window.t('timemanager', 'Do you want to delete this time entry?')}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
-				<button class="button primary" on:click|preventDefault={doDelete}>Delete</button>
-				<button class="button" on:click|preventDefault={cancelDelete}>Cancel</button>
+				<button class="button primary" on:click|preventDefault={doDelete}>{window.t('timemanager', 'Delete')}</button>
+				<button class="button" on:click|preventDefault={cancelDelete}>{window.t('timemanager', 'Cancel')}</button>
 			</div>
 		</div>
 	</Overlay>
@@ -66,5 +66,5 @@
 <form action={deleteTimeEntryAction} on:submit={submit} method="post" class="tm_inline-hover-form">
 	<input type="hidden" name="uuid" value={deleteTimeEntryUuid} />
 	<input type="hidden" name="requesttoken" value={requestToken} />
-	<button type="submit" name="action" value="delete" class="btn">Delete</button>
+	<button type="submit" name="action" value="delete" class="btn">{window.t('timemanager', 'Delete')}</button>
 </form>

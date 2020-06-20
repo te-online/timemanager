@@ -20,7 +20,7 @@
 	<h3>{clientEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label class="space-top">
-			Client name
+			{window.t('timemanager', 'Client name')}
 			<br />
 			<input
 				autofocus
@@ -28,26 +28,28 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="name"
-				placeholder="Example Corp."
+				placeholder={window.t('timemanager', 'Example Corp.')}
 				bind:value={name}
 				required />
 		</label>
 		<label class="space-top">
-			Note
+			{window.t('timemanager', 'Note')}
 			<br />
 			<!-- prettier-ignore -->
 			<textarea
 				style="width: 100%;"
 				class="input-wide"
 				name="note"
-				placeholder="A long text ..."
+				placeholder={window.t('timemanager', 'Describe what you did...')}
 				on:input={(e) => (note = e.target.value)}>{note}</textarea>
 		</label>
 		<input type="hidden" name="requesttoken" value={requestToken} />
 		<div class="oc-dialog-buttonrow twobuttons reverse">
 			<button type="submit" class="button primary">{clientEditorButtonCaption}</button>
 			{#if !isServer}
-				<button type="reset" class="button" on:click|preventDefault={onCancel}>Cancel</button>
+				<button type="reset" class="button" on:click|preventDefault={onCancel}>
+					{window.t('timemanager', 'Cancel')}
+				</button>
 			{/if}
 		</div>
 	</form>

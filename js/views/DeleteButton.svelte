@@ -36,10 +36,10 @@
 {#if confirmation}
 	<Overlay>
 		<div class="inner tm_new-item">
-			Do you want to delete {deleteItemName}?
+			{(window.t('timemanager', 'Do you want to delete {deleteItemName}?'), { deleteItemName })}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
-				<button class="button primary" on:click|preventDefault={doDelete}>Delete</button>
-				<button class="button" on:click|preventDefault={cancelDelete}>Cancel</button>
+				<button class="button primary" on:click|preventDefault={doDelete}>{window.t('timemanager', 'Delete')}</button>
+				<button class="button" on:click|preventDefault={cancelDelete}>{window.t('timemanager', 'Cancel')}</button>
 			</div>
 		</div>
 	</Overlay>

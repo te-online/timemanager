@@ -6359,15 +6359,18 @@
 	  ctx[17].stats.total + "";
 	  var t0;
 	  var t1;
+	  var t2_value = window.t("timemanager", "hrs.") + "";
 	  var t2;
+	  var t3;
 	  var div;
 	  var div_style_value;
 	  return {
 	    c() {
 	      span = element("span");
 	      t0 = text(t0_value);
-	      t1 = text(" hrs.");
-	      t2 = space();
+	      t1 = space();
+	      t2 = text(t2_value);
+	      t3 = space();
 	      div = element("div");
 	      attr(span, "class", "hours-label");
 	      attr(div, "class", "column-inner");
@@ -6382,7 +6385,8 @@
 	      insert(target, span, anchor);
 	      append(span, t0);
 	      append(span, t1);
-	      insert(target, t2, anchor);
+	      append(span, t2);
+	      insert(target, t3, anchor);
 	      insert(target, div, anchor);
 	    },
 
@@ -6406,7 +6410,7 @@
 
 	    d(detaching) {
 	      if (detaching) detach(span);
-	      if (detaching) detach(t2);
+	      if (detaching) detach(t3);
 	      if (detaching) detach(div);
 	    }
 
@@ -6466,7 +6470,7 @@
 	  return {
 	    c() {
 	      p = element("p");
-	      p.textContent = "When you add entries for this week graphs will appear here.";
+	      p.textContent = "".concat(window.t("timemanager", "When you add entries for this week graphs will appear here."));
 	      attr(p, "class", "empty");
 	    },
 
@@ -6474,12 +6478,14 @@
 	      insert(target, p, anchor);
 	    },
 
+	    p: noop,
+
 	    d(detaching) {
 	      if (detaching) detach(p);
 	    }
 
 	  };
-	} // (138:3) {#if !isSameDay(startOfToday(), dayCursor)}
+	} // (142:3) {#if !isSameDay(startOfToday(), dayCursor)}
 
 
 	function create_if_block(ctx) {
@@ -6489,7 +6495,7 @@
 	  return {
 	    c() {
 	      button = element("button");
-	      button.textContent = "Current week";
+	      button.textContent = "".concat(window.t("timemanager", "Current week"));
 	      attr(button, "class", "current");
 	    },
 
@@ -6525,43 +6531,49 @@
 	  var t3;
 	  var t4;
 	  var t5;
+	  var t6_value = window.t("timemanager", "hrs.") + "";
 	  var t6;
+	  var t7;
 	  var figure1;
 	  var figcaption1;
-	  var t8;
 	  var t9;
 	  var t10;
 	  var t11;
-	  var div2;
-	  var div1;
+	  var t12_value = window.t("timemanager", "hrs.") + "";
 	  var t12;
 	  var t13;
+	  var div2;
+	  var div1;
+	  var t14;
+	  var t15;
 	  var nav;
 	  var button0;
-	  var t15;
-	  var span1;
-	  var t16;
 	  var t17;
+	  var span1;
+	  var t18_value = window.t("timemanager", "Week") + "";
 	  var t18;
-	  var span0;
 	  var t19;
-	  var t20_value = format(startOfWeek(
-	  /*dayCursor*/
-	  ctx[5],
-	  /*localeOptions*/
-	  ctx[7]), "iiiiii d.MM.Y") + "";
 	  var t20;
 	  var t21;
-	  var t22_value = format(endOfWeek(
+	  var span0;
+	  var t22;
+	  var t23_value = format(startOfWeek(
 	  /*dayCursor*/
 	  ctx[5],
 	  /*localeOptions*/
 	  ctx[7]), "iiiiii d.MM.Y") + "";
-	  var t22;
 	  var t23;
 	  var t24;
-	  var button1;
+	  var t25_value = format(endOfWeek(
+	  /*dayCursor*/
+	  ctx[5],
+	  /*localeOptions*/
+	  ctx[7]), "iiiiii d.MM.Y") + "";
+	  var t25;
 	  var t26;
+	  var t27;
+	  var button1;
+	  var t29;
 	  var show_if = !isSameDay(startOfToday(),
 	  /*dayCursor*/
 	  ctx[5]);
@@ -6586,28 +6598,30 @@
 	  return {
 	    c() {
 	      h2 = element("h2");
-	      h2.textContent = "Statistics";
+	      h2.textContent = "".concat(window.t("timemanager", "Statistics"));
 	      t1 = space();
 	      div3 = element("div");
 	      div0 = element("div");
 	      figure0 = element("figure");
 	      figcaption0 = element("figcaption");
-	      figcaption0.textContent = "Today";
+	      figcaption0.textContent = "".concat(window.t("timemanager", "Today"));
 	      t3 = space();
 	      t4 = text(
 	      /*todayTotal*/
 	      ctx[3]);
-	      t5 = text(" hrs.");
-	      t6 = space();
+	      t5 = space();
+	      t6 = text(t6_value);
+	      t7 = space();
 	      figure1 = element("figure");
 	      figcaption1 = element("figcaption");
-	      figcaption1.textContent = "Week";
-	      t8 = space();
-	      t9 = text(
+	      figcaption1.textContent = "".concat(window.t("timemanager", "Week"));
+	      t9 = space();
+	      t10 = text(
 	      /*weekTotal*/
 	      ctx[2]);
-	      t10 = text(" hrs.");
 	      t11 = space();
+	      t12 = text(t12_value);
+	      t13 = space();
 	      div2 = element("div");
 	      div1 = element("div");
 
@@ -6615,29 +6629,30 @@
 	        each_blocks[_i].c();
 	      }
 
-	      t12 = space();
+	      t14 = space();
 	      if (if_block0) if_block0.c();
-	      t13 = space();
+	      t15 = space();
 	      nav = element("nav");
 	      button0 = element("button");
-	      button0.textContent = "Previous week";
-	      t15 = space();
+	      button0.textContent = "".concat(window.t("timemanager", "Previous week"));
+	      t17 = space();
 	      span1 = element("span");
-	      t16 = text("Week ");
-	      t17 = text(
+	      t18 = text(t18_value);
+	      t19 = space();
+	      t20 = text(
 	      /*currentWeek*/
 	      ctx[6]);
-	      t18 = space();
+	      t21 = space();
 	      span0 = element("span");
-	      t19 = text("(");
-	      t20 = text(t20_value);
-	      t21 = text(" – ");
-	      t22 = text(t22_value);
-	      t23 = text(")");
-	      t24 = space();
+	      t22 = text("(");
+	      t23 = text(t23_value);
+	      t24 = text(" – ");
+	      t25 = text(t25_value);
+	      t26 = text(")");
+	      t27 = space();
 	      button1 = element("button");
-	      button1.textContent = "Next week";
-	      t26 = space();
+	      button1.textContent = "".concat(window.t("timemanager", "Next week"));
+	      t29 = space();
 	      if (if_block1) if_block1.c();
 	      attr(figcaption0, "class", "tm_label");
 	      attr(figcaption1, "class", "tm_label");
@@ -6663,13 +6678,15 @@
 	      append(figure0, t3);
 	      append(figure0, t4);
 	      append(figure0, t5);
-	      append(div0, t6);
+	      append(figure0, t6);
+	      append(div0, t7);
 	      append(div0, figure1);
 	      append(figure1, figcaption1);
-	      append(figure1, t8);
 	      append(figure1, t9);
 	      append(figure1, t10);
-	      append(div3, t11);
+	      append(figure1, t11);
+	      append(figure1, t12);
+	      append(div3, t13);
 	      append(div3, div2);
 	      append(div2, div1);
 
@@ -6677,25 +6694,26 @@
 	        each_blocks[_i2].m(div1, null);
 	      }
 
-	      append(div1, t12);
+	      append(div1, t14);
 	      if (if_block0) if_block0.m(div1, null);
-	      append(div2, t13);
+	      append(div2, t15);
 	      append(div2, nav);
 	      append(nav, button0);
-	      append(nav, t15);
+	      append(nav, t17);
 	      append(nav, span1);
-	      append(span1, t16);
-	      append(span1, t17);
 	      append(span1, t18);
+	      append(span1, t19);
+	      append(span1, t20);
+	      append(span1, t21);
 	      append(span1, span0);
-	      append(span0, t19);
-	      append(span0, t20);
-	      append(span0, t21);
 	      append(span0, t22);
 	      append(span0, t23);
-	      append(nav, t24);
+	      append(span0, t24);
+	      append(span0, t25);
+	      append(span0, t26);
+	      append(nav, t27);
 	      append(nav, button1);
-	      append(nav, t26);
+	      append(nav, t29);
 	      if (if_block1) if_block1.m(nav, null);
 
 	      if (!mounted) {
@@ -6719,12 +6737,12 @@
 	      ctx[3]);
 	      if (dirty &
 	      /*weekTotal*/
-	      4) set_data(t9,
+	      4) set_data(t10,
 	      /*weekTotal*/
 	      ctx[2]);
 
 	      if (dirty &
-	      /*format, days, highest*/
+	      /*format, days, highest, window*/
 	      18) {
 	        each_value =
 	        /*days*/
@@ -6742,7 +6760,7 @@
 
 	            each_blocks[_i3].c();
 
-	            each_blocks[_i3].m(div1, t12);
+	            each_blocks[_i3].m(div1, t14);
 	          }
 	        }
 
@@ -6758,7 +6776,9 @@
 	      ctx[0] &&
 	      /*weekTotal*/
 	      ctx[2] === 0) {
-	        if (if_block0) ; else {
+	        if (if_block0) {
+	          if_block0.p(ctx, dirty);
+	        } else {
 	          if_block0 = create_if_block_1();
 	          if_block0.c();
 	          if_block0.m(div1, null);
@@ -6770,23 +6790,23 @@
 
 	      if (dirty &
 	      /*currentWeek*/
-	      64) set_data(t17,
+	      64) set_data(t20,
 	      /*currentWeek*/
 	      ctx[6]);
 	      if (dirty &
 	      /*dayCursor*/
-	      32 && t20_value !== (t20_value = format(startOfWeek(
+	      32 && t23_value !== (t23_value = format(startOfWeek(
 	      /*dayCursor*/
 	      ctx[5],
 	      /*localeOptions*/
-	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t20, t20_value);
+	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t23, t23_value);
 	      if (dirty &
 	      /*dayCursor*/
-	      32 && t22_value !== (t22_value = format(endOfWeek(
+	      32 && t25_value !== (t25_value = format(endOfWeek(
 	      /*dayCursor*/
 	      ctx[5],
 	      /*localeOptions*/
-	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t22, t22_value);
+	      ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t25, t25_value);
 	      if (dirty &
 	      /*dayCursor*/
 	      32) show_if = !isSameDay(startOfToday(),
@@ -7160,7 +7180,7 @@
 	  return {
 	    c() {
 	      button = element("button");
-	      button.textContent = "Cancel";
+	      button.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button, "type", "reset");
 	      attr(button, "class", "button");
 	    },
@@ -7200,23 +7220,29 @@
 	  var t1;
 	  var form;
 	  var label0;
+	  var t2_value = window.t("timemanager", "Client name") + "";
 	  var t2;
-	  var br0;
 	  var t3;
-	  var input0;
+	  var br0;
 	  var t4;
-	  var label1;
+	  var input0;
+	  var input0_placeholder_value;
 	  var t5;
-	  var br1;
+	  var label1;
+	  var t6_value = window.t("timemanager", "Note") + "";
 	  var t6;
-	  var textarea;
 	  var t7;
-	  var input1;
+	  var br1;
 	  var t8;
+	  var textarea;
+	  var textarea_placeholder_value;
+	  var t9;
+	  var input1;
+	  var t10;
 	  var div0;
 	  var button;
-	  var t9;
-	  var t10;
+	  var t11;
+	  var t12;
 	  var mounted;
 	  var dispose;
 	  var if_block = !
@@ -7232,38 +7258,40 @@
 	      t1 = space();
 	      form = element("form");
 	      label0 = element("label");
-	      t2 = text("Client name\n\t\t\t");
-	      br0 = element("br");
+	      t2 = text(t2_value);
 	      t3 = space();
-	      input0 = element("input");
+	      br0 = element("br");
 	      t4 = space();
+	      input0 = element("input");
+	      t5 = space();
 	      label1 = element("label");
-	      t5 = text("Note\n\t\t\t");
-	      br1 = element("br");
-	      t6 = space();
-	      textarea = element("textarea");
+	      t6 = text(t6_value);
 	      t7 = space();
-	      input1 = element("input");
+	      br1 = element("br");
 	      t8 = space();
+	      textarea = element("textarea");
+	      t9 = space();
+	      input1 = element("input");
+	      t10 = space();
 	      div0 = element("div");
 	      button = element("button");
-	      t9 = text(
+	      t11 = text(
 	      /*clientEditorButtonCaption*/
 	      ctx[4]);
-	      t10 = space();
+	      t12 = space();
 	      if (if_block) if_block.c();
 	      input0.autofocus = true;
 	      attr(input0, "type", "text");
 	      set_style(input0, "width", "100%");
 	      attr(input0, "class", "input-wide");
 	      attr(input0, "name", "name");
-	      attr(input0, "placeholder", "Example Corp.");
+	      attr(input0, "placeholder", input0_placeholder_value = window.t("timemanager", "Example Corp."));
 	      input0.required = true;
 	      attr(label0, "class", "space-top");
 	      set_style(textarea, "width", "100%");
 	      attr(textarea, "class", "input-wide");
 	      attr(textarea, "name", "note");
-	      attr(textarea, "placeholder", "A long text ...");
+	      attr(textarea, "placeholder", textarea_placeholder_value = window.t("timemanager", "Describe what you did..."));
 	      textarea.value =
 	      /*note*/
 	      ctx[7];
@@ -7291,25 +7319,27 @@
 	      append(div1, form);
 	      append(form, label0);
 	      append(label0, t2);
-	      append(label0, br0);
 	      append(label0, t3);
+	      append(label0, br0);
+	      append(label0, t4);
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*name*/
 	      ctx[6]);
-	      append(form, t4);
+	      append(form, t5);
 	      append(form, label1);
-	      append(label1, t5);
-	      append(label1, br1);
 	      append(label1, t6);
+	      append(label1, t7);
+	      append(label1, br1);
+	      append(label1, t8);
 	      append(label1, textarea);
-	      append(form, t7);
+	      append(form, t9);
 	      append(form, input1);
-	      append(form, t8);
+	      append(form, t10);
 	      append(form, div0);
 	      append(div0, button);
-	      append(button, t9);
-	      append(div0, t10);
+	      append(button, t11);
+	      append(div0, t12);
 	      if (if_block) if_block.m(div0, null);
 	      input0.focus();
 
@@ -7363,7 +7393,7 @@
 
 	      if (dirty &
 	      /*clientEditorButtonCaption*/
-	      16) set_data(t9,
+	      16) set_data(t11,
 	      /*clientEditorButtonCaption*/
 	      ctx[4]);
 
@@ -7901,7 +7931,7 @@
 	  return {
 	    c() {
 	      button = element("button");
-	      button.textContent = "Cancel";
+	      button.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button, "type", "reset");
 	      attr(button, "class", "button");
 	    },
@@ -7941,26 +7971,31 @@
 	  var t1;
 	  var form;
 	  var label0;
+	  var t2_value = window.t("timemanager", "Project name") + "";
 	  var t2;
-	  var br0;
 	  var t3;
-	  var input0;
+	  var br0;
 	  var t4;
-	  var label1;
+	  var input0;
+	  var input0_placeholder_value;
 	  var t5;
-	  var br1;
+	  var label1;
+	  var t6_value = window.t("timemanager", "For client") + "";
 	  var t6;
-	  var strong;
 	  var t7;
+	  var br1;
 	  var t8;
-	  var br2;
+	  var strong;
 	  var t9;
-	  var input1;
 	  var t10;
+	  var br2;
+	  var t11;
+	  var input1;
+	  var t12;
 	  var div0;
 	  var button;
-	  var t11;
-	  var t12;
+	  var t13;
+	  var t14;
 	  var mounted;
 	  var dispose;
 	  var if_block = !
@@ -7976,37 +8011,39 @@
 	      t1 = space();
 	      form = element("form");
 	      label0 = element("label");
-	      t2 = text("Project name\n\t\t\t");
-	      br0 = element("br");
+	      t2 = text(t2_value);
 	      t3 = space();
-	      input0 = element("input");
+	      br0 = element("br");
 	      t4 = space();
+	      input0 = element("input");
+	      t5 = space();
 	      label1 = element("label");
-	      t5 = text("For client\n\t\t\t");
+	      t6 = text(t6_value);
+	      t7 = space();
 	      br1 = element("br");
-	      t6 = space();
+	      t8 = space();
 	      strong = element("strong");
-	      t7 = text(
+	      t9 = text(
 	      /*clientName*/
 	      ctx[2]);
-	      t8 = space();
-	      br2 = element("br");
-	      t9 = space();
-	      input1 = element("input");
 	      t10 = space();
+	      br2 = element("br");
+	      t11 = space();
+	      input1 = element("input");
+	      t12 = space();
 	      div0 = element("div");
 	      button = element("button");
-	      t11 = text(
+	      t13 = text(
 	      /*projectEditorButtonCaption*/
 	      ctx[5]);
-	      t12 = space();
+	      t14 = space();
 	      if (if_block) if_block.c();
 	      input0.autofocus = true;
 	      attr(input0, "type", "text");
 	      set_style(input0, "width", "100%");
 	      attr(input0, "class", "input-wide");
 	      attr(input0, "name", "name");
-	      attr(input0, "placeholder", "Very special project");
+	      attr(input0, "placeholder", input0_placeholder_value = window.t("timemanager", "A project name"));
 	      input0.required = true;
 	      attr(label0, "class", "space-top");
 	      attr(label1, "class", "space-top");
@@ -8033,28 +8070,30 @@
 	      append(div1, form);
 	      append(form, label0);
 	      append(label0, t2);
-	      append(label0, br0);
 	      append(label0, t3);
+	      append(label0, br0);
+	      append(label0, t4);
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*name*/
 	      ctx[7]);
-	      append(form, t4);
+	      append(form, t5);
 	      append(form, label1);
-	      append(label1, t5);
-	      append(label1, br1);
 	      append(label1, t6);
+	      append(label1, t7);
+	      append(label1, br1);
+	      append(label1, t8);
 	      append(label1, strong);
-	      append(strong, t7);
-	      append(form, t8);
-	      append(form, br2);
-	      append(form, t9);
-	      append(form, input1);
+	      append(strong, t9);
 	      append(form, t10);
+	      append(form, br2);
+	      append(form, t11);
+	      append(form, input1);
+	      append(form, t12);
 	      append(form, div0);
 	      append(div0, button);
-	      append(button, t11);
-	      append(div0, t12);
+	      append(button, t13);
+	      append(div0, t14);
 	      if (if_block) if_block.m(div0, null);
 	      input0.focus();
 
@@ -8090,7 +8129,7 @@
 
 	      if (dirty &
 	      /*clientName*/
-	      4) set_data(t7,
+	      4) set_data(t9,
 	      /*clientName*/
 	      ctx[2]);
 
@@ -8104,7 +8143,7 @@
 
 	      if (dirty &
 	      /*projectEditorButtonCaption*/
-	      32) set_data(t11,
+	      32) set_data(t13,
 	      /*projectEditorButtonCaption*/
 	      ctx[5]);
 
@@ -8624,7 +8663,7 @@
 	  return {
 	    c() {
 	      button = element("button");
-	      button.textContent = "Cancel";
+	      button.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button, "type", "reset");
 	      attr(button, "class", "button");
 	    },
@@ -8664,33 +8703,40 @@
 	  var t1;
 	  var form;
 	  var label0;
+	  var t2_value = window.t("timemanager", "Task name") + "";
 	  var t2;
-	  var br0;
 	  var t3;
-	  var input0;
+	  var br0;
 	  var t4;
-	  var label1;
+	  var input0;
+	  var input0_placeholder_value;
 	  var t5;
-	  var br1;
+	  var label1;
+	  var t6_value = window.t("timemanager", "For project") + "";
 	  var t6;
-	  var strong0;
 	  var t7;
+	  var br1;
 	  var t8;
-	  var label2;
+	  var strong0;
 	  var t9;
-	  var br2;
 	  var t10;
-	  var strong1;
+	  var label2;
+	  var t11_value = window.t("timemanager", "For client") + "";
 	  var t11;
 	  var t12;
-	  var br3;
+	  var br2;
 	  var t13;
-	  var input1;
+	  var strong1;
 	  var t14;
+	  var t15;
+	  var br3;
+	  var t16;
+	  var input1;
+	  var t17;
 	  var div0;
 	  var button;
-	  var t15;
-	  var t16;
+	  var t18;
+	  var t19;
 	  var mounted;
 	  var dispose;
 	  var if_block = !
@@ -8706,46 +8752,49 @@
 	      t1 = space();
 	      form = element("form");
 	      label0 = element("label");
-	      t2 = text("Task name\n\t\t\t");
-	      br0 = element("br");
+	      t2 = text(t2_value);
 	      t3 = space();
-	      input0 = element("input");
+	      br0 = element("br");
 	      t4 = space();
+	      input0 = element("input");
+	      t5 = space();
 	      label1 = element("label");
-	      t5 = text("For project\n\t\t\t");
+	      t6 = text(t6_value);
+	      t7 = space();
 	      br1 = element("br");
-	      t6 = space();
+	      t8 = space();
 	      strong0 = element("strong");
-	      t7 = text(
+	      t9 = text(
 	      /*projectName*/
 	      ctx[3]);
-	      t8 = space();
-	      label2 = element("label");
-	      t9 = text("For client\n\t\t\t");
-	      br2 = element("br");
 	      t10 = space();
+	      label2 = element("label");
+	      t11 = text(t11_value);
+	      t12 = space();
+	      br2 = element("br");
+	      t13 = space();
 	      strong1 = element("strong");
-	      t11 = text(
+	      t14 = text(
 	      /*clientName*/
 	      ctx[2]);
-	      t12 = space();
+	      t15 = space();
 	      br3 = element("br");
-	      t13 = space();
+	      t16 = space();
 	      input1 = element("input");
-	      t14 = space();
+	      t17 = space();
 	      div0 = element("div");
 	      button = element("button");
-	      t15 = text(
+	      t18 = text(
 	      /*taskEditorButtonCaption*/
 	      ctx[6]);
-	      t16 = space();
+	      t19 = space();
 	      if (if_block) if_block.c();
 	      input0.autofocus = true;
 	      attr(input0, "type", "text");
 	      set_style(input0, "width", "100%");
 	      attr(input0, "class", "input-wide");
 	      attr(input0, "name", "name");
-	      attr(input0, "placeholder", "Very special task");
+	      attr(input0, "placeholder", input0_placeholder_value = window.t("timemanager", "A task name"));
 	      input0.required = true;
 	      attr(label0, "class", "space-top");
 	      attr(label1, "class", "space-top");
@@ -8773,35 +8822,38 @@
 	      append(div1, form);
 	      append(form, label0);
 	      append(label0, t2);
-	      append(label0, br0);
 	      append(label0, t3);
+	      append(label0, br0);
+	      append(label0, t4);
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*name*/
 	      ctx[8]);
-	      append(form, t4);
+	      append(form, t5);
 	      append(form, label1);
-	      append(label1, t5);
-	      append(label1, br1);
 	      append(label1, t6);
+	      append(label1, t7);
+	      append(label1, br1);
+	      append(label1, t8);
 	      append(label1, strong0);
-	      append(strong0, t7);
-	      append(form, t8);
+	      append(strong0, t9);
+	      append(form, t10);
 	      append(form, label2);
-	      append(label2, t9);
+	      append(label2, t11);
+	      append(label2, t12);
 	      append(label2, br2);
-	      append(label2, t10);
+	      append(label2, t13);
 	      append(label2, strong1);
-	      append(strong1, t11);
-	      append(form, t12);
+	      append(strong1, t14);
+	      append(form, t15);
 	      append(form, br3);
-	      append(form, t13);
+	      append(form, t16);
 	      append(form, input1);
-	      append(form, t14);
+	      append(form, t17);
 	      append(form, div0);
 	      append(div0, button);
-	      append(button, t15);
-	      append(div0, t16);
+	      append(button, t18);
+	      append(div0, t19);
 	      if (if_block) if_block.m(div0, null);
 	      input0.focus();
 
@@ -8837,12 +8889,12 @@
 
 	      if (dirty &
 	      /*projectName*/
-	      8) set_data(t7,
+	      8) set_data(t9,
 	      /*projectName*/
 	      ctx[3]);
 	      if (dirty &
 	      /*clientName*/
-	      4) set_data(t11,
+	      4) set_data(t14,
 	      /*clientName*/
 	      ctx[2]);
 
@@ -8856,7 +8908,7 @@
 
 	      if (dirty &
 	      /*taskEditorButtonCaption*/
-	      64) set_data(t15,
+	      64) set_data(t18,
 	      /*taskEditorButtonCaption*/
 	      ctx[6]);
 
@@ -9390,7 +9442,7 @@
 	  return {
 	    c() {
 	      button = element("button");
-	      button.textContent = "Cancel";
+	      button.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button, "type", "reset");
 	      attr(button, "class", "button");
 	    },
@@ -9430,58 +9482,71 @@
 	  var t1;
 	  var form;
 	  var label0;
+	  var t2_value = window.t("timemanager", "Duration (in hrs.)") + "";
 	  var t2;
-	  var br0;
 	  var t3;
-	  var input0;
+	  var br0;
 	  var t4;
-	  var br1;
+	  var input0;
 	  var t5;
-	  var label1;
+	  var br1;
 	  var t6;
-	  var br2;
+	  var label1;
+	  var t7_value = window.t("timemanager", "Date") + "";
 	  var t7;
-	  var input1;
 	  var t8;
-	  var br3;
+	  var br2;
 	  var t9;
-	  var label2;
+	  var input1;
 	  var t10;
-	  var br4;
+	  var br3;
 	  var t11;
-	  var textarea;
+	  var label2;
+	  var t12_value = window.t("timemanager", "Note") + "";
 	  var t12;
-	  var br5;
 	  var t13;
-	  var label3;
+	  var br4;
 	  var t14;
-	  var br6;
+	  var textarea;
+	  var textarea_placeholder_value;
 	  var t15;
-	  var strong0;
+	  var br5;
 	  var t16;
+	  var label3;
+	  var t17_value = window.t("timemanager", "For task") + "";
 	  var t17;
-	  var label4;
 	  var t18;
-	  var br7;
+	  var br6;
 	  var t19;
-	  var strong1;
+	  var strong0;
 	  var t20;
 	  var t21;
-	  var label5;
+	  var label4;
+	  var t22_value = window.t("timemanager", "For project") + "";
 	  var t22;
-	  var br8;
 	  var t23;
-	  var strong2;
+	  var br7;
 	  var t24;
+	  var strong1;
 	  var t25;
-	  var br9;
 	  var t26;
-	  var input2;
+	  var label5;
+	  var t27_value = window.t("timemanager", "For client") + "";
 	  var t27;
+	  var t28;
+	  var br8;
+	  var t29;
+	  var strong2;
+	  var t30;
+	  var t31;
+	  var br9;
+	  var t32;
+	  var input2;
+	  var t33;
 	  var div0;
 	  var button;
-	  var t28;
-	  var t29;
+	  var t34;
+	  var t35;
 	  var mounted;
 	  var dispose;
 	  var if_block = !
@@ -9497,66 +9562,72 @@
 	      t1 = space();
 	      form = element("form");
 	      label0 = element("label");
-	      t2 = text("Duration (in hrs.)\n\t\t\t");
-	      br0 = element("br");
+	      t2 = text(t2_value);
 	      t3 = space();
-	      input0 = element("input");
+	      br0 = element("br");
 	      t4 = space();
-	      br1 = element("br");
+	      input0 = element("input");
 	      t5 = space();
+	      br1 = element("br");
+	      t6 = space();
 	      label1 = element("label");
-	      t6 = text("Date\n\t\t\t");
-	      br2 = element("br");
-	      t7 = space();
-	      input1 = element("input");
+	      t7 = text(t7_value);
 	      t8 = space();
-	      br3 = element("br");
+	      br2 = element("br");
 	      t9 = space();
-	      label2 = element("label");
-	      t10 = text("Note\n\t\t\t");
-	      br4 = element("br");
+	      input1 = element("input");
+	      t10 = space();
+	      br3 = element("br");
 	      t11 = space();
-	      textarea = element("textarea");
-	      t12 = space();
-	      br5 = element("br");
+	      label2 = element("label");
+	      t12 = text(t12_value);
 	      t13 = space();
-	      label3 = element("label");
-	      t14 = text("For task\n\t\t\t");
-	      br6 = element("br");
+	      br4 = element("br");
+	      t14 = space();
+	      textarea = element("textarea");
 	      t15 = space();
+	      br5 = element("br");
+	      t16 = space();
+	      label3 = element("label");
+	      t17 = text(t17_value);
+	      t18 = space();
+	      br6 = element("br");
+	      t19 = space();
 	      strong0 = element("strong");
-	      t16 = text(
+	      t20 = text(
 	      /*taskName*/
 	      ctx[4]);
-	      t17 = space();
+	      t21 = space();
 	      label4 = element("label");
-	      t18 = text("For project\n\t\t\t");
+	      t22 = text(t22_value);
+	      t23 = space();
 	      br7 = element("br");
-	      t19 = space();
+	      t24 = space();
 	      strong1 = element("strong");
-	      t20 = text(
+	      t25 = text(
 	      /*projectName*/
 	      ctx[3]);
-	      t21 = space();
+	      t26 = space();
 	      label5 = element("label");
-	      t22 = text("For client\n\t\t\t");
+	      t27 = text(t27_value);
+	      t28 = space();
 	      br8 = element("br");
-	      t23 = space();
+	      t29 = space();
 	      strong2 = element("strong");
-	      t24 = text(
+	      t30 = text(
 	      /*clientName*/
 	      ctx[2]);
-	      t25 = space();
+	      t31 = space();
 	      br9 = element("br");
-	      t26 = space();
+	      t32 = space();
 	      input2 = element("input");
-	      t27 = space();
+	      t33 = space();
 	      div0 = element("div");
 	      button = element("button");
-	      t28 = text(
+	      t34 = text(
 	      /*timeEditorButtonCaption*/
 	      ctx[8]);
-	      t29 = space();
+	      t35 = space();
 	      if (if_block) if_block.c();
 	      input0.autofocus = true;
 	      attr(input0, "type", "number");
@@ -9573,7 +9644,7 @@
 	      set_style(textarea, "width", "100%");
 	      attr(textarea, "class", "input-wide");
 	      attr(textarea, "name", "note");
-	      attr(textarea, "placeholder", "A long text ...");
+	      attr(textarea, "placeholder", textarea_placeholder_value = window.t("timemanager", "Describe what you did..."));
 	      textarea.value =
 	      /*note*/
 	      ctx[11];
@@ -9603,63 +9674,69 @@
 	      append(div1, form);
 	      append(form, label0);
 	      append(label0, t2);
-	      append(label0, br0);
 	      append(label0, t3);
+	      append(label0, br0);
+	      append(label0, t4);
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*duration*/
 	      ctx[9]);
-	      append(form, t4);
-	      append(form, br1);
 	      append(form, t5);
+	      append(form, br1);
+	      append(form, t6);
 	      append(form, label1);
-	      append(label1, t6);
-	      append(label1, br2);
 	      append(label1, t7);
+	      append(label1, t8);
+	      append(label1, br2);
+	      append(label1, t9);
 	      append(label1, input1);
 	      set_input_value(input1,
 	      /*date*/
 	      ctx[10]);
-	      append(form, t8);
+	      append(form, t10);
 	      append(form, br3);
-	      append(form, t9);
+	      append(form, t11);
 	      append(form, label2);
-	      append(label2, t10);
+	      append(label2, t12);
+	      append(label2, t13);
 	      append(label2, br4);
-	      append(label2, t11);
+	      append(label2, t14);
 	      append(label2, textarea);
-	      append(form, t12);
+	      append(form, t15);
 	      append(form, br5);
-	      append(form, t13);
+	      append(form, t16);
 	      append(form, label3);
-	      append(label3, t14);
+	      append(label3, t17);
+	      append(label3, t18);
 	      append(label3, br6);
-	      append(label3, t15);
+	      append(label3, t19);
 	      append(label3, strong0);
-	      append(strong0, t16);
-	      append(form, t17);
-	      append(form, label4);
-	      append(label4, t18);
-	      append(label4, br7);
-	      append(label4, t19);
-	      append(label4, strong1);
-	      append(strong1, t20);
+	      append(strong0, t20);
 	      append(form, t21);
-	      append(form, label5);
-	      append(label5, t22);
-	      append(label5, br8);
-	      append(label5, t23);
-	      append(label5, strong2);
-	      append(strong2, t24);
-	      append(form, t25);
-	      append(form, br9);
+	      append(form, label4);
+	      append(label4, t22);
+	      append(label4, t23);
+	      append(label4, br7);
+	      append(label4, t24);
+	      append(label4, strong1);
+	      append(strong1, t25);
 	      append(form, t26);
+	      append(form, label5);
+	      append(label5, t27);
+	      append(label5, t28);
+	      append(label5, br8);
+	      append(label5, t29);
+	      append(label5, strong2);
+	      append(strong2, t30);
+	      append(form, t31);
+	      append(form, br9);
+	      append(form, t32);
 	      append(form, input2);
-	      append(form, t27);
+	      append(form, t33);
 	      append(form, div0);
 	      append(div0, button);
-	      append(button, t28);
-	      append(div0, t29);
+	      append(button, t34);
+	      append(div0, t35);
 	      if (if_block) if_block.m(div0, null);
 	      input0.focus();
 
@@ -9715,17 +9792,17 @@
 
 	      if (dirty &
 	      /*taskName*/
-	      16) set_data(t16,
+	      16) set_data(t20,
 	      /*taskName*/
 	      ctx[4]);
 	      if (dirty &
 	      /*projectName*/
-	      8) set_data(t20,
+	      8) set_data(t25,
 	      /*projectName*/
 	      ctx[3]);
 	      if (dirty &
 	      /*clientName*/
-	      4) set_data(t24,
+	      4) set_data(t30,
 	      /*clientName*/
 	      ctx[2]);
 
@@ -9739,7 +9816,7 @@
 
 	      if (dirty &
 	      /*timeEditorButtonCaption*/
-	      256) set_data(t28,
+	      256) set_data(t34,
 	      /*timeEditorButtonCaption*/
 	      ctx[8]);
 
@@ -10461,29 +10538,30 @@
 
 	function create_default_slot$4(ctx) {
 	  var div1;
+	  var t0_value = (window.t("timemanager", "Do you want to delete {deleteItemName}?"), {
+	    deleteItemName:
+	    /*deleteItemName*/
+	    ctx[3]
+	  }) + "";
 	  var t0;
 	  var t1;
-	  var t2;
 	  var div0;
 	  var button0;
-	  var t4;
+	  var t3;
 	  var button1;
 	  var mounted;
 	  var dispose;
 	  return {
 	    c() {
 	      div1 = element("div");
-	      t0 = text("Do you want to delete ");
-	      t1 = text(
-	      /*deleteItemName*/
-	      ctx[3]);
-	      t2 = text("?\n\t\t\t");
+	      t0 = text(t0_value);
+	      t1 = space();
 	      div0 = element("div");
 	      button0 = element("button");
-	      button0.textContent = "Delete";
-	      t4 = space();
+	      button0.textContent = "".concat(window.t("timemanager", "Delete"));
+	      t3 = space();
 	      button1 = element("button");
-	      button1.textContent = "Cancel";
+	      button1.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button0, "class", "button primary");
 	      attr(button1, "class", "button");
 	      attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -10494,10 +10572,9 @@
 	      insert(target, div1, anchor);
 	      append(div1, t0);
 	      append(div1, t1);
-	      append(div1, t2);
 	      append(div1, div0);
 	      append(div0, button0);
-	      append(div0, t4);
+	      append(div0, t3);
 	      append(div0, button1);
 
 	      if (!mounted) {
@@ -10513,9 +10590,11 @@
 	    p(ctx, dirty) {
 	      if (dirty &
 	      /*deleteItemName*/
-	      8) set_data(t1,
-	      /*deleteItemName*/
-	      ctx[3]);
+	      8 && t0_value !== (t0_value = (window.t("timemanager", "Do you want to delete {deleteItemName}?"), {
+	        deleteItemName:
+	        /*deleteItemName*/
+	        ctx[3]
+	      }) + "")) set_data(t0, t0_value);
 	    },
 
 	    d(detaching) {
@@ -10802,23 +10881,26 @@
 
 	function create_default_slot$5(ctx) {
 	  var div1;
+	  var t0_value = window.t("timemanager", "Do you want to delete this time entry?") + "";
 	  var t0;
+	  var t1;
 	  var div0;
 	  var button0;
-	  var t2;
+	  var t3;
 	  var button1;
 	  var mounted;
 	  var dispose;
 	  return {
 	    c() {
 	      div1 = element("div");
-	      t0 = text("Do you want to delete this time entry?\n\t\t\t");
+	      t0 = text(t0_value);
+	      t1 = space();
 	      div0 = element("div");
 	      button0 = element("button");
-	      button0.textContent = "Delete";
-	      t2 = space();
+	      button0.textContent = "".concat(window.t("timemanager", "Delete"));
+	      t3 = space();
 	      button1 = element("button");
-	      button1.textContent = "Cancel";
+	      button1.textContent = "".concat(window.t("timemanager", "Cancel"));
 	      attr(button0, "class", "button primary");
 	      attr(button1, "class", "button");
 	      attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -10828,9 +10910,10 @@
 	    m(target, anchor) {
 	      insert(target, div1, anchor);
 	      append(div1, t0);
+	      append(div1, t1);
 	      append(div1, div0);
 	      append(div0, button0);
-	      append(div0, t2);
+	      append(div0, t3);
 	      append(div0, button1);
 
 	      if (!mounted) {
@@ -10878,7 +10961,7 @@
 	      input1 = element("input");
 	      t2 = space();
 	      button = element("button");
-	      button.textContent = "Delete";
+	      button.textContent = "".concat(window.t("timemanager", "Delete"));
 	      attr(input0, "type", "hidden");
 	      attr(input0, "name", "uuid");
 	      input0.value =
@@ -15279,40 +15362,50 @@
 	function create_fragment$i(ctx) {
 	  var form;
 	  var label0;
+	  var t0_value = window.t("timemanager", "Note") + "";
 	  var t0;
-	  var input0;
 	  var t1;
-	  var label1;
+	  var input0;
+	  var input0_placeholder_value;
 	  var t2;
+	  var label1;
+	  var t3_value = window.t("timemanager", "Duration (in hrs.) & Date") + "";
+	  var t3;
+	  var t4;
 	  var span0;
 	  var input1;
-	  var t3;
-	  var input2;
-	  var t4;
-	  var label2;
 	  var t5;
+	  var input2;
+	  var t6;
+	  var label2;
+	  var t7_value = window.t("timemanager", "Client") + "";
+	  var t7;
+	  var t8;
 	  var updating_selectedValue;
 	  var label2_class_value;
-	  var t6;
+	  var t9;
 	  var label3;
 	  var span1;
-	  var t7;
+	  var t10_value = window.t("timemanager", "Project & Task for") + "";
+	  var t10;
+	  var t11;
 	  var strong;
-	  var t8_value = (
+	  var t12_value = (
 	  /*client*/
 	  ctx[4] &&
 	  /*client*/
 	  ctx[4].label) + "";
-	  var t8;
-	  var t9;
+	  var t12;
+	  var t13;
 	  var a;
-	  var t11;
+	  var t15;
 	  var updating_selectedValue_1;
 	  var label3_class_value;
-	  var t12;
+	  var t16;
 	  var span2;
 	  var button;
-	  var t13;
+	  var t17_value = window.t("timemanager", "Add") + "";
+	  var t17;
 	  var form_class_value;
 	  var current;
 	  var mounted;
@@ -15361,7 +15454,7 @@
 	    /*func*/
 	    ctx[24]),
 	    groupBy: func_1,
-	    noOptionsMessage: "No projects/tasks or no client selected."
+	    noOptionsMessage: window.t("timemanager", "No projects/tasks or no client selected.")
 	  };
 
 	  if (
@@ -15382,38 +15475,42 @@
 	    c() {
 	      form = element("form");
 	      label0 = element("label");
-	      t0 = text("Note\n\t\t");
-	      input0 = element("input");
+	      t0 = text(t0_value);
 	      t1 = space();
+	      input0 = element("input");
+	      t2 = space();
 	      label1 = element("label");
-	      t2 = text("Duration (in hrs.) / Date\n\t\t");
+	      t3 = text(t3_value);
+	      t4 = space();
 	      span0 = element("span");
 	      input1 = element("input");
-	      t3 = space();
+	      t5 = space();
 	      input2 = element("input");
-	      t4 = space();
-	      label2 = element("label");
-	      t5 = text("Client\n\t\t");
-	      create_component(select0.$$.fragment);
 	      t6 = space();
+	      label2 = element("label");
+	      t7 = text(t7_value);
+	      t8 = space();
+	      create_component(select0.$$.fragment);
+	      t9 = space();
 	      label3 = element("label");
 	      span1 = element("span");
-	      t7 = text("Project & Task for\n\t\t\t");
+	      t10 = text(t10_value);
+	      t11 = space();
 	      strong = element("strong");
-	      t8 = text(t8_value);
-	      t9 = space();
+	      t12 = text(t12_value);
+	      t13 = space();
 	      a = element("a");
 	      a.textContent = "Change client";
-	      t11 = space();
+	      t15 = space();
 	      create_component(select1.$$.fragment);
-	      t12 = space();
+	      t16 = space();
 	      span2 = element("span");
 	      button = element("button");
-	      t13 = text("Add");
+	      t17 = text(t17_value);
 	      attr(input0, "type", "text");
 	      attr(input0, "name", "note");
 	      attr(input0, "class", "note");
-	      attr(input0, "placeholder", "Describe what you did...");
+	      attr(input0, "placeholder", input0_placeholder_value = window.t("timemanager", "Describe what you did..."));
 	      attr(label0, "class", "note");
 	      attr(input1, "type", "number");
 	      attr(input1, "name", "duration");
@@ -15452,6 +15549,7 @@
 	      insert(target, form, anchor);
 	      append(form, label0);
 	      append(label0, t0);
+	      append(label0, t1);
 	      append(label0, input0);
 	      set_input_value(input0,
 	      /*note*/
@@ -15459,37 +15557,40 @@
 	      /*input0_binding*/
 
 	      ctx[19](input0);
-	      append(form, t1);
+	      append(form, t2);
 	      append(form, label1);
-	      append(label1, t2);
+	      append(label1, t3);
+	      append(label1, t4);
 	      append(label1, span0);
 	      append(span0, input1);
 	      set_input_value(input1,
 	      /*duration*/
 	      ctx[1]);
-	      append(span0, t3);
+	      append(span0, t5);
 	      append(span0, input2);
 	      set_input_value(input2,
 	      /*date*/
 	      ctx[2]);
-	      append(form, t4);
-	      append(form, label2);
-	      append(label2, t5);
-	      mount_component(select0, label2, null);
 	      append(form, t6);
+	      append(form, label2);
+	      append(label2, t7);
+	      append(label2, t8);
+	      mount_component(select0, label2, null);
+	      append(form, t9);
 	      append(form, label3);
 	      append(label3, span1);
-	      append(span1, t7);
+	      append(span1, t10);
+	      append(span1, t11);
 	      append(span1, strong);
-	      append(strong, t8);
-	      append(span1, t9);
+	      append(strong, t12);
+	      append(span1, t13);
 	      append(span1, a);
-	      append(label3, t11);
+	      append(label3, t15);
 	      mount_component(select1, label3, null);
-	      append(form, t12);
+	      append(form, t16);
 	      append(form, span2);
 	      append(span2, button);
-	      append(button, t13);
+	      append(button, t17);
 	      current = true;
 
 	      if (!mounted) {
@@ -15573,11 +15674,11 @@
 
 	      if ((!current || dirty &
 	      /*client*/
-	      16) && t8_value !== (t8_value = (
+	      16) && t12_value !== (t12_value = (
 	      /*client*/
 	      ctx[4] &&
 	      /*client*/
-	      ctx[4].label) + "")) set_data(t8, t8_value);
+	      ctx[4].label) + "")) set_data(t12, t12_value);
 	      var select1_changes = {};
 	      if (dirty &
 	      /*client*/
@@ -17186,8 +17287,8 @@
 	        props: _objectSpread2(_objectSpread2({}, store), {}, {
 	          timeUuid: button.getAttribute("data-uuid"),
 	          editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-	          timeEditorButtonCaption: "Edit",
-	          timeEditorCaption: "Edit time entry",
+	          timeEditorButtonCaption: window.t("timemanager", "Edit"),
+	          timeEditorCaption: window.t("timemanager", "Edit time entry"),
 	          requestToken: window.OC.requestToken
 	        })
 	      }));

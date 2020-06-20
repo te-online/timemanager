@@ -126,8 +126,8 @@ const init = () => {
 						...store,
 						timeUuid: button.getAttribute("data-uuid"),
 						editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-						timeEditorButtonCaption: "Edit",
-						timeEditorCaption: "Edit time entry",
+						timeEditorButtonCaption: window.t("timemanager", "Edit"),
+						timeEditorCaption: window.t("timemanager", "Edit time entry"),
 						requestToken: window.OC.requestToken,
 					},
 				})

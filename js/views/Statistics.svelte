@@ -97,16 +97,16 @@
 	};
 </script>
 
-<h2>Statistics</h2>
+<h2>{window.t('timemanager', 'Statistics')}</h2>
 <div class={`${loading ? 'icon-loading' : ''}`}>
 	<div class="top-stats">
 		<figure>
-			<figcaption class="tm_label">Today</figcaption>
-			{todayTotal} hrs.
+			<figcaption class="tm_label">{window.t('timemanager', 'Today')}</figcaption>
+			{todayTotal} {window.t('timemanager', 'hrs.')}
 		</figure>
 		<figure>
-			<figcaption class="tm_label">Week</figcaption>
-			{weekTotal} hrs.
+			<figcaption class="tm_label">{window.t('timemanager', 'Week')}</figcaption>
+			{weekTotal} {window.t('timemanager', 'hrs.')}
 		</figure>
 	</div>
 	<div class="graphs">
@@ -115,7 +115,7 @@
 				<div class="column">
 					{#if day && day.stats}
 						{#if day.stats.total > 0}
-							<span class="hours-label">{day.stats.total} hrs.</span>
+							<span class="hours-label">{day.stats.total} {window.t('timemanager', 'hrs.')}</span>
 							<div class="column-inner" style={`height: ${(day.stats.total / highest) * 100}%`} />
 						{/if}
 						<div class="date-label">{format(day.date, 'iiiiii d.M.')}</div>
@@ -123,20 +123,26 @@
 				</div>
 			{/each}
 			{#if !loading && weekTotal === 0}
-				<p class="empty">When you add entries for this week graphs will appear here.</p>
+				<p class="empty">{window.t('timemanager', 'When you add entries for this week graphs will appear here.')}</p>
 			{/if}
 		</div>
 		<nav class="week-navigation">
-			<button class="previous" on:click|preventDefault={() => weekNavigation('previous')}>Previous week</button>
+			<button class="previous" on:click|preventDefault={() => weekNavigation('previous')}>
+				{window.t('timemanager', 'Previous week')}
+			</button>
 			<span>
-				Week {currentWeek}
+				{window.t('timemanager', 'Week')} {currentWeek}
 				<span class="dates">
 					({format(startOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')} &ndash; {format(endOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')})
 				</span>
 			</span>
-			<button class="next" on:click|preventDefault={() => weekNavigation('next')}>Next week</button>
+			<button class="next" on:click|preventDefault={() => weekNavigation('next')}>
+				{window.t('timemanager', 'Next week')}
+			</button>
 			{#if !isSameDay(startOfToday(), dayCursor)}
-				<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>Current week</button>
+				<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>
+					{window.t('timemanager', 'Current week')}
+				</button>
 			{/if}
 		</nav>
 	</div>
