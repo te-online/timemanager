@@ -15,7 +15,6 @@ OC.L10N.register(
 		Note: "Beschreibung",
 		"Describe what you did...": "Beschreibe, was du gemacht hast...",
 		Cancel: "Abbrechen",
-		"Do you want to delete {deleteItemName}?": "Möchtest du {deleteItemName} löschen?",
 		Delete: "Löschen",
 		"Do you want to delete this time entry?": "Möchtest du diesen Zeiteintrag löschen?",
 		"Duration (in hrs.) & Date": "Dauer (in Std.) & Datum",
@@ -36,6 +35,64 @@ OC.L10N.register(
 		Edit: "Bearbeiten",
 		"Edit time entry": "Zeiteintrag bearbeiten",
 		"Change client": "Kunde wechseln",
+		"Add client": "Kunde hinzufügen",
+		"New client": "Neuer Kunde",
+		"Edit client": "Kunde bearbeiten",
+		"Add project": "Projekt hinzufügen",
+		"New project": "Neues Projekt",
+		"Delete client": "Kunde löschen",
+		"Do you want to delete the client %s and all associated projects, tasks and time entries?":
+			"Möchtest du den Kunden %s und alle zugehörigen Projekte, Aufgaben und Zeiteinträge löschen?",
+		"Edit project": "Projekt bearbeiten",
+		"Add task": "Aufgabe hinzufügen",
+		"New task": "Neue Aufgabe",
+		"Delete project": "Projekt löschen",
+		"Do you want to delete the project %s and all associated tasks and time entries?":
+			"Möchtest du das Projekt %s und alle zugehörigen Aufgaben und Zeiteinträge löschen?",
+		"Edit task": "Aufgabe bearbeiten",
+		"Delete task": "Aufgabe löschen",
+		"Do you want to delete the task %s and all associated time entries?":
+			"Möchtest du die Aufgabe %s und alle zugehörigen Zeiteinträge löschen?",
+		"Add time entry": "Zeiteintrag hinzufügen",
+		"New time entry": "Neuer Zeiteintrag",
+		"Latest time entries": "Neueste Zeiteinträge",
+		"No activity, yet. Check back later.": "Noch keine Einträge. Komm später wieder.",
+		Dashboard: "Dashboard",
+		Clients: "Kunden",
+		Projects: "Projekte",
+		Tasks: "Aufgaben",
+		Task: "Aufgabe",
+		"Time entries": "Zeiteinträge",
+		"%s projects": "%s Projekte",
+		"since %s": "seit %s",
+		"You don't have any clients, yet. Get started by clicking “Add client”.":
+			"Du hast noch keine Kunden. Klicke „Kunde hinzufügen“, um loszulegen.",
+		"Client since": "Kunde seit",
+		Address: "Adresse",
+		"Select a client to show projects for": "Wähle einen Kunden, für den du Projekte anzeigen möchtest",
+		Show: "Anzeigen",
+		"No clients created yet. Go ahead and create one.": "Noch keine Kunden erstellt. Leg los und erstelle einen.",
+		"Select a client first to show projects for this client.":
+			"Wähle zuerst einen Kunden, für den du Projekte anzeigen möchtest",
+		"%s tasks": "%s Aufgaben",
+		"You don't have any projects, yet. Try adding one by clicking “Add project”.":
+			"Du hast noch keine Projekte. Klicke „Projekt hinzufügen“, um loszulegen.",
+		"Client total": "Kunde gesamt",
+		Created: "Erstellt",
+		"Select a project to show tasks for": "Wähle ein Projekt, für das du Aufgaben anzeigen möchtest",
+		"Select a project first to show the tasks for this project.":
+			"Wähle zuerst ein Projekt, für das du Aufgaben anzeigen möchtest",
+		"You don't have any tasks, yet. Try adding one by clicking “Add task”.":
+			"Du hast noch keine Aufgaben. Klicke „Aufgabe hinzufügen“, um loszulegen.",
+		"Project total": "Projekt gesamt",
+		"Select a task to show time entries for": "Wähle eine Aufgabe, für die du Zeiteinträge anzeigen möchtest",
+		"No tasks created yet. Go ahead and create one.": "Noch keine Aufgaben erstellt. Leg los und erstelle eine.",
+		"Select a task first to show the times for this task.":
+			"Wähle zuerst eine Aufgabe, für die du Zeiteinträge anzeigen möchtest.",
+		"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.":
+			"Du hast noch keine Zeiteinträge. Klicke „Zeiteintrag hinzufügen“, um loszulegen.",
+		"Task total": "Aufgabe gesamt",
+		"No projects created yet. Go ahead and create one.": "Noch keine Projekte erstellt. Leg los und erstelle eines.",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
