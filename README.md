@@ -27,7 +27,7 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
-### 0.1.0 Beta, xx. June 2020
+### 0.1.0 Beta, 22. June 2020
 - Initial release.
 - Featureset:
 	- Organize time entries based on tasks, projects and clients.
