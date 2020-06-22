@@ -151,6 +151,7 @@ class PageController extends Controller {
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+		$l = \OC::$server->getL10N('timemanager');
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.clients'),
@@ -170,8 +171,8 @@ class PageController extends Controller {
 
 		$form_props = [
 			'action' => $urlGenerator->linkToRoute('timemanager.page.clients'),
-			'clientEditorButtonCaption' => 'Add client',
-			'clientEditorCaption' => 'New client',
+			'clientEditorButtonCaption' => $l->t('Add client'),
+			'clientEditorCaption' => $l->t('New client'),
 		];
 
 		return new TemplateResponse('timemanager', 'clients', [
@@ -276,6 +277,7 @@ class PageController extends Controller {
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+		$l = \OC::$server->getL10N('timemanager');
 
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : '';
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '';
@@ -285,19 +287,21 @@ class PageController extends Controller {
 			'editAction' => $urlGenerator->linkToRoute('timemanager.page.clients'),
 			'requestToken' => $requestToken,
 			'clientName' => $client_name,
-			'clientEditorButtonCaption' => 'Edit client',
-			'clientEditorCaption' => 'Edit client',
+			'clientEditorButtonCaption' => $l->t('Edit client'),
+			'clientEditorCaption' => $l->t('Edit client'),
 			'clientUuid' => $client_uuid,
-			'projectEditorButtonCaption' => 'Add project',
-			'projectEditorCaption' => 'New project',
+			'projectEditorButtonCaption' => $l->t('Add project'),
+			'projectEditorCaption' => $l->t('New project'),
 			'editClientData' => [
 				'name' => $client_name,
 				'note' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getNote() : '',
 			],
 			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.clients') . '/delete',
 			'deleteUuid' => $client_uuid,
-			'deleteButtonCaption' => 'Delete client',
-			'deleteItemName' => 'the client ' . $client_name . ' and all associated projects, tasks and time entries',
+			'deleteButtonCaption' => $l->t('Delete client'),
+			'deleteQuestion' => $l->t('Do you want to delete the client %s and all associated projects, tasks and time entries?', [
+				$client_name,
+			]),
 			'isServer' => true,
 		];
 
@@ -416,6 +420,7 @@ class PageController extends Controller {
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+		$l = \OC::$server->getL10N('timemanager');
 
 		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : '';
 		$project_name = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : '';
@@ -426,15 +431,17 @@ class PageController extends Controller {
 			'requestToken' => $requestToken,
 			'clientName' => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : '',
 			'projectName' => $project_name,
-			'projectEditorButtonCaption' => 'Edit project',
-			'projectEditorCaption' => 'Edit project',
+			'projectEditorButtonCaption' => $l->t('Edit project'),
+			'projectEditorCaption' => $l->t('Edit project'),
 			'projectUuid' => $project_uuid,
-			'taskEditorButtonCaption' => 'Add task',
-			'taskEditorCaption' => 'New task',
+			'taskEditorButtonCaption' => $l->t('Add task'),
+			'taskEditorCaption' => $l->t('New task'),
 			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.projects') . '/delete',
 			'deleteUuid' => $project_uuid,
-			'deleteButtonCaption' => 'Delete project',
-			'deleteItemName' => 'the project ' . $project_name . ' and all associated tasks and time entries',
+			'deleteButtonCaption' => $l->t('Delete project'),
+			'deleteQuestion' => $l->t('Do you want to delete the project %s and all associated tasks and time entries?', [
+				$project_name,
+			]),
 			'editProjectData' => [
 				'name' => $project_name,
 			],
@@ -556,6 +563,7 @@ class PageController extends Controller {
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+		$l = \OC::$server->getL10N('timemanager');
 
 		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : '';
 		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : '';
@@ -569,19 +577,19 @@ class PageController extends Controller {
 			'taskName' => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : '',
 			'taskUuid' => $taskUuid,
 			'initialDate' => date('Y-m-d'),
-			'taskEditorButtonCaption' => 'Edit task',
-			'taskEditorCaption' => 'Edit task',
+			'taskEditorButtonCaption' => $l->t('Edit task'),
+			'taskEditorCaption' => $l->t('Edit task'),
 			'taskUuid' => $task_uuid,
 			'editTaskData' => [
 				'name' => $task_name,
 			],
 			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.tasks') . '/delete',
 			'deleteUuid' => $task_uuid,
-			'deleteButtonCaption' => 'Delete task',
-			'deleteItemName' => 'the task ' . $task_name . ' and all associated time entries',
+			'deleteButtonCaption' => $l->t('Delete task'),
+			'deleteQuestion' => $l->t('Do you want to delete the task %s and all associated time entries?', [$task_name]),
 			'deleteTimeEntryAction' => $urlGenerator->linkToRoute('timemanager.page.times') . '/delete',
-			'timeEditorButtonCaption' => 'Add time entry',
-			'timeEditorCaption' => 'New time entry',
+			'timeEditorButtonCaption' => $l->t('Add time entry'),
+			'timeEditorCaption' => $l->t('New time entry'),
 			'editTimeEntryAction' => $urlGenerator->linkToRoute('timemanager.page.times') . '?task=' . $task_uuid,
 			'isServer' => true,
 		];

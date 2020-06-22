@@ -1070,6 +1070,63 @@
 	  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	}
 
+	function _createForOfIteratorHelper(o, allowArrayLike) {
+	  var it;
+
+	  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+	    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+	      if (it) o = it;
+	      var i = 0;
+
+	      var F = function () {};
+
+	      return {
+	        s: F,
+	        n: function () {
+	          if (i >= o.length) return {
+	            done: true
+	          };
+	          return {
+	            done: false,
+	            value: o[i++]
+	          };
+	        },
+	        e: function (e) {
+	          throw e;
+	        },
+	        f: F
+	      };
+	    }
+
+	    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+	  }
+
+	  var normalCompletion = true,
+	      didErr = false,
+	      err;
+	  return {
+	    s: function () {
+	      it = o[Symbol.iterator]();
+	    },
+	    n: function () {
+	      var step = it.next();
+	      normalCompletion = step.done;
+	      return step;
+	    },
+	    e: function (e) {
+	      didErr = true;
+	      err = e;
+	    },
+	    f: function () {
+	      try {
+	        if (!normalCompletion && it.return != null) it.return();
+	      } finally {
+	        if (didErr) throw err;
+	      }
+	    }
+	  };
+	}
+
 	var createProperty = function (object, key, value) {
 	  var propertyKey = toPrimitive(key);
 	  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));else object[propertyKey] = value;
@@ -6321,7 +6378,7 @@
 	  var child_ctx = ctx.slice();
 	  child_ctx[17] = list[i];
 	  return child_ctx;
-	} // (116:5) {#if day && day.stats}
+	} // (117:5) {#if day && day.stats}
 
 
 	function create_if_block_2(ctx) {
@@ -6380,7 +6437,7 @@
 	    }
 
 	  };
-	} // (117:6) {#if day.stats.total > 0}
+	} // (118:6) {#if day.stats.total > 0}
 
 
 	function create_if_block_3(ctx) {
@@ -6446,7 +6503,7 @@
 	    }
 
 	  };
-	} // (114:3) {#each days as day}
+	} // (115:3) {#each days as day}
 
 
 	function create_each_block(ctx) {
@@ -6493,7 +6550,7 @@
 	    }
 
 	  };
-	} // (125:3) {#if !loading && weekTotal === 0}
+	} // (126:3) {#if !loading && weekTotal === 0}
 
 
 	function create_if_block_1(ctx) {
@@ -6516,7 +6573,7 @@
 	    }
 
 	  };
-	} // (142:3) {#if !isSameDay(startOfToday(), dayCursor)}
+	} // (143:3) {#if !isSameDay(startOfToday(), dayCursor)}
 
 
 	function create_if_block(ctx) {
@@ -6889,17 +6946,11 @@
 	  var localeOptions = {
 	    weekStartsOn: 1
 	  };
-	  var loading = false;
-	  var days = [];
-	  var weekTotal = 0;
-	  var todayTotal = 0;
-	  var highest = 0;
-	  var dayCursor = startOfToday();
-	  var currentWeek;
 
 	  var updateWeek = function updateWeek() {
 	    $$invalidate(2, weekTotal = 0);
 	    $$invalidate(3, todayTotal = 0);
+	    $$invalidate(4, highest = 0);
 	    $$invalidate(6, currentWeek = getWeek(dayCursor, localeOptions));
 	  };
 
@@ -6921,7 +6972,7 @@
 
 	  var loadData = /*#__PURE__*/function () {
 	    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-	      var monday, _i4, _days, day;
+	      var monday, _iterator, _step, day;
 
 	      return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	        while (1) {
@@ -6944,27 +6995,46 @@
 	              }, {
 	                date: addDays(monday, 6)
 	              }]);
-	              _i4 = 0, _days = days;
+	              _iterator = _createForOfIteratorHelper(days);
+	              _context2.prev = 4;
 
-	            case 4:
-	              if (!(_i4 < _days.length)) {
-	                _context2.next = 12;
+	              _iterator.s();
+
+	            case 6:
+	              if ((_step = _iterator.n()).done) {
+	                _context2.next = 13;
 	                break;
 	              }
 
-	              day = _days[_i4];
-	              _context2.next = 8;
+	              day = _step.value;
+	              _context2.next = 10;
 	              return loadStatsForDay(day);
 
-	            case 8:
+	            case 10:
 	              day.stats = _context2.sent;
 
-	            case 9:
-	              _i4++;
-	              _context2.next = 4;
+	            case 11:
+	              _context2.next = 6;
 	              break;
 
-	            case 12:
+	            case 13:
+	              _context2.next = 18;
+	              break;
+
+	            case 15:
+	              _context2.prev = 15;
+	              _context2.t0 = _context2["catch"](4);
+
+	              _iterator.e(_context2.t0);
+
+	            case 18:
+	              _context2.prev = 18;
+
+	              _iterator.f();
+
+	              return _context2.finish(18);
+
+	            case 21:
 	              days.forEach(function (day) {
 	                if (day.stats && day.stats.total) {
 	                  // Find highest value
@@ -6982,12 +7052,12 @@
 	              });
 	              $$invalidate(0, loading = false);
 
-	            case 14:
+	            case 23:
 	            case "end":
 	              return _context2.stop();
 	          }
 	        }
-	      }, _callee2);
+	      }, _callee2, null, [[4, 15, 18, 21]]);
 	    }));
 
 	    return function loadData() {
@@ -7063,6 +7133,28 @@
 	    if ("statsApiUrl" in $$props) $$invalidate(9, statsApiUrl = $$props.statsApiUrl);
 	    if ("requestToken" in $$props) $$invalidate(10, requestToken = $$props.requestToken);
 	  };
+
+	  var loading;
+	  var days;
+	  var weekTotal;
+	  var todayTotal;
+	  var highest;
+	  var dayCursor;
+	  var currentWeek;
+
+	   $$invalidate(0, loading = false);
+
+	   $$invalidate(1, days = []);
+
+	   $$invalidate(2, weekTotal = 0);
+
+	   $$invalidate(3, todayTotal = 0);
+
+	   $$invalidate(4, highest = 0);
+
+	   $$invalidate(5, dayCursor = startOfToday());
+
+	   $$invalidate(6, currentWeek = null);
 
 	  return [loading, days, weekTotal, todayTotal, highest, dayCursor, currentWeek, localeOptions, weekNavigation, statsApiUrl, requestToken, updateWeek, loadData, loadStatsForDay, click_handler, click_handler_1, click_handler_2];
 	}
@@ -7266,7 +7358,6 @@
 	  var br1;
 	  var t8;
 	  var textarea;
-	  var textarea_placeholder_value;
 	  var t9;
 	  var input1;
 	  var t10;
@@ -7322,7 +7413,7 @@
 	      set_style(textarea, "width", "100%");
 	      attr(textarea, "class", "input-wide");
 	      attr(textarea, "name", "note");
-	      attr(textarea, "placeholder", textarea_placeholder_value = window.t("timemanager", "Describe what you did..."));
+	      attr(textarea, "placeholder", "");
 	      textarea.value =
 	      /*note*/
 	      ctx[7];
@@ -10537,7 +10628,7 @@
 	      var overlay_changes = {};
 
 	      if (dirty &
-	      /*$$scope, deleteItemName*/
+	      /*$$scope, deleteQuestion*/
 	      2056) {
 	        overlay_changes.$$scope = {
 	          dirty,
@@ -10569,11 +10660,6 @@
 
 	function create_default_slot$4(ctx) {
 	  var div1;
-	  var t0_value = (window.t("timemanager", "Do you want to delete {deleteItemName}?"), {
-	    deleteItemName:
-	    /*deleteItemName*/
-	    ctx[3]
-	  }) + "";
 	  var t0;
 	  var t1;
 	  var div0;
@@ -10585,7 +10671,9 @@
 	  return {
 	    c() {
 	      div1 = element("div");
-	      t0 = text(t0_value);
+	      t0 = text(
+	      /*deleteQuestion*/
+	      ctx[3]);
 	      t1 = space();
 	      div0 = element("div");
 	      button0 = element("button");
@@ -10620,12 +10708,10 @@
 
 	    p(ctx, dirty) {
 	      if (dirty &
-	      /*deleteItemName*/
-	      8 && t0_value !== (t0_value = (window.t("timemanager", "Do you want to delete {deleteItemName}?"), {
-	        deleteItemName:
-	        /*deleteItemName*/
-	        ctx[3]
-	      }) + "")) set_data(t0, t0_value);
+	      /*deleteQuestion*/
+	      8) set_data(t0,
+	      /*deleteQuestion*/
+	      ctx[3]);
 	    },
 
 	    d(detaching) {
@@ -10786,7 +10872,7 @@
 	  var deleteAction = $$props.deleteAction;
 	  var deleteUuid = $$props.deleteUuid;
 	  var deleteButtonCaption = $$props.deleteButtonCaption;
-	  var deleteItemName = $$props.deleteItemName;
+	  var deleteQuestion = $$props.deleteQuestion;
 	  var requestToken = $$props.requestToken;
 	  var form;
 	  onMount(function () {
@@ -10819,7 +10905,7 @@
 	    if ("deleteAction" in $$props) $$invalidate(0, deleteAction = $$props.deleteAction);
 	    if ("deleteUuid" in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
 	    if ("deleteButtonCaption" in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
-	    if ("deleteItemName" in $$props) $$invalidate(3, deleteItemName = $$props.deleteItemName);
+	    if ("deleteQuestion" in $$props) $$invalidate(3, deleteQuestion = $$props.deleteQuestion);
 	    if ("requestToken" in $$props) $$invalidate(4, requestToken = $$props.requestToken);
 	  };
 
@@ -10827,7 +10913,7 @@
 
 	   $$invalidate(6, confirmation = false);
 
-	  return [deleteAction, deleteUuid, deleteButtonCaption, deleteItemName, requestToken, form, confirmation, doDelete, cancelDelete, submit, form_1_binding];
+	  return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, requestToken, form, confirmation, doDelete, cancelDelete, submit, form_1_binding];
 	}
 
 	var DeleteButton = /*#__PURE__*/function (_SvelteComponent) {
@@ -10845,7 +10931,7 @@
 	      deleteAction: 0,
 	      deleteUuid: 1,
 	      deleteButtonCaption: 2,
-	      deleteItemName: 3,
+	      deleteQuestion: 3,
 	      requestToken: 4
 	    });
 	    return _this;

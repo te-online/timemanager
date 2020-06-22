@@ -2,6 +2,7 @@
 script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 $urlGenerator = \OC::$server->getURLGenerator();
+$l = \OC::$server->getL10N('timemanager');
 ?>
 
 <?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
@@ -13,20 +14,20 @@ $urlGenerator = \OC::$server->getURLGenerator();
 				<div class="tm_object-details">
 					<h2>
 						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $_['client']->getUuid(); ?>">
-							<span class="tm_label">Client</span>
+							<span class="tm_label"><?php p($l->t('Client')); ?></span>
 							<?php p($_['client']->getName()); ?>
 						</a>&nbsp;&nbsp;
 						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $_['project']->getUuid(); ?>">
-							<span class="tm_label">Project</span>
+							<span class="tm_label"><?php p($l->t('Project')); ?></span>
 							<?php p($_['project']->getName()); ?>
 						</a>&nbsp;&nbsp;
 						<a class="timemanager-pjax-link" data-current-link href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $_['task']->getUuid(); ?>">
-							<span class="tm_label">Task</span>
+							<span class="tm_label"><?php p($l->t('Task')); ?></span>
 							<?php p($_['task']->getName()); ?>
 						</a>
 					</h2>
 					<div class="tm_object-details-item">
-						<span class="tm_label">Created</span>
+						<span class="tm_label"><?php p($l->t('Created')); ?></span>
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
 					<?php if($_['task']) { ?>
@@ -46,13 +47,13 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
-				<h2 class="list-title">Time Entries</h2>
+				<h2 class="list-title"><?php p($l->t('Time entries')); ?></h2>
 				<?php if($_['task']) { ?>
 					<span data-svelte="TimeEditorDialog.svelte"></span>
 					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
 				<?php if(!$_['task']) { ?>
-					<p>Select a task to show time entries for</p>
+					<p><?php p($l->t('Select a task to show time entries for')); ?></p>
 					<form action="" method="get">
 						<?php if(count($_['tasks']) > 0 ) { ?>
 							<select name="task">
@@ -75,12 +76,12 @@ $urlGenerator = \OC::$server->getURLGenerator();
 									<option value="<?php p($task->getUuid()); ?>"><?php p($client->getName() . ' › ' . $project->getName() . ' › ' . $task->getName()); ?></option>
 								<?php } ?>
 							</select>
-							<button type="submit" class="btn">Show</button>
+							<button type="submit" class="btn"><?php p($l->t('Show')); ?></button>
 						<?php } else { ?>
-							<p>No tasks created yet. Go ahead and <a href="">create one</a>.</p>
+							<p><?php p($l->t('No tasks created yet. Go ahead and create one.')); ?></p>
 						<?php } ?>
 					</form>
-					<p><strong>Select a task first to show the times for this task.</strong></p>
+					<p><strong><?php p($l->t('Select a task first to show the times for this task.')); ?></strong></p>
 				<?php } else { ?>
 					<?php if(count($_['times']) > 0) {
 						foreach($_['times'] as $time) { ?>
@@ -104,7 +105,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 										data-initialState="<?php p($paymentStatus); ?>"
 									>
 									</span>
-									<?php p($time->getDurationInHours()); ?> hrs.
+									<?php p($time->getDurationInHours()); ?> <?php p($l->t('hrs.')); ?>
 									<form
 										action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>"
 										method="post"
@@ -147,28 +148,28 @@ $urlGenerator = \OC::$server->getURLGenerator();
 											<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
 											<input type="hidden" name="task" value="<?php p($_['task']->getUuid()); ?>" />
 											<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
-											<button type="submit" class="btn">Delete</button>
+											<button type="submit" class="btn"><?php p($l->t('Delete')); ?></button>
 									</form>
 									</div>
 								</div>
 							</div>
 					<?php } } else { ?>
 						<div class="tm_item-row">
-							<h3>You don't have any time entries, yet. Try adding one by clicking “Add time entry”.</h3>
+							<h3><?php p($l->t("You don't have any time entries, yet. Try adding one by clicking “Add time entry”.")); ?></h3>
 						</div>
 					<?php } ?>
 					<div class="tm_summary">
 						<p>
-							<span class="tm_label">Task Total</span>
-							<?php p($_['task']->hours); ?> Hrs.
+							<span class="tm_label"><?php p($l->t('Task total')); ?></span>
+							<?php p($_['task']->hours); ?> <?php p($l->t('hrs.')); ?>
 						</p>
 						<p>
-							<span class="tm_label">Project</span>
-							<?php p($_['project']->hours); ?> Hrs.
+							<span class="tm_label"><?php p($l->t('Project')); ?></span>
+							<?php p($_['project']->hours); ?> <?php p($l->t('hrs.')); ?>
 						</p>
 						<p>
-							<span class="tm_label">Client</span>
-							<?php p($_['client']->hours); ?> Hrs.
+							<span class="tm_label"><?php p($l->t('Client')); ?></span>
+							<?php p($_['client']->hours); ?> <?php p($l->t('hrs.')); ?>
 						</p>
 					</div>
 				<?php } ?>

@@ -40,7 +40,7 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="note"
-				placeholder={window.t('timemanager', 'Describe what you did...')}
+				placeholder=""
 				on:input={(e) => (note = e.target.value)}>{note}</textarea>
 		</label>
 		<input type="hidden" name="requesttoken" value={requestToken} />

@@ -2,7 +2,7 @@
 	export let deleteAction;
 	export let deleteUuid;
 	export let deleteButtonCaption;
-	export let deleteItemName;
+	export let deleteQuestion;
 	export let requestToken;
 
 	import { onMount } from "svelte";
@@ -36,7 +36,7 @@
 {#if confirmation}
 	<Overlay>
 		<div class="inner tm_new-item">
-			{(window.t('timemanager', 'Do you want to delete {deleteItemName}?'), { deleteItemName })}
+			{deleteQuestion}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
 				<button class="button primary" on:click|preventDefault={doDelete}>{window.t('timemanager', 'Delete')}</button>
 				<button class="button" on:click|preventDefault={cancelDelete}>{window.t('timemanager', 'Cancel')}</button>

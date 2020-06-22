@@ -2,6 +2,7 @@
 script('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
 $urlGenerator = \OC::$server->getURLGenerator();
+$l = \OC::$server->getL10N('timemanager');
 ?>
 
 <?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
@@ -17,7 +18,7 @@ $urlGenerator = \OC::$server->getURLGenerator();
 		</div>
 
 		<div class="section">
-			<h2 class="list-title">Clients</h2>
+			<h2 class="list-title"><?php p($l->t('Clients')); ?></h2>
 			<span data-svelte="ClientEditorDialog.svelte"></span>
 			<span data-store="<?php p($_['store']); ?>"></span>
 			<?php if(count($_['clients']) > 0) {
@@ -26,13 +27,13 @@ $urlGenerator = \OC::$server->getURLGenerator();
 						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $client->getUuid(); ?>">
 							<h3><?php p($client->getName()); ?></h3>
 							<div class="tm_item-excerpt">
-								<span><?php p($client->project_count); ?> projects</span>&nbsp;&middot;&nbsp;<span><?php p($client->hours); ?> hrs.</span>&nbsp;&middot;&nbsp;<span>since <?php p($client->getCreatedYear()); ?></span>
+								<span><?php p($l->t('%s projects', [$client->project_count])); ?></span>&nbsp;&middot;&nbsp;<span><?php p($client->hours); ?> <?php p($l->t('hrs.')); ?></span>&nbsp;&middot;&nbsp;<span><?php p($l->t('since %s', [$client->getCreatedYear()])); ?></span>
 							</div>
 						</a>
 					</div>
 			<?php } } else { ?>
 				<div class="tm_item-row">
-					<h3>You don't have any clients, yet. Get started by clicking “Add client”.</h3>
+					<h3><?php p($l->t("You don't have any clients, yet. Get started by clicking “Add client”.")); ?></h3>
 				</div>
 			<?php } ?>
 		</div>
