@@ -27,6 +27,6 @@
 	<repository type="git">https://github.com/te-online/timemanager.git</repository>
 	<bugs>https://github.com/te-online/timemanager/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="13" />
+		<nextcloud min-version="13" max-version="20" />
 	</dependencies>
 </info>
