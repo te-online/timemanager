@@ -27,6 +27,9 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.2 Beta, 22. June 2020
+- Navigation – Fix icon urls
+
 ### 0.1.1 Beta, 22. June 2020
 - Fix case of class filename
 
