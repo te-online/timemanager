@@ -1,6 +1,8 @@
 .git
 .eslintrc
 .gitignore
+.prettierrc
+.babelrc
 package-lock.json
 package.json
 test
@@ -8,3 +10,4 @@ test
 js/views/*
 js/lib/*
 js/main.js
+rollup.config.js
