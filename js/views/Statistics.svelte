@@ -19,16 +19,17 @@
 	} from "date-fns";
 
 	const localeOptions = { weekStartsOn: 1 };
-	let loading = false;
-	let days = [];
-	let weekTotal = 0;
-	let todayTotal = 0;
-	let highest = 0;
-	let dayCursor = startOfToday();
-	let currentWeek;
+	$: loading = false;
+	$: days = [];
+	$: weekTotal = 0;
+	$: todayTotal = 0;
+	$: highest = 0;
+	$: dayCursor = startOfToday();
+	$: currentWeek = null;
 	const updateWeek = () => {
 		weekTotal = 0;
 		todayTotal = 0;
+		highest = 0;
 		currentWeek = getWeek(dayCursor, localeOptions);
 	};
 
