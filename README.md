@@ -29,6 +29,9 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.3 Beta, 1. July 2020
+- Fix issue with `LOWER` SQL function and backticks interpreted as timestamp (issue #3)
+
 ### 0.1.2 Beta, 22. June 2020
 - Navigation – Fix icon urls
 
