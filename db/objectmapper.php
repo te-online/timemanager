@@ -37,8 +37,8 @@ class ObjectMapper extends Mapper {
 	function getActiveObjects($orderby = "created") {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ?' .
-				'ORDER BY LOWER(`' . $orderby . '`) DESC;';
+				'WHERE `user_id` = ? AND `status` != ? ' .
+				$this->getOrderByClause($orderby) . ';';
 		return $this->findEntities($sql, [$this->userId, 'deleted']);
 	}
 
@@ -54,7 +54,7 @@ class ObjectMapper extends Mapper {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `status` != ? AND `' . $attr . '` = ? ' .
-				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
+				$this->getOrderByClause($orderby) . ';';
 		return $this->findEntities($sql, [$this->userId, 'deleted', $value]);
 	}
 
@@ -71,7 +71,7 @@ class ObjectMapper extends Mapper {
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `status` != ? ' .
 				'AND start >= ? AND start <= ? ' .
-				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
+				$this->getOrderByClause($orderby) . ';';
 		return $this->findEntities($sql, [$this->userId, 'deleted', $date_start, $date_end]);
 	}
 
@@ -180,7 +180,19 @@ class ObjectMapper extends Mapper {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `status` != ? ' .
-				'ORDER BY LOWER(`' . $orderby . '`) ASC;';
+				$this->getOrderByClause($orderby) . ';';
 		return $this->findEntities($sql, [$this->userId, 'deleted']);
+	}
+
+	/**
+	 * Creates a proper ORDER BY clause for given orderby column.
+	 *
+	 * @return string
+	 */
+	function getOrderByClause($orderby) {
+		return sprintf(
+			'ORDER BY `%s` ASC',
+			\strtolower($orderby)
+		);
 	}
 }
