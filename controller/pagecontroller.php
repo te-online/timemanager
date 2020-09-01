@@ -79,7 +79,7 @@ class PageController extends Controller {
 	 */
 	function index() {
 		// Find the latest time entries
-		$times = $this->timeMapper->getActiveObjects('start');
+		$times = $this->timeMapper->getActiveObjects('start', 'DESC');
 		$all_clients = $this->clientMapper->findActiveForCurrentUser('name');
 		$all_projects = $this->projectMapper->findActiveForCurrentUser('name');
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser('name');
@@ -299,9 +299,10 @@ class PageController extends Controller {
 			'deleteAction' => $urlGenerator->linkToRoute('timemanager.page.clients') . '/delete',
 			'deleteUuid' => $client_uuid,
 			'deleteButtonCaption' => $l->t('Delete client'),
-			'deleteQuestion' => $l->t('Do you want to delete the client %s and all associated projects, tasks and time entries?', [
-				$client_name,
-			]),
+			'deleteQuestion' => $l->t(
+				'Do you want to delete the client %s and all associated projects, tasks and time entries?',
+				[$client_name]
+			),
 			'isServer' => true,
 		];
 

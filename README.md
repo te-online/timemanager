@@ -29,6 +29,9 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.4 Beta, 1. September 2020
+- Fix sorting of "Latest entries" on Dashboard page
+
 ### 0.1.3 Beta, 1. July 2020
 - Fix issue with `LOWER` SQL function and backticks interpreted as timestamp (issue #3)
 

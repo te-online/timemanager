@@ -34,11 +34,11 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
-	function getActiveObjects($orderby = "created") {
+	function getActiveObjects($orderby = "created", $sort) {
 		$sql = 'SELECT * ' .
 				'FROM `' . $this->tableName . '` ' .
 				'WHERE `user_id` = ? AND `status` != ? ' .
-				$this->getOrderByClause($orderby) . ';';
+				$this->getOrderByClause($orderby, $sort) . ';';
 		return $this->findEntities($sql, [$this->userId, 'deleted']);
 	}
 
@@ -189,10 +189,11 @@ class ObjectMapper extends Mapper {
 	 *
 	 * @return string
 	 */
-	function getOrderByClause($orderby) {
+	function getOrderByClause($orderby, $sort = 'ASC') {
 		return sprintf(
-			'ORDER BY `%s` ASC',
-			\strtolower($orderby)
+			'ORDER BY `%s` %s',
+			\strtolower($orderby),
+			$sort
 		);
 	}
 }
