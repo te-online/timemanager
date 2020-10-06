@@ -18,7 +18,7 @@ OC.L10N.register(
 		Cancel: "Annuler",
 		Delete: "Supprimer",
 		"Do you want to delete this time entry?": "Souhaitez-vous supprimer cette saisie de temps ?",
-		"Duration (in hrs.) & Date": "Durée (en heures) & Date",
+		"Duration (in hrs.) & Date": "Durée (en heure(s)) & Date",
 		"Project & Task for": "Projet & Tâche pour",
 		"No projects/tasks or no client selected.": "Aucun projet/tâche ni aucun client sélectionné.",
 		Add: "Ajouter",
@@ -27,7 +27,7 @@ OC.L10N.register(
 		"Previous week": "Semaine précédente",
 		Week: "Semaine",
 		"When you add entries for this week graphs will appear here.":
-			"Lorsque vous ajoutez les données de temps pour cette semaine, un graphique est affiché ici.",
+			"Lorsque vous ajoutez les saisies de temps pour cette semaine, un graphique est affiché ici.",
 		"hrs.": "hrs.",
 		Today: "Aujourd’hui",
 		Statistics: "Statistiques",
@@ -43,17 +43,17 @@ OC.L10N.register(
 		"New project": "Nouveau projet",
 		"Delete client": "Supprimer le client",
 		"Do you want to delete the client %s and all associated projects, tasks and time entries?":
-			"Voulez-vous supprimer le client %s et tous ses projects, tâches et périodes de temps associés ?",
+			"Voulez-vous supprimer le client %s et tous ses projets, tâches et saisies de temps associés ?",
 		"Edit project": "Éditer le projet",
 		"Add task": "Ajouter une tâche",
 		"New task": "Nouvelle tâche",
 		"Delete project": "Supprimer le projet",
 		"Do you want to delete the project %s and all associated tasks and time entries?":
-			"Voulez-vous supprimer le projet %s et toutes les tâches et périodes de temps associées ?",
+			"Voulez-vous supprimer le projet %s et toutes les tâches et saisies de temps associées ?",
 		"Edit task": "Éditez la tâche",
 		"Delete task": "Supprimer la tâche",
 		"Do you want to delete the task %s and all associated time entries?":
-			"Voulez-vous supprimer la tâche %s et toutes les périodes de temps associées ?",
+			"Voulez-vous supprimer la tâche %s et toutes les saisies de temps associées ?",
 		"Add time entry": "Ajoutez une saisie de temps",
 		"New time entry": "Nouvelle saisie de temps",
 		"Latest time entries": "Dernières saisies de temps",
