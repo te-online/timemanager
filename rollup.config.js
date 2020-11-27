@@ -9,5 +9,13 @@ export default {
 		file: "js/bundle.js",
 		format: "iife",
 	},
-	plugins: [svelte({}), babel({ extensions: [".js", ".svelte"] }), resolve(), commonjs()],
+	plugins: [
+		svelte({
+			// Emit CSS as "files" for other plugins to process. default is true
+			emitCss: false,
+		}),
+		babel({ extensions: [".js", ".svelte"] }),
+		resolve(),
+		commonjs(),
+	],
 };

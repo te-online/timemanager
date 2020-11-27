@@ -14,7 +14,9 @@
 
 	var global_1 = // eslint-disable-next-line no-undef
 	check(typeof globalThis == 'object' && globalThis) || check(typeof window == 'object' && window) || check(typeof self == 'object' && self) || check(typeof commonjsGlobal == 'object' && commonjsGlobal) || // eslint-disable-next-line no-new-func
-	Function('return this')();
+	function () {
+	  return this;
+	}() || Function('return this')();
 
 	var fails = function (exec) {
 	  try {
@@ -222,7 +224,7 @@
 	(module.exports = function (key, value) {
 	  return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
 	})('versions', []).push({
-	  version: '3.6.5',
+	  version: '3.8.0',
 	  mode:  'global',
 	  copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
 	});
@@ -263,12 +265,13 @@
 	};
 
 	if (nativeWeakMap) {
-	  var store$1 = new WeakMap$1();
+	  var store$1 = sharedStore.state || (sharedStore.state = new WeakMap$1());
 	  var wmget = store$1.get;
 	  var wmhas = store$1.has;
 	  var wmset = store$1.set;
 
 	  set = function (it, metadata) {
+	    metadata.facade = it;
 	    wmset.call(store$1, it, metadata);
 	    return metadata;
 	  };
@@ -285,6 +288,7 @@
 	  hiddenKeys[STATE] = true;
 
 	  set = function (it, metadata) {
+	    metadata.facade = it;
 	    createNonEnumerableProperty(it, STATE, metadata);
 	    return metadata;
 	  };
@@ -314,10 +318,18 @@
 	  var unsafe = options ? !!options.unsafe : false;
 	  var simple = options ? !!options.enumerable : false;
 	  var noTargetGet = options ? !!options.noTargetGet : false;
+	  var state;
 
 	  if (typeof value == 'function') {
-	    if (typeof key == 'string' && !has(value, 'name')) createNonEnumerableProperty(value, 'name', key);
-	    enforceInternalState(value).source = TEMPLATE.join(typeof key == 'string' ? key : '');
+	    if (typeof key == 'string' && !has(value, 'name')) {
+	      createNonEnumerableProperty(value, 'name', key);
+	    }
+
+	    state = enforceInternalState(value);
+
+	    if (!state.source) {
+	      state.source = TEMPLATE.join(typeof key == 'string' ? key : '');
+	    }
 	  }
 
 	  if (O === global_1) {
@@ -643,7 +655,7 @@
 	  return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
 	};
 
-	var push = [].push; // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
+	var push = [].push; // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
 
 	var createMethod$1 = function (TYPE) {
 	  var IS_MAP = TYPE == 1;
@@ -651,6 +663,7 @@
 	  var IS_SOME = TYPE == 3;
 	  var IS_EVERY = TYPE == 4;
 	  var IS_FIND_INDEX = TYPE == 6;
+	  var IS_FILTER_OUT = TYPE == 7;
 	  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
 	  return function ($this, callbackfn, that, specificCreate) {
 	    var O = toObject($this);
@@ -659,7 +672,7 @@
 	    var length = toLength(self.length);
 	    var index = 0;
 	    var create = specificCreate || arraySpeciesCreate;
-	    var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+	    var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_OUT ? create($this, 0) : undefined;
 	    var value, result;
 
 	    for (; length > index; index++) if (NO_HOLES || index in self) {
@@ -684,7 +697,15 @@
 	            case 2:
 	              push.call(target, value);
 	            // filter
-	          } else if (IS_EVERY) return false; // every
+	          } else switch (TYPE) {
+	            case 4:
+	              return false;
+	            // every
+
+	            case 7:
+	              push.call(target, value);
+	            // filterOut
+	          }
 	      }
 	    }
 
@@ -713,7 +734,10 @@
 	  find: createMethod$1(5),
 	  // `Array.prototype.findIndex` method
 	  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-	  findIndex: createMethod$1(6)
+	  findIndex: createMethod$1(6),
+	  // `Array.prototype.filterOut` method
+	  // https://github.com/tc39/proposal-array-filtering
+	  filterOut: createMethod$1(7)
 	};
 
 	var arrayMethodIsStrict = function (METHOD_NAME, argument) {
@@ -1386,28 +1410,40 @@
 	  if (it != undefined) return it[ITERATOR$1] || it['@@iterator'] || iterators[classof(it)];
 	};
 
-	// call something on iterator step with safe closing on error
+	var iteratorClose = function (iterator) {
+	  var returnMethod = iterator['return'];
 
-
-	var callWithSafeIterationClosing = function (iterator, fn, value, ENTRIES) {
-	  try {
-	    return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value); // 7.4.6 IteratorClose(iterator, completion)
-	  } catch (error) {
-	    var returnMethod = iterator['return'];
-	    if (returnMethod !== undefined) anObject(returnMethod.call(iterator));
-	    throw error;
+	  if (returnMethod !== undefined) {
+	    return anObject(returnMethod.call(iterator)).value;
 	  }
 	};
 
-	var iterate_1 = createCommonjsModule(function (module) {
 	var Result = function (stopped, result) {
 	  this.stopped = stopped;
 	  this.result = result;
 	};
 
-	var iterate = module.exports = function (iterable, fn, that, AS_ENTRIES, IS_ITERATOR) {
-	  var boundFunction = functionBindContext(fn, that, AS_ENTRIES ? 2 : 1);
+	var iterate = function (iterable, unboundFunction, options) {
+	  var that = options && options.that;
+	  var AS_ENTRIES = !!(options && options.AS_ENTRIES);
+	  var IS_ITERATOR = !!(options && options.IS_ITERATOR);
+	  var INTERRUPTED = !!(options && options.INTERRUPTED);
+	  var fn = functionBindContext(unboundFunction, that, 1 + AS_ENTRIES + INTERRUPTED);
 	  var iterator, iterFn, index, length, result, next, step;
+
+	  var stop = function (condition) {
+	    if (iterator) iteratorClose(iterator);
+	    return new Result(true, condition);
+	  };
+
+	  var callFn = function (value) {
+	    if (AS_ENTRIES) {
+	      anObject(value);
+	      return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
+	    }
+
+	    return INTERRUPTED ? fn(value, stop) : fn(value);
+	  };
 
 	  if (IS_ITERATOR) {
 	    iterator = iterable;
@@ -1417,7 +1453,7 @@
 
 	    if (isArrayIteratorMethod(iterFn)) {
 	      for (index = 0, length = toLength(iterable.length); length > index; index++) {
-	        result = AS_ENTRIES ? boundFunction(anObject(step = iterable[index])[0], step[1]) : boundFunction(iterable[index]);
+	        result = callFn(iterable[index]);
 	        if (result && result instanceof Result) return result;
 	      }
 
@@ -1430,17 +1466,18 @@
 	  next = iterator.next;
 
 	  while (!(step = next.call(iterator)).done) {
-	    result = callWithSafeIterationClosing(iterator, boundFunction, step.value, AS_ENTRIES);
+	    try {
+	      result = callFn(step.value);
+	    } catch (error) {
+	      iteratorClose(iterator);
+	      throw error;
+	    }
+
 	    if (typeof result == 'object' && result && result instanceof Result) return result;
 	  }
 
 	  return new Result(false);
 	};
-
-	iterate.stop = function (result) {
-	  return new Result(true, result);
-	};
-	});
 
 	var ITERATOR$2 = wellKnownSymbol('iterator');
 	var SAFE_CLOSING = false;
@@ -1508,6 +1545,8 @@
 
 	var engineIsIos = /(iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent);
 
+	var engineIsNode = classofRaw(global_1.process) == 'process';
+
 	var location$1 = global_1.location;
 	var set$1 = global_1.setImmediate;
 	var clear = global_1.clearImmediate;
@@ -1565,7 +1604,7 @@
 	  }; // Node.js 0.8-
 
 
-	  if (classofRaw(process$1) == 'process') {
+	  if (engineIsNode) {
 	    defer = function (id) {
 	      process$1.nextTick(runner(id));
 	    }; // Sphere (JS game engine) Dispatch API
@@ -1582,7 +1621,7 @@
 	    channel.port1.onmessage = listener;
 	    defer = functionBindContext(port.postMessage, port, 1); // Browsers with postMessage, skip WebWorkers
 	    // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-	  } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && !fails(post) && location$1.protocol !== 'file:') {
+	  } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && location$1 && location$1.protocol !== 'file:' && !fails(post)) {
 	    defer = post;
 	    global_1.addEventListener('message', listener, false); // IE8-
 	  } else if (ONREADYSTATECHANGE in documentCreateElement('script')) {
@@ -1607,16 +1646,16 @@
 
 	var getOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
 
-
-
 	var macrotask = task.set;
 
 
 
+
+
 	var MutationObserver = global_1.MutationObserver || global_1.WebKitMutationObserver;
+	var document$2 = global_1.document;
 	var process$2 = global_1.process;
-	var Promise$1 = global_1.Promise;
-	var IS_NODE = classofRaw(process$2) == 'process'; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
+	var Promise$1 = global_1.Promise; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
 
 	var queueMicrotaskDescriptor = getOwnPropertyDescriptor$2(global_1, 'queueMicrotask');
 	var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
@@ -1625,7 +1664,7 @@
 	if (!queueMicrotask) {
 	  flush = function () {
 	    var parent, fn;
-	    if (IS_NODE && (parent = process$2.domain)) parent.exit();
+	    if (engineIsNode && (parent = process$2.domain)) parent.exit();
 
 	    while (head) {
 	      fn = head.fn;
@@ -1641,17 +1680,12 @@
 
 	    last = undefined;
 	    if (parent) parent.enter();
-	  }; // Node.js
+	  }; // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
 
 
-	  if (IS_NODE) {
-	    notify = function () {
-	      process$2.nextTick(flush);
-	    }; // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
-
-	  } else if (MutationObserver && !engineIsIos) {
+	  if (!engineIsIos && !engineIsNode && MutationObserver && document$2) {
 	    toggle = true;
-	    node = document.createTextNode('');
+	    node = document$2.createTextNode('');
 	    new MutationObserver(flush).observe(node, {
 	      characterData: true
 	    });
@@ -1667,6 +1701,11 @@
 
 	    notify = function () {
 	      then.call(promise, flush);
+	    }; // Node.js without promises
+
+	  } else if (engineIsNode) {
+	    notify = function () {
+	      process$2.nextTick(flush);
 	    }; // for other environments - macrotask based on:
 	    // - setImmediate
 	    // - MessageChannel
@@ -1768,6 +1807,8 @@
 
 
 
+
+
 	var SPECIES$5 = wellKnownSymbol('species');
 	var PROMISE = 'Promise';
 	var getInternalState = internalState.get;
@@ -1775,13 +1816,13 @@
 	var getInternalPromiseState = internalState.getterFor(PROMISE);
 	var PromiseConstructor = nativePromiseConstructor;
 	var TypeError$1 = global_1.TypeError;
-	var document$2 = global_1.document;
+	var document$3 = global_1.document;
 	var process$3 = global_1.process;
 	var $fetch = getBuiltIn('fetch');
 	var newPromiseCapability$1 = newPromiseCapability.f;
 	var newGenericPromiseCapability = newPromiseCapability$1;
-	var IS_NODE$1 = classofRaw(process$3) == 'process';
-	var DISPATCH_EVENT = !!(document$2 && document$2.createEvent && global_1.dispatchEvent);
+	var DISPATCH_EVENT = !!(document$3 && document$3.createEvent && global_1.dispatchEvent);
+	var NATIVE_REJECTION_EVENT = typeof PromiseRejectionEvent == 'function';
 	var UNHANDLED_REJECTION = 'unhandledrejection';
 	var REJECTION_HANDLED = 'rejectionhandled';
 	var PENDING = 0;
@@ -1799,7 +1840,7 @@
 	    // We can't detect it synchronously, so just check versions
 	    if (engineV8Version === 66) return true; // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
 
-	    if (!IS_NODE$1 && typeof PromiseRejectionEvent != 'function') return true;
+	    if (!engineIsNode && !NATIVE_REJECTION_EVENT) return true;
 	  } // We need Promise#finally in the pure version for preventing prototype pollution
 	  // deoptimization and performance degradation
 	  // https://github.com/zloirock/core-js/issues/679
@@ -1833,7 +1874,7 @@
 	  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
 	};
 
-	var notify$1 = function (promise, state, isReject) {
+	var notify$1 = function (state, isReject) {
 	  if (state.notified) return;
 	  state.notified = true;
 	  var chain = state.reactions;
@@ -1853,7 +1894,7 @@
 	      try {
 	        if (handler) {
 	          if (!ok) {
-	            if (state.rejection === UNHANDLED) onHandleUnhandled(promise, state);
+	            if (state.rejection === UNHANDLED) onHandleUnhandled(state);
 	            state.rejection = HANDLED;
 	          }
 
@@ -1881,7 +1922,7 @@
 
 	    state.reactions = [];
 	    state.notified = false;
-	    if (isReject && !state.rejection) onUnhandled(promise, state);
+	    if (isReject && !state.rejection) onUnhandled(state);
 	  });
 	};
 
@@ -1889,7 +1930,7 @@
 	  var event, handler;
 
 	  if (DISPATCH_EVENT) {
-	    event = document$2.createEvent('Event');
+	    event = document$3.createEvent('Event');
 	    event.promise = promise;
 	    event.reason = reason;
 	    event.initEvent(name, false, true);
@@ -1899,23 +1940,24 @@
 	    reason: reason
 	  };
 
-	  if (handler = global_1['on' + name]) handler(event);else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
+	  if (!NATIVE_REJECTION_EVENT && (handler = global_1['on' + name])) handler(event);else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
 	};
 
-	var onUnhandled = function (promise, state) {
+	var onUnhandled = function (state) {
 	  task$1.call(global_1, function () {
+	    var promise = state.facade;
 	    var value = state.value;
 	    var IS_UNHANDLED = isUnhandled(state);
 	    var result;
 
 	    if (IS_UNHANDLED) {
 	      result = perform(function () {
-	        if (IS_NODE$1) {
+	        if (engineIsNode) {
 	          process$3.emit('unhandledRejection', value, promise);
 	        } else dispatchEvent(UNHANDLED_REJECTION, promise, value);
 	      }); // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
 
-	      state.rejection = IS_NODE$1 || isUnhandled(state) ? UNHANDLED : HANDLED;
+	      state.rejection = engineIsNode || isUnhandled(state) ? UNHANDLED : HANDLED;
 	      if (result.error) throw result.value;
 	    }
 	  });
@@ -1925,36 +1967,38 @@
 	  return state.rejection !== HANDLED && !state.parent;
 	};
 
-	var onHandleUnhandled = function (promise, state) {
+	var onHandleUnhandled = function (state) {
 	  task$1.call(global_1, function () {
-	    if (IS_NODE$1) {
+	    var promise = state.facade;
+
+	    if (engineIsNode) {
 	      process$3.emit('rejectionHandled', promise);
 	    } else dispatchEvent(REJECTION_HANDLED, promise, state.value);
 	  });
 	};
 
-	var bind = function (fn, promise, state, unwrap) {
+	var bind = function (fn, state, unwrap) {
 	  return function (value) {
-	    fn(promise, state, value, unwrap);
+	    fn(state, value, unwrap);
 	  };
 	};
 
-	var internalReject = function (promise, state, value, unwrap) {
+	var internalReject = function (state, value, unwrap) {
 	  if (state.done) return;
 	  state.done = true;
 	  if (unwrap) state = unwrap;
 	  state.value = value;
 	  state.state = REJECTED;
-	  notify$1(promise, state, true);
+	  notify$1(state, true);
 	};
 
-	var internalResolve = function (promise, state, value, unwrap) {
+	var internalResolve = function (state, value, unwrap) {
 	  if (state.done) return;
 	  state.done = true;
 	  if (unwrap) state = unwrap;
 
 	  try {
-	    if (promise === value) throw TypeError$1("Promise can't be resolved itself");
+	    if (state.facade === value) throw TypeError$1("Promise can't be resolved itself");
 	    var then = isThenable(value);
 
 	    if (then) {
@@ -1964,18 +2008,18 @@
 	        };
 
 	        try {
-	          then.call(value, bind(internalResolve, promise, wrapper, state), bind(internalReject, promise, wrapper, state));
+	          then.call(value, bind(internalResolve, wrapper, state), bind(internalReject, wrapper, state));
 	        } catch (error) {
-	          internalReject(promise, wrapper, error, state);
+	          internalReject(wrapper, error, state);
 	        }
 	      });
 	    } else {
 	      state.value = value;
 	      state.state = FULFILLED;
-	      notify$1(promise, state, false);
+	      notify$1(state, false);
 	    }
 	  } catch (error) {
-	    internalReject(promise, {
+	    internalReject({
 	      done: false
 	    }, error, state);
 	  }
@@ -1991,9 +2035,9 @@
 	    var state = getInternalState(this);
 
 	    try {
-	      executor(bind(internalResolve, this, state), bind(internalReject, this, state));
+	      executor(bind(internalResolve, state), bind(internalReject, state));
 	    } catch (error) {
-	      internalReject(this, state, error);
+	      internalReject(state, error);
 	    }
 	  }; // eslint-disable-next-line no-unused-vars
 
@@ -2019,10 +2063,10 @@
 	      var reaction = newPromiseCapability$1(speciesConstructor(this, PromiseConstructor));
 	      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
 	      reaction.fail = typeof onRejected == 'function' && onRejected;
-	      reaction.domain = IS_NODE$1 ? process$3.domain : undefined;
+	      reaction.domain = engineIsNode ? process$3.domain : undefined;
 	      state.parent = true;
 	      state.reactions.push(reaction);
-	      if (state.state != PENDING) notify$1(this, state, false);
+	      if (state.state != PENDING) notify$1(state, false);
 	      return reaction.promise;
 	    },
 	    // `Promise.prototype.catch` method
@@ -2036,8 +2080,8 @@
 	    var promise = new Internal();
 	    var state = getInternalState(promise);
 	    this.promise = promise;
-	    this.resolve = bind(internalResolve, promise, state);
-	    this.reject = bind(internalReject, promise, state);
+	    this.resolve = bind(internalResolve, state);
+	    this.reject = bind(internalReject, state);
 	  };
 
 	  newPromiseCapability.f = newPromiseCapability$1 = function (C) {
@@ -2123,7 +2167,7 @@
 	      var values = [];
 	      var counter = 0;
 	      var remaining = 1;
-	      iterate_1(iterable, function (promise) {
+	      iterate(iterable, function (promise) {
 	        var index = counter++;
 	        var alreadyCalled = false;
 	        values.push(undefined);
@@ -2148,7 +2192,7 @@
 	    var reject = capability.reject;
 	    var result = perform(function () {
 	      var $promiseResolve = aFunction$1(C.resolve);
-	      iterate_1(iterable, function (promise) {
+	      iterate(iterable, function (promise) {
 	        $promiseResolve.call(C, promise).then(capability.resolve, reject);
 	      });
 	    });
@@ -2174,6 +2218,25 @@
 	  var iteratorSymbol = $Symbol.iterator || "@@iterator";
 	  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
 	  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+	  function define(obj, key, value) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	    return obj[key];
+	  }
+
+	  try {
+	    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+	    define({}, "");
+	  } catch (err) {
+	    define = function (obj, key, value) {
+	      return obj[key] = value;
+	    };
+	  }
 
 	  function wrap(innerFn, outerFn, self, tryLocsList) {
 	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
@@ -2248,14 +2311,14 @@
 	  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
 	  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
 	  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-	  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction"; // Helper for defining the .next, .throw, and .return methods of the
+	  GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"); // Helper for defining the .next, .throw, and .return methods of the
 	  // Iterator interface in terms of a single ._invoke method.
 
 	  function defineIteratorMethods(prototype) {
 	    ["next", "throw", "return"].forEach(function (method) {
-	      prototype[method] = function (arg) {
+	      define(prototype, method, function (arg) {
 	        return this._invoke(method, arg);
-	      };
+	      });
 	    });
 	  }
 
@@ -2271,10 +2334,7 @@
 	      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
 	    } else {
 	      genFun.__proto__ = GeneratorFunctionPrototype;
-
-	      if (!(toStringTagSymbol in genFun)) {
-	        genFun[toStringTagSymbol] = "GeneratorFunction";
-	      }
+	      define(genFun, toStringTagSymbol, "GeneratorFunction");
 	    }
 
 	    genFun.prototype = Object.create(Gp);
@@ -2530,7 +2590,7 @@
 
 
 	  defineIteratorMethods(Gp);
-	  Gp[toStringTagSymbol] = "Generator"; // A Generator should always return itself as the iterator object when the
+	  define(Gp, toStringTagSymbol, "Generator"); // A Generator should always return itself as the iterator object when the
 	  // @@iterator function is called on it. Some browsers' implementations of the
 	  // iterator prototype chain incorrectly implement this, causing the Generator
 	  // object to not be returned from this call. This ensures that doesn't happen.
@@ -2887,6 +2947,9 @@
 	function safe_not_equal(a, b) {
 	    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
 	}
+	function is_empty(obj) {
+	    return Object.keys(obj).length === 0;
+	}
 	function create_slot(definition, ctx, $$scope, fn) {
 	    if (definition) {
 	        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
@@ -2941,6 +3004,9 @@
 	}
 	function element(name) {
 	    return document.createElement(name);
+	}
+	function svg_element(name) {
+	    return document.createElementNS('http://www.w3.org/2000/svg', name);
 	}
 	function text(data) {
 	    return document.createTextNode(data);
@@ -2998,14 +3064,14 @@
 	    }
 	}
 	function to_number(value) {
-	    return value === '' ? undefined : +value;
+	    return value === '' ? null : +value;
 	}
 	function children(element) {
 	    return Array.from(element.childNodes);
 	}
 	function set_data(text, data) {
 	    data = '' + data;
-	    if (text.data !== data)
+	    if (text.wholeText !== data)
 	        text.data = data;
 	}
 	function set_input_value(input, value) {
@@ -3038,14 +3104,14 @@
 	        node.style.position = 'relative';
 	    }
 	    const iframe = element('iframe');
-	    iframe.setAttribute('style', `display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ` +
+	    iframe.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ' +
 	        `overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: ${z_index};`);
 	    iframe.setAttribute('aria-hidden', 'true');
 	    iframe.tabIndex = -1;
 	    const crossorigin = is_crossorigin();
 	    let unsubscribe;
 	    if (crossorigin) {
-	        iframe.src = `data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>`;
+	        iframe.src = "data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>";
 	        unsubscribe = listen(window, 'message', (event) => {
 	            if (event.source === iframe.contentWindow)
 	                fn();
@@ -3114,7 +3180,7 @@
 	}
 	function get_current_component() {
 	    if (!current_component)
-	        throw new Error(`Function called outside component initialization`);
+	        throw new Error('Function called outside component initialization');
 	    return current_component;
 	}
 	function beforeUpdate(fn) {
@@ -3177,6 +3243,7 @@
 	            set_current_component(component);
 	            update(component.$$);
 	        }
+	        set_current_component(null);
 	        dirty_components.length = 0;
 	        while (binding_callbacks.length)
 	            binding_callbacks.pop()();
@@ -3367,6 +3434,9 @@
 	    }
 	    return update;
 	}
+	function get_spread_object(spread_props) {
+	    return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+	}
 
 	function bind$1(component, name, callback) {
 	    const index = component.$$.props[name];
@@ -3435,14 +3505,15 @@
 	        context: new Map(parent_component ? parent_component.$$.context : []),
 	        // everything else
 	        callbacks: blank_object(),
-	        dirty
+	        dirty,
+	        skip_bound: false
 	    };
 	    let ready = false;
 	    $$.ctx = instance
 	        ? instance(component, prop_values, (i, ret, ...rest) => {
 	            const value = rest.length ? rest[0] : ret;
 	            if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-	                if ($$.bound[i])
+	                if (!$$.skip_bound && $$.bound[i])
 	                    $$.bound[i](value);
 	                if (ready)
 	                    make_dirty(component, i);
@@ -3487,8 +3558,12 @@
 	                callbacks.splice(index, 1);
 	        };
 	    }
-	    $set() {
-	        // overridden by instance, if it has props
+	    $set($$props) {
+	        if (this.$$set && !is_empty($$props)) {
+	            this.$$.skip_bound = true;
+	            this.$$set($$props);
+	            this.$$.skip_bound = false;
+	        }
 	    }
 	}
 
@@ -6593,7 +6668,7 @@
 	      if (!mounted) {
 	        dispose = listen(button, "click", prevent_default(
 	        /*click_handler_2*/
-	        ctx[16]));
+	        ctx[13]));
 	        mounted = true;
 	      }
 	    },
@@ -6807,9 +6882,9 @@
 	      if (!mounted) {
 	        dispose = [listen(button0, "click", prevent_default(
 	        /*click_handler*/
-	        ctx[14])), listen(button1, "click", prevent_default(
+	        ctx[11])), listen(button1, "click", prevent_default(
 	        /*click_handler_1*/
-	        ctx[15]))];
+	        ctx[12]))];
 	        mounted = true;
 	      }
 	    },
@@ -7129,7 +7204,7 @@
 	    return weekNavigation("reset");
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("statsApiUrl" in $$props) $$invalidate(9, statsApiUrl = $$props.statsApiUrl);
 	    if ("requestToken" in $$props) $$invalidate(10, requestToken = $$props.requestToken);
 	  };
@@ -7156,7 +7231,7 @@
 
 	   $$invalidate(6, currentWeek = null);
 
-	  return [loading, days, weekTotal, todayTotal, highest, dayCursor, currentWeek, localeOptions, weekNavigation, statsApiUrl, requestToken, updateWeek, loadData, loadStatsForDay, click_handler, click_handler_1, click_handler_2];
+	  return [loading, days, weekTotal, todayTotal, highest, dayCursor, currentWeek, localeOptions, weekNavigation, statsApiUrl, requestToken, click_handler, click_handler_1, click_handler_2];
 	}
 
 	var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -7187,7 +7262,7 @@
 	  var div1_class_value;
 	  var current;
 	  var default_slot_template =
-	  /*$$slots*/
+	  /*#slots*/
 	  ctx[2].default;
 	  var default_slot = create_slot(default_slot_template, ctx,
 	  /*$$scope*/
@@ -7262,18 +7337,18 @@
 	}
 
 	function instance$1($$self, $$props, $$invalidate) {
+	  var _$$props$$$slots = $$props.$$slots,
+	      slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
+	      $$scope = $$props.$$scope;
 	  var _$$props$loading = $$props.loading,
 	      loading = _$$props$loading === void 0 ? false : _$$props$loading;
-	  var _$$props$$$slots = $$props.$$slots,
-	      $$slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
-	      $$scope = $$props.$$scope;
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("loading" in $$props) $$invalidate(0, loading = $$props.loading);
 	    if ("$$scope" in $$props) $$invalidate(1, $$scope = $$props.$$scope);
 	  };
 
-	  return [loading, $$scope, $$slots];
+	  return [loading, $$scope, slots];
 	}
 
 	var Overlay = /*#__PURE__*/function (_SvelteComponent) {
@@ -7584,7 +7659,7 @@
 	    return $$invalidate(7, note = e.target.value);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
 	    if ("isServer" in $$props) $$invalidate(2, isServer = $$props.isServer);
@@ -7657,8 +7732,9 @@
 	}();
 
 	function create_if_block$2(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      loading:
 	      /*loading*/
@@ -7721,8 +7797,9 @@
 
 
 	function create_default_slot(ctx) {
+	  var clienteditor;
 	  var current;
-	  var clienteditor = new ClientEditor({
+	  clienteditor = new ClientEditor({
 	    props: {
 	      action:
 	      /*action*/
@@ -8000,7 +8077,7 @@
 	    return $$invalidate(5, show = false);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("editAction" in $$props) $$invalidate(8, editAction = $$props.editAction);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
@@ -8329,7 +8406,7 @@
 	    $$invalidate(7, name);
 	  }
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
 	    if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
@@ -8373,8 +8450,9 @@
 	}(SvelteComponent);
 
 	function create_if_block$4(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      loading:
 	      /*loading*/
@@ -8437,8 +8515,9 @@
 
 
 	function create_default_slot$1(ctx) {
+	  var projecteditor;
 	  var current;
-	  var projecteditor = new ProjectEditor({
+	  projecteditor = new ProjectEditor({
 	    props: {
 	      action:
 	      /*action*/
@@ -8728,7 +8807,7 @@
 	    return $$invalidate(7, show = false);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("editAction" in $$props) $$invalidate(10, editAction = $$props.editAction);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
@@ -9095,7 +9174,7 @@
 	    $$invalidate(8, name);
 	  }
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
 	    if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
@@ -9141,8 +9220,9 @@
 	}(SvelteComponent);
 
 	function create_if_block$6(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      loading:
 	      /*loading*/
@@ -9205,8 +9285,9 @@
 
 
 	function create_default_slot$2(ctx) {
+	  var taskeditor;
 	  var current;
-	  var taskeditor = new TaskEditor({
+	  taskeditor = new TaskEditor({
 	    props: {
 	      action:
 	      /*action*/
@@ -9505,7 +9586,7 @@
 	    return $$invalidate(8, show = false);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("editAction" in $$props) $$invalidate(11, editAction = $$props.editAction);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
@@ -10019,7 +10100,7 @@
 	    return $$invalidate(11, note = e.target.value);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
 	    if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
@@ -10166,8 +10247,9 @@
 
 
 	function create_if_block$8(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      loading:
 	      /*loading*/
@@ -10230,8 +10312,9 @@
 
 
 	function create_default_slot$3(ctx) {
+	  var timeeditor;
 	  var current;
-	  var timeeditor = new TimeEditor({
+	  timeeditor = new TimeEditor({
 	    props: {
 	      action:
 	      /*action*/
@@ -10546,7 +10629,7 @@
 	    return $$invalidate(11, show = false);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(0, action = $$props.action);
 	    if ("editTimeEntryAction" in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
 	    if ("timeUuid" in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
@@ -10603,8 +10686,9 @@
 	}(SvelteComponent);
 
 	function create_if_block$9(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      $$slots: {
 	        default: [create_default_slot$4]
@@ -10781,7 +10865,7 @@
 	      append(button, t3);
 	      /*form_1_binding*/
 
-	      ctx[10](form_1);
+	      ctx[9](form_1);
 	      current = true;
 	    },
 
@@ -10862,7 +10946,7 @@
 	      if (detaching) detach(form_1);
 	      /*form_1_binding*/
 
-	      ctx[10](null);
+	      ctx[9](null);
 	    }
 
 	  };
@@ -10897,11 +10981,12 @@
 
 	  function form_1_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](function () {
-	      $$invalidate(5, form = $$value);
+	      form = $$value;
+	      $$invalidate(5, form);
 	    });
 	  }
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("deleteAction" in $$props) $$invalidate(0, deleteAction = $$props.deleteAction);
 	    if ("deleteUuid" in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
 	    if ("deleteButtonCaption" in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
@@ -10913,7 +10998,7 @@
 
 	   $$invalidate(6, confirmation = false);
 
-	  return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, requestToken, form, confirmation, doDelete, cancelDelete, submit, form_1_binding];
+	  return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, requestToken, form, confirmation, doDelete, cancelDelete, form_1_binding];
 	}
 
 	var DeleteButton = /*#__PURE__*/function (_SvelteComponent) {
@@ -10941,8 +11026,9 @@
 	}(SvelteComponent);
 
 	function create_if_block$a(ctx) {
+	  var overlay;
 	  var current;
-	  var overlay = new Overlay({
+	  overlay = new Overlay({
 	    props: {
 	      $$slots: {
 	        default: [create_default_slot$5]
@@ -11270,7 +11356,7 @@
 	    $$invalidate(3, confirmation = false);
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("deleteTimeEntryAction" in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
 	    if ("deleteTimeEntryUuid" in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
 	    if ("requestToken" in $$props) $$invalidate(2, requestToken = $$props.requestToken);
@@ -11503,7 +11589,7 @@
 	  }
 	});
 
-	/* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.30.0 */
 
 	function add_css() {
 	  var style = element("style");
@@ -11586,7 +11672,7 @@
 	  } = $$props;
 	  let itemClasses = "";
 
-	  $$self.$set = $$props => {
+	  $$self.$$set = $$props => {
 	    if ("isActive" in $$props) $$invalidate(4, isActive = $$props.isActive);
 	    if ("isFirst" in $$props) $$invalidate(5, isFirst = $$props.isFirst);
 	    if ("isHover" in $$props) $$invalidate(6, isHover = $$props.isHover);
@@ -11646,13 +11732,19 @@
 
 	}
 
-	/* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.30.0 */
 
 	function add_css$1() {
 	  var style = element("style");
 	  style.id = "svelte-p6ehlv-style";
 	  style.textContent = "svelte-virtual-list-viewport.svelte-p6ehlv{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-p6ehlv,svelte-virtual-list-row.svelte-p6ehlv{display:block}svelte-virtual-list-row.svelte-p6ehlv{overflow:hidden}";
 	  append(document.head, style);
+	}
+
+	function get_each_context$1(ctx, list, i) {
+	  const child_ctx = ctx.slice();
+	  child_ctx[23] = list[i];
+	  return child_ctx;
 	}
 
 	const get_default_slot_changes = dirty => ({
@@ -11677,13 +11769,7 @@
 	  hoverItemIndex:
 	  /*hoverItemIndex*/
 	  ctx[1]
-	});
-
-	function get_each_context$1(ctx, list, i) {
-	  const child_ctx = ctx.slice();
-	  child_ctx[23] = list[i];
-	  return child_ctx;
-	} // (160:57) Missing template
+	}); // (160:57) Missing template
 
 
 	function fallback_block(ctx) {
@@ -11710,11 +11796,11 @@
 	  let t;
 	  let current;
 	  const default_slot_template =
-	  /*$$slots*/
-	  ctx[19].default;
+	  /*#slots*/
+	  ctx[15].default;
 	  const default_slot = create_slot(default_slot_template, ctx,
 	  /*$$scope*/
-	  ctx[18], get_default_slot_context);
+	  ctx[14], get_default_slot_context);
 	  const default_slot_or_fallback = default_slot || fallback_block();
 	  return {
 	    key: key_1,
@@ -11743,10 +11829,10 @@
 	      if (default_slot) {
 	        if (default_slot.p && dirty &
 	        /*$$scope, visible, hoverItemIndex*/
-	        262178) {
+	        16418) {
 	          update_slot(default_slot, default_slot_template, ctx,
 	          /*$$scope*/
-	          ctx[18], dirty, get_default_slot_changes, get_default_slot_context);
+	          ctx[14], dirty, get_default_slot_changes, get_default_slot_context);
 	        }
 	      }
 	    },
@@ -11815,7 +11901,7 @@
 	      set_custom_element_data(svelte_virtual_list_viewport, "class", "svelte-p6ehlv");
 	      add_render_callback(() =>
 	      /*svelte_virtual_list_viewport_elementresize_handler*/
-	      ctx[22].call(svelte_virtual_list_viewport));
+	      ctx[18].call(svelte_virtual_list_viewport));
 	    },
 
 	    m(target, anchor) {
@@ -11828,13 +11914,13 @@
 	      /*svelte_virtual_list_contents_binding*/
 
 
-	      ctx[20](svelte_virtual_list_contents);
+	      ctx[16](svelte_virtual_list_contents);
 	      /*svelte_virtual_list_viewport_binding*/
 
-	      ctx[21](svelte_virtual_list_viewport);
+	      ctx[17](svelte_virtual_list_viewport);
 	      svelte_virtual_list_viewport_resize_listener = add_resize_listener(svelte_virtual_list_viewport,
 	      /*svelte_virtual_list_viewport_elementresize_handler*/
-	      ctx[22].bind(svelte_virtual_list_viewport));
+	      ctx[18].bind(svelte_virtual_list_viewport));
 	      current = true;
 
 	      if (!mounted) {
@@ -11848,7 +11934,7 @@
 	    p(ctx, [dirty]) {
 	      if (dirty &
 	      /*$$scope, visible, hoverItemIndex*/
-	      262178) {
+	      16418) {
 	        const each_value =
 	        /*visible*/
 	        ctx[5];
@@ -11909,10 +11995,10 @@
 	      /*svelte_virtual_list_contents_binding*/
 
 
-	      ctx[20](null);
+	      ctx[16](null);
 	      /*svelte_virtual_list_viewport_binding*/
 
-	      ctx[21](null);
+	      ctx[17](null);
 	      svelte_virtual_list_viewport_resize_listener();
 	      mounted = false;
 	      dispose();
@@ -11922,6 +12008,10 @@
 	}
 
 	function instance$d($$self, $$props, $$invalidate) {
+	  let {
+	    $$slots: slots = {},
+	    $$scope
+	  } = $$props;
 	  let {
 	    items = undefined
 	  } = $$props;
@@ -11981,7 +12071,7 @@
 	    average_height = (top + content_height) / end;
 	    $$invalidate(7, bottom = remaining * average_height);
 	    height_map.length = items.length;
-	    $$invalidate(2, viewport.scrollTop = 0, viewport);
+	    $$invalidate(3, viewport.scrollTop = 0, viewport);
 	  }
 
 	  async function handle_scroll() {
@@ -12047,38 +12137,36 @@
 
 	  onMount(() => {
 	    rows = contents.getElementsByTagName("svelte-virtual-list-row");
-	    $$invalidate(15, mounted = true);
+	    $$invalidate(13, mounted = true);
 	  });
-	  let {
-	    $$slots = {},
-	    $$scope
-	  } = $$props;
 
 	  function svelte_virtual_list_contents_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(3, contents = $$value);
+	      contents = $$value;
+	      $$invalidate(4, contents);
 	    });
 	  }
 
 	  function svelte_virtual_list_viewport_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(2, viewport = $$value);
+	      viewport = $$value;
+	      $$invalidate(3, viewport);
 	    });
 	  }
 
 	  function svelte_virtual_list_viewport_elementresize_handler() {
 	    viewport_height = this.offsetHeight;
-	    $$invalidate(4, viewport_height);
+	    $$invalidate(2, viewport_height);
 	  }
 
-	  $$self.$set = $$props => {
+	  $$self.$$set = $$props => {
 	    if ("items" in $$props) $$invalidate(11, items = $$props.items);
 	    if ("height" in $$props) $$invalidate(0, height = $$props.height);
 	    if ("itemHeight" in $$props) $$invalidate(12, itemHeight = $$props.itemHeight);
 	    if ("hoverItemIndex" in $$props) $$invalidate(1, hoverItemIndex = $$props.hoverItemIndex);
 	    if ("start" in $$props) $$invalidate(9, start = $$props.start);
 	    if ("end" in $$props) $$invalidate(10, end = $$props.end);
-	    if ("$$scope" in $$props) $$invalidate(18, $$scope = $$props.$$scope);
+	    if ("$$scope" in $$props) $$invalidate(14, $$scope = $$props.$$scope);
 	  };
 
 	  $$self.$$.update = () => {
@@ -12095,13 +12183,13 @@
 
 	    if ($$self.$$.dirty &
 	    /*mounted, items, viewport_height, itemHeight*/
-	    38928) {
+	    14340) {
 	      // whenever `items` changes, invalidate the current heightmap
 	       if (mounted) refresh(items, viewport_height, itemHeight);
 	    }
 	  };
 
-	  return [height, hoverItemIndex, viewport, contents, viewport_height, visible, top, bottom, handle_scroll, start, end, items, itemHeight, height_map, rows, mounted, average_height, refresh, $$scope, $$slots, svelte_virtual_list_contents_binding, svelte_virtual_list_viewport_binding, svelte_virtual_list_viewport_elementresize_handler];
+	  return [height, hoverItemIndex, viewport_height, viewport, contents, visible, top, bottom, handle_scroll, start, end, items, itemHeight, mounted, $$scope, slots, svelte_virtual_list_contents_binding, svelte_virtual_list_viewport_binding, svelte_virtual_list_viewport_elementresize_handler];
 	}
 
 	class VirtualList extends SvelteComponent {
@@ -12120,7 +12208,7 @@
 
 	}
 
-	/* node_modules/svelte-select/src/List.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/List.svelte generated by Svelte v3.30.0 */
 
 	function add_css$2() {
 	  var style = element("style");
@@ -12139,8 +12227,9 @@
 
 	function create_if_block_3$1(ctx) {
 	  let div;
+	  let virtuallist;
 	  let current;
-	  const virtuallist = new VirtualList({
+	  virtuallist = new VirtualList({
 	    props: {
 	      items:
 	      /*items*/
@@ -12177,7 +12266,7 @@
 	      mount_component(virtuallist, div, null);
 	      /*div_binding*/
 
-	      ctx[30](div);
+	      ctx[20](div);
 	      current = true;
 	    },
 
@@ -12224,7 +12313,7 @@
 	      destroy_component(virtuallist);
 	      /*div_binding*/
 
-	      ctx[30](null);
+	      ctx[20](null);
 	    }
 
 	  };
@@ -12233,6 +12322,7 @@
 
 	function create_default_slot$6(ctx) {
 	  let div;
+	  let switch_instance;
 	  let current;
 	  let mounted;
 	  let dispose;
@@ -12276,22 +12366,22 @@
 	  }
 
 	  if (switch_value) {
-	    var switch_instance = new switch_value(switch_props(ctx));
+	    switch_instance = new switch_value(switch_props(ctx));
 	  }
 
-	  function mouseover_handler(...args) {
+	  function mouseover_handler() {
 	    return (
 	      /*mouseover_handler*/
-	      ctx[28](
+	      ctx[18](
 	      /*i*/
-	      ctx[36], ...args)
+	      ctx[36])
 	    );
 	  }
 
 	  function click_handler(...args) {
 	    return (
 	      /*click_handler*/
-	      ctx[29](
+	      ctx[19](
 	      /*item*/
 	      ctx[34],
 	      /*i*/
@@ -12466,7 +12556,7 @@
 	      /*div_binding_1*/
 
 
-	      ctx[33](div);
+	      ctx[23](div);
 	      current = true;
 	    },
 
@@ -12540,7 +12630,7 @@
 	      if (each_1_else) each_1_else.d();
 	      /*div_binding_1*/
 
-	      ctx[33](null);
+	      ctx[23](null);
 	    }
 
 	  };
@@ -12624,6 +12714,7 @@
 
 	function create_else_block$1(ctx) {
 	  let div;
+	  let switch_instance;
 	  let t;
 	  let current;
 	  let mounted;
@@ -12668,22 +12759,22 @@
 	  }
 
 	  if (switch_value) {
-	    var switch_instance = new switch_value(switch_props(ctx));
+	    switch_instance = new switch_value(switch_props(ctx));
 	  }
 
-	  function mouseover_handler_1(...args) {
+	  function mouseover_handler_1() {
 	    return (
 	      /*mouseover_handler_1*/
-	      ctx[31](
+	      ctx[21](
 	      /*i*/
-	      ctx[36], ...args)
+	      ctx[36])
 	    );
 	  }
 
 	  function click_handler_1(...args) {
 	    return (
 	      /*click_handler_1*/
-	      ctx[32](
+	      ctx[22](
 	      /*item*/
 	      ctx[34],
 	      /*i*/
@@ -12890,6 +12981,8 @@
 	        if (!if_block) {
 	          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 	          if_block.c();
+	        } else {
+	          if_block.p(ctx, dirty);
 	        }
 
 	        transition_in(if_block, 1);
@@ -13094,8 +13187,6 @@
 	  let isScrollingTimer = 0;
 	  let isScrolling = false;
 	  let prev_items;
-	  let prev_activeItemIndex;
-	  let prev_selectedValue;
 	  onMount(() => {
 	    if (items.length > 0 && !isMulti && selectedValue) {
 	      const _hoverItemIndex = items.findIndex(item => item[optionIdentifier] === selectedValue[optionIdentifier]);
@@ -13134,8 +13225,6 @@
 
 
 	    prev_items = items;
-	    prev_activeItemIndex = activeItemIndex;
-	    prev_selectedValue = selectedValue;
 	  });
 
 	  function handleSelect(item) {
@@ -13253,7 +13342,8 @@
 
 	  function div_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(0, container = $$value);
+	      container = $$value;
+	      $$invalidate(0, container);
 	    });
 	  }
 
@@ -13267,11 +13357,12 @@
 
 	  function div_binding_1($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(0, container = $$value);
+	      container = $$value;
+	      $$invalidate(0, container);
 	    });
 	  }
 
-	  $$self.$set = $$props => {
+	  $$self.$$set = $$props => {
 	    if ("container" in $$props) $$invalidate(0, container = $$props.container);
 	    if ("Item" in $$props) $$invalidate(2, Item$1 = $$props.Item);
 	    if ("isVirtualList" in $$props) $$invalidate(3, isVirtualList = $$props.isVirtualList);
@@ -13289,7 +13380,7 @@
 	    if ("filterText" in $$props) $$invalidate(12, filterText = $$props.filterText);
 	  };
 
-	  return [container, hoverItemIndex, Item$1, isVirtualList, items, getOptionLabel, getGroupHeaderLabel, itemHeight, selectedValue, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, handleHover, handleClick, handleKeyDown, activeItemIndex, isMulti, isScrollingTimer, isScrolling, prev_items, prev_activeItemIndex, prev_selectedValue, dispatch, handleSelect, closeList, updateHoverItem, scrollToActiveItem, mouseover_handler, click_handler, div_binding, mouseover_handler_1, click_handler_1, div_binding_1];
+	  return [container, hoverItemIndex, Item$1, isVirtualList, items, getOptionLabel, getGroupHeaderLabel, itemHeight, selectedValue, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, handleHover, handleClick, handleKeyDown, activeItemIndex, isMulti, mouseover_handler, click_handler, div_binding, mouseover_handler_1, click_handler_1, div_binding_1];
 	}
 
 	class List extends SvelteComponent {
@@ -13317,7 +13408,7 @@
 
 	}
 
-	/* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.30.0 */
 
 	function add_css$3() {
 	  var style = element("style");
@@ -13372,7 +13463,7 @@
 	    item = undefined
 	  } = $$props;
 
-	  $$self.$set = $$props => {
+	  $$self.$$set = $$props => {
 	    if ("getSelectionLabel" in $$props) $$invalidate(0, getSelectionLabel = $$props.getSelectionLabel);
 	    if ("item" in $$props) $$invalidate(1, item = $$props.item);
 	  };
@@ -13392,12 +13483,12 @@
 
 	}
 
-	/* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.30.0 */
 
 	function add_css$4() {
 	  var style = element("style");
-	  style.id = "svelte-rtzfov-style";
-	  style.textContent = ".multiSelectItem.svelte-rtzfov.svelte-rtzfov{background:var(--multiItemBG, #EBEDEF);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px)}.multiSelectItem_label.svelte-rtzfov.svelte-rtzfov{margin:var(--multiLabelMargin, 0 5px 0 0)}.multiSelectItem.svelte-rtzfov.svelte-rtzfov:hover,.multiSelectItem.active.svelte-rtzfov.svelte-rtzfov{background-color:var(--multiItemActiveBG, #006FFF);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-rtzfov.svelte-rtzfov:hover{background:var(--multiItemDisabledHoverBg, #EBEDEF);color:var(--multiItemDisabledHoverColor, #C1C6CC)}.multiSelectItem_clear.svelte-rtzfov.svelte-rtzfov{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616F);width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-rtzfov.svelte-rtzfov:hover,.active.svelte-rtzfov .multiSelectItem_clear.svelte-rtzfov{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-rtzfov:hover svg.svelte-rtzfov,.active.svelte-rtzfov .multiSelectItem_clear svg.svelte-rtzfov{fill:var(--multiClearHoverFill, #006FFF)}.multiSelectItem_clear.svelte-rtzfov svg.svelte-rtzfov{fill:var(--multiClearFill, #EBEDEF);vertical-align:top}";
+	  style.id = "svelte-14r1jr2-style";
+	  style.textContent = ".multiSelectItem.svelte-14r1jr2.svelte-14r1jr2{background:var(--multiItemBG, #EBEDEF);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-14r1jr2.svelte-14r1jr2{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-14r1jr2.svelte-14r1jr2:hover,.multiSelectItem.active.svelte-14r1jr2.svelte-14r1jr2{background-color:var(--multiItemActiveBG, #006FFF);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-14r1jr2.svelte-14r1jr2:hover{background:var(--multiItemDisabledHoverBg, #EBEDEF);color:var(--multiItemDisabledHoverColor, #C1C6CC)}.multiSelectItem_clear.svelte-14r1jr2.svelte-14r1jr2{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616F);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-14r1jr2.svelte-14r1jr2:hover,.active.svelte-14r1jr2 .multiSelectItem_clear.svelte-14r1jr2{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-14r1jr2:hover svg.svelte-14r1jr2,.active.svelte-14r1jr2 .multiSelectItem_clear svg.svelte-14r1jr2{fill:var(--multiClearHoverFill, #006FFF)}.multiSelectItem_clear.svelte-14r1jr2 svg.svelte-14r1jr2{fill:var(--multiClearFill, #EBEDEF);vertical-align:top}";
 	  append(document.head, style);
 	}
 
@@ -13417,7 +13508,7 @@
 	  function click_handler(...args) {
 	    return (
 	      /*click_handler*/
-	      ctx[6](
+	      ctx[5](
 	      /*i*/
 	      ctx[9], ...args)
 	    );
@@ -13426,8 +13517,8 @@
 	  return {
 	    c() {
 	      div = element("div");
-	      div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation" class="svelte-rtzfov"><path d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124 l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
-	      attr(div, "class", "multiSelectItem_clear svelte-rtzfov");
+	      div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation" class="svelte-14r1jr2"><path d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124 l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
+	      attr(div, "class", "multiSelectItem_clear svelte-14r1jr2");
 	    },
 
 	    m(target, anchor) {
@@ -13474,14 +13565,14 @@
 	      t0 = space();
 	      if (if_block) if_block.c();
 	      t1 = space();
-	      attr(div0, "class", "multiSelectItem_label svelte-rtzfov");
+	      attr(div0, "class", "multiSelectItem_label svelte-14r1jr2");
 	      attr(div1, "class", div1_class_value = "multiSelectItem " + (
 	      /*activeSelectedValue*/
 	      ctx[1] ===
 	      /*i*/
 	      ctx[9] ? "active" : "") + " " + (
 	      /*isDisabled*/
-	      ctx[2] ? "disabled" : "") + " svelte-rtzfov");
+	      ctx[2] ? "disabled" : "") + " svelte-14r1jr2");
 	    },
 
 	    m(target, anchor) {
@@ -13525,7 +13616,7 @@
 	      /*i*/
 	      ctx[9] ? "active" : "") + " " + (
 	      /*isDisabled*/
-	      ctx[2] ? "disabled" : "") + " svelte-rtzfov")) {
+	      ctx[2] ? "disabled" : "") + " svelte-14r1jr2")) {
 	        attr(div1, "class", div1_class_value);
 	      }
 	    },
@@ -13630,20 +13721,20 @@
 
 	  const click_handler = (i, event) => handleClear(i, event);
 
-	  $$self.$set = $$props => {
+	  $$self.$$set = $$props => {
 	    if ("selectedValue" in $$props) $$invalidate(0, selectedValue = $$props.selectedValue);
 	    if ("activeSelectedValue" in $$props) $$invalidate(1, activeSelectedValue = $$props.activeSelectedValue);
 	    if ("isDisabled" in $$props) $$invalidate(2, isDisabled = $$props.isDisabled);
 	    if ("getSelectionLabel" in $$props) $$invalidate(3, getSelectionLabel = $$props.getSelectionLabel);
 	  };
 
-	  return [selectedValue, activeSelectedValue, isDisabled, getSelectionLabel, handleClear, dispatch, click_handler];
+	  return [selectedValue, activeSelectedValue, isDisabled, getSelectionLabel, handleClear, click_handler];
 	}
 
 	class MultiSelection extends SvelteComponent {
 	  constructor(options) {
 	    super();
-	    if (!document.getElementById("svelte-rtzfov-style")) add_css$4();
+	    if (!document.getElementById("svelte-14r1jr2-style")) add_css$4();
 	    init(this, options, instance$g, create_fragment$g, safe_not_equal, {
 	      selectedValue: 0,
 	      activeSelectedValue: 1,
@@ -13683,32 +13774,44 @@
 	  };
 	}
 
-	/* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.23.0 */
+	/* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.30.0 */
 	const {
 	  document: document_1
 	} = globals;
 
 	function add_css$5() {
 	  var style = element("style");
-	  style.id = "svelte-2eeumy-style";
-	  style.textContent = ".selectContainer.svelte-2eeumy.svelte-2eeumy{--padding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding);background:var(--background, #fff)}.selectContainer.svelte-2eeumy input.svelte-2eeumy{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0)}.selectContainer.svelte-2eeumy input.svelte-2eeumy::placeholder{color:var(--placeholderColor, #78848f)}.selectContainer.svelte-2eeumy input.svelte-2eeumy:focus{outline:none}.selectContainer.svelte-2eeumy.svelte-2eeumy:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-2eeumy.svelte-2eeumy{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-2eeumy.svelte-2eeumy{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-2eeumy input.svelte-2eeumy::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc)}.selectedItem.svelte-2eeumy.svelte-2eeumy{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-2eeumy.svelte-2eeumy:focus{outline:none}.clearSelect.svelte-2eeumy.svelte-2eeumy{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-2eeumy.svelte-2eeumy:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-2eeumy .clearSelect.svelte-2eeumy{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-2eeumy.svelte-2eeumy{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-2eeumy svg.svelte-2eeumy{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-2eeumy.svelte-2eeumy{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-2eeumy-rotate 0.75s linear infinite}.spinner_icon.svelte-2eeumy.svelte-2eeumy{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-2eeumy.svelte-2eeumy{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-2eeumy.svelte-2eeumy{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap}.multiSelect.svelte-2eeumy>.svelte-2eeumy{flex:1 1 50px}.selectContainer.multiSelect.svelte-2eeumy input.svelte-2eeumy{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-2eeumy.svelte-2eeumy{border:var(--errorBorder, 1px solid #ff2d55)}@keyframes svelte-2eeumy-rotate{100%{transform:rotate(360deg)}}";
+	  style.id = "svelte-1kmtf2c-style";
+	  style.textContent = ".selectContainer.svelte-1kmtf2c.svelte-1kmtf2c{--padding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding);background:var(--background, #fff)}.selectContainer.svelte-1kmtf2c input.svelte-1kmtf2c{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0)}.selectContainer.svelte-1kmtf2c input.svelte-1kmtf2c::placeholder{color:var(--placeholderColor, #78848f)}.selectContainer.svelte-1kmtf2c input.svelte-1kmtf2c:focus{outline:none}.selectContainer.svelte-1kmtf2c.svelte-1kmtf2c:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-1kmtf2c.svelte-1kmtf2c{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-1kmtf2c.svelte-1kmtf2c{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-1kmtf2c input.svelte-1kmtf2c::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc)}.selectedItem.svelte-1kmtf2c.svelte-1kmtf2c{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-1kmtf2c.svelte-1kmtf2c:focus{outline:none}.clearSelect.svelte-1kmtf2c.svelte-1kmtf2c{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-1kmtf2c.svelte-1kmtf2c:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-1kmtf2c .clearSelect.svelte-1kmtf2c{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-1kmtf2c.svelte-1kmtf2c{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-1kmtf2c svg.svelte-1kmtf2c{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-1kmtf2c.svelte-1kmtf2c{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-1kmtf2c-rotate 0.75s linear infinite}.spinner_icon.svelte-1kmtf2c.svelte-1kmtf2c{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-1kmtf2c.svelte-1kmtf2c{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-1kmtf2c.svelte-1kmtf2c{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-1kmtf2c>.svelte-1kmtf2c{flex:1 1 50px}.selectContainer.multiSelect.svelte-1kmtf2c input.svelte-1kmtf2c{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-1kmtf2c.svelte-1kmtf2c{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}@keyframes svelte-1kmtf2c-rotate{100%{transform:rotate(360deg)}}";
 	  append(document_1.head, style);
-	} // (789:2) {#if Icon}
+	} // (799:2) {#if Icon}
 
 
-	function create_if_block_6(ctx) {
+	function create_if_block_7(ctx) {
+	  let switch_instance;
 	  let switch_instance_anchor;
 	  let current;
+	  const switch_instance_spread_levels = [
+	  /*iconProps*/
+	  ctx[17]];
 	  var switch_value =
 	  /*Icon*/
 	  ctx[16];
 
 	  function switch_props(ctx) {
-	    return {};
+	    let switch_instance_props = {};
+
+	    for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+	      switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+	    }
+
+	    return {
+	      props: switch_instance_props
+	    };
 	  }
 
 	  if (switch_value) {
-	    var switch_instance = new switch_value(switch_props());
+	    switch_instance = new switch_value(switch_props());
 	  }
 
 	  return {
@@ -13727,6 +13830,12 @@
 	    },
 
 	    p(ctx, dirty) {
+	      const switch_instance_changes = dirty[0] &
+	      /*iconProps*/
+	      131072 ? get_spread_update(switch_instance_spread_levels, [get_spread_object(
+	      /*iconProps*/
+	      ctx[17])]) : {};
+
 	      if (switch_value !== (switch_value =
 	      /*Icon*/
 	      ctx[16])) {
@@ -13741,129 +13850,6 @@
 
 	        if (switch_value) {
 	          switch_instance = new switch_value(switch_props());
-	          create_component(switch_instance.$$.fragment);
-	          transition_in(switch_instance.$$.fragment, 1);
-	          mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
-	        } else {
-	          switch_instance = null;
-	        }
-	      }
-	    },
-
-	    i(local) {
-	      if (current) return;
-	      if (switch_instance) transition_in(switch_instance.$$.fragment, local);
-	      current = true;
-	    },
-
-	    o(local) {
-	      if (switch_instance) transition_out(switch_instance.$$.fragment, local);
-	      current = false;
-	    },
-
-	    d(detaching) {
-	      if (detaching) detach(switch_instance_anchor);
-	      if (switch_instance) destroy_component(switch_instance, detaching);
-	    }
-
-	  };
-	} // (793:2) {#if isMulti && selectedValue && selectedValue.length > 0}
-
-
-	function create_if_block_5(ctx) {
-	  let switch_instance_anchor;
-	  let current;
-	  var switch_value =
-	  /*MultiSelection*/
-	  ctx[7];
-
-	  function switch_props(ctx) {
-	    return {
-	      props: {
-	        selectedValue:
-	        /*selectedValue*/
-	        ctx[3],
-	        getSelectionLabel:
-	        /*getSelectionLabel*/
-	        ctx[12],
-	        activeSelectedValue:
-	        /*activeSelectedValue*/
-	        ctx[20],
-	        isDisabled:
-	        /*isDisabled*/
-	        ctx[9]
-	      }
-	    };
-	  }
-
-	  if (switch_value) {
-	    var switch_instance = new switch_value(switch_props(ctx));
-	    switch_instance.$on("multiItemClear",
-	    /*handleMultiItemClear*/
-	    ctx[24]);
-	    switch_instance.$on("focus",
-	    /*handleFocus*/
-	    ctx[27]);
-	  }
-
-	  return {
-	    c() {
-	      if (switch_instance) create_component(switch_instance.$$.fragment);
-	      switch_instance_anchor = empty();
-	    },
-
-	    m(target, anchor) {
-	      if (switch_instance) {
-	        mount_component(switch_instance, target, anchor);
-	      }
-
-	      insert(target, switch_instance_anchor, anchor);
-	      current = true;
-	    },
-
-	    p(ctx, dirty) {
-	      const switch_instance_changes = {};
-	      if (dirty[0] &
-	      /*selectedValue*/
-	      8) switch_instance_changes.selectedValue =
-	      /*selectedValue*/
-	      ctx[3];
-	      if (dirty[0] &
-	      /*getSelectionLabel*/
-	      4096) switch_instance_changes.getSelectionLabel =
-	      /*getSelectionLabel*/
-	      ctx[12];
-	      if (dirty[0] &
-	      /*activeSelectedValue*/
-	      1048576) switch_instance_changes.activeSelectedValue =
-	      /*activeSelectedValue*/
-	      ctx[20];
-	      if (dirty[0] &
-	      /*isDisabled*/
-	      512) switch_instance_changes.isDisabled =
-	      /*isDisabled*/
-	      ctx[9];
-
-	      if (switch_value !== (switch_value =
-	      /*MultiSelection*/
-	      ctx[7])) {
-	        if (switch_instance) {
-	          group_outros();
-	          const old_component = switch_instance;
-	          transition_out(old_component.$$.fragment, 1, 0, () => {
-	            destroy_component(old_component, 1);
-	          });
-	          check_outros();
-	        }
-
-	        if (switch_value) {
-	          switch_instance = new switch_value(switch_props(ctx));
-	          switch_instance.$on("multiItemClear",
-	          /*handleMultiItemClear*/
-	          ctx[24]);
-	          switch_instance.$on("focus",
-	          /*handleFocus*/
-	          ctx[27]);
 	          create_component(switch_instance.$$.fragment);
 	          transition_in(switch_instance.$$.fragment, 1);
 	          mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
@@ -13892,19 +13878,145 @@
 	    }
 
 	  };
-	} // (813:2) {:else}
+	} // (803:2) {#if isMulti && selectedValue && selectedValue.length > 0}
 
 
-	function create_else_block$2(ctx) {
+	function create_if_block_6(ctx) {
+	  let switch_instance;
+	  let switch_instance_anchor;
+	  let current;
+	  var switch_value =
+	  /*MultiSelection*/
+	  ctx[7];
+
+	  function switch_props(ctx) {
+	    return {
+	      props: {
+	        selectedValue:
+	        /*selectedValue*/
+	        ctx[0],
+	        getSelectionLabel:
+	        /*getSelectionLabel*/
+	        ctx[12],
+	        activeSelectedValue:
+	        /*activeSelectedValue*/
+	        ctx[23],
+	        isDisabled:
+	        /*isDisabled*/
+	        ctx[9]
+	      }
+	    };
+	  }
+
+	  if (switch_value) {
+	    switch_instance = new switch_value(switch_props(ctx));
+	    switch_instance.$on("multiItemClear",
+	    /*handleMultiItemClear*/
+	    ctx[27]);
+	    switch_instance.$on("focus",
+	    /*handleFocus*/
+	    ctx[30]);
+	  }
+
+	  return {
+	    c() {
+	      if (switch_instance) create_component(switch_instance.$$.fragment);
+	      switch_instance_anchor = empty();
+	    },
+
+	    m(target, anchor) {
+	      if (switch_instance) {
+	        mount_component(switch_instance, target, anchor);
+	      }
+
+	      insert(target, switch_instance_anchor, anchor);
+	      current = true;
+	    },
+
+	    p(ctx, dirty) {
+	      const switch_instance_changes = {};
+	      if (dirty[0] &
+	      /*selectedValue*/
+	      1) switch_instance_changes.selectedValue =
+	      /*selectedValue*/
+	      ctx[0];
+	      if (dirty[0] &
+	      /*getSelectionLabel*/
+	      4096) switch_instance_changes.getSelectionLabel =
+	      /*getSelectionLabel*/
+	      ctx[12];
+	      if (dirty[0] &
+	      /*activeSelectedValue*/
+	      8388608) switch_instance_changes.activeSelectedValue =
+	      /*activeSelectedValue*/
+	      ctx[23];
+	      if (dirty[0] &
+	      /*isDisabled*/
+	      512) switch_instance_changes.isDisabled =
+	      /*isDisabled*/
+	      ctx[9];
+
+	      if (switch_value !== (switch_value =
+	      /*MultiSelection*/
+	      ctx[7])) {
+	        if (switch_instance) {
+	          group_outros();
+	          const old_component = switch_instance;
+	          transition_out(old_component.$$.fragment, 1, 0, () => {
+	            destroy_component(old_component, 1);
+	          });
+	          check_outros();
+	        }
+
+	        if (switch_value) {
+	          switch_instance = new switch_value(switch_props(ctx));
+	          switch_instance.$on("multiItemClear",
+	          /*handleMultiItemClear*/
+	          ctx[27]);
+	          switch_instance.$on("focus",
+	          /*handleFocus*/
+	          ctx[30]);
+	          create_component(switch_instance.$$.fragment);
+	          transition_in(switch_instance.$$.fragment, 1);
+	          mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+	        } else {
+	          switch_instance = null;
+	        }
+	      } else if (switch_value) {
+	        switch_instance.$set(switch_instance_changes);
+	      }
+	    },
+
+	    i(local) {
+	      if (current) return;
+	      if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+	      current = true;
+	    },
+
+	    o(local) {
+	      if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+	      current = false;
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(switch_instance_anchor);
+	      if (switch_instance) destroy_component(switch_instance, detaching);
+	    }
+
+	  };
+	} // (823:2) {:else}
+
+
+	function create_else_block_1$1(ctx) {
 	  let input_1;
 	  let mounted;
 	  let dispose;
 	  let input_1_levels = [
 	  /*_inputAttributes*/
-	  ctx[21], {
+	  ctx[24], {
 	    placeholder:
 	    /*placeholderText*/
-	    ctx[23]
+	    ctx[26]
 	  }, {
 	    style:
 	    /*inputStyles*/
@@ -13920,24 +14032,24 @@
 	    c() {
 	      input_1 = element("input");
 	      set_attributes(input_1, input_1_data);
-	      toggle_class(input_1, "svelte-2eeumy", true);
+	      toggle_class(input_1, "svelte-1kmtf2c", true);
 	    },
 
 	    m(target, anchor) {
 	      insert(target, input_1, anchor);
 	      /*input_1_binding_1*/
 
-	      ctx[74](input_1);
+	      ctx[61](input_1);
 	      set_input_value(input_1,
 	      /*filterText*/
-	      ctx[4]);
+	      ctx[1]);
 
 	      if (!mounted) {
 	        dispose = [listen(input_1, "focus",
 	        /*handleFocus*/
-	        ctx[27]), listen(input_1, "input",
+	        ctx[30]), listen(input_1, "input",
 	        /*input_1_input_handler_1*/
-	        ctx[75])];
+	        ctx[62])];
 	        mounted = true;
 	      }
 	    },
@@ -13945,14 +14057,14 @@
 	    p(ctx, dirty) {
 	      set_attributes(input_1, input_1_data = get_spread_update(input_1_levels, [dirty[0] &
 	      /*_inputAttributes*/
-	      2097152 &&
+	      16777216 &&
 	      /*_inputAttributes*/
-	      ctx[21], dirty[0] &
+	      ctx[24], dirty[0] &
 	      /*placeholderText*/
-	      8388608 && {
+	      67108864 && {
 	        placeholder:
 	        /*placeholderText*/
-	        ctx[23]
+	        ctx[26]
 	      }, dirty[0] &
 	      /*inputStyles*/
 	      16384 && {
@@ -13963,40 +14075,40 @@
 
 	      if (dirty[0] &
 	      /*filterText*/
-	      16 && input_1.value !==
+	      2 && input_1.value !==
 	      /*filterText*/
-	      ctx[4]) {
+	      ctx[1]) {
 	        set_input_value(input_1,
 	        /*filterText*/
-	        ctx[4]);
+	        ctx[1]);
 	      }
 
-	      toggle_class(input_1, "svelte-2eeumy", true);
+	      toggle_class(input_1, "svelte-1kmtf2c", true);
 	    },
 
 	    d(detaching) {
 	      if (detaching) detach(input_1);
 	      /*input_1_binding_1*/
 
-	      ctx[74](null);
+	      ctx[61](null);
 	      mounted = false;
 	      run_all(dispose);
 	    }
 
 	  };
-	} // (804:2) {#if isDisabled}
+	} // (814:2) {#if isDisabled}
 
 
-	function create_if_block_4(ctx) {
+	function create_if_block_5(ctx) {
 	  let input_1;
 	  let mounted;
 	  let dispose;
 	  let input_1_levels = [
 	  /*_inputAttributes*/
-	  ctx[21], {
+	  ctx[24], {
 	    placeholder:
 	    /*placeholderText*/
-	    ctx[23]
+	    ctx[26]
 	  }, {
 	    style:
 	    /*inputStyles*/
@@ -14014,24 +14126,24 @@
 	    c() {
 	      input_1 = element("input");
 	      set_attributes(input_1, input_1_data);
-	      toggle_class(input_1, "svelte-2eeumy", true);
+	      toggle_class(input_1, "svelte-1kmtf2c", true);
 	    },
 
 	    m(target, anchor) {
 	      insert(target, input_1, anchor);
 	      /*input_1_binding*/
 
-	      ctx[72](input_1);
+	      ctx[59](input_1);
 	      set_input_value(input_1,
 	      /*filterText*/
-	      ctx[4]);
+	      ctx[1]);
 
 	      if (!mounted) {
 	        dispose = [listen(input_1, "focus",
 	        /*handleFocus*/
-	        ctx[27]), listen(input_1, "input",
+	        ctx[30]), listen(input_1, "input",
 	        /*input_1_input_handler*/
-	        ctx[73])];
+	        ctx[60])];
 	        mounted = true;
 	      }
 	    },
@@ -14039,14 +14151,14 @@
 	    p(ctx, dirty) {
 	      set_attributes(input_1, input_1_data = get_spread_update(input_1_levels, [dirty[0] &
 	      /*_inputAttributes*/
-	      2097152 &&
+	      16777216 &&
 	      /*_inputAttributes*/
-	      ctx[21], dirty[0] &
+	      ctx[24], dirty[0] &
 	      /*placeholderText*/
-	      8388608 && {
+	      67108864 && {
 	        placeholder:
 	        /*placeholderText*/
-	        ctx[23]
+	        ctx[26]
 	      }, dirty[0] &
 	      /*inputStyles*/
 	      16384 && {
@@ -14059,32 +14171,33 @@
 
 	      if (dirty[0] &
 	      /*filterText*/
-	      16 && input_1.value !==
+	      2 && input_1.value !==
 	      /*filterText*/
-	      ctx[4]) {
+	      ctx[1]) {
 	        set_input_value(input_1,
 	        /*filterText*/
-	        ctx[4]);
+	        ctx[1]);
 	      }
 
-	      toggle_class(input_1, "svelte-2eeumy", true);
+	      toggle_class(input_1, "svelte-1kmtf2c", true);
 	    },
 
 	    d(detaching) {
 	      if (detaching) detach(input_1);
 	      /*input_1_binding*/
 
-	      ctx[72](null);
+	      ctx[59](null);
 	      mounted = false;
 	      run_all(dispose);
 	    }
 
 	  };
-	} // (823:2) {#if !isMulti && showSelectedItem}
+	} // (833:2) {#if !isMulti && showSelectedItem}
 
 
-	function create_if_block_3$2(ctx) {
+	function create_if_block_4(ctx) {
 	  let div;
+	  let switch_instance;
 	  let current;
 	  let mounted;
 	  let dispose;
@@ -14097,7 +14210,7 @@
 	      props: {
 	        item:
 	        /*selectedValue*/
-	        ctx[3],
+	        ctx[0],
 	        getSelectionLabel:
 	        /*getSelectionLabel*/
 	        ctx[12]
@@ -14106,14 +14219,14 @@
 	  }
 
 	  if (switch_value) {
-	    var switch_instance = new switch_value(switch_props(ctx));
+	    switch_instance = new switch_value(switch_props(ctx));
 	  }
 
 	  return {
 	    c() {
 	      div = element("div");
 	      if (switch_instance) create_component(switch_instance.$$.fragment);
-	      attr(div, "class", "selectedItem svelte-2eeumy");
+	      attr(div, "class", "selectedItem svelte-1kmtf2c");
 	    },
 
 	    m(target, anchor) {
@@ -14128,7 +14241,7 @@
 	      if (!mounted) {
 	        dispose = listen(div, "focus",
 	        /*handleFocus*/
-	        ctx[27]);
+	        ctx[30]);
 	        mounted = true;
 	      }
 	    },
@@ -14137,9 +14250,9 @@
 	      const switch_instance_changes = {};
 	      if (dirty[0] &
 	      /*selectedValue*/
-	      8) switch_instance_changes.item =
+	      1) switch_instance_changes.item =
 	      /*selectedValue*/
-	      ctx[3];
+	      ctx[0];
 	      if (dirty[0] &
 	      /*getSelectionLabel*/
 	      4096) switch_instance_changes.getSelectionLabel =
@@ -14190,19 +14303,19 @@
 	    }
 
 	  };
-	} // (832:2) {#if showSelectedItem && isClearable && !isDisabled && !isWaiting}
+	} // (842:2) {#if showSelectedItem && isClearable && !isDisabled && !isWaiting}
 
 
-	function create_if_block_2$2(ctx) {
+	function create_if_block_3$2(ctx) {
 	  let div;
 	  let mounted;
 	  let dispose;
 	  return {
 	    c() {
 	      div = element("div");
-	      div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation" class="svelte-2eeumy"><path fill="currentColor" d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124
+	      div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation" class="svelte-1kmtf2c"><path fill="currentColor" d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124
           l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
-	      attr(div, "class", "clearSelect svelte-2eeumy");
+	      attr(div, "class", "clearSelect svelte-1kmtf2c");
 	    },
 
 	    m(target, anchor) {
@@ -14211,7 +14324,7 @@
 	      if (!mounted) {
 	        dispose = listen(div, "click", prevent_default(
 	        /*handleClear*/
-	        ctx[19]));
+	        ctx[22]));
 	        mounted = true;
 	      }
 	    },
@@ -14225,32 +14338,117 @@
 	    }
 
 	  };
-	} // (848:2) {#if showChevron && !selectedValue || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem))}
+	} // (858:2) {#if showIndicator || (showChevron && !selectedValue || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
 
 
 	function create_if_block_1$3(ctx) {
 	  let div;
+
+	  function select_block_type_1(ctx, dirty) {
+	    if (
+	    /*indicatorSvg*/
+	    ctx[21]) return create_if_block_2$2;
+	    return create_else_block$2;
+	  }
+
+	  let current_block_type = select_block_type_1(ctx);
+	  let if_block = current_block_type(ctx);
 	  return {
 	    c() {
 	      div = element("div");
-	      div.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 20 20" focusable="false" class="css-19bqh2r svelte-2eeumy"><path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747
-          3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0
-          1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502
-          0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0
-          0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path></svg>`;
-	      attr(div, "class", "indicator svelte-2eeumy");
+	      if_block.c();
+	      attr(div, "class", "indicator svelte-1kmtf2c");
 	    },
 
 	    m(target, anchor) {
 	      insert(target, div, anchor);
+	      if_block.m(div, null);
+	    },
+
+	    p(ctx, dirty) {
+	      if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+	        if_block.p(ctx, dirty);
+	      } else {
+	        if_block.d(1);
+	        if_block = current_block_type(ctx);
+
+	        if (if_block) {
+	          if_block.c();
+	          if_block.m(div, null);
+	        }
+	      }
 	    },
 
 	    d(detaching) {
 	      if (detaching) detach(div);
+	      if_block.d();
 	    }
 
 	  };
-	} // (866:2) {#if isWaiting}
+	} // (862:6) {:else}
+
+
+	function create_else_block$2(ctx) {
+	  let svg;
+	  let path;
+	  return {
+	    c() {
+	      svg = svg_element("svg");
+	      path = svg_element("path");
+	      attr(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747\n            3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0\n            1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502\n            0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0\n            0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
+	      attr(svg, "width", "100%");
+	      attr(svg, "height", "100%");
+	      attr(svg, "viewBox", "0 0 20 20");
+	      attr(svg, "focusable", "false");
+	      attr(svg, "class", "svelte-1kmtf2c");
+	    },
+
+	    m(target, anchor) {
+	      insert(target, svg, anchor);
+	      append(svg, path);
+	    },
+
+	    p: noop,
+
+	    d(detaching) {
+	      if (detaching) detach(svg);
+	    }
+
+	  };
+	} // (860:6) {#if indicatorSvg}
+
+
+	function create_if_block_2$2(ctx) {
+	  let html_tag;
+	  let html_anchor;
+	  return {
+	    c() {
+	      html_anchor = empty();
+	      html_tag = new HtmlTag(html_anchor);
+	    },
+
+	    m(target, anchor) {
+	      html_tag.m(
+	      /*indicatorSvg*/
+	      ctx[21], target, anchor);
+	      insert(target, html_anchor, anchor);
+	    },
+
+	    p(ctx, dirty) {
+	      if (dirty[0] &
+	      /*indicatorSvg*/
+	      2097152) html_tag.p(
+	      /*indicatorSvg*/
+	      ctx[21]);
+	    },
+
+	    d(detaching) {
+	      if (detaching) detach(html_anchor);
+	      if (detaching) html_tag.d();
+	    }
+
+	  };
+	} // (879:2) {#if isWaiting}
 
 
 	function create_if_block$d(ctx) {
@@ -14258,8 +14456,8 @@
 	  return {
 	    c() {
 	      div = element("div");
-	      div.innerHTML = `<svg class="spinner_icon svelte-2eeumy" viewBox="25 25 50 50"><circle class="spinner_path svelte-2eeumy" cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-miterlimit="10"></circle></svg>`;
-	      attr(div, "class", "spinner svelte-2eeumy");
+	      div.innerHTML = `<svg class="spinner_icon svelte-1kmtf2c" viewBox="25 25 50 50"><circle class="spinner_path svelte-1kmtf2c" cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-miterlimit="10"></circle></svg>`;
+	      attr(div, "class", "spinner svelte-1kmtf2c");
 	    },
 
 	    m(target, anchor) {
@@ -14287,20 +14485,20 @@
 	  let dispose;
 	  let if_block0 =
 	  /*Icon*/
-	  ctx[16] && create_if_block_6(ctx);
+	  ctx[16] && create_if_block_7(ctx);
 	  let if_block1 =
 	  /*isMulti*/
 	  ctx[8] &&
 	  /*selectedValue*/
-	  ctx[3] &&
+	  ctx[0] &&
 	  /*selectedValue*/
-	  ctx[3].length > 0 && create_if_block_5(ctx);
+	  ctx[0].length > 0 && create_if_block_6(ctx);
 
 	  function select_block_type(ctx, dirty) {
 	    if (
 	    /*isDisabled*/
-	    ctx[9]) return create_if_block_4;
-	    return create_else_block$2;
+	    ctx[9]) return create_if_block_5;
+	    return create_else_block_1$1;
 	  }
 
 	  let current_block_type = select_block_type(ctx);
@@ -14309,21 +14507,23 @@
 	  /*isMulti*/
 	  ctx[8] &&
 	  /*showSelectedItem*/
-	  ctx[22] && create_if_block_3$2(ctx);
+	  ctx[25] && create_if_block_4(ctx);
 	  let if_block4 =
 	  /*showSelectedItem*/
-	  ctx[22] &&
+	  ctx[25] &&
 	  /*isClearable*/
 	  ctx[15] && !
 	  /*isDisabled*/
 	  ctx[9] && !
 	  /*isWaiting*/
-	  ctx[5] && create_if_block_2$2(ctx);
+	  ctx[5] && create_if_block_3$2(ctx);
 	  let if_block5 = (
+	  /*showIndicator*/
+	  ctx[19] ||
 	  /*showChevron*/
-	  ctx[17] && !
+	  ctx[18] && !
 	  /*selectedValue*/
-	  ctx[3] || !
+	  ctx[0] || !
 	  /*isSearchable*/
 	  ctx[13] && !
 	  /*isDisabled*/
@@ -14331,11 +14531,11 @@
 	  /*isWaiting*/
 	  ctx[5] && (
 	  /*showSelectedItem*/
-	  ctx[22] && !
+	  ctx[25] && !
 	  /*isClearable*/
 	  ctx[15] || !
 	  /*showSelectedItem*/
-	  ctx[22])) && create_if_block_1$3();
+	  ctx[25])) && create_if_block_1$3(ctx);
 	  let if_block6 =
 	  /*isWaiting*/
 	  ctx[5] && create_if_block$d();
@@ -14357,7 +14557,7 @@
 	      if (if_block6) if_block6.c();
 	      attr(div, "class", div_class_value = "selectContainer " +
 	      /*containerClasses*/
-	      ctx[18] + " svelte-2eeumy");
+	      ctx[20] + " svelte-1kmtf2c");
 	      attr(div, "style",
 	      /*containerStyles*/
 	      ctx[11]);
@@ -14372,7 +14572,7 @@
 	      ctx[9]);
 	      toggle_class(div, "focused",
 	      /*isFocused*/
-	      ctx[2]);
+	      ctx[4]);
 	    },
 
 	    m(target, anchor) {
@@ -14392,19 +14592,19 @@
 	      if (if_block6) if_block6.m(div, null);
 	      /*div_binding*/
 
-	      ctx[76](div);
+	      ctx[63](div);
 	      current = true;
 
 	      if (!mounted) {
 	        dispose = [listen(window, "click",
 	        /*handleWindowClick*/
-	        ctx[28]), listen(window, "keydown",
+	        ctx[31]), listen(window, "keydown",
 	        /*handleKeyDown*/
-	        ctx[26]), listen(window, "resize",
+	        ctx[29]), listen(window, "resize",
 	        /*getPosition*/
-	        ctx[25]), listen(div, "click",
+	        ctx[28]), listen(div, "click",
 	        /*handleClick*/
-	        ctx[29])];
+	        ctx[32])];
 	        mounted = true;
 	      }
 	    },
@@ -14422,7 +14622,7 @@
 	            transition_in(if_block0, 1);
 	          }
 	        } else {
-	          if_block0 = create_if_block_6(ctx);
+	          if_block0 = create_if_block_7(ctx);
 	          if_block0.c();
 	          transition_in(if_block0, 1);
 	          if_block0.m(div, t0);
@@ -14439,19 +14639,19 @@
 	      /*isMulti*/
 	      ctx[8] &&
 	      /*selectedValue*/
-	      ctx[3] &&
+	      ctx[0] &&
 	      /*selectedValue*/
-	      ctx[3].length > 0) {
+	      ctx[0].length > 0) {
 	        if (if_block1) {
 	          if_block1.p(ctx, dirty);
 
 	          if (dirty[0] &
 	          /*isMulti, selectedValue*/
-	          264) {
+	          257) {
 	            transition_in(if_block1, 1);
 	          }
 	        } else {
-	          if_block1 = create_if_block_5(ctx);
+	          if_block1 = create_if_block_6(ctx);
 	          if_block1.c();
 	          transition_in(if_block1, 1);
 	          if_block1.m(div, t1);
@@ -14480,17 +14680,17 @@
 	      /*isMulti*/
 	      ctx[8] &&
 	      /*showSelectedItem*/
-	      ctx[22]) {
+	      ctx[25]) {
 	        if (if_block3) {
 	          if_block3.p(ctx, dirty);
 
 	          if (dirty[0] &
 	          /*isMulti, showSelectedItem*/
-	          4194560) {
+	          33554688) {
 	            transition_in(if_block3, 1);
 	          }
 	        } else {
-	          if_block3 = create_if_block_3$2(ctx);
+	          if_block3 = create_if_block_4(ctx);
 	          if_block3.c();
 	          transition_in(if_block3, 1);
 	          if_block3.m(div, t3);
@@ -14505,7 +14705,7 @@
 
 	      if (
 	      /*showSelectedItem*/
-	      ctx[22] &&
+	      ctx[25] &&
 	      /*isClearable*/
 	      ctx[15] && !
 	      /*isDisabled*/
@@ -14515,7 +14715,7 @@
 	        if (if_block4) {
 	          if_block4.p(ctx, dirty);
 	        } else {
-	          if_block4 = create_if_block_2$2(ctx);
+	          if_block4 = create_if_block_3$2(ctx);
 	          if_block4.c();
 	          if_block4.m(div, t4);
 	        }
@@ -14525,10 +14725,12 @@
 	      }
 
 	      if (
+	      /*showIndicator*/
+	      ctx[19] ||
 	      /*showChevron*/
-	      ctx[17] && !
+	      ctx[18] && !
 	      /*selectedValue*/
-	      ctx[3] || !
+	      ctx[0] || !
 	      /*isSearchable*/
 	      ctx[13] && !
 	      /*isDisabled*/
@@ -14536,13 +14738,15 @@
 	      /*isWaiting*/
 	      ctx[5] && (
 	      /*showSelectedItem*/
-	      ctx[22] && !
+	      ctx[25] && !
 	      /*isClearable*/
 	      ctx[15] || !
 	      /*showSelectedItem*/
-	      ctx[22])) {
-	        if (if_block5) ; else {
-	          if_block5 = create_if_block_1$3();
+	      ctx[25])) {
+	        if (if_block5) {
+	          if_block5.p(ctx, dirty);
+	        } else {
+	          if_block5 = create_if_block_1$3(ctx);
 	          if_block5.c();
 	          if_block5.m(div, t5);
 	        }
@@ -14566,9 +14770,9 @@
 
 	      if (!current || dirty[0] &
 	      /*containerClasses*/
-	      262144 && div_class_value !== (div_class_value = "selectContainer " +
+	      1048576 && div_class_value !== (div_class_value = "selectContainer " +
 	      /*containerClasses*/
-	      ctx[18] + " svelte-2eeumy")) {
+	      ctx[20] + " svelte-1kmtf2c")) {
 	        attr(div, "class", div_class_value);
 	      }
 
@@ -14582,7 +14786,7 @@
 
 	      if (dirty[0] &
 	      /*containerClasses, hasError*/
-	      263168) {
+	      1049600) {
 	        toggle_class(div, "hasError",
 	        /*hasError*/
 	        ctx[10]);
@@ -14590,7 +14794,7 @@
 
 	      if (dirty[0] &
 	      /*containerClasses, isMulti*/
-	      262400) {
+	      1048832) {
 	        toggle_class(div, "multiSelect",
 	        /*isMulti*/
 	        ctx[8]);
@@ -14598,7 +14802,7 @@
 
 	      if (dirty[0] &
 	      /*containerClasses, isDisabled*/
-	      262656) {
+	      1049088) {
 	        toggle_class(div, "disabled",
 	        /*isDisabled*/
 	        ctx[9]);
@@ -14606,10 +14810,10 @@
 
 	      if (dirty[0] &
 	      /*containerClasses, isFocused*/
-	      262148) {
+	      1048592) {
 	        toggle_class(div, "focused",
 	        /*isFocused*/
-	        ctx[2]);
+	        ctx[4]);
 	      }
 	    },
 
@@ -14639,7 +14843,7 @@
 	      if (if_block6) if_block6.d();
 	      /*div_binding*/
 
-	      ctx[76](null);
+	      ctx[63](null);
 	      mounted = false;
 	      run_all(dispose);
 	    }
@@ -14792,14 +14996,22 @@
 	    Icon = undefined
 	  } = $$props;
 	  let {
+	    iconProps = {}
+	  } = $$props;
+	  let {
 	    showChevron = false
+	  } = $$props;
+	  let {
+	    showIndicator = false
 	  } = $$props;
 	  let {
 	    containerClasses = ""
 	  } = $$props;
+	  let {
+	    indicatorSvg = undefined
+	  } = $$props;
 	  let target;
 	  let activeSelectedValue;
-	  let _items = [];
 	  let originalItemsClone;
 	  let prev_selectedValue;
 	  let prev_listOpen;
@@ -14809,17 +15021,33 @@
 
 	  async function resetFilter() {
 	    await tick();
-	    $$invalidate(4, filterText = "");
+	    $$invalidate(1, filterText = "");
 	  }
 
 	  let getItemsHasInvoked = false;
 	  const getItems = debounce(async () => {
 	    getItemsHasInvoked = true;
 	    $$invalidate(5, isWaiting = true);
-	    $$invalidate(30, items = await loadOptions(filterText));
+	    let res = await loadOptions(filterText).catch(err => {
+	      console.warn("svelte-select loadOptions error :>> ", err);
+	      dispatch("error", {
+	        type: "loadOptions",
+	        details: err
+	      });
+	    });
+
+	    if (res) {
+	      $$invalidate(33, items = [...res]);
+	      dispatch("loaded", {
+	        items
+	      });
+	    } else {
+	      $$invalidate(33, items = []);
+	    }
+
 	    $$invalidate(5, isWaiting = false);
-	    $$invalidate(2, isFocused = true);
-	    $$invalidate(31, listOpen = true);
+	    $$invalidate(4, isFocused = true);
+	    $$invalidate(35, listOpen = true);
 	  }, loadOptionsInterval);
 	  let _inputAttributes = {};
 	  beforeUpdate(() => {
@@ -14849,17 +15077,17 @@
 
 	    if (filterText !== prev_filterText) {
 	      if (filterText.length > 0) {
-	        $$invalidate(2, isFocused = true);
-	        $$invalidate(31, listOpen = true);
+	        $$invalidate(4, isFocused = true);
+	        $$invalidate(35, listOpen = true);
 
 	        if (loadOptions) {
 	          getItems();
 	        } else {
 	          loadList();
-	          $$invalidate(31, listOpen = true);
+	          $$invalidate(35, listOpen = true);
 
 	          if (isMulti) {
-	            $$invalidate(20, activeSelectedValue = undefined);
+	            $$invalidate(23, activeSelectedValue = undefined);
 	          }
 	        }
 	      } else {
@@ -14934,7 +15162,7 @@
 	          noDuplicates = false;
 	        }
 	      });
-	      $$invalidate(3, selectedValue = uniqueValues);
+	      if (!noDuplicates) $$invalidate(0, selectedValue = uniqueValues);
 	    }
 
 	    return noDuplicates;
@@ -14955,9 +15183,9 @@
 	    const itemToRemove = selectedValue[detail ? detail.i : selectedValue.length - 1];
 
 	    if (selectedValue.length === 1) {
-	      $$invalidate(3, selectedValue = undefined);
+	      $$invalidate(0, selectedValue = undefined);
 	    } else {
-	      $$invalidate(3, selectedValue = selectedValue.filter(item => {
+	      $$invalidate(0, selectedValue = selectedValue.filter(item => {
 	        return item !== itemToRemove;
 	      }));
 	    }
@@ -15000,18 +15228,18 @@
 	    switch (e.key) {
 	      case "ArrowDown":
 	        e.preventDefault();
-	        $$invalidate(31, listOpen = true);
-	        $$invalidate(20, activeSelectedValue = undefined);
+	        $$invalidate(35, listOpen = true);
+	        $$invalidate(23, activeSelectedValue = undefined);
 	        break;
 
 	      case "ArrowUp":
 	        e.preventDefault();
-	        $$invalidate(31, listOpen = true);
-	        $$invalidate(20, activeSelectedValue = undefined);
+	        $$invalidate(35, listOpen = true);
+	        $$invalidate(23, activeSelectedValue = undefined);
 	        break;
 
 	      case "Tab":
-	        if (!listOpen) $$invalidate(2, isFocused = false);
+	        if (!listOpen) $$invalidate(4, isFocused = false);
 	        break;
 
 	      case "Backspace":
@@ -15020,7 +15248,7 @@
 	        if (isMulti && selectedValue && selectedValue.length > 0) {
 	          handleMultiItemClear(activeSelectedValue !== undefined ? activeSelectedValue : selectedValue.length - 1);
 	          if (activeSelectedValue === 0 || activeSelectedValue === undefined) break;
-	          $$invalidate(20, activeSelectedValue = selectedValue.length > activeSelectedValue ? activeSelectedValue - 1 : undefined);
+	          $$invalidate(23, activeSelectedValue = selectedValue.length > activeSelectedValue ? activeSelectedValue - 1 : undefined);
 	        }
 
 	        break;
@@ -15032,9 +15260,9 @@
 	        if (!isMulti || filterText.length > 0) return;
 
 	        if (activeSelectedValue === undefined) {
-	          $$invalidate(20, activeSelectedValue = selectedValue.length - 1);
+	          $$invalidate(23, activeSelectedValue = selectedValue.length - 1);
 	        } else if (selectedValue.length > activeSelectedValue && activeSelectedValue !== 0) {
-	          $$invalidate(20, activeSelectedValue -= 1);
+	          $$invalidate(23, activeSelectedValue -= 1);
 	        }
 
 	        break;
@@ -15046,9 +15274,9 @@
 	        if (!isMulti || filterText.length > 0 || activeSelectedValue === undefined) return;
 
 	        if (activeSelectedValue === selectedValue.length - 1) {
-	          $$invalidate(20, activeSelectedValue = undefined);
+	          $$invalidate(23, activeSelectedValue = undefined);
 	        } else if (activeSelectedValue < selectedValue.length - 1) {
-	          $$invalidate(20, activeSelectedValue += 1);
+	          $$invalidate(23, activeSelectedValue += 1);
 	        }
 
 	        break;
@@ -15056,20 +15284,20 @@
 	  }
 
 	  function handleFocus() {
-	    $$invalidate(2, isFocused = true);
+	    $$invalidate(4, isFocused = true);
 	    if (input) input.focus();
 	  }
 
 	  function removeList() {
 	    resetFilter();
-	    $$invalidate(20, activeSelectedValue = undefined);
+	    $$invalidate(23, activeSelectedValue = undefined);
 	    if (!list) return;
 	    list.$destroy();
-	    $$invalidate(32, list = undefined);
+	    $$invalidate(34, list = undefined);
 	    if (!target) return;
 	    if (target.parentNode) target.parentNode.removeChild(target);
 	    target = undefined;
-	    $$invalidate(32, list);
+	    $$invalidate(34, list);
 	    target = target;
 	  }
 
@@ -15077,21 +15305,21 @@
 	    if (!container) return;
 	    const eventTarget = event.path && event.path.length > 0 ? event.path[0] : event.target;
 	    if (container.contains(eventTarget)) return;
-	    $$invalidate(2, isFocused = false);
-	    $$invalidate(31, listOpen = false);
-	    $$invalidate(20, activeSelectedValue = undefined);
+	    $$invalidate(4, isFocused = false);
+	    $$invalidate(35, listOpen = false);
+	    $$invalidate(23, activeSelectedValue = undefined);
 	    if (input) input.blur();
 	  }
 
 	  function handleClick() {
 	    if (isDisabled) return;
-	    $$invalidate(2, isFocused = true);
-	    $$invalidate(31, listOpen = !listOpen);
+	    $$invalidate(4, isFocused = true);
+	    $$invalidate(35, listOpen = !listOpen);
 	  }
 
 	  function handleClear() {
-	    $$invalidate(3, selectedValue = undefined);
-	    $$invalidate(31, listOpen = false);
+	    $$invalidate(0, selectedValue = undefined);
+	    $$invalidate(35, listOpen = false);
 	    dispatch("clear", selectedValue);
 	    handleFocus();
 	  }
@@ -15123,10 +15351,10 @@
 	      "z-index": 2,
 	      visibility: "hidden"
 	    });
-	    $$invalidate(32, list);
+	    $$invalidate(34, list);
 	    target = target;
 	    if (container) container.appendChild(target);
-	    $$invalidate(32, list = new List({
+	    $$invalidate(34, list = new List({
 	      target,
 	      props: data
 	    }));
@@ -15140,16 +15368,16 @@
 
 	        if (!item.isGroupHeader || item.isSelectable) {
 	          if (isMulti) {
-	            $$invalidate(3, selectedValue = selectedValue ? selectedValue.concat([item]) : [item]);
+	            $$invalidate(0, selectedValue = selectedValue ? selectedValue.concat([item]) : [item]);
 	          } else {
-	            $$invalidate(3, selectedValue = item);
+	            $$invalidate(0, selectedValue = item);
 	          }
 
 	          resetFilter();
-	          $$invalidate(3, selectedValue), $$invalidate(43, optionIdentifier);
+	          ($$invalidate(0, selectedValue), $$invalidate(46, optionIdentifier)), $$invalidate(8, isMulti);
 	          setTimeout(() => {
-	            $$invalidate(31, listOpen = false);
-	            $$invalidate(20, activeSelectedValue = undefined);
+	            $$invalidate(35, listOpen = false);
+	            $$invalidate(23, activeSelectedValue = undefined);
 	          });
 	        }
 	      }
@@ -15160,21 +15388,21 @@
 	      } = event;
 
 	      if (isMulti) {
-	        $$invalidate(3, selectedValue = selectedValue || []);
-	        $$invalidate(3, selectedValue = [...selectedValue, createItem(detail)]);
+	        $$invalidate(0, selectedValue = selectedValue || []);
+	        $$invalidate(0, selectedValue = [...selectedValue, createItem(detail)]);
 	      } else {
-	        $$invalidate(3, selectedValue = createItem(detail));
+	        $$invalidate(0, selectedValue = createItem(detail));
 	      }
 
-	      $$invalidate(4, filterText = "");
-	      $$invalidate(31, listOpen = false);
-	      $$invalidate(20, activeSelectedValue = undefined);
+	      $$invalidate(1, filterText = "");
+	      $$invalidate(35, listOpen = false);
+	      $$invalidate(23, activeSelectedValue = undefined);
 	      resetFilter();
 	    });
 	    list.$on("closeList", () => {
-	      $$invalidate(31, listOpen = false);
+	      $$invalidate(35, listOpen = false);
 	    });
-	    $$invalidate(32, list), target = target;
+	    $$invalidate(34, list), target = target;
 	    getPosition();
 	  }
 
@@ -15183,22 +15411,7 @@
 	    if (listOpen) loadList();
 
 	    if (items && items.length > 0) {
-	      $$invalidate(56, originalItemsClone = JSON.stringify(items));
-	    }
-
-	    if (selectedValue) {
-	      if (isMulti) {
-	        $$invalidate(3, selectedValue = selectedValue.map(item => {
-	          if (typeof item === "string") {
-	            return {
-	              value: item,
-	              label: item
-	            };
-	          } else {
-	            return item;
-	          }
-	        }));
-	      }
+	      $$invalidate(58, originalItemsClone = JSON.stringify(items));
 	    }
 	  });
 	  onDestroy(() => {
@@ -15207,142 +15420,159 @@
 
 	  function input_1_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(1, input = $$value);
+	      input = $$value;
+	      $$invalidate(3, input);
 	    });
 	  }
 
 	  function input_1_input_handler() {
 	    filterText = this.value;
-	    $$invalidate(4, filterText);
+	    $$invalidate(1, filterText);
 	  }
 
 	  function input_1_binding_1($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(1, input = $$value);
+	      input = $$value;
+	      $$invalidate(3, input);
 	    });
 	  }
 
 	  function input_1_input_handler_1() {
 	    filterText = this.value;
-	    $$invalidate(4, filterText);
+	    $$invalidate(1, filterText);
 	  }
 
 	  function div_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](() => {
-	      $$invalidate(0, container = $$value);
+	      container = $$value;
+	      $$invalidate(2, container);
 	    });
 	  }
 
-	  $$self.$set = $$props => {
-	    if ("container" in $$props) $$invalidate(0, container = $$props.container);
-	    if ("input" in $$props) $$invalidate(1, input = $$props.input);
-	    if ("Item" in $$props) $$invalidate(34, Item$1 = $$props.Item);
+	  $$self.$$set = $$props => {
+	    if ("container" in $$props) $$invalidate(2, container = $$props.container);
+	    if ("input" in $$props) $$invalidate(3, input = $$props.input);
+	    if ("Item" in $$props) $$invalidate(37, Item$1 = $$props.Item);
 	    if ("Selection" in $$props) $$invalidate(6, Selection$1 = $$props.Selection);
 	    if ("MultiSelection" in $$props) $$invalidate(7, MultiSelection$1 = $$props.MultiSelection);
 	    if ("isMulti" in $$props) $$invalidate(8, isMulti = $$props.isMulti);
 	    if ("isDisabled" in $$props) $$invalidate(9, isDisabled = $$props.isDisabled);
-	    if ("isCreatable" in $$props) $$invalidate(35, isCreatable = $$props.isCreatable);
-	    if ("isFocused" in $$props) $$invalidate(2, isFocused = $$props.isFocused);
-	    if ("selectedValue" in $$props) $$invalidate(3, selectedValue = $$props.selectedValue);
-	    if ("filterText" in $$props) $$invalidate(4, filterText = $$props.filterText);
-	    if ("placeholder" in $$props) $$invalidate(36, placeholder = $$props.placeholder);
-	    if ("items" in $$props) $$invalidate(30, items = $$props.items);
-	    if ("itemFilter" in $$props) $$invalidate(37, itemFilter = $$props.itemFilter);
-	    if ("groupBy" in $$props) $$invalidate(38, groupBy = $$props.groupBy);
-	    if ("groupFilter" in $$props) $$invalidate(39, groupFilter = $$props.groupFilter);
-	    if ("isGroupHeaderSelectable" in $$props) $$invalidate(40, isGroupHeaderSelectable = $$props.isGroupHeaderSelectable);
-	    if ("getGroupHeaderLabel" in $$props) $$invalidate(41, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
-	    if ("getOptionLabel" in $$props) $$invalidate(42, getOptionLabel = $$props.getOptionLabel);
-	    if ("optionIdentifier" in $$props) $$invalidate(43, optionIdentifier = $$props.optionIdentifier);
-	    if ("loadOptions" in $$props) $$invalidate(44, loadOptions = $$props.loadOptions);
+	    if ("isCreatable" in $$props) $$invalidate(38, isCreatable = $$props.isCreatable);
+	    if ("isFocused" in $$props) $$invalidate(4, isFocused = $$props.isFocused);
+	    if ("selectedValue" in $$props) $$invalidate(0, selectedValue = $$props.selectedValue);
+	    if ("filterText" in $$props) $$invalidate(1, filterText = $$props.filterText);
+	    if ("placeholder" in $$props) $$invalidate(39, placeholder = $$props.placeholder);
+	    if ("items" in $$props) $$invalidate(33, items = $$props.items);
+	    if ("itemFilter" in $$props) $$invalidate(40, itemFilter = $$props.itemFilter);
+	    if ("groupBy" in $$props) $$invalidate(41, groupBy = $$props.groupBy);
+	    if ("groupFilter" in $$props) $$invalidate(42, groupFilter = $$props.groupFilter);
+	    if ("isGroupHeaderSelectable" in $$props) $$invalidate(43, isGroupHeaderSelectable = $$props.isGroupHeaderSelectable);
+	    if ("getGroupHeaderLabel" in $$props) $$invalidate(44, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
+	    if ("getOptionLabel" in $$props) $$invalidate(45, getOptionLabel = $$props.getOptionLabel);
+	    if ("optionIdentifier" in $$props) $$invalidate(46, optionIdentifier = $$props.optionIdentifier);
+	    if ("loadOptions" in $$props) $$invalidate(47, loadOptions = $$props.loadOptions);
 	    if ("hasError" in $$props) $$invalidate(10, hasError = $$props.hasError);
 	    if ("containerStyles" in $$props) $$invalidate(11, containerStyles = $$props.containerStyles);
 	    if ("getSelectionLabel" in $$props) $$invalidate(12, getSelectionLabel = $$props.getSelectionLabel);
-	    if ("createGroupHeaderItem" in $$props) $$invalidate(45, createGroupHeaderItem = $$props.createGroupHeaderItem);
-	    if ("createItem" in $$props) $$invalidate(46, createItem = $$props.createItem);
+	    if ("createGroupHeaderItem" in $$props) $$invalidate(48, createGroupHeaderItem = $$props.createGroupHeaderItem);
+	    if ("createItem" in $$props) $$invalidate(49, createItem = $$props.createItem);
 	    if ("isSearchable" in $$props) $$invalidate(13, isSearchable = $$props.isSearchable);
 	    if ("inputStyles" in $$props) $$invalidate(14, inputStyles = $$props.inputStyles);
 	    if ("isClearable" in $$props) $$invalidate(15, isClearable = $$props.isClearable);
 	    if ("isWaiting" in $$props) $$invalidate(5, isWaiting = $$props.isWaiting);
-	    if ("listPlacement" in $$props) $$invalidate(47, listPlacement = $$props.listPlacement);
-	    if ("listOpen" in $$props) $$invalidate(31, listOpen = $$props.listOpen);
-	    if ("list" in $$props) $$invalidate(32, list = $$props.list);
-	    if ("isVirtualList" in $$props) $$invalidate(48, isVirtualList = $$props.isVirtualList);
-	    if ("loadOptionsInterval" in $$props) $$invalidate(49, loadOptionsInterval = $$props.loadOptionsInterval);
-	    if ("noOptionsMessage" in $$props) $$invalidate(50, noOptionsMessage = $$props.noOptionsMessage);
-	    if ("hideEmptyState" in $$props) $$invalidate(51, hideEmptyState = $$props.hideEmptyState);
-	    if ("filteredItems" in $$props) $$invalidate(33, filteredItems = $$props.filteredItems);
-	    if ("inputAttributes" in $$props) $$invalidate(52, inputAttributes = $$props.inputAttributes);
-	    if ("listAutoWidth" in $$props) $$invalidate(53, listAutoWidth = $$props.listAutoWidth);
-	    if ("itemHeight" in $$props) $$invalidate(54, itemHeight = $$props.itemHeight);
+	    if ("listPlacement" in $$props) $$invalidate(50, listPlacement = $$props.listPlacement);
+	    if ("listOpen" in $$props) $$invalidate(35, listOpen = $$props.listOpen);
+	    if ("list" in $$props) $$invalidate(34, list = $$props.list);
+	    if ("isVirtualList" in $$props) $$invalidate(51, isVirtualList = $$props.isVirtualList);
+	    if ("loadOptionsInterval" in $$props) $$invalidate(52, loadOptionsInterval = $$props.loadOptionsInterval);
+	    if ("noOptionsMessage" in $$props) $$invalidate(53, noOptionsMessage = $$props.noOptionsMessage);
+	    if ("hideEmptyState" in $$props) $$invalidate(54, hideEmptyState = $$props.hideEmptyState);
+	    if ("filteredItems" in $$props) $$invalidate(36, filteredItems = $$props.filteredItems);
+	    if ("inputAttributes" in $$props) $$invalidate(55, inputAttributes = $$props.inputAttributes);
+	    if ("listAutoWidth" in $$props) $$invalidate(56, listAutoWidth = $$props.listAutoWidth);
+	    if ("itemHeight" in $$props) $$invalidate(57, itemHeight = $$props.itemHeight);
 	    if ("Icon" in $$props) $$invalidate(16, Icon = $$props.Icon);
-	    if ("showChevron" in $$props) $$invalidate(17, showChevron = $$props.showChevron);
-	    if ("containerClasses" in $$props) $$invalidate(18, containerClasses = $$props.containerClasses);
+	    if ("iconProps" in $$props) $$invalidate(17, iconProps = $$props.iconProps);
+	    if ("showChevron" in $$props) $$invalidate(18, showChevron = $$props.showChevron);
+	    if ("showIndicator" in $$props) $$invalidate(19, showIndicator = $$props.showIndicator);
+	    if ("containerClasses" in $$props) $$invalidate(20, containerClasses = $$props.containerClasses);
+	    if ("indicatorSvg" in $$props) $$invalidate(21, indicatorSvg = $$props.indicatorSvg);
 	  };
-
-	  let disabled;
 	  let showSelectedItem;
 	  let placeholderText;
 
 	  $$self.$$.update = () => {
 	    if ($$self.$$.dirty[0] &
 	    /*isDisabled*/
-	    512) {
-	       disabled = isDisabled;
-	    }
+	    512) ;
 
 	    if ($$self.$$.dirty[0] &
-	    /*selectedValue*/
-	    8 | $$self.$$.dirty[1] &
+	    /*selectedValue, isMulti*/
+	    257 | $$self.$$.dirty[1] &
 	    /*optionIdentifier*/
-	    4096) {
+	    32768) {
 	       {
 	        if (typeof selectedValue === "string") {
-	          $$invalidate(3, selectedValue = {
+	          $$invalidate(0, selectedValue = {
 	            [optionIdentifier]: selectedValue,
 	            label: selectedValue
 	          });
+	        } else if (isMulti && Array.isArray(selectedValue) && selectedValue.length > 0) {
+	          $$invalidate(0, selectedValue = selectedValue.map(item => typeof item === "string" ? {
+	            value: item,
+	            label: item
+	          } : item));
 	        }
+	      }
+	    }
+
+	    if ($$self.$$.dirty[1] &
+	    /*noOptionsMessage, list*/
+	    4194312) {
+	       {
+	        if (noOptionsMessage && list) list.$set({
+	          noOptionsMessage
+	        });
 	      }
 	    }
 
 	    if ($$self.$$.dirty[0] &
 	    /*selectedValue, filterText*/
-	    24) {
-	       $$invalidate(22, showSelectedItem = selectedValue && filterText.length === 0);
+	    3) {
+	       $$invalidate(25, showSelectedItem = selectedValue && filterText.length === 0);
 	    }
 
 	    if ($$self.$$.dirty[0] &
 	    /*selectedValue*/
-	    8 | $$self.$$.dirty[1] &
+	    1 | $$self.$$.dirty[1] &
 	    /*placeholder*/
-	    32) {
-	       $$invalidate(23, placeholderText = selectedValue ? "" : placeholder);
+	    256) {
+	       $$invalidate(26, placeholderText = selectedValue ? "" : placeholder);
 	    }
 
 	    if ($$self.$$.dirty[0] &
 	    /*isSearchable*/
 	    8192 | $$self.$$.dirty[1] &
 	    /*inputAttributes*/
-	    2097152) {
+	    16777216) {
 	       {
-	        $$invalidate(21, _inputAttributes = Object.assign(inputAttributes, {
+	        $$invalidate(24, _inputAttributes = Object.assign({
 	          autocomplete: "off",
 	          autocorrect: "off",
 	          spellcheck: false
-	        }));
+	        }, inputAttributes));
 
 	        if (!isSearchable) {
-	          $$invalidate(21, _inputAttributes.readonly = true, _inputAttributes);
+	          $$invalidate(24, _inputAttributes.readonly = true, _inputAttributes);
 	        }
 	      }
 	    }
 
 	    if ($$self.$$.dirty[0] &
-	    /*items, filterText, isMulti, selectedValue*/
-	    1073742104 | $$self.$$.dirty[1] &
-	    /*loadOptions, originalItemsClone, optionIdentifier, itemFilter, getOptionLabel, groupBy, createGroupHeaderItem, isGroupHeaderSelectable, groupFilter*/
-	    33586112) {
+	    /*filterText, isMulti, selectedValue*/
+	    259 | $$self.$$.dirty[1] &
+	    /*items, loadOptions, originalItemsClone, optionIdentifier, itemFilter, getOptionLabel, groupBy, createGroupHeaderItem, isGroupHeaderSelectable, groupFilter*/
+	    134471172) {
 	       {
 	        let _filteredItems;
 
@@ -15366,7 +15596,7 @@
 	            let keepItem = true;
 
 	            if (isMulti && selectedValue) {
-	              keepItem = !selectedValue.find(value => {
+	              keepItem = !selectedValue.some(value => {
 	                return value[optionIdentifier] === item[optionIdentifier];
 	              });
 	            }
@@ -15406,72 +15636,75 @@
 	          groupFilter(groupValues).forEach(groupValue => {
 	            sortedGroupedItems.push(...groups[groupValue]);
 	          });
-	          $$invalidate(33, filteredItems = sortedGroupedItems);
+	          $$invalidate(36, filteredItems = sortedGroupedItems);
 	        } else {
-	          $$invalidate(33, filteredItems = _filteredItems);
+	          $$invalidate(36, filteredItems = _filteredItems);
 	        }
 	      }
 	    }
 	  };
 
-	  return [container, input, isFocused, selectedValue, filterText, isWaiting, Selection$1, MultiSelection$1, isMulti, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, Icon, showChevron, containerClasses, handleClear, activeSelectedValue, _inputAttributes, showSelectedItem, placeholderText, handleMultiItemClear, getPosition, handleKeyDown, handleFocus, handleWindowClick, handleClick, items, listOpen, list, filteredItems, Item$1, isCreatable, placeholder, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, inputAttributes, listAutoWidth, itemHeight, target, originalItemsClone, prev_selectedValue, prev_listOpen, prev_filterText, prev_isFocused, prev_filteredItems, getItemsHasInvoked, disabled, dispatch, _items, resetFilter, getItems, checkSelectedValueForDuplicates, setList, removeList, loadList, input_1_binding, input_1_input_handler, input_1_binding_1, input_1_input_handler_1, div_binding];
+	  return [selectedValue, filterText, container, input, isFocused, isWaiting, Selection$1, MultiSelection$1, isMulti, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, Icon, iconProps, showChevron, showIndicator, containerClasses, indicatorSvg, handleClear, activeSelectedValue, _inputAttributes, showSelectedItem, placeholderText, handleMultiItemClear, getPosition, handleKeyDown, handleFocus, handleWindowClick, handleClick, items, list, listOpen, filteredItems, Item$1, isCreatable, placeholder, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, inputAttributes, listAutoWidth, itemHeight, originalItemsClone, input_1_binding, input_1_input_handler, input_1_binding_1, input_1_input_handler_1, div_binding];
 	}
 
 	class Select extends SvelteComponent {
 	  constructor(options) {
 	    super();
-	    if (!document_1.getElementById("svelte-2eeumy-style")) add_css$5();
+	    if (!document_1.getElementById("svelte-1kmtf2c-style")) add_css$5();
 	    init(this, options, instance$h, create_fragment$h, safe_not_equal, {
-	      container: 0,
-	      input: 1,
-	      Item: 34,
+	      container: 2,
+	      input: 3,
+	      Item: 37,
 	      Selection: 6,
 	      MultiSelection: 7,
 	      isMulti: 8,
 	      isDisabled: 9,
-	      isCreatable: 35,
-	      isFocused: 2,
-	      selectedValue: 3,
-	      filterText: 4,
-	      placeholder: 36,
-	      items: 30,
-	      itemFilter: 37,
-	      groupBy: 38,
-	      groupFilter: 39,
-	      isGroupHeaderSelectable: 40,
-	      getGroupHeaderLabel: 41,
-	      getOptionLabel: 42,
-	      optionIdentifier: 43,
-	      loadOptions: 44,
+	      isCreatable: 38,
+	      isFocused: 4,
+	      selectedValue: 0,
+	      filterText: 1,
+	      placeholder: 39,
+	      items: 33,
+	      itemFilter: 40,
+	      groupBy: 41,
+	      groupFilter: 42,
+	      isGroupHeaderSelectable: 43,
+	      getGroupHeaderLabel: 44,
+	      getOptionLabel: 45,
+	      optionIdentifier: 46,
+	      loadOptions: 47,
 	      hasError: 10,
 	      containerStyles: 11,
 	      getSelectionLabel: 12,
-	      createGroupHeaderItem: 45,
-	      createItem: 46,
+	      createGroupHeaderItem: 48,
+	      createItem: 49,
 	      isSearchable: 13,
 	      inputStyles: 14,
 	      isClearable: 15,
 	      isWaiting: 5,
-	      listPlacement: 47,
-	      listOpen: 31,
-	      list: 32,
-	      isVirtualList: 48,
-	      loadOptionsInterval: 49,
-	      noOptionsMessage: 50,
-	      hideEmptyState: 51,
-	      filteredItems: 33,
-	      inputAttributes: 52,
-	      listAutoWidth: 53,
-	      itemHeight: 54,
+	      listPlacement: 50,
+	      listOpen: 35,
+	      list: 34,
+	      isVirtualList: 51,
+	      loadOptionsInterval: 52,
+	      noOptionsMessage: 53,
+	      hideEmptyState: 54,
+	      filteredItems: 36,
+	      inputAttributes: 55,
+	      listAutoWidth: 56,
+	      itemHeight: 57,
 	      Icon: 16,
-	      showChevron: 17,
-	      containerClasses: 18,
-	      handleClear: 19
+	      iconProps: 17,
+	      showChevron: 18,
+	      showIndicator: 19,
+	      containerClasses: 20,
+	      indicatorSvg: 21,
+	      handleClear: 22
 	    }, [-1, -1, -1]);
 	  }
 
 	  get handleClear() {
-	    return this.$$.ctx[19];
+	    return this.$$.ctx[22];
 	  }
 
 	}
@@ -15498,6 +15731,7 @@
 	  var t6_value = window.t("timemanager", "Client") + "";
 	  var t6;
 	  var t7;
+	  var select0;
 	  var updating_selectedValue;
 	  var label2_class_value;
 	  var t8;
@@ -15516,6 +15750,7 @@
 	  var t11;
 	  var a;
 	  var t13;
+	  var select1;
 	  var updating_selectedValue_1;
 	  var label3_class_value;
 	  var t14;
@@ -15530,7 +15765,7 @@
 
 	  function select0_selectedValue_binding(value) {
 	    /*select0_selectedValue_binding*/
-	    ctx[22].call(null, value);
+	    ctx[21].call(null, value);
 	  }
 
 	  var select0_props = {
@@ -15547,7 +15782,7 @@
 	    ctx[4];
 	  }
 
-	  var select0 = new Select({
+	  select0 = new Select({
 	    props: select0_props
 	  });
 	  binding_callbacks.push(function () {
@@ -15559,7 +15794,7 @@
 
 	  function select1_selectedValue_binding(value) {
 	    /*select1_selectedValue_binding*/
-	    ctx[25].call(null, value);
+	    ctx[24].call(null, value);
 	  }
 
 	  var select1_props = {
@@ -15569,7 +15804,7 @@
 	    /*tasksWithProject*/
 	    ctx[9].filter(
 	    /*func*/
-	    ctx[24]),
+	    ctx[23]),
 	    groupBy: func_1,
 	    noOptionsMessage: window.t("timemanager", "No projects/tasks or no client selected.")
 	  };
@@ -15582,7 +15817,7 @@
 	    ctx[5];
 	  }
 
-	  var select1 = new Select({
+	  select1 = new Select({
 	    props: select1_props
 	  });
 	  binding_callbacks.push(function () {
@@ -15673,7 +15908,7 @@
 	      ctx[3]);
 	      /*input0_binding*/
 
-	      ctx[19](input0);
+	      ctx[18](input0);
 	      append(form, t2);
 	      append(form, label1);
 	      html_tag.m(raw0_value, label1);
@@ -15713,13 +15948,13 @@
 	      if (!mounted) {
 	        dispose = [listen(input0, "input",
 	        /*input0_input_handler*/
-	        ctx[18]), listen(input1, "input",
+	        ctx[17]), listen(input1, "input",
 	        /*input1_input_handler*/
-	        ctx[20]), listen(input2, "input",
+	        ctx[19]), listen(input2, "input",
 	        /*input2_input_handler*/
-	        ctx[21]), listen(a, "click", prevent_default(
+	        ctx[20]), listen(a, "click", prevent_default(
 	        /*click_handler*/
-	        ctx[23])), listen(form, "submit", prevent_default(
+	        ctx[22])), listen(form, "submit", prevent_default(
 	        /*save*/
 	        ctx[10]))];
 	        mounted = true;
@@ -15805,7 +16040,7 @@
 	      /*tasksWithProject*/
 	      ctx[9].filter(
 	      /*func*/
-	      ctx[24]);
+	      ctx[23]);
 
 	      if (!updating_selectedValue_1 && dirty &
 	      /*task*/
@@ -15865,7 +16100,7 @@
 	      if (detaching) detach(form);
 	      /*input0_binding*/
 
-	      ctx[19](null);
+	      ctx[18](null);
 	      destroy_component(select0);
 	      destroy_component(select1);
 	      mounted = false;
@@ -15951,7 +16186,6 @@
 	              response = _context.sent;
 
 	              if (response && response.ok) {
-	                show = false;
 	                document.querySelector(".app-timemanager [data-current-link]").click();
 	              }
 
@@ -15994,7 +16228,8 @@
 
 	  function input0_binding($$value) {
 	    binding_callbacks[$$value ? "unshift" : "push"](function () {
-	      $$invalidate(6, noteInput = $$value);
+	      noteInput = $$value;
+	      $$invalidate(6, noteInput);
 	    });
 	  }
 
@@ -16026,7 +16261,7 @@
 	    $$invalidate(5, task);
 	  }
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("action" in $$props) $$invalidate(12, action = $$props.action);
 	    if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
 	    if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
@@ -16034,18 +16269,14 @@
 	    if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
 	    if ("initialDate" in $$props) $$invalidate(16, initialDate = $$props.initialDate);
 	  };
-
-	  var show;
 	  var loading;
 	  var taskError;
-
-	   show = false;
 
 	   $$invalidate(7, loading = false);
 
 	   $$invalidate(8, taskError = false);
 
-	  return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, show, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_selectedValue_binding, click_handler, func, select1_selectedValue_binding];
+	  return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_selectedValue_binding, click_handler, func, select1_selectedValue_binding];
 	}
 
 	var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -16257,7 +16488,7 @@
 	    save();
 	  };
 
-	  $$self.$set = function ($$props) {
+	  $$self.$$set = function ($$props) {
 	    if ("uuid" in $$props) $$invalidate(0, uuid = $$props.uuid);
 	    if ("initialState" in $$props) $$invalidate(1, initialState = $$props.initialState);
 	    if ("action" in $$props) $$invalidate(5, action = $$props.action);
