@@ -73,7 +73,7 @@ $l = \OC::$server->getL10N('timemanager');
 				<?php } else { ?>
 					<?php if(count($_['projects']) > 0) {
 						foreach($_['projects'] as $project) { ?>
-							<div class="tm_item-row">
+							<div class="tm_item-row with-link">
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">

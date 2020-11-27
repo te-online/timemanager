@@ -13,24 +13,29 @@
 }
 
 .tm_item-row {
-	min-height: 80px;
 	width: 100%;
 	padding: 1px 10px;
 
-	&:hover,
+	&.with-link {
+		padding: 0;
+	}
+
 	a:hover,
 	a:focus {
-		background: mintcream;
+		background: var(--color-primary-light);
 	}
 
 	a {
 		display: block;
+		padding: 1px 10px 5px;
+		background: var(--color-main-background-translucent);
+		transition: background-color 0.3s ease;
 	}
 
 	&:nth-child(odd) {
 		/* background: lightgrey; */
-		border-top: 1px solid lightgrey;
-		border-bottom: 1px solid lightgrey;
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
 	}
 }
 
@@ -63,14 +68,14 @@
 }
 
 .tm_object-details a {
-	border-bottom: 1px solid #bbb;
+	border-bottom: 1px solid var(--color-loading-light);
 	padding-bottom: 4px;
 	transition: border-color 0.3s ease;
 }
 
 .tm_object-details a:hover,
 .tm_object-details a:focus {
-	border-color: #666;
+	border-color: var(--color-primary);
 }
 
 .tm_object-details h2 {
@@ -84,7 +89,7 @@
 
 .tm_summary {
 	display: flex;
-	background: #d1d1d1;
+	background: var(--color-primary-light);
 	padding: 10px;
 	margin-bottom: 50px;
 }
@@ -101,7 +106,7 @@
 .tm_new-item label {
 	text-transform: uppercase;
 	letter-spacing: 0.09em;
-	color: #444;
+	color: var(--color-text-light);
 	display: block;
 	font-size: 9pt;
 }
@@ -117,7 +122,7 @@
 
 .tm_add {
 	padding: 20px 25px 25px;
-	border: 1px solid #d1d1d1;
+	border: 1px solid var(--color-border);
 	border-radius: 2px;
 }
 
@@ -186,7 +191,7 @@ body.loading-error #content.app-timemanager:before {
 	opacity: 0.5;
 	width: 100%;
 	height: 4px;
-	background: red;
+	background: var(--color-error);
 	z-index: 9999;
 }
 
@@ -280,7 +285,7 @@ label {
 			flex-flow: column;
 			&.error {
 				.selectContainer {
-					border-color: red;
+					border-color: var(--color-error);
 				}
 			}
 
@@ -463,4 +468,10 @@ label {
 		width: 100%;
 		opacity: 1;
 	}
+}
+
+:root {
+	--background: var(--color-main-background);
+	--listBackground: var(--color-main-background);
+	--itemHoverBG: var(--color-primary-light);
 }

@@ -23,7 +23,7 @@ $l = \OC::$server->getL10N('timemanager');
 			<span data-store="<?php p($_['store']); ?>"></span>
 			<?php if(count($_['clients']) > 0) {
 				foreach($_['clients'] as $client) { ?>
-					<div class="tm_item-row">
+					<div class="tm_item-row with-link">
 						<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $client->getUuid(); ?>">
 							<h3><?php p($client->getName()); ?></h3>
 							<div class="tm_item-excerpt">

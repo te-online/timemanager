@@ -6,7 +6,7 @@
 <h2><?php p($l->t('Latest time entries')); ?></h2>
 
 <?php foreach($_['latest_entries'] as $entry) { ?>
-	<div class="tm_item-row">
+	<div class="tm_item-row with-link">
 		<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $entry->task->getUuid(); ?>">
 			<h3><?php p($entry->client->getName()); ?> › <?php p($entry->project->getName()); ?> › <?php p($entry->task->getName()); ?></h3>
 			<div class="tm_item-excerpt">
