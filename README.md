@@ -29,6 +29,14 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.5 Beta, 27. November 2020
+- Add French translation (thanks to @Thovi98)
+- Fix missing *.svelte views for server-side-rendering in app release
+- Update JS dependencies
+- Improve Dark Mode by using Nextcloud's CSS variables instead of fixed colors
+- Redirect to login when session times out and server responds with 401
+- Allow time entries in steps of `0.01` instead of `0.25`
+
 ### 0.1.4 Beta, 1. September 2020
 - Fix sorting of "Latest entries" on Dashboard page
 
