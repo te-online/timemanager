@@ -17552,7 +17552,12 @@
 	      reload();
 	    }, 300);
 	  });
-	  document.addEventListener("pjax:error", function () {
+	  document.addEventListener("pjax:error", function (error) {
+	    // Catch session timeout and redirect to login
+	    if (error && error.request && error.request.status === 401) {
+	      document.location.href = "".concat(OC.generateUrl("login"), "?redirect_url=").concat(OC.generateUrl("timemanager", "index"));
+	    }
+
 	    document.body.classList.remove("loading");
 	    document.body.classList.add("loading-error");
 	  });

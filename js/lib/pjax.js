@@ -24,7 +24,11 @@ export class PagePjax {
 			}, 300);
 		});
 
-		document.addEventListener("pjax:error", () => {
+		document.addEventListener("pjax:error", (error) => {
+			// Catch session timeout and redirect to login
+			if (error && error.request && error.request.status === 401) {
+				document.location.href = `${OC.generateUrl("login")}?redirect_url=${OC.generateUrl("timemanager", "index")}`;
+			}
 			document.body.classList.remove("loading");
 			document.body.classList.add("loading-error");
 		});
