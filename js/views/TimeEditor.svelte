@@ -31,7 +31,7 @@
 				autofocus
 				type="number"
 				name="duration"
-				step="0.25"
+				step="0.01"
 				placeholder=""
 				style="width: 100%"
 				class="input-wide"

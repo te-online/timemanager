@@ -91,7 +91,7 @@
 	<label>
 		{@html window.t('timemanager', 'Duration (in hrs.) & Date')}
 		<span class="double">
-			<input type="number" name="duration" step="0.25" placeholder="" class="duration-input" bind:value={duration} />
+			<input type="number" name="duration" step="0.01" placeholder="" class="duration-input" bind:value={duration} />
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
 	</label>

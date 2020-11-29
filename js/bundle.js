@@ -9835,7 +9835,7 @@
 	      input0.autofocus = true;
 	      attr(input0, "type", "number");
 	      attr(input0, "name", "duration");
-	      attr(input0, "step", "0.25");
+	      attr(input0, "step", "0.01");
 	      attr(input0, "placeholder", "");
 	      set_style(input0, "width", "100%");
 	      attr(input0, "class", "input-wide");
@@ -15865,7 +15865,7 @@
 	      html_tag = new HtmlTag(t3);
 	      attr(input1, "type", "number");
 	      attr(input1, "name", "duration");
-	      attr(input1, "step", "0.25");
+	      attr(input1, "step", "0.01");
 	      attr(input1, "placeholder", "");
 	      attr(input1, "class", "duration-input");
 	      attr(input2, "type", "date");
