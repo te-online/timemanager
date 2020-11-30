@@ -91,7 +91,7 @@
 		"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.":
 			"Vous n’avez pas encore de saisie de temps. Commencew par cliquer sur le “Ajouter une saisie de temps”.",
 		"Task total": "Total des tâches",
-		"No projects created yet. Go ahead and create one.": "Aucun projet n’a encore été créé. Commencez par en créer un.",
+		"No projects created yet. Go ahead and create one.": "Aucun projet n’a encore été créé. Commencez par en créer un."
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }
