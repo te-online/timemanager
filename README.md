@@ -29,6 +29,9 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.6 Beta, 30. November 2020
+- Fix syntax error in French translation file (thanks for the fix @Thovi98)
+
 ### 0.1.5 Beta, 27. November 2020
 - Add French translation (thanks to @Thovi98)
 - Fix missing *.svelte views for server-side-rendering in app release
