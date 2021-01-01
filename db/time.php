@@ -43,6 +43,7 @@ class Time extends Entity {
 			"created"		=> ISODate::convert($this->getCreated()),
 			"end" 			=> ISODate::convert($this->getEnd()),
 			"note" 			=> $this->getNote(),
+			"paymentStatus" 	=> $this->getPaymentStatus(),
 			"start"			=> ISODate::convert($this->getStart()),
 			"task_uuid"	=> $this->getTaskUuid(),
 			"uuid"			=> $this->getUuid()
