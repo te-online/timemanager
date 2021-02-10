@@ -123,7 +123,7 @@ $l = \OC::$server->getL10N('timemanager');
 										<?php p($time->getNote()); ?>
 									</div>
 									<div class="tm_item-date">
-										<?php p($time->getStartFormatted()); ?>
+										<?php p($time->getStartLocalized()); ?>
 										<span
 											data-svelte="EditTimeEntryButton.svelte"
 											data-uuid="<?php p($time->getUuid()); ?>"
