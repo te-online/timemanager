@@ -31,6 +31,12 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.7 Beta, 10. February 2021
+- Fix missing localization of time entry start dates (#25)
+- Add link to beta Android app (thanks to @joleaf)
+- Update JS dependencies
+- Add `paymentStatus` to sync REST API response (thanks to @joleaf)
+
 ### 0.1.6 Beta, 30. November 2020
 - Fix syntax error in French translation file (thanks for the fix @Thovi98)
 
