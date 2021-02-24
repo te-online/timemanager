@@ -31,6 +31,9 @@ Before building or development dependencies need to be installed once by running
 
 ## Changelog
 
+### 0.1.8 Beta, 24. February 2021
+- Bump compatibility to Nextcloud 21
+
 ### 0.1.7 Beta, 10. February 2021
 - Fix missing localization of time entry start dates (#25)
 - Add link to beta Android app (thanks to @joleaf)
