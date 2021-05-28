@@ -146,6 +146,57 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
+	function reports($clients, $projects, $tasks, $start, $end) {
+		$times = $this->timeMapper->getActiveObjects('start', 'DESC');
+		$all_clients = $this->clientMapper->findActiveForCurrentUser('name');
+		$all_projects = $this->projectMapper->findActiveForCurrentUser('name');
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser('name');
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+
+		$store = [
+			'clients' => array_map(function ($oneClient) {
+				$oneClient = $oneClient->toArray();
+				return ['value' => $oneClient['uuid'], 'label' => $oneClient['name']];
+			}, $all_clients),
+			'projects' => array_map(function ($oneProject) {
+				$oneProject = $oneProject->toArray();
+				return [
+					'value' => $oneProject['uuid'],
+					'label' => $oneProject['name'],
+					'clientUuid' => $oneProject['client_uuid'],
+				];
+			}, $all_projects),
+			'tasks' => array_map(function ($oneTask) {
+				$oneTask = $oneTask->toArray();
+				return ['value' => $oneTask['uuid'], 'label' => $oneTask['name'], 'projectUuid' => $oneTask['project_uuid']];
+			}, $all_tasks),
+			'initialDate' => date('Y-m-d'),
+			'action' => $urlGenerator->linkToRoute('timemanager.page.reports'),
+			'requestToken' => $requestToken,
+			'isServer' => true,
+		];
+
+		return new TemplateResponse('timemanager', 'reports', [
+			'clients' => $clients,
+			'projects' => $projects,
+			'tasks' => $tasks,
+			'start' => $start,
+			'end' => $end,
+			'templates' => [
+				'Filters.svelte' => PHP_Svelte::render_template('Filters.svelte', $store),
+				'Timerange.svelte' => PHP_Svelte::render_template('Timerange.svelte', $store),
+			],
+			'store' => json_encode($store),
+			'page' => 'reports',
+		]);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
 	function clients() {
 		$clients = $this->clientMapper->findActiveForCurrentUser('name');
 

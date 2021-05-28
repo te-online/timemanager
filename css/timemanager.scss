@@ -252,11 +252,11 @@ label {
 		}
 	}
 
-	.quick-add {
+	.quick-add,
+	.reports-filters {
 		display: grid;
 		margin-left: -30px;
 		width: calc(100% + 60px);
-		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
 		column-gap: 12px;
 
 		@media screen and (max-width: 1024px) {
@@ -356,6 +356,14 @@ label {
 		.selectContainer {
 			margin: 3px 3px 3px 0;
 		}
+	}
+
+	.quick-add {
+		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
+	}
+
+	.reports-filters {
+		grid-template-columns: repeat(6, auto);
 	}
 
 	.checkbox-action label {

@@ -1,0 +1,1 @@
+<h2>Here goes a time range selector. For now it should be "this month"</h2>

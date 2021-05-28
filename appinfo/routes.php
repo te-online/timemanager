@@ -3,6 +3,7 @@
 return [
 	'routes' => [
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+		['name' => 'page#reports', 'url' => '/reports', 'verb' => 'GET'],
 		['name' => 'page#clients', 'url' => '/clients', 'verb' => 'GET'],
 		['name' => 'page#addClient', 'url' => '/clients', 'verb' => 'POST'],
 		['name' => 'page#editClient', 'url' => '/clients', 'verb' => 'PATCH'],
