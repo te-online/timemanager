@@ -28,18 +28,20 @@ class ObjectMapper extends Mapper {
 	}
 
 	function getObjectsByAttributeValue($attr, $value) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `' . $attr . '` = ?;';
+		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `" . $attr . "` = ?;";
 		return $this->findEntities($sql, [$this->userId, $value]);
 	}
 
 	function getActiveObjects($orderby = "created", $sort) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ? ' .
-				$this->getOrderByClause($orderby, $sort) . ';';
-		return $this->findEntities($sql, [$this->userId, 'deleted']);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `status` != ? " .
+			$this->getOrderByClause($orderby, $sort) .
+			";";
+		return $this->findEntities($sql, [$this->userId, "deleted"]);
 	}
 
 	/**
@@ -51,11 +53,17 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created") {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ? AND `' . $attr . '` = ? ' .
-				$this->getOrderByClause($orderby) . ';';
-		return $this->findEntities($sql, [$this->userId, 'deleted', $value]);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `status` != ? AND `" .
+			$attr .
+			"` = ? " .
+			$this->getOrderByClause($orderby) .
+			";";
+		return $this->findEntities($sql, [$this->userId, "deleted", $value]);
 	}
 
 	/**
@@ -67,20 +75,53 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function getActiveObjectsByDateRange($date_start, $date_end, $orderby = "start") {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ? ' .
-				'AND start >= ? AND start <= ? ' .
-				$this->getOrderByClause($orderby) . ';';
-		return $this->findEntities($sql, [$this->userId, 'deleted', $date_start, $date_end]);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `status` != ? " .
+			"AND start >= ? AND start <= ? " .
+			$this->getOrderByClause($orderby) .
+			";";
+		return $this->findEntities($sql, [$this->userId, "deleted", $date_start, $date_end]);
+	}
+
+	/**
+	 * Fetch all items that are associated to the current user
+	 * within a given timerange, not deleted and with applied filters
+	 *
+	 * @param string $date_start the range start
+	 * @param string $date_end the range end
+	 * @param string $status the status
+	 * @return Object[] list if matching items
+	 */
+	function getActiveObjectsByDateRangeAndFilters(
+		string $date_start,
+		string $date_end,
+		string $status = null,
+		string $orderby = "start"
+	) {
+		$params = [$this->userId, "deleted", $date_start, $date_end];
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `status` != ? " .
+			"AND start >= ? AND start <= ? ";
+		if (isset($status) && $status) {
+			$sql .= "AND LOWER(`payment_status`) = ? ";
+			$params[] = strtolower($status);
+		}
+		$sql .= $this->getOrderByClause("start") . ";";
+		return $this->findEntities($sql, $params);
 	}
 
 	function getObjectById($uuid) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;';
+		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;";
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
-		if(count($objects) > 0) {
+		if (count($objects) > 0) {
 			return $objects[0];
 		} else {
 			return null;
@@ -88,11 +129,14 @@ class ObjectMapper extends Mapper {
 	}
 
 	function getActiveObjectById($uuid) {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `uuid` = ? AND `status` != ? LIMIT 1;';
-		$objects = $this->findEntities($sql, [$this->userId, $uuid, 'deleted']);
-		if(count($objects) > 0) {
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `uuid` = ? AND `status` != ? LIMIT 1;";
+		$objects = $this->findEntities($sql, [$this->userId, $uuid, "deleted"]);
+		if (count($objects) > 0) {
 			return $objects[0];
 		} else {
 			return null;
@@ -100,61 +144,67 @@ class ObjectMapper extends Mapper {
 	}
 
 	function getObjectsAfterCommit($commit) {
-		return array(
+		return [
 			"created" => $this->getCreatedObjectsAfterCommit($commit),
 			"updated" => $this->getUpdatedObjectsAfterCommit($commit),
-			"deleted" => $this->getDeletedObjectsAfterCommit($commit)
-		);
+			"deleted" => $this->getDeletedObjectsAfterCommit($commit),
+		];
 	}
 
 	function getCreatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? '.
-				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
-				'AND `created` = `changed` AND `status` != ? ' .
-				'ORDER BY `changed`;';
-		$clients = array_map(
-			function($client) {
-				return $client->toArray();
-			},
-			$this->findEntities($sql, [$this->userId, 'deleted'])
-		);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? " .
+			'AND `commit` IN ( "' .
+			implode('","', $applicable_commits) .
+			'" ) ' .
+			"AND `created` = `changed` AND `status` != ? " .
+			"ORDER BY `changed`;";
+		$clients = array_map(function ($client) {
+			return $client->toArray();
+		}, $this->findEntities($sql, [$this->userId, "deleted"]));
 		return $clients;
 	}
 
 	function getUpdatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? ' .
-				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
-				'AND `created` != `changed` AND `status` != ? ' .
-				'ORDER BY `changed`;';
-		$clients = array_map(
-			function($client) {
-				return $client->toArray();
-			},
-			$this->findEntities($sql, [$this->userId, 'deleted'])
-		);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? " .
+			'AND `commit` IN ( "' .
+			implode('","', $applicable_commits) .
+			'" ) ' .
+			"AND `created` != `changed` AND `status` != ? " .
+			"ORDER BY `changed`;";
+		$clients = array_map(function ($client) {
+			return $client->toArray();
+		}, $this->findEntities($sql, [$this->userId, "deleted"]));
 		return $clients;
 	}
 
 	function getDeletedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? ' .
-				'AND `commit` IN ( "' . implode('","', $applicable_commits) . '" ) ' .
-				'AND `status` = ? ' .
-				'ORDER BY `changed`;';
-		$clients = array_map(
-			function($client) {
-				return $client->toArray();
-			},
-			$this->findEntities($sql, [$this->userId, 'deleted'])
-		);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? " .
+			'AND `commit` IN ( "' .
+			implode('","', $applicable_commits) .
+			'" ) ' .
+			"AND `status` = ? " .
+			"ORDER BY `changed`;";
+		$clients = array_map(function ($client) {
+			return $client->toArray();
+		}, $this->findEntities($sql, [$this->userId, "deleted"]));
 		return $clients;
 	}
 
@@ -164,9 +214,7 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function findAllForCurrentUser() {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ?;';
+		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ?;";
 		return $this->findEntities($sql, [$this->userId]);
 	}
 
@@ -177,11 +225,15 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function findActiveForCurrentUser($orderby = "created") {
-		$sql = 'SELECT * ' .
-				'FROM `' . $this->tableName . '` ' .
-				'WHERE `user_id` = ? AND `status` != ? ' .
-				$this->getOrderByClause($orderby) . ';';
-		return $this->findEntities($sql, [$this->userId, 'deleted']);
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE `user_id` = ? AND `status` != ? " .
+			$this->getOrderByClause($orderby) .
+			";";
+		return $this->findEntities($sql, [$this->userId, "deleted"]);
 	}
 
 	/**
@@ -189,11 +241,7 @@ class ObjectMapper extends Mapper {
 	 *
 	 * @return string
 	 */
-	function getOrderByClause($orderby, $sort = 'ASC') {
-		return sprintf(
-			'ORDER BY `%s` %s',
-			\strtolower($orderby),
-			$sort
-		);
+	function getOrderByClause($orderby, $sort = "ASC") {
+		return sprintf("ORDER BY `%s` %s", \strtolower($orderby), $sort);
 	}
 }
