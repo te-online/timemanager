@@ -16,6 +16,8 @@
 	let selectedTasks;
 	let selectedStatus;
 
+	const availableStatus = [{ value: "unpaid", label: "Unpaid" }, { value: "paid", label: "Paid" }];
+
 	const apply = e => {
 		// Prepare a link with get attributes
 		const filterLinkElement = Helpers.getLinkEl();
@@ -37,7 +39,7 @@
 			selectedTasks ? selectedTasks.map(t => t.value).join(",") : "",
 			newUrl
 		);
-		newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
+		newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus.value : "", newUrl);
 		// Attach url to hidden pjax link
 		filterLinkElement.href = newUrl;
 		// Navigate
@@ -79,7 +81,7 @@
 		selectedTasks = event.detail;
 	};
 	const handleSelectStatus = event => {
-		selectedStatus = event.detail.value;
+		selectedStatus = event.detail;
 	};
 	const handleClearStatus = () => {
 		selectedStatus = "";
@@ -98,12 +100,11 @@
 				const partParts = part.split("=");
 				const [name, value] = partParts;
 				// Apply filters from query params
-				if (name === "status" && value && ["paid", "unpaid"].includes(value)) {
-					selectedStatus = value;
+				if (name === "status" && value) {
+					selectedStatus = availableStatus.find(status => status.value === value);
 				}
 				if (name === "tasks" && value && value.length) {
 					selectedTasks = value.split(",").map(taskId => tasks.find(task => task.value === taskId));
-					console.log({ selectedTasks });
 				}
 				if (name === "projects" && value && value.length) {
 					handleSelectProjects({
@@ -155,7 +156,7 @@
 		{window.t('timemanager', 'Status')}
 		<Select
 			inputAttributes={{ id: 'status-select' }}
-			items={[{ value: 'paid', label: 'Paid' }, { value: 'unpaid', label: 'Unpaid' }]}
+			items={availableStatus}
 			selectedValue={selectedStatus}
 			on:select={handleSelectStatus}
 			on:clear={handleClearStatus} />

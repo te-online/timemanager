@@ -17257,25 +17257,6 @@
     return Checkmark;
   }(SvelteComponent);
 
-  var $includes = arrayIncludes.includes;
-
-   // `Array.prototype.includes` method
-  // https://tc39.es/ecma262/#sec-array.prototype.includes
-
-
-  _export({
-    target: 'Array',
-    proto: true
-  }, {
-    includes: function includes(el
-    /* , fromIndex = 0 */
-    ) {
-      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-
-  addToUnscopables('includes');
-
   function create_fragment$1(ctx) {
     var form;
     var label0;
@@ -17326,7 +17307,7 @@
     });
     select0.$on("select",
     /*handleSelectClients*/
-    ctx[9]);
+    ctx[10]);
     select1 = new Select({
       props: {
         inputAttributes: {
@@ -17343,7 +17324,7 @@
     });
     select1.$on("select",
     /*handleSelectProjects*/
-    ctx[10]);
+    ctx[11]);
     select2 = new Select({
       props: {
         inputAttributes: {
@@ -17360,19 +17341,15 @@
     });
     select2.$on("select",
     /*handleSelectTasks*/
-    ctx[11]);
+    ctx[12]);
     select3 = new Select({
       props: {
         inputAttributes: {
           id: "status-select"
         },
-        items: [{
-          value: "paid",
-          label: "Paid"
-        }, {
-          value: "unpaid",
-          label: "Unpaid"
-        }],
+        items:
+        /*availableStatus*/
+        ctx[8],
         selectedValue:
         /*selectedStatus*/
         ctx[4]
@@ -17380,10 +17357,10 @@
     });
     select3.$on("select",
     /*handleSelectStatus*/
-    ctx[12]);
+    ctx[13]);
     select3.$on("clear",
     /*handleClearStatus*/
-    ctx[13]);
+    ctx[14]);
     return {
       c() {
         form = element("form");
@@ -17459,7 +17436,7 @@
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*apply*/
-          ctx[8]));
+          ctx[9]));
           mounted = true;
         }
       },
@@ -17570,6 +17547,13 @@
     var selectedProjects;
     var selectedTasks;
     var selectedStatus;
+    var availableStatus = [{
+      value: "unpaid",
+      label: "Unpaid"
+    }, {
+      value: "paid",
+      label: "Paid"
+    }];
 
     var apply = function apply(e) {
       // Prepare a link with get attributes
@@ -17586,7 +17570,7 @@
       newUrl = Helpers.getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(function (t) {
         return t.value;
       }).join(",") : "", newUrl);
-      newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl); // Attach url to hidden pjax link
+      newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus.value : "", newUrl); // Attach url to hidden pjax link
 
       filterLinkElement.href = newUrl; // Navigate
 
@@ -17646,7 +17630,7 @@
     };
 
     var handleSelectStatus = function handleSelectStatus(event) {
-      $$invalidate(4, selectedStatus = event.detail.value);
+      $$invalidate(4, selectedStatus = event.detail);
     };
 
     var handleClearStatus = function handleClearStatus() {
@@ -17670,8 +17654,10 @@
               value = _partParts[1]; // Apply filters from query params
 
 
-          if (name === "status" && value && ["paid", "unpaid"].includes(value)) {
-            $$invalidate(4, selectedStatus = value);
+          if (name === "status" && value) {
+            $$invalidate(4, selectedStatus = availableStatus.find(function (status) {
+              return status.value === value;
+            }));
           }
 
           if (name === "tasks" && value && value.length) {
@@ -17680,9 +17666,6 @@
                 return task.value === taskId;
               });
             }));
-            console.log({
-              selectedTasks
-            });
           }
 
           if (name === "projects" && value && value.length) {
@@ -17710,27 +17693,27 @@
 
     $$self.$$set = function ($$props) {
       if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-      if ("projects" in $$props) $$invalidate(14, projects = $$props.projects);
-      if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
+      if ("projects" in $$props) $$invalidate(15, projects = $$props.projects);
+      if ("tasks" in $$props) $$invalidate(16, tasks = $$props.tasks);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*projects*/
-      16384) {
+      32768) {
         $$invalidate(6, availableProjects = projects);
       }
 
       if ($$self.$$.dirty &
       /*tasks*/
-      32768) {
+      65536) {
         $$invalidate(7, availableTasks = tasks);
       }
     };
 
     $$invalidate(5, loading = false);
 
-    return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, loading, availableProjects, availableTasks, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+    return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, loading, availableProjects, availableTasks, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
   }
 
   var Filters = /*#__PURE__*/function (_SvelteComponent) {
@@ -17746,8 +17729,8 @@
       _this = _super.call(this);
       init$1(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
         clients: 0,
-        projects: 14,
-        tasks: 15
+        projects: 15,
+        tasks: 16
       });
       return _this;
     }

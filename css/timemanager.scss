@@ -20,6 +20,17 @@
 		padding: 0;
 	}
 
+	.reports &.with-link > a {
+		display: grid;
+		grid-template-columns: 70% 30%;
+		padding-top: 8px;
+		padding-bottom: 8px;
+
+		h3 {
+			margin: 0;
+		}
+	}
+
 	a:hover,
 	a:focus {
 		background: var(--color-primary-light);
@@ -109,14 +120,6 @@
 	color: var(--color-text-light);
 	display: block;
 	font-size: 9pt;
-
-	&.inline {
-		margin-right: 12px;
-		&,
-		& + * {
-			display: inline-block;
-		}
-	}
 }
 
 .tm_object-details-item {
@@ -482,6 +485,19 @@ label {
 				margin-bottom: 4px;
 			}
 		}
+	}
+}
+
+.reports {
+	h2 {
+		margin-bottom: 24px;
+	}
+
+	details {
+		padding-left: 12px;
+		padding-bottom: 12px;
+		padding-top: 6px;
+		color: var(--color-text-lighter);
 	}
 }
 

@@ -270,7 +270,8 @@ class PageController extends Controller {
 			"end" => $end,
 			"times" => $times,
 			"times_grouped_by_client" => $times_grouped_by_client,
-			"filter_tasks" => $filter_tasks,
+			"hoursTotal" => $hours_total,
+			"numEntries" => count($times),
 			"templates" => [
 				"Filters.svelte" => PHP_Svelte::render_template("Filters.svelte", $store),
 				"Timerange.svelte" => PHP_Svelte::render_template("Timerange.svelte", $store),
