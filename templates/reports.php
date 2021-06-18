@@ -43,6 +43,10 @@
 				</div>
 				<?php
 						}
+					} else {
+				?>
+				<p><?php p($l->t('Nothing found. If you have any filters set, try adjusting them.')); ?></p>
+				<?php
 					}
 				?>
 			</section>
