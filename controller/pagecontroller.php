@@ -157,17 +157,50 @@ class PageController extends Controller {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
 
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+
 		// Get task uuids related to filters
+		$filter_tasks = [];
+		if (isset($tasks) && strlen($tasks) > 0) {
+			foreach (explode(",", $tasks) as $task_uuid) {
+				$filter_tasks[] = $task_uuid;
+			}
+		}
+		if (isset($projects) && strlen($projects) > 0) {
+			foreach (explode(",", $projects) as $project_uuid) {
+				// Find tasks related to project
+				foreach ($all_tasks as $task) {
+					if ($task->getProjectUuid() === $project_uuid) {
+						$filter_tasks[] = $task->getUuid();
+					}
+				}
+			}
+		}
+		if (isset($clients) && strlen($clients) > 0) {
+			foreach (explode(",", $clients) as $client_uuid) {
+				// Find tasks related to project
+				foreach ($all_projects as $project) {
+					if ($project->getClientUuid() === $client_uuid) {
+						// Find tasks related to project
+						foreach ($all_tasks as $task) {
+							if ($task->getProjectUuid() === $project->getUuid()) {
+								$filter_tasks[] = $task->getUuid();
+							}
+						}
+					}
+				}
+			}
+		}
+		$filter_tasks = array_unique($filter_tasks);
 
 		$times = $this->timeMapper->findForReport(
 			$start ? $start : $start_of_month->format("Y-m-d"),
 			$end ? $end : $end_of_month->format("Y-m-d"),
-			$status
+			$status,
+			$filter_tasks
 		);
-
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
 
 		// Group times by client
 		$times_grouped_by_client = [];
@@ -225,6 +258,8 @@ class PageController extends Controller {
 			"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
 			"requestToken" => $requestToken,
 			"isServer" => true,
+			"startOfMonth" => $start_of_month->format("Y-m-d"),
+			"endOfMonth" => $end_of_month->format("Y-m-d"),
 		];
 
 		return new TemplateResponse("timemanager", "reports", [
@@ -235,6 +270,7 @@ class PageController extends Controller {
 			"end" => $end,
 			"times" => $times,
 			"times_grouped_by_client" => $times_grouped_by_client,
+			"filter_tasks" => $filter_tasks,
 			"templates" => [
 				"Filters.svelte" => PHP_Svelte::render_template("Filters.svelte", $store),
 				"Timerange.svelte" => PHP_Svelte::render_template("Timerange.svelte", $store),

@@ -100,6 +100,7 @@ class ObjectMapper extends Mapper {
 		string $date_start,
 		string $date_end,
 		string $status = null,
+		array $filter_tasks = [],
 		string $orderby = "start"
 	) {
 		$params = [$this->userId, "deleted", $date_start, $date_end];
@@ -114,7 +115,10 @@ class ObjectMapper extends Mapper {
 			$sql .= "AND LOWER(`payment_status`) = ? ";
 			$params[] = strtolower($status);
 		}
-		$sql .= $this->getOrderByClause("start") . ";";
+		if (count($filter_tasks) > 0) {
+			$sql .= "AND `task_uuid` IN ('" . implode("','", $filter_tasks) . "') ";
+		}
+		$sql .= $this->getOrderByClause($orderby) . ";";
 		return $this->findEntities($sql, $params);
 	}
 
