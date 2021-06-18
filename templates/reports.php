@@ -13,6 +13,7 @@
 		<div class="section">
 			<h2><?php p($l->t('Reports')); ?></h2>
 			<section class="section">
+				<h3 class="tm_label"><?php p($l->t('Filter by')); ?></h3>
 				<span data-svelte="Filters.svelte">
 					<?php // @TODO: This is broken: print_unescaped($_['templates']['Filters.svelte']); ?>
 				</span>
@@ -20,7 +21,8 @@
 					<?php // @TODO: This is broken: print_unescaped($_['templates']['Timerange.svelte']); ?>
 				</span>
 				<span data-store="<?php p($_["store"]); ?>"></span>
-				<a href="" class="timemanager-pjax-link hidden-visually hidden-filter-link">Apply filters</a>
+				<a href=""
+					class="timemanager-pjax-link hidden-visually hidden-filter-link"><?php p($l->t('Apply filters')); ?></a>
 			</section>
 			<section class="section">
 				<?php

@@ -17228,35 +17228,33 @@
   function create_fragment$1(ctx) {
     var form;
     var label0;
+    var t0_value = window.t("timemanager", "Clients") + "";
+    var t0;
     var t1;
-    var label1;
-    var t2_value = window.t("timemanager", "Clients") + "";
-    var t2;
-    var t3;
     var select0;
+    var t2;
+    var label1;
+    var t3_value = window.t("timemanager", "Projects") + "";
+    var t3;
     var t4;
-    var label2;
-    var t5_value = window.t("timemanager", "Projects") + "";
-    var t5;
-    var t6;
     var select1;
+    var t5;
+    var label2;
+    var t6_value = window.t("timemanager", "Tasks") + "";
+    var t6;
     var t7;
-    var label3;
-    var t8_value = window.t("timemanager", "Tasks") + "";
-    var t8;
-    var t9;
     var select2;
+    var t8;
+    var label3;
+    var t9_value = window.t("timemanager", "Status") + "";
+    var t9;
     var t10;
-    var label4;
-    var t11_value = window.t("timemanager", "Status") + "";
-    var t11;
-    var t12;
     var select3;
-    var t13;
+    var t11;
     var span;
     var button;
-    var t14_value = window.t("timemanager", "Apply filters") + "";
-    var t14;
+    var t12_value = window.t("timemanager", "Apply filters") + "";
+    var t12;
     var form_class_value;
     var current;
     var mounted;
@@ -17269,40 +17267,49 @@
         items:
         /*clients*/
         ctx[0],
+        selectedValue:
+        /*selectedClients*/
+        ctx[1],
         isMulti: true
       }
     });
     select0.$on("select",
     /*handleSelectClients*/
-    ctx[5]);
+    ctx[9]);
     select1 = new Select({
       props: {
         inputAttributes: {
           id: "projects-select"
         },
         items:
-        /*projects*/
-        ctx[1],
+        /*availableProjects*/
+        ctx[6],
+        selectedValue:
+        /*selectedProjects*/
+        ctx[2],
         isMulti: true
       }
     });
     select1.$on("select",
     /*handleSelectProjects*/
-    ctx[6]);
+    ctx[10]);
     select2 = new Select({
       props: {
         inputAttributes: {
           id: "tasks-select"
         },
         items:
-        /*tasks*/
-        ctx[2],
+        /*availableTasks*/
+        ctx[7],
+        selectedValue:
+        /*selectedTasks*/
+        ctx[3],
         isMulti: true
       }
     });
     select2.$on("select",
     /*handleSelectTasks*/
-    ctx[7]);
+    ctx[11]);
     select3 = new Select({
       props: {
         inputAttributes: {
@@ -17315,94 +17322,93 @@
           value: "unpaid",
           label: "Unpaid"
         }],
-        isMulti: true
+        selectedValue:
+        /*selectedStatus*/
+        ctx[4]
       }
     });
     select3.$on("select",
     /*handleSelectStatus*/
-    ctx[8]);
+    ctx[12]);
+    select3.$on("clear",
+    /*handleClearStatus*/
+    ctx[13]);
     return {
       c() {
         form = element("form");
         label0 = element("label");
-        label0.textContent = "Filter by:";
+        t0 = text(t0_value);
         t1 = space();
-        label1 = element("label");
-        t2 = text(t2_value);
-        t3 = space();
         create_component(select0.$$.fragment);
+        t2 = space();
+        label1 = element("label");
+        t3 = text(t3_value);
         t4 = space();
-        label2 = element("label");
-        t5 = text(t5_value);
-        t6 = space();
         create_component(select1.$$.fragment);
+        t5 = space();
+        label2 = element("label");
+        t6 = text(t6_value);
         t7 = space();
-        label3 = element("label");
-        t8 = text(t8_value);
-        t9 = space();
         create_component(select2.$$.fragment);
+        t8 = space();
+        label3 = element("label");
+        t9 = text(t9_value);
         t10 = space();
-        label4 = element("label");
-        t11 = text(t11_value);
-        t12 = space();
         create_component(select3.$$.fragment);
-        t13 = space();
+        t11 = space();
         span = element("span");
         button = element("button");
-        t14 = text(t14_value);
+        t12 = text(t12_value);
         attr(label0, "for", "client-select");
-        attr(label1, "for", "client-select");
-        attr(label1, "class", "clients");
-        attr(label2, "for", "projects-select");
-        attr(label2, "class", "projects");
-        attr(label3, "for", "tasks-select");
-        attr(label3, "class", "tasks");
-        attr(label4, "for", "status-select");
-        attr(label4, "class", "status");
+        attr(label0, "class", "clients");
+        attr(label1, "for", "projects-select");
+        attr(label1, "class", "projects");
+        attr(label2, "for", "tasks-select");
+        attr(label2, "class", "tasks");
+        attr(label3, "for", "status-select");
+        attr(label3, "class", "status");
         button.disabled =
         /*loading*/
-        ctx[3];
+        ctx[5];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
         attr(span, "class", "actions");
         attr(form, "class", form_class_value = "reports-filters".concat(
         /*loading*/
-        ctx[3] ? " icon-loading" : ""));
+        ctx[5] ? " icon-loading" : ""));
       },
 
       m(target, anchor) {
         insert(target, form, anchor);
         append(form, label0);
-        append(form, t1);
+        append(label0, t0);
+        append(label0, t1);
+        mount_component(select0, label0, null);
+        append(form, t2);
         append(form, label1);
-        append(label1, t2);
         append(label1, t3);
-        mount_component(select0, label1, null);
-        append(form, t4);
+        append(label1, t4);
+        mount_component(select1, label1, null);
+        append(form, t5);
         append(form, label2);
-        append(label2, t5);
         append(label2, t6);
-        mount_component(select1, label2, null);
-        append(form, t7);
+        append(label2, t7);
+        mount_component(select2, label2, null);
+        append(form, t8);
         append(form, label3);
-        append(label3, t8);
         append(label3, t9);
-        mount_component(select2, label3, null);
-        append(form, t10);
-        append(form, label4);
-        append(label4, t11);
-        append(label4, t12);
-        mount_component(select3, label4, null);
-        append(form, t13);
+        append(label3, t10);
+        mount_component(select3, label3, null);
+        append(form, t11);
         append(form, span);
         append(span, button);
-        append(button, t14);
+        append(button, t12);
         current = true;
 
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*apply*/
-          ctx[4]));
+          ctx[8]));
           mounted = true;
         }
       },
@@ -17417,35 +17423,57 @@
         1) select0_changes.items =
         /*clients*/
         ctx[0];
+        if (dirty &
+        /*selectedClients*/
+        2) select0_changes.selectedValue =
+        /*selectedClients*/
+        ctx[1];
         select0.$set(select0_changes);
         var select1_changes = {};
         if (dirty &
-        /*projects*/
-        2) select1_changes.items =
-        /*projects*/
-        ctx[1];
+        /*availableProjects*/
+        64) select1_changes.items =
+        /*availableProjects*/
+        ctx[6];
+        if (dirty &
+        /*selectedProjects*/
+        4) select1_changes.selectedValue =
+        /*selectedProjects*/
+        ctx[2];
         select1.$set(select1_changes);
         var select2_changes = {};
         if (dirty &
-        /*tasks*/
-        4) select2_changes.items =
-        /*tasks*/
-        ctx[2];
+        /*availableTasks*/
+        128) select2_changes.items =
+        /*availableTasks*/
+        ctx[7];
+        if (dirty &
+        /*selectedTasks*/
+        8) select2_changes.selectedValue =
+        /*selectedTasks*/
+        ctx[3];
         select2.$set(select2_changes);
+        var select3_changes = {};
+        if (dirty &
+        /*selectedStatus*/
+        16) select3_changes.selectedValue =
+        /*selectedStatus*/
+        ctx[4];
+        select3.$set(select3_changes);
 
         if (!current || dirty &
         /*loading*/
-        8) {
+        32) {
           button.disabled =
           /*loading*/
-          ctx[3];
+          ctx[5];
         }
 
         if (!current || dirty &
         /*loading*/
-        8 && form_class_value !== (form_class_value = "reports-filters".concat(
+        32 && form_class_value !== (form_class_value = "reports-filters".concat(
         /*loading*/
-        ctx[3] ? " icon-loading" : ""))) {
+        ctx[5] ? " icon-loading" : ""))) {
           attr(form, "class", form_class_value);
         }
       },
@@ -17482,13 +17510,15 @@
 
   function instance($$self, $$props, $$invalidate) {
     var loading;
+    var availableProjects;
+    var availableTasks;
     var clients = $$props.clients;
     var projects = $$props.projects;
     var tasks = $$props.tasks;
-    var selectedClients;
-    var selectedProjects;
-    var selectedTasks;
-    var selectedStatus; // Returns a new url with updated fields
+    var selectedClients = [];
+    var selectedProjects = [];
+    var selectedTasks = [];
+    var selectedStatus = ""; // Returns a new url with updated fields
 
     var getUpdatedFilterUrl = function getUpdatedFilterUrl(field, value, baseUrl) {
       var urlParts = baseUrl.split("?");
@@ -17534,9 +17564,8 @@
       newUrl = getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(function (t) {
         return t.value;
       }).join(",") : "", newUrl);
-      newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus.map(function (s) {
-        return s.value;
-      }).join(",") : "", newUrl); // Attach url to hidden pjax link
+      newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
+      console.log(newUrl); // Attach url to hidden pjax link
 
       filterLinkElement.href = newUrl; // Navigate
 
@@ -17544,30 +17573,130 @@
     };
 
     var handleSelectClients = function handleSelectClients(event) {
-      selectedClients = event.detail;
+      $$invalidate(1, selectedClients = event.detail);
+
+      if (selectedClients && selectedClients.length) {
+        $$invalidate(6, availableProjects = projects.filter(function (project) {
+          return selectedClients.find(function (client) {
+            return project.clientUuid === client.value;
+          });
+        }));
+      } else {
+        $$invalidate(6, availableProjects = projects);
+      }
+
+      if (selectedProjects && selectedProjects.length) {
+        $$invalidate(7, availableTasks = tasks.filter(function (task) {
+          return selectedProjects && selectedProjects.find(function (project) {
+            return task.projectUuid === project.value;
+          });
+        }));
+      } else {
+        $$invalidate(7, availableTasks = tasks);
+      }
     };
 
     var handleSelectProjects = function handleSelectProjects(event) {
-      selectedProjects = event.detail;
+      $$invalidate(2, selectedProjects = event.detail);
+
+      if (selectedClients && selectedClients.length) {
+        $$invalidate(6, availableProjects = projects.filter(function (project) {
+          return selectedClients.find(function (client) {
+            return project.clientUuid === client.value;
+          });
+        }));
+      } else {
+        $$invalidate(6, availableProjects = projects);
+      }
+
+      if (selectedProjects && selectedProjects.length) {
+        $$invalidate(7, availableTasks = tasks.filter(function (task) {
+          return selectedProjects && selectedProjects.find(function (project) {
+            return task.projectUuid === project.value;
+          });
+        }));
+      } else {
+        $$invalidate(7, availableTasks = tasks);
+      }
     };
 
     var handleSelectTasks = function handleSelectTasks(event) {
-      selectedTasks = event.detail;
+      $$invalidate(3, selectedTasks = event.detail);
     };
 
     var handleSelectStatus = function handleSelectStatus(event) {
-      selectedStatus = event.detail;
+      $$invalidate(4, selectedStatus = event.detail.value);
     };
+
+    var handleClearStatus = function handleClearStatus() {
+      $$invalidate(4, selectedStatus = "");
+    };
+
+    onMount(function () {
+      // Parse current URL
+      var urlParts = document.location.href.split("?");
+
+      if (urlParts.length > 1) {
+        var queryString = urlParts[1];
+        var queryStringParts = queryString.split("&");
+
+        queryStringParts.map(function (part) {
+          // Split query params
+          var partParts = part.split("=");
+
+          var _partParts = _slicedToArray(partParts, 2),
+              name = _partParts[0],
+              value = _partParts[1]; // Apply filters from query params
+
+
+          if (name === "status") {
+            $$invalidate(4, selectedStatus = value);
+          }
+
+          if (name === "tasks" && value) {
+            $$invalidate(3, selectedTasks = value.split(",").map(function (taskId) {
+              return tasks.find(function (task) {
+                return task.value === taskId;
+              });
+            }));
+          }
+
+          if (name === "projects" && value) {
+            handleSelectProjects({
+              detail: value.split(",").map(function (projectId) {
+                return projects.find(function (project) {
+                  return project.value === projectId;
+                });
+              })
+            });
+          }
+
+          if (name === "clients" && value) {
+            handleSelectClients({
+              detail: value.split(",").map(function (clientId) {
+                return clients.find(function (client) {
+                  return client.value === clientId;
+                });
+              })
+            });
+          }
+        });
+      }
+    });
 
     $$self.$$set = function ($$props) {
       if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-      if ("projects" in $$props) $$invalidate(1, projects = $$props.projects);
-      if ("tasks" in $$props) $$invalidate(2, tasks = $$props.tasks);
+      if ("projects" in $$props) $$invalidate(14, projects = $$props.projects);
+      if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
     };
 
-    $$invalidate(3, loading = false);
+    $$invalidate(5, loading = false);
 
-    return [clients, projects, tasks, loading, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus];
+    $$invalidate(6, availableProjects = []);
+
+    $$invalidate(7, availableTasks = []);
+
+    return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, loading, availableProjects, availableTasks, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
   }
 
   var Filters = /*#__PURE__*/function (_SvelteComponent) {
@@ -17583,8 +17712,8 @@
       _this = _super.call(this);
       init$1(_assertThisInitialized(_this), options, instance, create_fragment$1, safe_not_equal, {
         clients: 0,
-        projects: 1,
-        tasks: 2
+        projects: 14,
+        tasks: 15
       });
       return _this;
     }

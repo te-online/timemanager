@@ -11,13 +11,16 @@
 	export let tasks;
 
 	import Select from "svelte-select";
+	import { onMount } from "svelte";
 
 	$: loading = false;
+	$: availableProjects = [];
+	$: availableTasks = [];
 
-	let selectedClients;
-	let selectedProjects;
-	let selectedTasks;
-	let selectedStatus;
+	let selectedClients = [];
+	let selectedProjects = [];
+	let selectedTasks = [];
+	let selectedStatus = "";
 
 	// Returns a new url with updated fields
 	const getUpdatedFilterUrl = (field, value, baseUrl) => {
@@ -60,7 +63,8 @@
 			newUrl
 		);
 		newUrl = getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(t => t.value).join(",") : "", newUrl);
-		newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus.map(s => s.value).join(",") : "", newUrl);
+		newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
+		console.log(newUrl);
 		// Attach url to hidden pjax link
 		filterLinkElement.href = newUrl;
 		// Navigate
@@ -69,38 +73,111 @@
 
 	const handleSelectClients = event => {
 		selectedClients = event.detail;
+		if (selectedClients && selectedClients.length) {
+			availableProjects = projects.filter(project =>
+				selectedClients.find(client => project.clientUuid === client.value)
+			);
+		} else {
+			availableProjects = projects;
+		}
+		if (selectedProjects && selectedProjects.length) {
+			availableTasks = tasks.filter(
+				task => selectedProjects && selectedProjects.find(project => task.projectUuid === project.value)
+			);
+		} else {
+			availableTasks = tasks;
+		}
 	};
 	const handleSelectProjects = event => {
 		selectedProjects = event.detail;
+		if (selectedClients && selectedClients.length) {
+			availableProjects = projects.filter(project =>
+				selectedClients.find(client => project.clientUuid === client.value)
+			);
+		} else {
+			availableProjects = projects;
+		}
+		if (selectedProjects && selectedProjects.length) {
+			availableTasks = tasks.filter(
+				task => selectedProjects && selectedProjects.find(project => task.projectUuid === project.value)
+			);
+		} else {
+			availableTasks = tasks;
+		}
 	};
 	const handleSelectTasks = event => {
 		selectedTasks = event.detail;
 	};
 	const handleSelectStatus = event => {
-		selectedStatus = event.detail;
+		selectedStatus = event.detail.value;
 	};
+	const handleClearStatus = () => {
+		selectedStatus = "";
+	};
+
+	onMount(() => {
+		// Parse current URL
+		const urlParts = document.location.href.split("?");
+		if (urlParts.length > 1) {
+			const queryString = urlParts[1];
+			const queryStringParts = queryString.split("&");
+			let queryStringVariables = {};
+			// Map over all query params
+			queryStringParts.map(part => {
+				// Split query params
+				const partParts = part.split("=");
+				const [name, value] = partParts;
+				// Apply filters from query params
+				if (name === "status") {
+					selectedStatus = value;
+				}
+				if (name === "tasks" && value) {
+					selectedTasks = value.split(",").map(taskId => tasks.find(task => task.value === taskId));
+				}
+				if (name === "projects" && value) {
+					handleSelectProjects({
+						detail: value.split(",").map(projectId => projects.find(project => project.value === projectId))
+					});
+				}
+				if (name === "clients" && value) {
+					handleSelectClients({
+						detail: value.split(",").map(clientId => clients.find(client => client.value === clientId))
+					});
+				}
+			});
+		}
+	});
 </script>
 
 <form class={`reports-filters${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={apply}>
-	<label for="client-select">Filter by:</label>
-
 	<label for="client-select" class="clients">
 		{window.t('timemanager', 'Clients')}
-		<Select inputAttributes={{ id: 'client-select' }} items={clients} on:select={handleSelectClients} isMulti={true} />
+		<Select
+			inputAttributes={{ id: 'client-select' }}
+			items={clients}
+			on:select={handleSelectClients}
+			selectedValue={selectedClients}
+			isMulti={true} />
 	</label>
 
 	<label for="projects-select" class="projects">
 		{window.t('timemanager', 'Projects')}
 		<Select
 			inputAttributes={{ id: 'projects-select' }}
-			items={projects}
+			items={availableProjects}
 			on:select={handleSelectProjects}
+			selectedValue={selectedProjects}
 			isMulti={true} />
 	</label>
 
 	<label for="tasks-select" class="tasks">
 		{window.t('timemanager', 'Tasks')}
-		<Select inputAttributes={{ id: 'tasks-select' }} items={tasks} on:select={handleSelectTasks} isMulti={true} />
+		<Select
+			inputAttributes={{ id: 'tasks-select' }}
+			items={availableTasks}
+			on:select={handleSelectTasks}
+			selectedValue={selectedTasks}
+			isMulti={true} />
 	</label>
 
 	<label for="status-select" class="status">
@@ -108,8 +185,9 @@
 		<Select
 			inputAttributes={{ id: 'status-select' }}
 			items={[{ value: 'paid', label: 'Paid' }, { value: 'unpaid', label: 'Unpaid' }]}
+			selectedValue={selectedStatus}
 			on:select={handleSelectStatus}
-			isMulti={true} />
+			on:clear={handleClearStatus} />
 	</label>
 
 	<span class="actions">

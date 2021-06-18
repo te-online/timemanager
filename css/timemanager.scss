@@ -266,6 +266,11 @@ label {
 		width: calc(100% + 60px);
 		column-gap: 12px;
 
+		&.reports-filters {
+			width: 100%;
+			margin-left: 0;
+		}
+
 		@media screen and (max-width: 1024px) {
 			grid-template-columns: 100%;
 		}
