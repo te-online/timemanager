@@ -13,4 +13,34 @@ export class Helpers {
 			nodes.forEach((node) => node.remove());
 		}
 	}
+
+	// Returns a new url with updated fields
+	static getUpdatedFilterUrl(field, value, baseUrl) {
+		const urlParts = baseUrl.split("?");
+		if (urlParts.length > 1) {
+			const queryString = urlParts[1];
+			const queryStringParts = queryString.split("&");
+			let queryStringVariables = {};
+			queryStringParts.forEach((part) => {
+				const partParts = part.split("=");
+				if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
+					queryStringVariables = {
+						...queryStringVariables,
+						[partParts[0]]: partParts[1],
+					};
+				}
+			});
+			queryStringVariables[field] = value;
+
+			return `${urlParts[0]}?${Object.keys(queryStringVariables)
+				.map((key) => `${key}=${queryStringVariables[key]}`)
+				.join("&")}`;
+		} else {
+			return `${baseUrl}?${field}=${value}`;
+		}
+	}
+
+	static getLinkEl() {
+		return document.querySelector(".hidden-filter-link");
+	}
 }

@@ -7065,7 +7065,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var loading;
     var days;
     var weekTotal;
@@ -7294,7 +7294,7 @@
       _classCallCheck(this, Statistics);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$k, create_fragment$m, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         statsApiUrl: 9,
         requestToken: 10
       });
@@ -7385,7 +7385,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -7411,7 +7411,7 @@
       _classCallCheck(this, Overlay);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$j, create_fragment$l, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         loading: 0
       });
       return _this;
@@ -7679,7 +7679,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -7732,7 +7732,7 @@
       _classCallCheck(this, ClientEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$i, create_fragment$k, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -7747,6 +7747,523 @@
 
     return ClientEditor;
   }(SvelteComponent);
+
+  // `RegExp.prototype.flags` getter implementation
+  // https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
+
+
+  var regexpFlags = function () {
+    var that = anObject(this);
+    var result = '';
+    if (that.global) result += 'g';
+    if (that.ignoreCase) result += 'i';
+    if (that.multiline) result += 'm';
+    if (that.dotAll) result += 's';
+    if (that.unicode) result += 'u';
+    if (that.sticky) result += 'y';
+    return result;
+  };
+
+  // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
+  // so we use an intermediate function.
+
+
+  function RE(s, f) {
+    return RegExp(s, f);
+  }
+
+  var UNSUPPORTED_Y$2 = fails(function () {
+    // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
+    var re = RE('a', 'y');
+    re.lastIndex = 2;
+    return re.exec('abcd') != null;
+  });
+  var BROKEN_CARET = fails(function () {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=773687
+    var re = RE('^r', 'gy');
+    re.lastIndex = 2;
+    return re.exec('str') != null;
+  });
+
+  var regexpStickyHelpers = {
+  	UNSUPPORTED_Y: UNSUPPORTED_Y$2,
+  	BROKEN_CARET: BROKEN_CARET
+  };
+
+  /* eslint-disable regexp/no-assertion-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
+
+  /* eslint-disable regexp/no-useless-quantifier -- testing */
+
+
+
+
+
+
+
+  var nativeExec = RegExp.prototype.exec;
+  var nativeReplace = shared('native-string-replace', String.prototype.replace);
+  var patchedExec = nativeExec;
+
+  var UPDATES_LAST_INDEX_WRONG = function () {
+    var re1 = /a/;
+    var re2 = /b*/g;
+    nativeExec.call(re1, 'a');
+    nativeExec.call(re2, 'a');
+    return re1.lastIndex !== 0 || re2.lastIndex !== 0;
+  }();
+
+  var UNSUPPORTED_Y$1 = regexpStickyHelpers.UNSUPPORTED_Y || regexpStickyHelpers.BROKEN_CARET; // nonparticipating capturing group, copied from es5-shim's String#split patch.
+
+  var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
+  var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y$1;
+
+  if (PATCH) {
+    patchedExec = function exec(str) {
+      var re = this;
+      var lastIndex, reCopy, match, i;
+      var sticky = UNSUPPORTED_Y$1 && re.sticky;
+      var flags = regexpFlags.call(re);
+      var source = re.source;
+      var charsAdded = 0;
+      var strCopy = str;
+
+      if (sticky) {
+        flags = flags.replace('y', '');
+
+        if (flags.indexOf('g') === -1) {
+          flags += 'g';
+        }
+
+        strCopy = String(str).slice(re.lastIndex); // Support anchored sticky behavior.
+
+        if (re.lastIndex > 0 && (!re.multiline || re.multiline && str[re.lastIndex - 1] !== '\n')) {
+          source = '(?: ' + source + ')';
+          strCopy = ' ' + strCopy;
+          charsAdded++;
+        } // ^(? + rx + ) is needed, in combination with some str slicing, to
+        // simulate the 'y' flag.
+
+
+        reCopy = new RegExp('^(?:' + source + ')', flags);
+      }
+
+      if (NPCG_INCLUDED) {
+        reCopy = new RegExp('^' + source + '$(?!\\s)', flags);
+      }
+
+      if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
+      match = nativeExec.call(sticky ? reCopy : re, strCopy);
+
+      if (sticky) {
+        if (match) {
+          match.input = match.input.slice(charsAdded);
+          match[0] = match[0].slice(charsAdded);
+          match.index = re.lastIndex;
+          re.lastIndex += match[0].length;
+        } else re.lastIndex = 0;
+      } else if (UPDATES_LAST_INDEX_WRONG && match) {
+        re.lastIndex = re.global ? match.index + match[0].length : lastIndex;
+      }
+
+      if (NPCG_INCLUDED && match && match.length > 1) {
+        // Fix browsers whose `exec` methods don't consistently return `undefined`
+        // for NPCG, like IE8. NOTE: This doesn' work for /(.?)?/
+        nativeReplace.call(match[0], reCopy, function () {
+          for (i = 1; i < arguments.length - 2; i++) {
+            if (arguments[i] === undefined) match[i] = undefined;
+          }
+        });
+      }
+
+      return match;
+    };
+  }
+
+  var regexpExec = patchedExec;
+
+  // `RegExp.prototype.exec` method
+  // https://tc39.es/ecma262/#sec-regexp.prototype.exec
+
+
+  _export({
+    target: 'RegExp',
+    proto: true,
+    forced: /./.exec !== regexpExec
+  }, {
+    exec: regexpExec
+  });
+
+  var SPECIES = wellKnownSymbol('species');
+  var RegExpPrototype = RegExp.prototype;
+  var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
+    // #replace needs built-in support for named groups.
+    // #match works fine because it just return the exec results, even if it has
+    // a "grops" property.
+    var re = /./;
+
+    re.exec = function () {
+      var result = [];
+      result.groups = {
+        a: '7'
+      };
+      return result;
+    };
+
+    return ''.replace(re, '$<a>') !== '7';
+  }); // IE <= 11 replaces $0 with the whole match, as if it was $&
+  // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
+
+  var REPLACE_KEEPS_$0 = function () {
+    // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
+    return 'a'.replace(/./, '$0') === '$0';
+  }();
+
+  var REPLACE = wellKnownSymbol('replace'); // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
+
+  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function () {
+    if (/./[REPLACE]) {
+      return /./[REPLACE]('a', '$0') === '';
+    }
+
+    return false;
+  }(); // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
+
+
+  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
+    // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    var re = /(?:)/;
+    var originalExec = re.exec;
+
+    re.exec = function () {
+      return originalExec.apply(this, arguments);
+    };
+
+    var result = 'ab'.split(re);
+    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+  });
+
+  var fixRegexpWellKnownSymbolLogic = function (KEY, length, exec, sham) {
+    var SYMBOL = wellKnownSymbol(KEY);
+    var DELEGATES_TO_SYMBOL = !fails(function () {
+      // String methods call symbol-named RegEp methods
+      var O = {};
+
+      O[SYMBOL] = function () {
+        return 7;
+      };
+
+      return ''[KEY](O) != 7;
+    });
+    var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL && !fails(function () {
+      // Symbol-named RegExp methods call .exec
+      var execCalled = false;
+      var re = /a/;
+
+      if (KEY === 'split') {
+        // We can't use real regex here since it causes deoptimization
+        // and serious performance degradation in V8
+        // https://github.com/zloirock/core-js/issues/306
+        re = {}; // RegExp[@@split] doesn't call the regex's exec method, but first creates
+        // a new one. We need to return the patched regex when creating the new one.
+
+        re.constructor = {};
+
+        re.constructor[SPECIES] = function () {
+          return re;
+        };
+
+        re.flags = '';
+        re[SYMBOL] = /./[SYMBOL];
+      }
+
+      re.exec = function () {
+        execCalled = true;
+        return null;
+      };
+
+      re[SYMBOL]('');
+      return !execCalled;
+    });
+
+    if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || KEY === 'replace' && !(REPLACE_SUPPORTS_NAMED_GROUPS && REPLACE_KEEPS_$0 && !REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE) || KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC) {
+      var nativeRegExpMethod = /./[SYMBOL];
+      var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
+        var $exec = regexp.exec;
+
+        if ($exec === regexpExec || $exec === RegExpPrototype.exec) {
+          if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
+            // The native String method already delegates to @@method (this
+            // polyfilled function), leasing to infinite recursion.
+            // We avoid it by directly calling the native @@method method.
+            return {
+              done: true,
+              value: nativeRegExpMethod.call(regexp, str, arg2)
+            };
+          }
+
+          return {
+            done: true,
+            value: nativeMethod.call(str, regexp, arg2)
+          };
+        }
+
+        return {
+          done: false
+        };
+      }, {
+        REPLACE_KEEPS_$0: REPLACE_KEEPS_$0,
+        REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE: REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE
+      });
+      var stringMethod = methods[0];
+      var regexMethod = methods[1];
+      redefine(String.prototype, KEY, stringMethod);
+      redefine(RegExpPrototype, SYMBOL, length == 2 // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+      ? function (string, arg) {
+        return regexMethod.call(string, this, arg);
+      } // 21.2.5.6 RegExp.prototype[@@match](string)
+      // 21.2.5.9 RegExp.prototype[@@search](string)
+      : function (string) {
+        return regexMethod.call(string, this);
+      });
+    }
+
+    if (sham) createNonEnumerableProperty(RegExpPrototype[SYMBOL], 'sham', true);
+  };
+
+  var MATCH = wellKnownSymbol('match'); // `IsRegExp` abstract operation
+  // https://tc39.es/ecma262/#sec-isregexp
+
+  var isRegexp = function (it) {
+    var isRegExp;
+    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
+  };
+
+  // `String.prototype.{ codePointAt, at }` methods implementation
+
+
+  var createMethod = function (CONVERT_TO_STRING) {
+    return function ($this, pos) {
+      var S = String(requireObjectCoercible($this));
+      var position = toInteger$1(pos);
+      var size = S.length;
+      var first, second;
+      if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
+      first = S.charCodeAt(position);
+      return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = S.charCodeAt(position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? S.charAt(position) : first : CONVERT_TO_STRING ? S.slice(position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+    };
+  };
+
+  var stringMultibyte = {
+    // `String.prototype.codePointAt` method
+    // https://tc39.es/ecma262/#sec-string.prototype.codepointat
+    codeAt: createMethod(false),
+    // `String.prototype.at` method
+    // https://github.com/mathiasbynens/String.prototype.at
+    charAt: createMethod(true)
+  };
+
+  var charAt = stringMultibyte.charAt; // `AdvanceStringIndex` abstract operation
+  // https://tc39.es/ecma262/#sec-advancestringindex
+
+
+  var advanceStringIndex = function (S, index, unicode) {
+    return index + (unicode ? charAt(S, index).length : 1);
+  };
+
+  // `RegExpExec` abstract operation
+  // https://tc39.es/ecma262/#sec-regexpexec
+
+
+  var regexpExecAbstract = function (R, S) {
+    var exec = R.exec;
+
+    if (typeof exec === 'function') {
+      var result = exec.call(R, S);
+
+      if (typeof result !== 'object') {
+        throw TypeError('RegExp exec method returned something other than an Object or null');
+      }
+
+      return result;
+    }
+
+    if (classofRaw(R) !== 'RegExp') {
+      throw TypeError('RegExp#exec called on incompatible receiver');
+    }
+
+    return regexpExec.call(R, S);
+  };
+
+  var UNSUPPORTED_Y = regexpStickyHelpers.UNSUPPORTED_Y;
+  var arrayPush = [].push;
+  var min = Math.min;
+  var MAX_UINT32 = 0xFFFFFFFF; // @@split logic
+
+  fixRegexpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCallNative) {
+    var internalSplit;
+
+    if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
+    '.'.split(/()()/).length > 1 || ''.split(/.?/).length) {
+      // based on es5-shim implementation, need to rework it
+      internalSplit = function (separator, limit) {
+        var string = String(requireObjectCoercible(this));
+        var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+        if (lim === 0) return [];
+        if (separator === undefined) return [string]; // If `separator` is not a regex, use native split
+
+        if (!isRegexp(separator)) {
+          return nativeSplit.call(string, separator, lim);
+        }
+
+        var output = [];
+        var flags = (separator.ignoreCase ? 'i' : '') + (separator.multiline ? 'm' : '') + (separator.unicode ? 'u' : '') + (separator.sticky ? 'y' : '');
+        var lastLastIndex = 0; // Make `global` and avoid `lastIndex` issues by working with a copy
+
+        var separatorCopy = new RegExp(separator.source, flags + 'g');
+        var match, lastIndex, lastLength;
+
+        while (match = regexpExec.call(separatorCopy, string)) {
+          lastIndex = separatorCopy.lastIndex;
+
+          if (lastIndex > lastLastIndex) {
+            output.push(string.slice(lastLastIndex, match.index));
+            if (match.length > 1 && match.index < string.length) arrayPush.apply(output, match.slice(1));
+            lastLength = match[0].length;
+            lastLastIndex = lastIndex;
+            if (output.length >= lim) break;
+          }
+
+          if (separatorCopy.lastIndex === match.index) separatorCopy.lastIndex++; // Avoid an infinite loop
+        }
+
+        if (lastLastIndex === string.length) {
+          if (lastLength || !separatorCopy.test('')) output.push('');
+        } else output.push(string.slice(lastLastIndex));
+
+        return output.length > lim ? output.slice(0, lim) : output;
+      }; // Chakra, V8
+
+    } else if ('0'.split(undefined, 0).length) {
+      internalSplit = function (separator, limit) {
+        return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
+      };
+    } else internalSplit = nativeSplit;
+
+    return [// `String.prototype.split` method
+    // https://tc39.es/ecma262/#sec-string.prototype.split
+    function split(separator, limit) {
+      var O = requireObjectCoercible(this);
+      var splitter = separator == undefined ? undefined : separator[SPLIT];
+      return splitter !== undefined ? splitter.call(separator, O, limit) : internalSplit.call(String(O), separator, limit);
+    }, // `RegExp.prototype[@@split]` method
+    // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
+    //
+    // NOTE: This cannot be properly polyfilled in engines that don't support
+    // the 'y' flag.
+    function (regexp, limit) {
+      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== nativeSplit);
+      if (res.done) return res.value;
+      var rx = anObject(regexp);
+      var S = String(this);
+      var C = speciesConstructor(rx, RegExp);
+      var unicodeMatching = rx.unicode;
+      var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
+      // simulate the 'y' flag.
+
+      var splitter = new C(UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
+      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+      if (lim === 0) return [];
+      if (S.length === 0) return regexpExecAbstract(splitter, S) === null ? [S] : [];
+      var p = 0;
+      var q = 0;
+      var A = [];
+
+      while (q < S.length) {
+        splitter.lastIndex = UNSUPPORTED_Y ? 0 : q;
+        var z = regexpExecAbstract(splitter, UNSUPPORTED_Y ? S.slice(q) : S);
+        var e;
+
+        if (z === null || (e = min(toLength(splitter.lastIndex + (UNSUPPORTED_Y ? q : 0)), S.length)) === p) {
+          q = advanceStringIndex(S, q, unicodeMatching);
+        } else {
+          A.push(S.slice(p, q));
+          if (A.length === lim) return A;
+
+          for (var i = 1; i <= z.length - 1; i++) {
+            A.push(z[i]);
+            if (A.length === lim) return A;
+          }
+
+          q = p = e;
+        }
+      }
+
+      A.push(S.slice(p));
+      return A;
+    }];
+  }, UNSUPPORTED_Y);
+
+  var nativeJoin = [].join;
+  var ES3_STRINGS = indexedObject != Object;
+  var STRICT_METHOD = arrayMethodIsStrict('join', ','); // `Array.prototype.join` method
+  // https://tc39.es/ecma262/#sec-array.prototype.join
+
+  _export({
+    target: 'Array',
+    proto: true,
+    forced: ES3_STRINGS || !STRICT_METHOD
+  }, {
+    join: function join(separator) {
+      return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
+    }
+  });
+
+  var $map = arrayIteration.map;
+
+
+
+  var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('map'); // `Array.prototype.map` method
+  // https://tc39.es/ecma262/#sec-array.prototype.map
+  // with adding support of @@species
+
+  _export({
+    target: 'Array',
+    proto: true,
+    forced: !HAS_SPECIES_SUPPORT$1
+  }, {
+    map: function map(callbackfn
+    /* , thisArg */
+    ) {
+      return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  // `Object.keys` method
+  // https://tc39.es/ecma262/#sec-object.keys
+  // eslint-disable-next-line es/no-object-keys -- safe
+
+
+  var objectKeys = Object.keys || function keys(O) {
+    return objectKeysInternal(O, enumBugKeys);
+  };
+
+  var FAILS_ON_PRIMITIVES = fails(function () {
+    objectKeys(1);
+  }); // `Object.keys` method
+  // https://tc39.es/ecma262/#sec-object.keys
+
+  _export({
+    target: 'Object',
+    stat: true,
+    forced: FAILS_ON_PRIMITIVES
+  }, {
+    keys: function keys(it) {
+      return objectKeys(toObject(it));
+    }
+  });
 
   var Helpers = /*#__PURE__*/function () {
     function Helpers() {
@@ -7773,6 +8290,38 @@
             return node.remove();
           });
         }
+      } // Returns a new url with updated fields
+
+    }, {
+      key: "getUpdatedFilterUrl",
+      value: function getUpdatedFilterUrl(field, value, baseUrl) {
+        var urlParts = baseUrl.split("?");
+
+        if (urlParts.length > 1) {
+          var queryString = urlParts[1];
+          var queryStringParts = queryString.split("&");
+          var queryStringVariables = {};
+          queryStringParts.forEach(function (part) {
+            var partParts = part.split("=");
+
+            if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
+              queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, {
+                [partParts[0]]: partParts[1]
+              });
+            }
+          });
+          queryStringVariables[field] = value;
+          return "".concat(urlParts[0], "?").concat(Object.keys(queryStringVariables).map(function (key) {
+            return "".concat(key, "=").concat(queryStringVariables[key]);
+          }).join("&"));
+        } else {
+          return "".concat(baseUrl, "?").concat(field, "=").concat(value);
+        }
+      }
+    }, {
+      key: "getLinkEl",
+      value: function getLinkEl() {
+        return document.querySelector(".hidden-filter-link");
       }
     }]);
 
@@ -8037,7 +8586,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -8155,7 +8704,7 @@
       _classCallCheck(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$h, create_fragment$j, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -8429,7 +8978,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -8478,7 +9027,7 @@
       _classCallCheck(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$g, create_fragment$i, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -8769,7 +9318,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -8885,7 +9434,7 @@
       _classCallCheck(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$f, create_fragment$h, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -9194,7 +9743,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -9245,7 +9794,7 @@
       _classCallCheck(this, TaskEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$e, create_fragment$g, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -9545,7 +10094,7 @@
     };
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -9663,7 +10212,7 @@
       _classCallCheck(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$d, create_fragment$f, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -10102,7 +10651,7 @@
     };
   }
 
-  function instance$c($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -10171,7 +10720,7 @@
       _classCallCheck(this, TimeEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$c, create_fragment$e, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$d, create_fragment$e, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -10580,7 +11129,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -10706,7 +11255,7 @@
       _classCallCheck(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$b, create_fragment$d, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$c, create_fragment$d, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -10993,7 +11542,7 @@
     };
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -11052,7 +11601,7 @@
       _classCallCheck(this, DeleteButton);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$a, create_fragment$c, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$b, create_fragment$c, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -11321,7 +11870,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
     var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
@@ -11419,7 +11968,7 @@
       _classCallCheck(this, DeleteTimeEntryButton);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$9, create_fragment$b, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$a, create_fragment$b, safe_not_equal, {
         deleteTimeEntryAction: 0,
         deleteTimeEntryUuid: 1,
         requestToken: 2
@@ -11434,28 +11983,8 @@
 
 
 
-  var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter'); // `Array.prototype.filter` method
+  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter'); // `Array.prototype.filter` method
   // https://tc39.es/ecma262/#sec-array.prototype.filter
-  // with adding support of @@species
-
-  _export({
-    target: 'Array',
-    proto: true,
-    forced: !HAS_SPECIES_SUPPORT$1
-  }, {
-    filter: function filter(callbackfn
-    /* , thisArg */
-    ) {
-      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-
-  var $map = arrayIteration.map;
-
-
-
-  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map'); // `Array.prototype.map` method
-  // https://tc39.es/ecma262/#sec-array.prototype.map
   // with adding support of @@species
 
   _export({
@@ -11463,21 +11992,12 @@
     proto: true,
     forced: !HAS_SPECIES_SUPPORT
   }, {
-    map: function map(callbackfn
+    filter: function filter(callbackfn
     /* , thisArg */
     ) {
-      return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
     }
   });
-
-  // `Object.keys` method
-  // https://tc39.es/ecma262/#sec-object.keys
-  // eslint-disable-next-line es/no-object-keys -- safe
-
-
-  var objectKeys = Object.keys || function keys(O) {
-    return objectKeysInternal(O, enumBugKeys);
-  };
 
   // `Object.defineProperties` method
   // https://tc39.es/ecma262/#sec-object.defineproperties
@@ -11681,7 +12201,7 @@
     };
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -11750,7 +12270,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-bdnybl-style")) add_css$5();
-      init$1(this, options, instance$8, create_fragment$a, safe_not_equal, {
+      init$1(this, options, instance$9, create_fragment$a, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -12039,7 +12559,7 @@
     };
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$8($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -12228,7 +12748,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-p6ehlv-style")) add_css$4();
-      init$1(this, options, instance$7, create_fragment$9, safe_not_equal, {
+      init$1(this, options, instance$8, create_fragment$9, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -13165,7 +13685,7 @@
     return hoverItemIndex === itemIndex || items.length === 1;
   }
 
-  function instance$6($$self, $$props, $$invalidate) {
+  function instance$7($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -13419,7 +13939,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-ux0sbr-style")) add_css$3();
-      init$1(this, options, instance$6, create_fragment$8, safe_not_equal, {
+      init$1(this, options, instance$7, create_fragment$8, safe_not_equal, {
         container: 0,
         Item: 2,
         isVirtualList: 3,
@@ -13487,7 +14007,7 @@
     };
   }
 
-  function instance$5($$self, $$props, $$invalidate) {
+  function instance$6($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -13507,7 +14027,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-ch6bh7-style")) add_css$2();
-      init$1(this, options, instance$5, create_fragment$7, safe_not_equal, {
+      init$1(this, options, instance$6, create_fragment$7, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       });
@@ -13753,7 +14273,7 @@
     };
   }
 
-  function instance$4($$self, $$props, $$invalidate) {
+  function instance$5($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       selectedValue = []
@@ -13797,7 +14317,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-14r1jr2-style")) add_css$1();
-      init$1(this, options, instance$4, create_fragment$6, safe_not_equal, {
+      init$1(this, options, instance$5, create_fragment$6, safe_not_equal, {
         selectedValue: 0,
         activeSelectedValue: 1,
         isDisabled: 2,
@@ -15029,7 +15549,7 @@
     };
   }
 
-  function instance$3($$self, $$props, $$invalidate) {
+  function instance$4($$self, $$props, $$invalidate) {
     let showSelectedItem;
     let placeholderText;
     const dispatch = createEventDispatcher();
@@ -15863,7 +16383,7 @@
     constructor(options) {
       super();
       if (!document_1.getElementById("svelte-17qb5ew-style")) add_css();
-      init$1(this, options, instance$3, create_fragment$4, safe_not_equal, {
+      init$1(this, options, instance$4, create_fragment$4, safe_not_equal, {
         container: 2,
         input: 3,
         Item: 39,
@@ -16327,7 +16847,7 @@
     return item.project.label;
   };
 
-  function instance$2($$self, $$props, $$invalidate) {
+  function instance$3($$self, $$props, $$invalidate) {
     var loading;
     var taskError;
     var action = $$props.action;
@@ -16503,7 +17023,7 @@
       _classCallCheck(this, QuickAdd);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$2, create_fragment$3, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
         action: 12,
         requestToken: 13,
         clients: 0,
@@ -16633,7 +17153,7 @@
     };
   }
 
-  function instance$1($$self, $$props, $$invalidate) {
+  function instance$2($$self, $$props, $$invalidate) {
     var loading;
     var uuid = $$props.uuid;
     var initialState = $$props.initialState;
@@ -16725,7 +17245,7 @@
       _classCallCheck(this, Checkmark);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$1, create_fragment$2, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {
         uuid: 0,
         initialState: 1,
         action: 5,
@@ -16737,493 +17257,24 @@
     return Checkmark;
   }(SvelteComponent);
 
-  // `RegExp.prototype.flags` getter implementation
-  // https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
+  var $includes = arrayIncludes.includes;
 
+   // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
 
-  var regexpFlags = function () {
-    var that = anObject(this);
-    var result = '';
-    if (that.global) result += 'g';
-    if (that.ignoreCase) result += 'i';
-    if (that.multiline) result += 'm';
-    if (that.dotAll) result += 's';
-    if (that.unicode) result += 'u';
-    if (that.sticky) result += 'y';
-    return result;
-  };
-
-  // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
-  // so we use an intermediate function.
-
-
-  function RE(s, f) {
-    return RegExp(s, f);
-  }
-
-  var UNSUPPORTED_Y$2 = fails(function () {
-    // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
-    var re = RE('a', 'y');
-    re.lastIndex = 2;
-    return re.exec('abcd') != null;
-  });
-  var BROKEN_CARET = fails(function () {
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=773687
-    var re = RE('^r', 'gy');
-    re.lastIndex = 2;
-    return re.exec('str') != null;
-  });
-
-  var regexpStickyHelpers = {
-  	UNSUPPORTED_Y: UNSUPPORTED_Y$2,
-  	BROKEN_CARET: BROKEN_CARET
-  };
-
-  /* eslint-disable regexp/no-assertion-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
-
-  /* eslint-disable regexp/no-useless-quantifier -- testing */
-
-
-
-
-
-
-
-  var nativeExec = RegExp.prototype.exec;
-  var nativeReplace = shared('native-string-replace', String.prototype.replace);
-  var patchedExec = nativeExec;
-
-  var UPDATES_LAST_INDEX_WRONG = function () {
-    var re1 = /a/;
-    var re2 = /b*/g;
-    nativeExec.call(re1, 'a');
-    nativeExec.call(re2, 'a');
-    return re1.lastIndex !== 0 || re2.lastIndex !== 0;
-  }();
-
-  var UNSUPPORTED_Y$1 = regexpStickyHelpers.UNSUPPORTED_Y || regexpStickyHelpers.BROKEN_CARET; // nonparticipating capturing group, copied from es5-shim's String#split patch.
-
-  var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
-  var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y$1;
-
-  if (PATCH) {
-    patchedExec = function exec(str) {
-      var re = this;
-      var lastIndex, reCopy, match, i;
-      var sticky = UNSUPPORTED_Y$1 && re.sticky;
-      var flags = regexpFlags.call(re);
-      var source = re.source;
-      var charsAdded = 0;
-      var strCopy = str;
-
-      if (sticky) {
-        flags = flags.replace('y', '');
-
-        if (flags.indexOf('g') === -1) {
-          flags += 'g';
-        }
-
-        strCopy = String(str).slice(re.lastIndex); // Support anchored sticky behavior.
-
-        if (re.lastIndex > 0 && (!re.multiline || re.multiline && str[re.lastIndex - 1] !== '\n')) {
-          source = '(?: ' + source + ')';
-          strCopy = ' ' + strCopy;
-          charsAdded++;
-        } // ^(? + rx + ) is needed, in combination with some str slicing, to
-        // simulate the 'y' flag.
-
-
-        reCopy = new RegExp('^(?:' + source + ')', flags);
-      }
-
-      if (NPCG_INCLUDED) {
-        reCopy = new RegExp('^' + source + '$(?!\\s)', flags);
-      }
-
-      if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
-      match = nativeExec.call(sticky ? reCopy : re, strCopy);
-
-      if (sticky) {
-        if (match) {
-          match.input = match.input.slice(charsAdded);
-          match[0] = match[0].slice(charsAdded);
-          match.index = re.lastIndex;
-          re.lastIndex += match[0].length;
-        } else re.lastIndex = 0;
-      } else if (UPDATES_LAST_INDEX_WRONG && match) {
-        re.lastIndex = re.global ? match.index + match[0].length : lastIndex;
-      }
-
-      if (NPCG_INCLUDED && match && match.length > 1) {
-        // Fix browsers whose `exec` methods don't consistently return `undefined`
-        // for NPCG, like IE8. NOTE: This doesn' work for /(.?)?/
-        nativeReplace.call(match[0], reCopy, function () {
-          for (i = 1; i < arguments.length - 2; i++) {
-            if (arguments[i] === undefined) match[i] = undefined;
-          }
-        });
-      }
-
-      return match;
-    };
-  }
-
-  var regexpExec = patchedExec;
-
-  // `RegExp.prototype.exec` method
-  // https://tc39.es/ecma262/#sec-regexp.prototype.exec
-
-
-  _export({
-    target: 'RegExp',
-    proto: true,
-    forced: /./.exec !== regexpExec
-  }, {
-    exec: regexpExec
-  });
-
-  var SPECIES = wellKnownSymbol('species');
-  var RegExpPrototype = RegExp.prototype;
-  var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
-    // #replace needs built-in support for named groups.
-    // #match works fine because it just return the exec results, even if it has
-    // a "grops" property.
-    var re = /./;
-
-    re.exec = function () {
-      var result = [];
-      result.groups = {
-        a: '7'
-      };
-      return result;
-    };
-
-    return ''.replace(re, '$<a>') !== '7';
-  }); // IE <= 11 replaces $0 with the whole match, as if it was $&
-  // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
-
-  var REPLACE_KEEPS_$0 = function () {
-    // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
-    return 'a'.replace(/./, '$0') === '$0';
-  }();
-
-  var REPLACE = wellKnownSymbol('replace'); // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
-
-  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function () {
-    if (/./[REPLACE]) {
-      return /./[REPLACE]('a', '$0') === '';
-    }
-
-    return false;
-  }(); // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
-  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
-
-
-  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
-    // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    var re = /(?:)/;
-    var originalExec = re.exec;
-
-    re.exec = function () {
-      return originalExec.apply(this, arguments);
-    };
-
-    var result = 'ab'.split(re);
-    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
-  });
-
-  var fixRegexpWellKnownSymbolLogic = function (KEY, length, exec, sham) {
-    var SYMBOL = wellKnownSymbol(KEY);
-    var DELEGATES_TO_SYMBOL = !fails(function () {
-      // String methods call symbol-named RegEp methods
-      var O = {};
-
-      O[SYMBOL] = function () {
-        return 7;
-      };
-
-      return ''[KEY](O) != 7;
-    });
-    var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL && !fails(function () {
-      // Symbol-named RegExp methods call .exec
-      var execCalled = false;
-      var re = /a/;
-
-      if (KEY === 'split') {
-        // We can't use real regex here since it causes deoptimization
-        // and serious performance degradation in V8
-        // https://github.com/zloirock/core-js/issues/306
-        re = {}; // RegExp[@@split] doesn't call the regex's exec method, but first creates
-        // a new one. We need to return the patched regex when creating the new one.
-
-        re.constructor = {};
-
-        re.constructor[SPECIES] = function () {
-          return re;
-        };
-
-        re.flags = '';
-        re[SYMBOL] = /./[SYMBOL];
-      }
-
-      re.exec = function () {
-        execCalled = true;
-        return null;
-      };
-
-      re[SYMBOL]('');
-      return !execCalled;
-    });
-
-    if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || KEY === 'replace' && !(REPLACE_SUPPORTS_NAMED_GROUPS && REPLACE_KEEPS_$0 && !REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE) || KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC) {
-      var nativeRegExpMethod = /./[SYMBOL];
-      var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
-        var $exec = regexp.exec;
-
-        if ($exec === regexpExec || $exec === RegExpPrototype.exec) {
-          if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
-            // The native String method already delegates to @@method (this
-            // polyfilled function), leasing to infinite recursion.
-            // We avoid it by directly calling the native @@method method.
-            return {
-              done: true,
-              value: nativeRegExpMethod.call(regexp, str, arg2)
-            };
-          }
-
-          return {
-            done: true,
-            value: nativeMethod.call(str, regexp, arg2)
-          };
-        }
-
-        return {
-          done: false
-        };
-      }, {
-        REPLACE_KEEPS_$0: REPLACE_KEEPS_$0,
-        REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE: REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE
-      });
-      var stringMethod = methods[0];
-      var regexMethod = methods[1];
-      redefine(String.prototype, KEY, stringMethod);
-      redefine(RegExpPrototype, SYMBOL, length == 2 // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
-      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
-      ? function (string, arg) {
-        return regexMethod.call(string, this, arg);
-      } // 21.2.5.6 RegExp.prototype[@@match](string)
-      // 21.2.5.9 RegExp.prototype[@@search](string)
-      : function (string) {
-        return regexMethod.call(string, this);
-      });
-    }
-
-    if (sham) createNonEnumerableProperty(RegExpPrototype[SYMBOL], 'sham', true);
-  };
-
-  var MATCH = wellKnownSymbol('match'); // `IsRegExp` abstract operation
-  // https://tc39.es/ecma262/#sec-isregexp
-
-  var isRegexp = function (it) {
-    var isRegExp;
-    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
-  };
-
-  // `String.prototype.{ codePointAt, at }` methods implementation
-
-
-  var createMethod = function (CONVERT_TO_STRING) {
-    return function ($this, pos) {
-      var S = String(requireObjectCoercible($this));
-      var position = toInteger$1(pos);
-      var size = S.length;
-      var first, second;
-      if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
-      first = S.charCodeAt(position);
-      return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = S.charCodeAt(position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? S.charAt(position) : first : CONVERT_TO_STRING ? S.slice(position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
-    };
-  };
-
-  var stringMultibyte = {
-    // `String.prototype.codePointAt` method
-    // https://tc39.es/ecma262/#sec-string.prototype.codepointat
-    codeAt: createMethod(false),
-    // `String.prototype.at` method
-    // https://github.com/mathiasbynens/String.prototype.at
-    charAt: createMethod(true)
-  };
-
-  var charAt = stringMultibyte.charAt; // `AdvanceStringIndex` abstract operation
-  // https://tc39.es/ecma262/#sec-advancestringindex
-
-
-  var advanceStringIndex = function (S, index, unicode) {
-    return index + (unicode ? charAt(S, index).length : 1);
-  };
-
-  // `RegExpExec` abstract operation
-  // https://tc39.es/ecma262/#sec-regexpexec
-
-
-  var regexpExecAbstract = function (R, S) {
-    var exec = R.exec;
-
-    if (typeof exec === 'function') {
-      var result = exec.call(R, S);
-
-      if (typeof result !== 'object') {
-        throw TypeError('RegExp exec method returned something other than an Object or null');
-      }
-
-      return result;
-    }
-
-    if (classofRaw(R) !== 'RegExp') {
-      throw TypeError('RegExp#exec called on incompatible receiver');
-    }
-
-    return regexpExec.call(R, S);
-  };
-
-  var UNSUPPORTED_Y = regexpStickyHelpers.UNSUPPORTED_Y;
-  var arrayPush = [].push;
-  var min = Math.min;
-  var MAX_UINT32 = 0xFFFFFFFF; // @@split logic
-
-  fixRegexpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCallNative) {
-    var internalSplit;
-
-    if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
-    '.'.split(/()()/).length > 1 || ''.split(/.?/).length) {
-      // based on es5-shim implementation, need to rework it
-      internalSplit = function (separator, limit) {
-        var string = String(requireObjectCoercible(this));
-        var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
-        if (lim === 0) return [];
-        if (separator === undefined) return [string]; // If `separator` is not a regex, use native split
-
-        if (!isRegexp(separator)) {
-          return nativeSplit.call(string, separator, lim);
-        }
-
-        var output = [];
-        var flags = (separator.ignoreCase ? 'i' : '') + (separator.multiline ? 'm' : '') + (separator.unicode ? 'u' : '') + (separator.sticky ? 'y' : '');
-        var lastLastIndex = 0; // Make `global` and avoid `lastIndex` issues by working with a copy
-
-        var separatorCopy = new RegExp(separator.source, flags + 'g');
-        var match, lastIndex, lastLength;
-
-        while (match = regexpExec.call(separatorCopy, string)) {
-          lastIndex = separatorCopy.lastIndex;
-
-          if (lastIndex > lastLastIndex) {
-            output.push(string.slice(lastLastIndex, match.index));
-            if (match.length > 1 && match.index < string.length) arrayPush.apply(output, match.slice(1));
-            lastLength = match[0].length;
-            lastLastIndex = lastIndex;
-            if (output.length >= lim) break;
-          }
-
-          if (separatorCopy.lastIndex === match.index) separatorCopy.lastIndex++; // Avoid an infinite loop
-        }
-
-        if (lastLastIndex === string.length) {
-          if (lastLength || !separatorCopy.test('')) output.push('');
-        } else output.push(string.slice(lastLastIndex));
-
-        return output.length > lim ? output.slice(0, lim) : output;
-      }; // Chakra, V8
-
-    } else if ('0'.split(undefined, 0).length) {
-      internalSplit = function (separator, limit) {
-        return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
-      };
-    } else internalSplit = nativeSplit;
-
-    return [// `String.prototype.split` method
-    // https://tc39.es/ecma262/#sec-string.prototype.split
-    function split(separator, limit) {
-      var O = requireObjectCoercible(this);
-      var splitter = separator == undefined ? undefined : separator[SPLIT];
-      return splitter !== undefined ? splitter.call(separator, O, limit) : internalSplit.call(String(O), separator, limit);
-    }, // `RegExp.prototype[@@split]` method
-    // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
-    //
-    // NOTE: This cannot be properly polyfilled in engines that don't support
-    // the 'y' flag.
-    function (regexp, limit) {
-      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== nativeSplit);
-      if (res.done) return res.value;
-      var rx = anObject(regexp);
-      var S = String(this);
-      var C = speciesConstructor(rx, RegExp);
-      var unicodeMatching = rx.unicode;
-      var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
-      // simulate the 'y' flag.
-
-      var splitter = new C(UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
-      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
-      if (lim === 0) return [];
-      if (S.length === 0) return regexpExecAbstract(splitter, S) === null ? [S] : [];
-      var p = 0;
-      var q = 0;
-      var A = [];
-
-      while (q < S.length) {
-        splitter.lastIndex = UNSUPPORTED_Y ? 0 : q;
-        var z = regexpExecAbstract(splitter, UNSUPPORTED_Y ? S.slice(q) : S);
-        var e;
-
-        if (z === null || (e = min(toLength(splitter.lastIndex + (UNSUPPORTED_Y ? q : 0)), S.length)) === p) {
-          q = advanceStringIndex(S, q, unicodeMatching);
-        } else {
-          A.push(S.slice(p, q));
-          if (A.length === lim) return A;
-
-          for (var i = 1; i <= z.length - 1; i++) {
-            A.push(z[i]);
-            if (A.length === lim) return A;
-          }
-
-          q = p = e;
-        }
-      }
-
-      A.push(S.slice(p));
-      return A;
-    }];
-  }, UNSUPPORTED_Y);
-
-  var nativeJoin = [].join;
-  var ES3_STRINGS = indexedObject != Object;
-  var STRICT_METHOD = arrayMethodIsStrict('join', ','); // `Array.prototype.join` method
-  // https://tc39.es/ecma262/#sec-array.prototype.join
 
   _export({
     target: 'Array',
-    proto: true,
-    forced: ES3_STRINGS || !STRICT_METHOD
+    proto: true
   }, {
-    join: function join(separator) {
-      return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
+    includes: function includes(el
+    /* , fromIndex = 0 */
+    ) {
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
     }
-  });
+  }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 
-  var FAILS_ON_PRIMITIVES = fails(function () {
-    objectKeys(1);
-  }); // `Object.keys` method
-  // https://tc39.es/ecma262/#sec-object.keys
-
-  _export({
-    target: 'Object',
-    stat: true,
-    forced: FAILS_ON_PRIMITIVES
-  }, {
-    keys: function keys(it) {
-      return objectKeys(toObject(it));
-    }
-  });
+  addToUnscopables('includes');
 
   function create_fragment$1(ctx) {
     var form;
@@ -17508,64 +17559,34 @@
     };
   }
 
-  function instance($$self, $$props, $$invalidate) {
+  function instance$1($$self, $$props, $$invalidate) {
     var loading;
     var availableProjects;
     var availableTasks;
     var clients = $$props.clients;
     var projects = $$props.projects;
     var tasks = $$props.tasks;
-    var selectedClients = [];
-    var selectedProjects = [];
-    var selectedTasks = [];
-    var selectedStatus = ""; // Returns a new url with updated fields
-
-    var getUpdatedFilterUrl = function getUpdatedFilterUrl(field, value, baseUrl) {
-      var urlParts = baseUrl.split("?");
-
-      if (urlParts.length > 1) {
-        var queryString = urlParts[1];
-        var queryStringParts = queryString.split("&");
-        var queryStringVariables = {};
-        queryStringParts.map(function (part) {
-          var partParts = part.split("=");
-
-          if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-            queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, {
-              [partParts[0]]: partParts[1]
-            });
-          }
-        });
-        queryStringVariables[field] = value;
-        return "".concat(urlParts[0], "?").concat(Object.keys(queryStringVariables).map(function (key) {
-          return "".concat(key, "=").concat(queryStringVariables[key]);
-        }).join("&"));
-      } else {
-        return "".concat(baseUrl, "?").concat(field, "=").concat(value);
-      }
-    };
-
-    var getLinkEl = function getLinkEl() {
-      return document.querySelector(".hidden-filter-link");
-    };
+    var selectedClients;
+    var selectedProjects;
+    var selectedTasks;
+    var selectedStatus;
 
     var apply = function apply(e) {
       // Prepare a link with get attributes
-      var filterLinkElement = getLinkEl(); // Base off current url
+      var filterLinkElement = Helpers.getLinkEl(); // Base off current url
 
       var newUrl = document.location.href; // Add filter attributes to url
 
-      newUrl = getUpdatedFilterUrl("clients", selectedClients ? selectedClients.map(function (c) {
+      newUrl = Helpers.getUpdatedFilterUrl("clients", selectedClients ? selectedClients.map(function (c) {
         return c.value;
       }).join(",") : "", newUrl);
-      newUrl = getUpdatedFilterUrl("projects", selectedProjects ? selectedProjects.map(function (p) {
+      newUrl = Helpers.getUpdatedFilterUrl("projects", selectedProjects ? selectedProjects.map(function (p) {
         return p.value;
       }).join(",") : "", newUrl);
-      newUrl = getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(function (t) {
+      newUrl = Helpers.getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(function (t) {
         return t.value;
       }).join(",") : "", newUrl);
-      newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
-      console.log(newUrl); // Attach url to hidden pjax link
+      newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl); // Attach url to hidden pjax link
 
       filterLinkElement.href = newUrl; // Navigate
 
@@ -17587,7 +17608,7 @@
 
       if (selectedProjects && selectedProjects.length) {
         $$invalidate(7, availableTasks = tasks.filter(function (task) {
-          return selectedProjects && selectedProjects.find(function (project) {
+          return selectedProjects.find(function (project) {
             return task.projectUuid === project.value;
           });
         }));
@@ -17611,7 +17632,7 @@
 
       if (selectedProjects && selectedProjects.length) {
         $$invalidate(7, availableTasks = tasks.filter(function (task) {
-          return selectedProjects && selectedProjects.find(function (project) {
+          return selectedProjects.find(function (project) {
             return task.projectUuid === project.value;
           });
         }));
@@ -17649,19 +17670,22 @@
               value = _partParts[1]; // Apply filters from query params
 
 
-          if (name === "status") {
+          if (name === "status" && value && ["paid", "unpaid"].includes(value)) {
             $$invalidate(4, selectedStatus = value);
           }
 
-          if (name === "tasks" && value) {
+          if (name === "tasks" && value && value.length) {
             $$invalidate(3, selectedTasks = value.split(",").map(function (taskId) {
               return tasks.find(function (task) {
                 return task.value === taskId;
               });
             }));
+            console.log({
+              selectedTasks
+            });
           }
 
-          if (name === "projects" && value) {
+          if (name === "projects" && value && value.length) {
             handleSelectProjects({
               detail: value.split(",").map(function (projectId) {
                 return projects.find(function (project) {
@@ -17671,7 +17695,7 @@
             });
           }
 
-          if (name === "clients" && value) {
+          if (name === "clients" && value && value.length) {
             handleSelectClients({
               detail: value.split(",").map(function (clientId) {
                 return clients.find(function (client) {
@@ -17690,11 +17714,21 @@
       if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
     };
 
+    $$self.$$.update = function () {
+      if ($$self.$$.dirty &
+      /*projects*/
+      16384) {
+        $$invalidate(6, availableProjects = projects);
+      }
+
+      if ($$self.$$.dirty &
+      /*tasks*/
+      32768) {
+        $$invalidate(7, availableTasks = tasks);
+      }
+    };
+
     $$invalidate(5, loading = false);
-
-    $$invalidate(6, availableProjects = []);
-
-    $$invalidate(7, availableTasks = []);
 
     return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, loading, availableProjects, availableTasks, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
   }
@@ -17710,7 +17744,7 @@
       _classCallCheck(this, Filters);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance, create_fragment$1, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
         clients: 0,
         projects: 14,
         tasks: 15
@@ -17722,26 +17756,227 @@
   }(SvelteComponent);
 
   function create_fragment(ctx) {
-    var h2;
+    var form;
+    var label0;
+    var t0_value = window.t("timemanager", "From") + "";
+    var t0;
+    var t1;
+    var input0;
+    var t2;
+    var label1;
+    var t3_value = window.t("timemanager", "To") + "";
+    var t3;
+    var t4;
+    var input1;
+    var t5;
+    var span;
+    var button;
+    var t6_value = window.t("timemanager", "Apply range") + "";
+    var t6;
+    var form_class_value;
+    var mounted;
+    var dispose;
     return {
       c() {
-        h2 = element("h2");
-        h2.textContent = "Here goes a time range selector. For now it should be \"this month\"";
+        form = element("form");
+        label0 = element("label");
+        t0 = text(t0_value);
+        t1 = space();
+        input0 = element("input");
+        t2 = space();
+        label1 = element("label");
+        t3 = text(t3_value);
+        t4 = space();
+        input1 = element("input");
+        t5 = space();
+        span = element("span");
+        button = element("button");
+        t6 = text(t6_value);
+        attr(input0, "id", "start");
+        attr(input0, "type", "date");
+        attr(input0, "pattern", "Y-m-d");
+        attr(label0, "for", "start");
+        attr(label0, "class", "start");
+        attr(input1, "id", "end");
+        attr(input1, "type", "date");
+        attr(input1, "pattern", "Y-m-d");
+        attr(label1, "for", "end");
+        attr(label1, "class", "end");
+        button.disabled =
+        /*loading*/
+        ctx[0];
+        attr(button, "type", "submit");
+        attr(button, "class", "button primary");
+        attr(span, "class", "actions");
+        attr(form, "class", form_class_value = "reports-timerange".concat(
+        /*loading*/
+        ctx[0] ? " icon-loading" : ""));
       },
 
       m(target, anchor) {
-        insert(target, h2, anchor);
+        insert(target, form, anchor);
+        append(form, label0);
+        append(label0, t0);
+        append(label0, t1);
+        append(label0, input0);
+        set_input_value(input0,
+        /*start*/
+        ctx[1]);
+        append(form, t2);
+        append(form, label1);
+        append(label1, t3);
+        append(label1, t4);
+        append(label1, input1);
+        set_input_value(input1,
+        /*end*/
+        ctx[2]);
+        append(form, t5);
+        append(form, span);
+        append(span, button);
+        append(button, t6);
+
+        if (!mounted) {
+          dispose = [listen(input0, "input",
+          /*input0_input_handler*/
+          ctx[6]), listen(input1, "input",
+          /*input1_input_handler*/
+          ctx[7]), listen(form, "submit", prevent_default(
+          /*applyRange*/
+          ctx[3]))];
+          mounted = true;
+        }
       },
 
-      p: noop$1,
+      p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (dirty &
+        /*start*/
+        2) {
+          set_input_value(input0,
+          /*start*/
+          ctx[1]);
+        }
+
+        if (dirty &
+        /*end*/
+        4) {
+          set_input_value(input1,
+          /*end*/
+          ctx[2]);
+        }
+
+        if (dirty &
+        /*loading*/
+        1) {
+          button.disabled =
+          /*loading*/
+          ctx[0];
+        }
+
+        if (dirty &
+        /*loading*/
+        1 && form_class_value !== (form_class_value = "reports-timerange".concat(
+        /*loading*/
+        ctx[0] ? " icon-loading" : ""))) {
+          attr(form, "class", form_class_value);
+        }
+      },
+
       i: noop$1,
       o: noop$1,
 
       d(detaching) {
-        if (detaching) detach(h2);
+        if (detaching) detach(form);
+        mounted = false;
+        run_all(dispose);
       }
 
     };
+  }
+
+  function instance($$self, $$props, $$invalidate) {
+    var loading;
+    var start;
+    var end;
+    var startOfMonth = $$props.startOfMonth;
+    var endOfMonth = $$props.endOfMonth;
+
+    var applyRange = function applyRange(e) {
+      // Prepare a link with get attributes
+      var filterLinkElement = Helpers.getLinkEl(); // Base off current url
+
+      var newUrl = document.location.href; // Add filter attributes to url
+
+      newUrl = Helpers.getUpdatedFilterUrl("start", start ? start : "", newUrl);
+      newUrl = Helpers.getUpdatedFilterUrl("end", end ? end : "", newUrl); // Attach url to hidden pjax link
+
+      filterLinkElement.href = newUrl; // Navigate
+
+      filterLinkElement.click();
+    };
+
+    onMount(function () {
+      // Parse current URL
+      var urlParts = document.location.href.split("?");
+
+      if (urlParts.length > 1) {
+        var queryString = urlParts[1];
+        var queryStringParts = queryString.split("&");
+
+        queryStringParts.map(function (part) {
+          // Split query params
+          var partParts = part.split("=");
+
+          var _partParts = _slicedToArray(partParts, 2),
+              name = _partParts[0],
+              value = _partParts[1]; // Apply filters from query params
+
+
+          if (name === "start" && value) {
+            $$invalidate(1, start = value);
+          }
+
+          if (name === "end" && value) {
+            $$invalidate(2, end = value);
+          }
+        });
+      }
+    });
+
+    function input0_input_handler() {
+      start = this.value;
+      $$invalidate(1, start), $$invalidate(4, startOfMonth);
+    }
+
+    function input1_input_handler() {
+      end = this.value;
+      $$invalidate(2, end), $$invalidate(5, endOfMonth);
+    }
+
+    $$self.$$set = function ($$props) {
+      if ("startOfMonth" in $$props) $$invalidate(4, startOfMonth = $$props.startOfMonth);
+      if ("endOfMonth" in $$props) $$invalidate(5, endOfMonth = $$props.endOfMonth);
+    };
+
+    $$self.$$.update = function () {
+      if ($$self.$$.dirty &
+      /*startOfMonth*/
+      16) {
+        $$invalidate(1, start = startOfMonth);
+      }
+
+      if ($$self.$$.dirty &
+      /*endOfMonth*/
+      32) {
+        $$invalidate(2, end = endOfMonth);
+      }
+    };
+
+    $$invalidate(0, loading = false);
+
+    return [loading, start, end, applyRange, startOfMonth, endOfMonth, input0_input_handler, input1_input_handler];
   }
 
   var Timerange = /*#__PURE__*/function (_SvelteComponent) {
@@ -17755,7 +17990,10 @@
       _classCallCheck(this, Timerange);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, null, create_fragment, safe_not_equal, {});
+      init$1(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+        startOfMonth: 4,
+        endOfMonth: 5
+      });
       return _this;
     }
 

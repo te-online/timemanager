@@ -1,70 +1,43 @@
 <script>
-	/**
-	 * @TODO:
-	 * - Set initial values from URL
-	 * - Filter projects depending on selected clients
-	 * - Filter tasks depending on selected projects
-	 **/
-
 	export let clients;
 	export let projects;
 	export let tasks;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
+	import { Helpers } from "../lib/helpers";
 
 	$: loading = false;
-	$: availableProjects = [];
-	$: availableTasks = [];
+	$: availableProjects = projects;
+	$: availableTasks = tasks;
 
-	let selectedClients = [];
-	let selectedProjects = [];
-	let selectedTasks = [];
-	let selectedStatus = "";
-
-	// Returns a new url with updated fields
-	const getUpdatedFilterUrl = (field, value, baseUrl) => {
-		const urlParts = baseUrl.split("?");
-		if (urlParts.length > 1) {
-			const queryString = urlParts[1];
-			const queryStringParts = queryString.split("&");
-			let queryStringVariables = {};
-			queryStringParts.map(part => {
-				const partParts = part.split("=");
-				if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-					queryStringVariables = {
-						...queryStringVariables,
-						[partParts[0]]: partParts[1]
-					};
-				}
-			});
-			queryStringVariables[field] = value;
-
-			return `${urlParts[0]}?${Object.keys(queryStringVariables)
-				.map(key => `${key}=${queryStringVariables[key]}`)
-				.join("&")}`;
-		} else {
-			return `${baseUrl}?${field}=${value}`;
-		}
-	};
-
-	const getLinkEl = () => document.querySelector(".hidden-filter-link");
+	let selectedClients;
+	let selectedProjects;
+	let selectedTasks;
+	let selectedStatus;
 
 	const apply = e => {
 		// Prepare a link with get attributes
-		const filterLinkElement = getLinkEl();
+		const filterLinkElement = Helpers.getLinkEl();
 		// Base off current url
 		let newUrl = document.location.href;
 		// Add filter attributes to url
-		newUrl = getUpdatedFilterUrl("clients", selectedClients ? selectedClients.map(c => c.value).join(",") : "", newUrl);
-		newUrl = getUpdatedFilterUrl(
+		newUrl = Helpers.getUpdatedFilterUrl(
+			"clients",
+			selectedClients ? selectedClients.map(c => c.value).join(",") : "",
+			newUrl
+		);
+		newUrl = Helpers.getUpdatedFilterUrl(
 			"projects",
 			selectedProjects ? selectedProjects.map(p => p.value).join(",") : "",
 			newUrl
 		);
-		newUrl = getUpdatedFilterUrl("tasks", selectedTasks ? selectedTasks.map(t => t.value).join(",") : "", newUrl);
-		newUrl = getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
-		console.log(newUrl);
+		newUrl = Helpers.getUpdatedFilterUrl(
+			"tasks",
+			selectedTasks ? selectedTasks.map(t => t.value).join(",") : "",
+			newUrl
+		);
+		newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus : "", newUrl);
 		// Attach url to hidden pjax link
 		filterLinkElement.href = newUrl;
 		// Navigate
@@ -81,13 +54,12 @@
 			availableProjects = projects;
 		}
 		if (selectedProjects && selectedProjects.length) {
-			availableTasks = tasks.filter(
-				task => selectedProjects && selectedProjects.find(project => task.projectUuid === project.value)
-			);
+			availableTasks = tasks.filter(task => selectedProjects.find(project => task.projectUuid === project.value));
 		} else {
 			availableTasks = tasks;
 		}
 	};
+
 	const handleSelectProjects = event => {
 		selectedProjects = event.detail;
 		if (selectedClients && selectedClients.length) {
@@ -98,9 +70,7 @@
 			availableProjects = projects;
 		}
 		if (selectedProjects && selectedProjects.length) {
-			availableTasks = tasks.filter(
-				task => selectedProjects && selectedProjects.find(project => task.projectUuid === project.value)
-			);
+			availableTasks = tasks.filter(task => selectedProjects.find(project => task.projectUuid === project.value));
 		} else {
 			availableTasks = tasks;
 		}
@@ -128,18 +98,19 @@
 				const partParts = part.split("=");
 				const [name, value] = partParts;
 				// Apply filters from query params
-				if (name === "status") {
+				if (name === "status" && value && ["paid", "unpaid"].includes(value)) {
 					selectedStatus = value;
 				}
-				if (name === "tasks" && value) {
+				if (name === "tasks" && value && value.length) {
 					selectedTasks = value.split(",").map(taskId => tasks.find(task => task.value === taskId));
+					console.log({ selectedTasks });
 				}
-				if (name === "projects" && value) {
+				if (name === "projects" && value && value.length) {
 					handleSelectProjects({
 						detail: value.split(",").map(projectId => projects.find(project => project.value === projectId))
 					});
 				}
-				if (name === "clients" && value) {
+				if (name === "clients" && value && value.length) {
 					handleSelectClients({
 						detail: value.split(",").map(clientId => clients.find(client => client.value === clientId))
 					});

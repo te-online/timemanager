@@ -112,7 +112,8 @@
 
 	&.inline {
 		margin-right: 12px;
-		&, & + * {
+		&,
+		& + * {
 			display: inline-block;
 		}
 	}
@@ -260,19 +261,25 @@ label {
 	}
 
 	.quick-add,
-	.reports-filters {
+	.reports-filters,
+	.reports-timerange {
 		display: grid;
 		margin-left: -30px;
 		width: calc(100% + 60px);
 		column-gap: 12px;
 
-		&.reports-filters {
+		&.reports-filters,
+		&.reports-timerange {
 			width: 100%;
 			margin-left: 0;
 		}
 
 		@media screen and (max-width: 1024px) {
-			grid-template-columns: 100%;
+			&,
+			&.reports-filters,
+			&.reports-timerange {
+				grid-template-columns: 100%;
+			}
 		}
 
 		> .actions {
@@ -375,7 +382,12 @@ label {
 	}
 
 	.reports-filters {
-		grid-template-columns: repeat(6, auto);
+		grid-template-columns: repeat(auto-fill, minmax(20%, 100px));
+	}
+
+	.reports-timerange {
+		margin-top: 12px;
+		grid-template-columns: repeat(3, 130px);
 	}
 
 	.checkbox-action label {
