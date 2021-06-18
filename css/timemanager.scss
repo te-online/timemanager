@@ -109,6 +109,13 @@
 	color: var(--color-text-light);
 	display: block;
 	font-size: 9pt;
+
+	&.inline {
+		margin-right: 12px;
+		&, & + * {
+			display: inline-block;
+		}
+	}
 }
 
 .tm_object-details-item {

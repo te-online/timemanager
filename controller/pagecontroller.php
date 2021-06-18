@@ -147,49 +147,88 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function reports($clients, $projects, $tasks, $start, $end) {
-		$times = $this->timeMapper->getActiveObjects('start', 'DESC');
-		$all_clients = $this->clientMapper->findActiveForCurrentUser('name');
-		$all_projects = $this->projectMapper->findActiveForCurrentUser('name');
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser('name');
+		$start_of_month = new \DateTime("first day of this month");
+		$end_of_month = new \DateTime("last day of this month");
+		$times = $this->timeMapper->findForReport(
+			$start ? $start : $start_of_month->format("Y-m-d"),
+			$end ? $end : $end_of_month->format("Y-m-d")
+		);
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+
+		// Group times by client
+		$times_grouped_by_client = [];
+		$hours_total = 0;
+		if ($times && is_array($times) && count($times) > 0) {
+			foreach ($times as $time) {
+				// Find details for parents of time entry
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid());
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid());
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid());
+				// Compile a template object
+				if (!isset($times_grouped_by_client[$client->getUuid()])) {
+					$times_grouped_by_client[$client->getUuid()] = (object) [
+						"task" => $task,
+						"project" => $project,
+						"client" => $client,
+						"times" => [],
+						"totalHours" => 0,
+						"percentageHours" => 0,
+					];
+				}
+				$times_grouped_by_client[$client->getUuid()]->times[] = $time;
+				$hours = $time->getDurationInHours();
+				$times_grouped_by_client[$client->getUuid()]->totalHours += $hours;
+				$hours_total += $hours;
+			}
+		}
+		// Apply total to clients
+		foreach ($times_grouped_by_client as $times_group) {
+			$times_grouped_by_client[$times_group->client->getUuid()]->percentageHours =
+			round($times_group->totalHours / $hours_total, 2) * 100;
+		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : '';
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
 
 		$store = [
-			'clients' => array_map(function ($oneClient) {
+			"clients" => array_map(function ($oneClient) {
 				$oneClient = $oneClient->toArray();
-				return ['value' => $oneClient['uuid'], 'label' => $oneClient['name']];
+				return ["value" => $oneClient["uuid"], "label" => $oneClient["name"]];
 			}, $all_clients),
-			'projects' => array_map(function ($oneProject) {
+			"projects" => array_map(function ($oneProject) {
 				$oneProject = $oneProject->toArray();
 				return [
-					'value' => $oneProject['uuid'],
-					'label' => $oneProject['name'],
-					'clientUuid' => $oneProject['client_uuid'],
+					"value" => $oneProject["uuid"],
+					"label" => $oneProject["name"],
+					"clientUuid" => $oneProject["client_uuid"],
 				];
 			}, $all_projects),
-			'tasks' => array_map(function ($oneTask) {
+			"tasks" => array_map(function ($oneTask) {
 				$oneTask = $oneTask->toArray();
-				return ['value' => $oneTask['uuid'], 'label' => $oneTask['name'], 'projectUuid' => $oneTask['project_uuid']];
+				return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 			}, $all_tasks),
-			'initialDate' => date('Y-m-d'),
-			'action' => $urlGenerator->linkToRoute('timemanager.page.reports'),
-			'requestToken' => $requestToken,
-			'isServer' => true,
+			"initialDate" => date("Y-m-d"),
+			"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
+			"requestToken" => $requestToken,
+			"isServer" => true,
 		];
 
-		return new TemplateResponse('timemanager', 'reports', [
-			'clients' => $clients,
-			'projects' => $projects,
-			'tasks' => $tasks,
-			'start' => $start,
-			'end' => $end,
-			'templates' => [
-				'Filters.svelte' => PHP_Svelte::render_template('Filters.svelte', $store),
-				'Timerange.svelte' => PHP_Svelte::render_template('Timerange.svelte', $store),
+		return new TemplateResponse("timemanager", "reports", [
+			"clients" => $clients,
+			"projects" => $projects,
+			"tasks" => $tasks,
+			"start" => $start,
+			"end" => $end,
+			"times" => $times,
+			"times_grouped_by_client" => $times_grouped_by_client,
+			"templates" => [
+				"Filters.svelte" => PHP_Svelte::render_template("Filters.svelte", $store),
+				"Timerange.svelte" => PHP_Svelte::render_template("Timerange.svelte", $store),
 			],
-			'store' => json_encode($store),
-			'page' => 'reports',
+			"store" => json_encode($store),
+			"page" => "reports",
 		]);
 	}
 

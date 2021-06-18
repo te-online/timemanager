@@ -29,4 +29,8 @@ class TimeMapper extends ObjectMapper {
 	public function deleteChildrenForEntityById($uuid, $commit) {
 		// Do nothing here, because times have no children.
 	}
+
+	public function findForReport(string $start, string $end) {
+		return $this->getActiveObjectsByDateRange($start, $end);
+	}
 }

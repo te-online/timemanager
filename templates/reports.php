@@ -1,6 +1,9 @@
 <?php
-script("timemanager", "timemanager");
-style("timemanager", "timemanager");
+	script("timemanager", "timemanager");
+	style("timemanager", "timemanager");
+
+	$urlGenerator = \OC::$server->getURLGenerator();
+	$l = \OC::$server->getL10N('timemanager');
 ?>
 
 <?php print_unescaped($this->inc("partials/navigation")); ?>
@@ -19,11 +22,28 @@ style("timemanager", "timemanager");
 				<span data-store="<?php p($_["store"]); ?>"></span>
 				<a href="" class="timemanager-pjax-link hidden-visually hidden-filter-link">Apply filters</a>
 			</section>
-			<?php var_dump(p($_["clients"])); ?>
-			<?php var_dump(p($_["projects"])); ?>
-			<?php var_dump(p($_["tasks"])); ?>
-			<?php var_dump(p($_["start"])); ?>
-			<?php var_dump(p($_["end"])); ?>
+			<section class="section">
+				<?php
+					if ($_["times_grouped_by_client"] && is_array($_["times_grouped_by_client"]) && count($_["times_grouped_by_client"]) > 0) {
+						foreach ($_["times_grouped_by_client"] as $times_for_client) {
+							?>
+				<div class="tm_item-row with-link">
+					<a class="timemanager-pjax-link"
+						href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>?client=<?php echo $times_for_client->client->getUuid(); ?>">
+						<span class="tm_label inline"><?php p($l->t('Client')); ?></span>
+						<h3><?php p($times_for_client->client->getName()); ?></h3>
+						<div class="tm_item-excerpt">
+							<span class="tm_label inline"><?php p($l->t('Duration')); ?></span>
+							<span><?php p($times_for_client->totalHours); ?> <?php p($l->t('hrs.')); ?></span>
+							&nbsp;&middot;&nbsp;<span class="trim"><?php p($times_for_client->percentageHours); ?>&thinsp;%</span>
+						</div>
+					</a>
+				</div>
+				<?php
+						}
+					}
+				?>
+			</section>
 			<section class="section">
 				<ul>
 					<li>Here we'll show the results</li>
