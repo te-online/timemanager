@@ -16,7 +16,10 @@
 	let selectedTasks;
 	let selectedStatus;
 
-	const availableStatus = [{ value: "unpaid", label: "Unpaid" }, { value: "paid", label: "Paid" }];
+	const availableStatus = [
+		{ value: "unpaid", label: window.t("timemanager", "Unresolved") },
+		{ value: "paid", label: window.t("timemanager", "Resolved") }
+	];
 
 	const apply = e => {
 		// Prepare a link with get attributes

@@ -70,7 +70,6 @@ $l = \OC::$server->getL10N("timemanager");
 								action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>"
 								method="post" style="display: inline" data-svelte-hide="Checkmark.svelte">
 								<input type="hidden" name="uuid" value="<?php p($time->getUuid()); ?>" />
-								<input type="hidden" name="task" value="<?php p($times_for_client->task->getUuid()); ?>" />
 								<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']); ?>" />
 								<button type="submit"
 									class="icon-checkmark tm_icon-checkmark tm_icon-checkmark-<?php p($paymentStatus); ?>"></button>
@@ -96,7 +95,7 @@ $l = \OC::$server->getL10N("timemanager");
 				</p>
 				<p>
 					<span class="tm_label"><?php p($l->t("Number of entries")); ?></span>
-					<?php p($_["numEntries"]); ?> <?php p($l->t("entries")); ?>
+					<?php p($_["numEntries"]); ?> <?php p($_["numEntries"] === 1 ? $l->t("entry") : $l->t("entries")); ?>
 				</p>
 			</div>
 			<?php

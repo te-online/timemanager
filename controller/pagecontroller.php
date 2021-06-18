@@ -214,8 +214,6 @@ class PageController extends Controller {
 				// Compile a template object
 				if (!isset($times_grouped_by_client[$client->getUuid()])) {
 					$times_grouped_by_client[$client->getUuid()] = (object) [
-						"task" => $task,
-						"project" => $project,
 						"client" => $client,
 						"times" => [],
 						"totalHours" => 0,

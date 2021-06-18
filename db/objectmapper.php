@@ -112,8 +112,13 @@ class ObjectMapper extends Mapper {
 			"WHERE `user_id` = ? AND `status` != ? " .
 			"AND start >= ? AND start <= ? ";
 		if (isset($status) && $status) {
-			$sql .= "AND LOWER(`payment_status`) = ? ";
-			$params[] = strtolower($status);
+			if ($status === "paid") {
+				$sql .= "AND LOWER(`payment_status`) = ? ";
+				$params[] = strtolower($status);
+			} else {
+				$sql .= "AND (`payment_status` IS NULL OR LOWER(`payment_status`) <> ?) ";
+				$params[] = "paid";
+			}
 		}
 		if (count($filter_tasks) > 0) {
 			$sql .= "AND `task_uuid` IN ('" . implode("','", $filter_tasks) . "') ";

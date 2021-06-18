@@ -17549,10 +17549,10 @@
     var selectedStatus;
     var availableStatus = [{
       value: "unpaid",
-      label: "Unpaid"
+      label: window.t("timemanager", "Unresolved")
     }, {
       value: "paid",
-      label: "Paid"
+      label: window.t("timemanager", "Resolved")
     }];
 
     var apply = function apply(e) {
