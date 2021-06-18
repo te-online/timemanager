@@ -146,13 +146,25 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function reports($clients, $projects, $tasks, $start, $end) {
+	function reports(
+		string $clients = null,
+		string $projects = null,
+		string $tasks = null,
+		string $status = null,
+		string $start = null,
+		string $end = null
+	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
+
+		// Get task uuids related to filters
+
 		$times = $this->timeMapper->findForReport(
 			$start ? $start : $start_of_month->format("Y-m-d"),
-			$end ? $end : $end_of_month->format("Y-m-d")
+			$end ? $end : $end_of_month->format("Y-m-d"),
+			$status
 		);
+
 		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
@@ -186,7 +198,7 @@ class PageController extends Controller {
 		// Apply total to clients
 		foreach ($times_grouped_by_client as $times_group) {
 			$times_grouped_by_client[$times_group->client->getUuid()]->percentageHours =
-			round($times_group->totalHours / $hours_total, 2) * 100;
+				round($times_group->totalHours / $hours_total, 2) * 100;
 		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();

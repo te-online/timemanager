@@ -30,7 +30,7 @@ class TimeMapper extends ObjectMapper {
 		// Do nothing here, because times have no children.
 	}
 
-	public function findForReport(string $start, string $end) {
-		return $this->getActiveObjectsByDateRange($start, $end);
+	public function findForReport(string $start, string $end, string $status = null) {
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status);
 	}
 }
