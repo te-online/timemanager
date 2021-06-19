@@ -16502,6 +16502,8 @@
     }
 
     var select0_props = {
+      noOptionsMessage: window.t("timemanager", "No options"),
+      placeholder: window.t("timemanager", "Select..."),
       items:
       /*clients*/
       ctx[0]
@@ -16539,7 +16541,8 @@
       /*func*/
       ctx[23]),
       groupBy: func_1,
-      noOptionsMessage: window.t("timemanager", "No projects/tasks or no client selected.")
+      noOptionsMessage: window.t("timemanager", "No projects/tasks or no client selected."),
+      placeholder: window.t("timemanager", "Select...")
     };
 
     if (
@@ -17293,6 +17296,8 @@
     var dispose;
     select0 = new Select({
       props: {
+        noOptionsMessage: window.t("timemanager", "No options"),
+        placeholder: window.t("timemanager", "Select..."),
         inputAttributes: {
           id: "client-select"
         },
@@ -17310,6 +17315,8 @@
     ctx[10]);
     select1 = new Select({
       props: {
+        noOptionsMessage: window.t("timemanager", "No options"),
+        placeholder: window.t("timemanager", "Select..."),
         inputAttributes: {
           id: "projects-select"
         },
@@ -17327,6 +17334,8 @@
     ctx[11]);
     select2 = new Select({
       props: {
+        noOptionsMessage: window.t("timemanager", "No options"),
+        placeholder: window.t("timemanager", "Select..."),
         inputAttributes: {
           id: "tasks-select"
         },
@@ -17344,6 +17353,8 @@
     ctx[12]);
     select3 = new Select({
       props: {
+        noOptionsMessage: window.t("timemanager", "No options"),
+        placeholder: window.t("timemanager", "Select..."),
         inputAttributes: {
           id: "status-select"
         },

@@ -80,7 +80,22 @@
 		"Select a task first to show the times for this task.": "Wählen Sie zuerst eine Aufgabe, für die Sie Zeiteinträge anzeigen möchten.",
 		"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.": "Sie haben noch keine Zeiteinträge. Klicken Sie „Zeiteintrag hinzufügen“, um loszulegen.",
 		"Task total": "Aufgabe gesamt",
-		"No projects created yet. Go ahead and create one.": "Noch keine Projekte erstellt. Legen Sie los und erstellen Sie eines."
+		"No projects created yet. Go ahead and create one.": "Noch keine Projekte erstellt. Legen Sie los und erstellen Sie eines.",
+		"entry": "Eintrag",
+		"entries": "Einträge",
+		"Nothing found. If you have any filters set, try adjusting them.": "Nichts gefunden. Falls Filter gesetzt sind, versuchen Sie, sie anzupassen.",
+		"Duration": "Dauer",
+		"Report total": "Report gesamt",
+		"Number of entries": "Anzahl der Einträge",
+		"Apply filters": "Filter anwenden",
+		"Apply range": "Zeitraum anwenden",
+		"From": "Von",
+		"To": "Bis",
+		"Status": "Status",
+		"Filter by": "Filtern",
+		"No options": "Keine Elemente",
+		"Select...": "Auswählen...",
+		"Reports": "Reporte"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

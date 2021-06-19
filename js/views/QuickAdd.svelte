@@ -24,8 +24,8 @@
 
 	const tasksWithProject =
 		tasks && tasks.length
-			? tasks.map((aTask) => {
-					aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
+			? tasks.map(aTask => {
+					aTask.project = projects.find(aProject => aProject.value === aTask.projectUuid);
 					return aTask;
 			  })
 			: [];
@@ -56,8 +56,8 @@
 				body: JSON.stringify(entry),
 				headers: {
 					requesttoken: requestToken,
-					"content-type": "application/json",
-				},
+					"content-type": "application/json"
+				}
 			});
 			if (response && response.ok) {
 				show = false;
@@ -97,7 +97,12 @@
 	</label>
 	<label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
 		{window.t('timemanager', 'Client')}
-		<Select items={clients} bind:selectedValue={client} on:select={clientSelected} />
+		<Select
+			noOptionsMessage={window.t('timemanager', 'No options')}
+			placeholder={window.t('timemanager', 'Select...')}
+			items={clients}
+			bind:selectedValue={client}
+			on:select={clientSelected} />
 	</label>
 	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
 		<span class="task-caption">
@@ -108,9 +113,10 @@
 			</a>
 		</span>
 		<Select
-			items={tasksWithProject && tasksWithProject.filter((oneTask) => client && oneTask.project.clientUuid === client.value)}
-			groupBy={(item) => item.project.label}
+			items={tasksWithProject && tasksWithProject.filter(oneTask => client && oneTask.project.clientUuid === client.value)}
+			groupBy={item => item.project.label}
 			noOptionsMessage={window.t('timemanager', 'No projects/tasks or no client selected.')}
+			placeholder={window.t('timemanager', 'Select...')}
 			bind:selectedValue={task} />
 	</label>
 	<span class="actions">

@@ -128,6 +128,8 @@
 	<label for="client-select" class="clients">
 		{window.t('timemanager', 'Clients')}
 		<Select
+			noOptionsMessage={window.t('timemanager', 'No options')}
+			placeholder={window.t('timemanager', 'Select...')}
 			inputAttributes={{ id: 'client-select' }}
 			items={clients}
 			on:select={handleSelectClients}
@@ -138,6 +140,8 @@
 	<label for="projects-select" class="projects">
 		{window.t('timemanager', 'Projects')}
 		<Select
+			noOptionsMessage={window.t('timemanager', 'No options')}
+			placeholder={window.t('timemanager', 'Select...')}
 			inputAttributes={{ id: 'projects-select' }}
 			items={availableProjects}
 			on:select={handleSelectProjects}
@@ -148,6 +152,8 @@
 	<label for="tasks-select" class="tasks">
 		{window.t('timemanager', 'Tasks')}
 		<Select
+			noOptionsMessage={window.t('timemanager', 'No options')}
+			placeholder={window.t('timemanager', 'Select...')}
 			inputAttributes={{ id: 'tasks-select' }}
 			items={availableTasks}
 			on:select={handleSelectTasks}
@@ -158,6 +164,8 @@
 	<label for="status-select" class="status">
 		{window.t('timemanager', 'Status')}
 		<Select
+			noOptionsMessage={window.t('timemanager', 'No options')}
+			placeholder={window.t('timemanager', 'Select...')}
 			inputAttributes={{ id: 'status-select' }}
 			items={availableStatus}
 			selectedValue={selectedStatus}

@@ -96,6 +96,22 @@ OC.L10N.register(
 		"Task total": "Aufgabe gesamt",
 		"No projects created yet. Go ahead and create one.":
 			"Noch keine Projekte erstellt. Legen Sie los und erstellen Sie eines.",
+		entry: "Eintrag",
+		entries: "Einträge",
+		"Nothing found. If you have any filters set, try adjusting them.":
+			"Nichts gefunden. Falls Filter gesetzt sind, versuchen Sie, sie anzupassen.",
+		Duration: "Dauer",
+		"Report total": "Report gesamt",
+		"Number of entries": "Anzahl der Einträge",
+		"Apply filters": "Filter anwenden",
+		"Apply range": "Zeitraum anwenden",
+		From: "Von",
+		To: "Bis",
+		Status: "Status",
+		"Filter by": "Filtern",
+		"No options": "Keine Elemente",
+		"Select...": "Auswählen...",
+		Reports: "Reporte",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
