@@ -6734,7 +6734,7 @@
     };
   }
 
-  function create_fragment$m(ctx) {
+  function create_fragment$n(ctx) {
     var h2;
     var t1;
     var div3;
@@ -7065,7 +7065,7 @@
     };
   }
 
-  function instance$l($$self, $$props, $$invalidate) {
+  function instance$m($$self, $$props, $$invalidate) {
     var loading;
     var days;
     var weekTotal;
@@ -7294,7 +7294,7 @@
       _classCallCheck(this, Statistics);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
         statsApiUrl: 9,
         requestToken: 10
       });
@@ -7304,7 +7304,7 @@
     return Statistics;
   }(SvelteComponent);
 
-  function create_fragment$l(ctx) {
+  function create_fragment$m(ctx) {
     var div0;
     var t;
     var div1;
@@ -7385,7 +7385,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -7411,7 +7411,7 @@
       _classCallCheck(this, Overlay);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         loading: 0
       });
       return _this;
@@ -7460,7 +7460,7 @@
     };
   }
 
-  function create_fragment$k(ctx) {
+  function create_fragment$l(ctx) {
     var div1;
     var h3;
     var t0;
@@ -7679,7 +7679,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -7732,7 +7732,7 @@
       _classCallCheck(this, ClientEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -8484,7 +8484,7 @@
     };
   }
 
-  function create_fragment$j(ctx) {
+  function create_fragment$k(ctx) {
     var a;
     var span;
     var t0;
@@ -8586,7 +8586,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -8704,7 +8704,7 @@
       _classCallCheck(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -8759,7 +8759,7 @@
     };
   }
 
-  function create_fragment$i(ctx) {
+  function create_fragment$j(ctx) {
     var div1;
     var h3;
     var t0;
@@ -8978,7 +8978,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -9027,7 +9027,7 @@
       _classCallCheck(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -9216,7 +9216,7 @@
     };
   }
 
-  function create_fragment$h(ctx) {
+  function create_fragment$i(ctx) {
     var a;
     var span;
     var t0;
@@ -9318,7 +9318,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -9434,7 +9434,7 @@
       _classCallCheck(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -9491,7 +9491,7 @@
     };
   }
 
-  function create_fragment$g(ctx) {
+  function create_fragment$h(ctx) {
     var div1;
     var h3;
     var t0;
@@ -9743,7 +9743,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -9794,7 +9794,7 @@
       _classCallCheck(this, TaskEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -9992,7 +9992,7 @@
     };
   }
 
-  function create_fragment$f(ctx) {
+  function create_fragment$g(ctx) {
     var a;
     var span;
     var t0;
@@ -10094,7 +10094,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -10212,7 +10212,7 @@
       _classCallCheck(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -10270,7 +10270,7 @@
     };
   }
 
-  function create_fragment$e(ctx) {
+  function create_fragment$f(ctx) {
     var div1;
     var h3;
     var t0;
@@ -10651,7 +10651,7 @@
     };
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -10720,7 +10720,7 @@
       _classCallCheck(this, TimeEditor);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$d, create_fragment$e, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -11033,7 +11033,7 @@
     };
   }
 
-  function create_fragment$d(ctx) {
+  function create_fragment$e(ctx) {
     var t;
     var if_block1_anchor;
     var current;
@@ -11129,7 +11129,7 @@
     };
   }
 
-  function instance$c($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -11255,7 +11255,7 @@
       _classCallCheck(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$c, create_fragment$d, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$d, create_fragment$e, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -11397,7 +11397,7 @@
     };
   }
 
-  function create_fragment$c(ctx) {
+  function create_fragment$d(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -11542,7 +11542,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -11601,7 +11601,7 @@
       _classCallCheck(this, DeleteButton);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$b, create_fragment$c, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$c, create_fragment$d, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -11729,7 +11729,7 @@
     };
   }
 
-  function create_fragment$b(ctx) {
+  function create_fragment$c(ctx) {
     var t0;
     var form;
     var input0;
@@ -11870,7 +11870,7 @@
     };
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
     var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
@@ -11968,7 +11968,7 @@
       _classCallCheck(this, DeleteTimeEntryButton);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$a, create_fragment$b, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$b, create_fragment$c, safe_not_equal, {
         deleteTimeEntryAction: 0,
         deleteTimeEntryUuid: 1,
         requestToken: 2
@@ -12148,7 +12148,7 @@
     append(document.head, style);
   }
 
-  function create_fragment$a(ctx) {
+  function create_fragment$b(ctx) {
     let div;
     let raw_value =
     /*getOptionLabel*/
@@ -12201,7 +12201,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -12270,7 +12270,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-bdnybl-style")) add_css$5();
-      init$1(this, options, instance$9, create_fragment$a, safe_not_equal, {
+      init$1(this, options, instance$a, create_fragment$b, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -12408,7 +12408,7 @@
     };
   }
 
-  function create_fragment$9(ctx) {
+  function create_fragment$a(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -12559,7 +12559,7 @@
     };
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -12748,7 +12748,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-p6ehlv-style")) add_css$4();
-      init$1(this, options, instance$8, create_fragment$9, safe_not_equal, {
+      init$1(this, options, instance$9, create_fragment$a, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -13561,7 +13561,7 @@
     };
   }
 
-  function create_fragment$8(ctx) {
+  function create_fragment$9(ctx) {
     let t;
     let if_block1_anchor;
     let current;
@@ -13685,7 +13685,7 @@
     return hoverItemIndex === itemIndex || items.length === 1;
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$8($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -13939,7 +13939,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-ux0sbr-style")) add_css$3();
-      init$1(this, options, instance$7, create_fragment$8, safe_not_equal, {
+      init$1(this, options, instance$8, create_fragment$9, safe_not_equal, {
         container: 0,
         Item: 2,
         isVirtualList: 3,
@@ -13969,7 +13969,7 @@
     append(document.head, style);
   }
 
-  function create_fragment$7(ctx) {
+  function create_fragment$8(ctx) {
     let div;
     let raw_value =
     /*getSelectionLabel*/
@@ -14007,7 +14007,7 @@
     };
   }
 
-  function instance$6($$self, $$props, $$invalidate) {
+  function instance$7($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -14027,7 +14027,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-ch6bh7-style")) add_css$2();
-      init$1(this, options, instance$6, create_fragment$7, safe_not_equal, {
+      init$1(this, options, instance$7, create_fragment$8, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       });
@@ -14205,7 +14205,7 @@
     };
   }
 
-  function create_fragment$6(ctx) {
+  function create_fragment$7(ctx) {
     let each_1_anchor;
     let each_value =
     /*selectedValue*/
@@ -14273,7 +14273,7 @@
     };
   }
 
-  function instance$5($$self, $$props, $$invalidate) {
+  function instance$6($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       selectedValue = []
@@ -14317,7 +14317,7 @@
     constructor(options) {
       super();
       if (!document.getElementById("svelte-14r1jr2-style")) add_css$1();
-      init$1(this, options, instance$5, create_fragment$6, safe_not_equal, {
+      init$1(this, options, instance$6, create_fragment$7, safe_not_equal, {
         selectedValue: 0,
         activeSelectedValue: 1,
         isDisabled: 2,
@@ -14359,7 +14359,7 @@
 
   /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.38.2 */
 
-  function create_fragment$5(ctx) {
+  function create_fragment$6(ctx) {
     let svg;
     let path;
     return {
@@ -14394,7 +14394,7 @@
   class ClearIcon extends SvelteComponent {
     constructor(options) {
       super();
-      init$1(this, options, null, create_fragment$5, safe_not_equal, {});
+      init$1(this, options, null, create_fragment$6, safe_not_equal, {});
     }
 
   }
@@ -15157,7 +15157,7 @@
     };
   }
 
-  function create_fragment$4(ctx) {
+  function create_fragment$5(ctx) {
     let div;
     let t0;
     let t1;
@@ -15549,7 +15549,7 @@
     };
   }
 
-  function instance$4($$self, $$props, $$invalidate) {
+  function instance$5($$self, $$props, $$invalidate) {
     let showSelectedItem;
     let placeholderText;
     const dispatch = createEventDispatcher();
@@ -16383,7 +16383,7 @@
     constructor(options) {
       super();
       if (!document_1.getElementById("svelte-17qb5ew-style")) add_css();
-      init$1(this, options, instance$4, create_fragment$4, safe_not_equal, {
+      init$1(this, options, instance$5, create_fragment$5, safe_not_equal, {
         container: 2,
         input: 3,
         Item: 39,
@@ -16443,7 +16443,7 @@
 
   }
 
-  function create_fragment$3(ctx) {
+  function create_fragment$4(ctx) {
     var form;
     var label0;
     var t0_value = window.t("timemanager", "Note") + "";
@@ -16850,7 +16850,7 @@
     return item.project.label;
   };
 
-  function instance$3($$self, $$props, $$invalidate) {
+  function instance$4($$self, $$props, $$invalidate) {
     var loading;
     var taskError;
     var action = $$props.action;
@@ -17026,7 +17026,7 @@
       _classCallCheck(this, QuickAdd);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
         action: 12,
         requestToken: 13,
         clients: 0,
@@ -17040,7 +17040,7 @@
     return QuickAdd;
   }(SvelteComponent);
 
-  function create_fragment$2(ctx) {
+  function create_fragment$3(ctx) {
     var span0;
     var input;
     var input_id_value;
@@ -17156,7 +17156,7 @@
     };
   }
 
-  function instance$2($$self, $$props, $$invalidate) {
+  function instance$3($$self, $$props, $$invalidate) {
     var loading;
     var uuid = $$props.uuid;
     var initialState = $$props.initialState;
@@ -17248,7 +17248,7 @@
       _classCallCheck(this, Checkmark);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
         uuid: 0,
         initialState: 1,
         action: 5,
@@ -17260,7 +17260,7 @@
     return Checkmark;
   }(SvelteComponent);
 
-  function create_fragment$1(ctx) {
+  function create_fragment$2(ctx) {
     var form;
     var label0;
     var t0_value = window.t("timemanager", "Clients") + "";
@@ -17547,7 +17547,7 @@
     };
   }
 
-  function instance$1($$self, $$props, $$invalidate) {
+  function instance$2($$self, $$props, $$invalidate) {
     var loading;
     var availableProjects;
     var availableTasks;
@@ -17738,7 +17738,7 @@
       _classCallCheck(this, Filters);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {
         clients: 0,
         projects: 15,
         tasks: 16
@@ -17749,7 +17749,7 @@
     return Filters;
   }(SvelteComponent);
 
-  function create_fragment(ctx) {
+  function create_fragment$1(ctx) {
     var form;
     var label0;
     var t0_value = window.t("timemanager", "From") + "";
@@ -17890,7 +17890,7 @@
     };
   }
 
-  function instance($$self, $$props, $$invalidate) {
+  function instance$1($$self, $$props, $$invalidate) {
     var loading;
     var start;
     var end;
@@ -17984,7 +17984,7 @@
       _classCallCheck(this, Timerange);
 
       _this = _super.call(this);
-      init$1(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+      init$1(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
         startOfMonth: 4,
         endOfMonth: 5
       });
@@ -17992,6 +17992,95 @@
     }
 
     return Timerange;
+  }(SvelteComponent);
+
+  function create_fragment(ctx) {
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c() {
+        button = element("button");
+        button.textContent = "".concat(window.t("timemanager", "Print report"));
+        attr(button, "type", "button");
+        attr(button, "class", "button secondary");
+      },
+
+      m(target, anchor) {
+        insert(target, button, anchor);
+
+        if (!mounted) {
+          dispose = listen(button, "click",
+          /*click_handler*/
+          ctx[0]);
+          mounted = true;
+        }
+      },
+
+      p: noop$1,
+      i: noop$1,
+      o: noop$1,
+
+      d(detaching) {
+        if (detaching) detach(button);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function instance($$self) {
+    onMount(function () {
+      var openDetailsBeforePrint = function openDetailsBeforePrint() {
+        var details = document.querySelectorAll("details");
+        details && details.length && details.forEach(function (details) {
+          if (!details.open) {
+            details.setAttribute("open", "open");
+            details.setAttribute("data-print", "true");
+          }
+        });
+      };
+
+      var closeDetailsAfterPrint = function closeDetailsAfterPrint() {
+        var details = document.querySelectorAll("details[data-print=true]");
+        details && details.length && details.forEach(function (details) {
+          details.removeAttribute("open");
+          details.removeAttribute("data-print");
+        });
+      };
+
+      window.addEventListener("beforeprint", openDetailsBeforePrint);
+      window.addEventListener("afterprint", closeDetailsAfterPrint);
+      return function () {
+        window.removeEventListener("beforeprint", openDetailsBeforePrint);
+        window.removeEventListener("afterprint", closeDetailsAfterPrint);
+      };
+    });
+
+    var click_handler = function click_handler() {
+      return window.print();
+    };
+
+    return [click_handler];
+  }
+
+  var PrintButton = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(PrintButton, _SvelteComponent);
+
+    var _super = _createSuper(PrintButton);
+
+    function PrintButton(options) {
+      var _this;
+
+      _classCallCheck(this, PrintButton);
+
+      _this = _super.call(this);
+      init$1(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {});
+      return _this;
+    }
+
+    return PrintButton;
   }(SvelteComponent);
 
   /* global HTMLCollection: true */
@@ -19151,6 +19240,10 @@
         }));
       });
     }
+
+    components.push(new PrintButton({
+      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='PrintButton.svelte']"))
+    }));
   };
 
   init();

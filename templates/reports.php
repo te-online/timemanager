@@ -12,7 +12,7 @@ $l = \OC::$server->getL10N("timemanager");
 	<div class="container">
 		<section class="section">
 			<h2><?php p($l->t("Reports")); ?></h2>
-			<h3 class="tm_label"><?php p($l->t("Filter by")); ?></h3>
+			<h3 class="tm_label filters-form-title"><?php p($l->t("Filter by")); ?></h3>
 			<span data-svelte="Filters.svelte">
 				<?php
 // @TODO: This is broken: print_unescaped($_['templates']['Filters.svelte']);
@@ -98,6 +98,7 @@ $l = \OC::$server->getL10N("timemanager");
 					<?php p($_["numEntries"]); ?> <?php p($_["numEntries"] === 1 ? $l->t("entry") : $l->t("entries")); ?>
 				</p>
 			</div>
+			<span data-svelte="PrintButton.svelte"></span>
 			<?php
     } else {
     	 ?>

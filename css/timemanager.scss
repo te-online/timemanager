@@ -523,3 +523,37 @@ label {
 	--listBackground: var(--color-main-background);
 	--itemHoverBG: var(--color-primary-light);
 }
+
+@media print {
+	// Hide navigation, filters, form-title, Nextcloud-header
+	#app-navigation,
+	.reports-filters,
+	.filters-form-title,
+	#content.app-timemanager .quick-add > .actions,
+	#content.app-timemanager .reports-filters > .actions,
+	#content.app-timemanager .reports-timerange > .actions,
+	button[type="button"],
+	#header {
+		display: none !important;
+	}
+
+	// Remove extra spacing for navigation that is now hidden
+	#app-navigation:not(.hidden) + #app-content {
+		margin-left: 0;
+	}
+
+	// Remove extra spacing caused by header
+	#content {
+		padding-top: 0;
+	}
+
+	// Adjust section spacing
+	.section {
+		padding: 0.12cm;
+	}
+
+	// Don't break pages inside a time entry item on reports page
+	details > .tm_item-row {
+		break-inside: avoid;
+	}
+}

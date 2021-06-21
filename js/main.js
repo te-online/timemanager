@@ -9,6 +9,7 @@ import QuickAdd from "./views/QuickAdd.svelte";
 import Checkmark from "./views/Checkmark.svelte";
 import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
+import PrintButton from "./views/PrintButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -178,6 +179,14 @@ const init = () => {
 			);
 		});
 	}
+
+	components.push(
+		new PrintButton({
+			target: Helpers.replaceNode(
+				document.querySelector("#content.app-timemanager [data-svelte='PrintButton.svelte']")
+			),
+		})
+	);
 };
 
 init();
