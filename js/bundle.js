@@ -21049,10 +21049,7 @@
         },
         items:
         /*presets*/
-        ctx[3],
-        selectedValue:
-        /*presets*/
-        ctx[3][4]
+        ctx[3]
       }
     });
     select.$on("select",

@@ -127,7 +127,6 @@
 			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'preset-select' }}
 			items={presets}
-			selectedValue={presets[4]}
 			on:select={handleSelectPreset} />
 	</label>
 
