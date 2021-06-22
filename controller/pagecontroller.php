@@ -14,6 +14,7 @@ use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\Cleaner;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
+use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -156,6 +157,13 @@ class PageController extends Controller {
 	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
+		// Fall back to default if date is invalid
+		if (!ISODate::isDate($start)) {
+			$start = $start_of_month->format("Y-m-d");
+		}
+		if (!ISODate::isDate($end)) {
+			$end = $end_of_month->format("Y-m-d");
+		}
 
 		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
@@ -195,12 +203,7 @@ class PageController extends Controller {
 		}
 		$filter_tasks = array_unique($filter_tasks);
 
-		$times = $this->timeMapper->findForReport(
-			$start ? $start : $start_of_month->format("Y-m-d"),
-			$end ? $end : $end_of_month->format("Y-m-d"),
-			$status,
-			$filter_tasks
-		);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
 
 		// Group times by client
 		$times_grouped_by_client = [];
