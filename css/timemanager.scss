@@ -498,6 +498,11 @@ label {
 		padding-bottom: 12px;
 		padding-top: 6px;
 		color: var(--color-text-lighter);
+		cursor: pointer;
+
+		.tm_item-note {
+			color: var(--color-text-light);
+		}
 	}
 }
 

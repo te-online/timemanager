@@ -49,8 +49,8 @@ $l = \OC::$server->getL10N("timemanager");
 					</div>
 				</a>
 				<details>
-					<?php if(count($times_for_client->times) > 0) {
-						foreach($times_for_client->times as $time) { // var_dump($time); continue; ?>
+					<?php if(count($times_for_client->entries) > 0) {
+						foreach($times_for_client->entries as $entry) { $time = $entry->time; ?>
 					<div class="tm_item-row" data-remove-on-delete="<?php p($time->getUuid()); ?>">
 						<h3>
 							<?php
@@ -80,7 +80,7 @@ $l = \OC::$server->getL10N("timemanager");
 								<?php p($time->getNote()); ?>
 							</div>
 							<div class="tm_item-date">
-								<?php p($time->getStartLocalized()); ?>
+								<?php p($entry->project->getName()); ?>&nbsp;&middot;&nbsp;<?php p($entry->task->getName()); ?>&nbsp;&middot;&nbsp;<?php p($time->getStartLocalized()); ?>
 							</div>
 						</div>
 					</div>

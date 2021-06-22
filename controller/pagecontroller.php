@@ -215,12 +215,16 @@ class PageController extends Controller {
 				if (!isset($times_grouped_by_client[$client->getUuid()])) {
 					$times_grouped_by_client[$client->getUuid()] = (object) [
 						"client" => $client,
-						"times" => [],
+						"entries" => [],
 						"totalHours" => 0,
 						"percentageHours" => 0,
 					];
 				}
-				$times_grouped_by_client[$client->getUuid()]->times[] = $time;
+				$times_grouped_by_client[$client->getUuid()]->entries[] = (object) [
+					"time" => $time,
+					"project" => $project,
+					"task" => $task,
+				];
 				$hours = $time->getDurationInHours();
 				$times_grouped_by_client[$client->getUuid()]->totalHours += $hours;
 				$hours_total += $hours;
