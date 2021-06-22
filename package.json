@@ -44,6 +44,8 @@
     "svelte": "^3.38.2"
   },
   "dependencies": {
+    "@nextcloud/l10n": "^1.4.1",
+    "date-fns": "^2.22.1",
     "pjax": "^0.2.8",
     "svelte-select": "^3.17.0"
   }

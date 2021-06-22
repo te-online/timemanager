@@ -390,7 +390,7 @@ label {
 
 	.reports-timerange {
 		margin-top: 12px;
-		grid-template-columns: repeat(3, 130px);
+		grid-template-columns: repeat(2, 130px) repeat(2, 150px);
 	}
 
 	.checkbox-action label {
@@ -537,6 +537,7 @@ label {
 	#content.app-timemanager .quick-add > .actions,
 	#content.app-timemanager .reports-filters > .actions,
 	#content.app-timemanager .reports-timerange > .actions,
+	.reports-timerange .status,
 	button[type="button"],
 	#header {
 		display: none !important;

@@ -26,7 +26,7 @@
 		"Week": "Woche",
 		"When you add entries for this week graphs will appear here.": "Wenn du Zeiteinträge für diese Woche hinzufügst, wird hier ein Diagramm angezeigt.",
 		"hrs.": "Std.",
-		"Today": "heute",
+		"Today": "Heute",
 		"Statistics": "Statistik",
 		"Duration (in hrs.)": "Dauer (in Std.)",
 		"Date": "Datum",
@@ -95,7 +95,15 @@
 		"Filter by": "Filtern",
 		"No options": "Keine Elemente",
 		"Select...": "Auswählen...",
-		"Reports": "Reporte"
+		"Reports": "Reporte",
+		"Yesterday": "Gestern",
+		"This Week": "Diese Woche",
+		"Last week": "Letzte Woche",
+		"This month": "Dieser Monat",
+		"Last month": "Vorheriger Monat",
+		"This year": "Dieses Jahr",
+		"Last year": "Letztes Jahr",
+		"Presets": "Vorlagen"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

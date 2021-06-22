@@ -109,6 +109,14 @@ OC.L10N.register(
 		"No options": "Keine Elemente",
 		"Select...": "Auswählen...",
 		Reports: "Reporte",
+		Yesterday: "Gestern",
+		"This Week": "Diese Woche",
+		"Last week": "Letzte Woche",
+		"This month": "Dieser Monat",
+		"Last month": "Vorheriger Monat",
+		"This year": "Dieses Jahr",
+		"Last year": "Letztes Jahr",
+		Presets: "Vorlagen",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
