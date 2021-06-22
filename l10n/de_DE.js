@@ -120,6 +120,8 @@ OC.L10N.register(
 		"This year": "Dieses Jahr",
 		"Last year": "Letztes Jahr",
 		Presets: "Vorlagen",
+		"report_%s_%s.csv": "Report_%s_%s.csv",
+		"report_%s.csv": "Report_%s.csv",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

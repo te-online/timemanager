@@ -99,6 +99,9 @@ $l = \OC::$server->getL10N("timemanager");
 				</p>
 			</div>
 			<span data-svelte="PrintButton.svelte"></span>
+			<a href="<?php p($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] . '&' : '?'); ?>format=csv" download class="button secondary">
+				<?php p($l->t("Export report to CSV")); ?>
+			</a>
 			<?php
     } else {
     	 ?>

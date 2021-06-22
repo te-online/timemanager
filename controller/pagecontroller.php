@@ -4,6 +4,7 @@ namespace OCA\TimeManager\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\DataDownloadResponse;
 use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
 use OCA\TimeManager\Db\ProjectMapper;
@@ -14,6 +15,7 @@ use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\Cleaner;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
+use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
@@ -153,7 +155,8 @@ class PageController extends Controller {
 		string $tasks = null,
 		string $status = null,
 		string $start = null,
-		string $end = null
+		string $end = null,
+		string $format = "none"
 	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
@@ -208,6 +211,7 @@ class PageController extends Controller {
 		// Group times by client
 		$times_grouped_by_client = [];
 		$hours_total = 0;
+		$all_time_entries = [];
 		if ($times && is_array($times) && count($times) > 0) {
 			foreach ($times as $time) {
 				// Find details for parents of time entry
@@ -231,6 +235,19 @@ class PageController extends Controller {
 				$hours = $time->getDurationInHours();
 				$times_grouped_by_client[$client->getUuid()]->totalHours += $hours;
 				$hours_total += $hours;
+				// Prepare a row for the CSV
+				if ($format === "csv") {
+					$all_time_entries[] = [
+						"start" => $time->getStart(),
+						"end" => $time->getEnd(),
+						"note" => $time->getNote(),
+						"status" => strtolower($time->getPaymentStatus()) === "paid" ? "resolved" : "unresolved",
+						"duration" => $hours,
+						"client" => $client->getName(),
+						"project" => $project->getName(),
+						"task" => $task->getName(),
+					];
+				}
 			}
 		}
 		// Apply total to clients
@@ -239,51 +256,59 @@ class PageController extends Controller {
 				round($times_group->totalHours / $hours_total, 2) * 100;
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
+		if ($format === "csv") {
+			// Prepare filename with daterange
+			$l = \OC::$server->getL10N("timemanager");
+			$filename = $start === $end ? $l->t("report_%s.csv", [$start]) : $l->t("report_%s_%s.csv", [$start, $end]);
+			// Download as CSV
+			return new DataDownloadResponse(ArrayToCSV::convert($all_time_entries), $filename, "text/csv");
+		} else {
+			$urlGenerator = \OC::$server->getURLGenerator();
+			$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
 
-		$store = [
-			"clients" => array_map(function ($oneClient) {
-				$oneClient = $oneClient->toArray();
-				return ["value" => $oneClient["uuid"], "label" => $oneClient["name"]];
-			}, $all_clients),
-			"projects" => array_map(function ($oneProject) {
-				$oneProject = $oneProject->toArray();
-				return [
-					"value" => $oneProject["uuid"],
-					"label" => $oneProject["name"],
-					"clientUuid" => $oneProject["client_uuid"],
-				];
-			}, $all_projects),
-			"tasks" => array_map(function ($oneTask) {
-				$oneTask = $oneTask->toArray();
-				return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
-			}, $all_tasks),
-			"initialDate" => date("Y-m-d"),
-			"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
-			"requestToken" => $requestToken,
-			"isServer" => true,
-			"startOfMonth" => $start_of_month->format("Y-m-d"),
-			"endOfMonth" => $end_of_month->format("Y-m-d"),
-		];
+			$store = [
+				"clients" => array_map(function ($oneClient) {
+					$oneClient = $oneClient->toArray();
+					return ["value" => $oneClient["uuid"], "label" => $oneClient["name"]];
+				}, $all_clients),
+				"projects" => array_map(function ($oneProject) {
+					$oneProject = $oneProject->toArray();
+					return [
+						"value" => $oneProject["uuid"],
+						"label" => $oneProject["name"],
+						"clientUuid" => $oneProject["client_uuid"],
+					];
+				}, $all_projects),
+				"tasks" => array_map(function ($oneTask) {
+					$oneTask = $oneTask->toArray();
+					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
+				}, $all_tasks),
+				"initialDate" => date("Y-m-d"),
+				"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
+				"requestToken" => $requestToken,
+				"isServer" => true,
+				"startOfMonth" => $start_of_month->format("Y-m-d"),
+				"endOfMonth" => $end_of_month->format("Y-m-d"),
+			];
 
-		return new TemplateResponse("timemanager", "reports", [
-			"clients" => $clients,
-			"projects" => $projects,
-			"tasks" => $tasks,
-			"start" => $start,
-			"end" => $end,
-			"times" => $times,
-			"times_grouped_by_client" => $times_grouped_by_client,
-			"hoursTotal" => $hours_total,
-			"numEntries" => count($times),
-			"templates" => [
-				"Filters.svelte" => PHP_Svelte::render_template("Filters.svelte", $store),
-				"Timerange.svelte" => PHP_Svelte::render_template("Timerange.svelte", $store),
-			],
-			"store" => json_encode($store),
-			"page" => "reports",
-		]);
+			return new TemplateResponse("timemanager", "reports", [
+				"clients" => $clients,
+				"projects" => $projects,
+				"tasks" => $tasks,
+				"start" => $start,
+				"end" => $end,
+				"times" => $times,
+				"times_grouped_by_client" => $times_grouped_by_client,
+				"hoursTotal" => $hours_total,
+				"numEntries" => count($times),
+				"templates" => [
+					"Filters.svelte" => PHP_Svelte::render_template("Filters.svelte", $store),
+					"Timerange.svelte" => PHP_Svelte::render_template("Timerange.svelte", $store),
+				],
+				"store" => json_encode($store),
+				"page" => "reports",
+			]);
+		}
 	}
 
 	/**

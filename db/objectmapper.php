@@ -104,13 +104,25 @@ class ObjectMapper extends Mapper {
 		string $orderby = "start"
 	) {
 		$params = [$this->userId, "deleted", $date_start, $date_end];
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? AND `status` != ? " .
-			"AND start >= ? AND start <= ? ";
+		// Range can be one day as well
+		if ($date_start === $date_end) {
+			array_pop($params);
+			$sql =
+				"SELECT * " .
+				"FROM `" .
+				$this->tableName .
+				"` " .
+				"WHERE `user_id` = ? AND `status` != ? " .
+				"AND date(start) = ?";
+		} else {
+			$sql =
+				"SELECT * " .
+				"FROM `" .
+				$this->tableName .
+				"` " .
+				"WHERE `user_id` = ? AND `status` != ? " .
+				"AND start >= ? AND start <= ? ";
+		}
 		if (isset($status) && $status) {
 			if ($status === "paid") {
 				$sql .= "AND LOWER(`payment_status`) = ? ";

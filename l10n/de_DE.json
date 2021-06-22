@@ -103,7 +103,9 @@
 		"Last month": "Vorheriger Monat",
 		"This year": "Dieses Jahr",
 		"Last year": "Letztes Jahr",
-		"Presets": "Vorlagen"
+		"Presets": "Vorlagen",
+		"report_%s_%s.csv": "Report_%s_%s.csv",
+		"report_%s.csv": "Report_%s.csv"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }
