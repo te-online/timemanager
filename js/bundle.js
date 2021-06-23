@@ -4499,6 +4499,35 @@
   }
 
   /**
+   * @name addYears
+   * @category Year Helpers
+   * @summary Add the specified number of years to the given date.
+   *
+   * @description
+   * Add the specified number of years to the given date.
+   *
+   * ### v2.0.0 breaking changes:
+   *
+   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+   *
+   * @param {Date|Number} date - the date to be changed
+   * @param {Number} amount - the amount of years to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+   * @returns {Date} the new date with the years added
+   * @throws {TypeError} 2 arguments required
+   *
+   * @example
+   * // Add 5 years to 1 September 2014:
+   * const result = addYears(new Date(2014, 8, 1), 5)
+   * //=> Sun Sep 01 2019 00:00:00
+   */
+
+  function addYears(dirtyDate, dirtyAmount) {
+    requiredArgs(2, arguments);
+    var amount = toInteger(dirtyAmount);
+    return addMonths(dirtyDate, amount * 12);
+  }
+
+  /**
    * @name compareAsc
    * @category Common Helpers
    * @summary Compare the two dates and return -1, 0 or 1.
@@ -4798,114 +4827,6 @@
   }
 
   /**
-   * @name differenceInMilliseconds
-   * @category Millisecond Helpers
-   * @summary Get the number of milliseconds between the given dates.
-   *
-   * @description
-   * Get the number of milliseconds between the given dates.
-   *
-   * ### v2.0.0 breaking changes:
-   *
-   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-   *
-   * @param {Date|Number} dateLeft - the later date
-   * @param {Date|Number} dateRight - the earlier date
-   * @returns {Number} the number of milliseconds
-   * @throws {TypeError} 2 arguments required
-   *
-   * @example
-   * // How many milliseconds are between
-   * // 2 July 2014 12:30:20.600 and 2 July 2014 12:30:21.700?
-   * const result = differenceInMilliseconds(
-   *   new Date(2014, 6, 2, 12, 30, 21, 700),
-   *   new Date(2014, 6, 2, 12, 30, 20, 600)
-   * )
-   * //=> 1100
-   */
-
-  function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
-    requiredArgs(2, arguments);
-    var dateLeft = toDate(dirtyDateLeft);
-    var dateRight = toDate(dirtyDateRight);
-    return dateLeft.getTime() - dateRight.getTime();
-  }
-
-  var MILLISECONDS_IN_HOUR$1 = 3600000;
-  /**
-   * @name differenceInHours
-   * @category Hour Helpers
-   * @summary Get the number of hours between the given dates.
-   *
-   * @description
-   * Get the number of hours between the given dates.
-   *
-   * ### v2.0.0 breaking changes:
-   *
-   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-   *
-   * @param {Date|Number} dateLeft - the later date
-   * @param {Date|Number} dateRight - the earlier date
-   * @returns {Number} the number of hours
-   * @throws {TypeError} 2 arguments required
-   *
-   * @example
-   * // How many hours are between 2 July 2014 06:50:00 and 2 July 2014 19:00:00?
-   * var result = differenceInHours(
-   *   new Date(2014, 6, 2, 19, 0),
-   *   new Date(2014, 6, 2, 6, 50)
-   * )
-   * //=> 12
-   */
-
-  function differenceInHours(dirtyDateLeft, dirtyDateRight) {
-    requiredArgs(2, arguments);
-    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_HOUR$1;
-    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
-  }
-
-  var MILLISECONDS_IN_MINUTE$1 = 60000;
-  /**
-   * @name differenceInMinutes
-   * @category Minute Helpers
-   * @summary Get the number of minutes between the given dates.
-   *
-   * @description
-   * Get the signed number of full (rounded towards 0) minutes between the given dates.
-   *
-   * ### v2.0.0 breaking changes:
-   *
-   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-   *
-   * @param {Date|Number} dateLeft - the later date
-   * @param {Date|Number} dateRight - the earlier date
-   * @returns {Number} the number of minutes
-   * @throws {TypeError} 2 arguments required
-   *
-   * @example
-   * // How many minutes are between 2 July 2014 12:07:59 and 2 July 2014 12:20:00?
-   * var result = differenceInMinutes(
-   *   new Date(2014, 6, 2, 12, 20, 0),
-   *   new Date(2014, 6, 2, 12, 7, 59)
-   * )
-   * //=> 12
-   *
-   * @example
-   * // How many minutes are from 10:01:59 to 10:00:00
-   * var result = differenceInMinutes(
-   *   new Date(2000, 0, 1, 10, 0, 0),
-   *   new Date(2000, 0, 1, 10, 1, 59)
-   * )
-   * //=> -1
-   */
-
-  function differenceInMinutes(dirtyDateLeft, dirtyDateRight) {
-    requiredArgs(2, arguments);
-    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_MINUTE$1;
-    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
-  }
-
-  /**
    * @name endOfDay
    * @category Day Helpers
    * @summary Return the end of a day for the given date.
@@ -5052,12 +4973,21 @@
   }
 
   /**
-   * @name differenceInSeconds
-   * @category Second Helpers
-   * @summary Get the number of seconds between the given dates.
+   * @name differenceInWeeks
+   * @category Week Helpers
+   * @summary Get the number of full weeks between the given dates.
    *
    * @description
-   * Get the number of seconds between the given dates.
+   * Get the number of full weeks between two dates. Fractional weeks are
+   * truncated towards zero.
+   *
+   * One "full week" is the distance between a local time in one day to the same
+   * local time 7 days earlier or later. A full week can sometimes be less than
+   * or more than 7*24 hours if a daylight savings change happens between two dates.
+   *
+   * To ignore DST and only measure exact 7*24-hour periods, use this instead:
+   * `Math.floor(differenceInHours(dateLeft, dateRight)/(7*24))|0`.
+   *
    *
    * ### v2.0.0 breaking changes:
    *
@@ -5065,22 +4995,30 @@
    *
    * @param {Date|Number} dateLeft - the later date
    * @param {Date|Number} dateRight - the earlier date
-   * @returns {Number} the number of seconds
+   * @returns {Number} the number of full weeks
    * @throws {TypeError} 2 arguments required
    *
    * @example
-   * // How many seconds are between
-   * // 2 July 2014 12:30:07.999 and 2 July 2014 12:30:20.000?
-   * const result = differenceInSeconds(
-   *   new Date(2014, 6, 2, 12, 30, 20, 0),
-   *   new Date(2014, 6, 2, 12, 30, 7, 999)
+   * // How many full weeks are between 5 July 2014 and 20 July 2014?
+   * const result = differenceInWeeks(new Date(2014, 6, 20), new Date(2014, 6, 5))
+   * //=> 2
+   *
+   * // How many full weeks are between
+   * // 1 March 2020 0:00 and 6 June 2020 0:00 ?
+   * // Note: because local time is used, the
+   * // result will always be 8 weeks (54 days),
+   * // even if DST starts and the period has
+   * // only 54*24-1 hours.
+   * const result = differenceInWeeks(
+   *   new Date(2020, 5, 1),
+   *   new Date(2020, 2, 6)
    * )
-   * //=> 12
+   * //=> 8
    */
 
-  function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
+  function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
     requiredArgs(2, arguments);
-    var diff = differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) / 1000;
+    var diff = differenceInDays(dirtyDateLeft, dirtyDateRight) / 7;
     return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
   }
 
@@ -7787,78 +7725,6 @@
     var mstoSub = secondstoSub * 1000;
     var finalDate = new Date(dateWithoutDays.getTime() - mstoSub);
     return finalDate;
-  }
-
-  /**
-   * @name intervalToDuration
-   * @category Common Helpers
-   * @summary Convert interval to duration
-   *
-   * @description
-   * Convert a interval object to a duration object.
-   *
-   * @param {Interval} interval - the interval to convert to duration
-   *
-   * @returns {Duration} The duration Object
-   * @throws {TypeError} Requires 2 arguments
-   * @throws {RangeError} `start` must not be Invalid Date
-   * @throws {RangeError} `end` must not be Invalid Date
-   *
-   * @example
-   * // Get the duration between January 15, 1929 and April 4, 1968.
-   * intervalToDuration({
-   *   start: new Date(1929, 0, 15, 12, 0, 0),
-   *   end: new Date(1968, 3, 4, 19, 5, 0)
-   * })
-   * // => { years: 39, months: 2, days: 20, hours: 7, minutes: 5, seconds: 0 }
-   */
-
-  function intervalToDuration(_ref) {
-    var start = _ref.start,
-        end = _ref.end;
-    requiredArgs(1, arguments);
-    var dateLeft = toDate(start);
-    var dateRight = toDate(end);
-
-    if (!isValid(dateLeft)) {
-      throw new RangeError('Start Date is invalid');
-    }
-
-    if (!isValid(dateRight)) {
-      throw new RangeError('End Date is invalid');
-    }
-
-    var duration = {
-      years: 0,
-      months: 0,
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0
-    };
-    var sign = compareAsc(dateLeft, dateRight);
-    duration.years = Math.abs(differenceInYears(dateLeft, dateRight));
-    var remainingMonths = sub(dateLeft, {
-      years: sign * duration.years
-    });
-    duration.months = Math.abs(differenceInMonths(remainingMonths, dateRight));
-    var remainingDays = sub(remainingMonths, {
-      months: sign * duration.months
-    });
-    duration.days = Math.abs(differenceInDays(remainingDays, dateRight));
-    var remainingHours = sub(remainingDays, {
-      days: sign * duration.days
-    });
-    duration.hours = Math.abs(differenceInHours(remainingHours, dateRight));
-    var remainingMinutes = sub(remainingHours, {
-      hours: sign * duration.hours
-    });
-    duration.minutes = Math.abs(differenceInMinutes(remainingMinutes, dateRight));
-    var remainingSeconds = sub(remainingMinutes, {
-      minutes: sign * duration.minutes
-    });
-    duration.seconds = Math.abs(differenceInSeconds(remainingSeconds, dateRight));
-    return duration;
   }
 
   /**
@@ -10749,16 +10615,121 @@
 
   function get_each_context$3(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[21] = list[i];
+    child_ctx[23] = list[i];
+    child_ctx[25] = i;
     return child_ctx;
-  } // (148:3) {#if !loading && weekTotal > 0}
+  } // (190:0) {#if controls}
 
 
-  function create_if_block_2$2(ctx) {
+  function create_if_block_7$1(ctx) {
+    var h2;
+    return {
+      c() {
+        h2 = element("h2");
+        h2.textContent = "".concat(dist_4("timemanager", "Statistics"));
+      },
+
+      m(target, anchor) {
+        insert(target, h2, anchor);
+      },
+
+      p: noop$1,
+
+      d(detaching) {
+        if (detaching) detach(h2);
+      }
+
+    };
+  } // (194:1) {#if controls}
+
+
+  function create_if_block_6$1(ctx) {
+    var div;
+    var figure0;
+    var figcaption0;
+    var t1;
+    var t2;
+    var t3;
+    var t4_value = dist_4("timemanager", "hrs.") + "";
+    var t4;
+    var t5;
+    var figure1;
+    var figcaption1;
+    var t7;
+    var t8;
+    var t9;
+    var t10_value = dist_4("timemanager", "hrs.") + "";
+    var t10;
+    return {
+      c() {
+        div = element("div");
+        figure0 = element("figure");
+        figcaption0 = element("figcaption");
+        figcaption0.textContent = "".concat(dist_4("timemanager", "Today"));
+        t1 = space();
+        t2 = text(
+        /*todayTotal*/
+        ctx[4]);
+        t3 = space();
+        t4 = text(t4_value);
+        t5 = space();
+        figure1 = element("figure");
+        figcaption1 = element("figcaption");
+        figcaption1.textContent = "".concat(dist_4("timemanager", "Week"));
+        t7 = space();
+        t8 = text(
+        /*weekTotal*/
+        ctx[3]);
+        t9 = space();
+        t10 = text(t10_value);
+        attr(figcaption0, "class", "tm_label");
+        attr(figcaption1, "class", "tm_label");
+        attr(div, "class", "top-stats");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, figure0);
+        append(figure0, figcaption0);
+        append(figure0, t1);
+        append(figure0, t2);
+        append(figure0, t3);
+        append(figure0, t4);
+        append(div, t5);
+        append(div, figure1);
+        append(figure1, figcaption1);
+        append(figure1, t7);
+        append(figure1, t8);
+        append(figure1, t9);
+        append(figure1, t10);
+      },
+
+      p(ctx, dirty) {
+        if (dirty &
+        /*todayTotal*/
+        16) set_data(t2,
+        /*todayTotal*/
+        ctx[4]);
+        if (dirty &
+        /*weekTotal*/
+        8) set_data(t8,
+        /*weekTotal*/
+        ctx[3]);
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+      }
+
+    };
+  } // (208:3) {#if !loading && weekTotal > 0}
+
+
+  function create_if_block_3$2(ctx) {
     var each_1_anchor;
     var each_value =
     /*points*/
-    ctx[1];
+    ctx[2];
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
@@ -10784,11 +10755,11 @@
 
       p(ctx, dirty) {
         if (dirty &
-        /*format, points, highest, translate*/
-        18) {
+        /*formatDateForScale, points, highest, translate*/
+        1060) {
           each_value =
           /*points*/
-          ctx[1];
+          ctx[2];
 
           var _i3;
 
@@ -10820,25 +10791,42 @@
       }
 
     };
-  } // (151:6) {#if point && point.stats}
+  } // (211:6) {#if point && point.stats}
 
 
-  function create_if_block_3$2(ctx) {
+  function create_if_block_4$1(ctx) {
     var t0;
     var div;
-    var t1_value = format(
+    var span0;
+    var t1_value =
+    /*formatDateForScale*/
+    ctx[10](
     /*point*/
-    ctx[21].date, "iiiiii d.M.") + "";
+    ctx[23].date, "primary") + "";
     var t1;
+    var t2;
+    var span1;
+    var t3_value =
+    /*formatDateForScale*/
+    ctx[10](
+    /*point*/
+    ctx[23].date, "secondary") + "";
+    var t3;
     var if_block =
     /*point*/
-    ctx[21].stats.total > 0 && create_if_block_4$1(ctx);
+    ctx[23].stats.total > 0 && create_if_block_5$1(ctx);
     return {
       c() {
         if (if_block) if_block.c();
         t0 = space();
         div = element("div");
+        span0 = element("span");
         t1 = text(t1_value);
+        t2 = space();
+        span1 = element("span");
+        t3 = text(t3_value);
+        attr(span0, "class", "day");
+        attr(span1, "class", "date");
         attr(div, "class", "date-label");
       },
 
@@ -10846,17 +10834,21 @@
         if (if_block) if_block.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, div, anchor);
-        append(div, t1);
+        append(div, span0);
+        append(span0, t1);
+        append(div, t2);
+        append(div, span1);
+        append(span1, t3);
       },
 
       p(ctx, dirty) {
         if (
         /*point*/
-        ctx[21].stats.total > 0) {
+        ctx[23].stats.total > 0) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_4$1(ctx);
+            if_block = create_if_block_5$1(ctx);
             if_block.c();
             if_block.m(t0.parentNode, t0);
           }
@@ -10867,9 +10859,18 @@
 
         if (dirty &
         /*points*/
-        2 && t1_value !== (t1_value = format(
+        4 && t1_value !== (t1_value =
+        /*formatDateForScale*/
+        ctx[10](
         /*point*/
-        ctx[21].date, "iiiiii d.M.") + "")) set_data(t1, t1_value);
+        ctx[23].date, "primary") + "")) set_data(t1, t1_value);
+        if (dirty &
+        /*points*/
+        4 && t3_value !== (t3_value =
+        /*formatDateForScale*/
+        ctx[10](
+        /*point*/
+        ctx[23].date, "secondary") + "")) set_data(t3, t3_value);
       },
 
       d(detaching) {
@@ -10879,14 +10880,14 @@
       }
 
     };
-  } // (152:7) {#if point.stats.total > 0}
+  } // (212:7) {#if point.stats.total > 0}
 
 
-  function create_if_block_4$1(ctx) {
+  function create_if_block_5$1(ctx) {
     var span;
     var t0_value =
     /*point*/
-    ctx[21].stats.total + "";
+    ctx[23].stats.total + "";
     var t0;
     var t1;
     var t2_value = dist_4("timemanager", "hrs.") + "";
@@ -10906,9 +10907,9 @@
         attr(div, "class", "column-inner");
         attr(div, "style", div_style_value = "height: ".concat(
         /*point*/
-        ctx[21].stats.total /
+        ctx[23].stats.total /
         /*highest*/
-        ctx[4] * 100, "%"));
+        ctx[5] * 100, "%"));
       },
 
       m(target, anchor) {
@@ -10923,17 +10924,17 @@
       p(ctx, dirty) {
         if (dirty &
         /*points*/
-        2 && t0_value !== (t0_value =
+        4 && t0_value !== (t0_value =
         /*point*/
-        ctx[21].stats.total + "")) set_data(t0, t0_value);
+        ctx[23].stats.total + "")) set_data(t0, t0_value);
 
         if (dirty &
         /*points, highest*/
-        18 && div_style_value !== (div_style_value = "height: ".concat(
+        36 && div_style_value !== (div_style_value = "height: ".concat(
         /*point*/
-        ctx[21].stats.total /
+        ctx[23].stats.total /
         /*highest*/
-        ctx[4] * 100, "%"))) {
+        ctx[5] * 100, "%"))) {
           attr(div, "style", div_style_value);
         }
       },
@@ -10945,7 +10946,7 @@
       }
 
     };
-  } // (149:4) {#each points as point}
+  } // (209:4) {#each points as point, index}
 
 
   function create_each_block$3(ctx) {
@@ -10953,9 +10954,9 @@
     var t;
     var if_block =
     /*point*/
-    ctx[21] &&
+    ctx[23] &&
     /*point*/
-    ctx[21].stats && create_if_block_3$2(ctx);
+    ctx[23].stats && create_if_block_4$1(ctx);
     return {
       c() {
         div = element("div");
@@ -10973,13 +10974,13 @@
       p(ctx, dirty) {
         if (
         /*point*/
-        ctx[21] &&
+        ctx[23] &&
         /*point*/
-        ctx[21].stats) {
+        ctx[23].stats) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_3$2(ctx);
+            if_block = create_if_block_4$1(ctx);
             if_block.c();
             if_block.m(div, t);
           }
@@ -10995,10 +10996,10 @@
       }
 
     };
-  } // (161:3) {#if !loading && weekTotal === 0}
+  } // (224:3) {#if controls && !loading && weekTotal === 0}
 
 
-  function create_if_block_1$3(ctx) {
+  function create_if_block_2$2(ctx) {
     var p;
     return {
       c() {
@@ -11018,10 +11019,163 @@
       }
 
     };
-  } // (176:4) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (228:2) {#if controls}
 
 
   function create_if_block$d(ctx) {
+    var nav;
+    var button0;
+    var t1;
+    var span1;
+    var t2_value = dist_4("timemanager", "Week") + "";
+    var t2;
+    var t3;
+    var t4;
+    var t5;
+    var span0;
+    var t6;
+    var t7_value = format(startOfWeek(
+    /*startCursor*/
+    ctx[6],
+    /*localeOptions*/
+    ctx[8]), "iiiiii d.MM.Y") + "";
+    var t7;
+    var t8;
+    var t9_value = format(endOfWeek(
+    /*startCursor*/
+    ctx[6],
+    /*localeOptions*/
+    ctx[8]), "iiiiii d.MM.Y") + "";
+    var t9;
+    var t10;
+    var t11;
+    var span2;
+    var show_if = !isSameDay(startOfWeek(startOfToday(),
+    /*localeOptions*/
+    ctx[8]),
+    /*startCursor*/
+    ctx[6]);
+    var t12;
+    var button1;
+    var mounted;
+    var dispose;
+    var if_block = show_if && create_if_block_1$3(ctx);
+    return {
+      c() {
+        nav = element("nav");
+        button0 = element("button");
+        button0.textContent = "".concat(dist_4("timemanager", "Previous week"));
+        t1 = space();
+        span1 = element("span");
+        t2 = text(t2_value);
+        t3 = space();
+        t4 = text(
+        /*currentWeek*/
+        ctx[7]);
+        t5 = space();
+        span0 = element("span");
+        t6 = text("(");
+        t7 = text(t7_value);
+        t8 = text(" – ");
+        t9 = text(t9_value);
+        t10 = text(")");
+        t11 = space();
+        span2 = element("span");
+        if (if_block) if_block.c();
+        t12 = space();
+        button1 = element("button");
+        button1.textContent = "".concat(dist_4("timemanager", "Next week"));
+        attr(button0, "class", "previous");
+        attr(span0, "class", "dates");
+        attr(button1, "class", "next");
+        attr(nav, "class", "week-navigation");
+      },
+
+      m(target, anchor) {
+        insert(target, nav, anchor);
+        append(nav, button0);
+        append(nav, t1);
+        append(nav, span1);
+        append(span1, t2);
+        append(span1, t3);
+        append(span1, t4);
+        append(span1, t5);
+        append(span1, span0);
+        append(span0, t6);
+        append(span0, t7);
+        append(span0, t8);
+        append(span0, t9);
+        append(span0, t10);
+        append(nav, t11);
+        append(nav, span2);
+        if (if_block) if_block.m(span2, null);
+        append(span2, t12);
+        append(span2, button1);
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*click_handler*/
+          ctx[15])), listen(button1, "click", prevent_default(
+          /*click_handler_2*/
+          ctx[17]))];
+          mounted = true;
+        }
+      },
+
+      p(ctx, dirty) {
+        if (dirty &
+        /*currentWeek*/
+        128) set_data(t4,
+        /*currentWeek*/
+        ctx[7]);
+        if (dirty &
+        /*startCursor*/
+        64 && t7_value !== (t7_value = format(startOfWeek(
+        /*startCursor*/
+        ctx[6],
+        /*localeOptions*/
+        ctx[8]), "iiiiii d.MM.Y") + "")) set_data(t7, t7_value);
+        if (dirty &
+        /*startCursor*/
+        64 && t9_value !== (t9_value = format(endOfWeek(
+        /*startCursor*/
+        ctx[6],
+        /*localeOptions*/
+        ctx[8]), "iiiiii d.MM.Y") + "")) set_data(t9, t9_value);
+        if (dirty &
+        /*startCursor*/
+        64) show_if = !isSameDay(startOfWeek(startOfToday(),
+        /*localeOptions*/
+        ctx[8]),
+        /*startCursor*/
+        ctx[6]);
+
+        if (show_if) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_1$3(ctx);
+            if_block.c();
+            if_block.m(span2, t12);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+
+      d(detaching) {
+        if (detaching) detach(nav);
+        if (if_block) if_block.d();
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  } // (240:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+
+
+  function create_if_block_1$3(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -11038,7 +11192,7 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_1*/
-          ctx[14]));
+          ctx[16]));
           mounted = true;
         }
       },
@@ -11055,298 +11209,173 @@
   }
 
   function create_fragment$n(ctx) {
-    var h2;
-    var t1;
-    var div3;
-    var div0;
-    var figure0;
-    var figcaption0;
-    var t3;
-    var t4;
-    var t5;
-    var t6_value = dist_4("timemanager", "hrs.") + "";
-    var t6;
-    var t7;
-    var figure1;
-    var figcaption1;
-    var t9;
-    var t10;
-    var t11;
-    var t12_value = dist_4("timemanager", "hrs.") + "";
-    var t12;
-    var t13;
+    var t0;
     var div2;
+    var t1;
     var div1;
-    var t14;
-    var t15;
-    var nav;
-    var button0;
-    var t17;
-    var span1;
-    var t18_value = dist_4("timemanager", "Week") + "";
-    var t18;
-    var t19;
-    var t20;
-    var t21;
-    var span0;
-    var t22;
-    var t23_value = format(startOfWeek(
-    /*startCursor*/
-    ctx[5],
-    /*localeOptions*/
-    ctx[7]), "iiiiii d.MM.Y") + "";
-    var t23;
-    var t24;
-    var t25_value = format(endOfWeek(
-    /*startCursor*/
-    ctx[5],
-    /*localeOptions*/
-    ctx[7]), "iiiiii d.MM.Y") + "";
-    var t25;
-    var t26;
-    var t27;
-    var span2;
-    var show_if = !isSameDay(startOfWeek(startOfToday(),
-    /*localeOptions*/
-    ctx[7]),
-    /*startCursor*/
-    ctx[5]);
-    var t28;
-    var button1;
-    var div3_class_value;
-    var mounted;
-    var dispose;
-    var if_block0 = !
+    var div0;
+    var t2;
+    var div0_class_value;
+    var t3;
+    var div2_class_value;
+    var if_block0 =
+    /*controls*/
+    ctx[0] && create_if_block_7$1();
+    var if_block1 =
+    /*controls*/
+    ctx[0] && create_if_block_6$1(ctx);
+    var if_block2 = !
     /*loading*/
-    ctx[0] &&
+    ctx[1] &&
     /*weekTotal*/
-    ctx[2] > 0 && create_if_block_2$2(ctx);
-    var if_block1 = !
+    ctx[3] > 0 && create_if_block_3$2(ctx);
+    var if_block3 =
+    /*controls*/
+    ctx[0] && !
     /*loading*/
-    ctx[0] &&
+    ctx[1] &&
     /*weekTotal*/
-    ctx[2] === 0 && create_if_block_1$3();
-    var if_block2 = show_if && create_if_block$d(ctx);
+    ctx[3] === 0 && create_if_block_2$2();
+    var if_block4 =
+    /*controls*/
+    ctx[0] && create_if_block$d(ctx);
     return {
       c() {
-        h2 = element("h2");
-        h2.textContent = "".concat(dist_4("timemanager", "Statistics"));
-        t1 = space();
-        div3 = element("div");
-        div0 = element("div");
-        figure0 = element("figure");
-        figcaption0 = element("figcaption");
-        figcaption0.textContent = "".concat(dist_4("timemanager", "Today"));
-        t3 = space();
-        t4 = text(
-        /*todayTotal*/
-        ctx[3]);
-        t5 = space();
-        t6 = text(t6_value);
-        t7 = space();
-        figure1 = element("figure");
-        figcaption1 = element("figcaption");
-        figcaption1.textContent = "".concat(dist_4("timemanager", "Week"));
-        t9 = space();
-        t10 = text(
-        /*weekTotal*/
-        ctx[2]);
-        t11 = space();
-        t12 = text(t12_value);
-        t13 = space();
-        div2 = element("div");
-        div1 = element("div");
         if (if_block0) if_block0.c();
-        t14 = space();
+        t0 = space();
+        div2 = element("div");
         if (if_block1) if_block1.c();
-        t15 = space();
-        nav = element("nav");
-        button0 = element("button");
-        button0.textContent = "".concat(dist_4("timemanager", "Previous week"));
-        t17 = space();
-        span1 = element("span");
-        t18 = text(t18_value);
-        t19 = space();
-        t20 = text(
-        /*currentWeek*/
-        ctx[6]);
-        t21 = space();
-        span0 = element("span");
-        t22 = text("(");
-        t23 = text(t23_value);
-        t24 = text(" – ");
-        t25 = text(t25_value);
-        t26 = text(")");
-        t27 = space();
-        span2 = element("span");
+        t1 = space();
+        div1 = element("div");
+        div0 = element("div");
         if (if_block2) if_block2.c();
-        t28 = space();
-        button1 = element("button");
-        button1.textContent = "".concat(dist_4("timemanager", "Next week"));
-        attr(figcaption0, "class", "tm_label");
-        attr(figcaption1, "class", "tm_label");
-        attr(div0, "class", "top-stats");
-        attr(div1, "class", "hours-per-week");
-        attr(button0, "class", "previous");
-        attr(span0, "class", "dates");
-        attr(button1, "class", "next");
-        attr(nav, "class", "week-navigation");
-        attr(div2, "class", "graphs");
-        attr(div3, "class", div3_class_value = "".concat(
+        t2 = space();
+        if (if_block3) if_block3.c();
+        t3 = space();
+        if (if_block4) if_block4.c();
+        attr(div0, "class", div0_class_value = "hours-per-week ".concat(
+        /*points*/
+        ctx[2].length > 12 || window.clientWidth < 768 ? "many" : "few"));
+        attr(div1, "class", "graphs");
+        attr(div2, "class", div2_class_value = "".concat(
         /*loading*/
-        ctx[0] ? "icon-loading" : ""));
+        ctx[1] ? "icon-loading" : ""));
       },
 
       m(target, anchor) {
-        insert(target, h2, anchor);
-        insert(target, t1, anchor);
-        insert(target, div3, anchor);
-        append(div3, div0);
-        append(div0, figure0);
-        append(figure0, figcaption0);
-        append(figure0, t3);
-        append(figure0, t4);
-        append(figure0, t5);
-        append(figure0, t6);
-        append(div0, t7);
-        append(div0, figure1);
-        append(figure1, figcaption1);
-        append(figure1, t9);
-        append(figure1, t10);
-        append(figure1, t11);
-        append(figure1, t12);
-        append(div3, t13);
-        append(div3, div2);
+        if (if_block0) if_block0.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, div2, anchor);
+        if (if_block1) if_block1.m(div2, null);
+        append(div2, t1);
         append(div2, div1);
-        if (if_block0) if_block0.m(div1, null);
-        append(div1, t14);
-        if (if_block1) if_block1.m(div1, null);
-        append(div2, t15);
-        append(div2, nav);
-        append(nav, button0);
-        append(nav, t17);
-        append(nav, span1);
-        append(span1, t18);
-        append(span1, t19);
-        append(span1, t20);
-        append(span1, t21);
-        append(span1, span0);
-        append(span0, t22);
-        append(span0, t23);
-        append(span0, t24);
-        append(span0, t25);
-        append(span0, t26);
-        append(nav, t27);
-        append(nav, span2);
-        if (if_block2) if_block2.m(span2, null);
-        append(span2, t28);
-        append(span2, button1);
-
-        if (!mounted) {
-          dispose = [listen(button0, "click", prevent_default(
-          /*click_handler*/
-          ctx[13])), listen(button1, "click", prevent_default(
-          /*click_handler_2*/
-          ctx[15]))];
-          mounted = true;
-        }
+        append(div1, div0);
+        if (if_block2) if_block2.m(div0, null);
+        append(div0, t2);
+        if (if_block3) if_block3.m(div0, null);
+        append(div1, t3);
+        if (if_block4) if_block4.m(div1, null);
       },
 
       p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
-        if (dirty &
-        /*todayTotal*/
-        8) set_data(t4,
-        /*todayTotal*/
-        ctx[3]);
-        if (dirty &
-        /*weekTotal*/
-        4) set_data(t10,
-        /*weekTotal*/
-        ctx[2]);
-
-        if (!
-        /*loading*/
-        ctx[0] &&
-        /*weekTotal*/
-        ctx[2] > 0) {
+        if (
+        /*controls*/
+        ctx[0]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
           } else {
-            if_block0 = create_if_block_2$2(ctx);
+            if_block0 = create_if_block_7$1();
             if_block0.c();
-            if_block0.m(div1, t14);
+            if_block0.m(t0.parentNode, t0);
           }
         } else if (if_block0) {
           if_block0.d(1);
           if_block0 = null;
         }
 
-        if (!
-        /*loading*/
-        ctx[0] &&
-        /*weekTotal*/
-        ctx[2] === 0) {
+        if (
+        /*controls*/
+        ctx[0]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
           } else {
-            if_block1 = create_if_block_1$3();
+            if_block1 = create_if_block_6$1(ctx);
             if_block1.c();
-            if_block1.m(div1, null);
+            if_block1.m(div2, t1);
           }
         } else if (if_block1) {
           if_block1.d(1);
           if_block1 = null;
         }
 
-        if (dirty &
-        /*currentWeek*/
-        64) set_data(t20,
-        /*currentWeek*/
-        ctx[6]);
-        if (dirty &
-        /*startCursor*/
-        32 && t23_value !== (t23_value = format(startOfWeek(
-        /*startCursor*/
-        ctx[5],
-        /*localeOptions*/
-        ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t23, t23_value);
-        if (dirty &
-        /*startCursor*/
-        32 && t25_value !== (t25_value = format(endOfWeek(
-        /*startCursor*/
-        ctx[5],
-        /*localeOptions*/
-        ctx[7]), "iiiiii d.MM.Y") + "")) set_data(t25, t25_value);
-        if (dirty &
-        /*startCursor*/
-        32) show_if = !isSameDay(startOfWeek(startOfToday(),
-        /*localeOptions*/
-        ctx[7]),
-        /*startCursor*/
-        ctx[5]);
-
-        if (show_if) {
+        if (!
+        /*loading*/
+        ctx[1] &&
+        /*weekTotal*/
+        ctx[3] > 0) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block$d(ctx);
+            if_block2 = create_if_block_3$2(ctx);
             if_block2.c();
-            if_block2.m(span2, t28);
+            if_block2.m(div0, t2);
           }
         } else if (if_block2) {
           if_block2.d(1);
           if_block2 = null;
         }
 
+        if (
+        /*controls*/
+        ctx[0] && !
+        /*loading*/
+        ctx[1] &&
+        /*weekTotal*/
+        ctx[3] === 0) {
+          if (if_block3) {
+            if_block3.p(ctx, dirty);
+          } else {
+            if_block3 = create_if_block_2$2();
+            if_block3.c();
+            if_block3.m(div0, null);
+          }
+        } else if (if_block3) {
+          if_block3.d(1);
+          if_block3 = null;
+        }
+
+        if (dirty &
+        /*points*/
+        4 && div0_class_value !== (div0_class_value = "hours-per-week ".concat(
+        /*points*/
+        ctx[2].length > 12 || window.clientWidth < 768 ? "many" : "few"))) {
+          attr(div0, "class", div0_class_value);
+        }
+
+        if (
+        /*controls*/
+        ctx[0]) {
+          if (if_block4) {
+            if_block4.p(ctx, dirty);
+          } else {
+            if_block4 = create_if_block$d(ctx);
+            if_block4.c();
+            if_block4.m(div1, null);
+          }
+        } else if (if_block4) {
+          if_block4.d(1);
+          if_block4 = null;
+        }
+
         if (dirty &
         /*loading*/
-        1 && div3_class_value !== (div3_class_value = "".concat(
+        2 && div2_class_value !== (div2_class_value = "".concat(
         /*loading*/
-        ctx[0] ? "icon-loading" : ""))) {
-          attr(div3, "class", div3_class_value);
+        ctx[1] ? "icon-loading" : ""))) {
+          attr(div2, "class", div2_class_value);
         }
       },
 
@@ -11354,14 +11383,13 @@
       o: noop$1,
 
       d(detaching) {
-        if (detaching) detach(h2);
-        if (detaching) detach(t1);
-        if (detaching) detach(div3);
-        if (if_block0) if_block0.d();
+        if (if_block0) if_block0.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(div2);
         if (if_block1) if_block1.d();
         if (if_block2) if_block2.d();
-        mounted = false;
-        run_all(dispose);
+        if (if_block3) if_block3.d();
+        if (if_block4) if_block4.d();
       }
 
     };
@@ -11381,17 +11409,21 @@
     var currentWeek;
     var statsApiUrl = $$props.statsApiUrl;
     var requestToken = $$props.requestToken;
-    var start = $$props.start;
-    var end = $$props.end;
+    var _$$props$controls = $$props.controls,
+        controls = _$$props$controls === void 0 ? true : _$$props$controls;
     var localeOptions = {
       weekStartsOn: dist_6()
     };
+    var _$$props$start = $$props.start,
+        start = _$$props$start === void 0 ? format(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
+    var _$$props$end = $$props.end,
+        end = _$$props$end === void 0 ? format(endOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$end;
 
     var updateWeek = function updateWeek() {
-      $$invalidate(2, weekTotal = 0);
-      $$invalidate(3, todayTotal = 0);
-      $$invalidate(4, highest = 0);
-      $$invalidate(6, currentWeek = getWeek(startCursor, localeOptions));
+      $$invalidate(3, weekTotal = 0);
+      $$invalidate(4, todayTotal = 0);
+      $$invalidate(5, highest = 0);
+      $$invalidate(7, currentWeek = getWeek(startCursor, localeOptions));
     };
 
     onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -11412,70 +11444,85 @@
 
     var loadData = /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var duration, _yield$loadStats, grouped, js_date_format;
+        var durationDays, durationMonths, durationWeeks, durationYears, _yield$loadStats, grouped, js_date_format;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                $$invalidate(0, loading = true); // Reset points
+                $$invalidate(1, loading = true); // Reset points
 
-                $$invalidate(1, points = []); // Determine duration between cursors
+                $$invalidate(2, points = []); // Determine duration between cursors
 
-                duration = intervalToDuration({
-                  start: startCursor,
-                  end: endCursor
-                }); // Determine scale
+                durationDays = differenceInDays(endCursor, startCursor);
+                durationMonths = differenceInMonths(endCursor, startCursor);
+                durationWeeks = differenceInWeeks(endCursor, startCursor);
+                durationYears = differenceInYears(endCursor, startCursor); // Determine scale
 
-                if (duration.days > 31 && duration.days <= 180) {
+                if (durationDays > 31 && durationDays <= 180) {
                   scale = "week";
-                } else // 	points.push({
-                  // 		date: addWeeks(startCursor, week),
-                  // 	})
-                  // })
-                  if (duration.days > 180) {
-                    scale = "month"; // new Array(duration.weeks).forEach(week => {
-                  } else {
-                    scale = "day";
-                    Array.from(Array(duration.days + 1).keys()).forEach(function (day) {
-                      points.push({
-                        date: addDays(startCursor, day)
-                      });
+                  Array.from(Array(durationWeeks + 1).keys()).forEach(function (week) {
+                    points.push({
+                      date: addWeeks(startCursor, week)
                     });
-                  } // Load data from API
+                  });
+                } else if (durationDays > 180 && durationMonths <= 24) {
+                  scale = "month";
+                  Array.from(Array(durationMonths + 1).keys()).forEach(function (month) {
+                    points.push({
+                      date: addMonths(startCursor, month)
+                    });
+                  });
+                } else if (durationMonths > 24) {
+                  scale = "year";
+                  Array.from(Array(durationYears + 1).keys()).forEach(function (year) {
+                    points.push({
+                      date: addYears(startCursor, year)
+                    });
+                  });
+                } else {
+                  scale = "day";
+                  Array.from(Array(durationDays + 1).keys()).forEach(function (day) {
+                    points.push({
+                      date: addDays(startCursor, day)
+                    });
+                  });
+                } // Load data from API
 
 
-                _context2.next = 6;
-                return loadStats(scale);
+                _context2.next = 9;
+                return loadStats();
 
-              case 6:
+              case 9:
                 _yield$loadStats = _context2.sent;
                 grouped = _yield$loadStats.grouped;
                 js_date_format = _yield$loadStats.js_date_format;
                 // Extract points from grouped array
-                $$invalidate(1, points = points.map(function (point) {
+                $$invalidate(2, points = points.map(function (point) {
                   // Get total from API response
                   var total = grouped[format(point.date, js_date_format)];
                   point.stats = {
-                    total: total || 0
+                    total: total ? Math.round(total * 100) / 100 : 0
                   }; // Find highest value
 
                   if (total > highest) {
-                    $$invalidate(4, highest = total);
+                    $$invalidate(5, highest = total);
                   } // Sum up total
 
 
-                  $$invalidate(2, weekTotal += point.stats.total); // Day total
+                  $$invalidate(3, weekTotal += point.stats.total); // Day total
 
                   if (isSameDay(point.date, startOfToday())) {
-                    $$invalidate(3, todayTotal += point.stats.total);
+                    $$invalidate(4, todayTotal += point.stats.total);
                   }
 
                   return point;
-                }));
-                $$invalidate(0, loading = false);
+                })); // Set columns
 
-              case 11:
+                document.documentElement.style.setProperty("--tm-stats-columns", points.length);
+                $$invalidate(1, loading = false);
+
+              case 15:
               case "end":
                 return _context2.stop();
             }
@@ -11489,7 +11536,7 @@
     }();
 
     var loadStats = /*#__PURE__*/function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(scale) {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
         var start, end, stats;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -11522,25 +11569,59 @@
         }, _callee3);
       }));
 
-      return function loadStats(_x) {
+      return function loadStats() {
         return _ref5.apply(this, arguments);
       };
     }();
 
     var weekNavigation = function weekNavigation(mode) {
       if (mode === "reset") {
-        $$invalidate(5, startCursor = startOfWeek(startOfToday(), localeOptions));
+        $$invalidate(6, startCursor = startOfWeek(startOfToday(), localeOptions));
         endCursor = endOfWeek(startCursor, localeOptions);
       } else if (mode === "next") {
-        $$invalidate(5, startCursor = addWeeks(startCursor, 1));
+        $$invalidate(6, startCursor = addWeeks(startCursor, 1));
         endCursor = addWeeks(endCursor, 1);
       } else {
-        $$invalidate(5, startCursor = subWeeks(startCursor, 1));
+        $$invalidate(6, startCursor = subWeeks(startCursor, 1));
         endCursor = subWeeks(endCursor, 1);
       }
 
       updateWeek();
       loadData();
+    };
+
+    var formatDateForScale = function formatDateForScale(date, type) {
+      if (type === "primary") {
+        if (scale === "year") {
+          return format(date, "yyyy");
+        }
+
+        if (scale === "month") {
+          return format(date, "LLL");
+        }
+
+        if (scale === "week") {
+          return "".concat(dist_4("timemanager", "Week"), " ").concat(format(date, "w"));
+        }
+
+        return format(date, "iii");
+      }
+
+      if (type === "secondary") {
+        if (scale === "year") {
+          return "";
+        }
+
+        if (scale === "month") {
+          return format(date, "yyyy");
+        }
+
+        if (scale === "week") {
+          return format(date, "yyyy");
+        }
+
+        return format(date, "d.M.");
+      }
     };
 
     var click_handler = function click_handler() {
@@ -11556,41 +11637,42 @@
     };
 
     $$self.$$set = function ($$props) {
-      if ("statsApiUrl" in $$props) $$invalidate(9, statsApiUrl = $$props.statsApiUrl);
-      if ("requestToken" in $$props) $$invalidate(10, requestToken = $$props.requestToken);
-      if ("start" in $$props) $$invalidate(11, start = $$props.start);
-      if ("end" in $$props) $$invalidate(12, end = $$props.end);
+      if ("statsApiUrl" in $$props) $$invalidate(11, statsApiUrl = $$props.statsApiUrl);
+      if ("requestToken" in $$props) $$invalidate(12, requestToken = $$props.requestToken);
+      if ("controls" in $$props) $$invalidate(0, controls = $$props.controls);
+      if ("start" in $$props) $$invalidate(13, start = $$props.start);
+      if ("end" in $$props) $$invalidate(14, end = $$props.end);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*start*/
-      2048) {
-        $$invalidate(5, startCursor = isDate(start) ? parse(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
+      8192) {
+        $$invalidate(6, startCursor = isDate(parse(start, dateFormat$1, new Date())) ? parse(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
       }
 
       if ($$self.$$.dirty &
       /*end*/
-      4096) {
-        endCursor = isDate(end) ? parse(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
+      16384) {
+        endCursor = isDate(parse(end, dateFormat$1, new Date())) ? parse(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
       }
     };
 
-    $$invalidate(0, loading = false);
+    $$invalidate(1, loading = false);
 
-    scale = "none";
+    scale = "day";
 
-    $$invalidate(1, points = []);
+    $$invalidate(2, points = []);
 
-    $$invalidate(2, weekTotal = 0);
+    $$invalidate(3, weekTotal = 0);
 
-    $$invalidate(3, todayTotal = 0);
+    $$invalidate(4, todayTotal = 0);
 
-    $$invalidate(4, highest = 0);
+    $$invalidate(5, highest = 0);
 
-    $$invalidate(6, currentWeek = null);
+    $$invalidate(7, currentWeek = null);
 
-    return [loading, points, weekTotal, todayTotal, highest, startCursor, currentWeek, localeOptions, weekNavigation, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
+    return [controls, loading, points, weekTotal, todayTotal, highest, startCursor, currentWeek, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
   }
 
   var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -11605,10 +11687,11 @@
 
       _this = _super.call(this);
       init$1(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
-        statsApiUrl: 9,
-        requestToken: 10,
-        start: 11,
-        end: 12
+        statsApiUrl: 11,
+        requestToken: 12,
+        controls: 0,
+        start: 13,
+        end: 14
       });
       return _this;
     }

@@ -273,7 +273,7 @@ label {
 
 		&.reports-filters,
 		&.reports-timerange {
-			width: 100%;
+			width: calc(100% - 12px);
 			margin-left: 0;
 		}
 
@@ -406,7 +406,8 @@ label {
 	.statistics {
 		margin-left: -30px;
 		width: calc(100% + 45px);
-		max-width: 768px;
+		// Attempt to avoid flicker
+		min-height: 40vh;
 
 		.week-navigation {
 			margin-top: 24px;
@@ -436,7 +437,8 @@ label {
 
 		.hours-per-week {
 			display: grid;
-			grid-template-columns: repeat(7, 1fr);
+			grid-template-columns: repeat(var(--tm-stats-columns, 7), minmax(auto, 100px));
+			justify-content: center;
 			height: 40vh;
 			width: 100%;
 			margin-top: 12px;
@@ -466,7 +468,7 @@ label {
 					margin-bottom: 12px;
 					flex-shrink: 0;
 					flex-grow: 0;
-					width: calc(100% - 24px);
+					width: calc(100% - 6px);
 					max-width: 60px;
 					@supports (animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards) {
 						transform: scaleY(0.4);
@@ -480,6 +482,20 @@ label {
 			.date-label {
 				color: var(--color-text-lighter);
 				position: relative;
+				text-align: center;
+				transition: opacity 0.3s ease;
+
+				span {
+					display: block;
+				}
+
+				.day {
+					color: var(--color-text-light);
+				}
+
+				.date {
+					margin-top: -6px;
+				}
 
 				&:before {
 					content: "";
@@ -495,30 +511,76 @@ label {
 			.hours-label {
 				color: var(--color-text-light);
 				margin-bottom: 4px;
+				text-align: center;
+
 				@supports (animation: fade 0.4s 0.2s ease forwards) {
 					opacity: 0;
 					animation: fade 0.4s 0.2s ease forwards;
 				}
 				transform-origin: bottom center;
 			}
+
+			// Crowded graphs
+			&.many {
+				.column:nth-child(odd) {
+					.date-label {
+						opacity: 0;
+					}
+				}
+
+				&:hover {
+					.column:not(:hover) .date-label {
+						opacity: 0;
+					}
+					.column:nth-child(odd):hover .date-label {
+						opacity: 1;
+					}
+				}
+
+				.date-label {
+					width: 200%;
+					font-size: 9pt;
+
+					.date {
+						margin-top: -10px;
+					}
+				}
+
+				.hours-label {
+					width: 200%;
+					font-size: 9pt;
+				}
+			}
 		}
 	}
-}
 
-.reports {
-	h2 {
-		margin-bottom: 24px;
-	}
+	.reports {
+		h2 {
+			margin-bottom: 24px;
+		}
 
-	details {
-		padding-left: 12px;
-		padding-bottom: 12px;
-		padding-top: 6px;
-		color: var(--color-text-lighter);
-		cursor: pointer;
+		details {
+			padding-left: 12px;
+			padding-bottom: 12px;
+			padding-top: 6px;
+			color: var(--color-text-lighter);
+			cursor: pointer;
 
-		.tm_item-note {
-			color: var(--color-text-light);
+			.tm_item-note {
+				color: var(--color-text-light);
+			}
+		}
+
+		.statistics {
+			width: 100%;
+			margin-left: 0;
+
+			// Attempt to avoid flicker
+			min-height: 300px;
+
+			.hours-per-week {
+				height: 300px;
+			}
 		}
 	}
 }
@@ -576,6 +638,7 @@ label {
 	#content.app-timemanager .reports-timerange > .actions,
 	.reports-timerange .status,
 	button[type="button"],
+	.export-button,
 	#header {
 		display: none !important;
 	}
@@ -598,5 +661,9 @@ label {
 	// Don't break pages inside a time entry item on reports page
 	details > .tm_item-row {
 		break-inside: avoid;
+	}
+
+	.statistics .column-inner {
+		border: 1px solid var(--color-text-light);
 	}
 }

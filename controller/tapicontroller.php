@@ -264,6 +264,12 @@ class TApiController extends ApiController {
 					$grouped[$month] = 0;
 				}
 				$grouped[$month] += $duration;
+			} elseif ($group_by === "year") {
+				$year = $time->getStartFormatted("Y");
+				if (!isset($grouped[$year])) {
+					$grouped[$year] = 0;
+				}
+				$grouped[$year] += $duration;
 			}
 			// Legacy: No grouping
 			$sum += $duration;
@@ -273,9 +279,11 @@ class TApiController extends ApiController {
 		if ($group_by === "day") {
 			$js_date_format = "yyyy-MM-dd";
 		} elseif ($group_by === "week") {
-			$js_date_format = "YYYY-II";
+			$js_date_format = "yyyy-II";
 		} elseif ($group_by === "month") {
-			$js_date_format = "YYYY-mm";
+			$js_date_format = "yyyy-MM";
+		} elseif ($group_by === "year") {
+			$js_date_format = "yyyy";
 		}
 
 		return new DataResponse(["total" => $sum, "grouped" => $grouped, "js_date_format" => $js_date_format]);

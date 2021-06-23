@@ -27,6 +27,12 @@ $l = \OC::$server->getL10N("timemanager");
 			<a href=""
 				class="timemanager-pjax-link hidden-visually hidden-filter-link"><?php p($l->t("Apply filters")); ?></a>
 		</section>
+		<?php if ($_["times_grouped_by_client"] &&
+    	is_array($_["times_grouped_by_client"]) &&
+    	count($_["times_grouped_by_client"]) > 0
+    ) { ?>
+			<section class="section statistics" data-svelte="Statistics.svelte"></section>
+		<?php } ?>
 		<section class="section">
 			<?php if (
     	$_["times_grouped_by_client"] &&
@@ -99,7 +105,7 @@ $l = \OC::$server->getL10N("timemanager");
 				</p>
 			</div>
 			<span data-svelte="PrintButton.svelte"></span>
-			<a href="<?php p($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] . '&' : '?'); ?>format=csv" download class="button secondary">
+			<a href="<?php p($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] . '&' : '?'); ?>format=csv" download class="button secondary export-button">
 				<?php p($l->t("Export report to CSV")); ?>
 			</a>
 			<?php

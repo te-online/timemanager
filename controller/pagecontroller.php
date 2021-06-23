@@ -154,8 +154,8 @@ class PageController extends Controller {
 		string $projects = null,
 		string $tasks = null,
 		string $status = null,
-		string $start = null,
-		string $end = null,
+		string $start = "",
+		string $end = "",
 		string $format = "none"
 	) {
 		$start_of_month = new \DateTime("first day of this month");
@@ -285,10 +285,14 @@ class PageController extends Controller {
 				}, $all_tasks),
 				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
+				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
 				"requestToken" => $requestToken,
 				"isServer" => true,
 				"startOfMonth" => $start_of_month->format("Y-m-d"),
 				"endOfMonth" => $end_of_month->format("Y-m-d"),
+				"start" => $start,
+				"end" => $end,
+				"controls" => false,
 			];
 
 			return new TemplateResponse("timemanager", "reports", [

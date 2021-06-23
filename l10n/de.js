@@ -117,6 +117,7 @@ OC.L10N.register(
 		"This year": "Dieses Jahr",
 		"Last year": "Letztes Jahr",
 		Presets: "Vorlagen",
+		"Export report to CSV": "Report als CSV exportieren",
 		"report_%s_%s.csv": "Report_%s_%s.csv",
 		"report_%s.csv": "Report_%s.csv",
 	},
