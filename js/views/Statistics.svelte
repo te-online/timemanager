@@ -1,6 +1,8 @@
 <script>
 	export let statsApiUrl;
 	export let requestToken;
+	export let start;
+	export let end;
 
 	import { onMount } from "svelte";
 	import {
@@ -15,23 +17,29 @@
 		addWeeks,
 		subWeeks,
 		getYear,
-		endOfWeek
+		endOfWeek,
+		isDate,
+		parse,
+		intervalToDuration
 	} from "date-fns";
 	import { getFirstDay, translate } from "@nextcloud/l10n";
 
 	const localeOptions = { weekStartsOn: getFirstDay() };
+	const dateFormat = "yyyy-MM-dd";
 	$: loading = false;
-	$: days = [];
+	$: scale = "none";
+	$: points = [];
 	$: weekTotal = 0;
 	$: todayTotal = 0;
 	$: highest = 0;
-	$: dayCursor = startOfToday();
+	$: startCursor = isDate(start) ? parse(start, dateFormat, new Date()) : startOfWeek(new Date(), localeOptions);
+	$: endCursor = isDate(end) ? parse(end, dateFormat, new Date()) : endOfWeek(new Date(), localeOptions);
 	$: currentWeek = null;
 	const updateWeek = () => {
 		weekTotal = 0;
 		todayTotal = 0;
 		highest = 0;
-		currentWeek = getWeek(dayCursor, localeOptions);
+		currentWeek = getWeek(startCursor, localeOptions);
 	};
 
 	onMount(async () => {
@@ -41,42 +49,63 @@
 
 	const loadData = async () => {
 		loading = true;
-		const monday = startOfWeek(dayCursor, localeOptions);
-		days = [
-			{ date: monday },
-			{ date: addDays(monday, 1) },
-			{ date: addDays(monday, 2) },
-			{ date: addDays(monday, 3) },
-			{ date: addDays(monday, 4) },
-			{ date: addDays(monday, 5) },
-			{ date: addDays(monday, 6) }
-		];
-
-		for (const day of days) {
-			day.stats = await loadStatsForDay(day);
+		// Reset points
+		points = [];
+		// Determine duration between cursors
+		const duration = intervalToDuration({
+			start: startCursor,
+			end: endCursor
+		});
+		// Determine scale
+		if (duration.days > 31 && duration.days <= 180) {
+			scale = "week";
+			// new Array(duration.weeks).forEach(week => {
+			// 	points.push({
+			// 		date: addWeeks(startCursor, week),
+			// 	})
+			// })
+		} else if (duration.days > 180) {
+			scale = "month";
+		} else {
+			scale = "day";
+			Array.from(Array(duration.days + 1).keys()).forEach(day => {
+				points.push({
+					date: addDays(startCursor, day)
+				});
+			});
 		}
 
-		days.forEach(day => {
-			if (day.stats && day.stats.total) {
-				// Find highest value
-				if (day.stats.total > highest) {
-					highest = day.stats.total;
-				}
-				// Sum up total
-				weekTotal += day.stats.total;
-				// Day total
-				if (isSameDay(day.date, startOfToday())) {
-					todayTotal += day.stats.total;
-				}
+		// Load data from API
+		const { grouped, js_date_format } = await loadStats(scale);
+
+		// Extract points from grouped array
+		points = points.map(point => {
+			// Get total from API response
+			const total = grouped[format(point.date, js_date_format)];
+			point.stats = {
+				total: total || 0
+			};
+			// Find highest value
+			if (total > highest) {
+				highest = total;
 			}
+			// Sum up total
+			weekTotal += point.stats.total;
+			// Day total
+			if (isSameDay(point.date, startOfToday())) {
+				todayTotal += point.stats.total;
+			}
+
+			return point;
 		});
+
 		loading = false;
 	};
 
-	const loadStatsForDay = async day => {
-		const start = format(startOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
-		const end = format(endOfDay(day.date), "yyyy-MM-dd HH:mm:ss");
-		const stats = await fetch(`${statsApiUrl}?start=${start}&end=${end}`, {
+	const loadStats = async scale => {
+		const start = format(startCursor, "yyyy-MM-dd HH:mm:ss");
+		const end = format(endCursor, "yyyy-MM-dd HH:mm:ss");
+		const stats = await fetch(`${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}`, {
 			method: "GET",
 			headers: {
 				requesttoken: requestToken,
@@ -88,11 +117,14 @@
 
 	const weekNavigation = mode => {
 		if (mode === "reset") {
-			dayCursor = startOfToday();
+			startCursor = startOfWeek(startOfToday(), localeOptions);
+			endCursor = endOfWeek(startCursor, localeOptions);
 		} else if (mode === "next") {
-			dayCursor = addWeeks(dayCursor, 1);
+			startCursor = addWeeks(startCursor, 1);
+			endCursor = addWeeks(endCursor, 1);
 		} else {
-			dayCursor = subWeeks(dayCursor, 1);
+			startCursor = subWeeks(startCursor, 1);
+			endCursor = subWeeks(endCursor, 1);
 		}
 		updateWeek();
 		loadData();
@@ -113,17 +145,19 @@
 	</div>
 	<div class="graphs">
 		<div class="hours-per-week">
-			{#each days as day}
-				<div class="column">
-					{#if day && day.stats}
-						{#if day.stats.total > 0}
-							<span class="hours-label">{day.stats.total} {translate('timemanager', 'hrs.')}</span>
-							<div class="column-inner" style={`height: ${(day.stats.total / highest) * 100}%`} />
+			{#if !loading && weekTotal > 0}
+				{#each points as point}
+					<div class="column">
+						{#if point && point.stats}
+							{#if point.stats.total > 0}
+								<span class="hours-label">{point.stats.total} {translate('timemanager', 'hrs.')}</span>
+								<div class="column-inner" style={`height: ${(point.stats.total / highest) * 100}%`} />
+							{/if}
+							<div class="date-label">{format(point.date, 'iiiiii d.M.')}</div>
 						{/if}
-						<div class="date-label">{format(day.date, 'iiiiii d.M.')}</div>
-					{/if}
-				</div>
-			{/each}
+					</div>
+				{/each}
+			{/if}
 			{#if !loading && weekTotal === 0}
 				<p class="empty">{translate('timemanager', 'When you add entries for this week graphs will appear here.')}</p>
 			{/if}
@@ -135,17 +169,19 @@
 			<span>
 				{translate('timemanager', 'Week')} {currentWeek}
 				<span class="dates">
-					({format(startOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')} &ndash; {format(endOfWeek(dayCursor, localeOptions), 'iiiiii d.MM.Y')})
+					({format(startOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y')} &ndash; {format(endOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y')})
 				</span>
 			</span>
-			{#if !isSameDay(startOfToday(), dayCursor)}
-				<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>
-					{translate('timemanager', 'Current week')}
+			<span>
+				{#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+					<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>
+						{translate('timemanager', 'Current week')}
+					</button>
+				{/if}
+				<button class="next" on:click|preventDefault={() => weekNavigation('next')}>
+					{translate('timemanager', 'Next week')}
 				</button>
-			{/if}
-			<button class="next" on:click|preventDefault={() => weekNavigation('next')}>
-				{translate('timemanager', 'Next week')}
-			</button>
+			</span>
 		</nav>
 	</div>
 </div>

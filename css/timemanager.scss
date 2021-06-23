@@ -446,6 +446,9 @@ label {
 				grid-column-start: 1;
 				grid-column-end: 8;
 				text-align: center;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 			}
 
 			.column {
@@ -465,6 +468,12 @@ label {
 					flex-grow: 0;
 					width: calc(100% - 24px);
 					max-width: 60px;
+					@supports (animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards) {
+						transform: scaleY(0.4);
+						opacity: 0;
+						animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+					}
+					transform-origin: bottom center;
 				}
 			}
 
@@ -486,6 +495,11 @@ label {
 			.hours-label {
 				color: var(--color-text-light);
 				margin-bottom: 4px;
+				@supports (animation: fade 0.4s 0.2s ease forwards) {
+					opacity: 0;
+					animation: fade 0.4s 0.2s ease forwards;
+				}
+				transform-origin: bottom center;
 			}
 		}
 	}
@@ -522,6 +536,26 @@ label {
 	100% {
 		height: 100%;
 		width: 100%;
+		opacity: 1;
+	}
+}
+
+@keyframes scale {
+	0% {
+		transform: scaleY(0.4);
+		opacity: 0;
+	}
+	100% {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+
+@keyframes fade {
+	0% {
+		opacity: 0;
+	}
+	100% {
 		opacity: 1;
 	}
 }
