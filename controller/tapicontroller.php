@@ -221,16 +221,39 @@ class TApiController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 */
-	function getHoursInPeriodStats($start, $end) {
+	function getHoursInPeriodStats($start, $end, string $group_by = "none") {
 		// Get all time entries for time period
 		$times = $this->timeMapper->getActiveObjectsByDateRange($start, $end);
 		$sum = 0;
 
 		// Calculate sum
+		$grouped = [];
 		foreach ($times as $time) {
-			$sum += $time->getDurationInHours();
+			// Group by date
+			if ($group_by === "day") {
+				$day = $time->getStartFormatted("Y-m-D");
+				if (!isset($grouped[$day])) {
+					$grouped[$day] = 0;
+				}
+				$grouped[$day] += $time->getDurationInHours();
+			} elseif ($group_by === "week") {
+				$week = $time->getStartFormatted("Y-W");
+				if (!isset($grouped[$week])) {
+					$grouped[$week] = 0;
+				}
+				$grouped[$week] += $time->getDurationInHours();
+			} elseif ($group_by === "month") {
+				$month = $time->getStartFormatted("Y-m");
+				if (!isset($grouped[$month])) {
+					$grouped[$month] = 0;
+				}
+				$grouped[$month] += $time->getDurationInHours();
+			} else {
+				// Legacy: No grouping
+				$sum += $time->getDurationInHours();
+			}
 		}
 
-		return new DataResponse(['total' => $sum]);
+		return new DataResponse(["total" => $group_by === "none" ? $sum : $grouped]);
 	}
 }
