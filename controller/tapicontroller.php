@@ -236,7 +236,7 @@ class TApiController extends ApiController {
 	 */
 	function getHoursInPeriodStats($start, $end, string $group_by = "none") {
 		// Get all time entries for time period
-		$times = $this->timeMapper->getActiveObjectsByDateRange($start, $end);
+		$times = $this->timeMapper->getActiveObjectsByDateRangeAndFilters($start, $end);
 		$sum = 0;
 
 		// Calculate sum
