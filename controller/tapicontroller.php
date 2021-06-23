@@ -241,32 +241,43 @@ class TApiController extends ApiController {
 
 		// Calculate sum
 		$grouped = [];
+		$js_date_format = "";
 		foreach ($times as $time) {
+			$duration = $time->getDurationInHours();
+
 			// Group by date
 			if ($group_by === "day") {
-				$day = $time->getStartFormatted("Y-m-D");
+				$day = $time->getStartFormatted("Y-m-d");
 				if (!isset($grouped[$day])) {
 					$grouped[$day] = 0;
 				}
-				$grouped[$day] += $time->getDurationInHours();
+				$grouped[$day] += $duration;
 			} elseif ($group_by === "week") {
 				$week = $time->getStartFormatted("Y-W");
 				if (!isset($grouped[$week])) {
 					$grouped[$week] = 0;
 				}
-				$grouped[$week] += $time->getDurationInHours();
+				$grouped[$week] += $duration;
 			} elseif ($group_by === "month") {
 				$month = $time->getStartFormatted("Y-m");
 				if (!isset($grouped[$month])) {
 					$grouped[$month] = 0;
 				}
-				$grouped[$month] += $time->getDurationInHours();
-			} else {
-				// Legacy: No grouping
-				$sum += $time->getDurationInHours();
+				$grouped[$month] += $duration;
 			}
+			// Legacy: No grouping
+			$sum += $duration;
 		}
 
-		return new DataResponse(["total" => $group_by === "none" ? $sum : $grouped]);
+		// Send JS date format for object.keys along with grouping
+		if ($group_by === "day") {
+			$js_date_format = "yyyy-MM-dd";
+		} elseif ($group_by === "week") {
+			$js_date_format = "YYYY-II";
+		} elseif ($group_by === "month") {
+			$js_date_format = "YYYY-mm";
+		}
+
+		return new DataResponse(["total" => $sum, "grouped" => $grouped, "js_date_format" => $js_date_format]);
 	}
 }
