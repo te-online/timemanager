@@ -411,6 +411,9 @@ label {
 		.week-navigation {
 			margin-top: 24px;
 			color: var(--color-text-light);
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 
 			.dates {
 				color: var(--color-text-lighter);
