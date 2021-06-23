@@ -180,7 +180,10 @@
 				return format(date, "yyyy");
 			}
 			if (scale === "week") {
-				return format(date, "yyyy");
+				return `${format(startOfWeek(date, localeOptions), "d.M.")} - ${format(
+					endOfWeek(date, localeOptions),
+					"d.M."
+				)}`;
 			}
 			return format(date, "d.M.");
 		}

@@ -10618,7 +10618,7 @@
     child_ctx[23] = list[i];
     child_ctx[25] = i;
     return child_ctx;
-  } // (190:0) {#if controls}
+  } // (193:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -10640,7 +10640,7 @@
       }
 
     };
-  } // (194:1) {#if controls}
+  } // (197:1) {#if controls}
 
 
   function create_if_block_6$1(ctx) {
@@ -10722,7 +10722,7 @@
       }
 
     };
-  } // (208:3) {#if !loading && weekTotal > 0}
+  } // (211:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -10791,7 +10791,7 @@
       }
 
     };
-  } // (211:6) {#if point && point.stats}
+  } // (214:6) {#if point && point.stats}
 
 
   function create_if_block_4$1(ctx) {
@@ -10880,7 +10880,7 @@
       }
 
     };
-  } // (212:7) {#if point.stats.total > 0}
+  } // (215:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$1(ctx) {
@@ -10946,7 +10946,7 @@
       }
 
     };
-  } // (209:4) {#each points as point, index}
+  } // (212:4) {#each points as point, index}
 
 
   function create_each_block$3(ctx) {
@@ -10996,7 +10996,7 @@
       }
 
     };
-  } // (224:3) {#if controls && !loading && weekTotal === 0}
+  } // (227:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$2(ctx) {
@@ -11019,7 +11019,7 @@
       }
 
     };
-  } // (228:2) {#if controls}
+  } // (231:2) {#if controls}
 
 
   function create_if_block$d(ctx) {
@@ -11172,7 +11172,7 @@
       }
 
     };
-  } // (240:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (243:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
   function create_if_block_1$3(ctx) {
@@ -11617,7 +11617,7 @@
         }
 
         if (scale === "week") {
-          return format(date, "yyyy");
+          return "".concat(format(startOfWeek(date, localeOptions), "d.M."), " - ").concat(format(endOfWeek(date, localeOptions), "d.M."));
         }
 
         return format(date, "d.M.");
