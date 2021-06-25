@@ -13,6 +13,7 @@ _Looking for screenshots, official release packages or a place to leave a rating
 * Check or uncheck a time entry (e.g. to save whether you've billed it).
 * Get summaries of your time spent on tasks, projects and clients.
 * Take a glance at simple, but useful statistics.
+* Create basic reports using filters, timerange selection and a simple graph.
 
 ## Planned features
 
