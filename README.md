@@ -35,7 +35,7 @@ Before building or development, dependencies need to be installed once by runnin
 - Add basic print stylesheet for reports
 - Add Portuguese translation (thanks to @vascocb)
 - Clean up some older PHP code and add more type information (still tons to do, though...)
-- Respect locale (short locale) when formatting dates and times
+- Respect locale (short locale) when formatting dates and times in JS / Svelte components
 
 ### 0.1.8 Beta, 24. February 2021
 - Bump compatibility to Nextcloud 21
