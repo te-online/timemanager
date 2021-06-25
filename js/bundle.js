@@ -200,7 +200,7 @@
   }
 
   function _iterableToArrayLimit(arr, i) {
-    var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]);
+    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
 
     if (_i == null) return;
     var _arr = [];
@@ -532,7 +532,7 @@
   (module.exports = function (key, value) {
     return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
   })('versions', []).push({
-    version: '3.13.0',
+    version: '3.15.1',
     mode: 'global',
     copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
   });
@@ -540,7 +540,7 @@
 
   var hasOwnProperty = {}.hasOwnProperty;
 
-  var has$1 = function hasOwn(it, key) {
+  var has$1 = Object.hasOwn || function hasOwn(it, key) {
     return hasOwnProperty.call(toObject(it), key);
   };
 
@@ -589,8 +589,10 @@
 
 
   var nativeSymbol = !!Object.getOwnPropertySymbols && !fails(function () {
-    return !String(Symbol()) || // Chrome 38 Symbol has incorrect toString conversion
-    // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+    var symbol = Symbol(); // Chrome 38 Symbol has incorrect toString conversion
+    // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+
+    return !String(symbol) || !(Object(symbol) instanceof Symbol) || // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
     !Symbol.sham && engineV8Version && engineV8Version < 41;
   });
 
@@ -1524,7 +1526,7 @@
   	f: f$3
   };
 
-  var functionToString = Function.toString; // this helper broken in `3.4.1-3.4.4`, so we can't use `shared` helper
+  var functionToString = Function.toString; // this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
 
   if (typeof sharedStore.inspectSource != 'function') {
     sharedStore.inspectSource = function (it) {
@@ -1917,7 +1919,7 @@
 
   var callWithSafeIterationClosing = function (iterator, fn, value, ENTRIES) {
     try {
-      return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value); // 7.4.6 IteratorClose(iterator, completion)
+      return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value);
     } catch (error) {
       iteratorClose(iterator);
       throw error;
@@ -2150,7 +2152,8 @@
 
     return IteratorPrototype$2[ITERATOR$2].call(test) !== test;
   });
-  if (NEW_ITERATOR_PROTOTYPE) IteratorPrototype$2 = {}; // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+  if (NEW_ITERATOR_PROTOTYPE) IteratorPrototype$2 = {}; // `%IteratorPrototype%[@@iterator]()` method
+  // https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
 
   if (!has$1(IteratorPrototype$2, ITERATOR$2)) {
     createNonEnumerableProperty(IteratorPrototype$2, ITERATOR$2, returnThis$2);
@@ -2413,7 +2416,7 @@
 
         setToStringTag(CurrentIteratorPrototype, TO_STRING_TAG, true);
       }
-    } // fix Array#{values, @@iterator}.name in V8 / FF
+    } // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
 
 
     if (DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
@@ -2459,7 +2462,7 @@
 
   var STRING_ITERATOR = 'String Iterator';
   var setInternalState$2 = internalState.set;
-  var getInternalState$2 = internalState.getterFor(STRING_ITERATOR); // `String.prototype[@@iterator]` method
+  var getInternalState$3 = internalState.getterFor(STRING_ITERATOR); // `String.prototype[@@iterator]` method
   // https://tc39.es/ecma262/#sec-string.prototype-@@iterator
 
   defineIterator(String, 'String', function (iterated) {
@@ -2470,7 +2473,7 @@
     }); // `%StringIteratorPrototype%.next` method
     // https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
   }, function next() {
-    var state = getInternalState$2(this);
+    var state = getInternalState$3(this);
     var string = state.string;
     var index = state.index;
     var point;
@@ -2504,7 +2507,7 @@
 
   var ARRAY_ITERATOR = 'Array Iterator';
   var setInternalState$1 = internalState.set;
-  var getInternalState$1 = internalState.getterFor(ARRAY_ITERATOR); // `Array.prototype.entries` method
+  var getInternalState$2 = internalState.getterFor(ARRAY_ITERATOR); // `Array.prototype.entries` method
   // https://tc39.es/ecma262/#sec-array.prototype.entries
   // `Array.prototype.keys` method
   // https://tc39.es/ecma262/#sec-array.prototype.keys
@@ -2527,7 +2530,7 @@
     }); // `%ArrayIteratorPrototype%.next` method
     // https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
   }, function () {
-    var state = getInternalState$1(this);
+    var state = getInternalState$2(this);
     var target = state.target;
     var kind = state.kind;
     var index = state.index++;
@@ -2942,7 +2945,8 @@
     });
     this.resolve = aFunction$1(resolve);
     this.reject = aFunction$1(reject);
-  }; // 25.4.1.5 NewPromiseCapability(C)
+  }; // `NewPromiseCapability` abstract operation
+  // https://tc39.es/ecma262/#sec-newpromisecapability
 
 
   var f = function (C) {
@@ -3012,7 +3016,7 @@
 
   var SPECIES$1 = wellKnownSymbol('species');
   var PROMISE = 'Promise';
-  var getInternalState = internalState.get;
+  var getInternalState$1 = internalState.get;
   var setInternalState = internalState.set;
   var getInternalPromiseState = internalState.getterFor(PROMISE);
   var NativePromisePrototype = nativePromiseConstructor && nativePromiseConstructor.prototype;
@@ -3235,7 +3239,7 @@
       anInstance(this, PromiseConstructor, PROMISE);
       aFunction$1(executor);
       Internal.call(this);
-      var state = getInternalState(this);
+      var state = getInternalState$1(this);
 
       try {
         executor(bind$1(internalResolve, state), bind$1(internalReject, state));
@@ -3282,7 +3286,7 @@
 
     OwnPromiseCapability = function () {
       var promise = new Internal();
-      var state = getInternalState(promise);
+      var state = getInternalState$1(promise);
       this.promise = promise;
       this.resolve = bind$1(internalResolve, state);
       this.reject = bind$1(internalReject, state);
@@ -3527,11 +3531,119 @@
       }
   }
 
+  // Track which nodes are claimed during hydration. Unclaimed nodes can then be removed from the DOM
+  // at the end of hydration without touching the remaining nodes.
+  let is_hydrating = false;
+  function start_hydrating() {
+      is_hydrating = true;
+  }
+  function end_hydrating() {
+      is_hydrating = false;
+  }
+  function upper_bound(low, high, key, value) {
+      // Return first index of value larger than input value in the range [low, high)
+      while (low < high) {
+          const mid = low + ((high - low) >> 1);
+          if (key(mid) <= value) {
+              low = mid + 1;
+          }
+          else {
+              high = mid;
+          }
+      }
+      return low;
+  }
+  function init_hydrate(target) {
+      if (target.hydrate_init)
+          return;
+      target.hydrate_init = true;
+      // We know that all children have claim_order values since the unclaimed have been detached
+      const children = target.childNodes;
+      /*
+      * Reorder claimed children optimally.
+      * We can reorder claimed children optimally by finding the longest subsequence of
+      * nodes that are already claimed in order and only moving the rest. The longest
+      * subsequence subsequence of nodes that are claimed in order can be found by
+      * computing the longest increasing subsequence of .claim_order values.
+      *
+      * This algorithm is optimal in generating the least amount of reorder operations
+      * possible.
+      *
+      * Proof:
+      * We know that, given a set of reordering operations, the nodes that do not move
+      * always form an increasing subsequence, since they do not move among each other
+      * meaning that they must be already ordered among each other. Thus, the maximal
+      * set of nodes that do not move form a longest increasing subsequence.
+      */
+      // Compute longest increasing subsequence
+      // m: subsequence length j => index k of smallest value that ends an increasing subsequence of length j
+      const m = new Int32Array(children.length + 1);
+      // Predecessor indices + 1
+      const p = new Int32Array(children.length);
+      m[0] = -1;
+      let longest = 0;
+      for (let i = 0; i < children.length; i++) {
+          const current = children[i].claim_order;
+          // Find the largest subsequence length such that it ends in a value less than our current value
+          // upper_bound returns first greater value, so we subtract one
+          const seqLen = upper_bound(1, longest + 1, idx => children[m[idx]].claim_order, current) - 1;
+          p[i] = m[seqLen] + 1;
+          const newLen = seqLen + 1;
+          // We can guarantee that current is the smallest value. Otherwise, we would have generated a longer sequence.
+          m[newLen] = i;
+          longest = Math.max(newLen, longest);
+      }
+      // The longest increasing subsequence of nodes (initially reversed)
+      const lis = [];
+      // The rest of the nodes, nodes that will be moved
+      const toMove = [];
+      let last = children.length - 1;
+      for (let cur = m[longest] + 1; cur != 0; cur = p[cur - 1]) {
+          lis.push(children[cur - 1]);
+          for (; last >= cur; last--) {
+              toMove.push(children[last]);
+          }
+          last--;
+      }
+      for (; last >= 0; last--) {
+          toMove.push(children[last]);
+      }
+      lis.reverse();
+      // We sort the nodes being moved to guarantee that their insertion order matches the claim order
+      toMove.sort((a, b) => a.claim_order - b.claim_order);
+      // Finally, we move the nodes
+      for (let i = 0, j = 0; i < toMove.length; i++) {
+          while (j < lis.length && toMove[i].claim_order >= lis[j].claim_order) {
+              j++;
+          }
+          const anchor = j < lis.length ? lis[j] : null;
+          target.insertBefore(toMove[i], anchor);
+      }
+  }
   function append(target, node) {
-      target.appendChild(node);
+      if (is_hydrating) {
+          init_hydrate(target);
+          if ((target.actual_end_child === undefined) || ((target.actual_end_child !== null) && (target.actual_end_child.parentElement !== target))) {
+              target.actual_end_child = target.firstChild;
+          }
+          if (node !== target.actual_end_child) {
+              target.insertBefore(node, target.actual_end_child);
+          }
+          else {
+              target.actual_end_child = node.nextSibling;
+          }
+      }
+      else if (node.parentNode !== target) {
+          target.appendChild(node);
+      }
   }
   function insert(target, node, anchor) {
-      target.insertBefore(node, anchor || null);
+      if (is_hydrating && !anchor) {
+          append(target, node);
+      }
+      else if (node.parentNode !== target || (anchor && node.nextSibling !== anchor)) {
+          target.insertBefore(node, anchor || null);
+      }
   }
   function detach(node) {
       node.parentNode.removeChild(node);
@@ -3682,15 +3794,20 @@
       return e;
   }
   class HtmlTag {
-      constructor(anchor = null) {
-          this.a = anchor;
+      constructor(claimed_nodes) {
           this.e = this.n = null;
+          this.l = claimed_nodes;
       }
       m(html, target, anchor = null) {
           if (!this.e) {
               this.e = element(target.nodeName);
               this.t = target;
-              this.h(html);
+              if (this.l) {
+                  this.n = this.l;
+              }
+              else {
+                  this.h(html);
+              }
           }
           this.i(anchor);
       }
@@ -4069,6 +4186,7 @@
       $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
       if (options.target) {
           if (options.hydrate) {
+              start_hydrating();
               const nodes = children(options.target);
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               $$.fragment && $$.fragment.l(nodes);
@@ -4081,6 +4199,7 @@
           if (options.intro)
               transition_in(component.$$.fragment);
           mount_component(component, options.target, options.anchor, options.customElement);
+          end_hydrating();
           flush();
       }
       set_current_component(parent_component);
@@ -9981,15 +10100,13 @@
   };
 
   // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
-  // so we use an intermediate function.
 
 
-  function RE(s, f) {
+  var RE = function (s, f) {
     return RegExp(s, f);
-  }
+  };
 
   var UNSUPPORTED_Y$2 = fails(function () {
-    // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
     var re = RE('a', 'y');
     re.lastIndex = 2;
     return re.exec('abcd') != null;
@@ -10006,11 +10123,31 @@
   	BROKEN_CARET: BROKEN_CARET
   };
 
+  var regexpUnsupportedDotAll = fails(function () {
+    // babel-minify transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
+    var re = RegExp('.', (typeof '').charAt(0));
+    return !(re.dotAll && re.exec('\n') && re.flags === 's');
+  });
+
+  var regexpUnsupportedNcg = fails(function () {
+    // babel-minify transpiles RegExp('.', 'g') -> /./g and it causes SyntaxError
+    var re = RegExp('(?<a>b)', (typeof '').charAt(5));
+    return re.exec('b').groups.a !== 'b' || 'b'.replace(re, '$<a>c') !== 'bc';
+  });
+
   /* eslint-disable regexp/no-assertion-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
 
   /* eslint-disable regexp/no-useless-quantifier -- testing */
 
 
+
+
+
+
+
+
+
+  var getInternalState = internalState.get;
 
 
 
@@ -10031,12 +10168,24 @@
   var UNSUPPORTED_Y$1 = regexpStickyHelpers.UNSUPPORTED_Y || regexpStickyHelpers.BROKEN_CARET; // nonparticipating capturing group, copied from es5-shim's String#split patch.
 
   var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
-  var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y$1;
+  var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y$1 || regexpUnsupportedDotAll || regexpUnsupportedNcg;
 
   if (PATCH) {
+    // eslint-disable-next-line max-statements -- TODO
     patchedExec = function exec(str) {
       var re = this;
-      var lastIndex, reCopy, match, i;
+      var state = getInternalState(re);
+      var raw = state.raw;
+      var result, reCopy, lastIndex, match, i, object, group;
+
+      if (raw) {
+        raw.lastIndex = re.lastIndex;
+        result = patchedExec.call(raw, str);
+        re.lastIndex = raw.lastIndex;
+        return result;
+      }
+
+      var groups = state.groups;
       var sticky = UNSUPPORTED_Y$1 && re.sticky;
       var flags = regexpFlags.call(re);
       var source = re.source;
@@ -10091,6 +10240,15 @@
         });
       }
 
+      if (match && groups) {
+        match.groups = object = objectCreate(null);
+
+        for (i = 0; i < groups.length; i++) {
+          group = groups[i];
+          object[group[0]] = match[group[1]];
+        }
+      }
+
       return match;
     };
   }
@@ -10111,55 +10269,8 @@
 
   var SPECIES = wellKnownSymbol('species');
   var RegExpPrototype = RegExp.prototype;
-  var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
-    // #replace needs built-in support for named groups.
-    // #match works fine because it just return the exec results, even if it has
-    // a "grops" property.
-    var re = /./;
 
-    re.exec = function () {
-      var result = [];
-      result.groups = {
-        a: '7'
-      };
-      return result;
-    };
-
-    return ''.replace(re, '$<a>') !== '7';
-  }); // IE <= 11 replaces $0 with the whole match, as if it was $&
-  // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
-
-  var REPLACE_KEEPS_$0 = function () {
-    // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
-    return 'a'.replace(/./, '$0') === '$0';
-  }();
-
-  var REPLACE = wellKnownSymbol('replace'); // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
-
-  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function () {
-    if (/./[REPLACE]) {
-      return /./[REPLACE]('a', '$0') === '';
-    }
-
-    return false;
-  }(); // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
-  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
-
-
-  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
-    // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    var re = /(?:)/;
-    var originalExec = re.exec;
-
-    re.exec = function () {
-      return originalExec.apply(this, arguments);
-    };
-
-    var result = 'ab'.split(re);
-    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
-  });
-
-  var fixRegexpWellKnownSymbolLogic = function (KEY, length, exec, sham) {
+  var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
     var SYMBOL = wellKnownSymbol(KEY);
     var DELEGATES_TO_SYMBOL = !fails(function () {
       // String methods call symbol-named RegEp methods
@@ -10202,7 +10313,7 @@
       return !execCalled;
     });
 
-    if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || KEY === 'replace' && !(REPLACE_SUPPORTS_NAMED_GROUPS && REPLACE_KEEPS_$0 && !REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE) || KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC) {
+    if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || FORCED) {
       var nativeRegExpMethod = /./[SYMBOL];
       var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
         var $exec = regexp.exec;
@@ -10227,25 +10338,12 @@
         return {
           done: false
         };
-      }, {
-        REPLACE_KEEPS_$0: REPLACE_KEEPS_$0,
-        REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE: REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE
       });
-      var stringMethod = methods[0];
-      var regexMethod = methods[1];
-      redefine(String.prototype, KEY, stringMethod);
-      redefine(RegExpPrototype, SYMBOL, length == 2 // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
-      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
-      ? function (string, arg) {
-        return regexMethod.call(string, this, arg);
-      } // 21.2.5.6 RegExp.prototype[@@match](string)
-      // 21.2.5.9 RegExp.prototype[@@search](string)
-      : function (string) {
-        return regexMethod.call(string, this);
-      });
+      redefine(String.prototype, KEY, methods[0]);
+      redefine(RegExpPrototype, SYMBOL, methods[1]);
     }
 
-    if (sham) createNonEnumerableProperty(RegExpPrototype[SYMBOL], 'sham', true);
+    if (SHAM) createNonEnumerableProperty(RegExpPrototype[SYMBOL], 'sham', true);
   };
 
   var charAt = stringMultibyte.charAt; // `AdvanceStringIndex` abstract operation
@@ -10259,7 +10357,8 @@
   var floor = Math.floor;
   var replace = ''.replace;
   var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
-  var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g; // https://tc39.es/ecma262/#sec-getsubstitution
+  var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g; // `GetSubstitution` abstract operation
+  // https://tc39.es/ecma262/#sec-getsubstitution
 
   var getSubstitution = function (matched, str, position, captures, namedCaptures, replacement) {
     var tailPos = position + matched.length;
@@ -10334,17 +10433,45 @@
     return regexpExec.call(R, S);
   };
 
+  var REPLACE = wellKnownSymbol('replace');
   var max = Math.max;
   var min$1 = Math.min;
 
   var maybeToString = function (it) {
     return it === undefined ? it : String(it);
-  }; // @@replace logic
+  }; // IE <= 11 replaces $0 with the whole match, as if it was $&
+  // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
 
 
-  fixRegexpWellKnownSymbolLogic('replace', 2, function (REPLACE, nativeReplace, maybeCallNative, reason) {
-    var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = reason.REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE;
-    var REPLACE_KEEPS_$0 = reason.REPLACE_KEEPS_$0;
+  var REPLACE_KEEPS_$0 = function () {
+    // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
+    return 'a'.replace(/./, '$0') === '$0';
+  }(); // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
+
+
+  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function () {
+    if (/./[REPLACE]) {
+      return /./[REPLACE]('a', '$0') === '';
+    }
+
+    return false;
+  }();
+
+  var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
+    var re = /./;
+
+    re.exec = function () {
+      var result = [];
+      result.groups = {
+        a: '7'
+      };
+      return result;
+    };
+
+    return ''.replace(re, '$<a>') !== '7';
+  }); // @@replace logic
+
+  fixRegexpWellKnownSymbolLogic('replace', function (_, nativeReplace, maybeCallNative) {
     var UNSAFE_SUBSTITUTE = REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE ? '$' : '$0';
     return [// `String.prototype.replace` method
     // https://tc39.es/ecma262/#sec-string.prototype.replace
@@ -10354,14 +10481,14 @@
       return replacer !== undefined ? replacer.call(searchValue, O, replaceValue) : nativeReplace.call(String(O), searchValue, replaceValue);
     }, // `RegExp.prototype[@@replace]` method
     // https://tc39.es/ecma262/#sec-regexp.prototype-@@replace
-    function (regexp, replaceValue) {
-      if (!REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE && REPLACE_KEEPS_$0 || typeof replaceValue === 'string' && replaceValue.indexOf(UNSAFE_SUBSTITUTE) === -1) {
-        var res = maybeCallNative(nativeReplace, regexp, this, replaceValue);
+    function (string, replaceValue) {
+      if (typeof replaceValue === 'string' && replaceValue.indexOf(UNSAFE_SUBSTITUTE) === -1 && replaceValue.indexOf('$<') === -1) {
+        var res = maybeCallNative(nativeReplace, this, string, replaceValue);
         if (res.done) return res.value;
       }
 
-      var rx = anObject(regexp);
-      var S = String(this);
+      var rx = anObject(this);
+      var S = String(string);
       var functionalReplace = typeof replaceValue === 'function';
       if (!functionalReplace) replaceValue = String(replaceValue);
       var global = rx.global;
@@ -10415,7 +10542,7 @@
 
       return accumulatedResult + S.slice(nextSourcePosition);
     }];
-  });
+  }, !REPLACE_SUPPORTS_NAMED_GROUPS || !REPLACE_KEEPS_$0 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
 
   var dist = createCommonjsModule(function (module, exports) {
 
@@ -10624,21 +10751,17 @@
   function create_if_block_7$1(ctx) {
     var h2;
     return {
-      c() {
+      c: function c() {
         h2 = element("h2");
         h2.textContent = "".concat(dist_4("timemanager", "Statistics"));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, h2, anchor);
       },
-
       p: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(h2);
       }
-
     };
   } // (197:1) {#if controls}
 
@@ -10661,7 +10784,7 @@
     var t10_value = dist_4("timemanager", "hrs.") + "";
     var t10;
     return {
-      c() {
+      c: function c() {
         div = element("div");
         figure0 = element("figure");
         figcaption0 = element("figcaption");
@@ -10686,8 +10809,7 @@
         attr(figcaption1, "class", "tm_label");
         attr(div, "class", "top-stats");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div, anchor);
         append(div, figure0);
         append(figure0, figcaption0);
@@ -10703,8 +10825,7 @@
         append(figure1, t9);
         append(figure1, t10);
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*todayTotal*/
         16) set_data(t2,
@@ -10716,11 +10837,9 @@
         /*weekTotal*/
         ctx[3]);
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div);
       }
-
     };
   } // (211:3) {#if !loading && weekTotal > 0}
 
@@ -10737,23 +10856,21 @@
     }
 
     return {
-      c() {
+      c: function c() {
         for (var _i = 0; _i < each_blocks.length; _i += 1) {
           each_blocks[_i].c();
         }
 
         each_1_anchor = empty();
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
           each_blocks[_i2].m(target, anchor);
         }
 
         insert(target, each_1_anchor, anchor);
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*formatDateForScale, points, highest, translate*/
         1060) {
@@ -10784,12 +10901,10 @@
           each_blocks.length = each_value.length;
         }
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_each(each_blocks, detaching);
         if (detaching) detach(each_1_anchor);
       }
-
     };
   } // (214:6) {#if point && point.stats}
 
@@ -10816,7 +10931,7 @@
     /*point*/
     ctx[23].stats.total > 0 && create_if_block_5$1(ctx);
     return {
-      c() {
+      c: function c() {
         if (if_block) if_block.c();
         t0 = space();
         div = element("div");
@@ -10829,8 +10944,7 @@
         attr(span1, "class", "date");
         attr(div, "class", "date-label");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         if (if_block) if_block.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, div, anchor);
@@ -10840,8 +10954,7 @@
         append(div, span1);
         append(span1, t3);
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (
         /*point*/
         ctx[23].stats.total > 0) {
@@ -10872,13 +10985,11 @@
         /*point*/
         ctx[23].date, "secondary") + "")) set_data(t3, t3_value);
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (if_block) if_block.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(div);
       }
-
     };
   } // (215:7) {#if point.stats.total > 0}
 
@@ -10896,7 +11007,7 @@
     var div;
     var div_style_value;
     return {
-      c() {
+      c: function c() {
         span = element("span");
         t0 = text(t0_value);
         t1 = space();
@@ -10911,8 +11022,7 @@
         /*highest*/
         ctx[5] * 100, "%"));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, span, anchor);
         append(span, t0);
         append(span, t1);
@@ -10920,8 +11030,7 @@
         insert(target, t3, anchor);
         insert(target, div, anchor);
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*points*/
         4 && t0_value !== (t0_value =
@@ -10938,13 +11047,11 @@
           attr(div, "style", div_style_value);
         }
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(span);
         if (detaching) detach(t3);
         if (detaching) detach(div);
       }
-
     };
   } // (212:4) {#each points as point, index}
 
@@ -10958,20 +11065,18 @@
     /*point*/
     ctx[23].stats && create_if_block_4$1(ctx);
     return {
-      c() {
+      c: function c() {
         div = element("div");
         if (if_block) if_block.c();
         t = space();
         attr(div, "class", "column");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div, anchor);
         if (if_block) if_block.m(div, null);
         append(div, t);
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (
         /*point*/
         ctx[23] &&
@@ -10989,12 +11094,10 @@
           if_block = null;
         }
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div);
         if (if_block) if_block.d();
       }
-
     };
   } // (227:3) {#if controls && !loading && weekTotal === 0}
 
@@ -11002,22 +11105,18 @@
   function create_if_block_2$2(ctx) {
     var p;
     return {
-      c() {
+      c: function c() {
         p = element("p");
         p.textContent = "".concat(dist_4("timemanager", "When you add entries for this week graphs will appear here."));
         attr(p, "class", "empty");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, p, anchor);
       },
-
       p: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(p);
       }
-
     };
   } // (231:2) {#if controls}
 
@@ -11061,7 +11160,7 @@
     var dispose;
     var if_block = show_if && create_if_block_1$3(ctx);
     return {
-      c() {
+      c: function c() {
         nav = element("nav");
         button0 = element("button");
         button0.textContent = "".concat(dist_4("timemanager", "Previous week"));
@@ -11090,8 +11189,7 @@
         attr(button1, "class", "next");
         attr(nav, "class", "week-navigation");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, nav, anchor);
         append(nav, button0);
         append(nav, t1);
@@ -11121,8 +11219,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*currentWeek*/
         128) set_data(t4,
@@ -11163,14 +11260,12 @@
           if_block = null;
         }
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(nav);
         if (if_block) if_block.d();
         mounted = false;
         run_all(dispose);
       }
-
     };
   } // (243:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
@@ -11180,13 +11275,12 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(dist_4("timemanager", "Current week"));
         attr(button, "class", "current");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -11196,15 +11290,12 @@
           mounted = true;
         }
       },
-
       p: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -11240,7 +11331,7 @@
     /*controls*/
     ctx[0] && create_if_block$d(ctx);
     return {
-      c() {
+      c: function c() {
         if (if_block0) if_block0.c();
         t0 = space();
         div2 = element("div");
@@ -11261,8 +11352,7 @@
         /*loading*/
         ctx[1] ? "icon-loading" : ""));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         if (if_block0) if_block0.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, div2, anchor);
@@ -11276,8 +11366,7 @@
         append(div1, t3);
         if (if_block4) if_block4.m(div1, null);
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -11378,11 +11467,9 @@
           attr(div2, "class", div2_class_value);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(div2);
@@ -11391,7 +11478,6 @@
         if (if_block3) if_block3.d();
         if (if_block4) if_block4.d();
       }
-
     };
   }
 
@@ -11712,7 +11798,7 @@
     /*$$scope*/
     ctx[1], null);
     return {
-      c() {
+      c: function c() {
         div0 = element("div");
         t = space();
         div1 = element("div");
@@ -11723,8 +11809,7 @@
         ctx[0] ? "icon-loading" : ""));
         set_style(div1, "position", "fixed");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div0, anchor);
         insert(target, t, anchor);
         insert(target, div1, anchor);
@@ -11735,8 +11820,7 @@
 
         current = true;
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -11746,7 +11830,7 @@
           2)) {
             update_slot(default_slot, default_slot_template, ctx,
             /*$$scope*/
-            ctx[1], dirty, null, null);
+            ctx[1], !current ? -1 : dirty, null, null);
           }
         }
 
@@ -11758,25 +11842,21 @@
           attr(div1, "class", div1_class_value);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(default_slot, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(default_slot, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div0);
         if (detaching) detach(t);
         if (detaching) detach(div1);
         if (default_slot) default_slot.d(detaching);
       }
-
     };
   }
 
@@ -11820,14 +11900,13 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(window.t("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -11841,17 +11920,14 @@
           mounted = true;
         }
       },
-
-      p(new_ctx, dirty) {
+      p: function p(new_ctx, dirty) {
         ctx = new_ctx;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -11889,7 +11965,7 @@
     /*isServer*/
     ctx[2] && create_if_block$c(ctx);
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         h3 = element("h3");
         t0 = text(
@@ -11950,8 +12026,7 @@
         attr(form, "method", "post");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, h3);
         append(h3, t0);
@@ -11994,8 +12069,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -12060,17 +12134,14 @@
           ctx[0]);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         if (if_block) if_block.d();
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -12088,8 +12159,8 @@
 
     var submit = function submit() {
       onSubmit({
-        name,
-        note
+        name: name,
+        note: note
       });
     };
 
@@ -12154,9 +12225,23 @@
   var UNSUPPORTED_Y = regexpStickyHelpers.UNSUPPORTED_Y;
   var arrayPush = [].push;
   var min = Math.min;
-  var MAX_UINT32 = 0xFFFFFFFF; // @@split logic
+  var MAX_UINT32 = 0xFFFFFFFF; // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
 
-  fixRegexpWellKnownSymbolLogic('split', 2, function (SPLIT, nativeSplit, maybeCallNative) {
+  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
+    // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    var re = /(?:)/;
+    var originalExec = re.exec;
+
+    re.exec = function () {
+      return originalExec.apply(this, arguments);
+    };
+
+    var result = 'ab'.split(re);
+    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+  }); // @@split logic
+
+  fixRegexpWellKnownSymbolLogic('split', function (SPLIT, nativeSplit, maybeCallNative) {
     var internalSplit;
 
     if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
@@ -12218,11 +12303,11 @@
     //
     // NOTE: This cannot be properly polyfilled in engines that don't support
     // the 'y' flag.
-    function (regexp, limit) {
-      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== nativeSplit);
+    function (string, limit) {
+      var res = maybeCallNative(internalSplit, this, string, limit, internalSplit !== nativeSplit);
       if (res.done) return res.value;
-      var rx = anObject(regexp);
-      var S = String(this);
+      var rx = anObject(this);
+      var S = String(string);
       var C = speciesConstructor(rx, RegExp);
       var unicodeMatching = rx.unicode;
       var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
@@ -12259,7 +12344,7 @@
       A.push(S.slice(p));
       return A;
     }];
-  }, UNSUPPORTED_Y);
+  }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC, UNSUPPORTED_Y);
 
   var nativeJoin = [].join;
   var ES3_STRINGS = indexedObject != Object;
@@ -12331,9 +12416,7 @@
             var partParts = part.split("=");
 
             if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-              queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, {
-                [partParts[0]]: partParts[1]
-              });
+              queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty({}, partParts[0], partParts[1]));
             }
           });
           queryStringVariables[field] = value;
@@ -12366,21 +12449,19 @@
           default: [create_default_slot$6]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
         if (dirty &
         /*loading*/
@@ -12392,29 +12473,25 @@
         /*$$scope, action, requestToken, show, clientEditorButtonCaption, clientEditorCaption, editClientData*/
         4159) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (56:1) <Overlay {loading}>
 
@@ -12448,16 +12525,14 @@
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(clienteditor.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(clienteditor, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var clienteditor_changes = {};
         if (dirty &
         /*action*/
@@ -12491,22 +12566,18 @@
         ctx[4];
         clienteditor.$set(clienteditor_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(clienteditor.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(clienteditor.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(clienteditor, detaching);
       }
-
     };
   }
 
@@ -12523,7 +12594,7 @@
     /*show*/
     ctx[5] && create_if_block$b(ctx);
     return {
-      c() {
+      c: function c() {
         a = element("a");
         span = element("span");
         t0 = text(
@@ -12535,8 +12606,7 @@
         attr(a, "href", "#/");
         attr(a, "class", "button primary new");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, a, anchor);
         append(a, span);
         append(span, t0);
@@ -12552,8 +12622,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -12588,19 +12657,16 @@
           check_outros();
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(a);
         if (detaching) detach(t1);
         if (if_block) if_block.d(detaching);
@@ -12608,7 +12674,6 @@
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -12637,8 +12702,8 @@
                 $$invalidate(6, loading = true);
                 _context.prev = 2;
                 client = {
-                  name,
-                  note
+                  name: name,
+                  note: note
                 };
 
                 if (clientUuid) {
@@ -12750,14 +12815,13 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(window.t("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -12771,17 +12835,14 @@
           mounted = true;
         }
       },
-
-      p(new_ctx, dirty) {
+      p: function p(new_ctx, dirty) {
         ctx = new_ctx;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -12822,7 +12883,7 @@
     /*isServer*/
     ctx[3] && create_if_block$a(ctx);
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         h3 = element("h3");
         t0 = text(
@@ -12881,8 +12942,7 @@
         attr(form, "method", "post");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, h3);
         append(h3, t0);
@@ -12926,8 +12986,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -12990,17 +13049,14 @@
           ctx[0]);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         if (if_block) if_block.d();
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -13018,7 +13074,7 @@
 
     var submit = function submit() {
       onSubmit({
-        name
+        name: name
       });
     };
 
@@ -13082,21 +13138,19 @@
           default: [create_default_slot$5]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
         if (dirty &
         /*loading*/
@@ -13108,29 +13162,25 @@
         /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData*/
         16639) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (54:1) <Overlay {loading}>
 
@@ -13170,16 +13220,14 @@
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(projecteditor.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(projecteditor, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var projecteditor_changes = {};
         if (dirty &
         /*action*/
@@ -13223,22 +13271,18 @@
         ctx[6];
         projecteditor.$set(projecteditor_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(projecteditor.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(projecteditor.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(projecteditor, detaching);
       }
-
     };
   }
 
@@ -13255,7 +13299,7 @@
     /*show*/
     ctx[7] && create_if_block$9(ctx);
     return {
-      c() {
+      c: function c() {
         a = element("a");
         span = element("span");
         t0 = text(
@@ -13267,8 +13311,7 @@
         attr(a, "href", "#/");
         attr(a, "class", "button primary new");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, a, anchor);
         append(a, span);
         append(span, t0);
@@ -13284,8 +13327,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -13320,19 +13362,16 @@
           check_outros();
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(a);
         if (detaching) detach(t1);
         if (if_block) if_block.d(detaching);
@@ -13340,7 +13379,6 @@
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -13371,7 +13409,7 @@
                 $$invalidate(8, loading = true);
                 _context.prev = 2;
                 project = {
-                  name
+                  name: name
                 };
 
                 if (projectUuid) {
@@ -13482,14 +13520,13 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(window.t("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -13503,17 +13540,14 @@
           mounted = true;
         }
       },
-
-      p(new_ctx, dirty) {
+      p: function p(new_ctx, dirty) {
         ctx = new_ctx;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -13563,7 +13597,7 @@
     /*isServer*/
     ctx[4] && create_if_block$8(ctx);
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         h3 = element("h3");
         t0 = text(
@@ -13633,8 +13667,7 @@
         attr(form, "method", "post");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, h3);
         append(h3, t0);
@@ -13686,8 +13719,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -13755,17 +13787,14 @@
           ctx[0]);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         if (if_block) if_block.d();
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -13784,7 +13813,7 @@
 
     var submit = function submit() {
       onSubmit({
-        name
+        name: name
       });
     };
 
@@ -13850,21 +13879,19 @@
           default: [create_default_slot$4]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
         if (dirty &
         /*loading*/
@@ -13876,29 +13903,25 @@
         /*$$scope, action, requestToken, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData*/
         33279) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (55:1) <Overlay {loading}>
 
@@ -13941,16 +13964,14 @@
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(taskeditor.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(taskeditor, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var taskeditor_changes = {};
         if (dirty &
         /*action*/
@@ -13999,22 +14020,18 @@
         ctx[7];
         taskeditor.$set(taskeditor_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(taskeditor.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(taskeditor.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(taskeditor, detaching);
       }
-
     };
   }
 
@@ -14031,7 +14048,7 @@
     /*show*/
     ctx[8] && create_if_block$7(ctx);
     return {
-      c() {
+      c: function c() {
         a = element("a");
         span = element("span");
         t0 = text(
@@ -14043,8 +14060,7 @@
         attr(a, "href", "#/");
         attr(a, "class", "button primary new");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, a, anchor);
         append(a, span);
         append(span, t0);
@@ -14060,8 +14076,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -14096,19 +14111,16 @@
           check_outros();
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(a);
         if (detaching) detach(t1);
         if (if_block) if_block.d(detaching);
@@ -14116,7 +14128,6 @@
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -14148,7 +14159,7 @@
                 $$invalidate(9, loading = true);
                 _context.prev = 2;
                 task = {
-                  name
+                  name: name
                 };
 
                 if (taskUuid) {
@@ -14261,14 +14272,13 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(window.t("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -14282,17 +14292,14 @@
           mounted = true;
         }
       },
-
-      p(new_ctx, dirty) {
+      p: function p(new_ctx, dirty) {
         ctx = new_ctx;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -14373,7 +14380,7 @@
     /*isServer*/
     ctx[5] && create_if_block$6(ctx);
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         h3 = element("h3");
         t0 = text(
@@ -14485,8 +14492,7 @@
         attr(form, "method", "post");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, h3);
         append(h3, t0);
@@ -14573,8 +14579,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -14663,17 +14668,14 @@
           ctx[0]);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         if (if_block) if_block.d();
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -14697,9 +14699,9 @@
 
     var submit = function submit() {
       onSubmit({
-        duration,
-        date,
-        note
+        duration: duration,
+        date: date,
+        note: note
       });
     };
 
@@ -14773,7 +14775,7 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         div = element("div");
         button = element("button");
         t = text(
@@ -14783,8 +14785,7 @@
         attr(button, "class", "btn");
         attr(div, "class", "tm_inline-hover-form");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div, anchor);
         append(div, button);
         append(button, t);
@@ -14796,21 +14797,18 @@
           mounted = true;
         }
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*timeEditorButtonCaption*/
         128) set_data(t,
         /*timeEditorButtonCaption*/
         ctx[7]);
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div);
         mounted = false;
         dispose();
       }
-
     };
   } // (53:0) {#if !timeUuid}
 
@@ -14822,7 +14820,7 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         a = element("a");
         span = element("span");
         t = text(
@@ -14831,8 +14829,7 @@
         attr(a, "href", "#/");
         attr(a, "class", "button primary new");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, a, anchor);
         append(a, span);
         append(span, t);
@@ -14844,21 +14841,18 @@
           mounted = true;
         }
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*timeEditorButtonCaption*/
         128) set_data(t,
         /*timeEditorButtonCaption*/
         ctx[7]);
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(a);
         mounted = false;
         dispose();
       }
-
     };
   } // (62:0) {#if show}
 
@@ -14875,21 +14869,19 @@
           default: [create_default_slot$3]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
         if (dirty &
         /*loading*/
@@ -14901,29 +14893,25 @@
         /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/
         266237) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (63:1) <Overlay {loading}>
 
@@ -14972,16 +14960,14 @@
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(timeeditor.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(timeeditor, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var timeeditor_changes = {};
         if (dirty &
         /*action*/
@@ -15040,22 +15026,18 @@
         ctx[10];
         timeeditor.$set(timeeditor_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(timeeditor.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(timeeditor.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(timeeditor, detaching);
       }
-
     };
   }
 
@@ -15077,22 +15059,20 @@
     /*show*/
     ctx[11] && create_if_block$5(ctx);
     return {
-      c() {
+      c: function c() {
         if_block0.c();
         t = space();
         if (if_block1) if_block1.c();
         if_block1_anchor = empty();
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         if_block0.m(target, anchor);
         insert(target, t, anchor);
         if (if_block1) if_block1.m(target, anchor);
         insert(target, if_block1_anchor, anchor);
         current = true;
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -15133,25 +15113,21 @@
           check_outros();
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block1);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block1);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if_block0.d(detaching);
         if (detaching) detach(t);
         if (if_block1) if_block1.d(detaching);
         if (detaching) detach(if_block1_anchor);
       }
-
     };
   }
 
@@ -15185,9 +15161,9 @@
                 $$invalidate(12, loading = true);
                 _context.prev = 2;
                 entry = {
-                  duration,
-                  date,
-                  note
+                  duration: duration,
+                  date: date,
+                  note: note
                 };
 
                 if (timeUuid) {
@@ -15310,50 +15286,44 @@
           default: [create_default_slot$2]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
 
         if (dirty &
         /*$$scope, deleteQuestion*/
         2056) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (37:1) <Overlay>
 
@@ -15369,7 +15339,7 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         t0 = text(
         /*deleteQuestion*/
@@ -15386,8 +15356,7 @@
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, t0);
         append(div1, t1);
@@ -15405,21 +15374,18 @@
           mounted = true;
         }
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         if (dirty &
         /*deleteQuestion*/
         8) set_data(t0,
         /*deleteQuestion*/
         ctx[3]);
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -15437,7 +15403,7 @@
     /*confirmation*/
     ctx[6] && create_if_block$4(ctx);
     return {
-      c() {
+      c: function c() {
         if (if_block) if_block.c();
         t0 = space();
         form_1 = element("form");
@@ -15468,8 +15434,7 @@
         ctx[0]);
         attr(form_1, "method", "post");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         if (if_block) if_block.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, form_1, anchor);
@@ -15484,8 +15449,7 @@
         ctx[9](form_1);
         current = true;
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -15544,19 +15508,16 @@
           ctx[0]);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (if_block) if_block.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(form_1);
@@ -15564,7 +15525,6 @@
 
         ctx[9](null);
       }
-
     };
   }
 
@@ -15649,50 +15609,44 @@
           default: [create_default_slot$1]
         },
         $$scope: {
-          ctx
+          ctx: ctx
         }
       }
     });
     return {
-      c() {
+      c: function c() {
         create_component(overlay.$$.fragment);
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         mount_component(overlay, target, anchor);
         current = true;
       },
-
-      p(ctx, dirty) {
+      p: function p(ctx, dirty) {
         var overlay_changes = {};
 
         if (dirty &
         /*$$scope*/
         128) {
           overlay_changes.$$scope = {
-            dirty,
-            ctx
+            dirty: dirty,
+            ctx: ctx
           };
         }
 
         overlay.$set(overlay_changes);
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(overlay.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(overlay.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         destroy_component(overlay, detaching);
       }
-
     };
   } // (55:1) <Overlay>
 
@@ -15709,7 +15663,7 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         div1 = element("div");
         t0 = text(t0_value);
         t1 = space();
@@ -15724,8 +15678,7 @@
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
         attr(div1, "class", "inner tm_new-item");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, div1, anchor);
         append(div1, t0);
         append(div1, t1);
@@ -15743,15 +15696,12 @@
           mounted = true;
         }
       },
-
       p: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(div1);
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -15770,7 +15720,7 @@
     /*confirmation*/
     ctx[3] && create_if_block$3(ctx);
     return {
-      c() {
+      c: function c() {
         if (if_block) if_block.c();
         t0 = space();
         form = element("form");
@@ -15800,8 +15750,7 @@
         attr(form, "method", "post");
         attr(form, "class", "tm_inline-hover-form");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         if (if_block) if_block.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, form, anchor);
@@ -15819,8 +15768,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -15873,26 +15821,22 @@
           ctx[0]);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(if_block);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(if_block);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (if_block) if_block.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(form);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -16051,7 +15995,7 @@
 
   addToUnscopables(FIND);
 
-  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.38.3 */
 
   function add_css$5() {
     var style = element("style");
@@ -16194,7 +16138,7 @@
 
   }
 
-  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.38.3 */
 
   function add_css$4() {
     var style = element("style");
@@ -16296,7 +16240,7 @@
           16418)) {
             update_slot(default_slot, default_slot_template, ctx,
             /*$$scope*/
-            ctx[14], dirty, get_default_slot_changes, get_default_slot_context);
+            ctx[14], !current ? -1 : dirty, get_default_slot_changes, get_default_slot_context);
           }
         }
       },
@@ -16672,7 +16616,7 @@
 
   }
 
-  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.38.3 */
 
   function add_css$3() {
     var style = element("style");
@@ -17872,7 +17816,7 @@
 
   }
 
-  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.38.3 */
 
   function add_css$2() {
     var style = element("style");
@@ -17947,7 +17891,7 @@
 
   }
 
-  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.38.3 */
 
   function add_css$1() {
     var style = element("style");
@@ -18269,7 +18213,7 @@
     };
   }
 
-  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.38.3 */
 
   function create_fragment$6(ctx) {
     let svg;
@@ -18311,7 +18255,7 @@
 
   }
 
-  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.38.2 */
+  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.38.3 */
   const {
     document: document_1
   } = globals;
@@ -19021,8 +18965,9 @@
     let html_anchor;
     return {
       c() {
+        html_tag = new HtmlTag();
         html_anchor = empty();
-        html_tag = new HtmlTag(html_anchor);
+        html_tag.a = html_anchor;
       },
 
       m(target, anchor) {
@@ -20472,7 +20417,7 @@
       return bind(select1, "selectedValue", select1_selectedValue_binding);
     });
     return {
-      c() {
+      c: function c() {
         form = element("form");
         label0 = element("label");
         t0 = text(t0_value);
@@ -20480,6 +20425,7 @@
         input0 = element("input");
         t2 = space();
         label1 = element("label");
+        html_tag = new HtmlTag();
         t3 = space();
         span0 = element("span");
         input1 = element("input");
@@ -20493,6 +20439,7 @@
         t8 = space();
         label3 = element("label");
         span1 = element("span");
+        html_tag_1 = new HtmlTag();
         t9 = space();
         strong = element("strong");
         t10 = text(t10_value);
@@ -20510,7 +20457,7 @@
         attr(input0, "class", "note");
         attr(input0, "placeholder", window.t("timemanager", "Describe what you did..."));
         attr(label0, "class", "note");
-        html_tag = new HtmlTag(t3);
+        html_tag.a = t3;
         attr(input1, "type", "number");
         attr(input1, "name", "duration");
         attr(input1, "step", "0.01");
@@ -20525,7 +20472,7 @@
         ctx[8] ? " error" : "").concat(
         /*client*/
         ctx[4] ? " hidden-visually" : ""));
-        html_tag_1 = new HtmlTag(t9);
+        html_tag_1.a = t9;
         attr(a, "href", "#/");
         attr(a, "class", "change");
         attr(span1, "class", "task-caption");
@@ -20544,8 +20491,7 @@
         /*loading*/
         ctx[7] ? " icon-loading" : ""));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, form, anchor);
         append(form, label0);
         append(label0, t0);
@@ -20608,8 +20554,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -20730,21 +20675,18 @@
           attr(form, "class", form_class_value);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(select0.$$.fragment, local);
         transition_in(select1.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(select0.$$.fragment, local);
         transition_out(select1.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(form);
         /*input0_binding*/
 
@@ -20754,7 +20696,6 @@
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -20817,9 +20758,9 @@
               case 6:
                 _context.prev = 6;
                 entry = {
-                  duration,
-                  date,
-                  note,
+                  duration: duration,
+                  date: date,
+                  note: note,
                   task: task.value
                 };
                 _context.next = 10;
@@ -20966,7 +20907,7 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         span0 = element("span");
         input = element("input");
         t0 = space();
@@ -20992,8 +20933,7 @@
         /*loading*/
         ctx[3] ? " icon-loading" : ""));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, span0, anchor);
         append(span0, input);
         append(span0, t0);
@@ -21008,8 +20948,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -21053,18 +20992,15 @@
           attr(span1, "class", span1_class_value);
         }
       },
-
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(span0);
         if (detaching) detach(t1);
         if (detaching) detach(span1);
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -21092,7 +21028,7 @@
                 return fetch("".concat(action, "/").concat(state), {
                   method: "POST",
                   body: JSON.stringify({
-                    uuid
+                    uuid: uuid
                   }),
                   headers: {
                     requesttoken: requestToken,
@@ -21285,7 +21221,7 @@
     /*handleClearStatus*/
     ctx[14]);
     return {
-      c() {
+      c: function c() {
         form = element("form");
         label0 = element("label");
         t0 = text(t0_value);
@@ -21328,8 +21264,7 @@
         /*loading*/
         ctx[5] ? " icon-loading" : ""));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, form, anchor);
         append(form, label0);
         append(label0, t0);
@@ -21363,8 +21298,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -21428,8 +21362,7 @@
           attr(form, "class", form_class_value);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(select0.$$.fragment, local);
         transition_in(select1.$$.fragment, local);
@@ -21437,16 +21370,14 @@
         transition_in(select3.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(select0.$$.fragment, local);
         transition_out(select1.$$.fragment, local);
         transition_out(select2.$$.fragment, local);
         transition_out(select3.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(form);
         destroy_component(select0);
         destroy_component(select1);
@@ -21455,7 +21386,6 @@
         mounted = false;
         dispose();
       }
-
     };
   }
 
@@ -21705,7 +21635,7 @@
     /*handleSelectPreset*/
     ctx[5]);
     return {
-      c() {
+      c: function c() {
         form = element("form");
         label0 = element("label");
         t0 = text(t0_value);
@@ -21747,8 +21677,7 @@
         /*loading*/
         ctx[0] ? " icon-loading" : ""));
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, form, anchor);
         append(form, label0);
         append(label0, t0);
@@ -21787,8 +21716,7 @@
           mounted = true;
         }
       },
-
-      p(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
@@ -21824,25 +21752,21 @@
           attr(form, "class", form_class_value);
         }
       },
-
-      i(local) {
+      i: function i(local) {
         if (current) return;
         transition_in(select.$$.fragment, local);
         current = true;
       },
-
-      o(local) {
+      o: function o(local) {
         transition_out(select.$$.fragment, local);
         current = false;
       },
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(form);
         destroy_component(select);
         mounted = false;
         run_all(dispose);
       }
-
     };
   }
 
@@ -22048,14 +21972,13 @@
     var mounted;
     var dispose;
     return {
-      c() {
+      c: function c() {
         button = element("button");
         button.textContent = "".concat(window.t("timemanager", "Print report"));
         attr(button, "type", "button");
         attr(button, "class", "button secondary");
       },
-
-      m(target, anchor) {
+      m: function m(target, anchor) {
         insert(target, button, anchor);
 
         if (!mounted) {
@@ -22065,17 +21988,14 @@
           mounted = true;
         }
       },
-
       p: noop$1,
       i: noop$1,
       o: noop$1,
-
-      d(detaching) {
+      d: function d(detaching) {
         if (detaching) detach(button);
         mounted = false;
         dispose();
       }
-
     };
   }
 
