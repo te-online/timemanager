@@ -18,8 +18,6 @@ _Looking for screenshots, official release packages or a place to leave a rating
 
 * _Allow tracking of time in the background._
 * _Collaboration with other users – right now you can only view and edit your own time entries._
-* _Sync with mobile apps._
-* _Detailed statistics._
 * _Performance improvements._
 * _Work with start & end of time entry or duration._
 * _Allow to organize time entries without assigning them to tasks, projects or clients._
@@ -27,9 +25,17 @@ _Looking for screenshots, official release packages or a place to leave a rating
 ## Development
 The client-side JavaScript of this plugin uses ES6 features and needs to be transpiled for use in a browser. To run a watch command that automatically updates the `bundle.js` file when you make changes, execute `npm run dev`. To make a simple build, use `npm build`.
 
-Before building or development dependencies need to be installed once by running `npm install`.
+Before building or development, dependencies need to be installed once by running `npm install`.
 
 ## Changelog
+
+### 0.2.0 Beta, 25. June 2021
+- Add basic **reporting feature** with client, project, task, status and timerange filters and a simple graph
+- Add **CSV export** functionality for reports
+- Add basic print stylesheet for reports
+- Add Portuguese translation (thanks to @vascocb)
+- Clean up some older PHP code and add more type information (still tons to do, though...)
+- Respect locale (short locale) when formatting dates and times
 
 ### 0.1.8 Beta, 24. February 2021
 - Bump compatibility to Nextcloud 21
