@@ -9,6 +9,8 @@
 	export let projectEditorCaption;
 	export let editProjectData;
 
+	import { translate } from "@nextcloud/l10n";
+
 	let name = editProjectData ? editProjectData.name : "";
 
 	const submit = () => {
@@ -20,7 +22,7 @@
 	<h3>{projectEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label class="space-top">
-			{window.t('timemanager', 'Project name')}
+			{translate('timemanager', 'Project name')}
 			<br />
 			<input
 				autofocus
@@ -28,12 +30,12 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="name"
-				placeholder={window.t('timemanager', 'A project name')}
+				placeholder={translate('timemanager', 'A project name')}
 				bind:value={name}
 				required />
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'For client')}
+			{translate('timemanager', 'For client')}
 			<br />
 			<strong>{clientName}</strong>
 		</label>
@@ -43,7 +45,7 @@
 			<button type="submit" class="button primary">{projectEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{window.t('timemanager', 'Cancel')}
+					{translate('timemanager', 'Cancel')}
 				</button>
 			{/if}
 		</div>

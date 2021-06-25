@@ -12,6 +12,9 @@ import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
+import { translate } from "@nextcloud/l10n";
+import auth from "@nextcloud/auth";
+const token = auth.getRequestToken();
 const components = [];
 
 $(document).ready(function () {
@@ -60,7 +63,7 @@ const init = () => {
 			props: {
 				...store,
 				action: "",
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -72,7 +75,7 @@ const init = () => {
 			),
 			props: {
 				...store,
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -84,7 +87,7 @@ const init = () => {
 			),
 			props: {
 				...store,
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -96,7 +99,7 @@ const init = () => {
 			),
 			props: {
 				...store,
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -108,7 +111,7 @@ const init = () => {
 			),
 			props: {
 				...store,
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -124,7 +127,7 @@ const init = () => {
 					props: {
 						...store,
 						deleteTimeEntryUuid: button.getAttribute("data-uuid"),
-						requestToken: window.OC.requestToken,
+						requestToken: token,
 					},
 				})
 			);
@@ -143,9 +146,9 @@ const init = () => {
 						...store,
 						timeUuid: button.getAttribute("data-uuid"),
 						editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-						timeEditorButtonCaption: window.t("timemanager", "Edit"),
-						timeEditorCaption: window.t("timemanager", "Edit time entry"),
-						requestToken: window.OC.requestToken,
+						timeEditorButtonCaption: translate("timemanager", "Edit"),
+						timeEditorCaption: translate("timemanager", "Edit time entry"),
+						requestToken: token,
 					},
 				})
 			);
@@ -157,7 +160,7 @@ const init = () => {
 			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='QuickAdd.svelte']")),
 			props: {
 				...store,
-				requestToken: window.OC.requestToken,
+				requestToken: token,
 			},
 		})
 	);
@@ -173,7 +176,7 @@ const init = () => {
 						uuid: button.getAttribute("data-uuid"),
 						action: button.getAttribute("data-action"),
 						initialState: button.getAttribute("data-initialState"),
-						requestToken: window.OC.requestToken,
+						requestToken: token,
 					},
 				})
 			);

@@ -8,6 +8,8 @@
 	export let clientEditorCaption;
 	export let editClientData;
 
+	import { translate } from "@nextcloud/l10n";
+
 	let name = editClientData ? editClientData.name : "";
 	let note = editClientData ? editClientData.note : "";
 
@@ -20,7 +22,7 @@
 	<h3>{clientEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label class="space-top">
-			{window.t('timemanager', 'Client name')}
+			{translate('timemanager', 'Client name')}
 			<br />
 			<input
 				autofocus
@@ -28,12 +30,12 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="name"
-				placeholder={window.t('timemanager', 'Example Corp.')}
+				placeholder={translate('timemanager', 'Example Corp.')}
 				bind:value={name}
 				required />
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'Note')}
+			{translate('timemanager', 'Note')}
 			<br />
 			<!-- prettier-ignore -->
 			<textarea
@@ -48,7 +50,7 @@
 			<button type="submit" class="button primary">{clientEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{window.t('timemanager', 'Cancel')}
+					{translate('timemanager', 'Cancel')}
 				</button>
 			{/if}
 		</div>

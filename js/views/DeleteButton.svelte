@@ -8,6 +8,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import Overlay from "./Overlay.svelte";
+	import { translate } from "@nextcloud/l10n";
 
 	$: confirmation = false;
 	let form;
@@ -38,8 +39,8 @@
 		<div class="inner tm_new-item">
 			{deleteQuestion}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
-				<button class="button primary" on:click|preventDefault={doDelete}>{window.t('timemanager', 'Delete')}</button>
-				<button class="button" on:click|preventDefault={cancelDelete}>{window.t('timemanager', 'Cancel')}</button>
+				<button class="button primary" on:click|preventDefault={doDelete}>{translate('timemanager', 'Delete')}</button>
+				<button class="button" on:click|preventDefault={cancelDelete}>{translate('timemanager', 'Cancel')}</button>
 			</div>
 		</div>
 	</Overlay>

@@ -12,6 +12,8 @@
 	export let timeEditorCaption;
 	export let timeEditorButtonCaption;
 
+	import { translate } from "@nextcloud/l10n";
+
 	let duration = editTimeEntryData.duration;
 	let date = editTimeEntryData.date || initialDate;
 	let note = editTimeEntryData.note || "";
@@ -25,7 +27,7 @@
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label>
-			{window.t('timemanager', 'Duration (in hrs.)')}
+			{translate('timemanager', 'Duration (in hrs.)')}
 			<br />
 			<input
 				autofocus
@@ -40,35 +42,35 @@
 		</label>
 		<br />
 		<label>
-			{window.t('timemanager', 'Date')}
+			{translate('timemanager', 'Date')}
 			<br />
 			<input type="date" name="date" style="width: 100%" class="input-wide" bind:value={date} />
 		</label>
 		<br />
 		<label>
-			{window.t('timemanager', 'Note')}
+			{translate('timemanager', 'Note')}
 			<br />
 			<!-- prettier-ignore -->
 			<textarea
 				style="width: 100%;"
 				class="input-wide"
 				name="note"
-				placeholder={window.t('timemanager', 'Describe what you did...')}
+				placeholder={translate('timemanager', 'Describe what you did...')}
 				on:input={(e) => (note = e.target.value)}>{note}</textarea>
 		</label>
 		<br />
 		<label class="space-top">
-			{window.t('timemanager', 'For task')}
+			{translate('timemanager', 'For task')}
 			<br />
 			<strong>{taskName}</strong>
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'For project')}
+			{translate('timemanager', 'For project')}
 			<br />
 			<strong>{projectName}</strong>
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'For client')}
+			{translate('timemanager', 'For client')}
 			<br />
 			<strong>{clientName}</strong>
 		</label>
@@ -78,7 +80,7 @@
 			<button type="submit" class="button primary">{timeEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{window.t('timemanager', 'Cancel')}
+					{translate('timemanager', 'Cancel')}
 				</button>
 			{/if}
 		</div>

@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { translate } from "@nextcloud/l10n";
 
 	onMount(() => {
 		const openDetailsBeforePrint = () => {
@@ -33,5 +34,5 @@
 </script>
 
 <button on:click={() => window.print()} type="button" class="button secondary">
-	{window.t('timemanager', 'Print report')}
+	{translate('timemanager', 'Print report')}
 </button>

@@ -1,7 +1,6 @@
 <script>
 	export let statsApiUrl;
 	export let requestToken;
-
 	export let controls = true;
 
 	import { onMount } from "svelte";
@@ -21,13 +20,13 @@
 		isDate,
 		parse,
 		intervalToDuration,
-		addMonths
+		addMonths,
+		differenceInDays,
+		differenceInWeeks,
+		differenceInMonths,
+		differenceInYears,
+		addYears
 	} from "date-fns";
-	import differenceInDays from "date-fns/differenceInDays";
-	import differenceInWeeks from "date-fns/differenceInWeeks";
-	import differenceInMonths from "date-fns/differenceInMonths";
-	import differenceInYears from "date-fns/differenceInYears";
-	import addYears from "date-fns/addYears";
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
 

@@ -6,6 +6,7 @@
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
+	import { translate } from "@nextcloud/l10n";
 
 	$: loading = false;
 	$: availableProjects = projects;
@@ -17,8 +18,8 @@
 	let selectedStatus;
 
 	const availableStatus = [
-		{ value: "unpaid", label: window.t("timemanager", "Unresolved") },
-		{ value: "paid", label: window.t("timemanager", "Resolved") }
+		{ value: "unpaid", label: translate("timemanager", "Unresolved") },
+		{ value: "paid", label: translate("timemanager", "Resolved") }
 	];
 
 	const apply = e => {
@@ -126,10 +127,10 @@
 
 <form class={`reports-filters${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={apply}>
 	<label for="client-select" class="clients">
-		{window.t('timemanager', 'Clients')}
+		{translate('timemanager', 'Clients')}
 		<Select
-			noOptionsMessage={window.t('timemanager', 'No options')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No options')}
+			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'client-select' }}
 			items={clients}
 			on:select={handleSelectClients}
@@ -138,10 +139,10 @@
 	</label>
 
 	<label for="projects-select" class="projects">
-		{window.t('timemanager', 'Projects')}
+		{translate('timemanager', 'Projects')}
 		<Select
-			noOptionsMessage={window.t('timemanager', 'No options')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No options')}
+			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'projects-select' }}
 			items={availableProjects}
 			on:select={handleSelectProjects}
@@ -150,10 +151,10 @@
 	</label>
 
 	<label for="tasks-select" class="tasks">
-		{window.t('timemanager', 'Tasks')}
+		{translate('timemanager', 'Tasks')}
 		<Select
-			noOptionsMessage={window.t('timemanager', 'No options')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No options')}
+			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'tasks-select' }}
 			items={availableTasks}
 			on:select={handleSelectTasks}
@@ -162,10 +163,10 @@
 	</label>
 
 	<label for="status-select" class="status">
-		{window.t('timemanager', 'Status')}
+		{translate('timemanager', 'Status')}
 		<Select
-			noOptionsMessage={window.t('timemanager', 'No options')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No options')}
+			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'status-select' }}
 			items={availableStatus}
 			selectedValue={selectedStatus}
@@ -174,6 +175,6 @@
 	</label>
 
 	<span class="actions">
-		<button disabled={loading} type="submit" class="button primary">{window.t('timemanager', 'Apply filters')}</button>
+		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Apply filters')}</button>
 	</span>
 </form>

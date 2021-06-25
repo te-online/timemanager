@@ -10,6 +10,7 @@
 	import Overlay from "./Overlay.svelte";
 	import TimeEditor from "./TimeEditor.svelte";
 	import { onMount } from "svelte";
+	import { translate } from "@nextcloud/l10n";
 
 	$: show = false;
 	$: loading = false;
@@ -79,48 +80,48 @@
 
 <form class={`quick-add${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={save}>
 	<label class="note">
-		{window.t('timemanager', 'Note')}
+		{translate('timemanager', 'Note')}
 		<input
 			type="text"
 			name="note"
 			class="note"
 			bind:value={note}
-			placeholder={window.t('timemanager', 'Describe what you did...')}
+			placeholder={translate('timemanager', 'Describe what you did...')}
 			bind:this={noteInput} />
 	</label>
 	<label>
-		{@html window.t('timemanager', 'Duration (in hrs.) & Date')}
+		{@html translate('timemanager', 'Duration (in hrs.) & Date')}
 		<span class="double">
 			<input type="number" name="duration" step="0.01" placeholder="" class="duration-input" bind:value={duration} />
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
 	</label>
 	<label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
-		{window.t('timemanager', 'Client')}
+		{translate('timemanager', 'Client')}
 		<Select
-			noOptionsMessage={window.t('timemanager', 'No options')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No options')}
+			placeholder={translate('timemanager', 'Select...')}
 			items={clients}
 			bind:selectedValue={client}
 			on:select={clientSelected} />
 	</label>
 	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
 		<span class="task-caption">
-			{@html window.t('timemanager', 'Project & Task for')}
+			{@html translate('timemanager', 'Project & Task for')}
 			<strong>{client && client.label}</strong>
 			<a href="#/" class="change" on:click|preventDefault={() => (client = null)}>
-				{window.t('timemanager', 'Change client')}
+				{translate('timemanager', 'Change client')}
 			</a>
 		</span>
 		<Select
 			items={tasksWithProject && tasksWithProject.filter(oneTask => client && oneTask.project.clientUuid === client.value)}
 			groupBy={item => item.project.label}
-			noOptionsMessage={window.t('timemanager', 'No projects/tasks or no client selected.')}
-			placeholder={window.t('timemanager', 'Select...')}
+			noOptionsMessage={translate('timemanager', 'No projects/tasks or no client selected.')}
+			placeholder={translate('timemanager', 'Select...')}
 			bind:selectedValue={task} />
 	</label>
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
-		<button disabled={loading} type="submit" class="button primary">{window.t('timemanager', 'Add')}</button>
+		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Add')}</button>
 	</span>
 </form>

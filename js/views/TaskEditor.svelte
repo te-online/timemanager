@@ -10,6 +10,8 @@
 	export let taskEditorCaption;
 	export let editTaskData;
 
+	import { translate } from "@nextcloud/l10n";
+
 	let name = editTaskData ? editTaskData.name : "";
 
 	const submit = () => {
@@ -21,7 +23,7 @@
 	<h3>{taskEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label class="space-top">
-			{window.t('timemanager', 'Task name')}
+			{translate('timemanager', 'Task name')}
 			<br />
 			<input
 				autofocus
@@ -29,17 +31,17 @@
 				style="width: 100%;"
 				class="input-wide"
 				name="name"
-				placeholder={window.t('timemanager', 'A task name')}
+				placeholder={translate('timemanager', 'A task name')}
 				bind:value={name}
 				required />
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'For project')}
+			{translate('timemanager', 'For project')}
 			<br />
 			<strong>{projectName}</strong>
 		</label>
 		<label class="space-top">
-			{window.t('timemanager', 'For client')}
+			{translate('timemanager', 'For client')}
 			<br />
 			<strong>{clientName}</strong>
 		</label>
@@ -49,7 +51,7 @@
 			<button type="submit" class="button primary">{taskEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{window.t('timemanager', 'Cancel')}
+					{translate('timemanager', 'Cancel')}
 				</button>
 			{/if}
 		</div>

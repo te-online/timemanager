@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import Overlay from "./Overlay.svelte";
+	import { translate } from "@nextcloud/l10n";
 
 	$: confirmation = false;
 
@@ -54,10 +55,10 @@
 {#if confirmation}
 	<Overlay>
 		<div class="inner tm_new-item">
-			{window.t('timemanager', 'Do you want to delete this time entry?')}
+			{translate('timemanager', 'Do you want to delete this time entry?')}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
-				<button class="button primary" on:click|preventDefault={doDelete}>{window.t('timemanager', 'Delete')}</button>
-				<button class="button" on:click|preventDefault={cancelDelete}>{window.t('timemanager', 'Cancel')}</button>
+				<button class="button primary" on:click|preventDefault={doDelete}>{translate('timemanager', 'Delete')}</button>
+				<button class="button" on:click|preventDefault={cancelDelete}>{translate('timemanager', 'Cancel')}</button>
 			</div>
 		</div>
 	</Overlay>
@@ -66,5 +67,5 @@
 <form action={deleteTimeEntryAction} on:submit={submit} method="post" class="tm_inline-hover-form">
 	<input type="hidden" name="uuid" value={deleteTimeEntryUuid} />
 	<input type="hidden" name="requesttoken" value={requestToken} />
-	<button type="submit" name="action" value="delete" class="btn">{window.t('timemanager', 'Delete')}</button>
+	<button type="submit" name="action" value="delete" class="btn">{translate('timemanager', 'Delete')}</button>
 </form>
