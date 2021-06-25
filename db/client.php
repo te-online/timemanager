@@ -43,17 +43,17 @@ class Client extends Entity {
 	function toArray() {
 		return [
 			"changed" => ISODate::convert($this->getChanged()),
-			"city" 		=> $this->getCity(),
-			"commit" 	=> $this->getCommit(),
-			"created"	=> ISODate::convert($this->getCreated()),
-			"email"		=> $this->getEmail(),
-			"name"		=> $this->getName(),
-			"note" 		=> $this->getNote(),
-			"phone" 	=> $this->getPhone(),
-			"postcode"=> $this->getPostcode(),
-			"street"	=> $this->getStreet(),
-			"uuid"		=> $this->getUuid(),
-			"web"			=> $this->getWeb()
+			"city" => $this->getCity(),
+			"commit" => $this->getCommit(),
+			"created" => ISODate::convert($this->getCreated()),
+			"email" => $this->getEmail(),
+			"name" => $this->getName(),
+			"note" => $this->getNote(),
+			"phone" => $this->getPhone(),
+			"postcode" => $this->getPostcode(),
+			"street" => $this->getStreet(),
+			"uuid" => $this->getUuid(),
+			"web" => $this->getWeb(),
 		];
 	}
 
@@ -64,6 +64,6 @@ class Client extends Entity {
 	 */
 	function getCreatedYear() {
 		$created = date_create($this->getCreated());
-		return date_format($created, 'Y');
+		return date_format($created, "Y");
 	}
 }

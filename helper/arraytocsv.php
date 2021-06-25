@@ -8,7 +8,7 @@ class ArrayToCSV {
 	 */
 	static function convert(array &$array): string {
 		if (count($array) == 0) {
-			return '';
+			return "";
 		}
 		ob_start();
 		$df = fopen("php://output", "w");

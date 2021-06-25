@@ -2,7 +2,6 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 /**
@@ -12,21 +11,17 @@ use OCP\IDBConnection;
  * @method Project insert(Project $entity)
  */
 class ProjectMapper extends ObjectMapper {
-	public function __construct(
-		IDBConnection $db,
-		CommitMapper $commitMapper,
-		TaskMapper $taskMapper
-	) {
-		parent::__construct($db, $commitMapper, 'timemanager_project');
+	public function __construct(IDBConnection $db, CommitMapper $commitMapper, TaskMapper $taskMapper) {
+		parent::__construct($db, $commitMapper, "timemanager_project");
 		$this->taskMapper = $taskMapper;
 	}
 
 	public function deleteWithChildrenByClientId($uuid, $commit) {
-		$projects = $this->getObjectsByAttributeValue('client_uuid', $uuid);
-		foreach($projects as $project) {
+		$projects = $this->getObjectsByAttributeValue("client_uuid", $uuid);
+		foreach ($projects as $project) {
 			$project->setCommit($commit);
-			$project->setChanged(date('Y-m-d H:i:s'));
-			$project->setStatus('deleted');
+			$project->setChanged(date("Y-m-d H:i:s"));
+			$project->setStatus("deleted");
 			$this->update($project);
 			$this->deleteChildrenForEntityById($project->getUuid(), $commit);
 		}
@@ -43,15 +38,15 @@ class ProjectMapper extends ObjectMapper {
 	 * @return Client[] list if matching items
 	 */
 	public function countTasks($uuid) {
-		$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $uuid);
+		$tasks = $this->taskMapper->getObjectsByAttributeValue("project_uuid", $uuid);
 		return count($tasks);
 	}
 
 	public function getHours($uuid) {
-		$tasks = $this->taskMapper->getObjectsByAttributeValue('project_uuid', $uuid);
+		$tasks = $this->taskMapper->getObjectsByAttributeValue("project_uuid", $uuid);
 		$sum = 0;
-		if(count($tasks) > 0) {
-			foreach($tasks as $task) {
+		if (count($tasks) > 0) {
+			foreach ($tasks as $task) {
 				$sum += $this->taskMapper->getHours($task->getUuid());
 			}
 		}

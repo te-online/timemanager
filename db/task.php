@@ -36,12 +36,12 @@ class Task extends Entity {
 	 */
 	function toArray() {
 		return [
-			"changed" 		=> ISODate::convert($this->getChanged()),
-			"commit" 			=> $this->getCommit(),
-			"created"			=> ISODate::convert($this->getCreated()),
-			"name"				=> $this->getName(),
-			"project_uuid"=> $this->getProjectUuid(),
-			"uuid"				=> $this->getUuid()
+			"changed" => ISODate::convert($this->getChanged()),
+			"commit" => $this->getCommit(),
+			"created" => ISODate::convert($this->getCreated()),
+			"name" => $this->getName(),
+			"project_uuid" => $this->getProjectUuid(),
+			"uuid" => $this->getUuid(),
 		];
 	}
 
@@ -52,6 +52,6 @@ class Task extends Entity {
 	 */
 	function getCreatedDate() {
 		$created = date_create($this->getCreated());
-		return date_format($created, 'j. F Y');
+		return date_format($created, "j. F Y");
 	}
 }

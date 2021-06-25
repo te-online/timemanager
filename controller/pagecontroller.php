@@ -5,22 +5,17 @@ namespace OCA\TimeManager\Controller;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
-use OCA\TimeManager\Db\Client;
 use OCA\TimeManager\Db\ClientMapper;
 use OCA\TimeManager\Db\ProjectMapper;
 use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\storageHelper;
-use OCA\TimeManager\Helper\Cleaner;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Http;
 use OCP\IRequest;
 
 class PageController extends Controller {
@@ -416,8 +411,8 @@ class PageController extends Controller {
 				],
 				"clients"
 			);
-			$urlGenerator = \OC::$server->getURLGenerator();
 		}
+		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $uuid);
 	}
 
@@ -552,8 +547,8 @@ class PageController extends Controller {
 				],
 				"projects"
 			);
-			$urlGenerator = \OC::$server->getURLGenerator();
 		}
+		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $uuid);
 	}
 
@@ -697,8 +692,8 @@ class PageController extends Controller {
 				],
 				"tasks"
 			);
-			$urlGenerator = \OC::$server->getURLGenerator();
 		}
+		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $uuid);
 	}
 
@@ -749,7 +744,6 @@ class PageController extends Controller {
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
 			"taskName" => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : "",
-			"taskUuid" => $taskUuid,
 			"initialDate" => date("Y-m-d"),
 			"taskEditorButtonCaption" => $l->t("Edit task"),
 			"taskEditorCaption" => $l->t("Edit task"),
@@ -806,7 +800,6 @@ class PageController extends Controller {
 		$start = date("Y-m-d H:i:s", strtotime($end) - 60 * 60 * $duration);
 		$this->storageHelper->addOrUpdateObject(
 			[
-				"name" => $name,
 				"start" => $start, // now - duration
 				"end" => $end, // now
 				"task_uuid" => $task,
@@ -883,8 +876,8 @@ class PageController extends Controller {
 				],
 				"times"
 			);
-			$urlGenerator = \OC::$server->getURLGenerator();
 		}
+		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->task_uuid);
 	}
 

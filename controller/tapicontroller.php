@@ -9,7 +9,6 @@ use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\storageHelper;
-use OCA\TimeManager\Helper\Cleaner;
 use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
@@ -32,7 +31,6 @@ class TApiController extends ApiController {
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
-	protected $cleaner;
 
 	/**
 	 * constructor of the controller
@@ -70,20 +68,6 @@ class TApiController extends ApiController {
 			$this->commitMapper,
 			$userId
 		);
-		$this->cleaner = new Cleaner();
-	}
-
-	/**
-	 * Convert Item objects to their array representation. Item[] to array[]
-	 *
-	 * @param Item[] $items items that should be converted
-	 * @return array[] items mapped to their array representation
-	 */
-	private function itemsToArray(array $clients) {
-		$clients = array_map(function (Client $client) {
-			return $client->toArray();
-		}, $clients);
-		return $clients;
 	}
 
 	/**
@@ -113,18 +97,14 @@ class TApiController extends ApiController {
 	 */
 	function updateObjects($data, $lastCommit) {
 		$logger = \OC::$server->getLogger();
-		// $logger->error("New API request:", ['app' => 'timemanager']);
-		// $logger->error(json_encode($data), ['app' => 'timemanager']);
+		$logger->debug("New API request:", ["app" => "timemanager"]);
+		$logger->debug(json_encode($data), ["app" => "timemanager"]);
 		$logger->info("API Request with commit: " . $lastCommit, ["app" => "timemanager"]);
-		// return new JSONResponse(array('test' => "Hallo Welt"));
 		$entities = ["clients", "projects", "tasks", "times"];
 
 		if (!$data && !$lastCommit) {
 			return new DataResponse([], Http::STATUS_NOT_FOUND);
 		}
-		// if(empty($lastCommit)) {
-		// 	return new DataResponse(json_encode(["error" => "Commit is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
-		// }
 		if (empty($data)) {
 			return new DataResponse(json_encode(["error" => "Data is mandatory."]), Http::STATUS_NOT_ACCEPTABLE);
 		}
@@ -156,13 +136,9 @@ class TApiController extends ApiController {
 		}
 
 		$clientCommit = $lastCommit;
-		$missions = [];
+		$commit = UUID::v4();
 
 		if (!$noData) {
-			$commit = UUID::v4();
-			// $commit = "afafwafafawfaw";
-			// $commit = UUID.v4(); // TODO
-
 			foreach ($entities as $entity) {
 				// For all entities take the created objects
 				$created = $data[$entity]["created"];
@@ -218,17 +194,10 @@ class TApiController extends ApiController {
 			$response["commit"] = $lastCommit;
 		}
 
-		// $logger->error("Sending response... " . json_encode($response), ['app' => 'timemanager']);
+		$logger->debug("Sending response... " . json_encode($response), ["app" => "timemanager"]);
 		$logger->info("Sending response [omitted] and commit " . $lastCommit, ["app" => "timemanager"]);
 
 		return new JSONResponse($response);
-		// $response->addHeader('Test-Header', 'te-online');
-		// $response->addHeader('Content-Type', 'application/json');
-
-		// .catch(function(err) {
-		// 	console.error(err.stack);
-		// 	res.status(500).send(JSON.stringify([{ "error": err.error }], null, 2));
-		// });
 	}
 
 	/**

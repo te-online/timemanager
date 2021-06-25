@@ -143,7 +143,7 @@ class ObjectMapper extends Mapper {
 		}
 	}
 
-	function getObjectsAfterCommit($commit) {
+	function getObjectsAfterCommit($commit): array {
 		return [
 			"created" => $this->getCreatedObjectsAfterCommit($commit),
 			"updated" => $this->getUpdatedObjectsAfterCommit($commit),
