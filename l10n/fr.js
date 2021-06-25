@@ -1,4 +1,3 @@
-
 OC.L10N.register(
 	"timemanager",
 	{
@@ -86,7 +85,8 @@ OC.L10N.register(
 		"You don't have any tasks, yet. Try adding one by clicking “Add task”.":
 			"Vous n’avez pas encore de tâche. Commencez par cliquer sur “Ajouter une tâche”.",
 		"Project total": "Total des projets",
-		"Select a task to show time entries for": "Sélectionnez la tâche pour laquelle vous souhaitez afficher des saisies de temps",
+		"Select a task to show time entries for":
+			"Sélectionnez la tâche pour laquelle vous souhaitez afficher des saisies de temps",
 		"No tasks created yet. Go ahead and create one.": "Aucune tâche n’a encore été créée. Commencez par en créer une.",
 		"Select a task first to show the times for this task.":
 			"Sélectionnez d’abord une tâche pour montrer les saisie de temps pour cette tâche.",
