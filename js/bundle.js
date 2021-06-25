@@ -10544,7 +10544,7 @@
     }];
   }, !REPLACE_SUPPORTS_NAMED_GROUPS$1 || !REPLACE_KEEPS_$0$1 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE$1);
 
-  var dist$1 = createCommonjsModule$1(function (module, exports) {
+  var dist$2 = createCommonjsModule$1(function (module, exports) {
 
 
 
@@ -10727,18 +10727,18 @@
   }
   });
 
-  unwrapExports(dist$1);
-  var dist_1 = dist$1.getLocale;
-  dist$1.getCanonicalLocale;
-  dist$1.getLanguage;
-  var dist_4 = dist$1.translate;
-  dist$1.translatePlural;
-  var dist_6 = dist$1.getFirstDay;
-  dist$1.getDayNames;
-  dist$1.getDayNamesShort;
-  dist$1.getDayNamesMin;
-  dist$1.getMonthNames;
-  dist$1.getMonthNamesShort;
+  unwrapExports(dist$2);
+  var dist_1 = dist$2.getLocale;
+  dist$2.getCanonicalLocale;
+  dist$2.getLanguage;
+  var dist_4$1 = dist$2.translate;
+  dist$2.translatePlural;
+  var dist_6 = dist$2.getFirstDay;
+  dist$2.getDayNames;
+  dist$2.getDayNamesShort;
+  dist$2.getDayNamesMin;
+  dist$2.getMonthNames;
+  dist$2.getMonthNamesShort;
 
   var MATCH$2 = wellKnownSymbol$1('match'); // `IsRegExp` abstract operation
   // https://tc39.es/ecma262/#sec-isregexp
@@ -12202,7 +12202,7 @@
     return {
       c: function c() {
         h2 = element("h2");
-        h2.textContent = "".concat(dist_4("timemanager", "Statistics"));
+        h2.textContent = "".concat(dist_4$1("timemanager", "Statistics"));
       },
       m: function m(target, anchor) {
         insert(target, h2, anchor);
@@ -12222,7 +12222,7 @@
     var t1;
     var t2;
     var t3;
-    var t4_value = dist_4("timemanager", "hrs.") + "";
+    var t4_value = dist_4$1("timemanager", "hrs.") + "";
     var t4;
     var t5;
     var figure1;
@@ -12230,14 +12230,14 @@
     var t7;
     var t8;
     var t9;
-    var t10_value = dist_4("timemanager", "hrs.") + "";
+    var t10_value = dist_4$1("timemanager", "hrs.") + "";
     var t10;
     return {
       c: function c() {
         div = element("div");
         figure0 = element("figure");
         figcaption0 = element("figcaption");
-        figcaption0.textContent = "".concat(dist_4("timemanager", "Today"));
+        figcaption0.textContent = "".concat(dist_4$1("timemanager", "Today"));
         t1 = space();
         t2 = text(
         /*todayTotal*/
@@ -12247,7 +12247,7 @@
         t5 = space();
         figure1 = element("figure");
         figcaption1 = element("figcaption");
-        figcaption1.textContent = "".concat(dist_4("timemanager", "Week"));
+        figcaption1.textContent = "".concat(dist_4$1("timemanager", "Week"));
         t7 = space();
         t8 = text(
         /*weekTotal*/
@@ -12450,7 +12450,7 @@
     ctx[23].stats.total + "";
     var t0;
     var t1;
-    var t2_value = dist_4("timemanager", "hrs.") + "";
+    var t2_value = dist_4$1("timemanager", "hrs.") + "";
     var t2;
     var t3;
     var div;
@@ -12556,7 +12556,7 @@
     return {
       c: function c() {
         p = element("p");
-        p.textContent = "".concat(dist_4("timemanager", "When you add entries for this week graphs will appear here."));
+        p.textContent = "".concat(dist_4$1("timemanager", "When you add entries for this week graphs will appear here."));
         attr(p, "class", "empty");
       },
       m: function m(target, anchor) {
@@ -12575,7 +12575,7 @@
     var button0;
     var t1;
     var span1;
-    var t2_value = dist_4("timemanager", "Week") + "";
+    var t2_value = dist_4$1("timemanager", "Week") + "";
     var t2;
     var t3;
     var t4;
@@ -12616,7 +12616,7 @@
       c: function c() {
         nav = element("nav");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4("timemanager", "Previous week"));
+        button0.textContent = "".concat(dist_4$1("timemanager", "Previous week"));
         t1 = space();
         span1 = element("span");
         t2 = text(t2_value);
@@ -12636,7 +12636,7 @@
         if (if_block) if_block.c();
         t12 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4("timemanager", "Next week"));
+        button1.textContent = "".concat(dist_4$1("timemanager", "Next week"));
         attr(button0, "class", "previous");
         attr(span0, "class", "dates");
         attr(button1, "class", "next");
@@ -12734,7 +12734,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Current week"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Current week"));
         attr(button, "class", "current");
       },
       m: function m(target, anchor) {
@@ -13142,7 +13142,7 @@
         }
 
         if (scale === "week") {
-          return "".concat(dist_4("timemanager", "Week"), " ").concat(format(date, "w", localeOptions));
+          return "".concat(dist_4$1("timemanager", "Week"), " ").concat(format(date, "w", localeOptions));
         }
 
         return format(date, "iii", localeOptions);
@@ -13357,7 +13357,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -13393,7 +13393,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4("timemanager", "Client name") + "";
+    var t2_value = dist_4$1("timemanager", "Client name") + "";
     var t2;
     var t3;
     var br0;
@@ -13401,7 +13401,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4("timemanager", "Note") + "";
+    var t6_value = dist_4$1("timemanager", "Note") + "";
     var t6;
     var t7;
     var br1;
@@ -13456,7 +13456,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4("timemanager", "Example Corp."));
+        attr(input0, "placeholder", dist_4$1("timemanager", "Example Corp."));
         input0.required = true;
         attr(label0, "class", "space-top");
         set_style(textarea, "width", "100%");
@@ -14049,7 +14049,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -14085,7 +14085,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4("timemanager", "Project name") + "";
+    var t2_value = dist_4$1("timemanager", "Project name") + "";
     var t2;
     var t3;
     var br0;
@@ -14093,7 +14093,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4("timemanager", "For client") + "";
+    var t6_value = dist_4$1("timemanager", "For client") + "";
     var t6;
     var t7;
     var br1;
@@ -14156,7 +14156,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4("timemanager", "A project name"));
+        attr(input0, "placeholder", dist_4$1("timemanager", "A project name"));
         input0.required = true;
         attr(label0, "class", "space-top");
         attr(label1, "class", "space-top");
@@ -14754,7 +14754,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -14790,7 +14790,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4("timemanager", "Task name") + "";
+    var t2_value = dist_4$1("timemanager", "Task name") + "";
     var t2;
     var t3;
     var br0;
@@ -14798,7 +14798,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4("timemanager", "For project") + "";
+    var t6_value = dist_4$1("timemanager", "For project") + "";
     var t6;
     var t7;
     var br1;
@@ -14807,7 +14807,7 @@
     var t9;
     var t10;
     var label2;
-    var t11_value = dist_4("timemanager", "For client") + "";
+    var t11_value = dist_4$1("timemanager", "For client") + "";
     var t11;
     var t12;
     var br2;
@@ -14880,7 +14880,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4("timemanager", "A task name"));
+        attr(input0, "placeholder", dist_4$1("timemanager", "A task name"));
         input0.required = true;
         attr(label0, "class", "space-top");
         attr(label1, "class", "space-top");
@@ -15506,7 +15506,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -15542,7 +15542,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4("timemanager", "Duration (in hrs.)") + "";
+    var t2_value = dist_4$1("timemanager", "Duration (in hrs.)") + "";
     var t2;
     var t3;
     var br0;
@@ -15552,7 +15552,7 @@
     var br1;
     var t6;
     var label1;
-    var t7_value = dist_4("timemanager", "Date") + "";
+    var t7_value = dist_4$1("timemanager", "Date") + "";
     var t7;
     var t8;
     var br2;
@@ -15562,7 +15562,7 @@
     var br3;
     var t11;
     var label2;
-    var t12_value = dist_4("timemanager", "Note") + "";
+    var t12_value = dist_4$1("timemanager", "Note") + "";
     var t12;
     var t13;
     var br4;
@@ -15572,7 +15572,7 @@
     var br5;
     var t16;
     var label3;
-    var t17_value = dist_4("timemanager", "For task") + "";
+    var t17_value = dist_4$1("timemanager", "For task") + "";
     var t17;
     var t18;
     var br6;
@@ -15581,7 +15581,7 @@
     var t20;
     var t21;
     var label4;
-    var t22_value = dist_4("timemanager", "For project") + "";
+    var t22_value = dist_4$1("timemanager", "For project") + "";
     var t22;
     var t23;
     var br7;
@@ -15590,7 +15590,7 @@
     var t25;
     var t26;
     var label5;
-    var t27_value = dist_4("timemanager", "For client") + "";
+    var t27_value = dist_4$1("timemanager", "For client") + "";
     var t27;
     var t28;
     var br8;
@@ -15703,7 +15703,7 @@
         set_style(textarea, "width", "100%");
         attr(textarea, "class", "input-wide");
         attr(textarea, "name", "note");
-        attr(textarea, "placeholder", dist_4("timemanager", "Describe what you did..."));
+        attr(textarea, "placeholder", dist_4$1("timemanager", "Describe what you did..."));
         textarea.value =
         /*note*/
         ctx[11];
@@ -16579,10 +16579,10 @@
         t1 = space();
         div0 = element("div");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4("timemanager", "Delete"));
+        button0.textContent = "".concat(dist_4$1("timemanager", "Delete"));
         t3 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button0, "class", "button primary");
         attr(button1, "class", "button");
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -16885,7 +16885,7 @@
 
   function create_default_slot$1(ctx) {
     var div1;
-    var t0_value = dist_4("timemanager", "Do you want to delete this time entry?") + "";
+    var t0_value = dist_4$1("timemanager", "Do you want to delete this time entry?") + "";
     var t0;
     var t1;
     var div0;
@@ -16901,10 +16901,10 @@
         t1 = space();
         div0 = element("div");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4("timemanager", "Delete"));
+        button0.textContent = "".concat(dist_4$1("timemanager", "Delete"));
         t3 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4("timemanager", "Cancel"));
+        button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
         attr(button0, "class", "button primary");
         attr(button1, "class", "button");
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -16961,7 +16961,7 @@
         input1 = element("input");
         t2 = space();
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Delete"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Delete"));
         attr(input0, "type", "hidden");
         attr(input0, "name", "uuid");
         input0.value =
@@ -21535,14 +21535,14 @@
   function create_fragment$4(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4("timemanager", "Note") + "";
+    var t0_value = dist_4$1("timemanager", "Note") + "";
     var t0;
     var t1;
     var input0;
     var t2;
     var label1;
     var html_tag;
-    var raw0_value = dist_4("timemanager", "Duration (in hrs.) & Date") + "";
+    var raw0_value = dist_4$1("timemanager", "Duration (in hrs.) & Date") + "";
     var t3;
     var span0;
     var input1;
@@ -21550,7 +21550,7 @@
     var input2;
     var t5;
     var label2;
-    var t6_value = dist_4("timemanager", "Client") + "";
+    var t6_value = dist_4$1("timemanager", "Client") + "";
     var t6;
     var t7;
     var select0;
@@ -21560,7 +21560,7 @@
     var label3;
     var span1;
     var html_tag_1;
-    var raw1_value = dist_4("timemanager", "Project & Task for") + "";
+    var raw1_value = dist_4$1("timemanager", "Project & Task for") + "";
     var t9;
     var strong;
     var t10_value = (
@@ -21578,7 +21578,7 @@
     var t14;
     var span2;
     var button;
-    var t15_value = dist_4("timemanager", "Add") + "";
+    var t15_value = dist_4$1("timemanager", "Add") + "";
     var t15;
     var form_class_value;
     var current;
@@ -21591,8 +21591,8 @@
     }
 
     var select0_props = {
-      noOptionsMessage: dist_4("timemanager", "No options"),
-      placeholder: dist_4("timemanager", "Select..."),
+      noOptionsMessage: dist_4$1("timemanager", "No options"),
+      placeholder: dist_4$1("timemanager", "Select..."),
       items:
       /*clients*/
       ctx[0]
@@ -21630,8 +21630,8 @@
       /*func*/
       ctx[23]),
       groupBy: func_1,
-      noOptionsMessage: dist_4("timemanager", "No projects/tasks or no client selected."),
-      placeholder: dist_4("timemanager", "Select...")
+      noOptionsMessage: dist_4$1("timemanager", "No projects/tasks or no client selected."),
+      placeholder: dist_4$1("timemanager", "Select...")
     };
 
     if (
@@ -21677,7 +21677,7 @@
         t10 = text(t10_value);
         t11 = space();
         a = element("a");
-        a.textContent = "".concat(dist_4("timemanager", "Change client"));
+        a.textContent = "".concat(dist_4$1("timemanager", "Change client"));
         t13 = space();
         create_component(select1.$$.fragment);
         t14 = space();
@@ -21687,7 +21687,7 @@
         attr(input0, "type", "text");
         attr(input0, "name", "note");
         attr(input0, "class", "note");
-        attr(input0, "placeholder", dist_4("timemanager", "Describe what you did..."));
+        attr(input0, "placeholder", dist_4$1("timemanager", "Describe what you did..."));
         attr(label0, "class", "note");
         html_tag.a = t3;
         attr(input1, "type", "number");
@@ -22343,32 +22343,32 @@
   function create_fragment$2(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4("timemanager", "Clients") + "";
+    var t0_value = dist_4$1("timemanager", "Clients") + "";
     var t0;
     var t1;
     var select0;
     var t2;
     var label1;
-    var t3_value = dist_4("timemanager", "Projects") + "";
+    var t3_value = dist_4$1("timemanager", "Projects") + "";
     var t3;
     var t4;
     var select1;
     var t5;
     var label2;
-    var t6_value = dist_4("timemanager", "Tasks") + "";
+    var t6_value = dist_4$1("timemanager", "Tasks") + "";
     var t6;
     var t7;
     var select2;
     var t8;
     var label3;
-    var t9_value = dist_4("timemanager", "Status") + "";
+    var t9_value = dist_4$1("timemanager", "Status") + "";
     var t9;
     var t10;
     var select3;
     var t11;
     var span;
     var button;
-    var t12_value = dist_4("timemanager", "Apply filters") + "";
+    var t12_value = dist_4$1("timemanager", "Apply filters") + "";
     var t12;
     var form_class_value;
     var current;
@@ -22376,8 +22376,8 @@
     var dispose;
     select0 = new Select({
       props: {
-        noOptionsMessage: dist_4("timemanager", "No options"),
-        placeholder: dist_4("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Select..."),
         inputAttributes: {
           id: "client-select"
         },
@@ -22395,8 +22395,8 @@
     ctx[10]);
     select1 = new Select({
       props: {
-        noOptionsMessage: dist_4("timemanager", "No options"),
-        placeholder: dist_4("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Select..."),
         inputAttributes: {
           id: "projects-select"
         },
@@ -22414,8 +22414,8 @@
     ctx[11]);
     select2 = new Select({
       props: {
-        noOptionsMessage: dist_4("timemanager", "No options"),
-        placeholder: dist_4("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Select..."),
         inputAttributes: {
           id: "tasks-select"
         },
@@ -22433,8 +22433,8 @@
     ctx[12]);
     select3 = new Select({
       props: {
-        noOptionsMessage: dist_4("timemanager", "No options"),
-        placeholder: dist_4("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Select..."),
         inputAttributes: {
           id: "status-select"
         },
@@ -22634,10 +22634,10 @@
     var selectedStatus;
     var availableStatus = [{
       value: "unpaid",
-      label: dist_4("timemanager", "Unresolved")
+      label: dist_4$1("timemanager", "Unresolved")
     }, {
       value: "paid",
-      label: dist_4("timemanager", "Resolved")
+      label: dist_4$1("timemanager", "Resolved")
     }];
 
     var apply = function apply(e) {
@@ -22826,26 +22826,26 @@
   function create_fragment$1(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4("timemanager", "From") + "";
+    var t0_value = dist_4$1("timemanager", "From") + "";
     var t0;
     var t1;
     var input0;
     var t2;
     var label1;
-    var t3_value = dist_4("timemanager", "To") + "";
+    var t3_value = dist_4$1("timemanager", "To") + "";
     var t3;
     var t4;
     var input1;
     var t5;
     var label2;
-    var t6_value = dist_4("timemanager", "Presets") + "";
+    var t6_value = dist_4$1("timemanager", "Presets") + "";
     var t6;
     var t7;
     var select;
     var t8;
     var span;
     var button;
-    var t9_value = dist_4("timemanager", "Apply range") + "";
+    var t9_value = dist_4$1("timemanager", "Apply range") + "";
     var t9;
     var form_class_value;
     var current;
@@ -22853,8 +22853,8 @@
     var dispose;
     select = new Select({
       props: {
-        noOptionsMessage: dist_4("timemanager", "No options"),
-        placeholder: dist_4("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Select..."),
         inputAttributes: {
           id: "preset-select"
         },
@@ -23011,28 +23011,28 @@
     var startOfMonth$1 = $$props.startOfMonth;
     var endOfMonth$1 = $$props.endOfMonth;
     var presets = [{
-      label: dist_4("timemanager", "Today"),
+      label: dist_4$1("timemanager", "Today"),
       value: "today"
     }, {
-      label: dist_4("timemanager", "Yesterday"),
+      label: dist_4$1("timemanager", "Yesterday"),
       value: "yesterday"
     }, {
-      label: dist_4("timemanager", "This Week"),
+      label: dist_4$1("timemanager", "This Week"),
       value: "week"
     }, {
-      label: dist_4("timemanager", "Last week"),
+      label: dist_4$1("timemanager", "Last week"),
       value: "week-1"
     }, {
-      label: dist_4("timemanager", "This month"),
+      label: dist_4$1("timemanager", "This month"),
       value: "month"
     }, {
-      label: dist_4("timemanager", "Last month"),
+      label: dist_4$1("timemanager", "Last month"),
       value: "month-1"
     }, {
-      label: dist_4("timemanager", "This year"),
+      label: dist_4$1("timemanager", "This year"),
       value: "year"
     }, {
-      label: dist_4("timemanager", "Last year"),
+      label: dist_4$1("timemanager", "Last year"),
       value: "year-1"
     }];
 
@@ -23206,7 +23206,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4("timemanager", "Print report"));
+        button.textContent = "".concat(dist_4$1("timemanager", "Print report"));
         attr(button, "type", "button");
         attr(button, "class", "button secondary");
       },
@@ -24294,6 +24294,238 @@
     }
   });
 
+  var dist$1 = createCommonjsModule$1(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.getRootUrl = exports.generateFilePath = exports.imagePath = exports.generateUrl = exports.generateOcsUrl = exports.generateRemoteUrl = exports.linkTo = void 0;
+
+   /// <reference types="@nextcloud/typings" />
+
+  /**
+   * Get an url with webroot to a file in an app
+   *
+   * @param {string} app the id of the app the file belongs to
+   * @param {string} file the file path relative to the app folder
+   * @return {string} URL with webroot to a file
+   */
+
+
+  const linkTo = (app, file) => generateFilePath(app, '', file);
+  /**
+   * Creates a relative url for remote use
+   *
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  exports.linkTo = linkTo;
+
+  const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
+  /**
+   * @brief Creates an absolute url for remote use
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
+  /**
+   * Get the base path for the given OCS API service
+   *
+   * @param {string} url OCS API service url
+   * @param {object} params parameters to be replaced into the service url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
+   * @return {string} Absolute path for the OCS URL
+   */
+
+
+  exports.generateRemoteUrl = generateRemoteUrl;
+
+  const generateOcsUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      ocsVersion: 2
+    }, options || {});
+    const version = allOptions.ocsVersion === 1 ? 1 : 2;
+    return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
+  };
+
+  exports.generateOcsUrl = generateOcsUrl;
+  /**
+   * Generate a url path, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the address
+   * @param {UrlOptions} options options for the parameter replacement
+   * @return {string} Path part for the given URL
+   */
+
+  const _generateUrlPath = (url, params, options) => {
+    const allOptions = Object.assign({
+      escape: true
+    }, options || {});
+
+    const _build = function (text, vars) {
+      vars = vars || {};
+      return text.replace(/{([^{}]*)}/g, function (a, b) {
+        var r = vars[b];
+
+        if (allOptions.escape) {
+          return typeof r === 'string' || typeof r === 'number' ? encodeURIComponent(r.toString()) : encodeURIComponent(a);
+        } else {
+          return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
+        }
+      });
+    };
+
+    if (url.charAt(0) !== '/') {
+      url = '/' + url;
+    }
+
+    return _build(url, params || {});
+  };
+  /**
+   * Generate the url with webroot for the given relative url, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.noRewrite True if you want to force index.php being added
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @return {string} URL with webroot for the given relative URL
+   */
+
+
+  const generateUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      noRewrite: false
+    }, options || {});
+
+    if (OC.config.modRewriteWorking === true && !allOptions.noRewrite) {
+      return getRootUrl() + _generateUrlPath(url, params, options);
+    }
+
+    return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
+  };
+  /**
+   * Get the path with webroot to an image file
+   * if no extension is given for the image, it will automatically decide
+   * between .png and .svg based on what the browser supports
+   *
+   * @param {string} app the app id to which the image belongs
+   * @param {string} file the name of the image file
+   * @return {string}
+   */
+
+
+  exports.generateUrl = generateUrl;
+
+  const imagePath = (app, file) => {
+    if (file.indexOf('.') === -1) {
+      //if no extension is given, use svg
+      return generateFilePath(app, 'img', file + '.svg');
+    }
+
+    return generateFilePath(app, 'img', file);
+  };
+  /**
+   * Get the url with webroot for a file in an app
+   *
+   * @param {string} app the id of the app
+   * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
+   * @param {string} file the filename
+   * @return {string} URL with webroot for a file in an app
+   */
+
+
+  exports.imagePath = imagePath;
+
+  const generateFilePath = (app, type, file) => {
+    const isCore = OC.coreApps.indexOf(app) !== -1;
+    let link = getRootUrl();
+
+    if (file.substring(file.length - 3) === 'php' && !isCore) {
+      link += '/index.php/apps/' + app;
+
+      if (file !== 'index.php') {
+        link += '/';
+
+        if (type) {
+          link += encodeURI(type + '/');
+        }
+
+        link += file;
+      }
+    } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
+      link = OC.appswebroots[app];
+
+      if (type) {
+        link += '/' + type + '/';
+      }
+
+      if (link.substring(link.length - 1) !== '/') {
+        link += '/';
+      }
+
+      link += file;
+    } else {
+      if ((app === 'settings' || app === 'core' || app === 'search') && type === 'ajax') {
+        link += '/index.php/';
+      } else {
+        link += '/';
+      }
+
+      if (!isCore) {
+        link += 'apps/';
+      }
+
+      if (app !== '') {
+        app += '/';
+        link += app;
+      }
+
+      if (type) {
+        link += type + '/';
+      }
+
+      link += file;
+    }
+
+    return link;
+  };
+  /**
+   * Return the web root path where this Nextcloud instance
+   * is accessible, with a leading slash.
+   * For example "/nextcloud".
+   *
+   * @return {string} web root path
+   */
+
+
+  exports.generateFilePath = generateFilePath;
+
+  const getRootUrl = () => OC.webroot;
+
+  exports.getRootUrl = getRootUrl;
+  });
+
+  unwrapExports(dist$1);
+  dist$1.getRootUrl;
+  dist$1.generateFilePath;
+  dist$1.imagePath;
+  var dist_4 = dist$1.generateUrl;
+  dist$1.generateOcsUrl;
+  dist$1.generateRemoteUrl;
+  dist$1.linkTo;
+
   var PagePjax = function PagePjax(reload) {
     _classCallCheck$1(this, PagePjax);
 
@@ -24319,7 +24551,7 @@
     document.addEventListener("pjax:error", function (error) {
       // Catch session timeout and redirect to login
       if (error && error.request && error.request.status === 401) {
-        document.location.href = "".concat(OC.generateUrl("login"), "?redirect_url=").concat(OC.generateUrl("timemanager", "index"));
+        document.location.href = "".concat(dist_4("login"), "?redirect_url=").concat(dist_4("timemanager", "index"));
       }
 
       document.body.classList.remove("loading");
@@ -27985,8 +28217,8 @@
           props: _objectSpread2(_objectSpread2({}, store), {}, {
             timeUuid: button.getAttribute("data-uuid"),
             editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-            timeEditorButtonCaption: dist_4("timemanager", "Edit"),
-            timeEditorCaption: dist_4("timemanager", "Edit time entry"),
+            timeEditorButtonCaption: dist_4$1("timemanager", "Edit"),
+            timeEditorCaption: dist_4$1("timemanager", "Edit time entry"),
             requestToken: token
           })
         }));
