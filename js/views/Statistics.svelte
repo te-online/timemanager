@@ -28,9 +28,10 @@
 	import differenceInMonths from "date-fns/differenceInMonths";
 	import differenceInYears from "date-fns/differenceInYears";
 	import addYears from "date-fns/addYears";
-	import { getFirstDay, translate } from "@nextcloud/l10n";
+	import { translate } from "@nextcloud/l10n";
+	import { Helpers } from "../lib/helpers";
 
-	const localeOptions = { weekStartsOn: getFirstDay() };
+	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
 
 	export let start = format(startOfWeek(new Date(), localeOptions), dateFormat, new Date());
@@ -162,30 +163,31 @@
 	const formatDateForScale = (date, type) => {
 		if (type === "primary") {
 			if (scale === "year") {
-				return format(date, "yyyy");
+				return format(date, "yyyy", localeOptions);
 			}
 			if (scale === "month") {
-				return format(date, "LLL");
+				return format(date, "LLL", localeOptions);
 			}
 			if (scale === "week") {
-				return `${translate("timemanager", "Week")} ${format(date, "w")}`;
+				return `${translate("timemanager", "Week")} ${format(date, "w", localeOptions)}`;
 			}
-			return format(date, "iii");
+			return format(date, "iii", localeOptions);
 		}
 		if (type === "secondary") {
 			if (scale === "year") {
 				return "";
 			}
 			if (scale === "month") {
-				return format(date, "yyyy");
+				return format(date, "yyyy", localeOptions);
 			}
 			if (scale === "week") {
-				return `${format(startOfWeek(date, localeOptions), "d.M.")} - ${format(
+				return `${format(startOfWeek(date, localeOptions), "d.M.", localeOptions)} - ${format(
 					endOfWeek(date, localeOptions),
-					"d.M."
+					"d.M.",
+					localeOptions
 				)}`;
 			}
-			return format(date, "d.M.");
+			return format(date, "d.M.", localeOptions);
 		}
 	};
 </script>
@@ -236,7 +238,7 @@
 				<span>
 					{translate('timemanager', 'Week')} {currentWeek}
 					<span class="dates">
-						({format(startOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y')} &ndash; {format(endOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y')})
+						({format(startOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y', localeOptions)} &ndash; {format(endOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y', localeOptions)})
 					</span>
 				</span>
 				<span>

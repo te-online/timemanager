@@ -566,17 +566,17 @@
   var process$3 = global_1.process;
   var versions = process$3 && process$3.versions;
   var v8 = versions && versions.v8;
-  var match$1, version;
+  var match$4, version;
 
   if (v8) {
-    match$1 = v8.split('.');
-    version = match$1[0] < 4 ? 1 : match$1[0] + match$1[1];
+    match$4 = v8.split('.');
+    version = match$4[0] < 4 ? 1 : match$4[0] + match$4[1];
   } else if (engineUserAgent) {
-    match$1 = engineUserAgent.match(/Edge\/(\d+)/);
+    match$4 = engineUserAgent.match(/Edge\/(\d+)/);
 
-    if (!match$1 || match$1[1] >= 74) {
-      match$1 = engineUserAgent.match(/Chrome\/(\d+)/);
-      if (match$1) version = match$1[1];
+    if (!match$4 || match$4[1] >= 74) {
+      match$4 = engineUserAgent.match(/Chrome\/(\d+)/);
+      if (match$4) version = match$4[1];
     }
   }
 
@@ -5329,7 +5329,7 @@
     return date;
   }
 
-  var formatDistanceLocale = {
+  var formatDistanceLocale$3 = {
     lessThanXSeconds: {
       one: 'less than a second',
       other: 'less than {{count}} seconds'
@@ -5392,16 +5392,16 @@
       other: 'almost {{count}} years'
     }
   };
-  function formatDistance(token, count, options) {
+  function formatDistance$3(token, count, options) {
     options = options || {};
     var result;
 
-    if (typeof formatDistanceLocale[token] === 'string') {
-      result = formatDistanceLocale[token];
+    if (typeof formatDistanceLocale$3[token] === 'string') {
+      result = formatDistanceLocale$3[token];
     } else if (count === 1) {
-      result = formatDistanceLocale[token].one;
+      result = formatDistanceLocale$3[token].one;
     } else {
-      result = formatDistanceLocale[token].other.replace('{{count}}', count);
+      result = formatDistanceLocale$3[token].other.replace('{{count}}', count);
     }
 
     if (options.addSuffix) {
@@ -5424,40 +5424,40 @@
     };
   }
 
-  var dateFormats = {
+  var dateFormats$3 = {
     full: 'EEEE, MMMM do, y',
     long: 'MMMM do, y',
     medium: 'MMM d, y',
     short: 'MM/dd/yyyy'
   };
-  var timeFormats = {
+  var timeFormats$3 = {
     full: 'h:mm:ss a zzzz',
     long: 'h:mm:ss a z',
     medium: 'h:mm:ss a',
     short: 'h:mm a'
   };
-  var dateTimeFormats = {
+  var dateTimeFormats$3 = {
     full: "{{date}} 'at' {{time}}",
     long: "{{date}} 'at' {{time}}",
     medium: '{{date}}, {{time}}',
     short: '{{date}}, {{time}}'
   };
-  var formatLong = {
+  var formatLong$3 = {
     date: buildFormatLongFn({
-      formats: dateFormats,
+      formats: dateFormats$3,
       defaultWidth: 'full'
     }),
     time: buildFormatLongFn({
-      formats: timeFormats,
+      formats: timeFormats$3,
       defaultWidth: 'full'
     }),
     dateTime: buildFormatLongFn({
-      formats: dateTimeFormats,
+      formats: dateTimeFormats$3,
       defaultWidth: 'full'
     })
   };
 
-  var formatRelativeLocale = {
+  var formatRelativeLocale$3 = {
     lastWeek: "'last' eeee 'at' p",
     yesterday: "'yesterday at' p",
     today: "'today at' p",
@@ -5465,8 +5465,8 @@
     nextWeek: "eeee 'at' p",
     other: 'P'
   };
-  function formatRelative(token, _date, _baseDate, _options) {
-    return formatRelativeLocale[token];
+  function formatRelative$3(token, _date, _baseDate, _options) {
+    return formatRelativeLocale$3[token];
   }
 
   function buildLocalizeFn(args) {
@@ -5492,12 +5492,12 @@
     };
   }
 
-  var eraValues = {
+  var eraValues$3 = {
     narrow: ['B', 'A'],
     abbreviated: ['BC', 'AD'],
     wide: ['Before Christ', 'Anno Domini']
   };
-  var quarterValues = {
+  var quarterValues$3 = {
     narrow: ['1', '2', '3', '4'],
     abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
     wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter'] // Note: in English, the names of days of the week and months are capitalized.
@@ -5506,18 +5506,18 @@
     // e.g. in Spanish language the weekdays and months should be in the lowercase.
 
   };
-  var monthValues = {
+  var monthValues$3 = {
     narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
     abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     wide: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   };
-  var dayValues = {
+  var dayValues$3 = {
     narrow: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
     short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
     abbreviated: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     wide: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   };
-  var dayPeriodValues = {
+  var dayPeriodValues$3 = {
     narrow: {
       am: 'a',
       pm: 'p',
@@ -5549,7 +5549,7 @@
       night: 'night'
     }
   };
-  var formattingDayPeriodValues = {
+  var formattingDayPeriodValues$2 = {
     narrow: {
       am: 'a',
       pm: 'p',
@@ -5582,7 +5582,7 @@
     }
   };
 
-  function ordinalNumber(dirtyNumber, _dirtyOptions) {
+  function ordinalNumber$3(dirtyNumber, _dirtyOptions) {
     var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
     // if they are different for different grammatical genders,
     // use `options.unit`:
@@ -5611,31 +5611,31 @@
     return number + 'th';
   }
 
-  var localize = {
-    ordinalNumber: ordinalNumber,
+  var localize$3 = {
+    ordinalNumber: ordinalNumber$3,
     era: buildLocalizeFn({
-      values: eraValues,
+      values: eraValues$3,
       defaultWidth: 'wide'
     }),
     quarter: buildLocalizeFn({
-      values: quarterValues,
+      values: quarterValues$3,
       defaultWidth: 'wide',
       argumentCallback: function (quarter) {
         return Number(quarter) - 1;
       }
     }),
     month: buildLocalizeFn({
-      values: monthValues,
+      values: monthValues$3,
       defaultWidth: 'wide'
     }),
     day: buildLocalizeFn({
-      values: dayValues,
+      values: dayValues$3,
       defaultWidth: 'wide'
     }),
     dayPeriod: buildLocalizeFn({
-      values: dayPeriodValues,
+      values: dayPeriodValues$3,
       defaultWidth: 'wide',
-      formattingValues: formattingDayPeriodValues,
+      formattingValues: formattingDayPeriodValues$2,
       defaultFormattingWidth: 'wide'
     })
   };
@@ -5717,48 +5717,48 @@
     }
   }
 
-  var matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i;
-  var parseOrdinalNumberPattern = /\d+/i;
-  var matchEraPatterns = {
+  var matchOrdinalNumberPattern$3 = /^(\d+)(th|st|nd|rd)?/i;
+  var parseOrdinalNumberPattern$3 = /\d+/i;
+  var matchEraPatterns$3 = {
     narrow: /^(b|a)/i,
     abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
     wide: /^(before christ|before common era|anno domini|common era)/i
   };
-  var parseEraPatterns = {
+  var parseEraPatterns$3 = {
     any: [/^b/i, /^(a|c)/i]
   };
-  var matchQuarterPatterns = {
+  var matchQuarterPatterns$3 = {
     narrow: /^[1234]/i,
     abbreviated: /^q[1234]/i,
     wide: /^[1234](th|st|nd|rd)? quarter/i
   };
-  var parseQuarterPatterns = {
+  var parseQuarterPatterns$3 = {
     any: [/1/i, /2/i, /3/i, /4/i]
   };
-  var matchMonthPatterns = {
+  var matchMonthPatterns$3 = {
     narrow: /^[jfmasond]/i,
     abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
     wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
   };
-  var parseMonthPatterns = {
+  var parseMonthPatterns$3 = {
     narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
     any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^may/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
   };
-  var matchDayPatterns = {
+  var matchDayPatterns$3 = {
     narrow: /^[smtwf]/i,
     short: /^(su|mo|tu|we|th|fr|sa)/i,
     abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
     wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
   };
-  var parseDayPatterns = {
+  var parseDayPatterns$3 = {
     narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
     any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
   };
-  var matchDayPeriodPatterns = {
+  var matchDayPeriodPatterns$3 = {
     narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
     any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
   };
-  var parseDayPeriodPatterns = {
+  var parseDayPeriodPatterns$3 = {
     any: {
       am: /^a/i,
       pm: /^p/i,
@@ -5770,45 +5770,45 @@
       night: /night/i
     }
   };
-  var match = {
+  var match$3 = {
     ordinalNumber: buildMatchPatternFn({
-      matchPattern: matchOrdinalNumberPattern,
-      parsePattern: parseOrdinalNumberPattern,
+      matchPattern: matchOrdinalNumberPattern$3,
+      parsePattern: parseOrdinalNumberPattern$3,
       valueCallback: function (value) {
         return parseInt(value, 10);
       }
     }),
     era: buildMatchFn({
-      matchPatterns: matchEraPatterns,
+      matchPatterns: matchEraPatterns$3,
       defaultMatchWidth: 'wide',
-      parsePatterns: parseEraPatterns,
+      parsePatterns: parseEraPatterns$3,
       defaultParseWidth: 'any'
     }),
     quarter: buildMatchFn({
-      matchPatterns: matchQuarterPatterns,
+      matchPatterns: matchQuarterPatterns$3,
       defaultMatchWidth: 'wide',
-      parsePatterns: parseQuarterPatterns,
+      parsePatterns: parseQuarterPatterns$3,
       defaultParseWidth: 'any',
       valueCallback: function (index) {
         return index + 1;
       }
     }),
     month: buildMatchFn({
-      matchPatterns: matchMonthPatterns,
+      matchPatterns: matchMonthPatterns$3,
       defaultMatchWidth: 'wide',
-      parsePatterns: parseMonthPatterns,
+      parsePatterns: parseMonthPatterns$3,
       defaultParseWidth: 'any'
     }),
     day: buildMatchFn({
-      matchPatterns: matchDayPatterns,
+      matchPatterns: matchDayPatterns$3,
       defaultMatchWidth: 'wide',
-      parsePatterns: parseDayPatterns,
+      parsePatterns: parseDayPatterns$3,
       defaultParseWidth: 'any'
     }),
     dayPeriod: buildMatchFn({
-      matchPatterns: matchDayPeriodPatterns,
+      matchPatterns: matchDayPeriodPatterns$3,
       defaultMatchWidth: 'any',
-      parsePatterns: parseDayPeriodPatterns,
+      parsePatterns: parseDayPeriodPatterns$3,
       defaultParseWidth: 'any'
     })
   };
@@ -5823,13 +5823,13 @@
    * @author Lesha Koss [@leshakoss]{@link https://github.com/leshakoss}
    */
 
-  var locale = {
+  var locale$3 = {
     code: 'en-US',
-    formatDistance: formatDistance,
-    formatLong: formatLong,
-    formatRelative: formatRelative,
-    localize: localize,
-    match: match,
+    formatDistance: formatDistance$3,
+    formatLong: formatLong$3,
+    formatRelative: formatRelative$3,
+    localize: localize$3,
+    match: match$3,
     options: {
       weekStartsOn: 0
       /* Sunday */
@@ -7431,8 +7431,8 @@
     requiredArgs(2, arguments);
     var formatStr = String(dirtyFormatStr);
     var options = dirtyOptions || {};
-    var locale$1 = options.locale || locale;
-    var localeFirstWeekContainsDate = locale$1.options && locale$1.options.firstWeekContainsDate;
+    var locale = options.locale || locale$3;
+    var localeFirstWeekContainsDate = locale.options && locale.options.firstWeekContainsDate;
     var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger(localeFirstWeekContainsDate);
     var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
@@ -7440,7 +7440,7 @@
       throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
     }
 
-    var localeWeekStartsOn = locale$1.options && locale$1.options.weekStartsOn;
+    var localeWeekStartsOn = locale.options && locale.options.weekStartsOn;
     var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger(localeWeekStartsOn);
     var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
@@ -7448,11 +7448,11 @@
       throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
     }
 
-    if (!locale$1.localize) {
+    if (!locale.localize) {
       throw new RangeError('locale must contain localize property');
     }
 
-    if (!locale$1.formatLong) {
+    if (!locale.formatLong) {
       throw new RangeError('locale must contain formatLong property');
     }
 
@@ -7470,7 +7470,7 @@
     var formatterOptions = {
       firstWeekContainsDate: firstWeekContainsDate,
       weekStartsOn: weekStartsOn,
-      locale: locale$1,
+      locale: locale,
       _originalDate: originalDate
     };
     var result = formatStr.match(longFormattingTokensRegExp$1).map(function (substring) {
@@ -7478,7 +7478,7 @@
 
       if (firstCharacter === 'p' || firstCharacter === 'P') {
         var longFormatter = longFormatters[firstCharacter];
-        return longFormatter(substring, locale$1.formatLong, formatterOptions);
+        return longFormatter(substring, locale.formatLong, formatterOptions);
       }
 
       return substring;
@@ -7505,7 +7505,7 @@
           throwProtectedError(substring, dirtyFormatStr, dirtyDate);
         }
 
-        return formatter(utcDate, substring, locale$1.localize, formatterOptions);
+        return formatter(utcDate, substring, locale.localize, formatterOptions);
       }
 
       if (firstCharacter.match(unescapedLatinCharacterRegExp$1)) {
@@ -9794,13 +9794,13 @@
     var dateString = String(dirtyDateString);
     var formatString = String(dirtyFormatString);
     var options = dirtyOptions || {};
-    var locale$1 = options.locale || locale;
+    var locale = options.locale || locale$3;
 
-    if (!locale$1.match) {
+    if (!locale.match) {
       throw new RangeError('locale must contain match property');
     }
 
-    var localeFirstWeekContainsDate = locale$1.options && locale$1.options.firstWeekContainsDate;
+    var localeFirstWeekContainsDate = locale.options && locale.options.firstWeekContainsDate;
     var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger(localeFirstWeekContainsDate);
     var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
@@ -9808,7 +9808,7 @@
       throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
     }
 
-    var localeWeekStartsOn = locale$1.options && locale$1.options.weekStartsOn;
+    var localeWeekStartsOn = locale.options && locale.options.weekStartsOn;
     var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger(localeWeekStartsOn);
     var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
@@ -9827,7 +9827,7 @@
     var subFnOptions = {
       firstWeekContainsDate: firstWeekContainsDate,
       weekStartsOn: weekStartsOn,
-      locale: locale$1 // If timezone isn't specified, it will be set to the system timezone
+      locale: locale // If timezone isn't specified, it will be set to the system timezone
 
     };
     var setters = [{
@@ -9842,7 +9842,7 @@
 
       if (firstCharacter === 'p' || firstCharacter === 'P') {
         var longFormatter = longFormatters[firstCharacter];
-        return longFormatter(substring, locale$1.formatLong, subFnOptions);
+        return longFormatter(substring, locale.formatLong, subFnOptions);
       }
 
       return substring;
@@ -9889,7 +9889,7 @@
           token: firstCharacter,
           fullToken: token
         });
-        var parseResult = parser.parse(dateString, token, locale$1.match, subFnOptions);
+        var parseResult = parser.parse(dateString, token, locale.match, subFnOptions);
 
         if (!parseResult) {
           return new Date(NaN);
@@ -10728,7 +10728,7 @@
   });
 
   unwrapExports(dist);
-  dist.getLocale;
+  var dist_1 = dist.getLocale;
   dist.getCanonicalLocale;
   dist.getLanguage;
   var dist_4 = dist.translate;
@@ -10740,12 +10740,1461 @@
   dist.getMonthNames;
   dist.getMonthNamesShort;
 
+  var MATCH = wellKnownSymbol('match'); // `IsRegExp` abstract operation
+  // https://tc39.es/ecma262/#sec-isregexp
+
+  var isRegexp = function (it) {
+    var isRegExp;
+    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
+  };
+
+  var UNSUPPORTED_Y = regexpStickyHelpers.UNSUPPORTED_Y;
+  var arrayPush = [].push;
+  var min = Math.min;
+  var MAX_UINT32 = 0xFFFFFFFF; // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
+
+  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
+    // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    var re = /(?:)/;
+    var originalExec = re.exec;
+
+    re.exec = function () {
+      return originalExec.apply(this, arguments);
+    };
+
+    var result = 'ab'.split(re);
+    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+  }); // @@split logic
+
+  fixRegexpWellKnownSymbolLogic('split', function (SPLIT, nativeSplit, maybeCallNative) {
+    var internalSplit;
+
+    if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
+    '.'.split(/()()/).length > 1 || ''.split(/.?/).length) {
+      // based on es5-shim implementation, need to rework it
+      internalSplit = function (separator, limit) {
+        var string = String(requireObjectCoercible(this));
+        var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+        if (lim === 0) return [];
+        if (separator === undefined) return [string]; // If `separator` is not a regex, use native split
+
+        if (!isRegexp(separator)) {
+          return nativeSplit.call(string, separator, lim);
+        }
+
+        var output = [];
+        var flags = (separator.ignoreCase ? 'i' : '') + (separator.multiline ? 'm' : '') + (separator.unicode ? 'u' : '') + (separator.sticky ? 'y' : '');
+        var lastLastIndex = 0; // Make `global` and avoid `lastIndex` issues by working with a copy
+
+        var separatorCopy = new RegExp(separator.source, flags + 'g');
+        var match, lastIndex, lastLength;
+
+        while (match = regexpExec.call(separatorCopy, string)) {
+          lastIndex = separatorCopy.lastIndex;
+
+          if (lastIndex > lastLastIndex) {
+            output.push(string.slice(lastLastIndex, match.index));
+            if (match.length > 1 && match.index < string.length) arrayPush.apply(output, match.slice(1));
+            lastLength = match[0].length;
+            lastLastIndex = lastIndex;
+            if (output.length >= lim) break;
+          }
+
+          if (separatorCopy.lastIndex === match.index) separatorCopy.lastIndex++; // Avoid an infinite loop
+        }
+
+        if (lastLastIndex === string.length) {
+          if (lastLength || !separatorCopy.test('')) output.push('');
+        } else output.push(string.slice(lastLastIndex));
+
+        return output.length > lim ? output.slice(0, lim) : output;
+      }; // Chakra, V8
+
+    } else if ('0'.split(undefined, 0).length) {
+      internalSplit = function (separator, limit) {
+        return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
+      };
+    } else internalSplit = nativeSplit;
+
+    return [// `String.prototype.split` method
+    // https://tc39.es/ecma262/#sec-string.prototype.split
+    function split(separator, limit) {
+      var O = requireObjectCoercible(this);
+      var splitter = separator == undefined ? undefined : separator[SPLIT];
+      return splitter !== undefined ? splitter.call(separator, O, limit) : internalSplit.call(String(O), separator, limit);
+    }, // `RegExp.prototype[@@split]` method
+    // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
+    //
+    // NOTE: This cannot be properly polyfilled in engines that don't support
+    // the 'y' flag.
+    function (string, limit) {
+      var res = maybeCallNative(internalSplit, this, string, limit, internalSplit !== nativeSplit);
+      if (res.done) return res.value;
+      var rx = anObject(this);
+      var S = String(string);
+      var C = speciesConstructor(rx, RegExp);
+      var unicodeMatching = rx.unicode;
+      var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
+      // simulate the 'y' flag.
+
+      var splitter = new C(UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
+      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+      if (lim === 0) return [];
+      if (S.length === 0) return regexpExecAbstract(splitter, S) === null ? [S] : [];
+      var p = 0;
+      var q = 0;
+      var A = [];
+
+      while (q < S.length) {
+        splitter.lastIndex = UNSUPPORTED_Y ? 0 : q;
+        var z = regexpExecAbstract(splitter, UNSUPPORTED_Y ? S.slice(q) : S);
+        var e;
+
+        if (z === null || (e = min(toLength(splitter.lastIndex + (UNSUPPORTED_Y ? q : 0)), S.length)) === p) {
+          q = advanceStringIndex(S, q, unicodeMatching);
+        } else {
+          A.push(S.slice(p, q));
+          if (A.length === lim) return A;
+
+          for (var i = 1; i <= z.length - 1; i++) {
+            A.push(z[i]);
+            if (A.length === lim) return A;
+          }
+
+          q = p = e;
+        }
+      }
+
+      A.push(S.slice(p));
+      return A;
+    }];
+  }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC, UNSUPPORTED_Y);
+
+  var nativeJoin = [].join;
+  var ES3_STRINGS = indexedObject != Object;
+  var STRICT_METHOD = arrayMethodIsStrict('join', ','); // `Array.prototype.join` method
+  // https://tc39.es/ecma262/#sec-array.prototype.join
+
+  _export({
+    target: 'Array',
+    proto: true,
+    forced: ES3_STRINGS || !STRICT_METHOD
+  }, {
+    join: function join(separator) {
+      return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
+    }
+  });
+
+  var FAILS_ON_PRIMITIVES = fails(function () {
+    objectKeys(1);
+  }); // `Object.keys` method
+  // https://tc39.es/ecma262/#sec-object.keys
+
+  _export({
+    target: 'Object',
+    stat: true,
+    forced: FAILS_ON_PRIMITIVES
+  }, {
+    keys: function keys(it) {
+      return objectKeys(toObject(it));
+    }
+  });
+
+  var formatDistanceLocale$2 = {
+    lessThanXSeconds: {
+      standalone: {
+        one: 'weniger als eine Sekunde',
+        other: 'weniger als {{count}} Sekunden'
+      },
+      withPreposition: {
+        one: 'weniger als einer Sekunde',
+        other: 'weniger als {{count}} Sekunden'
+      }
+    },
+    xSeconds: {
+      standalone: {
+        one: 'eine Sekunde',
+        other: '{{count}} Sekunden'
+      },
+      withPreposition: {
+        one: 'einer Sekunde',
+        other: '{{count}} Sekunden'
+      }
+    },
+    halfAMinute: {
+      standalone: 'eine halbe Minute',
+      withPreposition: 'einer halben Minute'
+    },
+    lessThanXMinutes: {
+      standalone: {
+        one: 'weniger als eine Minute',
+        other: 'weniger als {{count}} Minuten'
+      },
+      withPreposition: {
+        one: 'weniger als einer Minute',
+        other: 'weniger als {{count}} Minuten'
+      }
+    },
+    xMinutes: {
+      standalone: {
+        one: 'eine Minute',
+        other: '{{count}} Minuten'
+      },
+      withPreposition: {
+        one: 'einer Minute',
+        other: '{{count}} Minuten'
+      }
+    },
+    aboutXHours: {
+      standalone: {
+        one: 'etwa eine Stunde',
+        other: 'etwa {{count}} Stunden'
+      },
+      withPreposition: {
+        one: 'etwa einer Stunde',
+        other: 'etwa {{count}} Stunden'
+      }
+    },
+    xHours: {
+      standalone: {
+        one: 'eine Stunde',
+        other: '{{count}} Stunden'
+      },
+      withPreposition: {
+        one: 'einer Stunde',
+        other: '{{count}} Stunden'
+      }
+    },
+    xDays: {
+      standalone: {
+        one: 'ein Tag',
+        other: '{{count}} Tage'
+      },
+      withPreposition: {
+        one: 'einem Tag',
+        other: '{{count}} Tagen'
+      }
+    },
+    aboutXWeeks: {
+      standalone: {
+        one: 'etwa ein Woche',
+        other: 'etwa {{count}} Wochen'
+      },
+      withPreposition: {
+        one: 'etwa einem Woche',
+        other: 'etwa {{count}} Wochen'
+      }
+    },
+    xWeeks: {
+      standalone: {
+        one: 'ein Woche',
+        other: '{{count}} Wochen'
+      },
+      withPreposition: {
+        one: 'einem Woche',
+        other: '{{count}} Wochen'
+      }
+    },
+    aboutXMonths: {
+      standalone: {
+        one: 'etwa ein Monat',
+        other: 'etwa {{count}} Monate'
+      },
+      withPreposition: {
+        one: 'etwa einem Monat',
+        other: 'etwa {{count}} Monaten'
+      }
+    },
+    xMonths: {
+      standalone: {
+        one: 'ein Monat',
+        other: '{{count}} Monate'
+      },
+      withPreposition: {
+        one: 'einem Monat',
+        other: '{{count}} Monaten'
+      }
+    },
+    aboutXYears: {
+      standalone: {
+        one: 'etwa ein Jahr',
+        other: 'etwa {{count}} Jahre'
+      },
+      withPreposition: {
+        one: 'etwa einem Jahr',
+        other: 'etwa {{count}} Jahren'
+      }
+    },
+    xYears: {
+      standalone: {
+        one: 'ein Jahr',
+        other: '{{count}} Jahre'
+      },
+      withPreposition: {
+        one: 'einem Jahr',
+        other: '{{count}} Jahren'
+      }
+    },
+    overXYears: {
+      standalone: {
+        one: 'mehr als ein Jahr',
+        other: 'mehr als {{count}} Jahre'
+      },
+      withPreposition: {
+        one: 'mehr als einem Jahr',
+        other: 'mehr als {{count}} Jahren'
+      }
+    },
+    almostXYears: {
+      standalone: {
+        one: 'fast ein Jahr',
+        other: 'fast {{count}} Jahre'
+      },
+      withPreposition: {
+        one: 'fast einem Jahr',
+        other: 'fast {{count}} Jahren'
+      }
+    }
+  };
+  function formatDistance$2(token, count, options) {
+    options = options || {};
+    var usageGroup = options.addSuffix ? formatDistanceLocale$2[token].withPreposition : formatDistanceLocale$2[token].standalone;
+    var result;
+
+    if (typeof usageGroup === 'string') {
+      result = usageGroup;
+    } else if (count === 1) {
+      result = usageGroup.one;
+    } else {
+      result = usageGroup.other.replace('{{count}}', count);
+    }
+
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'in ' + result;
+      } else {
+        return 'vor ' + result;
+      }
+    }
+
+    return result;
+  }
+
+  var dateFormats$2 = {
+    full: 'EEEE, do MMMM y',
+    // Montag, 7. Januar 2018
+    long: 'do MMMM y',
+    // 7. Januar 2018
+    medium: 'do MMM. y',
+    // 7. Jan. 2018
+    short: 'dd.MM.y' // 07.01.2018
+
+  };
+  var timeFormats$2 = {
+    full: 'HH:mm:ss zzzz',
+    long: 'HH:mm:ss z',
+    medium: 'HH:mm:ss',
+    short: 'HH:mm'
+  };
+  var dateTimeFormats$2 = {
+    full: "{{date}} 'um' {{time}}",
+    long: "{{date}} 'um' {{time}}",
+    medium: '{{date}} {{time}}',
+    short: '{{date}} {{time}}'
+  };
+  var formatLong$2 = {
+    date: buildFormatLongFn({
+      formats: dateFormats$2,
+      defaultWidth: 'full'
+    }),
+    time: buildFormatLongFn({
+      formats: timeFormats$2,
+      defaultWidth: 'full'
+    }),
+    dateTime: buildFormatLongFn({
+      formats: dateTimeFormats$2,
+      defaultWidth: 'full'
+    })
+  };
+
+  var formatRelativeLocale$2 = {
+    lastWeek: "'letzten' eeee 'um' p",
+    yesterday: "'gestern um' p",
+    today: "'heute um' p",
+    tomorrow: "'morgen um' p",
+    nextWeek: "eeee 'um' p",
+    other: 'P'
+  };
+  function formatRelative$2(token, _date, _baseDate, _options) {
+    return formatRelativeLocale$2[token];
+  }
+
+  var eraValues$2 = {
+    narrow: ['v.Chr.', 'n.Chr.'],
+    abbreviated: ['v.Chr.', 'n.Chr.'],
+    wide: ['vor Christus', 'nach Christus']
+  };
+  var quarterValues$2 = {
+    narrow: ['1', '2', '3', '4'],
+    abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
+    wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal'] // Note: in German, the names of days of the week and months are capitalized.
+    // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+    // Generally, formatted dates should look like they are in the middle of a sentence,
+    // e.g. in Spanish language the weekdays and months should be in the lowercase.
+
+  };
+  var monthValues$2 = {
+    narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+    abbreviated: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+    wide: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+  };
+  var dayValues$2 = {
+    narrow: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
+    short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+    abbreviated: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
+    wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'] // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
+
+  };
+  var dayPeriodValues$2 = {
+    narrow: {
+      am: 'vm.',
+      pm: 'nm.',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'Morgen',
+      afternoon: 'Nachm.',
+      evening: 'Abend',
+      night: 'Nacht'
+    },
+    abbreviated: {
+      am: 'vorm.',
+      pm: 'nachm.',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'Morgen',
+      afternoon: 'Nachmittag',
+      evening: 'Abend',
+      night: 'Nacht'
+    },
+    wide: {
+      am: 'vormittags',
+      pm: 'nachmittags',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'Morgen',
+      afternoon: 'Nachmittag',
+      evening: 'Abend',
+      night: 'Nacht'
+    }
+  };
+  var formattingDayPeriodValues$1 = {
+    narrow: {
+      am: 'vm.',
+      pm: 'nm.',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'morgens',
+      afternoon: 'nachm.',
+      evening: 'abends',
+      night: 'nachts'
+    },
+    abbreviated: {
+      am: 'vorm.',
+      pm: 'nachm.',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'morgens',
+      afternoon: 'nachmittags',
+      evening: 'abends',
+      night: 'nachts'
+    },
+    wide: {
+      am: 'vormittags',
+      pm: 'nachmittags',
+      midnight: 'Mitternacht',
+      noon: 'Mittag',
+      morning: 'morgens',
+      afternoon: 'nachmittags',
+      evening: 'abends',
+      night: 'nachts'
+    }
+  };
+
+  function ordinalNumber$2(dirtyNumber, _dirtyOptions) {
+    var number = Number(dirtyNumber);
+    return number + '.';
+  }
+
+  var localize$2 = {
+    ordinalNumber: ordinalNumber$2,
+    era: buildLocalizeFn({
+      values: eraValues$2,
+      defaultWidth: 'wide'
+    }),
+    quarter: buildLocalizeFn({
+      values: quarterValues$2,
+      defaultWidth: 'wide',
+      argumentCallback: function (quarter) {
+        return Number(quarter) - 1;
+      }
+    }),
+    month: buildLocalizeFn({
+      values: monthValues$2,
+      defaultWidth: 'wide'
+    }),
+    day: buildLocalizeFn({
+      values: dayValues$2,
+      defaultWidth: 'wide'
+    }),
+    dayPeriod: buildLocalizeFn({
+      values: dayPeriodValues$2,
+      defaultWidth: 'wide',
+      formattingValues: formattingDayPeriodValues$1,
+      defaultFormattingWidth: 'wide'
+    })
+  };
+
+  var matchOrdinalNumberPattern$2 = /^(\d+)(\.)?/i;
+  var parseOrdinalNumberPattern$2 = /\d+/i;
+  var matchEraPatterns$2 = {
+    narrow: /^(v\.? ?Chr\.?|n\.? ?Chr\.?)/i,
+    abbreviated: /^(v\.? ?Chr\.?|n\.? ?Chr\.?)/i,
+    wide: /^(vor Christus|vor unserer Zeitrechnung|nach Christus|unserer Zeitrechnung)/i
+  };
+  var parseEraPatterns$2 = {
+    any: [/^v/i, /^n/i]
+  };
+  var matchQuarterPatterns$2 = {
+    narrow: /^[1234]/i,
+    abbreviated: /^q[1234]/i,
+    wide: /^[1234](\.)? Quartal/i
+  };
+  var parseQuarterPatterns$2 = {
+    any: [/1/i, /2/i, /3/i, /4/i]
+  };
+  var matchMonthPatterns$2 = {
+    narrow: /^[jfmasond]/i,
+    abbreviated: /^(jan|feb|mär|apr|mai|jun|jul|aug|sep|okt|nov|dez)/i,
+    wide: /^(januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)/i
+  };
+  var parseMonthPatterns$2 = {
+    narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
+    any: [/^ja/i, /^f/i, /^mär/i, /^ap/i, /^mai/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
+  };
+  var matchDayPatterns$2 = {
+    narrow: /^[smdmf]/i,
+    short: /^(so|mo|di|mi|do|fr|sa)/i,
+    abbreviated: /^(son?|mon?|die?|mit?|don?|fre?|sam?)\.?/i,
+    wide: /^(sonntag|montag|dienstag|mittwoch|donnerstag|freitag|samstag)/i
+  };
+  var parseDayPatterns$2 = {
+    any: [/^so/i, /^mo/i, /^di/i, /^mi/i, /^do/i, /^f/i, /^sa/i]
+  };
+  var matchDayPeriodPatterns$2 = {
+    narrow: /^(vm\.?|nm\.?|Mitternacht|Mittag|morgens|nachm\.?|abends|nachts)/i,
+    abbreviated: /^(vorm\.?|nachm\.?|Mitternacht|Mittag|morgens|nachm\.?|abends|nachts)/i,
+    wide: /^(vormittags|nachmittags|Mitternacht|Mittag|morgens|nachmittags|abends|nachts)/i
+  };
+  var parseDayPeriodPatterns$2 = {
+    any: {
+      am: /^v/i,
+      pm: /^n/i,
+      midnight: /^Mitte/i,
+      noon: /^Mitta/i,
+      morning: /morgens/i,
+      afternoon: /nachmittags/i,
+      // will never be matched. Afternoon is matched by `pm`
+      evening: /abends/i,
+      night: /nachts/i // will never be matched. Night is matched by `pm`
+
+    }
+  };
+  var match$2 = {
+    ordinalNumber: buildMatchPatternFn({
+      matchPattern: matchOrdinalNumberPattern$2,
+      parsePattern: parseOrdinalNumberPattern$2,
+      valueCallback: function (value) {
+        return parseInt(value, 10);
+      }
+    }),
+    era: buildMatchFn({
+      matchPatterns: matchEraPatterns$2,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseEraPatterns$2,
+      defaultParseWidth: 'any'
+    }),
+    quarter: buildMatchFn({
+      matchPatterns: matchQuarterPatterns$2,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseQuarterPatterns$2,
+      defaultParseWidth: 'any',
+      valueCallback: function (index) {
+        return index + 1;
+      }
+    }),
+    month: buildMatchFn({
+      matchPatterns: matchMonthPatterns$2,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseMonthPatterns$2,
+      defaultParseWidth: 'any'
+    }),
+    day: buildMatchFn({
+      matchPatterns: matchDayPatterns$2,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseDayPatterns$2,
+      defaultParseWidth: 'any'
+    }),
+    dayPeriod: buildMatchFn({
+      matchPatterns: matchDayPeriodPatterns$2,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseDayPeriodPatterns$2,
+      defaultParseWidth: 'any'
+    })
+  };
+
+  /**
+   * @type {Locale}
+   * @category Locales
+   * @summary German locale.
+   * @language German
+   * @iso-639-2 deu
+   * @author Thomas Eilmsteiner [@DeMuu]{@link https://github.com/DeMuu}
+   * @author Asia [@asia-t]{@link https://github.com/asia-t}
+   * @author Van Vuong Ngo [@vanvuongngo]{@link https://github.com/vanvuongngo}
+   * @author RomanErnst [@pex]{@link https://github.com/pex}
+   * @author Philipp Keck [@Philipp91]{@link https://github.com/Philipp91}
+   */
+
+  var locale$2 = {
+    code: 'de',
+    formatDistance: formatDistance$2,
+    formatLong: formatLong$2,
+    formatRelative: formatRelative$2,
+    localize: localize$2,
+    match: match$2,
+    options: {
+      weekStartsOn: 1
+      /* Monday */
+      ,
+      firstWeekContainsDate: 4
+    }
+  };
+
+  var formatDistanceLocale$1 = {
+    lessThanXSeconds: {
+      one: 'moins d’une seconde',
+      other: 'moins de {{count}} secondes'
+    },
+    xSeconds: {
+      one: '1 seconde',
+      other: '{{count}} secondes'
+    },
+    halfAMinute: '30 secondes',
+    lessThanXMinutes: {
+      one: 'moins d’une minute',
+      other: 'moins de {{count}} minutes'
+    },
+    xMinutes: {
+      one: '1 minute',
+      other: '{{count}} minutes'
+    },
+    aboutXHours: {
+      one: 'environ 1 heure',
+      other: 'environ {{count}} heures'
+    },
+    xHours: {
+      one: '1 heure',
+      other: '{{count}} heures'
+    },
+    xDays: {
+      one: '1 jour',
+      other: '{{count}} jours'
+    },
+    aboutXWeeks: {
+      one: 'environ 1 semaine',
+      other: 'environ {{count}} semaines'
+    },
+    xWeeks: {
+      one: '1 semaine',
+      other: '{{count}} semaines'
+    },
+    aboutXMonths: {
+      one: 'environ 1 mois',
+      other: 'environ {{count}} mois'
+    },
+    xMonths: {
+      one: '1 mois',
+      other: '{{count}} mois'
+    },
+    aboutXYears: {
+      one: 'environ 1 an',
+      other: 'environ {{count}} ans'
+    },
+    xYears: {
+      one: '1 an',
+      other: '{{count}} ans'
+    },
+    overXYears: {
+      one: 'plus d’un an',
+      other: 'plus de {{count}} ans'
+    },
+    almostXYears: {
+      one: 'presqu’un an',
+      other: 'presque {{count}} ans'
+    }
+  };
+  function formatDistance$1(token, count, options) {
+    options = options || {};
+    var result;
+
+    if (typeof formatDistanceLocale$1[token] === 'string') {
+      result = formatDistanceLocale$1[token];
+    } else if (count === 1) {
+      result = formatDistanceLocale$1[token].one;
+    } else {
+      result = formatDistanceLocale$1[token].other.replace('{{count}}', count);
+    }
+
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'dans ' + result;
+      } else {
+        return 'il y a ' + result;
+      }
+    }
+
+    return result;
+  }
+
+  var dateFormats$1 = {
+    full: 'EEEE d MMMM y',
+    long: 'd MMMM y',
+    medium: 'd MMM y',
+    short: 'dd/MM/y'
+  };
+  var timeFormats$1 = {
+    full: 'HH:mm:ss zzzz',
+    long: 'HH:mm:ss z',
+    medium: 'HH:mm:ss',
+    short: 'HH:mm'
+  };
+  var dateTimeFormats$1 = {
+    full: "{{date}} 'à' {{time}}",
+    long: "{{date}} 'à' {{time}}",
+    medium: '{{date}}, {{time}}',
+    short: '{{date}}, {{time}}'
+  };
+  var formatLong$1 = {
+    date: buildFormatLongFn({
+      formats: dateFormats$1,
+      defaultWidth: 'full'
+    }),
+    time: buildFormatLongFn({
+      formats: timeFormats$1,
+      defaultWidth: 'full'
+    }),
+    dateTime: buildFormatLongFn({
+      formats: dateTimeFormats$1,
+      defaultWidth: 'full'
+    })
+  };
+
+  var formatRelativeLocale$1 = {
+    lastWeek: "eeee 'dernier à' p",
+    yesterday: "'hier à' p",
+    today: "'aujourd’hui à' p",
+    tomorrow: "'demain à' p'",
+    nextWeek: "eeee 'prochain à' p",
+    other: 'P'
+  };
+  function formatRelative$1(token, _date, _baseDate, _options) {
+    return formatRelativeLocale$1[token];
+  }
+
+  var eraValues$1 = {
+    narrow: ['av. J.-C', 'ap. J.-C'],
+    abbreviated: ['av. J.-C', 'ap. J.-C'],
+    wide: ['avant Jésus-Christ', 'après Jésus-Christ']
+  };
+  var quarterValues$1 = {
+    narrow: ['T1', 'T2', 'T3', 'T4'],
+    abbreviated: ['1er trim.', '2ème trim.', '3ème trim.', '4ème trim.'],
+    wide: ['1er trimestre', '2ème trimestre', '3ème trimestre', '4ème trimestre']
+  };
+  var monthValues$1 = {
+    narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+    abbreviated: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
+    wide: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+  };
+  var dayValues$1 = {
+    narrow: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    short: ['di', 'lu', 'ma', 'me', 'je', 've', 'sa'],
+    abbreviated: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+    wide: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
+  };
+  var dayPeriodValues$1 = {
+    narrow: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'minuit',
+      noon: 'midi',
+      morning: 'mat.',
+      afternoon: 'ap.m.',
+      evening: 'soir',
+      night: 'mat.'
+    },
+    abbreviated: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'minuit',
+      noon: 'midi',
+      morning: 'matin',
+      afternoon: 'après-midi',
+      evening: 'soir',
+      night: 'matin'
+    },
+    wide: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'minuit',
+      noon: 'midi',
+      morning: 'du matin',
+      afternoon: 'de l’après-midi',
+      evening: 'du soir',
+      night: 'du matin'
+    }
+  };
+
+  function ordinalNumber$1(dirtyNumber, dirtyOptions) {
+    var number = Number(dirtyNumber);
+    var options = dirtyOptions || {};
+    var unit = String(options.unit);
+    var suffix;
+
+    if (number === 0) {
+      return number;
+    }
+
+    if (unit === 'year' || unit === 'hour' || unit === 'week') {
+      if (number === 1) {
+        suffix = 'ère';
+      } else {
+        suffix = 'ème';
+      }
+    } else {
+      if (number === 1) {
+        suffix = 'er';
+      } else {
+        suffix = 'ème';
+      }
+    }
+
+    return number + suffix;
+  }
+
+  var localize$1 = {
+    ordinalNumber: ordinalNumber$1,
+    era: buildLocalizeFn({
+      values: eraValues$1,
+      defaultWidth: 'wide'
+    }),
+    quarter: buildLocalizeFn({
+      values: quarterValues$1,
+      defaultWidth: 'wide',
+      argumentCallback: function (quarter) {
+        return Number(quarter) - 1;
+      }
+    }),
+    month: buildLocalizeFn({
+      values: monthValues$1,
+      defaultWidth: 'wide'
+    }),
+    day: buildLocalizeFn({
+      values: dayValues$1,
+      defaultWidth: 'wide'
+    }),
+    dayPeriod: buildLocalizeFn({
+      values: dayPeriodValues$1,
+      defaultWidth: 'wide'
+    })
+  };
+
+  var matchOrdinalNumberPattern$1 = /^(\d+)(ième|ère|ème|er|e)?/i;
+  var parseOrdinalNumberPattern$1 = /\d+/i;
+  var matchEraPatterns$1 = {
+    narrow: /^(av\.J\.C|ap\.J\.C|ap\.J\.-C)/i,
+    abbreviated: /^(av\.J\.-C|av\.J-C|apr\.J\.-C|apr\.J-C|ap\.J-C)/i,
+    wide: /^(avant Jésus-Christ|après Jésus-Christ)/i
+  };
+  var parseEraPatterns$1 = {
+    any: [/^av/i, /^ap/i]
+  };
+  var matchQuarterPatterns$1 = {
+    narrow: /^[1234]/i,
+    abbreviated: /^t[1234]/i,
+    wide: /^[1234](er|ème|e)? trimestre/i
+  };
+  var parseQuarterPatterns$1 = {
+    any: [/1/i, /2/i, /3/i, /4/i]
+  };
+  var matchMonthPatterns$1 = {
+    narrow: /^[jfmasond]/i,
+    abbreviated: /^(janv|févr|mars|avr|mai|juin|juill|juil|août|sept|oct|nov|déc)\.?/i,
+    wide: /^(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)/i
+  };
+  var parseMonthPatterns$1 = {
+    narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
+    any: [/^ja/i, /^f/i, /^mar/i, /^av/i, /^ma/i, /^juin/i, /^juil/i, /^ao/i, /^s/i, /^o/i, /^n/i, /^d/i]
+  };
+  var matchDayPatterns$1 = {
+    narrow: /^[lmjvsd]/i,
+    short: /^(di|lu|ma|me|je|ve|sa)/i,
+    abbreviated: /^(dim|lun|mar|mer|jeu|ven|sam)\.?/i,
+    wide: /^(dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi)/i
+  };
+  var parseDayPatterns$1 = {
+    narrow: [/^d/i, /^l/i, /^m/i, /^m/i, /^j/i, /^v/i, /^s/i],
+    any: [/^di/i, /^lu/i, /^ma/i, /^me/i, /^je/i, /^ve/i, /^sa/i]
+  };
+  var matchDayPeriodPatterns$1 = {
+    narrow: /^(a|p|minuit|midi|mat\.?|ap\.?m\.?|soir|nuit)/i,
+    any: /^([ap]\.?\s?m\.?|du matin|de l'après[-\s]midi|du soir|de la nuit)/i
+  };
+  var parseDayPeriodPatterns$1 = {
+    any: {
+      am: /^a/i,
+      pm: /^p/i,
+      midnight: /^min/i,
+      noon: /^mid/i,
+      morning: /mat/i,
+      afternoon: /ap/i,
+      evening: /soir/i,
+      night: /nuit/i
+    }
+  };
+  var match$1 = {
+    ordinalNumber: buildMatchPatternFn({
+      matchPattern: matchOrdinalNumberPattern$1,
+      parsePattern: parseOrdinalNumberPattern$1,
+      valueCallback: function (value) {
+        return parseInt(value, 10);
+      }
+    }),
+    era: buildMatchFn({
+      matchPatterns: matchEraPatterns$1,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseEraPatterns$1,
+      defaultParseWidth: 'any'
+    }),
+    quarter: buildMatchFn({
+      matchPatterns: matchQuarterPatterns$1,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseQuarterPatterns$1,
+      defaultParseWidth: 'any',
+      valueCallback: function (index) {
+        return index + 1;
+      }
+    }),
+    month: buildMatchFn({
+      matchPatterns: matchMonthPatterns$1,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseMonthPatterns$1,
+      defaultParseWidth: 'any'
+    }),
+    day: buildMatchFn({
+      matchPatterns: matchDayPatterns$1,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseDayPatterns$1,
+      defaultParseWidth: 'any'
+    }),
+    dayPeriod: buildMatchFn({
+      matchPatterns: matchDayPeriodPatterns$1,
+      defaultMatchWidth: 'any',
+      parsePatterns: parseDayPeriodPatterns$1,
+      defaultParseWidth: 'any'
+    })
+  };
+
+  /**
+   * @type {Locale}
+   * @category Locales
+   * @summary French locale.
+   * @language French
+   * @iso-639-2 fra
+   * @author Jean Dupouy [@izeau]{@link https://github.com/izeau}
+   * @author François B [@fbonzon]{@link https://github.com/fbonzon}
+   */
+
+  var locale$1 = {
+    code: 'fr',
+    formatDistance: formatDistance$1,
+    formatLong: formatLong$1,
+    formatRelative: formatRelative$1,
+    localize: localize$1,
+    match: match$1,
+    options: {
+      weekStartsOn: 1
+      /* Monday */
+      ,
+      firstWeekContainsDate: 4
+    }
+  };
+
+  var formatDistanceLocale = {
+    lessThanXSeconds: {
+      one: 'menos de um segundo',
+      other: 'menos de {{count}} segundos'
+    },
+    xSeconds: {
+      one: '1 segundo',
+      other: '{{count}} segundos'
+    },
+    halfAMinute: 'meio minuto',
+    lessThanXMinutes: {
+      one: 'menos de um minuto',
+      other: 'menos de {{count}} minutos'
+    },
+    xMinutes: {
+      one: '1 minuto',
+      other: '{{count}} minutos'
+    },
+    aboutXHours: {
+      one: 'aproximadamente 1 hora',
+      other: 'aproximadamente {{count}} horas'
+    },
+    xHours: {
+      one: '1 hora',
+      other: '{{count}} horas'
+    },
+    xDays: {
+      one: '1 dia',
+      other: '{{count}} dias'
+    },
+    aboutXWeeks: {
+      one: 'aproximadamente 1 semana',
+      other: 'aproximadamente {{count}} semanas'
+    },
+    xWeeks: {
+      one: '1 semana',
+      other: '{{count}} semanas'
+    },
+    aboutXMonths: {
+      one: 'aproximadamente 1 mês',
+      other: 'aproximadamente {{count}} meses'
+    },
+    xMonths: {
+      one: '1 mês',
+      other: '{{count}} meses'
+    },
+    aboutXYears: {
+      one: 'aproximadamente 1 ano',
+      other: 'aproximadamente {{count}} anos'
+    },
+    xYears: {
+      one: '1 ano',
+      other: '{{count}} anos'
+    },
+    overXYears: {
+      one: 'mais de 1 ano',
+      other: 'mais de {{count}} anos'
+    },
+    almostXYears: {
+      one: 'quase 1 ano',
+      other: 'quase {{count}} anos'
+    }
+  };
+  function formatDistance(token, count, options) {
+    options = options || {};
+    var result;
+
+    if (typeof formatDistanceLocale[token] === 'string') {
+      result = formatDistanceLocale[token];
+    } else if (count === 1) {
+      result = formatDistanceLocale[token].one;
+    } else {
+      result = formatDistanceLocale[token].other.replace('{{count}}', count);
+    }
+
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'daqui a ' + result;
+      } else {
+        return 'há ' + result;
+      }
+    }
+
+    return result;
+  }
+
+  var dateFormats = {
+    full: "EEEE, d 'de' MMMM 'de' y",
+    long: "d 'de' MMMM 'de' y",
+    medium: "d 'de' MMM 'de' y",
+    short: 'dd/MM/y'
+  };
+  var timeFormats = {
+    full: 'HH:mm:ss zzzz',
+    long: 'HH:mm:ss z',
+    medium: 'HH:mm:ss',
+    short: 'HH:mm'
+  };
+  var dateTimeFormats = {
+    full: "{{date}} 'às' {{time}}",
+    long: "{{date}} 'às' {{time}}",
+    medium: '{{date}}, {{time}}',
+    short: '{{date}}, {{time}}'
+  };
+  var formatLong = {
+    date: buildFormatLongFn({
+      formats: dateFormats,
+      defaultWidth: 'full'
+    }),
+    time: buildFormatLongFn({
+      formats: timeFormats,
+      defaultWidth: 'full'
+    }),
+    dateTime: buildFormatLongFn({
+      formats: dateTimeFormats,
+      defaultWidth: 'full'
+    })
+  };
+
+  var formatRelativeLocale = {
+    lastWeek: "'na última' eeee 'às' p",
+    yesterday: "'ontem às' p",
+    today: "'hoje às' p",
+    tomorrow: "'amanhã às' p",
+    nextWeek: "eeee 'às' p",
+    other: 'P'
+  };
+  function formatRelative(token, _date, _baseDate, _options) {
+    return formatRelativeLocale[token];
+  }
+
+  function ordinalNumber(dirtyNumber) {
+    var number = Number(dirtyNumber);
+    return number + 'º';
+  }
+
+  var eraValues = {
+    narrow: ['aC', 'dC'],
+    abbreviated: ['a.C.', 'd.C.'],
+    wide: ['antes de Cristo', 'depois de Cristo']
+  };
+  var quarterValues = {
+    narrow: ['1', '2', '3', '4'],
+    abbreviated: ['T1', 'T2', 'T3', 'T4'],
+    wide: ['1º trimestre', '2º trimestre', '3º trimestre', '4º trimestre']
+  };
+  var monthValues = {
+    narrow: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'],
+    abbreviated: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+    wide: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
+  };
+  var dayValues = {
+    narrow: ['d', 's', 't', 'q', 'q', 's', 's'],
+    short: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
+    abbreviated: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
+    wide: ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
+  };
+  var dayPeriodValues = {
+    narrow: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'manhã',
+      afternoon: 'tarde',
+      evening: 'noite',
+      night: 'madrugada'
+    },
+    abbreviated: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'manhã',
+      afternoon: 'tarde',
+      evening: 'noite',
+      night: 'madrugada'
+    },
+    wide: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'manhã',
+      afternoon: 'tarde',
+      evening: 'noite',
+      night: 'madrugada'
+    }
+  };
+  var formattingDayPeriodValues = {
+    narrow: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'da manhã',
+      afternoon: 'da tarde',
+      evening: 'da noite',
+      night: 'da madrugada'
+    },
+    abbreviated: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'da manhã',
+      afternoon: 'da tarde',
+      evening: 'da noite',
+      night: 'da madrugada'
+    },
+    wide: {
+      am: 'AM',
+      pm: 'PM',
+      midnight: 'meia-noite',
+      noon: 'meio-dia',
+      morning: 'da manhã',
+      afternoon: 'da tarde',
+      evening: 'da noite',
+      night: 'da madrugada'
+    }
+  };
+  var localize = {
+    ordinalNumber: ordinalNumber,
+    era: buildLocalizeFn({
+      values: eraValues,
+      defaultWidth: 'wide'
+    }),
+    quarter: buildLocalizeFn({
+      values: quarterValues,
+      defaultWidth: 'wide',
+      argumentCallback: function (quarter) {
+        return Number(quarter) - 1;
+      }
+    }),
+    month: buildLocalizeFn({
+      values: monthValues,
+      defaultWidth: 'wide'
+    }),
+    day: buildLocalizeFn({
+      values: dayValues,
+      defaultWidth: 'wide'
+    }),
+    dayPeriod: buildLocalizeFn({
+      values: dayPeriodValues,
+      defaultWidth: 'wide',
+      formattingValues: formattingDayPeriodValues,
+      defaultFormattingWidth: 'wide'
+    })
+  };
+
+  var matchOrdinalNumberPattern = /^(\d+)(º|ª)?/i;
+  var parseOrdinalNumberPattern = /\d+/i;
+  var matchEraPatterns = {
+    narrow: /^(ac|dc|a|d)/i,
+    abbreviated: /^(a\.?\s?c\.?|a\.?\s?e\.?\s?c\.?|d\.?\s?c\.?|e\.?\s?c\.?)/i,
+    wide: /^(antes de cristo|antes da era comum|depois de cristo|era comum)/i
+  };
+  var parseEraPatterns = {
+    any: [/^ac/i, /^dc/i],
+    wide: [/^(antes de cristo|antes da era comum)/i, /^(depois de cristo|era comum)/i]
+  };
+  var matchQuarterPatterns = {
+    narrow: /^[1234]/i,
+    abbreviated: /^T[1234]/i,
+    wide: /^[1234](º|ª)? trimestre/i
+  };
+  var parseQuarterPatterns = {
+    any: [/1/i, /2/i, /3/i, /4/i]
+  };
+  var matchMonthPatterns = {
+    narrow: /^[jfmasond]/i,
+    abbreviated: /^(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/i,
+    wide: /^(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)/i
+  };
+  var parseMonthPatterns = {
+    narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
+    any: [/^ja/i, /^f/i, /^mar/i, /^ab/i, /^mai/i, /^jun/i, /^jul/i, /^ag/i, /^s/i, /^o/i, /^n/i, /^d/i]
+  };
+  var matchDayPatterns = {
+    narrow: /^[dstq]/i,
+    short: /^(dom|seg|ter|qua|qui|sex|s[áa]b)/i,
+    abbreviated: /^(dom|seg|ter|qua|qui|sex|s[áa]b)/i,
+    wide: /^(domingo|segunda-?\s?feira|terça-?\s?feira|quarta-?\s?feira|quinta-?\s?feira|sexta-?\s?feira|s[áa]bado)/i
+  };
+  var parseDayPatterns = {
+    narrow: [/^d/i, /^s/i, /^t/i, /^q/i, /^q/i, /^s/i, /^s/i],
+    any: [/^d/i, /^seg/i, /^t/i, /^qua/i, /^qui/i, /^sex/i, /^s[áa]/i]
+  };
+  var matchDayPeriodPatterns = {
+    narrow: /^(a|p|meia-?\s?noite|meio-?\s?dia|(da) (manh[ãa]|tarde|noite|madrugada))/i,
+    any: /^([ap]\.?\s?m\.?|meia-?\s?noite|meio-?\s?dia|(da) (manh[ãa]|tarde|noite|madrugada))/i
+  };
+  var parseDayPeriodPatterns = {
+    any: {
+      am: /^a/i,
+      pm: /^p/i,
+      midnight: /^meia/i,
+      noon: /^meio/i,
+      morning: /manh[ãa]/i,
+      afternoon: /tarde/i,
+      evening: /noite/i,
+      night: /madrugada/i
+    }
+  };
+  var match = {
+    ordinalNumber: buildMatchPatternFn({
+      matchPattern: matchOrdinalNumberPattern,
+      parsePattern: parseOrdinalNumberPattern,
+      valueCallback: function (value) {
+        return parseInt(value, 10);
+      }
+    }),
+    era: buildMatchFn({
+      matchPatterns: matchEraPatterns,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseEraPatterns,
+      defaultParseWidth: 'any'
+    }),
+    quarter: buildMatchFn({
+      matchPatterns: matchQuarterPatterns,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseQuarterPatterns,
+      defaultParseWidth: 'any',
+      valueCallback: function (index) {
+        return index + 1;
+      }
+    }),
+    month: buildMatchFn({
+      matchPatterns: matchMonthPatterns,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseMonthPatterns,
+      defaultParseWidth: 'any'
+    }),
+    day: buildMatchFn({
+      matchPatterns: matchDayPatterns,
+      defaultMatchWidth: 'wide',
+      parsePatterns: parseDayPatterns,
+      defaultParseWidth: 'any'
+    }),
+    dayPeriod: buildMatchFn({
+      matchPatterns: matchDayPeriodPatterns,
+      defaultMatchWidth: 'any',
+      parsePatterns: parseDayPeriodPatterns,
+      defaultParseWidth: 'any'
+    })
+  };
+
+  /**
+   * @type {Locale}
+   * @category Locales
+   * @summary Portuguese locale.
+   * @language Portuguese
+   * @iso-639-2 por
+   * @author Dário Freire [@dfreire]{@link https://github.com/dfreire}
+   * @author Adrián de la Rosa [@adrm]{@link https://github.com/adrm}
+   */
+
+  var locale = {
+    code: 'pt',
+    formatDistance: formatDistance,
+    formatLong: formatLong,
+    formatRelative: formatRelative,
+    localize: localize,
+    match: match,
+    options: {
+      weekStartsOn: 1
+      /* Monday */
+      ,
+      firstWeekContainsDate: 4
+    }
+  };
+
+  var Helpers = /*#__PURE__*/function () {
+    function Helpers() {
+      _classCallCheck(this, Helpers);
+    }
+
+    _createClass(Helpers, null, [{
+      key: "replaceNode",
+      value: // Helps replacing a SSR node with a Svelte component
+      function replaceNode(node) {
+        if (node) {
+          node.innerHTML = "";
+        }
+
+        return node;
+      }
+    }, {
+      key: "hideFallbacks",
+      value: function hideFallbacks(fileName) {
+        var nodes = document.querySelectorAll("[data-svelte-hide=\"".concat(fileName, "\"]"));
+
+        if (nodes && nodes.length) {
+          nodes.forEach(function (node) {
+            return node.remove();
+          });
+        }
+      } // Returns a new url with updated fields
+
+    }, {
+      key: "getUpdatedFilterUrl",
+      value: function getUpdatedFilterUrl(field, value, baseUrl) {
+        var urlParts = baseUrl.split("?");
+
+        if (urlParts.length > 1) {
+          var queryString = urlParts[1];
+          var queryStringParts = queryString.split("&");
+          var queryStringVariables = {};
+          queryStringParts.forEach(function (part) {
+            var partParts = part.split("=");
+
+            if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
+              queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty({}, partParts[0], partParts[1]));
+            }
+          });
+          queryStringVariables[field] = value;
+          return "".concat(urlParts[0], "?").concat(Object.keys(queryStringVariables).map(function (key) {
+            return "".concat(key, "=").concat(queryStringVariables[key]);
+          }).join("&"));
+        } else {
+          return "".concat(baseUrl, "?").concat(field, "=").concat(value);
+        }
+      }
+    }, {
+      key: "getLinkEl",
+      value: function getLinkEl() {
+        return document.querySelector(".hidden-filter-link");
+      }
+    }, {
+      key: "getDateLocaleOptions",
+      value: function getDateLocaleOptions() {
+        var shortLocale = dist_1().split("_")[0];
+        var locales = {
+          de: locale$2,
+          fr: locale$1,
+          pt: locale
+        };
+        return {
+          weekStartsOn: dist_6(),
+          locale: locales[shortLocale]
+        };
+      }
+    }]);
+
+    return Helpers;
+  }();
+
   function get_each_context$3(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     child_ctx[25] = i;
     return child_ctx;
-  } // (193:0) {#if controls}
+  } // (195:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -10763,7 +12212,7 @@
         if (detaching) detach(h2);
       }
     };
-  } // (197:1) {#if controls}
+  } // (199:1) {#if controls}
 
 
   function create_if_block_6$1(ctx) {
@@ -10841,7 +12290,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (211:3) {#if !loading && weekTotal > 0}
+  } // (213:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -10906,7 +12355,7 @@
         if (detaching) detach(each_1_anchor);
       }
     };
-  } // (214:6) {#if point && point.stats}
+  } // (216:6) {#if point && point.stats}
 
 
   function create_if_block_4$1(ctx) {
@@ -10991,7 +12440,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (215:7) {#if point.stats.total > 0}
+  } // (217:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$1(ctx) {
@@ -11053,7 +12502,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (212:4) {#each points as point, index}
+  } // (214:4) {#each points as point, index}
 
 
   function create_each_block$3(ctx) {
@@ -11099,7 +12548,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (227:3) {#if controls && !loading && weekTotal === 0}
+  } // (229:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$2(ctx) {
@@ -11118,7 +12567,7 @@
         if (detaching) detach(p);
       }
     };
-  } // (231:2) {#if controls}
+  } // (233:2) {#if controls}
 
 
   function create_if_block$d(ctx) {
@@ -11137,14 +12586,18 @@
     /*startCursor*/
     ctx[6],
     /*localeOptions*/
-    ctx[8]), "iiiiii d.MM.Y") + "";
+    ctx[8]), "iiiiii d.MM.Y",
+    /*localeOptions*/
+    ctx[8]) + "";
     var t7;
     var t8;
     var t9_value = format(endOfWeek(
     /*startCursor*/
     ctx[6],
     /*localeOptions*/
-    ctx[8]), "iiiiii d.MM.Y") + "";
+    ctx[8]), "iiiiii d.MM.Y",
+    /*localeOptions*/
+    ctx[8]) + "";
     var t9;
     var t10;
     var t11;
@@ -11231,14 +12684,18 @@
         /*startCursor*/
         ctx[6],
         /*localeOptions*/
-        ctx[8]), "iiiiii d.MM.Y") + "")) set_data(t7, t7_value);
+        ctx[8]), "iiiiii d.MM.Y",
+        /*localeOptions*/
+        ctx[8]) + "")) set_data(t7, t7_value);
         if (dirty &
         /*startCursor*/
         64 && t9_value !== (t9_value = format(endOfWeek(
         /*startCursor*/
         ctx[6],
         /*localeOptions*/
-        ctx[8]), "iiiiii d.MM.Y") + "")) set_data(t9, t9_value);
+        ctx[8]), "iiiiii d.MM.Y",
+        /*localeOptions*/
+        ctx[8]) + "")) set_data(t9, t9_value);
         if (dirty &
         /*startCursor*/
         64) show_if = !isSameDay(startOfWeek(startOfToday(),
@@ -11267,7 +12724,7 @@
         run_all(dispose);
       }
     };
-  } // (243:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (245:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
   function create_if_block_1$3(ctx) {
@@ -11497,9 +12954,7 @@
     var requestToken = $$props.requestToken;
     var _$$props$controls = $$props.controls,
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
-    var localeOptions = {
-      weekStartsOn: dist_6()
-    };
+    var localeOptions = Helpers.getDateLocaleOptions();
     var _$$props$start = $$props.start,
         start = _$$props$start === void 0 ? format(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
     var _$$props$end = $$props.end,
@@ -11679,18 +13134,18 @@
     var formatDateForScale = function formatDateForScale(date, type) {
       if (type === "primary") {
         if (scale === "year") {
-          return format(date, "yyyy");
+          return format(date, "yyyy", localeOptions);
         }
 
         if (scale === "month") {
-          return format(date, "LLL");
+          return format(date, "LLL", localeOptions);
         }
 
         if (scale === "week") {
-          return "".concat(dist_4("timemanager", "Week"), " ").concat(format(date, "w"));
+          return "".concat(dist_4("timemanager", "Week"), " ").concat(format(date, "w", localeOptions));
         }
 
-        return format(date, "iii");
+        return format(date, "iii", localeOptions);
       }
 
       if (type === "secondary") {
@@ -11699,14 +13154,14 @@
         }
 
         if (scale === "month") {
-          return format(date, "yyyy");
+          return format(date, "yyyy", localeOptions);
         }
 
         if (scale === "week") {
-          return "".concat(format(startOfWeek(date, localeOptions), "d.M."), " - ").concat(format(endOfWeek(date, localeOptions), "d.M."));
+          return "".concat(format(startOfWeek(date, localeOptions), "d.M.", localeOptions), " - ").concat(format(endOfWeek(date, localeOptions), "d.M.", localeOptions));
         }
 
-        return format(date, "d.M.");
+        return format(date, "d.M.", localeOptions);
       }
     };
 
@@ -12213,229 +13668,6 @@
 
     return ClientEditor;
   }(SvelteComponent);
-
-  var MATCH = wellKnownSymbol('match'); // `IsRegExp` abstract operation
-  // https://tc39.es/ecma262/#sec-isregexp
-
-  var isRegexp = function (it) {
-    var isRegExp;
-    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
-  };
-
-  var UNSUPPORTED_Y = regexpStickyHelpers.UNSUPPORTED_Y;
-  var arrayPush = [].push;
-  var min = Math.min;
-  var MAX_UINT32 = 0xFFFFFFFF; // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
-  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
-
-  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
-    // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    var re = /(?:)/;
-    var originalExec = re.exec;
-
-    re.exec = function () {
-      return originalExec.apply(this, arguments);
-    };
-
-    var result = 'ab'.split(re);
-    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
-  }); // @@split logic
-
-  fixRegexpWellKnownSymbolLogic('split', function (SPLIT, nativeSplit, maybeCallNative) {
-    var internalSplit;
-
-    if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
-    '.'.split(/()()/).length > 1 || ''.split(/.?/).length) {
-      // based on es5-shim implementation, need to rework it
-      internalSplit = function (separator, limit) {
-        var string = String(requireObjectCoercible(this));
-        var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
-        if (lim === 0) return [];
-        if (separator === undefined) return [string]; // If `separator` is not a regex, use native split
-
-        if (!isRegexp(separator)) {
-          return nativeSplit.call(string, separator, lim);
-        }
-
-        var output = [];
-        var flags = (separator.ignoreCase ? 'i' : '') + (separator.multiline ? 'm' : '') + (separator.unicode ? 'u' : '') + (separator.sticky ? 'y' : '');
-        var lastLastIndex = 0; // Make `global` and avoid `lastIndex` issues by working with a copy
-
-        var separatorCopy = new RegExp(separator.source, flags + 'g');
-        var match, lastIndex, lastLength;
-
-        while (match = regexpExec.call(separatorCopy, string)) {
-          lastIndex = separatorCopy.lastIndex;
-
-          if (lastIndex > lastLastIndex) {
-            output.push(string.slice(lastLastIndex, match.index));
-            if (match.length > 1 && match.index < string.length) arrayPush.apply(output, match.slice(1));
-            lastLength = match[0].length;
-            lastLastIndex = lastIndex;
-            if (output.length >= lim) break;
-          }
-
-          if (separatorCopy.lastIndex === match.index) separatorCopy.lastIndex++; // Avoid an infinite loop
-        }
-
-        if (lastLastIndex === string.length) {
-          if (lastLength || !separatorCopy.test('')) output.push('');
-        } else output.push(string.slice(lastLastIndex));
-
-        return output.length > lim ? output.slice(0, lim) : output;
-      }; // Chakra, V8
-
-    } else if ('0'.split(undefined, 0).length) {
-      internalSplit = function (separator, limit) {
-        return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
-      };
-    } else internalSplit = nativeSplit;
-
-    return [// `String.prototype.split` method
-    // https://tc39.es/ecma262/#sec-string.prototype.split
-    function split(separator, limit) {
-      var O = requireObjectCoercible(this);
-      var splitter = separator == undefined ? undefined : separator[SPLIT];
-      return splitter !== undefined ? splitter.call(separator, O, limit) : internalSplit.call(String(O), separator, limit);
-    }, // `RegExp.prototype[@@split]` method
-    // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
-    //
-    // NOTE: This cannot be properly polyfilled in engines that don't support
-    // the 'y' flag.
-    function (string, limit) {
-      var res = maybeCallNative(internalSplit, this, string, limit, internalSplit !== nativeSplit);
-      if (res.done) return res.value;
-      var rx = anObject(this);
-      var S = String(string);
-      var C = speciesConstructor(rx, RegExp);
-      var unicodeMatching = rx.unicode;
-      var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
-      // simulate the 'y' flag.
-
-      var splitter = new C(UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
-      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
-      if (lim === 0) return [];
-      if (S.length === 0) return regexpExecAbstract(splitter, S) === null ? [S] : [];
-      var p = 0;
-      var q = 0;
-      var A = [];
-
-      while (q < S.length) {
-        splitter.lastIndex = UNSUPPORTED_Y ? 0 : q;
-        var z = regexpExecAbstract(splitter, UNSUPPORTED_Y ? S.slice(q) : S);
-        var e;
-
-        if (z === null || (e = min(toLength(splitter.lastIndex + (UNSUPPORTED_Y ? q : 0)), S.length)) === p) {
-          q = advanceStringIndex(S, q, unicodeMatching);
-        } else {
-          A.push(S.slice(p, q));
-          if (A.length === lim) return A;
-
-          for (var i = 1; i <= z.length - 1; i++) {
-            A.push(z[i]);
-            if (A.length === lim) return A;
-          }
-
-          q = p = e;
-        }
-      }
-
-      A.push(S.slice(p));
-      return A;
-    }];
-  }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC, UNSUPPORTED_Y);
-
-  var nativeJoin = [].join;
-  var ES3_STRINGS = indexedObject != Object;
-  var STRICT_METHOD = arrayMethodIsStrict('join', ','); // `Array.prototype.join` method
-  // https://tc39.es/ecma262/#sec-array.prototype.join
-
-  _export({
-    target: 'Array',
-    proto: true,
-    forced: ES3_STRINGS || !STRICT_METHOD
-  }, {
-    join: function join(separator) {
-      return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
-    }
-  });
-
-  var FAILS_ON_PRIMITIVES = fails(function () {
-    objectKeys(1);
-  }); // `Object.keys` method
-  // https://tc39.es/ecma262/#sec-object.keys
-
-  _export({
-    target: 'Object',
-    stat: true,
-    forced: FAILS_ON_PRIMITIVES
-  }, {
-    keys: function keys(it) {
-      return objectKeys(toObject(it));
-    }
-  });
-
-  var Helpers = /*#__PURE__*/function () {
-    function Helpers() {
-      _classCallCheck(this, Helpers);
-    }
-
-    _createClass(Helpers, null, [{
-      key: "replaceNode",
-      value: // Helps replacing a SSR node with a Svelte component
-      function replaceNode(node) {
-        if (node) {
-          node.innerHTML = "";
-        }
-
-        return node;
-      }
-    }, {
-      key: "hideFallbacks",
-      value: function hideFallbacks(fileName) {
-        var nodes = document.querySelectorAll("[data-svelte-hide=\"".concat(fileName, "\"]"));
-
-        if (nodes && nodes.length) {
-          nodes.forEach(function (node) {
-            return node.remove();
-          });
-        }
-      } // Returns a new url with updated fields
-
-    }, {
-      key: "getUpdatedFilterUrl",
-      value: function getUpdatedFilterUrl(field, value, baseUrl) {
-        var urlParts = baseUrl.split("?");
-
-        if (urlParts.length > 1) {
-          var queryString = urlParts[1];
-          var queryStringParts = queryString.split("&");
-          var queryStringVariables = {};
-          queryStringParts.forEach(function (part) {
-            var partParts = part.split("=");
-
-            if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-              queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty({}, partParts[0], partParts[1]));
-            }
-          });
-          queryStringVariables[field] = value;
-          return "".concat(urlParts[0], "?").concat(Object.keys(queryStringVariables).map(function (key) {
-            return "".concat(key, "=").concat(queryStringVariables[key]);
-          }).join("&"));
-        } else {
-          return "".concat(baseUrl, "?").concat(field, "=").concat(value);
-        }
-      }
-    }, {
-      key: "getLinkEl",
-      value: function getLinkEl() {
-        return document.querySelector(".hidden-filter-link");
-      }
-    }]);
-
-    return Helpers;
-  }();
 
   function create_if_block$b(ctx) {
     var overlay;

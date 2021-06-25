@@ -1,3 +1,6 @@
+import { de, fr, pt } from "date-fns/locale";
+import { getFirstDay, getLocale } from "@nextcloud/l10n";
+
 export class Helpers {
 	// Helps replacing a SSR node with a Svelte component
 	static replaceNode(node) {
@@ -42,5 +45,11 @@ export class Helpers {
 
 	static getLinkEl() {
 		return document.querySelector(".hidden-filter-link");
+	}
+
+	static getDateLocaleOptions() {
+		const shortLocale = getLocale().split("_")[0];
+		const locales = { de, fr, pt };
+		return { weekStartsOn: getFirstDay(), locale: locales[shortLocale] };
 	}
 }
