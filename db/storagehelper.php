@@ -10,22 +10,27 @@ use OCA\TimeManager\Helper\UUID;
  * @package OCA\TimeManager\Db
  */
 class StorageHelper {
-
+	/** @var ClientMapper */
 	protected $clientMapper;
+	/** @var ProjectMapper */
 	protected $projectMapper;
+	/** @var TaskMapper */
 	protected $taskMapper;
+	/** @var TimeMapper */
 	protected $timeMapper;
+	/** @var CommitMapper */
 	protected $commitMapper;
 	/** @var string user ID */
 	protected $userId;
 
-	public function __construct(ClientMapper $clientMapper,
-			ProjectMapper $projectMapper,
-			TaskMapper $taskMapper,
-			TimeMapper $timeMapper,
-			CommitMapper $commitMapper,
-			$userId
-			) {
+	public function __construct(
+		ClientMapper $clientMapper,
+		ProjectMapper $projectMapper,
+		TaskMapper $taskMapper,
+		TimeMapper $timeMapper,
+		CommitMapper $commitMapper,
+		string $userId
+	) {
 		$this->clientMapper = $clientMapper;
 		$this->clientMapper->setCurrentUser($userId);
 		$this->projectMapper = $projectMapper;
@@ -42,118 +47,119 @@ class StorageHelper {
 	/**
 	 * Adds or updates an entity object
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param array an input object as named array
+	 * @param string the entity to use
+	 * @return Client|Project|Task|Time the updated object
 	 */
-	function addOrUpdateObject($object, $entity) {
-		// if(objectTypes.indexOf(objectType) < 0) {
-	  // 		return Promise.reject(Error("Object Type not supported: " + objectType));
-	  // 	}
+	function addOrUpdateObject(array $object, string $entity): \OCP\AppFramework\Db\Entity {
 		// if object is not new, but wants to update.
-		if(isset($object['desiredCommit'])) {
+		if (isset($object["desiredCommit"])) {
 			// if current object commit <= last commit delivered by client
 			// get commits after the given commit.
-			$commits = $this->commitMapper->getCommitsAfter($object['commit']);
+			$commits = $this->commitMapper->getCommitsAfter($object["commit"]);
 			// get current object by UUID.
-			$currentObject = $this->findEntityMapper($entity)->getObjectById($object['uuid']);
+			$currentObject = $this->findEntityMapper($entity)->getObjectById($object["uuid"]);
 
-			$desiredCommit = $object['desiredCommit'];
-			$object['desiredCommit'] = null;
+			$desiredCommit = $object["desiredCommit"];
+			$object["desiredCommit"] = null;
 			// if there are commits and current object's commit is in list.
-			if( count( $commits ) > 0 && in_array($commits, $currentObject->getCommit()) ) {
+			if (count($commits) > 0 && in_array($commits, $currentObject->getCommit())) {
 				// cancel
-				$error = new Error("Dropped, because commit is behind current state.");
-				$error['reason'] = "dropped";
+				$error = new \Error("Dropped, because commit is behind current state.");
+				$error["reason"] = "dropped";
 				return $error;
 			}
-			$object['commit'] = $desiredCommit;
-			$object['id'] = $currentObject->getId();
+			$object["commit"] = $desiredCommit;
+			$object["id"] = $currentObject->getId();
 
-			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, '', true));
+			return $this->findEntityMapper($entity)->update($this->convertToEntityObject($object, $entity, "", true));
 		} else {
 			$object = $this->prepareObjectForInsert($object);
-			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ''));
+			return $this->findEntityMapper($entity)->insert($this->convertToEntityObject($object, $entity, ""));
 		}
 	}
 
 	/**
 	 * Returns an entity object from the specified entity by using the specified simple object.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param array $object a plain named array as input object
+	 * @param string $entity the name of the entity to use
+	 * @param bool $deleted the new status of the object
+	 * @param bool $includeId set this to true if the input object includes an id that should be represented in the resulting object
+	 * @return Client|Project|Task|Time the entity object
 	 */
-	function convertToEntityObject($object, $entity, $deleted, $includeId = false) {
-		switch($entity) {
-			case 'clients':
+	function convertToEntityObject(array $object, string $entity, bool $deleted, bool $includeId = false): \OCP\AppFramework\Db\Entity {
+		switch ($entity) {
+			case "clients":
 				$client = new Client();
-				$client->setChanged($object['changed']);
-				$client->setCreated($object['created']);
-				$client->setCity($object['city']);
-				$client->setEmail($object['email']);
-				$client->setName($object['name']);
-				$client->setNote($object['note']);
-				$client->setPhone($object['phone']);
-				$client->setPostcode($object['postcode']);
-				$client->setStreet($object['street']);
-				$client->setUuid($object['uuid']);
-				$client->setWeb($object['web']);
-				$client->setCommit($object['commit']);
+				$client->setChanged($object["changed"]);
+				$client->setCreated($object["created"]);
+				$client->setCity($object["city"]);
+				$client->setEmail($object["email"]);
+				$client->setName($object["name"]);
+				$client->setNote($object["note"]);
+				$client->setPhone($object["phone"]);
+				$client->setPostcode($object["postcode"]);
+				$client->setStreet($object["street"]);
+				$client->setUuid($object["uuid"]);
+				$client->setWeb($object["web"]);
+				$client->setCommit($object["commit"]);
 				$client->setUserId($this->userId);
 				$client->setStatus($deleted);
 				$client->setBillableDefault(true);
-				if($includeId) {
-					$client->setId($object['id']);
+				if ($includeId) {
+					$client->setId($object["id"]);
 				}
 				return $client;
-			case 'projects':
+			case "projects":
 				$project = new Project();
-				$project->setChanged($object['changed']);
-				$project->setCreated($object['created']);
-				$project->setName($object['name']);
-				$project->setNote($object['note']);
-				$project->setColor($object['color']);
-				$project->setClientUuid($object['client_uuid']);
-				$project->setUuid($object['uuid']);
-				$project->setCommit($object['commit']);
+				$project->setChanged($object["changed"]);
+				$project->setCreated($object["created"]);
+				$project->setName($object["name"]);
+				$project->setNote($object["note"]);
+				$project->setColor($object["color"]);
+				$project->setClientUuid($object["client_uuid"]);
+				$project->setUuid($object["uuid"]);
+				$project->setCommit($object["commit"]);
 				$project->setUserId($this->userId);
 				$project->setStatus($deleted);
 				// $project->setBillable($object['billable']);
 				$project->setBillable(true);
-				if($includeId) {
-					$project->setId($object['id']);
+				if ($includeId) {
+					$project->setId($object["id"]);
 				}
 				return $project;
-			case 'tasks':
+			case "tasks":
 				$task = new Task();
-				$task->setChanged($object['changed']);
-				$task->setCreated($object['created']);
-				$task->setName($object['name']);
-				$task->setProjectUuid($object['project_uuid']);
-				$task->setUuid($object['uuid']);
-				$task->setCommit($object['commit']);
+				$task->setChanged($object["changed"]);
+				$task->setCreated($object["created"]);
+				$task->setName($object["name"]);
+				$task->setProjectUuid($object["project_uuid"]);
+				$task->setUuid($object["uuid"]);
+				$task->setCommit($object["commit"]);
 				$task->setUserId($this->userId);
 				$task->setStatus($deleted);
 				// $task->setBillable($object['billable']);
 				$task->setBillable(true);
-				if($includeId) {
-					$task->setId($object['id']);
+				if ($includeId) {
+					$task->setId($object["id"]);
 				}
 				return $task;
-			case 'times':
+			case "times":
 				$time = new Time();
-				$time->setChanged($object['changed']);
-				$time->setCreated($object['created']);
-				$time->setStart($object['start']);
-				$time->setEnd($object['end']);
-				$time->setTaskUuid($object['task_uuid']);
-				$time->setUuid($object['uuid']);
-				$time->setCommit($object['commit']);
-				$time->setNote($object['note']);
+				$time->setChanged($object["changed"]);
+				$time->setCreated($object["created"]);
+				$time->setStart($object["start"]);
+				$time->setEnd($object["end"]);
+				$time->setTaskUuid($object["task_uuid"]);
+				$time->setUuid($object["uuid"]);
+				$time->setCommit($object["commit"]);
+				$time->setNote($object["note"]);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
 				// $time->setPaymentStatus((isset($object['payment_status'])) ? $object['payment_status'] : '');
-				if($includeId) {
-					$time->setId($object['id']);
+				if ($includeId) {
+					$time->setId($object["id"]);
 				}
 				return $time;
 		}
@@ -162,18 +168,18 @@ class StorageHelper {
 	/**
 	 * Returns the correct mapper for the given entity.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param string $entity the entity to look for
+	 * @return ClientMapper|ProjectMapper|TaskMapper|TimeMapper matching mapper
 	 */
-	function findEntityMapper($entity) {
-		switch($entity) {
-			case 'clients':
+	 function findEntityMapper(string $entity): \OCP\AppFramework\Db\Mapper {
+		switch ($entity) {
+			case "clients":
 				return $this->clientMapper;
-			case 'projects':
+			case "projects":
 				return $this->projectMapper;
-			case 'tasks':
+			case "tasks":
 				return $this->taskMapper;
-			case 'times':
+			case "times":
 				return $this->timeMapper;
 		}
 	}
@@ -181,71 +187,80 @@ class StorageHelper {
 	/**
 	 * Get objects after commit.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param string $entity the entity to look for
+	 * @param string $commit the commit
+	 * @return array list of matching items
 	 */
-	function getObjectsAfterCommit($entity, $commit) {
-		// $logger = \OC::$server->getLogger();
-		// $logger->error($entity, ['app' => 'timemanager']);
+	function getObjectsAfterCommit(string $entity, string $commit): array {
+		$logger = \OC::$server->getLogger();
+		$logger->debug($entity, ['app' => 'timemanager']);
 		return $this->findEntityMapper($entity)->getObjectsAfterCommit($commit);
 	}
 
 	/**
 	 * Find out if an object needs deletion
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param array $object an object to delete
+	 * @param string $entity the entity the object belongs to
+	 * @return void
 	 */
-	function maybeDeleteObject($object, $entity) {
+	function maybeDeleteObject(array $object, string $entity): void {
 		// TODO implement as in Storage.js:233
 		// if object is not new, but wants to update.
-		if(!empty($object['desiredCommit'])) {
+		if (!empty($object["desiredCommit"])) {
 			// if current object commit <= last commit delivered by client
 
 			// get commits after the given commit.
-			$commits_after = $this->commitMapper->getCommitsAfter($object['commit']);
+			$commits_after = $this->commitMapper->getCommitsAfter($object["commit"]);
 			// get current object by UUID.
-			$current_object = $this->findEntityMapper($entity)->getObjectById($object['uuid']);
+			$current_object = $this->findEntityMapper($entity)->getObjectById($object["uuid"]);
 
 			// if there are commits and current object's commit is in list.
-			if($current_object == null || (count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))) {
+			if (
+				$current_object == null ||
+				(count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))
+			) {
 				// cancel
 				$logger = \OC::$server->getLogger();
-				$logger->error("Dropped deletion of object " . $object['uuid'] . ", because commit is behind current state.", ['app' => 'timemanager']);
-				return false;
+				$logger->error("Dropped deletion of object " . $object["uuid"] . ", because commit is behind current state.", [
+					"app" => "timemanager",
+				]);
+				return;
 			}
 
 			// Delete object
-			$current_object->setChanged(date('Y-m-d H:i:s'));
-			$current_object->setCommit($object['desiredCommit']);
-			$current_object->setStatus('deleted');
+			$current_object->setChanged(date("Y-m-d H:i:s"));
+			$current_object->setCommit($object["desiredCommit"]);
+			$current_object->setStatus("deleted");
 			$this->findEntityMapper($entity)->update($current_object);
 
 			// Delete children
-			$this->findEntityMapper($entity)->deleteChildrenForEntityById($current_object->getUuid(), $object['desiredCommit']);
+			$this->findEntityMapper($entity)->deleteChildrenForEntityById(
+				$current_object->getUuid(),
+				$object["desiredCommit"]
+			);
 		}
 	}
 
 	/**
 	 * Get the latest commit.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @return string commit
 	 */
-	function getLatestCommit() {
+	function getLatestCommit(): string {
 		return $this->commitMapper->getLatestCommit();
 	}
 
 	/**
 	 * Insert a new commit.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param string $commit the commit
+	 * @return Commit The inserted commit object
 	 */
-	function insertCommit($commit) {
+	function insertCommit(string $commit): Commit {
 		$insertCommit = new Commit();
 		$insertCommit->setCommit($commit);
-		$insertCommit->setCreated(date('Y-m-d H:i:s')); // date('Y-m-d H:i:s') // time()
+		$insertCommit->setCreated(date("Y-m-d H:i:s")); // date('Y-m-d H:i:s') // time()
 		$insertCommit->setUserId($this->userId);
 		return $this->commitMapper->insert($insertCommit);
 	}
@@ -253,14 +268,14 @@ class StorageHelper {
 	/**
 	 * Prepares and object for inserting, prepping it with uuid and stuff.
 	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
+	 * @param array $object An object to prepare
+	 * @return array The prepared object
 	 */
-	function prepareObjectForInsert($object) {
-		$object['uuid'] = (empty($object['uuid'])) ? UUID::v4() : $object['uuid'];
-		$today = date('Y-m-d H:i:s');
-		$object['created'] = (empty($object['created'])) ? $today : $object['created'];
-		$object['changed'] = (empty($object['changed'])) ? $today : $object['changed'];
+	function prepareObjectForInsert(array $object): array {
+		$object["uuid"] = empty($object["uuid"]) ? UUID::v4() : $object["uuid"];
+		$today = date("Y-m-d H:i:s");
+		$object["created"] = empty($object["created"]) ? $today : $object["created"];
+		$object["changed"] = empty($object["changed"]) ? $today : $object["changed"];
 		return $object;
 	}
 }

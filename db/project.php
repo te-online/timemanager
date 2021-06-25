@@ -38,14 +38,14 @@ class Project extends Entity {
 	 */
 	function toArray() {
 		return [
-			"changed" 		=> ISODate::convert($this->getChanged()),
-			"client_uuid"	=> $this->getClientUuid(),
-			"color" 			=> $this->getColor(),
-			"commit" 			=> $this->getCommit(),
-			"created"			=> ISODate::convert($this->getCreated()),
-			"name"				=> $this->getName(),
-			"note" 				=> $this->getNote(),
-			"uuid"				=> $this->getUuid()
+			"changed" => ISODate::convert($this->getChanged()),
+			"client_uuid" => $this->getClientUuid(),
+			"color" => $this->getColor(),
+			"commit" => $this->getCommit(),
+			"created" => ISODate::convert($this->getCreated()),
+			"name" => $this->getName(),
+			"note" => $this->getNote(),
+			"uuid" => $this->getUuid(),
 		];
 	}
 
@@ -56,6 +56,6 @@ class Project extends Entity {
 	 */
 	function getCreatedDate() {
 		$created = date_create($this->getCreated());
-		return date_format($created, 'j. F Y');
+		return date_format($created, "j. F Y");
 	}
 }

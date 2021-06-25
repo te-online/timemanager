@@ -13,7 +13,7 @@
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://github.com/joleaf)]]></description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.1.8</version>
+	<version>0.1.9</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_overview.png</screenshot>
@@ -31,4 +31,12 @@
 	<dependencies>
 		<nextcloud min-version="13" max-version="21" />
 	</dependencies>
+	<navigations>
+		<navigation>
+			<name>TimeManager</name>
+			<route>timemanager.page.index</route>
+			<icon>timemanager.svg</icon>
+			<order>4</order>
+		</navigation>
+	</navigations>
 </info>

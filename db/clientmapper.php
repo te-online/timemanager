@@ -2,7 +2,6 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 /**

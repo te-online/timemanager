@@ -7,6 +7,9 @@ import DeleteButton from "./views/DeleteButton.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
 import QuickAdd from "./views/QuickAdd.svelte";
 import Checkmark from "./views/Checkmark.svelte";
+import Filters from "./views/Filters.svelte";
+import Timerange from "./views/Timerange.svelte";
+import PrintButton from "./views/PrintButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 const components = [];
@@ -31,6 +34,20 @@ const init = () => {
 	components.push(
 		new Statistics({
 			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Statistics.svelte']")),
+			props: { ...store },
+		})
+	);
+
+	components.push(
+		new Filters({
+			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Filters.svelte']")),
+			props: { ...store },
+		})
+	);
+
+	components.push(
+		new Timerange({
+			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Timerange.svelte']")),
 			props: { ...store },
 		})
 	);
@@ -162,6 +179,14 @@ const init = () => {
 			);
 		});
 	}
+
+	components.push(
+		new PrintButton({
+			target: Helpers.replaceNode(
+				document.querySelector("#content.app-timemanager [data-svelte='PrintButton.svelte']")
+			),
+		})
+	);
 };
 
 init();

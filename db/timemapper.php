@@ -2,7 +2,6 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
 /**
@@ -13,20 +12,24 @@ use OCP\IDBConnection;
  */
 class TimeMapper extends ObjectMapper {
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
-		parent::__construct($db, $commitMapper, 'timemanager_time');
+		parent::__construct($db, $commitMapper, "timemanager_time");
 	}
 
 	public function deleteByTaskId($uuid, $commit) {
-		$times = $this->getObjectsByAttributeValue('task_uuid', $uuid);
-		foreach($times as $time) {
+		$times = $this->getObjectsByAttributeValue("task_uuid", $uuid);
+		foreach ($times as $time) {
 			$time->setCommit($commit);
-			$time->setChanged(date('Y-m-d H:i:s'));
-			$time->setStatus('deleted');
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setStatus("deleted");
 			$this->update($time);
 		}
 	}
 
 	public function deleteChildrenForEntityById($uuid, $commit) {
 		// Do nothing here, because times have no children.
+	}
+
+	public function findForReport(string $start, string $end, string $status = null, array $filter_tasks = []) {
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks);
 	}
 }

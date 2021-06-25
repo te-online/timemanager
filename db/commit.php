@@ -22,8 +22,8 @@ class Commit extends Entity {
 	 */
 	function toArray() {
 		return [
-			'commit' => $this->getCommit(),
-			'created' => ISODate::convert($this->getCreated())
+			"commit" => $this->getCommit(),
+			"created" => ISODate::convert($this->getCreated()),
 		];
 	}
 

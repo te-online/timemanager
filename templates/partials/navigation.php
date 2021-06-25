@@ -16,6 +16,15 @@ $l = \OC::$server->getL10N('timemanager');
 		</li>
     <li>
     	<a
+				class="timemanager-pjax-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>"
+			>
+				<img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/details.svg')); ?>">
+				<span><?php p($l->t('Reports')); ?></span>
+			</a>
+    </li>
+    <li>
+    	<a
 				class="timemanager-pjax-link<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>"
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>"
 			>
