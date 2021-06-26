@@ -30,6 +30,10 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.1 Beta, 26. June 2021
+- Update Portuguese translation (thanks to @vascocb)
+- Fix wrong internal version number
+
 ### 0.2.0 Beta, 25. June 2021
 - Add basic **reporting feature** with client, project, task, status and timerange filters and a simple graph
 - Add **CSV export** functionality for reports
