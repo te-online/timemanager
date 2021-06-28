@@ -30,6 +30,9 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.2 Beta, 28. June 2021
+- Update Portuguese translation (I forgot to include some updated strings 🙈)
+
 ### 0.2.1 Beta, 26. June 2021
 - Update Portuguese translation (thanks to @vascocb)
 - Fix wrong internal version number
