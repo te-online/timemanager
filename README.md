@@ -30,6 +30,10 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.3 Beta, 14. July 2021
+- Bump compatibility to Nextcloud 22
+- Remove `database.xml` and generate migration files instead
+
 ### 0.2.2 Beta, 28. June 2021
 - Update Portuguese translation (I forgot to include some updated strings 🙈)
 
