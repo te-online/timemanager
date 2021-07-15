@@ -167,39 +167,8 @@ class PageController extends Controller {
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
 
-		// Get task uuids related to filters
-		$filter_tasks = [];
-		if (isset($tasks) && strlen($tasks) > 0) {
-			foreach (explode(",", $tasks) as $task_uuid) {
-				$filter_tasks[] = $task_uuid;
-			}
-		}
-		if (isset($projects) && strlen($projects) > 0) {
-			foreach (explode(",", $projects) as $project_uuid) {
-				// Find tasks related to project
-				foreach ($all_tasks as $task) {
-					if ($task->getProjectUuid() === $project_uuid) {
-						$filter_tasks[] = $task->getUuid();
-					}
-				}
-			}
-		}
-		if (isset($clients) && strlen($clients) > 0) {
-			foreach (explode(",", $clients) as $client_uuid) {
-				// Find tasks related to project
-				foreach ($all_projects as $project) {
-					if ($project->getClientUuid() === $client_uuid) {
-						// Find tasks related to project
-						foreach ($all_tasks as $task) {
-							if ($task->getProjectUuid() === $project->getUuid()) {
-								$filter_tasks[] = $task->getUuid();
-							}
-						}
-					}
-				}
-			}
-		}
-		$filter_tasks = array_unique($filter_tasks);
+		// Get possible task ids to filters for
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks);
 
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
 

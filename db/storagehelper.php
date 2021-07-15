@@ -88,7 +88,12 @@ class StorageHelper {
 	 * @param bool $includeId set this to true if the input object includes an id that should be represented in the resulting object
 	 * @return Client|Project|Task|Time the entity object
 	 */
-	function convertToEntityObject(array $object, string $entity, bool $deleted, bool $includeId = false): \OCP\AppFramework\Db\Entity {
+	function convertToEntityObject(
+		array $object,
+		string $entity,
+		bool $deleted,
+		bool $includeId = false
+	): \OCP\AppFramework\Db\Entity {
 		switch ($entity) {
 			case "clients":
 				$client = new Client();
@@ -171,7 +176,7 @@ class StorageHelper {
 	 * @param string $entity the entity to look for
 	 * @return ClientMapper|ProjectMapper|TaskMapper|TimeMapper matching mapper
 	 */
-	 function findEntityMapper(string $entity): \OCP\AppFramework\Db\Mapper {
+	function findEntityMapper(string $entity): \OCP\AppFramework\Db\Mapper {
 		switch ($entity) {
 			case "clients":
 				return $this->clientMapper;
@@ -193,7 +198,7 @@ class StorageHelper {
 	 */
 	function getObjectsAfterCommit(string $entity, string $commit): array {
 		$logger = \OC::$server->getLogger();
-		$logger->debug($entity, ['app' => 'timemanager']);
+		$logger->debug($entity, ["app" => "timemanager"]);
 		return $this->findEntityMapper($entity)->getObjectsAfterCommit($commit);
 	}
 
@@ -277,5 +282,56 @@ class StorageHelper {
 		$object["created"] = empty($object["created"]) ? $today : $object["created"];
 		$object["changed"] = empty($object["changed"]) ? $today : $object["changed"];
 		return $object;
+	}
+
+	/**
+	 * Takes comma-separated lists of client, project and task uuids and returns
+	 * a reduced list of task uuids to filter time entries for.
+	 * This can be used for reports or statistics
+	 * @param string|null $clients A comma-separated list of client uuids
+	 * @param string|null $projects A comma-separated list of project uuids
+	 * @param string|null $tasks A comma-separated list of task uuids
+	 * @return array A comma-separated list of task uuids
+	 */
+	function getTaskListFromFilters(string $clients = null, string $projects = null, string $tasks = null): array {
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+
+		// Get task uuids related to filters.
+		// Filters are exclusive from finer to coarse.
+		// That is, finer filters override more coarse filters.
+		// Example: If a task filter is set, project and client filters will be ignored
+		$filter_tasks = [];
+		if (isset($tasks) && strlen($tasks) > 0) {
+			foreach (explode(",", $tasks) as $task_uuid) {
+				$filter_tasks[] = $task_uuid;
+			}
+		} elseif (isset($projects) && strlen($projects) > 0) {
+			foreach (explode(",", $projects) as $project_uuid) {
+				// Find tasks related to project
+				foreach ($all_tasks as $task) {
+					if ($task->getProjectUuid() === $project_uuid) {
+						$filter_tasks[] = $task->getUuid();
+					}
+				}
+			}
+		} elseif (isset($clients) && strlen($clients) > 0) {
+			foreach (explode(",", $clients) as $client_uuid) {
+				// Find tasks related to project
+				foreach ($all_projects as $project) {
+					if ($project->getClientUuid() === $client_uuid) {
+						// Find tasks related to project
+						foreach ($all_tasks as $task) {
+							if ($task->getProjectUuid() === $project->getUuid()) {
+								$filter_tasks[] = $task->getUuid();
+							}
+						}
+					}
+				}
+			}
+		}
+		$filter_tasks = array_unique($filter_tasks);
+
+		return $filter_tasks;
 	}
 }
