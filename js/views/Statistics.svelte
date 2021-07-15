@@ -134,7 +134,36 @@
 	const loadStats = async () => {
 		const start = format(startCursor, "yyyy-MM-dd HH:mm:ss");
 		const end = format(endCursor, "yyyy-MM-dd HH:mm:ss");
-		const stats = await fetch(`${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}`, {
+		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}`;
+
+		// Parse current URL for filters
+		const urlParts = document.location.href.split("?");
+		if (urlParts.length > 1) {
+			const queryString = urlParts[1];
+			const queryStringParts = queryString.split("&");
+			let queryStringVariables = {};
+			// Map over all query params
+			queryStringParts.forEach(part => {
+				// Split query params
+				const partParts = part.split("=");
+				const [name, value] = partParts;
+				// Apply filters from query params
+				if (name === "status" && value) {
+					statUrl += `&status=${value}`;
+				}
+				if (name === "tasks" && value && value.length) {
+					statUrl += `&tasks=${value}`;
+				}
+				if (name === "projects" && value && value.length) {
+					statUrl += `&projects=${value}`;
+				}
+				if (name === "clients" && value && value.length) {
+					statUrl += `&clients=${value}`;
+				}
+			});
+		}
+
+		const stats = await fetch(statUrl, {
 			method: "GET",
 			headers: {
 				requesttoken: requestToken,

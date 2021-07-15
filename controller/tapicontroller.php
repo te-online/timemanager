@@ -203,9 +203,20 @@ class TApiController extends ApiController {
 	/**
 	 * @NoAdminRequired
 	 */
-	function getHoursInPeriodStats($start, $end, string $group_by = "none") {
+	function getHoursInPeriodStats(
+		$start,
+		$end,
+		string $group_by = "none",
+		string $clients = null,
+		string $projects = null,
+		string $tasks = null,
+		string $status = null
+	) {
+		// Get possible task ids to filters for
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks);
+
 		// Get all time entries for time period
-		$times = $this->timeMapper->getActiveObjectsByDateRangeAndFilters($start, $end);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
 		$sum = 0;
 
 		// Calculate sum
