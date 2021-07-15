@@ -13083,8 +13083,8 @@
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                start = format(startCursor, "yyyy-MM-dd HH:mm:ss");
-                end = format(endCursor, "yyyy-MM-dd HH:mm:ss");
+                start = format(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
+                end = format(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
                 statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale); // Parse current URL for filters
 
                 urlParts = document.location.href.split("?");

@@ -132,8 +132,8 @@
 	};
 
 	const loadStats = async () => {
-		const start = format(startCursor, "yyyy-MM-dd HH:mm:ss");
-		const end = format(endCursor, "yyyy-MM-dd HH:mm:ss");
+		const start = format(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
+		const end = format(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
 		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}`;
 
 		// Parse current URL for filters
