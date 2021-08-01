@@ -36,6 +36,9 @@ Before building or development, dependencies need to be installed once by runnin
 	- Reports: The graph is now respecting configured filters (issue #37)
 	- Dashboard: The statistics module is looking for time entries on the last day of a week again (issue #35)
 
+### 0.2.4 Beta, tba
+- Add Czech localization (thanks to @p-bo)
+
 ### 0.2.3 Beta, 14. July 2021
 - Bump compatibility to Nextcloud 22
 - Remove `database.xml` and generate migration files instead
