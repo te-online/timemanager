@@ -63,7 +63,7 @@ class StorageHelper {
 			$desiredCommit = $object["desiredCommit"];
 			$object["desiredCommit"] = null;
 			// if there are commits and current object's commit is in list.
-			if (count($commits) > 0 && in_array($commits, $currentObject->getCommit())) {
+			if (count($commits) > 0 && in_array((string) $currentObject->getCommit(), $commits)) {
 				// cancel
 				$error = new \Error("Dropped, because commit is behind current state.");
 				$error["reason"] = "dropped";

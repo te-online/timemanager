@@ -118,7 +118,7 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, $params);
 	}
 
-	function getObjectById($uuid) {
+	function getObjectById($uuid): \OCP\AppFramework\Db\Entity {
 		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;";
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
 		if (count($objects) > 0) {
