@@ -67,7 +67,7 @@ class PageController extends Controller {
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
-			$userId
+			(string) $userId
 		);
 	}
 
