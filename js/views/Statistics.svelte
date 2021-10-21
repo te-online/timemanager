@@ -30,6 +30,8 @@
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
 
+	const simpleRounding = number => Math.round(number * 100) / 100;
+
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
 
@@ -109,7 +111,7 @@
 			// Get total from API response
 			const total = grouped[format(point.date, js_date_format)];
 			point.stats = {
-				total: total ? Math.round(total * 100) / 100 : 0
+				total: total ? simpleRounding(total) : 0
 			};
 			// Find highest value
 			if (total > highest) {
@@ -228,11 +230,11 @@
 		<div class="top-stats">
 			<figure>
 				<figcaption class="tm_label">{translate('timemanager', 'Today')}</figcaption>
-				{todayTotal} {translate('timemanager', 'hrs.')}
+				{simpleRounding(todayTotal)} {translate('timemanager', 'hrs.')}
 			</figure>
 			<figure>
 				<figcaption class="tm_label">{translate('timemanager', 'Week')}</figcaption>
-				{weekTotal} {translate('timemanager', 'hrs.')}
+				{simpleRounding(weekTotal)} {translate('timemanager', 'hrs.')}
 			</figure>
 		</div>
 	{/if}

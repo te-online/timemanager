@@ -12191,10 +12191,10 @@
 
   function get_each_context$3(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[23] = list[i];
-    child_ctx[25] = i;
+    child_ctx[24] = list[i];
+    child_ctx[26] = i;
     return child_ctx;
-  } // (223:0) {#if controls}
+  } // (225:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -12212,7 +12212,7 @@
         if (detaching) detach(h2);
       }
     };
-  } // (227:1) {#if controls}
+  } // (229:1) {#if controls}
 
 
   function create_if_block_6$1(ctx) {
@@ -12220,6 +12220,11 @@
     var figure0;
     var figcaption0;
     var t1;
+    var t2_value =
+    /*simpleRounding*/
+    ctx[8](
+    /*todayTotal*/
+    ctx[4]) + "";
     var t2;
     var t3;
     var t4_value = dist_4$1("timemanager", "hrs.") + "";
@@ -12228,6 +12233,11 @@
     var figure1;
     var figcaption1;
     var t7;
+    var t8_value =
+    /*simpleRounding*/
+    ctx[8](
+    /*weekTotal*/
+    ctx[3]) + "";
     var t8;
     var t9;
     var t10_value = dist_4$1("timemanager", "hrs.") + "";
@@ -12239,9 +12249,7 @@
         figcaption0 = element("figcaption");
         figcaption0.textContent = "".concat(dist_4$1("timemanager", "Today"));
         t1 = space();
-        t2 = text(
-        /*todayTotal*/
-        ctx[4]);
+        t2 = text(t2_value);
         t3 = space();
         t4 = text(t4_value);
         t5 = space();
@@ -12249,9 +12257,7 @@
         figcaption1 = element("figcaption");
         figcaption1.textContent = "".concat(dist_4$1("timemanager", "Week"));
         t7 = space();
-        t8 = text(
-        /*weekTotal*/
-        ctx[3]);
+        t8 = text(t8_value);
         t9 = space();
         t10 = text(t10_value);
         attr(figcaption0, "class", "tm_label");
@@ -12277,20 +12283,24 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*todayTotal*/
-        16) set_data(t2,
+        16 && t2_value !== (t2_value =
+        /*simpleRounding*/
+        ctx[8](
         /*todayTotal*/
-        ctx[4]);
+        ctx[4]) + "")) set_data(t2, t2_value);
         if (dirty &
         /*weekTotal*/
-        8) set_data(t8,
+        8 && t8_value !== (t8_value =
+        /*simpleRounding*/
+        ctx[8](
         /*weekTotal*/
-        ctx[3]);
+        ctx[3]) + "")) set_data(t8, t8_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div);
       }
     };
-  } // (241:3) {#if !loading && weekTotal > 0}
+  } // (243:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -12322,7 +12332,7 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*formatDateForScale, points, highest, translate*/
-        1060) {
+        2084) {
           each_value =
           /*points*/
           ctx[2];
@@ -12355,7 +12365,7 @@
         if (detaching) detach(each_1_anchor);
       }
     };
-  } // (244:6) {#if point && point.stats}
+  } // (246:6) {#if point && point.stats}
 
 
   function create_if_block_4$1(ctx) {
@@ -12364,21 +12374,21 @@
     var span0;
     var t1_value =
     /*formatDateForScale*/
-    ctx[10](
+    ctx[11](
     /*point*/
-    ctx[23].date, "primary") + "";
+    ctx[24].date, "primary") + "";
     var t1;
     var t2;
     var span1;
     var t3_value =
     /*formatDateForScale*/
-    ctx[10](
+    ctx[11](
     /*point*/
-    ctx[23].date, "secondary") + "";
+    ctx[24].date, "secondary") + "";
     var t3;
     var if_block =
     /*point*/
-    ctx[23].stats.total > 0 && create_if_block_5$1(ctx);
+    ctx[24].stats.total > 0 && create_if_block_5$1(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -12406,7 +12416,7 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[23].stats.total > 0) {
+        ctx[24].stats.total > 0) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12423,16 +12433,16 @@
         /*points*/
         4 && t1_value !== (t1_value =
         /*formatDateForScale*/
-        ctx[10](
+        ctx[11](
         /*point*/
-        ctx[23].date, "primary") + "")) set_data(t1, t1_value);
+        ctx[24].date, "primary") + "")) set_data(t1, t1_value);
         if (dirty &
         /*points*/
         4 && t3_value !== (t3_value =
         /*formatDateForScale*/
-        ctx[10](
+        ctx[11](
         /*point*/
-        ctx[23].date, "secondary") + "")) set_data(t3, t3_value);
+        ctx[24].date, "secondary") + "")) set_data(t3, t3_value);
       },
       d: function d(detaching) {
         if (if_block) if_block.d(detaching);
@@ -12440,14 +12450,14 @@
         if (detaching) detach(div);
       }
     };
-  } // (245:7) {#if point.stats.total > 0}
+  } // (247:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$1(ctx) {
     var span;
     var t0_value =
     /*point*/
-    ctx[23].stats.total + "";
+    ctx[24].stats.total + "";
     var t0;
     var t1;
     var t2_value = dist_4$1("timemanager", "hrs.") + "";
@@ -12467,7 +12477,7 @@
         attr(div, "class", "column-inner");
         attr(div, "style", div_style_value = "height: ".concat(
         /*point*/
-        ctx[23].stats.total /
+        ctx[24].stats.total /
         /*highest*/
         ctx[5] * 100, "%"));
       },
@@ -12484,13 +12494,13 @@
         /*points*/
         4 && t0_value !== (t0_value =
         /*point*/
-        ctx[23].stats.total + "")) set_data(t0, t0_value);
+        ctx[24].stats.total + "")) set_data(t0, t0_value);
 
         if (dirty &
         /*points, highest*/
         36 && div_style_value !== (div_style_value = "height: ".concat(
         /*point*/
-        ctx[23].stats.total /
+        ctx[24].stats.total /
         /*highest*/
         ctx[5] * 100, "%"))) {
           attr(div, "style", div_style_value);
@@ -12502,7 +12512,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (242:4) {#each points as point, index}
+  } // (244:4) {#each points as point, index}
 
 
   function create_each_block$3(ctx) {
@@ -12510,9 +12520,9 @@
     var t;
     var if_block =
     /*point*/
-    ctx[23] &&
+    ctx[24] &&
     /*point*/
-    ctx[23].stats && create_if_block_4$1(ctx);
+    ctx[24].stats && create_if_block_4$1(ctx);
     return {
       c: function c() {
         div = element("div");
@@ -12528,9 +12538,9 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[23] &&
+        ctx[24] &&
         /*point*/
-        ctx[23].stats) {
+        ctx[24].stats) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12548,7 +12558,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (257:3) {#if controls && !loading && weekTotal === 0}
+  } // (259:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$2(ctx) {
@@ -12567,7 +12577,7 @@
         if (detaching) detach(p);
       }
     };
-  } // (261:2) {#if controls}
+  } // (263:2) {#if controls}
 
 
   function create_if_block$d(ctx) {
@@ -12586,25 +12596,25 @@
     /*startCursor*/
     ctx[6],
     /*localeOptions*/
-    ctx[8]), "iiiiii d.MM.Y",
+    ctx[9]), "iiiiii d.MM.Y",
     /*localeOptions*/
-    ctx[8]) + "";
+    ctx[9]) + "";
     var t7;
     var t8;
     var t9_value = format(endOfWeek(
     /*startCursor*/
     ctx[6],
     /*localeOptions*/
-    ctx[8]), "iiiiii d.MM.Y",
+    ctx[9]), "iiiiii d.MM.Y",
     /*localeOptions*/
-    ctx[8]) + "";
+    ctx[9]) + "";
     var t9;
     var t10;
     var t11;
     var span2;
     var show_if = !isSameDay(startOfWeek(startOfToday(),
     /*localeOptions*/
-    ctx[8]),
+    ctx[9]),
     /*startCursor*/
     ctx[6]);
     var t12;
@@ -12666,9 +12676,9 @@
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
           /*click_handler*/
-          ctx[15])), listen(button1, "click", prevent_default(
+          ctx[16])), listen(button1, "click", prevent_default(
           /*click_handler_2*/
-          ctx[17]))];
+          ctx[18]))];
           mounted = true;
         }
       },
@@ -12684,23 +12694,23 @@
         /*startCursor*/
         ctx[6],
         /*localeOptions*/
-        ctx[8]), "iiiiii d.MM.Y",
+        ctx[9]), "iiiiii d.MM.Y",
         /*localeOptions*/
-        ctx[8]) + "")) set_data(t7, t7_value);
+        ctx[9]) + "")) set_data(t7, t7_value);
         if (dirty &
         /*startCursor*/
         64 && t9_value !== (t9_value = format(endOfWeek(
         /*startCursor*/
         ctx[6],
         /*localeOptions*/
-        ctx[8]), "iiiiii d.MM.Y",
+        ctx[9]), "iiiiii d.MM.Y",
         /*localeOptions*/
-        ctx[8]) + "")) set_data(t9, t9_value);
+        ctx[9]) + "")) set_data(t9, t9_value);
         if (dirty &
         /*startCursor*/
         64) show_if = !isSameDay(startOfWeek(startOfToday(),
         /*localeOptions*/
-        ctx[8]),
+        ctx[9]),
         /*startCursor*/
         ctx[6]);
 
@@ -12724,7 +12734,7 @@
         run_all(dispose);
       }
     };
-  } // (273:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
   function create_if_block_1$3(ctx) {
@@ -12743,7 +12753,7 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_1*/
-          ctx[16]));
+          ctx[17]));
           mounted = true;
         }
       },
@@ -12954,6 +12964,11 @@
     var requestToken = $$props.requestToken;
     var _$$props$controls = $$props.controls,
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
+
+    var simpleRounding = function simpleRounding(number) {
+      return Math.round(number * 100) / 100;
+    };
+
     var localeOptions = Helpers.getDateLocaleOptions();
     var _$$props$start = $$props.start,
         start = _$$props$start === void 0 ? format(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
@@ -13043,7 +13058,7 @@
                   // Get total from API response
                   var total = grouped[format(point.date, js_date_format)];
                   point.stats = {
-                    total: total ? Math.round(total * 100) / 100 : 0
+                    total: total ? simpleRounding(total) : 0
                   }; // Find highest value
 
                   if (total > highest) {
@@ -13213,23 +13228,23 @@
     };
 
     $$self.$$set = function ($$props) {
-      if ("statsApiUrl" in $$props) $$invalidate(11, statsApiUrl = $$props.statsApiUrl);
-      if ("requestToken" in $$props) $$invalidate(12, requestToken = $$props.requestToken);
+      if ("statsApiUrl" in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
+      if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
       if ("controls" in $$props) $$invalidate(0, controls = $$props.controls);
-      if ("start" in $$props) $$invalidate(13, start = $$props.start);
-      if ("end" in $$props) $$invalidate(14, end = $$props.end);
+      if ("start" in $$props) $$invalidate(14, start = $$props.start);
+      if ("end" in $$props) $$invalidate(15, end = $$props.end);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*start*/
-      8192) {
+      16384) {
         $$invalidate(6, startCursor = isDate(parse$1(start, dateFormat$1, new Date())) ? parse$1(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
       }
 
       if ($$self.$$.dirty &
       /*end*/
-      16384) {
+      32768) {
         endCursor = isDate(parse$1(end, dateFormat$1, new Date())) ? parse$1(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
       }
     };
@@ -13248,7 +13263,7 @@
 
     $$invalidate(7, currentWeek = null);
 
-    return [controls, loading, points, weekTotal, todayTotal, highest, startCursor, currentWeek, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
+    return [controls, loading, points, weekTotal, todayTotal, highest, startCursor, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
   }
 
   var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -13263,11 +13278,11 @@
 
       _this = _super.call(this);
       init$1(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
-        statsApiUrl: 11,
-        requestToken: 12,
+        statsApiUrl: 12,
+        requestToken: 13,
         controls: 0,
-        start: 13,
-        end: 14
+        start: 14,
+        end: 15
       });
       return _this;
     }
