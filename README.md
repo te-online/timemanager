@@ -30,6 +30,9 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.6 Beta, tba
+- Bugfix: Make sure to round outputs of totals in Statistics module (issue #52)
+
 ### 0.2.5 Beta, 29. September 2021
 - Add Czech localization (thanks to @p-bo)
 - Bugfix: Attempt to fix switched params to `in_array` method in `storagehelper.php` when checking desired commit for existence
