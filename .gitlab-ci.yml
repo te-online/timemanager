@@ -18,4 +18,5 @@ sync_api_test:
       alias: mysql.local
   script:
     - sleep 30
+    - service apache2 status
     - curl -I http://localhost
