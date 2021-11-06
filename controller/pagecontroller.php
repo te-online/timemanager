@@ -17,6 +17,7 @@ use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
+use OCP\IConfig;
 
 class PageController extends Controller {
 	/** @var ClientMapper mapper for client entity */
@@ -33,6 +34,8 @@ class PageController extends Controller {
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * constructor of the controller
@@ -52,6 +55,7 @@ class PageController extends Controller {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		IConfig $config,
 		$userId
 	) {
 		parent::__construct($appName, $request);
@@ -61,12 +65,14 @@ class PageController extends Controller {
 		$this->timeMapper = $timeMapper;
 		$this->commitMapper = $commitMapper;
 		$this->userId = $userId;
+		$this->config = $config;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
+			$this->config,
 			(string) $userId
 		);
 	}
@@ -134,6 +140,12 @@ class PageController extends Controller {
 				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.times"),
 				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
+				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+				"settings" => [
+					"handle_conflicts" =>
+						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
+						"handle_conflicts",
+				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
 			]),
@@ -257,6 +269,12 @@ class PageController extends Controller {
 				"start" => $start,
 				"end" => $end,
 				"controls" => false,
+				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+				"settings" => [
+					"handle_conflicts" =>
+						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
+						"handle_conflicts",
+				],
 			];
 
 			return new TemplateResponse("timemanager", "reports", [
@@ -308,6 +326,11 @@ class PageController extends Controller {
 
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.clients"),
+			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"settings" => [
+				"handle_conflicts" =>
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+			],
 			"clientEditorButtonCaption" => $l->t("Add client"),
 			"clientEditorCaption" => $l->t("New client"),
 		];
@@ -422,6 +445,11 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
 			"editAction" => $urlGenerator->linkToRoute("timemanager.page.clients"),
+			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"settings" => [
+				"handle_conflicts" =>
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+			],
 			"requestToken" => $requestToken,
 			"clientName" => $client_name,
 			"clientEditorButtonCaption" => $l->t("Edit client"),
@@ -566,6 +594,11 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
 			"editAction" => $urlGenerator->linkToRoute("timemanager.page.projects"),
+			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"settings" => [
+				"handle_conflicts" =>
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => $project_name,
@@ -709,6 +742,11 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"editAction" => $urlGenerator->linkToRoute("timemanager.page.tasks"),
+			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"settings" => [
+				"handle_conflicts" =>
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
@@ -884,5 +922,18 @@ class PageController extends Controller {
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function updateSettings($handle_conflicts) {
+		$this->config->setAppValue(
+			"timemanager",
+			"sync_mode",
+			(bool) $handle_conflicts ? "handle_conflicts" : "force_skip_conflict_handling"
+		);
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.index"));
 	}
 }

@@ -60,4 +60,15 @@ $l = \OC::$server->getL10N('timemanager');
 			</a>
     </li>
   </ul>
+
+	<div id="app-settings">
+		<div id="app-settings-header">
+			<button class="settings-button" data-apps-slide-toggle="#app-settings-content">
+				<?php p($l->t('Settings')); ?>
+			</button>
+		</div>
+		<div id="app-settings-content">
+			<span class="settings" data-svelte="Settings.svelte"></section>
+		</div>
+	</div>
 </div>

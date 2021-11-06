@@ -15,6 +15,7 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
 use OCP\IRequest;
+use OCP\IConfig;
 
 class TApiController extends ApiController {
 	/** @var ClientMapper mapper for client entity */
@@ -31,6 +32,8 @@ class TApiController extends ApiController {
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * constructor of the controller
@@ -51,6 +54,7 @@ class TApiController extends ApiController {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		IConfig $config,
 		$userId
 	) {
 		parent::__construct($appName, $request);
@@ -59,6 +63,7 @@ class TApiController extends ApiController {
 		$this->taskMapper = $taskMapper;
 		$this->timeMapper = $timeMapper;
 		$this->commitMapper = $commitMapper;
+		$this->config = $config;
 		$this->userId = $userId;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
@@ -66,6 +71,7 @@ class TApiController extends ApiController {
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
+			$this->config,
 			$userId
 		);
 	}

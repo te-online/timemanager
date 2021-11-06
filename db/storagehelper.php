@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Db;
 
 use OCA\TimeManager\Helper\UUID;
+use OCP\IConfig;
 
 /**
  * Class StorageHelper
@@ -22,6 +23,8 @@ class StorageHelper {
 	protected $commitMapper;
 	/** @var string user ID */
 	protected $userId;
+	/** @var IConfig */
+	private $config;
 
 	public function __construct(
 		ClientMapper $clientMapper,
@@ -29,6 +32,7 @@ class StorageHelper {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		IConfig $config,
 		string $userId
 	) {
 		$this->clientMapper = $clientMapper;
@@ -41,6 +45,7 @@ class StorageHelper {
 		$this->timeMapper->setCurrentUser($userId);
 		$this->commitMapper = $commitMapper;
 		$this->commitMapper->setCurrentUser($userId);
+		$this->config = $config;
 		$this->userId = $userId;
 	}
 
@@ -62,8 +67,14 @@ class StorageHelper {
 
 			$desiredCommit = $object["desiredCommit"];
 			$object["desiredCommit"] = null;
+
+			$sync_mode = (string) $this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling");
 			// if there are commits and current object's commit is in list.
-			if (count($commits) > 0 && in_array((string) $currentObject->getCommit(), $commits)) {
+			if (
+				$sync_mode === "handle_conflicts" &&
+				count($commits) > 0 &&
+				in_array((string) $currentObject->getCommit(), $commits)
+			) {
 				// cancel
 				$error = new \Error("Dropped, because commit is behind current state.");
 				$error["reason"] = "dropped";
@@ -220,10 +231,12 @@ class StorageHelper {
 			// get current object by UUID.
 			$current_object = $this->findEntityMapper($entity)->getObjectById($object["uuid"]);
 
+			$sync_mode = (string) $this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling");
 			// if there are commits and current object's commit is in list.
 			if (
-				$current_object == null ||
-				(count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))
+				($current_object == null ||
+					(count($commits_after) > 0 && in_array($current_object->getCommit(), $commits_after))) &&
+				$sync_mode === "handle_conflicts"
 			) {
 				// cancel
 				$logger = \OC::$server->getLogger();
