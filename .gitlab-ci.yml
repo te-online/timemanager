@@ -17,4 +17,5 @@ sync_api_test:
       command: ["--transaction-isolation=READ-COMMITTED", "--binlog-format=ROW"]
       alias: mysql.local
   script:
-    - curl -I --connect-timeout 5 --max-time 30 --retry 10 --retry-delay 0 --retry-max-time 350 http://localhost:8080
+    - sleep 120
+    - curl -I http://localhost:8080
