@@ -17,5 +17,5 @@ sync_api_test:
       command: ["--transaction-isolation=READ-COMMITTED", "--binlog-format=ROW"]
       alias: mysql.local
   script:
-    - sleep 120
-    - curl -I http://localhost:8080
+    - sleep 30
+    - curl -I http://localhost
