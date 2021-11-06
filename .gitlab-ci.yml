@@ -16,6 +16,5 @@ sync_api_test:
     - name: mariadb:10.5
       command: ["--transaction-isolation=READ-COMMITTED", "--binlog-format=ROW"]
       alias: mysql.local
-
   script:
-    - curl -I http://localhost:8080
+    - curl -I --connect-timeout 5 --max-time 30 --retry 10 --retry-delay 0 --retry-max-time 350 http://localhost:8080
