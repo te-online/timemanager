@@ -19,6 +19,7 @@ sync_api_test:
       command: ["--transaction-isolation=READ-COMMITTED", "--binlog-format=ROW"]
       alias: mysql.local
   script:
+    - echo "PHP_MEMORY_LIMIT=512M" >> /etc/enviroment
     - service apache2 start
-    - sleep 30
+    - sleep 10
     - curl http://localhost
