@@ -30,7 +30,20 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
-### 0.2.6 Beta, tba
+### 0.2.6 Beta, 9. November 2021
+#### IMPORTANT
+**If you experience sync issues with the Android app by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app), please install this update at your earliest convenience and restart the Android app to clear the sync queue. It will most likely resolve those issues. Details below.**
+
+- Bugfix: Don't assume that clients can handle sync conflicts (issue #53). 
+
+> This is sort of a regression, caused by #48 being fixed. Previously the bug described in #48 prevented the API to ask for client-side conflict handling, making the Android app work as it did. 
+
+> Since there's no API documentation and the API changed because of this bugfix, the Android app is not to blame for this. This release makes sync behavior configurable, defaulting to the sync behavior previous to 0.2.5. I've opened an [issue in the app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app/-/issues/4) to work on adjusting to the different API signature and getting conflict handling implemented in the Android app. If you've left a negative review in the PlayStore based on this issue, please consider updating it, if this release fixes the issue for you. If not, please open an issue in this repository or the [Android app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app). 
+
+> **Note:** If you've synced your [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) with release 0.2.5 you might experience duplicate objects. **This release contains a database migration that will fix these duplicate objects and prevent them in the future**, however you might need to sort out manually which ones you'd like to keep and which ones to delete. Very sorry for the inconvenience!
+
+> _As an aside: I'm actively working on setting up a test pipeline for API integrations that will catch these sort of errors in the future. After all, this is a good reminder that this app, as well as the Android app, are still in beta state._
+
 - Bugfix: Make sure to round outputs of totals in Statistics module (issue #52)
 
 ### 0.2.5 Beta, 29. September 2021
