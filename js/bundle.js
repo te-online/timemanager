@@ -167,6 +167,8 @@
   function _possibleConstructorReturn(self, call) {
     if (call && (typeof call === "object" || typeof call === "function")) {
       return call;
+    } else if (call !== void 0) {
+      throw new TypeError("Derived constructors may only return object or undefined");
     }
 
     return _assertThisInitialized(self);
@@ -272,6 +274,539 @@
     return this;
   }() || Function('return this')();
 
+  // eslint-disable-next-line es/no-object-defineproperty -- safe
+
+
+  var defineProperty$5 = Object.defineProperty;
+
+  var setGlobal$1 = function (key, value) {
+    try {
+      defineProperty$5(global_1, key, {
+        value: value,
+        configurable: true,
+        writable: true
+      });
+    } catch (error) {
+      global_1[key] = value;
+    }
+
+    return value;
+  };
+
+  var SHARED$1 = '__core-js_shared__';
+  var store$3 = global_1[SHARED$1] || setGlobal$1(SHARED$1, {});
+  var sharedStore$1 = store$3;
+
+  var shared$1 = createCommonjsModule$1(function (module) {
+  (module.exports = function (key, value) {
+    return sharedStore$1[key] || (sharedStore$1[key] = value !== undefined ? value : {});
+  })('versions', []).push({
+    version: '3.19.2',
+    mode: 'global',
+    copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
+  });
+  });
+
+  var FunctionPrototype$2 = Function.prototype;
+  var bind$4 = FunctionPrototype$2.bind;
+  var call$2 = FunctionPrototype$2.call;
+  var callBind = bind$4 && bind$4.bind(call$2);
+  var functionUncurryThis = bind$4 ? function (fn) {
+    return fn && callBind(call$2, fn);
+  } : function (fn) {
+    return fn && function () {
+      return call$2.apply(fn, arguments);
+    };
+  };
+
+  var TypeError$f = global_1.TypeError; // `RequireObjectCoercible` abstract operation
+  // https://tc39.es/ecma262/#sec-requireobjectcoercible
+
+  var requireObjectCoercible$1 = function (it) {
+    if (it == undefined) throw TypeError$f("Can't call method on " + it);
+    return it;
+  };
+
+  var Object$5 = global_1.Object; // `ToObject` abstract operation
+  // https://tc39.es/ecma262/#sec-toobject
+
+  var toObject$1 = function (argument) {
+    return Object$5(requireObjectCoercible$1(argument));
+  };
+
+  var hasOwnProperty$1 = functionUncurryThis({}.hasOwnProperty); // `HasOwnProperty` abstract operation
+  // https://tc39.es/ecma262/#sec-hasownproperty
+
+  var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
+    return hasOwnProperty$1(toObject$1(it), key);
+  };
+
+  var id$1 = 0;
+  var postfix$1 = Math.random();
+  var toString$2 = functionUncurryThis(1.0.toString);
+
+  var uid$1 = function (key) {
+    return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$2(++id$1 + postfix$1, 36);
+  };
+
+  // `IsCallable` abstract operation
+  // https://tc39.es/ecma262/#sec-iscallable
+  var isCallable = function (argument) {
+    return typeof argument == 'function';
+  };
+
+  var aFunction$2 = function (argument) {
+    return isCallable(argument) ? argument : undefined;
+  };
+
+  var getBuiltIn$1 = function (namespace, method) {
+    return arguments.length < 2 ? aFunction$2(global_1[namespace]) : global_1[namespace] && global_1[namespace][method];
+  };
+
+  var engineUserAgent$1 = getBuiltIn$1('navigator', 'userAgent') || '';
+
+  var process$5 = global_1.process;
+  var Deno = global_1.Deno;
+  var versions$1 = process$5 && process$5.versions || Deno && Deno.version;
+  var v8$1 = versions$1 && versions$1.v8;
+  var match$9, version$1;
+
+  if (v8$1) {
+    match$9 = v8$1.split('.'); // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+    // but their correct versions are not interesting for us
+
+    version$1 = match$9[0] > 0 && match$9[0] < 4 ? 1 : +(match$9[0] + match$9[1]);
+  } // BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+  // so check `userAgent` even if `.v8` exists, but 0
+
+
+  if (!version$1 && engineUserAgent$1) {
+    match$9 = engineUserAgent$1.match(/Edge\/(\d+)/);
+
+    if (!match$9 || match$9[1] >= 74) {
+      match$9 = engineUserAgent$1.match(/Chrome\/(\d+)/);
+      if (match$9) version$1 = +match$9[1];
+    }
+  }
+
+  var engineV8Version$1 = version$1;
+
+  var fails$1 = function (exec) {
+    try {
+      return !!exec();
+    } catch (error) {
+      return true;
+    }
+  };
+
+  /* eslint-disable es/no-symbol -- required for testing */
+
+
+   // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+
+
+  var nativeSymbol$1 = !!Object.getOwnPropertySymbols && !fails$1(function () {
+    var symbol = Symbol(); // Chrome 38 Symbol has incorrect toString conversion
+    // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+
+    return !String(symbol) || !(Object(symbol) instanceof Symbol) || // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+    !Symbol.sham && engineV8Version$1 && engineV8Version$1 < 41;
+  });
+
+  /* eslint-disable es/no-symbol -- required for testing */
+
+
+  var useSymbolAsUid$1 = nativeSymbol$1 && !Symbol.sham && typeof Symbol.iterator == 'symbol';
+
+  var WellKnownSymbolsStore$1 = shared$1('wks');
+  var Symbol$2 = global_1.Symbol;
+  var symbolFor = Symbol$2 && Symbol$2['for'];
+  var createWellKnownSymbol$1 = useSymbolAsUid$1 ? Symbol$2 : Symbol$2 && Symbol$2.withoutSetter || uid$1;
+
+  var wellKnownSymbol$1 = function (name) {
+    if (!hasOwnProperty_1(WellKnownSymbolsStore$1, name) || !(nativeSymbol$1 || typeof WellKnownSymbolsStore$1[name] == 'string')) {
+      var description = 'Symbol.' + name;
+
+      if (nativeSymbol$1 && hasOwnProperty_1(Symbol$2, name)) {
+        WellKnownSymbolsStore$1[name] = Symbol$2[name];
+      } else if (useSymbolAsUid$1 && symbolFor) {
+        WellKnownSymbolsStore$1[name] = symbolFor(description);
+      } else {
+        WellKnownSymbolsStore$1[name] = createWellKnownSymbol$1(description);
+      }
+    }
+
+    return WellKnownSymbolsStore$1[name];
+  };
+
+  var TO_STRING_TAG$7 = wellKnownSymbol$1('toStringTag');
+  var test$1 = {};
+  test$1[TO_STRING_TAG$7] = 'z';
+  var toStringTagSupport$1 = String(test$1) === '[object z]';
+
+  // Detect IE8's incomplete defineProperty implementation
+
+
+  var descriptors$1 = !fails$1(function () {
+    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+    return Object.defineProperty({}, 1, {
+      get: function () {
+        return 7;
+      }
+    })[1] != 7;
+  });
+
+  var isObject$1 = function (it) {
+    return typeof it == 'object' ? it !== null : isCallable(it);
+  };
+
+  var document$4 = global_1.document; // typeof document.createElement is 'object' in old IE
+
+  var EXISTS$2 = isObject$1(document$4) && isObject$1(document$4.createElement);
+
+  var documentCreateElement$1 = function (it) {
+    return EXISTS$2 ? document$4.createElement(it) : {};
+  };
+
+  // Thank's IE8 for his funny defineProperty
+
+
+  var ie8DomDefine$1 = !descriptors$1 && !fails$1(function () {
+    // eslint-disable-next-line es/no-object-defineproperty -- requied for testing
+    return Object.defineProperty(documentCreateElement$1('div'), 'a', {
+      get: function () {
+        return 7;
+      }
+    }).a != 7;
+  });
+
+  var String$5 = global_1.String;
+  var TypeError$e = global_1.TypeError; // `Assert: Type(argument) is Object`
+
+  var anObject$1 = function (argument) {
+    if (isObject$1(argument)) return argument;
+    throw TypeError$e(String$5(argument) + ' is not an object');
+  };
+
+  var call$1 = Function.prototype.call;
+  var functionCall = call$1.bind ? call$1.bind(call$1) : function () {
+    return call$1.apply(call$1, arguments);
+  };
+
+  var objectIsPrototypeOf = functionUncurryThis({}.isPrototypeOf);
+
+  var Object$4 = global_1.Object;
+  var isSymbol = useSymbolAsUid$1 ? function (it) {
+    return typeof it == 'symbol';
+  } : function (it) {
+    var $Symbol = getBuiltIn$1('Symbol');
+    return isCallable($Symbol) && objectIsPrototypeOf($Symbol.prototype, Object$4(it));
+  };
+
+  var String$4 = global_1.String;
+
+  var tryToString = function (argument) {
+    try {
+      return String$4(argument);
+    } catch (error) {
+      return 'Object';
+    }
+  };
+
+  var TypeError$d = global_1.TypeError; // `Assert: IsCallable(argument) is true`
+
+  var aCallable = function (argument) {
+    if (isCallable(argument)) return argument;
+    throw TypeError$d(tryToString(argument) + ' is not a function');
+  };
+
+  // `GetMethod` abstract operation
+  // https://tc39.es/ecma262/#sec-getmethod
+
+
+  var getMethod = function (V, P) {
+    var func = V[P];
+    return func == null ? undefined : aCallable(func);
+  };
+
+  var TypeError$c = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
+  // https://tc39.es/ecma262/#sec-ordinarytoprimitive
+
+  var ordinaryToPrimitive = function (input, pref) {
+    var fn, val;
+    if (pref === 'string' && isCallable(fn = input.toString) && !isObject$1(val = functionCall(fn, input))) return val;
+    if (isCallable(fn = input.valueOf) && !isObject$1(val = functionCall(fn, input))) return val;
+    if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$1(val = functionCall(fn, input))) return val;
+    throw TypeError$c("Can't convert object to primitive value");
+  };
+
+  var TypeError$b = global_1.TypeError;
+  var TO_PRIMITIVE = wellKnownSymbol$1('toPrimitive'); // `ToPrimitive` abstract operation
+  // https://tc39.es/ecma262/#sec-toprimitive
+
+  var toPrimitive$1 = function (input, pref) {
+    if (!isObject$1(input) || isSymbol(input)) return input;
+    var exoticToPrim = getMethod(input, TO_PRIMITIVE);
+    var result;
+
+    if (exoticToPrim) {
+      if (pref === undefined) pref = 'default';
+      result = functionCall(exoticToPrim, input, pref);
+      if (!isObject$1(result) || isSymbol(result)) return result;
+      throw TypeError$b("Can't convert object to primitive value");
+    }
+
+    if (pref === undefined) pref = 'number';
+    return ordinaryToPrimitive(input, pref);
+  };
+
+  // `ToPropertyKey` abstract operation
+  // https://tc39.es/ecma262/#sec-topropertykey
+
+
+  var toPropertyKey = function (argument) {
+    var key = toPrimitive$1(argument, 'string');
+    return isSymbol(key) ? key : key + '';
+  };
+
+  var TypeError$a = global_1.TypeError; // eslint-disable-next-line es/no-object-defineproperty -- safe
+
+  var $defineProperty$1 = Object.defineProperty; // `Object.defineProperty` method
+  // https://tc39.es/ecma262/#sec-object.defineproperty
+
+  var f$a = descriptors$1 ? $defineProperty$1 : function defineProperty(O, P, Attributes) {
+    anObject$1(O);
+    P = toPropertyKey(P);
+    anObject$1(Attributes);
+    if (ie8DomDefine$1) try {
+      return $defineProperty$1(O, P, Attributes);
+    } catch (error) {
+      /* empty */
+    }
+    if ('get' in Attributes || 'set' in Attributes) throw TypeError$a('Accessors not supported');
+    if ('value' in Attributes) O[P] = Attributes.value;
+    return O;
+  };
+
+  var objectDefineProperty$1 = {
+  	f: f$a
+  };
+
+  var createPropertyDescriptor$1 = function (bitmap, value) {
+    return {
+      enumerable: !(bitmap & 1),
+      configurable: !(bitmap & 2),
+      writable: !(bitmap & 4),
+      value: value
+    };
+  };
+
+  var createNonEnumerableProperty$1 = descriptors$1 ? function (object, key, value) {
+    return objectDefineProperty$1.f(object, key, createPropertyDescriptor$1(1, value));
+  } : function (object, key, value) {
+    object[key] = value;
+    return object;
+  };
+
+  var functionToString$1 = functionUncurryThis(Function.toString); // this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+
+  if (!isCallable(sharedStore$1.inspectSource)) {
+    sharedStore$1.inspectSource = function (it) {
+      return functionToString$1(it);
+    };
+  }
+
+  var inspectSource$1 = sharedStore$1.inspectSource;
+
+  var WeakMap$3 = global_1.WeakMap;
+  var nativeWeakMap$1 = isCallable(WeakMap$3) && /native code/.test(inspectSource$1(WeakMap$3));
+
+  var keys$3 = shared$1('keys');
+
+  var sharedKey$1 = function (key) {
+    return keys$3[key] || (keys$3[key] = uid$1(key));
+  };
+
+  var hiddenKeys$3 = {};
+
+  var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
+  var TypeError$9 = global_1.TypeError;
+  var WeakMap$2 = global_1.WeakMap;
+  var set$2, get$1, has$2;
+
+  var enforce$1 = function (it) {
+    return has$2(it) ? get$1(it) : set$2(it, {});
+  };
+
+  var getterFor$1 = function (TYPE) {
+    return function (it) {
+      var state;
+
+      if (!isObject$1(it) || (state = get$1(it)).type !== TYPE) {
+        throw TypeError$9('Incompatible receiver, ' + TYPE + ' required');
+      }
+
+      return state;
+    };
+  };
+
+  if (nativeWeakMap$1 || sharedStore$1.state) {
+    var store$2 = sharedStore$1.state || (sharedStore$1.state = new WeakMap$2());
+    var wmget$1 = functionUncurryThis(store$2.get);
+    var wmhas$1 = functionUncurryThis(store$2.has);
+    var wmset$1 = functionUncurryThis(store$2.set);
+
+    set$2 = function (it, metadata) {
+      if (wmhas$1(store$2, it)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      metadata.facade = it;
+      wmset$1(store$2, it, metadata);
+      return metadata;
+    };
+
+    get$1 = function (it) {
+      return wmget$1(store$2, it) || {};
+    };
+
+    has$2 = function (it) {
+      return wmhas$1(store$2, it);
+    };
+  } else {
+    var STATE$1 = sharedKey$1('state');
+    hiddenKeys$3[STATE$1] = true;
+
+    set$2 = function (it, metadata) {
+      if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      metadata.facade = it;
+      createNonEnumerableProperty$1(it, STATE$1, metadata);
+      return metadata;
+    };
+
+    get$1 = function (it) {
+      return hasOwnProperty_1(it, STATE$1) ? it[STATE$1] : {};
+    };
+
+    has$2 = function (it) {
+      return hasOwnProperty_1(it, STATE$1);
+    };
+  }
+
+  var internalState$1 = {
+    set: set$2,
+    get: get$1,
+    has: has$2,
+    enforce: enforce$1,
+    getterFor: getterFor$1
+  };
+
+  var FunctionPrototype$1 = Function.prototype; // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+
+  var getDescriptor = descriptors$1 && Object.getOwnPropertyDescriptor;
+  var EXISTS$1 = hasOwnProperty_1(FunctionPrototype$1, 'name'); // additional protection from minified / mangled / dropped function names
+
+  var PROPER = EXISTS$1 && function something() {
+    /* empty */
+  }.name === 'something';
+
+  var CONFIGURABLE = EXISTS$1 && (!descriptors$1 || descriptors$1 && getDescriptor(FunctionPrototype$1, 'name').configurable);
+  var functionName = {
+    EXISTS: EXISTS$1,
+    PROPER: PROPER,
+    CONFIGURABLE: CONFIGURABLE
+  };
+
+  var redefine$1 = createCommonjsModule$1(function (module) {
+  var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
+
+  var getInternalState = internalState$1.get;
+  var enforceInternalState = internalState$1.enforce;
+  var TEMPLATE = String(String).split('String');
+  (module.exports = function (O, key, value, options) {
+    var unsafe = options ? !!options.unsafe : false;
+    var simple = options ? !!options.enumerable : false;
+    var noTargetGet = options ? !!options.noTargetGet : false;
+    var name = options && options.name !== undefined ? options.name : key;
+    var state;
+
+    if (isCallable(value)) {
+      if (String(name).slice(0, 7) === 'Symbol(') {
+        name = '[' + String(name).replace(/^Symbol\(([^)]*)\)/, '$1') + ']';
+      }
+
+      if (!hasOwnProperty_1(value, 'name') || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+        createNonEnumerableProperty$1(value, 'name', name);
+      }
+
+      state = enforceInternalState(value);
+
+      if (!state.source) {
+        state.source = TEMPLATE.join(typeof name == 'string' ? name : '');
+      }
+    }
+
+    if (O === global_1) {
+      if (simple) O[key] = value;else setGlobal$1(key, value);
+      return;
+    } else if (!unsafe) {
+      delete O[key];
+    } else if (!noTargetGet && O[key]) {
+      simple = true;
+    }
+
+    if (simple) O[key] = value;else createNonEnumerableProperty$1(O, key, value); // add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+  })(Function.prototype, 'toString', function toString() {
+    return isCallable(this) && getInternalState(this).source || inspectSource$1(this);
+  });
+  });
+
+  var toString$1 = functionUncurryThis({}.toString);
+  var stringSlice$5 = functionUncurryThis(''.slice);
+
+  var classofRaw$1 = function (it) {
+    return stringSlice$5(toString$1(it), 8, -1);
+  };
+
+  var TO_STRING_TAG$6 = wellKnownSymbol$1('toStringTag');
+  var Object$3 = global_1.Object; // ES3 wrong here
+
+  var CORRECT_ARGUMENTS$1 = classofRaw$1(function () {
+    return arguments;
+  }()) == 'Arguments'; // fallback for IE11 Script Access Denied error
+
+  var tryGet$1 = function (it, key) {
+    try {
+      return it[key];
+    } catch (error) {
+      /* empty */
+    }
+  }; // getting tag from ES6+ `Object.prototype.toString`
+
+
+  var classof$1 = toStringTagSupport$1 ? classofRaw$1 : function (it) {
+    var O, tag, result;
+    return it === undefined ? 'Undefined' : it === null ? 'Null' // @@toStringTag case
+    : typeof (tag = tryGet$1(O = Object$3(it), TO_STRING_TAG$6)) == 'string' ? tag // builtinTag case
+    : CORRECT_ARGUMENTS$1 ? classofRaw$1(O) // ES3 arguments fallback
+    : (result = classofRaw$1(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
+  };
+
+  // `Object.prototype.toString` method implementation
+  // https://tc39.es/ecma262/#sec-object.prototype.tostring
+
+
+  var objectToString$1 = toStringTagSupport$1 ? {}.toString : function toString() {
+    return '[object ' + classof$1(this) + ']';
+  };
+
+  // `Object.prototype.toString` method
+  // https://tc39.es/ecma262/#sec-object.prototype.tostring
+
+
+  if (!toStringTagSupport$1) {
+    redefine$1(Object.prototype, 'toString', objectToString$1, {
+      unsafe: true
+    });
+  }
+
   // iterable DOM collections
   // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
   var domIterables$1 = {
@@ -308,106 +843,58 @@
     TouchList: 0
   };
 
-  var aFunction$3 = function (it) {
-    if (typeof it != 'function') {
-      throw TypeError(String(it) + ' is not a function');
-    }
-
-    return it;
-  };
-
-  // optional / simple context binding
+  // in old WebKit versions, `element.classList` is not an instance of global `DOMTokenList`
 
 
-  var functionBindContext$1 = function (fn, that, length) {
-    aFunction$3(fn);
-    if (that === undefined) return fn;
+  var classList = documentCreateElement$1('span').classList;
+  var DOMTokenListPrototype = classList && classList.constructor && classList.constructor.prototype;
+  var domTokenListPrototype = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
 
-    switch (length) {
-      case 0:
-        return function () {
-          return fn.call(that);
-        };
+  var bind$3 = functionUncurryThis(functionUncurryThis.bind); // optional / simple context binding
 
-      case 1:
-        return function (a) {
-          return fn.call(that, a);
-        };
-
-      case 2:
-        return function (a, b) {
-          return fn.call(that, a, b);
-        };
-
-      case 3:
-        return function (a, b, c) {
-          return fn.call(that, a, b, c);
-        };
-    }
-
-    return function ()
-    /* ...args */
-    {
+  var functionBindContext$1 = function (fn, that) {
+    aCallable(fn);
+    return that === undefined ? fn : bind$3 ? bind$3(fn, that) : function
+      /* ...args */
+    () {
       return fn.apply(that, arguments);
     };
   };
 
-  var fails$1 = function (exec) {
-    try {
-      return !!exec();
-    } catch (error) {
-      return true;
-    }
-  };
-
-  var toString$1 = {}.toString;
-
-  var classofRaw$1 = function (it) {
-    return toString$1.call(it).slice(8, -1);
-  };
-
-  var split$1 = ''.split; // fallback for non-array-like ES3 and non-enumerable old V8 strings
+  var Object$2 = global_1.Object;
+  var split$1 = functionUncurryThis(''.split); // fallback for non-array-like ES3 and non-enumerable old V8 strings
 
   var indexedObject$1 = fails$1(function () {
     // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
     // eslint-disable-next-line no-prototype-builtins -- safe
-    return !Object('z').propertyIsEnumerable(0);
+    return !Object$2('z').propertyIsEnumerable(0);
   }) ? function (it) {
-    return classofRaw$1(it) == 'String' ? split$1.call(it, '') : Object(it);
-  } : Object;
-
-  // `RequireObjectCoercible` abstract operation
-  // https://tc39.es/ecma262/#sec-requireobjectcoercible
-  var requireObjectCoercible$1 = function (it) {
-    if (it == undefined) throw TypeError("Can't call method on " + it);
-    return it;
-  };
-
-  // `ToObject` abstract operation
-  // https://tc39.es/ecma262/#sec-toobject
-
-
-  var toObject$1 = function (argument) {
-    return Object(requireObjectCoercible$1(argument));
-  };
+    return classofRaw$1(it) == 'String' ? split$1(it, '') : Object$2(it);
+  } : Object$2;
 
   var ceil$1 = Math.ceil;
-  var floor$2 = Math.floor; // `ToInteger` abstract operation
-  // https://tc39.es/ecma262/#sec-tointeger
+  var floor$2 = Math.floor; // `ToIntegerOrInfinity` abstract operation
+  // https://tc39.es/ecma262/#sec-tointegerorinfinity
 
-  var toInteger$2 = function (argument) {
-    return isNaN(argument = +argument) ? 0 : (argument > 0 ? floor$2 : ceil$1)(argument);
+  var toIntegerOrInfinity = function (argument) {
+    var number = +argument; // eslint-disable-next-line no-self-compare -- safe
+
+    return number !== number || number === 0 ? 0 : (number > 0 ? floor$2 : ceil$1)(number);
   };
 
   var min$6 = Math.min; // `ToLength` abstract operation
   // https://tc39.es/ecma262/#sec-tolength
 
   var toLength$1 = function (argument) {
-    return argument > 0 ? min$6(toInteger$2(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+    return argument > 0 ? min$6(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
   };
 
-  var isObject$1 = function (it) {
-    return typeof it === 'object' ? it !== null : typeof it === 'function';
+  // `LengthOfArrayLike` abstract operation
+  // https://tc39.es/ecma262/#sec-lengthofarraylike
+
+
+  var lengthOfArrayLike = function (obj) {
+    return toLength$1(obj.length);
   };
 
   // `IsArray` abstract operation
@@ -415,227 +902,82 @@
   // eslint-disable-next-line es/no-array-isarray -- safe
 
 
-  var isArray$1 = Array.isArray || function isArray(arg) {
-    return classofRaw$1(arg) == 'Array';
+  var isArray$1 = Array.isArray || function isArray(argument) {
+    return classofRaw$1(argument) == 'Array';
   };
 
-  // Detect IE8's incomplete defineProperty implementation
-
-
-  var descriptors$1 = !fails$1(function () {
-    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-    return Object.defineProperty({}, 1, {
-      get: function () {
-        return 7;
-      }
-    })[1] != 7;
-  });
-
-  var document$4 = global_1.document; // typeof document.createElement is 'object' in old IE
-
-  var EXISTS$1 = isObject$1(document$4) && isObject$1(document$4.createElement);
-
-  var documentCreateElement$1 = function (it) {
-    return EXISTS$1 ? document$4.createElement(it) : {};
+  var noop$2 = function () {
+    /* empty */
   };
 
-  // Thank's IE8 for his funny defineProperty
+  var empty$1 = [];
+  var construct = getBuiltIn$1('Reflect', 'construct');
+  var constructorRegExp = /^\s*(?:class|function)\b/;
+  var exec$1 = functionUncurryThis(constructorRegExp.exec);
+  var INCORRECT_TO_STRING = !constructorRegExp.exec(noop$2);
 
+  var isConstructorModern = function (argument) {
+    if (!isCallable(argument)) return false;
 
-  var ie8DomDefine$1 = !descriptors$1 && !fails$1(function () {
-    // eslint-disable-next-line es/no-object-defineproperty -- requied for testing
-    return Object.defineProperty(documentCreateElement$1('div'), 'a', {
-      get: function () {
-        return 7;
-      }
-    }).a != 7;
-  });
-
-  var anObject$1 = function (it) {
-    if (!isObject$1(it)) {
-      throw TypeError(String(it) + ' is not an object');
-    }
-
-    return it;
-  };
-
-  // `ToPrimitive` abstract operation
-  // https://tc39.es/ecma262/#sec-toprimitive
-  // instead of the ES6 spec version, we didn't implement @@toPrimitive case
-  // and the second argument - flag - preferred type is a string
-
-
-  var toPrimitive$1 = function (input, PREFERRED_STRING) {
-    if (!isObject$1(input)) return input;
-    var fn, val;
-    if (PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject$1(val = fn.call(input))) return val;
-    if (typeof (fn = input.valueOf) == 'function' && !isObject$1(val = fn.call(input))) return val;
-    if (!PREFERRED_STRING && typeof (fn = input.toString) == 'function' && !isObject$1(val = fn.call(input))) return val;
-    throw TypeError("Can't convert object to primitive value");
-  };
-
-  // eslint-disable-next-line es/no-object-defineproperty -- safe
-
-
-  var $defineProperty$1 = Object.defineProperty; // `Object.defineProperty` method
-  // https://tc39.es/ecma262/#sec-object.defineproperty
-
-  var f$a = descriptors$1 ? $defineProperty$1 : function defineProperty(O, P, Attributes) {
-    anObject$1(O);
-    P = toPrimitive$1(P, true);
-    anObject$1(Attributes);
-    if (ie8DomDefine$1) try {
-      return $defineProperty$1(O, P, Attributes);
-    } catch (error) {
-      /* empty */
-    }
-    if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported');
-    if ('value' in Attributes) O[P] = Attributes.value;
-    return O;
-  };
-
-  var objectDefineProperty$1 = {
-  	f: f$a
-  };
-
-  var createPropertyDescriptor$1 = function (bitmap, value) {
-    return {
-      enumerable: !(bitmap & 1),
-      configurable: !(bitmap & 2),
-      writable: !(bitmap & 4),
-      value: value
-    };
-  };
-
-  var createNonEnumerableProperty$1 = descriptors$1 ? function (object, key, value) {
-    return objectDefineProperty$1.f(object, key, createPropertyDescriptor$1(1, value));
-  } : function (object, key, value) {
-    object[key] = value;
-    return object;
-  };
-
-  var setGlobal$1 = function (key, value) {
     try {
-      createNonEnumerableProperty$1(global_1, key, value);
+      construct(noop$2, empty$1, argument);
+      return true;
     } catch (error) {
-      global_1[key] = value;
+      return false;
+    }
+  };
+
+  var isConstructorLegacy = function (argument) {
+    if (!isCallable(argument)) return false;
+
+    switch (classof$1(argument)) {
+      case 'AsyncFunction':
+      case 'GeneratorFunction':
+      case 'AsyncGeneratorFunction':
+        return false;
+      // we can't check .prototype since constructors produced by .bind haven't it
     }
 
-    return value;
-  };
-
-  var SHARED$1 = '__core-js_shared__';
-  var store$3 = global_1[SHARED$1] || setGlobal$1(SHARED$1, {});
-  var sharedStore$1 = store$3;
-
-  var shared$1 = createCommonjsModule$1(function (module) {
-  (module.exports = function (key, value) {
-    return sharedStore$1[key] || (sharedStore$1[key] = value !== undefined ? value : {});
-  })('versions', []).push({
-    version: '3.15.1',
-    mode: 'global',
-    copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
-  });
-  });
-
-  var hasOwnProperty$1 = {}.hasOwnProperty;
-
-  var has$3 = Object.hasOwn || function hasOwn(it, key) {
-    return hasOwnProperty$1.call(toObject$1(it), key);
-  };
-
-  var id$1 = 0;
-  var postfix$1 = Math.random();
-
-  var uid$1 = function (key) {
-    return 'Symbol(' + String(key === undefined ? '' : key) + ')_' + (++id$1 + postfix$1).toString(36);
-  };
-
-  var path$1 = global_1;
-
-  var aFunction$2 = function (variable) {
-    return typeof variable == 'function' ? variable : undefined;
-  };
-
-  var getBuiltIn$1 = function (namespace, method) {
-    return arguments.length < 2 ? aFunction$2(path$1[namespace]) || aFunction$2(global_1[namespace]) : path$1[namespace] && path$1[namespace][method] || global_1[namespace] && global_1[namespace][method];
-  };
-
-  var engineUserAgent$1 = getBuiltIn$1('navigator', 'userAgent') || '';
-
-  var process$5 = global_1.process;
-  var versions$1 = process$5 && process$5.versions;
-  var v8$1 = versions$1 && versions$1.v8;
-  var match$5, version$1;
-
-  if (v8$1) {
-    match$5 = v8$1.split('.');
-    version$1 = match$5[0] < 4 ? 1 : match$5[0] + match$5[1];
-  } else if (engineUserAgent$1) {
-    match$5 = engineUserAgent$1.match(/Edge\/(\d+)/);
-
-    if (!match$5 || match$5[1] >= 74) {
-      match$5 = engineUserAgent$1.match(/Chrome\/(\d+)/);
-      if (match$5) version$1 = match$5[1];
-    }
-  }
-
-  var engineV8Version$1 = version$1 && +version$1;
-
-  /* eslint-disable es/no-symbol -- required for testing */
+    return INCORRECT_TO_STRING || !!exec$1(constructorRegExp, inspectSource$1(argument));
+  }; // `IsConstructor` abstract operation
+  // https://tc39.es/ecma262/#sec-isconstructor
 
 
-   // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+  var isConstructor = !construct || fails$1(function () {
+    var called;
+    return isConstructorModern(isConstructorModern.call) || !isConstructorModern(Object) || !isConstructorModern(function () {
+      called = true;
+    }) || called;
+  }) ? isConstructorLegacy : isConstructorModern;
 
-
-  var nativeSymbol$1 = !!Object.getOwnPropertySymbols && !fails$1(function () {
-    var symbol = Symbol(); // Chrome 38 Symbol has incorrect toString conversion
-    // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
-
-    return !String(symbol) || !(Object(symbol) instanceof Symbol) || // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
-    !Symbol.sham && engineV8Version$1 && engineV8Version$1 < 41;
-  });
-
-  /* eslint-disable es/no-symbol -- required for testing */
-
-
-  var useSymbolAsUid$1 = nativeSymbol$1 && !Symbol.sham && typeof Symbol.iterator == 'symbol';
-
-  var WellKnownSymbolsStore$1 = shared$1('wks');
-  var Symbol$2 = global_1.Symbol;
-  var createWellKnownSymbol$1 = useSymbolAsUid$1 ? Symbol$2 : Symbol$2 && Symbol$2.withoutSetter || uid$1;
-
-  var wellKnownSymbol$1 = function (name) {
-    if (!has$3(WellKnownSymbolsStore$1, name) || !(nativeSymbol$1 || typeof WellKnownSymbolsStore$1[name] == 'string')) {
-      if (nativeSymbol$1 && has$3(Symbol$2, name)) {
-        WellKnownSymbolsStore$1[name] = Symbol$2[name];
-      } else {
-        WellKnownSymbolsStore$1[name] = createWellKnownSymbol$1('Symbol.' + name);
-      }
-    }
-
-    return WellKnownSymbolsStore$1[name];
-  };
-
-  var SPECIES$b = wellKnownSymbol$1('species'); // `ArraySpeciesCreate` abstract operation
+  var SPECIES$b = wellKnownSymbol$1('species');
+  var Array$4 = global_1.Array; // a part of `ArraySpeciesCreate` abstract operation
   // https://tc39.es/ecma262/#sec-arrayspeciescreate
 
-  var arraySpeciesCreate$1 = function (originalArray, length) {
+  var arraySpeciesConstructor = function (originalArray) {
     var C;
 
     if (isArray$1(originalArray)) {
       C = originalArray.constructor; // cross-realm fallback
 
-      if (typeof C == 'function' && (C === Array || isArray$1(C.prototype))) C = undefined;else if (isObject$1(C)) {
+      if (isConstructor(C) && (C === Array$4 || isArray$1(C.prototype))) C = undefined;else if (isObject$1(C)) {
         C = C[SPECIES$b];
         if (C === null) C = undefined;
       }
     }
 
-    return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
+    return C === undefined ? Array$4 : C;
   };
 
-  var push$1 = [].push; // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
+  // `ArraySpeciesCreate` abstract operation
+  // https://tc39.es/ecma262/#sec-arrayspeciescreate
+
+
+  var arraySpeciesCreate$1 = function (originalArray, length) {
+    return new (arraySpeciesConstructor(originalArray))(length === 0 ? 0 : length);
+  };
+
+  var push$4 = functionUncurryThis([].push); // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
 
   var createMethod$6 = function (TYPE) {
     var IS_MAP = TYPE == 1;
@@ -643,16 +985,16 @@
     var IS_SOME = TYPE == 3;
     var IS_EVERY = TYPE == 4;
     var IS_FIND_INDEX = TYPE == 6;
-    var IS_FILTER_OUT = TYPE == 7;
+    var IS_FILTER_REJECT = TYPE == 7;
     var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
     return function ($this, callbackfn, that, specificCreate) {
       var O = toObject$1($this);
       var self = indexedObject$1(O);
-      var boundFunction = functionBindContext$1(callbackfn, that, 3);
-      var length = toLength$1(self.length);
+      var boundFunction = functionBindContext$1(callbackfn, that);
+      var length = lengthOfArrayLike(self);
       var index = 0;
       var create = specificCreate || arraySpeciesCreate$1;
-      var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_OUT ? create($this, 0) : undefined;
+      var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : undefined;
       var value, result;
 
       for (; length > index; index++) if (NO_HOLES || index in self) {
@@ -662,30 +1004,30 @@
         if (TYPE) {
           if (IS_MAP) target[index] = result; // map
           else if (result) switch (TYPE) {
-              case 3:
-                return true;
-              // some
+            case 3:
+              return true;
+            // some
 
-              case 5:
-                return value;
-              // find
+            case 5:
+              return value;
+            // find
 
-              case 6:
-                return index;
-              // findIndex
+            case 6:
+              return index;
+            // findIndex
 
-              case 2:
-                push$1.call(target, value);
-              // filter
-            } else switch (TYPE) {
-              case 4:
-                return false;
-              // every
+            case 2:
+              push$4(target, value);
+            // filter
+          } else switch (TYPE) {
+            case 4:
+              return false;
+            // every
 
-              case 7:
-                push$1.call(target, value);
-              // filterOut
-            }
+            case 7:
+              push$4(target, value);
+            // filterReject
+          }
         }
       }
 
@@ -715,9 +1057,9 @@
     // `Array.prototype.findIndex` method
     // https://tc39.es/ecma262/#sec-array.prototype.findIndex
     findIndex: createMethod$6(6),
-    // `Array.prototype.filterOut` method
+    // `Array.prototype.filterReject` method
     // https://github.com/tc39/proposal-array-filtering
-    filterOut: createMethod$6(7)
+    filterReject: createMethod$6(7)
   };
 
   var arrayMethodIsStrict$1 = function (METHOD_NAME, argument) {
@@ -743,16 +1085,22 @@
     return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined); // eslint-disable-next-line es/no-array-prototype-foreach -- safe
   } : [].forEach;
 
-  for (var COLLECTION_NAME$3 in domIterables$1) {
-    var Collection$3 = global_1[COLLECTION_NAME$3];
-    var CollectionPrototype$3 = Collection$3 && Collection$3.prototype; // some Chrome versions have non-configurable methods on DOMTokenList
-
-    if (CollectionPrototype$3 && CollectionPrototype$3.forEach !== arrayForEach$1) try {
-      createNonEnumerableProperty$1(CollectionPrototype$3, 'forEach', arrayForEach$1);
+  var handlePrototype$1 = function (CollectionPrototype) {
+    // some Chrome versions have non-configurable methods on DOMTokenList
+    if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach$1) try {
+      createNonEnumerableProperty$1(CollectionPrototype, 'forEach', arrayForEach$1);
     } catch (error) {
-      CollectionPrototype$3.forEach = arrayForEach$1;
+      CollectionPrototype.forEach = arrayForEach$1;
+    }
+  };
+
+  for (var COLLECTION_NAME$3 in domIterables$1) {
+    if (domIterables$1[COLLECTION_NAME$3]) {
+      handlePrototype$1(global_1[COLLECTION_NAME$3] && global_1[COLLECTION_NAME$3].prototype);
     }
   }
+
+  handlePrototype$1(domTokenListPrototype);
 
   createCommonjsModule$1(function (module) {
   /**
@@ -847,11 +1195,9 @@
 
 
     var IteratorPrototype = {};
-
-    IteratorPrototype[iteratorSymbol] = function () {
+    define(IteratorPrototype, iteratorSymbol, function () {
       return this;
-    };
-
+    });
     var getProto = Object.getPrototypeOf;
     var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
 
@@ -862,8 +1208,9 @@
     }
 
     var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-    GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-    GeneratorFunctionPrototype.constructor = GeneratorFunction;
+    GeneratorFunction.prototype = GeneratorFunctionPrototype;
+    define(Gp, "constructor", GeneratorFunctionPrototype);
+    define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
     GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"); // Helper for defining the .next, .throw, and .return methods of the
     // Iterator interface in terms of a single ._invoke method.
 
@@ -968,11 +1315,9 @@
     }
 
     defineIteratorMethods(AsyncIterator.prototype);
-
-    AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
       return this;
-    };
-
+    });
     exports.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
     // AsyncIterator objects; they just return a Promise for the value of
     // the final result produced by the iterator.
@@ -1149,13 +1494,12 @@
     // object to not be returned from this call. This ensures that doesn't happen.
     // See https://github.com/facebook/regenerator/issues/274 for more details.
 
-    Gp[iteratorSymbol] = function () {
+    define(Gp, iteratorSymbol, function () {
       return this;
-    };
-
-    Gp.toString = function () {
+    });
+    define(Gp, "toString", function () {
       return "[object Generator]";
-    };
+    });
 
     function pushTryEntry(locs) {
       var entry = {
@@ -1467,14 +1811,19 @@
   } catch (accidentalStrictMode) {
     // This module should not be running in strict mode, so the above
     // assignment should always work unless something is misconfigured. Just
-    // in case runtime.js accidentally runs in strict mode, we can escape
+    // in case runtime.js accidentally runs in strict mode, in modern engines
+    // we can explicitly access globalThis. In older engines we can escape
     // strict mode using a global Function call. This could conceivably fail
     // if a Content Security Policy forbids using Function, but in that case
     // the proper solution is to fix the accidental strict mode problem. If
     // you've misconfigured your bundler to force strict mode and applied a
     // CSP to forbid Function, and you're not willing to fix either of those
     // problems, please detail your unique predicament in a GitHub issue.
-    Function("r", "regeneratorRuntime = r")(runtime);
+    if (typeof globalThis === "object") {
+      globalThis.regeneratorRuntime = runtime;
+    } else {
+      Function("r", "regeneratorRuntime = r")(runtime);
+    }
   }
   });
 
@@ -1513,153 +1862,27 @@
 
   var f$8 = descriptors$1 ? $getOwnPropertyDescriptor$1 : function getOwnPropertyDescriptor(O, P) {
     O = toIndexedObject$1(O);
-    P = toPrimitive$1(P, true);
+    P = toPropertyKey(P);
     if (ie8DomDefine$1) try {
       return $getOwnPropertyDescriptor$1(O, P);
     } catch (error) {
       /* empty */
     }
-    if (has$3(O, P)) return createPropertyDescriptor$1(!objectPropertyIsEnumerable$1.f.call(O, P), O[P]);
+    if (hasOwnProperty_1(O, P)) return createPropertyDescriptor$1(!functionCall(objectPropertyIsEnumerable$1.f, O, P), O[P]);
   };
 
   var objectGetOwnPropertyDescriptor$1 = {
   	f: f$8
   };
 
-  var functionToString$1 = Function.toString; // this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
-
-  if (typeof sharedStore$1.inspectSource != 'function') {
-    sharedStore$1.inspectSource = function (it) {
-      return functionToString$1.call(it);
-    };
-  }
-
-  var inspectSource$1 = sharedStore$1.inspectSource;
-
-  var WeakMap$3 = global_1.WeakMap;
-  var nativeWeakMap$1 = typeof WeakMap$3 === 'function' && /native code/.test(inspectSource$1(WeakMap$3));
-
-  var keys$3 = shared$1('keys');
-
-  var sharedKey$1 = function (key) {
-    return keys$3[key] || (keys$3[key] = uid$1(key));
-  };
-
-  var hiddenKeys$3 = {};
-
-  var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
-  var WeakMap$2 = global_1.WeakMap;
-  var set$2, get$1, has$2;
-
-  var enforce$1 = function (it) {
-    return has$2(it) ? get$1(it) : set$2(it, {});
-  };
-
-  var getterFor$1 = function (TYPE) {
-    return function (it) {
-      var state;
-
-      if (!isObject$1(it) || (state = get$1(it)).type !== TYPE) {
-        throw TypeError('Incompatible receiver, ' + TYPE + ' required');
-      }
-
-      return state;
-    };
-  };
-
-  if (nativeWeakMap$1 || sharedStore$1.state) {
-    var store$2 = sharedStore$1.state || (sharedStore$1.state = new WeakMap$2());
-    var wmget$1 = store$2.get;
-    var wmhas$1 = store$2.has;
-    var wmset$1 = store$2.set;
-
-    set$2 = function (it, metadata) {
-      if (wmhas$1.call(store$2, it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED$1);
-      metadata.facade = it;
-      wmset$1.call(store$2, it, metadata);
-      return metadata;
-    };
-
-    get$1 = function (it) {
-      return wmget$1.call(store$2, it) || {};
-    };
-
-    has$2 = function (it) {
-      return wmhas$1.call(store$2, it);
-    };
-  } else {
-    var STATE$1 = sharedKey$1('state');
-    hiddenKeys$3[STATE$1] = true;
-
-    set$2 = function (it, metadata) {
-      if (has$3(it, STATE$1)) throw new TypeError(OBJECT_ALREADY_INITIALIZED$1);
-      metadata.facade = it;
-      createNonEnumerableProperty$1(it, STATE$1, metadata);
-      return metadata;
-    };
-
-    get$1 = function (it) {
-      return has$3(it, STATE$1) ? it[STATE$1] : {};
-    };
-
-    has$2 = function (it) {
-      return has$3(it, STATE$1);
-    };
-  }
-
-  var internalState$1 = {
-    set: set$2,
-    get: get$1,
-    has: has$2,
-    enforce: enforce$1,
-    getterFor: getterFor$1
-  };
-
-  var redefine$1 = createCommonjsModule$1(function (module) {
-  var getInternalState = internalState$1.get;
-  var enforceInternalState = internalState$1.enforce;
-  var TEMPLATE = String(String).split('String');
-  (module.exports = function (O, key, value, options) {
-    var unsafe = options ? !!options.unsafe : false;
-    var simple = options ? !!options.enumerable : false;
-    var noTargetGet = options ? !!options.noTargetGet : false;
-    var state;
-
-    if (typeof value == 'function') {
-      if (typeof key == 'string' && !has$3(value, 'name')) {
-        createNonEnumerableProperty$1(value, 'name', key);
-      }
-
-      state = enforceInternalState(value);
-
-      if (!state.source) {
-        state.source = TEMPLATE.join(typeof key == 'string' ? key : '');
-      }
-    }
-
-    if (O === global_1) {
-      if (simple) O[key] = value;else setGlobal$1(key, value);
-      return;
-    } else if (!unsafe) {
-      delete O[key];
-    } else if (!noTargetGet && O[key]) {
-      simple = true;
-    }
-
-    if (simple) O[key] = value;else createNonEnumerableProperty$1(O, key, value); // add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-  })(Function.prototype, 'toString', function toString() {
-    return typeof this == 'function' && getInternalState(this).source || inspectSource$1(this);
-  });
-  });
-
-  var max$3 = Math.max;
+  var max$4 = Math.max;
   var min$5 = Math.min; // Helper for a popular repeating case of the spec:
   // Let integer be ? ToInteger(index).
   // If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
 
   var toAbsoluteIndex$1 = function (index, length) {
-    var integer = toInteger$2(index);
-    return integer < 0 ? max$3(integer + length, 0) : min$5(integer, length);
+    var integer = toIntegerOrInfinity(index);
+    return integer < 0 ? max$4(integer + length, 0) : min$5(integer, length);
   };
 
   // `Array.prototype.{ indexOf, includes }` methods implementation
@@ -1668,7 +1891,7 @@
   var createMethod$5 = function (IS_INCLUDES) {
     return function ($this, el, fromIndex) {
       var O = toIndexedObject$1($this);
-      var length = toLength$1(O.length);
+      var length = lengthOfArrayLike(O);
       var index = toAbsoluteIndex$1(fromIndex, length);
       var value; // Array#includes uses SameValueZero equality algorithm
       // eslint-disable-next-line no-self-compare -- NaN check
@@ -1693,9 +1916,11 @@
     indexOf: createMethod$5(false)
   };
 
-  var indexOf$1 = arrayIncludes$1.indexOf;
+  var indexOf$2 = arrayIncludes$1.indexOf;
 
 
+
+  var push$3 = functionUncurryThis([].push);
 
   var objectKeysInternal$1 = function (object, names) {
     var O = toIndexedObject$1(object);
@@ -1703,11 +1928,11 @@
     var result = [];
     var key;
 
-    for (key in O) !has$3(hiddenKeys$3, key) && has$3(O, key) && result.push(key); // Don't enum bug & hidden keys
+    for (key in O) !hasOwnProperty_1(hiddenKeys$3, key) && hasOwnProperty_1(O, key) && push$3(result, key); // Don't enum bug & hidden keys
 
 
-    while (names.length > i) if (has$3(O, key = names[i++])) {
-      ~indexOf$1(result, key) || result.push(key);
+    while (names.length > i) if (hasOwnProperty_1(O, key = names[i++])) {
+      ~indexOf$2(result, key) || push$3(result, key);
     }
 
     return result;
@@ -1735,13 +1960,12 @@
   	f: f$6
   };
 
-  // all object keys, includes non-enumerable and symbols
-
+  var concat$1 = functionUncurryThis([].concat); // all object keys, includes non-enumerable and symbols
 
   var ownKeys$1 = getBuiltIn$1('Reflect', 'ownKeys') || function ownKeys(it) {
     var keys = objectGetOwnPropertyNames$1.f(anObject$1(it));
     var getOwnPropertySymbols = objectGetOwnPropertySymbols$1.f;
-    return getOwnPropertySymbols ? keys.concat(getOwnPropertySymbols(it)) : keys;
+    return getOwnPropertySymbols ? concat$1(keys, getOwnPropertySymbols(it)) : keys;
   };
 
   var copyConstructorProperties$1 = function (target, source) {
@@ -1751,7 +1975,7 @@
 
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
-      if (!has$3(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+      if (!hasOwnProperty_1(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
     }
   };
 
@@ -1759,7 +1983,7 @@
 
   var isForced$1 = function (feature, detection) {
     var value = data$1[normalize$1(feature)];
-    return value == POLYFILL$1 ? true : value == NATIVE$1 ? false : typeof detection == 'function' ? fails$1(detection) : !!detection;
+    return value == POLYFILL$1 ? true : value == NATIVE$1 ? false : isCallable(detection) ? fails$1(detection) : !!detection;
   };
 
   var normalize$1 = isForced$1.normalize = function (string) {
@@ -1795,6 +2019,7 @@
     options.sham        - add a flag to not completely full polyfills
     options.enumerable  - export as enumerable property
     options.noTargetGet - prevent calling a getter on target
+    options.name        - the .name of the function if it does not match the key
   */
 
 
@@ -1823,7 +2048,7 @@
       FORCED = isForced_1$1(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced); // contained in target
 
       if (!FORCED && targetProperty !== undefined) {
-        if (typeof sourceProperty === typeof targetProperty) continue;
+        if (typeof sourceProperty == typeof targetProperty) continue;
         copyConstructorProperties$1(sourceProperty, targetProperty);
       } // add a flag to not completely full polyfills
 
@@ -1838,7 +2063,7 @@
   };
 
   var createProperty$1 = function (object, key, value) {
-    var propertyKey = toPrimitive$1(key);
+    var propertyKey = toPropertyKey(key);
     if (propertyKey in object) objectDefineProperty$1.f(object, propertyKey, createPropertyDescriptor$1(0, value));else object[propertyKey] = value;
   };
 
@@ -1862,10 +2087,12 @@
     });
   };
 
+  var arraySlice = functionUncurryThis([].slice);
+
   var HAS_SPECIES_SUPPORT$4 = arrayMethodHasSpeciesSupport$1('slice');
   var SPECIES$9 = wellKnownSymbol$1('species');
-  var nativeSlice = [].slice;
-  var max$2 = Math.max; // `Array.prototype.slice` method
+  var Array$3 = global_1.Array;
+  var max$3 = Math.max; // `Array.prototype.slice` method
   // https://tc39.es/ecma262/#sec-array.prototype.slice
   // fallback for not array-like ES3 strings and DOM objects
 
@@ -1876,7 +2103,7 @@
   }, {
     slice: function slice(start, end) {
       var O = toIndexedObject$1(this);
-      var length = toLength$1(O.length);
+      var length = lengthOfArrayLike(O);
       var k = toAbsoluteIndex$1(start, length);
       var fin = toAbsoluteIndex$1(end === undefined ? length : end, length); // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
 
@@ -1885,19 +2112,19 @@
       if (isArray$1(O)) {
         Constructor = O.constructor; // cross-realm fallback
 
-        if (typeof Constructor == 'function' && (Constructor === Array || isArray$1(Constructor.prototype))) {
+        if (isConstructor(Constructor) && (Constructor === Array$3 || isArray$1(Constructor.prototype))) {
           Constructor = undefined;
         } else if (isObject$1(Constructor)) {
           Constructor = Constructor[SPECIES$9];
           if (Constructor === null) Constructor = undefined;
         }
 
-        if (Constructor === Array || Constructor === undefined) {
-          return nativeSlice.call(O, k, fin);
+        if (Constructor === Array$3 || Constructor === undefined) {
+          return arraySlice(O, k, fin);
         }
       }
 
-      result = new (Constructor === undefined ? Array : Constructor)(max$2(fin - k, 0));
+      result = new (Constructor === undefined ? Array$3 : Constructor)(max$3(fin - k, 0));
 
       for (n = 0; k < fin; k++, n++) if (k in O) createProperty$1(result, n, O[k]);
 
@@ -1906,12 +2133,28 @@
     }
   });
 
-  var iteratorClose$1 = function (iterator) {
-    var returnMethod = iterator['return'];
+  var iteratorClose$1 = function (iterator, kind, value) {
+    var innerResult, innerError;
+    anObject$1(iterator);
 
-    if (returnMethod !== undefined) {
-      return anObject$1(returnMethod.call(iterator)).value;
+    try {
+      innerResult = getMethod(iterator, 'return');
+
+      if (!innerResult) {
+        if (kind === 'throw') throw value;
+        return value;
+      }
+
+      innerResult = functionCall(innerResult, iterator);
+    } catch (error) {
+      innerError = true;
+      innerResult = error;
     }
+
+    if (kind === 'throw') throw value;
+    if (innerError) throw innerResult;
+    anObject$1(innerResult);
+    return value;
   };
 
   // call something on iterator step with safe closing on error
@@ -1921,8 +2164,7 @@
     try {
       return ENTRIES ? fn(anObject$1(value)[0], value[1]) : fn(value);
     } catch (error) {
-      iteratorClose$1(iterator);
-      throw error;
+      iteratorClose$1(iterator, 'throw', error);
     }
   };
 
@@ -1935,69 +2177,48 @@
     return it !== undefined && (iterators$1.Array === it || ArrayPrototype$3[ITERATOR$b] === it);
   };
 
-  var TO_STRING_TAG$7 = wellKnownSymbol$1('toStringTag');
-  var test$1 = {};
-  test$1[TO_STRING_TAG$7] = 'z';
-  var toStringTagSupport$1 = String(test$1) === '[object z]';
-
-  var TO_STRING_TAG$6 = wellKnownSymbol$1('toStringTag'); // ES3 wrong here
-
-  var CORRECT_ARGUMENTS$1 = classofRaw$1(function () {
-    return arguments;
-  }()) == 'Arguments'; // fallback for IE11 Script Access Denied error
-
-  var tryGet$1 = function (it, key) {
-    try {
-      return it[key];
-    } catch (error) {
-      /* empty */
-    }
-  }; // getting tag from ES6+ `Object.prototype.toString`
-
-
-  var classof$1 = toStringTagSupport$1 ? classofRaw$1 : function (it) {
-    var O, tag, result;
-    return it === undefined ? 'Undefined' : it === null ? 'Null' // @@toStringTag case
-    : typeof (tag = tryGet$1(O = Object(it), TO_STRING_TAG$6)) == 'string' ? tag // builtinTag case
-    : CORRECT_ARGUMENTS$1 ? classofRaw$1(O) // ES3 arguments fallback
-    : (result = classofRaw$1(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
-  };
-
   var ITERATOR$a = wellKnownSymbol$1('iterator');
 
   var getIteratorMethod$1 = function (it) {
-    if (it != undefined) return it[ITERATOR$a] || it['@@iterator'] || iterators$1[classof$1(it)];
+    if (it != undefined) return getMethod(it, ITERATOR$a) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
   };
 
-  // `Array.from` method implementation
-  // https://tc39.es/ecma262/#sec-array.from
+  var TypeError$8 = global_1.TypeError;
 
+  var getIterator = function (argument, usingIterator) {
+    var iteratorMethod = arguments.length < 2 ? getIteratorMethod$1(argument) : usingIterator;
+    if (aCallable(iteratorMethod)) return anObject$1(functionCall(iteratorMethod, argument));
+    throw TypeError$8(tryToString(argument) + ' is not iterable');
+  };
+
+  var Array$2 = global_1.Array; // `Array.from` method implementation
+  // https://tc39.es/ecma262/#sec-array.from
 
   var arrayFrom = function from(arrayLike
   /* , mapfn = undefined, thisArg = undefined */
   ) {
     var O = toObject$1(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
+    var IS_CONSTRUCTOR = isConstructor(this);
     var argumentsLength = arguments.length;
     var mapfn = argumentsLength > 1 ? arguments[1] : undefined;
     var mapping = mapfn !== undefined;
+    if (mapping) mapfn = functionBindContext$1(mapfn, argumentsLength > 2 ? arguments[2] : undefined);
     var iteratorMethod = getIteratorMethod$1(O);
     var index = 0;
-    var length, result, step, iterator, next, value;
-    if (mapping) mapfn = functionBindContext$1(mapfn, argumentsLength > 2 ? arguments[2] : undefined, 2); // if the target is not iterable or it's an array with the default iterator - use a simple case
+    var length, result, step, iterator, next, value; // if the target is not iterable or it's an array with the default iterator - use a simple case
 
-    if (iteratorMethod != undefined && !(C == Array && isArrayIteratorMethod$1(iteratorMethod))) {
-      iterator = iteratorMethod.call(O);
+    if (iteratorMethod && !(this == Array$2 && isArrayIteratorMethod$1(iteratorMethod))) {
+      iterator = getIterator(O, iteratorMethod);
       next = iterator.next;
-      result = new C();
+      result = IS_CONSTRUCTOR ? new this() : [];
 
-      for (; !(step = next.call(iterator)).done; index++) {
+      for (; !(step = functionCall(next, iterator)).done; index++) {
         value = mapping ? callWithSafeIterationClosing(iterator, mapfn, [step.value, index], true) : step.value;
         createProperty$1(result, index, value);
       }
     } else {
-      length = toLength$1(O.length);
-      result = new C(length);
+      length = lengthOfArrayLike(O);
+      result = IS_CONSTRUCTOR ? new this(length) : Array$2(length);
 
       for (; length > index; index++) {
         value = mapping ? mapfn(O[index], index) : O[index];
@@ -2076,18 +2297,26 @@
     from: arrayFrom
   });
 
-  // `String.prototype.{ codePointAt, at }` methods implementation
+  var String$3 = global_1.String;
 
+  var toString_1 = function (argument) {
+    if (classof$1(argument) === 'Symbol') throw TypeError('Cannot convert a Symbol value to a string');
+    return String$3(argument);
+  };
+
+  var charAt$6 = functionUncurryThis(''.charAt);
+  var charCodeAt = functionUncurryThis(''.charCodeAt);
+  var stringSlice$4 = functionUncurryThis(''.slice);
 
   var createMethod$4 = function (CONVERT_TO_STRING) {
     return function ($this, pos) {
-      var S = String(requireObjectCoercible$1($this));
-      var position = toInteger$2(pos);
+      var S = toString_1(requireObjectCoercible$1($this));
+      var position = toIntegerOrInfinity(pos);
       var size = S.length;
       var first, second;
       if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
-      first = S.charCodeAt(position);
-      return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = S.charCodeAt(position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? S.charAt(position) : first : CONVERT_TO_STRING ? S.slice(position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+      first = charCodeAt(S, position);
+      return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$6(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
     };
   };
 
@@ -2098,70 +2327,6 @@
     // `String.prototype.at` method
     // https://github.com/mathiasbynens/String.prototype.at
     charAt: createMethod$4(true)
-  };
-
-  var correctPrototypeGetter$1 = !fails$1(function () {
-    function F() {
-      /* empty */
-    }
-
-    F.prototype.constructor = null; // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
-
-    return Object.getPrototypeOf(new F()) !== F.prototype;
-  });
-
-  var IE_PROTO$3 = sharedKey$1('IE_PROTO');
-  var ObjectPrototype$1 = Object.prototype; // `Object.getPrototypeOf` method
-  // https://tc39.es/ecma262/#sec-object.getprototypeof
-  // eslint-disable-next-line es/no-object-getprototypeof -- safe
-
-  var objectGetPrototypeOf$1 = correctPrototypeGetter$1 ? Object.getPrototypeOf : function (O) {
-    O = toObject$1(O);
-    if (has$3(O, IE_PROTO$3)) return O[IE_PROTO$3];
-
-    if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-      return O.constructor.prototype;
-    }
-
-    return O instanceof Object ? ObjectPrototype$1 : null;
-  };
-
-  var ITERATOR$8 = wellKnownSymbol$1('iterator');
-  var BUGGY_SAFARI_ITERATORS$3 = false;
-
-  var returnThis$5 = function () {
-    return this;
-  }; // `%IteratorPrototype%` object
-  // https://tc39.es/ecma262/#sec-%iteratorprototype%-object
-
-
-  var IteratorPrototype$5, PrototypeOfArrayIteratorPrototype$1, arrayIterator$1;
-  /* eslint-disable es/no-array-prototype-keys -- safe */
-
-  if ([].keys) {
-    arrayIterator$1 = [].keys(); // Safari 8 has buggy iterators w/o `next`
-
-    if (!('next' in arrayIterator$1)) BUGGY_SAFARI_ITERATORS$3 = true;else {
-      PrototypeOfArrayIteratorPrototype$1 = objectGetPrototypeOf$1(objectGetPrototypeOf$1(arrayIterator$1));
-      if (PrototypeOfArrayIteratorPrototype$1 !== Object.prototype) IteratorPrototype$5 = PrototypeOfArrayIteratorPrototype$1;
-    }
-  }
-
-  var NEW_ITERATOR_PROTOTYPE$1 = IteratorPrototype$5 == undefined || fails$1(function () {
-    var test = {}; // FF44- legacy iterators case
-
-    return IteratorPrototype$5[ITERATOR$8].call(test) !== test;
-  });
-  if (NEW_ITERATOR_PROTOTYPE$1) IteratorPrototype$5 = {}; // `%IteratorPrototype%[@@iterator]()` method
-  // https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
-
-  if (!has$3(IteratorPrototype$5, ITERATOR$8)) {
-    createNonEnumerableProperty$1(IteratorPrototype$5, ITERATOR$8, returnThis$5);
-  }
-
-  var iteratorsCore$1 = {
-    IteratorPrototype: IteratorPrototype$5,
-    BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
   };
 
   // `Object.keys` method
@@ -2180,23 +2345,39 @@
 
   var objectDefineProperties$1 = descriptors$1 ? Object.defineProperties : function defineProperties(O, Properties) {
     anObject$1(O);
+    var props = toIndexedObject$1(Properties);
     var keys = objectKeys$1(Properties);
     var length = keys.length;
     var index = 0;
     var key;
 
-    while (length > index) objectDefineProperty$1.f(O, key = keys[index++], Properties[key]);
+    while (length > index) objectDefineProperty$1.f(O, key = keys[index++], props[key]);
 
     return O;
   };
 
   var html$1 = getBuiltIn$1('document', 'documentElement');
 
+  /* global ActiveXObject -- old IE, WSH */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   var GT$1 = '>';
   var LT$1 = '<';
   var PROTOTYPE$1 = 'prototype';
   var SCRIPT$1 = 'script';
-  var IE_PROTO$2 = sharedKey$1('IE_PROTO');
+  var IE_PROTO$3 = sharedKey$1('IE_PROTO');
 
   var EmptyConstructor$1 = function () {
     /* empty */
@@ -2242,13 +2423,14 @@
 
   var NullProtoObject$1 = function () {
     try {
-      /* global ActiveXObject -- old IE */
-      activeXDocument$1 = document.domain && new ActiveXObject('htmlfile');
+      activeXDocument$1 = new ActiveXObject('htmlfile');
     } catch (error) {
       /* ignore */
     }
 
-    NullProtoObject$1 = activeXDocument$1 ? NullProtoObjectViaActiveX$1(activeXDocument$1) : NullProtoObjectViaIFrame$1();
+    NullProtoObject$1 = typeof document != 'undefined' ? document.domain && activeXDocument$1 ? NullProtoObjectViaActiveX$1(activeXDocument$1) // old IE
+    : NullProtoObjectViaIFrame$1() : NullProtoObjectViaActiveX$1(activeXDocument$1); // WSH
+
     var length = enumBugKeys$1.length;
 
     while (length--) delete NullProtoObject$1[PROTOTYPE$1][enumBugKeys$1[length]];
@@ -2256,7 +2438,7 @@
     return NullProtoObject$1();
   };
 
-  hiddenKeys$3[IE_PROTO$2] = true; // `Object.create` method
+  hiddenKeys$3[IE_PROTO$3] = true; // `Object.create` method
   // https://tc39.es/ecma262/#sec-object.create
 
   var objectCreate$1 = Object.create || function create(O, Properties) {
@@ -2267,10 +2449,72 @@
       result = new EmptyConstructor$1();
       EmptyConstructor$1[PROTOTYPE$1] = null; // add "__proto__" for Object.getPrototypeOf polyfill
 
-      result[IE_PROTO$2] = O;
+      result[IE_PROTO$3] = O;
     } else result = NullProtoObject$1();
 
     return Properties === undefined ? result : objectDefineProperties$1(result, Properties);
+  };
+
+  var correctPrototypeGetter$1 = !fails$1(function () {
+    function F() {
+      /* empty */
+    }
+
+    F.prototype.constructor = null; // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
+
+    return Object.getPrototypeOf(new F()) !== F.prototype;
+  });
+
+  var IE_PROTO$2 = sharedKey$1('IE_PROTO');
+  var Object$1 = global_1.Object;
+  var ObjectPrototype$1 = Object$1.prototype; // `Object.getPrototypeOf` method
+  // https://tc39.es/ecma262/#sec-object.getprototypeof
+
+  var objectGetPrototypeOf$1 = correctPrototypeGetter$1 ? Object$1.getPrototypeOf : function (O) {
+    var object = toObject$1(O);
+    if (hasOwnProperty_1(object, IE_PROTO$2)) return object[IE_PROTO$2];
+    var constructor = object.constructor;
+
+    if (isCallable(constructor) && object instanceof constructor) {
+      return constructor.prototype;
+    }
+
+    return object instanceof Object$1 ? ObjectPrototype$1 : null;
+  };
+
+  var ITERATOR$8 = wellKnownSymbol$1('iterator');
+  var BUGGY_SAFARI_ITERATORS$3 = false; // `%IteratorPrototype%` object
+  // https://tc39.es/ecma262/#sec-%iteratorprototype%-object
+
+  var IteratorPrototype$5, PrototypeOfArrayIteratorPrototype$1, arrayIterator$1;
+  /* eslint-disable es/no-array-prototype-keys -- safe */
+
+  if ([].keys) {
+    arrayIterator$1 = [].keys(); // Safari 8 has buggy iterators w/o `next`
+
+    if (!('next' in arrayIterator$1)) BUGGY_SAFARI_ITERATORS$3 = true;else {
+      PrototypeOfArrayIteratorPrototype$1 = objectGetPrototypeOf$1(objectGetPrototypeOf$1(arrayIterator$1));
+      if (PrototypeOfArrayIteratorPrototype$1 !== Object.prototype) IteratorPrototype$5 = PrototypeOfArrayIteratorPrototype$1;
+    }
+  }
+
+  var NEW_ITERATOR_PROTOTYPE$1 = IteratorPrototype$5 == undefined || fails$1(function () {
+    var test = {}; // FF44- legacy iterators case
+
+    return IteratorPrototype$5[ITERATOR$8].call(test) !== test;
+  });
+  if (NEW_ITERATOR_PROTOTYPE$1) IteratorPrototype$5 = {}; // `%IteratorPrototype%[@@iterator]()` method
+  // https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
+
+  if (!isCallable(IteratorPrototype$5[ITERATOR$8])) {
+    redefine$1(IteratorPrototype$5, ITERATOR$8, function () {
+      return this;
+    });
+  }
+
+  var iteratorsCore$1 = {
+    IteratorPrototype: IteratorPrototype$5,
+    BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
   };
 
   var defineProperty$4 = objectDefineProperty$1.f;
@@ -2282,7 +2526,7 @@
   var TO_STRING_TAG$5 = wellKnownSymbol$1('toStringTag');
 
   var setToStringTag$1 = function (it, TAG, STATIC) {
-    if (it && !has$3(it = STATIC ? it : it.prototype, TO_STRING_TAG$5)) {
+    if (it && !hasOwnProperty_1(it = STATIC ? it : it.prototype, TO_STRING_TAG$5)) {
       defineProperty$4(it, TO_STRING_TAG$5, {
         configurable: true,
         value: TAG
@@ -2314,15 +2558,17 @@
     return IteratorConstructor;
   };
 
-  var aPossiblePrototype$1 = function (it) {
-    if (!isObject$1(it) && it !== null) {
-      throw TypeError("Can't set " + String(it) + ' as a prototype');
-    }
+  var String$2 = global_1.String;
+  var TypeError$7 = global_1.TypeError;
 
-    return it;
+  var aPossiblePrototype$1 = function (argument) {
+    if (typeof argument == 'object' || isCallable(argument)) return argument;
+    throw TypeError$7("Can't set " + String$2(argument) + ' as a prototype');
   };
 
   /* eslint-disable no-proto -- safe */
+
+
 
 
    // `Object.setPrototypeOf` method
@@ -2338,8 +2584,8 @@
 
     try {
       // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-      setter = Object.getOwnPropertyDescriptor(Object.prototype, '__proto__').set;
-      setter.call(test, []);
+      setter = functionUncurryThis(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__').set);
+      setter(test, []);
       CORRECT_SETTER = test instanceof Array;
     } catch (error) {
       /* empty */
@@ -2348,11 +2594,13 @@
     return function setPrototypeOf(O, proto) {
       anObject$1(O);
       aPossiblePrototype$1(proto);
-      if (CORRECT_SETTER) setter.call(O, proto);else O.__proto__ = proto;
+      if (CORRECT_SETTER) setter(O, proto);else O.__proto__ = proto;
       return O;
     };
   }() : undefined);
 
+  var PROPER_FUNCTION_NAME = functionName.PROPER;
+  var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
   var IteratorPrototype$3 = iteratorsCore$1.IteratorPrototype;
   var BUGGY_SAFARI_ITERATORS$2 = iteratorsCore$1.BUGGY_SAFARI_ITERATORS;
   var ITERATOR$7 = wellKnownSymbol$1('iterator');
@@ -2404,12 +2652,12 @@
     if (anyNativeIterator) {
       CurrentIteratorPrototype = objectGetPrototypeOf$1(anyNativeIterator.call(new Iterable()));
 
-      if (IteratorPrototype$3 !== Object.prototype && CurrentIteratorPrototype.next) {
+      if (CurrentIteratorPrototype !== Object.prototype && CurrentIteratorPrototype.next) {
         if (objectGetPrototypeOf$1(CurrentIteratorPrototype) !== IteratorPrototype$3) {
           if (objectSetPrototypeOf$1) {
             objectSetPrototypeOf$1(CurrentIteratorPrototype, IteratorPrototype$3);
-          } else if (typeof CurrentIteratorPrototype[ITERATOR$7] != 'function') {
-            createNonEnumerableProperty$1(CurrentIteratorPrototype, ITERATOR$7, returnThis$3);
+          } else if (!isCallable(CurrentIteratorPrototype[ITERATOR$7])) {
+            redefine$1(CurrentIteratorPrototype, ITERATOR$7, returnThis$3);
           }
         } // Set @@toStringTag to native iterators
 
@@ -2419,20 +2667,18 @@
     } // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
 
 
-    if (DEFAULT == VALUES$1 && nativeIterator && nativeIterator.name !== VALUES$1) {
-      INCORRECT_VALUES_NAME = true;
+    if (PROPER_FUNCTION_NAME && DEFAULT == VALUES$1 && nativeIterator && nativeIterator.name !== VALUES$1) {
+      if (CONFIGURABLE_FUNCTION_NAME) {
+        createNonEnumerableProperty$1(IterablePrototype, 'name', VALUES$1);
+      } else {
+        INCORRECT_VALUES_NAME = true;
 
-      defaultIterator = function values() {
-        return nativeIterator.call(this);
-      };
-    } // define iterator
+        defaultIterator = function values() {
+          return functionCall(nativeIterator, this);
+        };
+      }
+    } // export additional methods
 
-
-    if (IterablePrototype[ITERATOR$7] !== defaultIterator) {
-      createNonEnumerableProperty$1(IterablePrototype, ITERATOR$7, defaultIterator);
-    }
-
-    iterators$1[NAME] = defaultIterator; // export additional methods
 
     if (DEFAULT) {
       methods = {
@@ -2449,12 +2695,22 @@
         proto: true,
         forced: BUGGY_SAFARI_ITERATORS$2 || INCORRECT_VALUES_NAME
       }, methods);
+    } // define iterator
+
+
+    if (IterablePrototype[ITERATOR$7] !== defaultIterator) {
+      redefine$1(IterablePrototype, ITERATOR$7, defaultIterator, {
+        name: DEFAULT
+      });
     }
 
+    iterators$1[NAME] = defaultIterator;
     return methods;
   };
 
-  var charAt$3 = stringMultibyte$1.charAt;
+  var charAt$5 = stringMultibyte$1.charAt;
+
+
 
 
 
@@ -2468,7 +2724,7 @@
   defineIterator$1(String, 'String', function (iterated) {
     setInternalState$5(this, {
       type: STRING_ITERATOR$1,
-      string: String(iterated),
+      string: toString_1(iterated),
       index: 0
     }); // `%StringIteratorPrototype%.next` method
     // https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
@@ -2481,7 +2737,7 @@
       value: undefined,
       done: true
     };
-    point = charAt$3(string, index);
+    point = charAt$5(string, index);
     state.index += point.length;
     return {
       value: point,
@@ -2565,54 +2821,39 @@
   addToUnscopables$1('values');
   addToUnscopables$1('entries');
 
-  // `Object.prototype.toString` method implementation
-  // https://tc39.es/ecma262/#sec-object.prototype.tostring
-
-
-  var objectToString$1 = toStringTagSupport$1 ? {}.toString : function toString() {
-    return '[object ' + classof$1(this) + ']';
-  };
-
-  // `Object.prototype.toString` method
-  // https://tc39.es/ecma262/#sec-object.prototype.tostring
-
-
-  if (!toStringTagSupport$1) {
-    redefine$1(Object.prototype, 'toString', objectToString$1, {
-      unsafe: true
-    });
-  }
-
   var ITERATOR$6 = wellKnownSymbol$1('iterator');
   var TO_STRING_TAG$4 = wellKnownSymbol$1('toStringTag');
   var ArrayValues$1 = es_array_iterator$1.values;
 
-  for (var COLLECTION_NAME$2 in domIterables$1) {
-    var Collection$2 = global_1[COLLECTION_NAME$2];
-    var CollectionPrototype$2 = Collection$2 && Collection$2.prototype;
-
-    if (CollectionPrototype$2) {
+  var handlePrototype = function (CollectionPrototype, COLLECTION_NAME) {
+    if (CollectionPrototype) {
       // some Chrome versions have non-configurable methods on DOMTokenList
-      if (CollectionPrototype$2[ITERATOR$6] !== ArrayValues$1) try {
-        createNonEnumerableProperty$1(CollectionPrototype$2, ITERATOR$6, ArrayValues$1);
+      if (CollectionPrototype[ITERATOR$6] !== ArrayValues$1) try {
+        createNonEnumerableProperty$1(CollectionPrototype, ITERATOR$6, ArrayValues$1);
       } catch (error) {
-        CollectionPrototype$2[ITERATOR$6] = ArrayValues$1;
+        CollectionPrototype[ITERATOR$6] = ArrayValues$1;
       }
 
-      if (!CollectionPrototype$2[TO_STRING_TAG$4]) {
-        createNonEnumerableProperty$1(CollectionPrototype$2, TO_STRING_TAG$4, COLLECTION_NAME$2);
+      if (!CollectionPrototype[TO_STRING_TAG$4]) {
+        createNonEnumerableProperty$1(CollectionPrototype, TO_STRING_TAG$4, COLLECTION_NAME);
       }
 
-      if (domIterables$1[COLLECTION_NAME$2]) for (var METHOD_NAME$1 in es_array_iterator$1) {
+      if (domIterables$1[COLLECTION_NAME]) for (var METHOD_NAME in es_array_iterator$1) {
         // some Chrome versions have non-configurable methods on DOMTokenList
-        if (CollectionPrototype$2[METHOD_NAME$1] !== es_array_iterator$1[METHOD_NAME$1]) try {
-          createNonEnumerableProperty$1(CollectionPrototype$2, METHOD_NAME$1, es_array_iterator$1[METHOD_NAME$1]);
+        if (CollectionPrototype[METHOD_NAME] !== es_array_iterator$1[METHOD_NAME]) try {
+          createNonEnumerableProperty$1(CollectionPrototype, METHOD_NAME, es_array_iterator$1[METHOD_NAME]);
         } catch (error) {
-          CollectionPrototype$2[METHOD_NAME$1] = es_array_iterator$1[METHOD_NAME$1];
+          CollectionPrototype[METHOD_NAME] = es_array_iterator$1[METHOD_NAME];
         }
       }
     }
+  };
+
+  for (var COLLECTION_NAME$2 in domIterables$1) {
+    handlePrototype(global_1[COLLECTION_NAME$2] && global_1[COLLECTION_NAME$2].prototype, COLLECTION_NAME$2);
   }
+
+  handlePrototype(domTokenListPrototype, 'DOMTokenList');
 
   var $map$1 = arrayIteration$1.map;
 
@@ -2636,7 +2877,8 @@
 
   var IS_CONCAT_SPREADABLE$1 = wellKnownSymbol$1('isConcatSpreadable');
   var MAX_SAFE_INTEGER$3 = 0x1FFFFFFFFFFFFF;
-  var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded'; // We can't use this feature detection in V8 since it causes
+  var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded';
+  var TypeError$6 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
   // deoptimization and serious performance degradation
   // https://github.com/zloirock/core-js/issues/679
 
@@ -2673,12 +2915,12 @@
         E = i === -1 ? O : arguments[i];
 
         if (isConcatSpreadable$1(E)) {
-          len = toLength$1(E.length);
-          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          len = lengthOfArrayLike(E);
+          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
 
           for (k = 0; k < len; k++, n++) if (k in E) createProperty$1(A, n, E[k]);
         } else {
-          if (n >= MAX_SAFE_INTEGER$3) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          if (n >= MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
           createProperty$1(A, n++, E);
         }
       }
@@ -2704,45 +2946,59 @@
     return result;
   };
 
-  // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
+  // babel-minify and Closure Compiler transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
 
 
-  var RE$1 = function (s, f) {
-    return RegExp(s, f);
-  };
-
+  var $RegExp$2 = global_1.RegExp;
   var UNSUPPORTED_Y$6 = fails$1(function () {
-    var re = RE$1('a', 'y');
+    var re = $RegExp$2('a', 'y');
     re.lastIndex = 2;
     return re.exec('abcd') != null;
+  }); // UC Browser bug
+  // https://github.com/zloirock/core-js/issues/1008
+
+  var MISSED_STICKY = UNSUPPORTED_Y$6 || fails$1(function () {
+    return !$RegExp$2('a', 'y').sticky;
   });
-  var BROKEN_CARET$1 = fails$1(function () {
+  var BROKEN_CARET$1 = UNSUPPORTED_Y$6 || fails$1(function () {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=773687
-    var re = RE$1('^r', 'gy');
+    var re = $RegExp$2('^r', 'gy');
     re.lastIndex = 2;
     return re.exec('str') != null;
   });
-
   var regexpStickyHelpers$1 = {
-  	UNSUPPORTED_Y: UNSUPPORTED_Y$6,
-  	BROKEN_CARET: BROKEN_CARET$1
+    BROKEN_CARET: BROKEN_CARET$1,
+    MISSED_STICKY: MISSED_STICKY,
+    UNSUPPORTED_Y: UNSUPPORTED_Y$6
   };
 
+  // babel-minify and Closure Compiler transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
+
+
+  var $RegExp$1 = global_1.RegExp;
   var regexpUnsupportedDotAll = fails$1(function () {
-    // babel-minify transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
-    var re = RegExp('.', (typeof '').charAt(0));
+    var re = $RegExp$1('.', 's');
     return !(re.dotAll && re.exec('\n') && re.flags === 's');
   });
 
+  // babel-minify and Closure Compiler transpiles RegExp('(?<a>b)', 'g') -> /(?<a>b)/g and it causes SyntaxError
+
+
+  var $RegExp = global_1.RegExp;
   var regexpUnsupportedNcg = fails$1(function () {
-    // babel-minify transpiles RegExp('.', 'g') -> /./g and it causes SyntaxError
-    var re = RegExp('(?<a>b)', (typeof '').charAt(5));
+    var re = $RegExp('(?<a>b)', 'g');
     return re.exec('b').groups.a !== 'b' || 'b'.replace(re, '$<a>c') !== 'bc';
   });
 
-  /* eslint-disable regexp/no-assertion-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
+  /* eslint-disable regexp/no-empty-capturing-group, regexp/no-empty-group, regexp/no-lazy-ends -- testing */
 
   /* eslint-disable regexp/no-useless-quantifier -- testing */
+
+
+
+
+
+
 
 
 
@@ -2758,55 +3014,59 @@
 
 
 
-  var nativeExec$1 = RegExp.prototype.exec;
   var nativeReplace$1 = shared$1('native-string-replace', String.prototype.replace);
+  var nativeExec$1 = RegExp.prototype.exec;
   var patchedExec$1 = nativeExec$1;
+  var charAt$4 = functionUncurryThis(''.charAt);
+  var indexOf$1 = functionUncurryThis(''.indexOf);
+  var replace$1 = functionUncurryThis(''.replace);
+  var stringSlice$3 = functionUncurryThis(''.slice);
 
   var UPDATES_LAST_INDEX_WRONG$1 = function () {
     var re1 = /a/;
     var re2 = /b*/g;
-    nativeExec$1.call(re1, 'a');
-    nativeExec$1.call(re2, 'a');
+    functionCall(nativeExec$1, re1, 'a');
+    functionCall(nativeExec$1, re2, 'a');
     return re1.lastIndex !== 0 || re2.lastIndex !== 0;
   }();
 
-  var UNSUPPORTED_Y$5 = regexpStickyHelpers$1.UNSUPPORTED_Y || regexpStickyHelpers$1.BROKEN_CARET; // nonparticipating capturing group, copied from es5-shim's String#split patch.
+  var UNSUPPORTED_Y$5 = regexpStickyHelpers$1.BROKEN_CARET; // nonparticipating capturing group, copied from es5-shim's String#split patch.
 
   var NPCG_INCLUDED$1 = /()??/.exec('')[1] !== undefined;
   var PATCH$1 = UPDATES_LAST_INDEX_WRONG$1 || NPCG_INCLUDED$1 || UNSUPPORTED_Y$5 || regexpUnsupportedDotAll || regexpUnsupportedNcg;
 
   if (PATCH$1) {
-    // eslint-disable-next-line max-statements -- TODO
-    patchedExec$1 = function exec(str) {
+    patchedExec$1 = function exec(string) {
       var re = this;
       var state = getInternalState$3(re);
+      var str = toString_1(string);
       var raw = state.raw;
       var result, reCopy, lastIndex, match, i, object, group;
 
       if (raw) {
         raw.lastIndex = re.lastIndex;
-        result = patchedExec$1.call(raw, str);
+        result = functionCall(patchedExec$1, raw, str);
         re.lastIndex = raw.lastIndex;
         return result;
       }
 
       var groups = state.groups;
       var sticky = UNSUPPORTED_Y$5 && re.sticky;
-      var flags = regexpFlags$1.call(re);
+      var flags = functionCall(regexpFlags$1, re);
       var source = re.source;
       var charsAdded = 0;
       var strCopy = str;
 
       if (sticky) {
-        flags = flags.replace('y', '');
+        flags = replace$1(flags, 'y', '');
 
-        if (flags.indexOf('g') === -1) {
+        if (indexOf$1(flags, 'g') === -1) {
           flags += 'g';
         }
 
-        strCopy = String(str).slice(re.lastIndex); // Support anchored sticky behavior.
+        strCopy = stringSlice$3(str, re.lastIndex); // Support anchored sticky behavior.
 
-        if (re.lastIndex > 0 && (!re.multiline || re.multiline && str[re.lastIndex - 1] !== '\n')) {
+        if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$4(str, re.lastIndex - 1) !== '\n')) {
           source = '(?: ' + source + ')';
           strCopy = ' ' + strCopy;
           charsAdded++;
@@ -2822,12 +3082,12 @@
       }
 
       if (UPDATES_LAST_INDEX_WRONG$1) lastIndex = re.lastIndex;
-      match = nativeExec$1.call(sticky ? reCopy : re, strCopy);
+      match = functionCall(nativeExec$1, sticky ? reCopy : re, strCopy);
 
       if (sticky) {
         if (match) {
-          match.input = match.input.slice(charsAdded);
-          match[0] = match[0].slice(charsAdded);
+          match.input = stringSlice$3(match.input, charsAdded);
+          match[0] = stringSlice$3(match[0], charsAdded);
           match.index = re.lastIndex;
           re.lastIndex += match[0].length;
         } else re.lastIndex = 0;
@@ -2838,7 +3098,7 @@
       if (NPCG_INCLUDED$1 && match && match.length > 1) {
         // Fix browsers whose `exec` methods don't consistently return `undefined`
         // for NPCG, like IE8. NOTE: This doesn' work for /(.?)?/
-        nativeReplace$1.call(match[0], reCopy, function () {
+        functionCall(nativeReplace$1, match[0], reCopy, function () {
           for (i = 1; i < arguments.length - 2; i++) {
             if (arguments[i] === undefined) match[i] = undefined;
           }
@@ -2870,6 +3130,15 @@
     forced: /./.exec !== regexpExec$1
   }, {
     exec: regexpExec$1
+  });
+
+  var FunctionPrototype = Function.prototype;
+  var apply = FunctionPrototype.apply;
+  var bind$2 = FunctionPrototype.bind;
+  var call = FunctionPrototype.call; // eslint-disable-next-line es/no-reflect -- safe
+
+  var functionApply = typeof Reflect == 'object' && Reflect.apply || (bind$2 ? call.bind(apply) : function () {
+    return call.apply(apply, arguments);
   });
 
   var SPECIES$8 = wellKnownSymbol$1('species');
@@ -2919,8 +3188,9 @@
     });
 
     if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || FORCED) {
-      var nativeRegExpMethod = /./[SYMBOL];
+      var uncurriedNativeRegExpMethod = functionUncurryThis(/./[SYMBOL]);
       var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
+        var uncurriedNativeMethod = functionUncurryThis(nativeMethod);
         var $exec = regexp.exec;
 
         if ($exec === regexpExec$1 || $exec === RegExpPrototype$2.exec) {
@@ -2930,13 +3200,13 @@
             // We avoid it by directly calling the native @@method method.
             return {
               done: true,
-              value: nativeRegExpMethod.call(regexp, str, arg2)
+              value: uncurriedNativeRegExpMethod(regexp, str, arg2)
             };
           }
 
           return {
             done: true,
-            value: nativeMethod.call(str, regexp, arg2)
+            value: uncurriedNativeMethod(str, regexp, arg2)
           };
         }
 
@@ -2959,51 +3229,68 @@
     return isObject$1(it) && ((isRegExp = it[MATCH$2]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
   };
 
+  var TypeError$5 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
+
+  var aConstructor = function (argument) {
+    if (isConstructor(argument)) return argument;
+    throw TypeError$5(tryToString(argument) + ' is not a constructor');
+  };
+
   var SPECIES$7 = wellKnownSymbol$1('species'); // `SpeciesConstructor` abstract operation
   // https://tc39.es/ecma262/#sec-speciesconstructor
 
   var speciesConstructor$1 = function (O, defaultConstructor) {
     var C = anObject$1(O).constructor;
     var S;
-    return C === undefined || (S = anObject$1(C)[SPECIES$7]) == undefined ? defaultConstructor : aFunction$3(S);
+    return C === undefined || (S = anObject$1(C)[SPECIES$7]) == undefined ? defaultConstructor : aConstructor(S);
   };
 
-  var charAt$2 = stringMultibyte$1.charAt; // `AdvanceStringIndex` abstract operation
+  var charAt$3 = stringMultibyte$1.charAt; // `AdvanceStringIndex` abstract operation
   // https://tc39.es/ecma262/#sec-advancestringindex
 
 
   var advanceStringIndex$1 = function (S, index, unicode) {
-    return index + (unicode ? charAt$2(S, index).length : 1);
+    return index + (unicode ? charAt$3(S, index).length : 1);
   };
 
-  // `RegExpExec` abstract operation
-  // https://tc39.es/ecma262/#sec-regexpexec
+  var Array$1 = global_1.Array;
+  var max$2 = Math.max;
 
+  var arraySliceSimple = function (O, start, end) {
+    var length = lengthOfArrayLike(O);
+    var k = toAbsoluteIndex$1(start, length);
+    var fin = toAbsoluteIndex$1(end === undefined ? length : end, length);
+    var result = Array$1(max$2(fin - k, 0));
+
+    for (var n = 0; k < fin; k++, n++) createProperty$1(result, n, O[k]);
+
+    result.length = n;
+    return result;
+  };
+
+  var TypeError$4 = global_1.TypeError; // `RegExpExec` abstract operation
+  // https://tc39.es/ecma262/#sec-regexpexec
 
   var regexpExecAbstract$1 = function (R, S) {
     var exec = R.exec;
 
-    if (typeof exec === 'function') {
-      var result = exec.call(R, S);
-
-      if (typeof result !== 'object') {
-        throw TypeError('RegExp exec method returned something other than an Object or null');
-      }
-
+    if (isCallable(exec)) {
+      var result = functionCall(exec, R, S);
+      if (result !== null) anObject$1(result);
       return result;
     }
 
-    if (classofRaw$1(R) !== 'RegExp') {
-      throw TypeError('RegExp#exec called on incompatible receiver');
-    }
-
-    return regexpExec$1.call(R, S);
+    if (classofRaw$1(R) === 'RegExp') return functionCall(regexpExec$1, R, S);
+    throw TypeError$4('RegExp#exec called on incompatible receiver');
   };
 
   var UNSUPPORTED_Y$4 = regexpStickyHelpers$1.UNSUPPORTED_Y;
-  var arrayPush$1 = [].push;
+  var MAX_UINT32$1 = 0xFFFFFFFF;
   var min$4 = Math.min;
-  var MAX_UINT32$1 = 0xFFFFFFFF; // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  var $push = [].push;
+  var exec = functionUncurryThis(/./.exec);
+  var push$2 = functionUncurryThis($push);
+  var stringSlice$2 = functionUncurryThis(''.slice); // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
   // Weex JS has frozen built-in prototypes, so use try / catch wrapper
 
   var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC$1 = !fails$1(function () {
@@ -3023,17 +3310,17 @@
     var internalSplit;
 
     if ('abbc'.split(/(b)*/)[1] == 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
-    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-assertion-capturing-group, regexp/no-empty-group -- required for testing
+    'test'.split(/(?:)/, -1).length != 4 || 'ab'.split(/(?:ab)*/).length != 2 || '.'.split(/(.?)(.?)/).length != 4 || // eslint-disable-next-line regexp/no-empty-capturing-group, regexp/no-empty-group -- required for testing
     '.'.split(/()()/).length > 1 || ''.split(/.?/).length) {
       // based on es5-shim implementation, need to rework it
       internalSplit = function (separator, limit) {
-        var string = String(requireObjectCoercible$1(this));
+        var string = toString_1(requireObjectCoercible$1(this));
         var lim = limit === undefined ? MAX_UINT32$1 : limit >>> 0;
         if (lim === 0) return [];
         if (separator === undefined) return [string]; // If `separator` is not a regex, use native split
 
         if (!isRegexp$1(separator)) {
-          return nativeSplit.call(string, separator, lim);
+          return functionCall(nativeSplit, string, separator, lim);
         }
 
         var output = [];
@@ -3043,12 +3330,12 @@
         var separatorCopy = new RegExp(separator.source, flags + 'g');
         var match, lastIndex, lastLength;
 
-        while (match = regexpExec$1.call(separatorCopy, string)) {
+        while (match = functionCall(regexpExec$1, separatorCopy, string)) {
           lastIndex = separatorCopy.lastIndex;
 
           if (lastIndex > lastLastIndex) {
-            output.push(string.slice(lastLastIndex, match.index));
-            if (match.length > 1 && match.index < string.length) arrayPush$1.apply(output, match.slice(1));
+            push$2(output, stringSlice$2(string, lastLastIndex, match.index));
+            if (match.length > 1 && match.index < string.length) functionApply($push, output, arraySliceSimple(match, 1));
             lastLength = match[0].length;
             lastLastIndex = lastIndex;
             if (output.length >= lim) break;
@@ -3058,15 +3345,15 @@
         }
 
         if (lastLastIndex === string.length) {
-          if (lastLength || !separatorCopy.test('')) output.push('');
-        } else output.push(string.slice(lastLastIndex));
+          if (lastLength || !exec(separatorCopy, '')) push$2(output, '');
+        } else push$2(output, stringSlice$2(string, lastLastIndex));
 
-        return output.length > lim ? output.slice(0, lim) : output;
+        return output.length > lim ? arraySliceSimple(output, 0, lim) : output;
       }; // Chakra, V8
 
     } else if ('0'.split(undefined, 0).length) {
       internalSplit = function (separator, limit) {
-        return separator === undefined && limit === 0 ? [] : nativeSplit.call(this, separator, limit);
+        return separator === undefined && limit === 0 ? [] : functionCall(nativeSplit, this, separator, limit);
       };
     } else internalSplit = nativeSplit;
 
@@ -3074,18 +3361,18 @@
     // https://tc39.es/ecma262/#sec-string.prototype.split
     function split(separator, limit) {
       var O = requireObjectCoercible$1(this);
-      var splitter = separator == undefined ? undefined : separator[SPLIT];
-      return splitter !== undefined ? splitter.call(separator, O, limit) : internalSplit.call(String(O), separator, limit);
+      var splitter = separator == undefined ? undefined : getMethod(separator, SPLIT);
+      return splitter ? functionCall(splitter, separator, O, limit) : functionCall(internalSplit, toString_1(O), separator, limit);
     }, // `RegExp.prototype[@@split]` method
     // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
     //
     // NOTE: This cannot be properly polyfilled in engines that don't support
     // the 'y' flag.
     function (string, limit) {
-      var res = maybeCallNative(internalSplit, this, string, limit, internalSplit !== nativeSplit);
-      if (res.done) return res.value;
       var rx = anObject$1(this);
-      var S = String(string);
+      var S = toString_1(string);
+      var res = maybeCallNative(internalSplit, rx, S, limit, internalSplit !== nativeSplit);
+      if (res.done) return res.value;
       var C = speciesConstructor$1(rx, RegExp);
       var unicodeMatching = rx.unicode;
       var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + (UNSUPPORTED_Y$4 ? 'g' : 'y'); // ^(? + rx + ) is needed, in combination with some S slicing, to
@@ -3101,17 +3388,17 @@
 
       while (q < S.length) {
         splitter.lastIndex = UNSUPPORTED_Y$4 ? 0 : q;
-        var z = regexpExecAbstract$1(splitter, UNSUPPORTED_Y$4 ? S.slice(q) : S);
+        var z = regexpExecAbstract$1(splitter, UNSUPPORTED_Y$4 ? stringSlice$2(S, q) : S);
         var e;
 
         if (z === null || (e = min$4(toLength$1(splitter.lastIndex + (UNSUPPORTED_Y$4 ? q : 0)), S.length)) === p) {
           q = advanceStringIndex$1(S, q, unicodeMatching);
         } else {
-          A.push(S.slice(p, q));
+          push$2(A, stringSlice$2(S, p, q));
           if (A.length === lim) return A;
 
           for (var i = 1; i <= z.length - 1; i++) {
-            A.push(z[i]);
+            push$2(A, z[i]);
             if (A.length === lim) return A;
           }
 
@@ -3119,7 +3406,7 @@
         }
       }
 
-      A.push(S.slice(p));
+      push$2(A, stringSlice$2(S, p));
       return A;
     }];
   }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC$1, UNSUPPORTED_Y$4);
@@ -3148,29 +3435,32 @@
     }
   };
 
-  var anInstance$1 = function (it, Constructor, name) {
-    if (!(it instanceof Constructor)) {
-      throw TypeError('Incorrect ' + (name ? name + ' ' : '') + 'invocation');
-    }
+  var TypeError$3 = global_1.TypeError;
 
-    return it;
+  var anInstance$1 = function (it, Prototype) {
+    if (objectIsPrototypeOf(Prototype, it)) return it;
+    throw TypeError$3('Incorrect invocation');
   };
+
+  var TypeError$2 = global_1.TypeError;
 
   var Result$1 = function (stopped, result) {
     this.stopped = stopped;
     this.result = result;
   };
 
+  var ResultPrototype = Result$1.prototype;
+
   var iterate$1 = function (iterable, unboundFunction, options) {
     var that = options && options.that;
     var AS_ENTRIES = !!(options && options.AS_ENTRIES);
     var IS_ITERATOR = !!(options && options.IS_ITERATOR);
     var INTERRUPTED = !!(options && options.INTERRUPTED);
-    var fn = functionBindContext$1(unboundFunction, that, 1 + AS_ENTRIES + INTERRUPTED);
+    var fn = functionBindContext$1(unboundFunction, that);
     var iterator, iterFn, index, length, result, next, step;
 
     var stop = function (condition) {
-      if (iterator) iteratorClose$1(iterator);
+      if (iterator) iteratorClose$1(iterator, 'normal', condition);
       return new Result$1(true, condition);
     };
 
@@ -3187,54 +3477,60 @@
       iterator = iterable;
     } else {
       iterFn = getIteratorMethod$1(iterable);
-      if (typeof iterFn != 'function') throw TypeError('Target is not iterable'); // optimisation for array iterators
+      if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
 
       if (isArrayIteratorMethod$1(iterFn)) {
-        for (index = 0, length = toLength$1(iterable.length); length > index; index++) {
+        for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
           result = callFn(iterable[index]);
-          if (result && result instanceof Result$1) return result;
+          if (result && objectIsPrototypeOf(ResultPrototype, result)) return result;
         }
 
         return new Result$1(false);
       }
 
-      iterator = iterFn.call(iterable);
+      iterator = getIterator(iterable, iterFn);
     }
 
     next = iterator.next;
 
-    while (!(step = next.call(iterator)).done) {
+    while (!(step = functionCall(next, iterator)).done) {
       try {
         result = callFn(step.value);
       } catch (error) {
-        iteratorClose$1(iterator);
-        throw error;
+        iteratorClose$1(iterator, 'throw', error);
       }
 
-      if (typeof result == 'object' && result && result instanceof Result$1) return result;
+      if (typeof result == 'object' && result && objectIsPrototypeOf(ResultPrototype, result)) return result;
     }
 
     return new Result$1(false);
   };
 
-  var engineIsIos = /(?:iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent$1);
+  var engineIsIos = /(?:ipad|iphone|ipod).*applewebkit/i.test(engineUserAgent$1);
 
   var engineIsNode$1 = classofRaw$1(global_1.process) == 'process';
 
-  var location$1 = global_1.location;
   var set$1 = global_1.setImmediate;
   var clear = global_1.clearImmediate;
   var process$4 = global_1.process;
-  var MessageChannel = global_1.MessageChannel;
   var Dispatch = global_1.Dispatch;
+  var Function$1 = global_1.Function;
+  var MessageChannel = global_1.MessageChannel;
+  var String$1 = global_1.String;
   var counter = 0;
   var queue = {};
   var ONREADYSTATECHANGE = 'onreadystatechange';
-  var defer, channel, port;
+  var location$1, defer, channel, port;
+
+  try {
+    // Deno throws a ReferenceError on `location` access without `--location` flag
+    location$1 = global_1.location;
+  } catch (error) {
+    /* empty */
+  }
 
   var run$1 = function (id) {
-    // eslint-disable-next-line no-prototype-builtins -- safe
-    if (queue.hasOwnProperty(id)) {
+    if (hasOwnProperty_1(queue, id)) {
       var fn = queue[id];
       delete queue[id];
       fn();
@@ -3253,20 +3549,16 @@
 
   var post = function (id) {
     // old engines have not location.origin
-    global_1.postMessage(id + '', location$1.protocol + '//' + location$1.host);
+    global_1.postMessage(String$1(id), location$1.protocol + '//' + location$1.host);
   }; // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
 
 
   if (!set$1 || !clear) {
     set$1 = function setImmediate(fn) {
-      var args = [];
-      var i = 1;
-
-      while (arguments.length > i) args.push(arguments[i++]);
+      var args = arraySlice(arguments, 1);
 
       queue[++counter] = function () {
-        // eslint-disable-next-line no-new-func -- spec requirement
-        (typeof fn == 'function' ? fn : Function(fn)).apply(undefined, args);
+        functionApply(isCallable(fn) ? fn : Function$1(fn), undefined, args);
       };
 
       defer(counter);
@@ -3293,9 +3585,9 @@
       channel = new MessageChannel();
       port = channel.port2;
       channel.port1.onmessage = listener;
-      defer = functionBindContext$1(port.postMessage, port, 1); // Browsers with postMessage, skip WebWorkers
+      defer = functionBindContext$1(port.postMessage, port); // Browsers with postMessage, skip WebWorkers
       // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-    } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && location$1 && location$1.protocol !== 'file:' && !fails$1(post)) {
+    } else if (global_1.addEventListener && isCallable(global_1.postMessage) && !global_1.importScripts && location$1 && location$1.protocol !== 'file:' && !fails$1(post)) {
       defer = post;
       global_1.addEventListener('message', listener, false); // IE8-
     } else if (ONREADYSTATECHANGE in documentCreateElement$1('script')) {
@@ -3318,11 +3610,15 @@
     clear: clear
   };
 
+  var engineIsIosPebble = /ipad|iphone|ipod/i.test(engineUserAgent$1) && global_1.Pebble !== undefined;
+
   var engineIsWebosWebkit = /web0s(?!.*chrome)/i.test(engineUserAgent$1);
 
   var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor$1.f;
 
   var macrotask = task$1.set;
+
+
 
 
 
@@ -3373,15 +3669,15 @@
         node.data = toggle = !toggle;
       }; // environments with maybe non-completely correct, but existent Promise
 
-    } else if (Promise$1 && Promise$1.resolve) {
+    } else if (!engineIsIosPebble && Promise$1 && Promise$1.resolve) {
       // Promise.resolve without an argument throws an error in LG WebOS 2
       promise = Promise$1.resolve(undefined); // workaround of WebKit ~ iOS Safari 10.1 bug
 
       promise.constructor = Promise$1;
-      then = promise.then;
+      then = functionBindContext$1(promise.then, promise);
 
       notify$1 = function () {
-        then.call(promise, flush$1);
+        then(flush$1);
       }; // Node.js without promises
 
     } else if (engineIsNode$1) {
@@ -3395,9 +3691,11 @@
       // - setTimeout
 
     } else {
+      // strange IE + webpack dev server bug - use .bind(global)
+      macrotask = functionBindContext$1(macrotask, global_1);
+
       notify$1 = function () {
-        // strange IE + webpack dev server bug - use .call(global)
-        macrotask.call(global_1, flush$1);
+        macrotask(flush$1);
       };
     }
   }
@@ -3424,8 +3722,8 @@
       resolve = $$resolve;
       reject = $$reject;
     });
-    this.resolve = aFunction$3(resolve);
-    this.reject = aFunction$3(reject);
+    this.resolve = aCallable(resolve);
+    this.reject = aCallable(reject);
   }; // `NewPromiseCapability` abstract operation
   // https://tc39.es/ecma262/#sec-newpromisecapability
 
@@ -3451,7 +3749,7 @@
     var console = global_1.console;
 
     if (console && console.error) {
-      arguments.length === 1 ? console.error(a) : console.error(a, b);
+      arguments.length == 1 ? console.error(a) : console.error(a, b);
     }
   };
 
@@ -3502,14 +3800,14 @@
   var getInternalPromiseState = internalState$1.getterFor(PROMISE);
   var NativePromisePrototype = nativePromiseConstructor && nativePromiseConstructor.prototype;
   var PromiseConstructor = nativePromiseConstructor;
-  var PromiseConstructorPrototype = NativePromisePrototype;
+  var PromisePrototype = NativePromisePrototype;
   var TypeError$1 = global_1.TypeError;
   var document$2 = global_1.document;
   var process$2 = global_1.process;
   var newPromiseCapability = newPromiseCapability$1.f;
   var newGenericPromiseCapability = newPromiseCapability;
   var DISPATCH_EVENT = !!(document$2 && document$2.createEvent && global_1.dispatchEvent);
-  var NATIVE_REJECTION_EVENT = typeof PromiseRejectionEvent == 'function';
+  var NATIVE_REJECTION_EVENT = isCallable(global_1.PromiseRejectionEvent);
   var UNHANDLED_REJECTION = 'unhandledrejection';
   var REJECTION_HANDLED = 'rejectionhandled';
   var PENDING = 0;
@@ -3520,7 +3818,8 @@
   var SUBCLASSING = false;
   var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
   var FORCED$2 = isForced_1$1(PROMISE, function () {
-    var GLOBAL_CORE_JS_PROMISE = inspectSource$1(PromiseConstructor) !== String(PromiseConstructor); // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+    var PROMISE_CONSTRUCTOR_SOURCE = inspectSource$1(PromiseConstructor);
+    var GLOBAL_CORE_JS_PROMISE = PROMISE_CONSTRUCTOR_SOURCE !== String(PromiseConstructor); // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
     // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
     // We can't detect it synchronously, so just check versions
 
@@ -3528,7 +3827,7 @@
     // deoptimization and performance degradation
     // https://github.com/zloirock/core-js/issues/679
 
-    if (engineV8Version$1 >= 51 && /native code/.test(PromiseConstructor)) return false; // Detect correctness of subclassing with @@species support
+    if (engineV8Version$1 >= 51 && /native code/.test(PROMISE_CONSTRUCTOR_SOURCE)) return false; // Detect correctness of subclassing with @@species support
 
     var promise = new PromiseConstructor(function (resolve) {
       resolve(1);
@@ -3559,7 +3858,7 @@
 
   var isThenable = function (it) {
     var then;
-    return isObject$1(it) && typeof (then = it.then) == 'function' ? then : false;
+    return isObject$1(it) && isCallable(then = it.then) ? then : false;
   };
 
   var notify = function (state, isReject) {
@@ -3599,7 +3898,7 @@
             if (result === reaction.promise) {
               reject(TypeError$1('Promise-chain cycle'));
             } else if (then = isThenable(result)) {
-              then.call(result, resolve, reject);
+              functionCall(then, result, resolve, reject);
             } else resolve(result);
           } else reject(value);
         } catch (error) {
@@ -3632,7 +3931,7 @@
   };
 
   var onUnhandled = function (state) {
-    task.call(global_1, function () {
+    functionCall(task, global_1, function () {
       var promise = state.facade;
       var value = state.value;
       var IS_UNHANDLED = isUnhandled(state);
@@ -3656,7 +3955,7 @@
   };
 
   var onHandleUnhandled = function (state) {
-    task.call(global_1, function () {
+    functionCall(task, global_1, function () {
       var promise = state.facade;
 
       if (engineIsNode$1) {
@@ -3696,7 +3995,7 @@
           };
 
           try {
-            then.call(value, bind$1(internalResolve, wrapper, state), bind$1(internalReject, wrapper, state));
+            functionCall(then, value, bind$1(internalResolve, wrapper, state), bind$1(internalReject, wrapper, state));
           } catch (error) {
             internalReject(wrapper, error, state);
           }
@@ -3717,9 +4016,9 @@
   if (FORCED$2) {
     // 25.4.3.1 Promise(executor)
     PromiseConstructor = function Promise(executor) {
-      anInstance$1(this, PromiseConstructor, PROMISE);
-      aFunction$3(executor);
-      Internal.call(this);
+      anInstance$1(this, PromisePrototype);
+      aCallable(executor);
+      functionCall(Internal, this);
       var state = getInternalState$2(this);
 
       try {
@@ -3729,7 +4028,7 @@
       }
     };
 
-    PromiseConstructorPrototype = PromiseConstructor.prototype; // eslint-disable-next-line no-unused-vars -- required for `.length`
+    PromisePrototype = PromiseConstructor.prototype; // eslint-disable-next-line no-unused-vars -- required for `.length`
 
     Internal = function Promise(executor) {
       setInternalState$3(this, {
@@ -3744,17 +4043,18 @@
       });
     };
 
-    Internal.prototype = redefineAll$1(PromiseConstructorPrototype, {
+    Internal.prototype = redefineAll$1(PromisePrototype, {
       // `Promise.prototype.then` method
       // https://tc39.es/ecma262/#sec-promise.prototype.then
       then: function then(onFulfilled, onRejected) {
         var state = getInternalPromiseState(this);
+        var reactions = state.reactions;
         var reaction = newPromiseCapability(speciesConstructor$1(this, PromiseConstructor));
-        reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-        reaction.fail = typeof onRejected == 'function' && onRejected;
+        reaction.ok = isCallable(onFulfilled) ? onFulfilled : true;
+        reaction.fail = isCallable(onRejected) && onRejected;
         reaction.domain = engineIsNode$1 ? process$2.domain : undefined;
         state.parent = true;
-        state.reactions.push(reaction);
+        reactions[reactions.length] = reaction;
         if (state.state != PENDING) notify(state, false);
         return reaction.promise;
       },
@@ -3777,7 +4077,7 @@
       return C === PromiseConstructor || C === PromiseWrapper ? new OwnPromiseCapability(C) : newGenericPromiseCapability(C);
     };
 
-    if (typeof nativePromiseConstructor == 'function' && NativePromisePrototype !== Object.prototype) {
+    if (isCallable(nativePromiseConstructor) && NativePromisePrototype !== Object.prototype) {
       nativeThen = NativePromisePrototype.then;
 
       if (!SUBCLASSING) {
@@ -3785,13 +4085,13 @@
         redefine$1(NativePromisePrototype, 'then', function then(onFulfilled, onRejected) {
           var that = this;
           return new PromiseConstructor(function (resolve, reject) {
-            nativeThen.call(that, resolve, reject);
+            functionCall(nativeThen, that, resolve, reject);
           }).then(onFulfilled, onRejected); // https://github.com/zloirock/core-js/issues/640
         }, {
           unsafe: true
         }); // makes sure that native promise-based APIs `Promise#catch` properly works with patched `Promise#then`
 
-        redefine$1(NativePromisePrototype, 'catch', PromiseConstructorPrototype['catch'], {
+        redefine$1(NativePromisePrototype, 'catch', PromisePrototype['catch'], {
           unsafe: true
         });
       } // make `.constructor === Promise` work for native promise-based APIs
@@ -3805,7 +4105,7 @@
 
 
       if (objectSetPrototypeOf$1) {
-        objectSetPrototypeOf$1(NativePromisePrototype, PromiseConstructorPrototype);
+        objectSetPrototypeOf$1(NativePromisePrototype, PromisePrototype);
       }
     }
   }
@@ -3830,7 +4130,7 @@
     // https://tc39.es/ecma262/#sec-promise.reject
     reject: function reject(r) {
       var capability = newPromiseCapability(this);
-      capability.reject.call(undefined, r);
+      functionCall(capability.reject, undefined, r);
       return capability.promise;
     }
   });
@@ -3858,16 +4158,15 @@
       var resolve = capability.resolve;
       var reject = capability.reject;
       var result = perform(function () {
-        var $promiseResolve = aFunction$3(C.resolve);
+        var $promiseResolve = aCallable(C.resolve);
         var values = [];
         var counter = 0;
         var remaining = 1;
         iterate$1(iterable, function (promise) {
           var index = counter++;
           var alreadyCalled = false;
-          values.push(undefined);
           remaining++;
-          $promiseResolve.call(C, promise).then(function (value) {
+          functionCall($promiseResolve, C, promise).then(function (value) {
             if (alreadyCalled) return;
             alreadyCalled = true;
             values[index] = value;
@@ -3886,9 +4185,9 @@
       var capability = newPromiseCapability(C);
       var reject = capability.reject;
       var result = perform(function () {
-        var $promiseResolve = aFunction$3(C.resolve);
+        var $promiseResolve = aCallable(C.resolve);
         iterate$1(iterable, function (promise) {
-          $promiseResolve.call(C, promise).then(capability.resolve, reject);
+          functionCall($promiseResolve, C, promise).then(capability.resolve, reject);
         });
       });
       if (result.error) reject(result.value);
@@ -3950,127 +4249,49 @@
       }
       return $$scope.dirty;
   }
-  function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
-      const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+  function update_slot_base(slot, slot_definition, ctx, $$scope, slot_changes, get_slot_context_fn) {
       if (slot_changes) {
           const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
           slot.p(slot_context, slot_changes);
       }
   }
-
-  // Track which nodes are claimed during hydration. Unclaimed nodes can then be removed from the DOM
-  // at the end of hydration without touching the remaining nodes.
-  let is_hydrating = false;
-  function start_hydrating() {
-      is_hydrating = true;
-  }
-  function end_hydrating() {
-      is_hydrating = false;
-  }
-  function upper_bound(low, high, key, value) {
-      // Return first index of value larger than input value in the range [low, high)
-      while (low < high) {
-          const mid = low + ((high - low) >> 1);
-          if (key(mid) <= value) {
-              low = mid + 1;
+  function get_all_dirty_from_scope($$scope) {
+      if ($$scope.ctx.length > 32) {
+          const dirty = [];
+          const length = $$scope.ctx.length / 32;
+          for (let i = 0; i < length; i++) {
+              dirty[i] = -1;
           }
-          else {
-              high = mid;
-          }
+          return dirty;
       }
-      return low;
-  }
-  function init_hydrate(target) {
-      if (target.hydrate_init)
-          return;
-      target.hydrate_init = true;
-      // We know that all children have claim_order values since the unclaimed have been detached
-      const children = target.childNodes;
-      /*
-      * Reorder claimed children optimally.
-      * We can reorder claimed children optimally by finding the longest subsequence of
-      * nodes that are already claimed in order and only moving the rest. The longest
-      * subsequence subsequence of nodes that are claimed in order can be found by
-      * computing the longest increasing subsequence of .claim_order values.
-      *
-      * This algorithm is optimal in generating the least amount of reorder operations
-      * possible.
-      *
-      * Proof:
-      * We know that, given a set of reordering operations, the nodes that do not move
-      * always form an increasing subsequence, since they do not move among each other
-      * meaning that they must be already ordered among each other. Thus, the maximal
-      * set of nodes that do not move form a longest increasing subsequence.
-      */
-      // Compute longest increasing subsequence
-      // m: subsequence length j => index k of smallest value that ends an increasing subsequence of length j
-      const m = new Int32Array(children.length + 1);
-      // Predecessor indices + 1
-      const p = new Int32Array(children.length);
-      m[0] = -1;
-      let longest = 0;
-      for (let i = 0; i < children.length; i++) {
-          const current = children[i].claim_order;
-          // Find the largest subsequence length such that it ends in a value less than our current value
-          // upper_bound returns first greater value, so we subtract one
-          const seqLen = upper_bound(1, longest + 1, idx => children[m[idx]].claim_order, current) - 1;
-          p[i] = m[seqLen] + 1;
-          const newLen = seqLen + 1;
-          // We can guarantee that current is the smallest value. Otherwise, we would have generated a longer sequence.
-          m[newLen] = i;
-          longest = Math.max(newLen, longest);
-      }
-      // The longest increasing subsequence of nodes (initially reversed)
-      const lis = [];
-      // The rest of the nodes, nodes that will be moved
-      const toMove = [];
-      let last = children.length - 1;
-      for (let cur = m[longest] + 1; cur != 0; cur = p[cur - 1]) {
-          lis.push(children[cur - 1]);
-          for (; last >= cur; last--) {
-              toMove.push(children[last]);
-          }
-          last--;
-      }
-      for (; last >= 0; last--) {
-          toMove.push(children[last]);
-      }
-      lis.reverse();
-      // We sort the nodes being moved to guarantee that their insertion order matches the claim order
-      toMove.sort((a, b) => a.claim_order - b.claim_order);
-      // Finally, we move the nodes
-      for (let i = 0, j = 0; i < toMove.length; i++) {
-          while (j < lis.length && toMove[i].claim_order >= lis[j].claim_order) {
-              j++;
-          }
-          const anchor = j < lis.length ? lis[j] : null;
-          target.insertBefore(toMove[i], anchor);
-      }
+      return -1;
   }
   function append(target, node) {
-      if (is_hydrating) {
-          init_hydrate(target);
-          if ((target.actual_end_child === undefined) || ((target.actual_end_child !== null) && (target.actual_end_child.parentElement !== target))) {
-              target.actual_end_child = target.firstChild;
-          }
-          if (node !== target.actual_end_child) {
-              target.insertBefore(node, target.actual_end_child);
-          }
-          else {
-              target.actual_end_child = node.nextSibling;
-          }
-      }
-      else if (node.parentNode !== target) {
-          target.appendChild(node);
+      target.appendChild(node);
+  }
+  function append_styles(target, style_sheet_id, styles) {
+      const append_styles_to = get_root_for_style(target);
+      if (!append_styles_to.getElementById(style_sheet_id)) {
+          const style = element('style');
+          style.id = style_sheet_id;
+          style.textContent = styles;
+          append_stylesheet(append_styles_to, style);
       }
   }
+  function get_root_for_style(node) {
+      if (!node)
+          return document;
+      const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
+      if (root && root.host) {
+          return root;
+      }
+      return node.ownerDocument;
+  }
+  function append_stylesheet(node, style) {
+      append(node.head || node, style);
+  }
   function insert(target, node, anchor) {
-      if (is_hydrating && !anchor) {
-          append(target, node);
-      }
-      else if (node.parentNode !== target || (anchor && node.nextSibling !== anchor)) {
-          target.insertBefore(node, anchor || null);
-      }
+      target.insertBefore(node, anchor || null);
   }
   function detach(node) {
       node.parentNode.removeChild(node);
@@ -4215,26 +4436,23 @@
   function toggle_class(element, name, toggle) {
       element.classList[toggle ? 'add' : 'remove'](name);
   }
-  function custom_event(type, detail) {
+  function custom_event(type, detail, bubbles = false) {
       const e = document.createEvent('CustomEvent');
-      e.initCustomEvent(type, false, false, detail);
+      e.initCustomEvent(type, bubbles, false, detail);
       return e;
   }
   class HtmlTag {
-      constructor(claimed_nodes) {
+      constructor() {
           this.e = this.n = null;
-          this.l = claimed_nodes;
+      }
+      c(html) {
+          this.h(html);
       }
       m(html, target, anchor = null) {
           if (!this.e) {
               this.e = element(target.nodeName);
               this.t = target;
-              if (this.l) {
-                  this.n = this.l;
-              }
-              else {
-                  this.h(html);
-              }
+              this.c(html);
           }
           this.i(anchor);
       }
@@ -4271,9 +4489,6 @@
   }
   function onMount(fn) {
       get_current_component().$$.on_mount.push(fn);
-  }
-  function onDestroy(fn) {
-      get_current_component().$$.on_destroy.push(fn);
   }
   function createEventDispatcher() {
       const component = get_current_component();
@@ -4397,12 +4612,6 @@
           block.o(local);
       }
   }
-
-  const globals = (typeof window !== 'undefined'
-      ? window
-      : typeof globalThis !== 'undefined'
-          ? globalThis
-          : global);
   function outro_and_destroy_block(block, lookup) {
       transition_out(block, 1, 1, () => {
           lookup.delete(block.key);
@@ -4570,7 +4779,7 @@
       }
       component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
   }
-  function init$1(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+  function init$1(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
       const parent_component = current_component;
       set_current_component(component);
       const $$ = component.$$ = {
@@ -4587,12 +4796,14 @@
           on_disconnect: [],
           before_update: [],
           after_update: [],
-          context: new Map(parent_component ? parent_component.$$.context : options.context || []),
+          context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
           // everything else
           callbacks: blank_object(),
           dirty,
-          skip_bound: false
+          skip_bound: false,
+          root: options.target || parent_component.$$.root
       };
+      append_styles && append_styles($$.root);
       let ready = false;
       $$.ctx = instance
           ? instance(component, options.props || {}, (i, ret, ...rest) => {
@@ -4613,7 +4824,6 @@
       $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
       if (options.target) {
           if (options.hydrate) {
-              start_hydrating();
               const nodes = children(options.target);
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               $$.fragment && $$.fragment.l(nodes);
@@ -4626,7 +4836,6 @@
           if (options.intro)
               transition_in(component.$$.fragment);
           mount_component(component, options.target, options.anchor, options.customElement);
-          end_hydrating();
           flush();
       }
       set_current_component(parent_component);
@@ -5126,6 +5335,78 @@
   }
 
   /**
+   * @name isSameDay
+   * @category Day Helpers
+   * @summary Are the given dates in the same day?
+   *
+   * @description
+   * Are the given dates in the same day?
+   *
+   * ### v2.0.0 breaking changes:
+   *
+   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+   *
+   * @param {Date|Number} dateLeft - the first date to check
+   * @param {Date|Number} dateRight - the second date to check
+   * @returns {Boolean} the dates are in the same day
+   * @throws {TypeError} 2 arguments required
+   *
+   * @example
+   * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
+   * var result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
+   * //=> true
+   */
+
+  function isSameDay(dirtyDateLeft, dirtyDateRight) {
+    requiredArgs(2, arguments);
+    var dateLeftStartOfDay = startOfDay(dirtyDateLeft);
+    var dateRightStartOfDay = startOfDay(dirtyDateRight);
+    return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
+  }
+
+  /**
+   * @name isDate
+   * @category Common Helpers
+   * @summary Is the given value a date?
+   *
+   * @description
+   * Returns true if the given value is an instance of Date. The function works for dates transferred across iframes.
+   *
+   * ### v2.0.0 breaking changes:
+   *
+   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+   *
+   * @param {*} value - the value to check
+   * @returns {boolean} true if the given value is a date
+   * @throws {TypeError} 1 arguments required
+   *
+   * @example
+   * // For a valid date:
+   * const result = isDate(new Date())
+   * //=> true
+   *
+   * @example
+   * // For an invalid date:
+   * const result = isDate(new Date(NaN))
+   * //=> true
+   *
+   * @example
+   * // For some value:
+   * const result = isDate('2014-02-31')
+   * //=> false
+   *
+   * @example
+   * // For an object:
+   * const result = isDate({})
+   * //=> false
+   */
+
+  function isDate(value) {
+    requiredArgs(1, arguments);
+    return value instanceof Date || typeof value === 'object' && Object.prototype.toString.call(value) === '[object Date]';
+  }
+
+  /**
    * @name isValid
    * @category Common Helpers
    * @summary Is the given date valid?
@@ -5169,54 +5450,29 @@
    *
    * @example
    * // For the valid date:
-   * var result = isValid(new Date(2014, 1, 31))
+   * const result = isValid(new Date(2014, 1, 31))
    * //=> true
    *
    * @example
    * // For the value, convertable into a date:
-   * var result = isValid(1393804800000)
+   * const result = isValid(1393804800000)
    * //=> true
    *
    * @example
    * // For the invalid date:
-   * var result = isValid(new Date(''))
+   * const result = isValid(new Date(''))
    * //=> false
    */
 
   function isValid(dirtyDate) {
     requiredArgs(1, arguments);
+
+    if (!isDate(dirtyDate) && typeof dirtyDate !== 'number') {
+      return false;
+    }
+
     var date = toDate(dirtyDate);
-    return !isNaN(date);
-  }
-
-  /**
-   * @name isSameDay
-   * @category Day Helpers
-   * @summary Are the given dates in the same day?
-   *
-   * @description
-   * Are the given dates in the same day?
-   *
-   * ### v2.0.0 breaking changes:
-   *
-   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-   *
-   * @param {Date|Number} dateLeft - the first date to check
-   * @param {Date|Number} dateRight - the second date to check
-   * @returns {Boolean} the dates are in the same day
-   * @throws {TypeError} 2 arguments required
-   *
-   * @example
-   * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
-   * var result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
-   * //=> true
-   */
-
-  function isSameDay(dirtyDateLeft, dirtyDateRight) {
-    requiredArgs(2, arguments);
-    var dateLeftStartOfDay = startOfDay(dirtyDateLeft);
-    var dateRightStartOfDay = startOfDay(dirtyDateRight);
-    return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
+    return !isNaN(Number(date));
   }
 
   /**
@@ -5372,6 +5628,20 @@
     return result === 0 ? 0 : result;
   }
 
+  var roundingMap = {
+    ceil: Math.ceil,
+    round: Math.round,
+    floor: Math.floor,
+    trunc: function (value) {
+      return value < 0 ? Math.ceil(value) : Math.floor(value);
+    } // Math.trunc is not supported by IE
+
+  };
+  var defaultRoundingMethod = 'trunc';
+  function getRoundingMethod(method) {
+    return method ? roundingMap[method] : roundingMap[defaultRoundingMethod];
+  }
+
   /**
    * @name endOfDay
    * @category Day Helpers
@@ -5468,7 +5738,7 @@
    * @summary Get the number of full months between the given dates.
    *
    * @description
-   * Get the number of full months between the given dates.
+   * Get the number of full months between the given dates using trunc as a default rounding method.
    *
    * ### v2.0.0 breaking changes:
    *
@@ -5481,7 +5751,7 @@
    *
    * @example
    * // How many full months are between 31 January 2014 and 1 September 2014?
-   * var result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
+   * const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
    * //=> 7
    */
 
@@ -5525,7 +5795,7 @@
    *
    * @description
    * Get the number of full weeks between two dates. Fractional weeks are
-   * truncated towards zero.
+   * truncated towards zero by default.
    *
    * One "full week" is the distance between a local time in one day to the same
    * local time 7 days earlier or later. A full week can sometimes be less than
@@ -5541,6 +5811,8 @@
    *
    * @param {Date|Number} dateLeft - the later date
    * @param {Date|Number} dateRight - the earlier date
+   * @param {Object} [options] - an object with options.
+   * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
    * @returns {Number} the number of full weeks
    * @throws {TypeError} 2 arguments required
    *
@@ -5562,10 +5834,10 @@
    * //=> 8
    */
 
-  function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
+  function differenceInWeeks(dateLeft, dateRight, options) {
     requiredArgs(2, arguments);
-    var diff = differenceInDays(dirtyDateLeft, dirtyDateRight) / 7;
-    return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+    var diff = differenceInDays(dateLeft, dateRight) / 7;
+    return getRoundingMethod(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
   }
 
   /**
@@ -5819,20 +6091,21 @@
       other: 'almost {{count}} years'
     }
   };
-  function formatDistance$3(token, count, options) {
-    options = options || {};
-    var result;
 
-    if (typeof formatDistanceLocale$3[token] === 'string') {
-      result = formatDistanceLocale$3[token];
+  var formatDistance$5 = function (token, count, options) {
+    var result;
+    var tokenValue = formatDistanceLocale$3[token];
+
+    if (typeof tokenValue === 'string') {
+      result = tokenValue;
     } else if (count === 1) {
-      result = formatDistanceLocale$3[token].one;
+      result = tokenValue.one;
     } else {
-      result = formatDistanceLocale$3[token].other.replace('{{count}}', count);
+      result = tokenValue.other.replace('{{count}}', count.toString());
     }
 
-    if (options.addSuffix) {
-      if (options.comparison > 0) {
+    if (options !== null && options !== void 0 && options.addSuffix) {
+      if (options.comparison && options.comparison > 0) {
         return 'in ' + result;
       } else {
         return result + ' ago';
@@ -5840,11 +6113,14 @@
     }
 
     return result;
-  }
+  };
+
+  var formatDistance$6 = formatDistance$5;
 
   function buildFormatLongFn(args) {
-    return function (dirtyOptions) {
-      var options = dirtyOptions || {};
+    return function () {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // TODO: Remove String()
+
       var width = options.width ? String(options.width) : args.defaultWidth;
       var format = args.formats[width] || args.formats[args.defaultWidth];
       return format;
@@ -5869,7 +6145,7 @@
     medium: '{{date}}, {{time}}',
     short: '{{date}}, {{time}}'
   };
-  var formatLong$3 = {
+  var formatLong$6 = {
     date: buildFormatLongFn({
       formats: dateFormats$3,
       defaultWidth: 'full'
@@ -5883,6 +6159,7 @@
       defaultWidth: 'full'
     })
   };
+  var formatLong$7 = formatLong$6;
 
   var formatRelativeLocale$3 = {
     lastWeek: "'last' eeee 'at' p",
@@ -5892,9 +6169,12 @@
     nextWeek: "eeee 'at' p",
     other: 'P'
   };
-  function formatRelative$3(token, _date, _baseDate, _options) {
+
+  var formatRelative$5 = function (token, _date, _baseDate, _options) {
     return formatRelativeLocale$3[token];
-  }
+  };
+
+  var formatRelative$6 = formatRelative$5;
 
   function buildLocalizeFn(args) {
     return function (dirtyIndex, dirtyOptions) {
@@ -5914,7 +6194,8 @@
         valuesArray = args.values[_width] || args.values[_defaultWidth];
       }
 
-      var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
+      var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challenge you to try to remove it!
+
       return valuesArray[index];
     };
   }
@@ -5927,12 +6208,12 @@
   var quarterValues$3 = {
     narrow: ['1', '2', '3', '4'],
     abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-    wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter'] // Note: in English, the names of days of the week and months are capitalized.
-    // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-    // Generally, formatted dates should look like they are in the middle of a sentence,
-    // e.g. in Spanish language the weekdays and months should be in the lowercase.
+    wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
+  }; // Note: in English, the names of days of the week and months are capitalized.
+  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+  // Generally, formatted dates should look like they are in the middle of a sentence,
+  // e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-  };
   var monthValues$3 = {
     narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
     abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -6009,16 +6290,13 @@
     }
   };
 
-  function ordinalNumber$3(dirtyNumber, _dirtyOptions) {
+  var ordinalNumber$3 = function (dirtyNumber, _options) {
     var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
     // if they are different for different grammatical genders,
-    // use `options.unit`:
+    // use `options.unit`.
     //
-    //   var options = dirtyOptions || {}
-    //   var unit = String(options.unit)
-    //
-    // where `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
-    // 'day', 'hour', 'minute', 'second'
+    // `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+    // 'day', 'hour', 'minute', 'second'.
 
     var rem100 = number % 100;
 
@@ -6036,9 +6314,9 @@
     }
 
     return number + 'th';
-  }
+  };
 
-  var localize$3 = {
+  var localize$6 = {
     ordinalNumber: ordinalNumber$3,
     era: buildLocalizeFn({
       values: eraValues$3,
@@ -6048,7 +6326,7 @@
       values: quarterValues$3,
       defaultWidth: 'wide',
       argumentCallback: function (quarter) {
-        return Number(quarter) - 1;
+        return quarter - 1;
       }
     }),
     month: buildLocalizeFn({
@@ -6066,37 +6344,11 @@
       defaultFormattingWidth: 'wide'
     })
   };
-
-  function buildMatchPatternFn(args) {
-    return function (dirtyString, dirtyOptions) {
-      var string = String(dirtyString);
-      var options = dirtyOptions || {};
-      var matchResult = string.match(args.matchPattern);
-
-      if (!matchResult) {
-        return null;
-      }
-
-      var matchedString = matchResult[0];
-      var parseResult = string.match(args.parsePattern);
-
-      if (!parseResult) {
-        return null;
-      }
-
-      var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-      value = options.valueCallback ? options.valueCallback(value) : value;
-      return {
-        value: value,
-        rest: string.slice(matchedString.length)
-      };
-    };
-  }
+  var localize$7 = localize$6;
 
   function buildMatchFn(args) {
-    return function (dirtyString, dirtyOptions) {
-      var string = String(dirtyString);
-      var options = dirtyOptions || {};
+    return function (string) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var width = options.width;
       var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
       var matchResult = string.match(matchPattern);
@@ -6107,23 +6359,18 @@
 
       var matchedString = matchResult[0];
       var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+      var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function (pattern) {
+        return pattern.test(matchedString);
+      }) : findKey(parsePatterns, function (pattern) {
+        return pattern.test(matchedString);
+      });
       var value;
-
-      if (Object.prototype.toString.call(parsePatterns) === '[object Array]') {
-        value = findIndex(parsePatterns, function (pattern) {
-          return pattern.test(matchedString);
-        });
-      } else {
-        value = findKey(parsePatterns, function (pattern) {
-          return pattern.test(matchedString);
-        });
-      }
-
-      value = args.valueCallback ? args.valueCallback(value) : value;
+      value = args.valueCallback ? args.valueCallback(key) : key;
       value = options.valueCallback ? options.valueCallback(value) : value;
+      var rest = string.slice(matchedString.length);
       return {
         value: value,
-        rest: string.slice(matchedString.length)
+        rest: rest
       };
     };
   }
@@ -6134,6 +6381,8 @@
         return key;
       }
     }
+
+    return undefined;
   }
 
   function findIndex(array, predicate) {
@@ -6142,6 +6391,26 @@
         return key;
       }
     }
+
+    return undefined;
+  }
+
+  function buildMatchPatternFn(args) {
+    return function (string) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var matchResult = string.match(args.matchPattern);
+      if (!matchResult) return null;
+      var matchedString = matchResult[0];
+      var parseResult = string.match(args.parsePattern);
+      if (!parseResult) return null;
+      var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+      value = options.valueCallback ? options.valueCallback(value) : value;
+      var rest = string.slice(matchedString.length);
+      return {
+        value: value,
+        rest: rest
+      };
+    };
   }
 
   var matchOrdinalNumberPattern$3 = /^(\d+)(th|st|nd|rd)?/i;
@@ -6197,7 +6466,7 @@
       night: /night/i
     }
   };
-  var match$4 = {
+  var match$7 = {
     ordinalNumber: buildMatchPatternFn({
       matchPattern: matchOrdinalNumberPattern$3,
       parsePattern: parseOrdinalNumberPattern$3,
@@ -6239,6 +6508,7 @@
       defaultParseWidth: 'any'
     })
   };
+  var match$8 = match$7;
 
   /**
    * @type {Locale}
@@ -6252,11 +6522,11 @@
 
   var locale$3 = {
     code: 'en-US',
-    formatDistance: formatDistance$3,
-    formatLong: formatLong$3,
-    formatRelative: formatRelative$3,
-    localize: localize$3,
-    match: match$4,
+    formatDistance: formatDistance$6,
+    formatLong: formatLong$7,
+    formatRelative: formatRelative$6,
+    localize: localize$7,
+    match: match$8,
     options: {
       weekStartsOn: 0
       /* Sunday */
@@ -6264,6 +6534,7 @@
       firstWeekContainsDate: 1
     }
   };
+  var defaultLocale = locale$3;
 
   /**
    * @name subMilliseconds
@@ -6318,7 +6589,7 @@
    * Letters marked by * are not implemented but reserved by Unicode standard.
    */
 
-  var formatters$1 = {
+  var formatters$2 = {
     // Year
     y: function (date, token) {
       // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_tokens
@@ -6387,6 +6658,7 @@
       return addLeadingZeros(fractionalSeconds, token.length);
     }
   };
+  var formatters$3 = formatters$2;
 
   var MILLISECONDS_IN_DAY = 86400000; // This function will be a part of public API when UTC function will be implemented.
   // See issue: https://github.com/date-fns/date-fns/issues/376
@@ -6490,7 +6762,7 @@
 
   function getUTCWeekYear(dirtyDate, dirtyOptions) {
     requiredArgs(1, arguments);
-    var date = toDate(dirtyDate, dirtyOptions);
+    var date = toDate(dirtyDate);
     var year = date.getUTCFullYear();
     var options = dirtyOptions || {};
     var locale = options.locale;
@@ -6559,53 +6831,53 @@
     afternoon: 'afternoon',
     evening: 'evening',
     night: 'night'
-    /*
-     * |     | Unit                           |     | Unit                           |
-     * |-----|--------------------------------|-----|--------------------------------|
-     * |  a  | AM, PM                         |  A* | Milliseconds in day            |
-     * |  b  | AM, PM, noon, midnight         |  B  | Flexible day period            |
-     * |  c  | Stand-alone local day of week  |  C* | Localized hour w/ day period   |
-     * |  d  | Day of month                   |  D  | Day of year                    |
-     * |  e  | Local day of week              |  E  | Day of week                    |
-     * |  f  |                                |  F* | Day of week in month           |
-     * |  g* | Modified Julian day            |  G  | Era                            |
-     * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
-     * |  i! | ISO day of week                |  I! | ISO week of year               |
-     * |  j* | Localized hour w/ day period   |  J* | Localized hour w/o day period  |
-     * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
-     * |  l* | (deprecated)                   |  L  | Stand-alone month              |
-     * |  m  | Minute                         |  M  | Month                          |
-     * |  n  |                                |  N  |                                |
-     * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
-     * |  p! | Long localized time            |  P! | Long localized date            |
-     * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
-     * |  r* | Related Gregorian year         |  R! | ISO week-numbering year        |
-     * |  s  | Second                         |  S  | Fraction of second             |
-     * |  t! | Seconds timestamp              |  T! | Milliseconds timestamp         |
-     * |  u  | Extended year                  |  U* | Cyclic year                    |
-     * |  v* | Timezone (generic non-locat.)  |  V* | Timezone (location)            |
-     * |  w  | Local week of year             |  W* | Week of month                  |
-     * |  x  | Timezone (ISO-8601 w/o Z)      |  X  | Timezone (ISO-8601)            |
-     * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
-     * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
-     *
-     * Letters marked by * are not implemented but reserved by Unicode standard.
-     *
-     * Letters marked by ! are non-standard, but implemented by date-fns:
-     * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
-     * - `i` is ISO day of week. For `i` and `ii` is returns numeric ISO week days,
-     *   i.e. 7 for Sunday, 1 for Monday, etc.
-     * - `I` is ISO week of year, as opposed to `w` which is local week of year.
-     * - `R` is ISO week-numbering year, as opposed to `Y` which is local week-numbering year.
-     *   `R` is supposed to be used in conjunction with `I` and `i`
-     *   for universal ISO week-numbering date, whereas
-     *   `Y` is supposed to be used in conjunction with `w` and `e`
-     *   for week-numbering date specific to the locale.
-     * - `P` is long localized date format
-     * - `p` is long localized time format
-     */
-
   };
+  /*
+   * |     | Unit                           |     | Unit                           |
+   * |-----|--------------------------------|-----|--------------------------------|
+   * |  a  | AM, PM                         |  A* | Milliseconds in day            |
+   * |  b  | AM, PM, noon, midnight         |  B  | Flexible day period            |
+   * |  c  | Stand-alone local day of week  |  C* | Localized hour w/ day period   |
+   * |  d  | Day of month                   |  D  | Day of year                    |
+   * |  e  | Local day of week              |  E  | Day of week                    |
+   * |  f  |                                |  F* | Day of week in month           |
+   * |  g* | Modified Julian day            |  G  | Era                            |
+   * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
+   * |  i! | ISO day of week                |  I! | ISO week of year               |
+   * |  j* | Localized hour w/ day period   |  J* | Localized hour w/o day period  |
+   * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
+   * |  l* | (deprecated)                   |  L  | Stand-alone month              |
+   * |  m  | Minute                         |  M  | Month                          |
+   * |  n  |                                |  N  |                                |
+   * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
+   * |  p! | Long localized time            |  P! | Long localized date            |
+   * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
+   * |  r* | Related Gregorian year         |  R! | ISO week-numbering year        |
+   * |  s  | Second                         |  S  | Fraction of second             |
+   * |  t! | Seconds timestamp              |  T! | Milliseconds timestamp         |
+   * |  u  | Extended year                  |  U* | Cyclic year                    |
+   * |  v* | Timezone (generic non-locat.)  |  V* | Timezone (location)            |
+   * |  w  | Local week of year             |  W* | Week of month                  |
+   * |  x  | Timezone (ISO-8601 w/o Z)      |  X  | Timezone (ISO-8601)            |
+   * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
+   * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
+   *
+   * Letters marked by * are not implemented but reserved by Unicode standard.
+   *
+   * Letters marked by ! are non-standard, but implemented by date-fns:
+   * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
+   * - `i` is ISO day of week. For `i` and `ii` is returns numeric ISO week days,
+   *   i.e. 7 for Sunday, 1 for Monday, etc.
+   * - `I` is ISO week of year, as opposed to `w` which is local week of year.
+   * - `R` is ISO week-numbering year, as opposed to `Y` which is local week-numbering year.
+   *   `R` is supposed to be used in conjunction with `I` and `i`
+   *   for universal ISO week-numbering date, whereas
+   *   `Y` is supposed to be used in conjunction with `w` and `e`
+   *   for week-numbering date specific to the locale.
+   * - `P` is long localized date format
+   * - `p` is long localized time format
+   */
+
   var formatters = {
     // Era
     G: function (date, token, localize) {
@@ -6646,7 +6918,7 @@
         });
       }
 
-      return formatters$1.y(date, token);
+      return formatters$3.y(date, token);
     },
     // Local week-numbering year
     Y: function (date, token, localize, options) {
@@ -6779,7 +7051,7 @@
       switch (token) {
         case 'M':
         case 'MM':
-          return formatters$1.M(date, token);
+          return formatters$3.M(date, token);
         // 1st, 2nd, ..., 12th
 
         case 'Mo':
@@ -6884,7 +7156,7 @@
         });
       }
 
-      return formatters$1.d(date, token);
+      return formatters$3.d(date, token);
     },
     // Day of year
     D: function (date, token, localize) {
@@ -7205,7 +7477,7 @@
         });
       }
 
-      return formatters$1.h(date, token);
+      return formatters$3.h(date, token);
     },
     // Hour [0-23]
     H: function (date, token, localize) {
@@ -7215,7 +7487,7 @@
         });
       }
 
-      return formatters$1.H(date, token);
+      return formatters$3.H(date, token);
     },
     // Hour [0-11]
     K: function (date, token, localize) {
@@ -7250,7 +7522,7 @@
         });
       }
 
-      return formatters$1.m(date, token);
+      return formatters$3.m(date, token);
     },
     // Second
     s: function (date, token, localize) {
@@ -7260,11 +7532,11 @@
         });
       }
 
-      return formatters$1.s(date, token);
+      return formatters$3.s(date, token);
     },
     // Fraction of second
     S: function (date, token) {
-      return formatters$1.S(date, token);
+      return formatters$3.S(date, token);
     },
     // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
     X: function (date, token, _localize, options) {
@@ -7376,7 +7648,7 @@
     }
   };
 
-  function formatTimezoneShort(offset, dirtyDelimiter) {
+  function formatTimezoneShort(offset, delimiter) {
     var sign = offset > 0 ? '-' : '+';
     var absOffset = Math.abs(offset);
     var hours = Math.floor(absOffset / 60);
@@ -7386,7 +7658,6 @@
       return sign + String(hours);
     }
 
-    var delimiter = dirtyDelimiter || '';
     return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
   }
 
@@ -7407,6 +7678,8 @@
     var minutes = addLeadingZeros(absOffset % 60, 2);
     return sign + hours + delimiter + minutes;
   }
+
+  var formatters$1 = formatters;
 
   function dateLongFormatter(pattern, formatLong) {
     switch (pattern) {
@@ -7459,7 +7732,7 @@
   }
 
   function dateTimeLongFormatter(pattern, formatLong) {
-    var matchResult = pattern.match(/(P+)(p+)?/);
+    var matchResult = pattern.match(/(P+)(p+)?/) || [];
     var datePattern = matchResult[1];
     var timePattern = matchResult[2];
 
@@ -7503,6 +7776,7 @@
     p: timeLongFormatter,
     P: dateTimeLongFormatter
   };
+  var longFormatters$1 = longFormatters;
 
   var protectedDayOfYearTokens = ['D', 'DD'];
   var protectedWeekYearTokens = ['YY', 'YYYY'];
@@ -7630,28 +7904,28 @@
    * | Day of week (formatting)        | E..EEE  | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 | EEEEE   | M, T, W, T, F, S, S               |       |
-   * |                                 | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 | EEEEEE  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | ISO day of week (formatting)    | i       | 1, 2, 3, ..., 7                   | 7     |
    * |                                 | io      | 1st, 2nd, ..., 7th                | 7     |
    * |                                 | ii      | 01, 02, ..., 07                   | 7     |
    * |                                 | iii     | Mon, Tue, Wed, ..., Sun           | 7     |
    * |                                 | iiii    | Monday, Tuesday, ..., Sunday      | 2,7   |
    * |                                 | iiiii   | M, T, W, T, F, S, S               | 7     |
-   * |                                 | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 7     |
+   * |                                 | iiiiii  | Mo, Tu, We, Th, Fr, Sa, Su        | 7     |
    * | Local day of week (formatting)  | e       | 2, 3, 4, ..., 1                   |       |
    * |                                 | eo      | 2nd, 3rd, ..., 1st                | 7     |
    * |                                 | ee      | 02, 03, ..., 01                   |       |
    * |                                 | eee     | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 | eeeee   | M, T, W, T, F, S, S               |       |
-   * |                                 | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 | eeeeee  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | Local day of week (stand-alone) | c       | 2, 3, 4, ..., 1                   |       |
    * |                                 | co      | 2nd, 3rd, ..., 1st                | 7     |
    * |                                 | cc      | 02, 03, ..., 01                   |       |
    * |                                 | ccc     | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 | ccccc   | M, T, W, T, F, S, S               |       |
-   * |                                 | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 | cccccc  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | AM, PM                          | a..aa   | AM, PM                            |       |
    * |                                 | aaa     | am, pm                            |       |
    * |                                 | aaaa    | a.m., p.m.                        | 2     |
@@ -7858,7 +8132,7 @@
     requiredArgs(2, arguments);
     var formatStr = String(dirtyFormatStr);
     var options = dirtyOptions || {};
-    var locale = options.locale || locale$3;
+    var locale = options.locale || defaultLocale;
     var localeFirstWeekContainsDate = locale.options && locale.options.firstWeekContainsDate;
     var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
     var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
@@ -7904,7 +8178,7 @@
       var firstCharacter = substring[0];
 
       if (firstCharacter === 'p' || firstCharacter === 'P') {
-        var longFormatter = longFormatters[firstCharacter];
+        var longFormatter = longFormatters$1[firstCharacter];
         return longFormatter(substring, locale.formatLong, formatterOptions);
       }
 
@@ -7921,7 +8195,7 @@
         return cleanEscapedString$1(substring);
       }
 
-      var formatter = formatters[firstCharacter];
+      var formatter = formatters$1[firstCharacter];
 
       if (formatter) {
         if (!options.useAdditionalWeekYearTokens && isProtectedWeekYearToken(substring)) {
@@ -7956,7 +8230,7 @@
     dirtyObject = dirtyObject || {};
 
     for (var property in dirtyObject) {
-      if (dirtyObject.hasOwnProperty(property)) {
+      if (Object.prototype.hasOwnProperty.call(dirtyObject, property)) {
         target[property] = dirtyObject[property];
       }
     }
@@ -8070,14 +8344,14 @@
    *
    * @example
    * // The start of an a week-numbering year for 2 July 2005 with default settings:
-   * var result = startOfWeekYear(new Date(2005, 6, 2))
+   * const result = startOfWeekYear(new Date(2005, 6, 2))
    * //=> Sun Dec 26 2004 00:00:00
    *
    * @example
    * // The start of a week-numbering year for 2 July 2005
    * // if Monday is the first day of week
    * // and 4 January is always in the first week of the year:
-   * var result = startOfWeekYear(new Date(2005, 6, 2), {
+   * const result = startOfWeekYear(new Date(2005, 6, 2), {
    *   weekStartsOn: 1,
    *   firstWeekContainsDate: 4
    * })
@@ -8130,13 +8404,13 @@
    *
    * @example
    * // Which week of the local week numbering year is 2 January 2005 with default options?
-   * const result = getISOWeek(new Date(2005, 0, 2))
+   * const result = getWeek(new Date(2005, 0, 2))
    * //=> 2
    *
    * // Which week of the local week numbering year is 2 January 2005,
    * // if Monday is the first day of the week,
    * // and the first week of the year always contains 4 January?
-   * const result = getISOWeek(new Date(2005, 0, 2), {
+   * const result = getWeek(new Date(2005, 0, 2), {
    *   weekStartsOn: 1,
    *   firstWeekContainsDate: 4
    * })
@@ -8251,18 +8525,18 @@
    * //=> Mon Sep 1 2014 10:19:50
    */
 
-  function sub(dirtyDate, duration) {
+  function sub(date, duration) {
     requiredArgs(2, arguments);
     if (!duration || typeof duration !== 'object') return new Date(NaN);
-    var years = 'years' in duration ? toInteger$1(duration.years) : 0;
-    var months = 'months' in duration ? toInteger$1(duration.months) : 0;
-    var weeks = 'weeks' in duration ? toInteger$1(duration.weeks) : 0;
-    var days = 'days' in duration ? toInteger$1(duration.days) : 0;
-    var hours = 'hours' in duration ? toInteger$1(duration.hours) : 0;
-    var minutes = 'minutes' in duration ? toInteger$1(duration.minutes) : 0;
-    var seconds = 'seconds' in duration ? toInteger$1(duration.seconds) : 0; // Subtract years and months
+    var years = duration.years ? toInteger$1(duration.years) : 0;
+    var months = duration.months ? toInteger$1(duration.months) : 0;
+    var weeks = duration.weeks ? toInteger$1(duration.weeks) : 0;
+    var days = duration.days ? toInteger$1(duration.days) : 0;
+    var hours = duration.hours ? toInteger$1(duration.hours) : 0;
+    var minutes = duration.minutes ? toInteger$1(duration.minutes) : 0;
+    var seconds = duration.seconds ? toInteger$1(duration.seconds) : 0; // Subtract years and months
 
-    var dateWithoutMonths = subMonths(toDate(dirtyDate), months + years * 12); // Subtract weeks and days
+    var dateWithoutMonths = subMonths(date, months + years * 12); // Subtract weeks and days
 
     var dateWithoutDays = subDays(dateWithoutMonths, days + weeks * 7); // Subtract hours, minutes and seconds
 
@@ -8271,48 +8545,6 @@
     var mstoSub = secondstoSub * 1000;
     var finalDate = new Date(dateWithoutDays.getTime() - mstoSub);
     return finalDate;
-  }
-
-  /**
-   * @name isDate
-   * @category Common Helpers
-   * @summary Is the given value a date?
-   *
-   * @description
-   * Returns true if the given value is an instance of Date. The function works for dates transferred across iframes.
-   *
-   * ### v2.0.0 breaking changes:
-   *
-   * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-   *
-   * @param {*} value - the value to check
-   * @returns {boolean} true if the given value is a date
-   * @throws {TypeError} 1 arguments required
-   *
-   * @example
-   * // For a valid date:
-   * const result = isDate(new Date())
-   * //=> true
-   *
-   * @example
-   * // For an invalid date:
-   * const result = isDate(new Date(NaN))
-   * //=> true
-   *
-   * @example
-   * // For some value:
-   * const result = isDate('2014-02-31')
-   * //=> false
-   *
-   * @example
-   * // For an object:
-   * const result = isDate({})
-   * //=> false
-   */
-
-  function isDate(value) {
-    requiredArgs(1, arguments);
-    return value instanceof Date || typeof value === 'object' && Object.prototype.toString.call(value) === '[object Date]';
   }
 
   // See issue: https://github.com/date-fns/date-fns/issues/376
@@ -9876,6 +10108,7 @@
       incompatibleTokens: '*'
     }
   };
+  var parsers$1 = parsers;
 
   var TIMEZONE_UNIT_PRIORITY = 10; // This RegExp consists of three parts separated by `|`:
   // - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
@@ -9994,28 +10227,28 @@
    * | Day of week (formatting)        |  90 | E..EEE  | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 |     | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 |     | EEEEE   | M, T, W, T, F, S, S               |       |
-   * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | ISO day of week (formatting)    |  90 | i       | 1, 2, 3, ..., 7                   | 5     |
    * |                                 |     | io      | 1st, 2nd, ..., 7th                | 5     |
    * |                                 |     | ii      | 01, 02, ..., 07                   | 5     |
    * |                                 |     | iii     | Mon, Tue, Wed, ..., Sun           | 5     |
    * |                                 |     | iiii    | Monday, Tuesday, ..., Sunday      | 2,5   |
    * |                                 |     | iiiii   | M, T, W, T, F, S, S               | 5     |
-   * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 5     |
+   * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Sa, Su        | 5     |
    * | Local day of week (formatting)  |  90 | e       | 2, 3, 4, ..., 1                   |       |
    * |                                 |     | eo      | 2nd, 3rd, ..., 1st                | 5     |
    * |                                 |     | ee      | 02, 03, ..., 01                   |       |
    * |                                 |     | eee     | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 |     | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 |     | eeeee   | M, T, W, T, F, S, S               |       |
-   * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | Local day of week (stand-alone) |  90 | c       | 2, 3, 4, ..., 1                   |       |
    * |                                 |     | co      | 2nd, 3rd, ..., 1st                | 5     |
    * |                                 |     | cc      | 02, 03, ..., 01                   |       |
    * |                                 |     | ccc     | Mon, Tue, Wed, ..., Sun           |       |
    * |                                 |     | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
    * |                                 |     | ccccc   | M, T, W, T, F, S, S               |       |
-   * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+   * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
    * | AM, PM                          |  80 | a..aaa  | AM, PM                            |       |
    * |                                 |     | aaaa    | a.m., p.m.                        | 2     |
    * |                                 |     | aaaaa   | a, p                              |       |
@@ -10221,7 +10454,7 @@
     var dateString = String(dirtyDateString);
     var formatString = String(dirtyFormatString);
     var options = dirtyOptions || {};
-    var locale = options.locale || locale$3;
+    var locale = options.locale || defaultLocale;
 
     if (!locale.match) {
       throw new RangeError('locale must contain match property');
@@ -10254,9 +10487,9 @@
     var subFnOptions = {
       firstWeekContainsDate: firstWeekContainsDate,
       weekStartsOn: weekStartsOn,
-      locale: locale // If timezone isn't specified, it will be set to the system timezone
+      locale: locale
+    }; // If timezone isn't specified, it will be set to the system timezone
 
-    };
     var setters = [{
       priority: TIMEZONE_UNIT_PRIORITY,
       subPriority: -1,
@@ -10268,7 +10501,7 @@
       var firstCharacter = substring[0];
 
       if (firstCharacter === 'p' || firstCharacter === 'P') {
-        var longFormatter = longFormatters[firstCharacter];
+        var longFormatter = longFormatters$1[firstCharacter];
         return longFormatter(substring, locale.formatLong, subFnOptions);
       }
 
@@ -10288,7 +10521,7 @@
       }
 
       var firstCharacter = token[0];
-      var parser = parsers[firstCharacter];
+      var parser = parsers$1[firstCharacter];
 
       if (parser) {
         var incompatibleTokens = parser.incompatibleTokens;
@@ -10511,7 +10744,9 @@
   }
 
   var floor$1 = Math.floor;
-  var replace = ''.replace;
+  var charAt$2 = functionUncurryThis(''.charAt);
+  var replace = functionUncurryThis(''.replace);
+  var stringSlice$1 = functionUncurryThis(''.slice);
   var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
   var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g; // `GetSubstitution` abstract operation
   // https://tc39.es/ecma262/#sec-getsubstitution
@@ -10526,10 +10761,10 @@
       symbols = SUBSTITUTION_SYMBOLS;
     }
 
-    return replace.call(replacement, symbols, function (match, ch) {
+    return replace(replacement, symbols, function (match, ch) {
       var capture;
 
-      switch (ch.charAt(0)) {
+      switch (charAt$2(ch, 0)) {
         case '$':
           return '$';
 
@@ -10537,13 +10772,13 @@
           return matched;
 
         case '`':
-          return str.slice(0, position);
+          return stringSlice$1(str, 0, position);
 
         case "'":
-          return str.slice(tailPos);
+          return stringSlice$1(str, tailPos);
 
         case '<':
-          capture = namedCaptures[ch.slice(1, -1)];
+          capture = namedCaptures[stringSlice$1(ch, 1, -1)];
           break;
 
         default:
@@ -10554,7 +10789,7 @@
           if (n > m) {
             var f = floor$1(n / 10);
             if (f === 0) return match;
-            if (f <= m) return captures[f - 1] === undefined ? ch.charAt(1) : captures[f - 1] + ch.charAt(1);
+            if (f <= m) return captures[f - 1] === undefined ? charAt$2(ch, 1) : captures[f - 1] + charAt$2(ch, 1);
             return match;
           }
 
@@ -10568,6 +10803,10 @@
   var REPLACE$1 = wellKnownSymbol$1('replace');
   var max$1 = Math.max;
   var min$3 = Math.min;
+  var concat = functionUncurryThis([].concat);
+  var push$1 = functionUncurryThis([].push);
+  var stringIndexOf = functionUncurryThis(''.indexOf);
+  var stringSlice = functionUncurryThis(''.slice);
 
   var maybeToString = function (it) {
     return it === undefined ? it : String(it);
@@ -10598,7 +10837,8 @@
         a: '7'
       };
       return result;
-    };
+    }; // eslint-disable-next-line regexp/no-useless-dollar-replacements -- false positive
+
 
     return ''.replace(re, '$<a>') !== '7';
   }); // @@replace logic
@@ -10609,20 +10849,21 @@
     // https://tc39.es/ecma262/#sec-string.prototype.replace
     function replace(searchValue, replaceValue) {
       var O = requireObjectCoercible$1(this);
-      var replacer = searchValue == undefined ? undefined : searchValue[REPLACE$1];
-      return replacer !== undefined ? replacer.call(searchValue, O, replaceValue) : nativeReplace.call(String(O), searchValue, replaceValue);
+      var replacer = searchValue == undefined ? undefined : getMethod(searchValue, REPLACE$1);
+      return replacer ? functionCall(replacer, searchValue, O, replaceValue) : functionCall(nativeReplace, toString_1(O), searchValue, replaceValue);
     }, // `RegExp.prototype[@@replace]` method
     // https://tc39.es/ecma262/#sec-regexp.prototype-@@replace
     function (string, replaceValue) {
-      if (typeof replaceValue === 'string' && replaceValue.indexOf(UNSAFE_SUBSTITUTE) === -1 && replaceValue.indexOf('$<') === -1) {
-        var res = maybeCallNative(nativeReplace, this, string, replaceValue);
+      var rx = anObject$1(this);
+      var S = toString_1(string);
+
+      if (typeof replaceValue == 'string' && stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf(replaceValue, '$<') === -1) {
+        var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
         if (res.done) return res.value;
       }
 
-      var rx = anObject$1(this);
-      var S = String(string);
-      var functionalReplace = typeof replaceValue === 'function';
-      if (!functionalReplace) replaceValue = String(replaceValue);
+      var functionalReplace = isCallable(replaceValue);
+      if (!functionalReplace) replaceValue = toString_1(replaceValue);
       var global = rx.global;
 
       if (global) {
@@ -10635,9 +10876,9 @@
       while (true) {
         var result = regexpExecAbstract$1(rx, S);
         if (result === null) break;
-        results.push(result);
+        push$1(results, result);
         if (!global) break;
-        var matchStr = String(result[0]);
+        var matchStr = toString_1(result[0]);
         if (matchStr === '') rx.lastIndex = advanceStringIndex$1(S, toLength$1(rx.lastIndex), fullUnicode);
       }
 
@@ -10646,33 +10887,33 @@
 
       for (var i = 0; i < results.length; i++) {
         result = results[i];
-        var matched = String(result[0]);
-        var position = max$1(min$3(toInteger$2(result.index), S.length), 0);
+        var matched = toString_1(result[0]);
+        var position = max$1(min$3(toIntegerOrInfinity(result.index), S.length), 0);
         var captures = []; // NOTE: This is equivalent to
         //   captures = result.slice(1).map(maybeToString)
         // but for some reason `nativeSlice.call(result, 1, result.length)` (called in
         // the slice polyfill when slicing native arrays) "doesn't work" in safari 9 and
         // causes a crash (https://pastebin.com/N21QzeQA) when trying to debug it.
 
-        for (var j = 1; j < result.length; j++) captures.push(maybeToString(result[j]));
+        for (var j = 1; j < result.length; j++) push$1(captures, maybeToString(result[j]));
 
         var namedCaptures = result.groups;
 
         if (functionalReplace) {
-          var replacerArgs = [matched].concat(captures, position, S);
-          if (namedCaptures !== undefined) replacerArgs.push(namedCaptures);
-          var replacement = String(replaceValue.apply(undefined, replacerArgs));
+          var replacerArgs = concat([matched], captures, position, S);
+          if (namedCaptures !== undefined) push$1(replacerArgs, namedCaptures);
+          var replacement = toString_1(functionApply(replaceValue, undefined, replacerArgs));
         } else {
           replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
         }
 
         if (position >= nextSourcePosition) {
-          accumulatedResult += S.slice(nextSourcePosition, position) + replacement;
+          accumulatedResult += stringSlice(S, nextSourcePosition, position) + replacement;
           nextSourcePosition = position + matched.length;
         }
       }
 
-      return accumulatedResult + S.slice(nextSourcePosition);
+      return accumulatedResult + stringSlice(S, nextSourcePosition);
     }];
   }, !REPLACE_SUPPORTS_NAMED_GROUPS$1 || !REPLACE_KEEPS_$0$1 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE$1);
 
@@ -10872,7 +11113,7 @@
   dist$2.getMonthNames;
   dist$2.getMonthNamesShort;
 
-  var nativeJoin$1 = [].join;
+  var un$Join = functionUncurryThis([].join);
   var ES3_STRINGS$1 = indexedObject$1 != Object;
   var STRICT_METHOD$2 = arrayMethodIsStrict$1('join', ','); // `Array.prototype.join` method
   // https://tc39.es/ecma262/#sec-array.prototype.join
@@ -10883,7 +11124,7 @@
     forced: ES3_STRINGS$1 || !STRICT_METHOD$2
   }, {
     join: function join(separator) {
-      return nativeJoin$1.call(toIndexedObject$1(this), separator === undefined ? ',' : separator);
+      return un$Join(toIndexedObject$1(this), separator === undefined ? ',' : separator);
     }
   });
 
@@ -10905,174 +11146,174 @@
   var formatDistanceLocale$2 = {
     lessThanXSeconds: {
       standalone: {
-        one: 'weniger als eine Sekunde',
+        one: 'weniger als 1 Sekunde',
         other: 'weniger als {{count}} Sekunden'
       },
       withPreposition: {
-        one: 'weniger als einer Sekunde',
+        one: 'weniger als 1 Sekunde',
         other: 'weniger als {{count}} Sekunden'
       }
     },
     xSeconds: {
       standalone: {
-        one: 'eine Sekunde',
+        one: '1 Sekunde',
         other: '{{count}} Sekunden'
       },
       withPreposition: {
-        one: 'einer Sekunde',
+        one: '1 Sekunde',
         other: '{{count}} Sekunden'
       }
     },
     halfAMinute: {
-      standalone: 'eine halbe Minute',
-      withPreposition: 'einer halben Minute'
+      standalone: 'halbe Minute',
+      withPreposition: 'halben Minute'
     },
     lessThanXMinutes: {
       standalone: {
-        one: 'weniger als eine Minute',
+        one: 'weniger als 1 Minute',
         other: 'weniger als {{count}} Minuten'
       },
       withPreposition: {
-        one: 'weniger als einer Minute',
+        one: 'weniger als 1 Minute',
         other: 'weniger als {{count}} Minuten'
       }
     },
     xMinutes: {
       standalone: {
-        one: 'eine Minute',
+        one: '1 Minute',
         other: '{{count}} Minuten'
       },
       withPreposition: {
-        one: 'einer Minute',
+        one: '1 Minute',
         other: '{{count}} Minuten'
       }
     },
     aboutXHours: {
       standalone: {
-        one: 'etwa eine Stunde',
+        one: 'etwa 1 Stunde',
         other: 'etwa {{count}} Stunden'
       },
       withPreposition: {
-        one: 'etwa einer Stunde',
+        one: 'etwa 1 Stunde',
         other: 'etwa {{count}} Stunden'
       }
     },
     xHours: {
       standalone: {
-        one: 'eine Stunde',
+        one: '1 Stunde',
         other: '{{count}} Stunden'
       },
       withPreposition: {
-        one: 'einer Stunde',
+        one: '1 Stunde',
         other: '{{count}} Stunden'
       }
     },
     xDays: {
       standalone: {
-        one: 'ein Tag',
+        one: '1 Tag',
         other: '{{count}} Tage'
       },
       withPreposition: {
-        one: 'einem Tag',
+        one: '1 Tag',
         other: '{{count}} Tagen'
       }
     },
     aboutXWeeks: {
       standalone: {
-        one: 'etwa ein Woche',
+        one: 'etwa 1 Woche',
         other: 'etwa {{count}} Wochen'
       },
       withPreposition: {
-        one: 'etwa einem Woche',
+        one: 'etwa 1 Woche',
         other: 'etwa {{count}} Wochen'
       }
     },
     xWeeks: {
       standalone: {
-        one: 'ein Woche',
+        one: '1 Woche',
         other: '{{count}} Wochen'
       },
       withPreposition: {
-        one: 'einem Woche',
+        one: '1 Woche',
         other: '{{count}} Wochen'
       }
     },
     aboutXMonths: {
       standalone: {
-        one: 'etwa ein Monat',
+        one: 'etwa 1 Monat',
         other: 'etwa {{count}} Monate'
       },
       withPreposition: {
-        one: 'etwa einem Monat',
+        one: 'etwa 1 Monat',
         other: 'etwa {{count}} Monaten'
       }
     },
     xMonths: {
       standalone: {
-        one: 'ein Monat',
+        one: '1 Monat',
         other: '{{count}} Monate'
       },
       withPreposition: {
-        one: 'einem Monat',
+        one: '1 Monat',
         other: '{{count}} Monaten'
       }
     },
     aboutXYears: {
       standalone: {
-        one: 'etwa ein Jahr',
+        one: 'etwa 1 Jahr',
         other: 'etwa {{count}} Jahre'
       },
       withPreposition: {
-        one: 'etwa einem Jahr',
+        one: 'etwa 1 Jahr',
         other: 'etwa {{count}} Jahren'
       }
     },
     xYears: {
       standalone: {
-        one: 'ein Jahr',
+        one: '1 Jahr',
         other: '{{count}} Jahre'
       },
       withPreposition: {
-        one: 'einem Jahr',
+        one: '1 Jahr',
         other: '{{count}} Jahren'
       }
     },
     overXYears: {
       standalone: {
-        one: 'mehr als ein Jahr',
+        one: 'mehr als 1 Jahr',
         other: 'mehr als {{count}} Jahre'
       },
       withPreposition: {
-        one: 'mehr als einem Jahr',
+        one: 'mehr als 1 Jahr',
         other: 'mehr als {{count}} Jahren'
       }
     },
     almostXYears: {
       standalone: {
-        one: 'fast ein Jahr',
+        one: 'fast 1 Jahr',
         other: 'fast {{count}} Jahre'
       },
       withPreposition: {
-        one: 'fast einem Jahr',
+        one: 'fast 1 Jahr',
         other: 'fast {{count}} Jahren'
       }
     }
   };
-  function formatDistance$2(token, count, options) {
-    options = options || {};
-    var usageGroup = options.addSuffix ? formatDistanceLocale$2[token].withPreposition : formatDistanceLocale$2[token].standalone;
-    var result;
 
-    if (typeof usageGroup === 'string') {
-      result = usageGroup;
+  var formatDistance$3 = function (token, count, options) {
+    var result;
+    var tokenValue = options !== null && options !== void 0 && options.addSuffix ? formatDistanceLocale$2[token].withPreposition : formatDistanceLocale$2[token].standalone;
+
+    if (typeof tokenValue === 'string') {
+      result = tokenValue;
     } else if (count === 1) {
-      result = usageGroup.one;
+      result = tokenValue.one;
     } else {
-      result = usageGroup.other.replace('{{count}}', count);
+      result = tokenValue.other.replace('{{count}}', String(count));
     }
 
-    if (options.addSuffix) {
-      if (options.comparison > 0) {
+    if (options !== null && options !== void 0 && options.addSuffix) {
+      if (options.comparison && options.comparison > 0) {
         return 'in ' + result;
       } else {
         return 'vor ' + result;
@@ -11080,14 +11321,16 @@
     }
 
     return result;
-  }
+  };
+
+  var formatDistance$4 = formatDistance$3;
 
   var dateFormats$2 = {
     full: 'EEEE, do MMMM y',
     // Montag, 7. Januar 2018
     long: 'do MMMM y',
     // 7. Januar 2018
-    medium: 'do MMM. y',
+    medium: 'do MMM y',
     // 7. Jan. 2018
     short: 'dd.MM.y' // 07.01.2018
 
@@ -11104,7 +11347,7 @@
     medium: '{{date}} {{time}}',
     short: '{{date}} {{time}}'
   };
-  var formatLong$2 = {
+  var formatLong$4 = {
     date: buildFormatLongFn({
       formats: dateFormats$2,
       defaultWidth: 'full'
@@ -11118,6 +11361,7 @@
       defaultWidth: 'full'
     })
   };
+  var formatLong$5 = formatLong$4;
 
   var formatRelativeLocale$2 = {
     lastWeek: "'letzten' eeee 'um' p",
@@ -11127,9 +11371,12 @@
     nextWeek: "eeee 'um' p",
     other: 'P'
   };
-  function formatRelative$2(token, _date, _baseDate, _options) {
+
+  var formatRelative$3 = function (token, _date, _baseDate, _options) {
     return formatRelativeLocale$2[token];
-  }
+  };
+
+  var formatRelative$4 = formatRelative$3;
 
   var eraValues$2 = {
     narrow: ['v.Chr.', 'n.Chr.'],
@@ -11139,24 +11386,30 @@
   var quarterValues$2 = {
     narrow: ['1', '2', '3', '4'],
     abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-    wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal'] // Note: in German, the names of days of the week and months are capitalized.
-    // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-    // Generally, formatted dates should look like they are in the middle of a sentence,
-    // e.g. in Spanish language the weekdays and months should be in the lowercase.
+    wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
+  }; // Note: in German, the names of days of the week and months are capitalized.
+  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+  // Generally, formatted dates should look like they are in the middle of a sentence,
+  // e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-  };
   var monthValues$2 = {
     narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
     abbreviated: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
     wide: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+  }; // https://st.unicode.org/cldr-apps/v#/de/Gregorian/
+
+  var formattingMonthValues = {
+    narrow: monthValues$2.narrow,
+    abbreviated: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'],
+    wide: monthValues$2.wide
   };
   var dayValues$2 = {
     narrow: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
     short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
     abbreviated: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
-    wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'] // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
+    wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+  }; // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
 
-  };
   var dayPeriodValues$2 = {
     narrow: {
       am: 'vm.',
@@ -11222,12 +11475,12 @@
     }
   };
 
-  function ordinalNumber$2(dirtyNumber, _dirtyOptions) {
+  var ordinalNumber$2 = function (dirtyNumber) {
     var number = Number(dirtyNumber);
     return number + '.';
-  }
+  };
 
-  var localize$2 = {
+  var localize$4 = {
     ordinalNumber: ordinalNumber$2,
     era: buildLocalizeFn({
       values: eraValues$2,
@@ -11237,11 +11490,12 @@
       values: quarterValues$2,
       defaultWidth: 'wide',
       argumentCallback: function (quarter) {
-        return Number(quarter) - 1;
+        return quarter - 1;
       }
     }),
     month: buildLocalizeFn({
       values: monthValues$2,
+      formattingValues: formattingMonthValues,
       defaultWidth: 'wide'
     }),
     day: buildLocalizeFn({
@@ -11255,6 +11509,7 @@
       defaultFormattingWidth: 'wide'
     })
   };
+  var localize$5 = localize$4;
 
   var matchOrdinalNumberPattern$2 = /^(\d+)(\.)?/i;
   var parseOrdinalNumberPattern$2 = /\d+/i;
@@ -11276,12 +11531,12 @@
   };
   var matchMonthPatterns$2 = {
     narrow: /^[jfmasond]/i,
-    abbreviated: /^(jan|feb|mär|apr|mai|jun|jul|aug|sep|okt|nov|dez)/i,
+    abbreviated: /^(j[aä]n|feb|mär[z]?|apr|mai|jun[i]?|jul[i]?|aug|sep|okt|nov|dez)\.?/i,
     wide: /^(januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)/i
   };
   var parseMonthPatterns$2 = {
     narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
-    any: [/^ja/i, /^f/i, /^mär/i, /^ap/i, /^mai/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
+    any: [/^j[aä]/i, /^f/i, /^mär/i, /^ap/i, /^mai/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
   };
   var matchDayPatterns$2 = {
     narrow: /^[smdmf]/i,
@@ -11311,12 +11566,12 @@
 
     }
   };
-  var match$3 = {
+  var match$5 = {
     ordinalNumber: buildMatchPatternFn({
       matchPattern: matchOrdinalNumberPattern$2,
       parsePattern: parseOrdinalNumberPattern$2,
       valueCallback: function (value) {
-        return parseInt(value, 10);
+        return parseInt(value);
       }
     }),
     era: buildMatchFn({
@@ -11353,6 +11608,7 @@
       defaultParseWidth: 'any'
     })
   };
+  var match$6 = match$5;
 
   /**
    * @type {Locale}
@@ -11369,11 +11625,11 @@
 
   var locale$2 = {
     code: 'de',
-    formatDistance: formatDistance$2,
-    formatLong: formatLong$2,
-    formatRelative: formatRelative$2,
-    localize: localize$2,
-    match: match$3,
+    formatDistance: formatDistance$4,
+    formatLong: formatLong$5,
+    formatRelative: formatRelative$4,
+    localize: localize$5,
+    match: match$6,
     options: {
       weekStartsOn: 1
       /* Monday */
@@ -11381,6 +11637,7 @@
       firstWeekContainsDate: 4
     }
   };
+  var de = locale$2;
 
   var formatDistanceLocale$1 = {
     lessThanXSeconds: {
@@ -11445,20 +11702,21 @@
       other: 'presque {{count}} ans'
     }
   };
-  function formatDistance$1(token, count, options) {
-    options = options || {};
-    var result;
 
-    if (typeof formatDistanceLocale$1[token] === 'string') {
-      result = formatDistanceLocale$1[token];
+  var formatDistance$1 = function (token, count, options) {
+    var result;
+    var form = formatDistanceLocale$1[token];
+
+    if (typeof form === 'string') {
+      result = form;
     } else if (count === 1) {
-      result = formatDistanceLocale$1[token].one;
+      result = form.one;
     } else {
-      result = formatDistanceLocale$1[token].other.replace('{{count}}', count);
+      result = form.other.replace('{{count}}', String(count));
     }
 
-    if (options.addSuffix) {
-      if (options.comparison > 0) {
+    if (options !== null && options !== void 0 && options.addSuffix) {
+      if (options.comparison && options.comparison > 0) {
         return 'dans ' + result;
       } else {
         return 'il y a ' + result;
@@ -11466,7 +11724,9 @@
     }
 
     return result;
-  }
+  };
+
+  var formatDistance$2 = formatDistance$1;
 
   var dateFormats$1 = {
     full: 'EEEE d MMMM y',
@@ -11486,7 +11746,7 @@
     medium: '{{date}}, {{time}}',
     short: '{{date}}, {{time}}'
   };
-  var formatLong$1 = {
+  var formatLong$2 = {
     date: buildFormatLongFn({
       formats: dateFormats$1,
       defaultWidth: 'full'
@@ -11500,6 +11760,7 @@
       defaultWidth: 'full'
     })
   };
+  var formatLong$3 = formatLong$2;
 
   var formatRelativeLocale$1 = {
     lastWeek: "eeee 'dernier à' p",
@@ -11509,9 +11770,12 @@
     nextWeek: "eeee 'prochain à' p",
     other: 'P'
   };
-  function formatRelative$1(token, _date, _baseDate, _options) {
+
+  var formatRelative$1 = function (token, _date, _baseDate, _options) {
     return formatRelativeLocale$1[token];
-  }
+  };
+
+  var formatRelative$2 = formatRelative$1;
 
   var eraValues$1 = {
     narrow: ['av. J.-C', 'ap. J.-C'],
@@ -11567,34 +11831,23 @@
     }
   };
 
-  function ordinalNumber$1(dirtyNumber, dirtyOptions) {
+  var ordinalNumber$1 = function (dirtyNumber, options) {
     var number = Number(dirtyNumber);
-    var options = dirtyOptions || {};
-    var unit = String(options.unit);
+    var unit = options === null || options === void 0 ? void 0 : options.unit;
+    if (number === 0) return '0';
+    var feminineUnits = ['year', 'week', 'hour', 'minute', 'second'];
     var suffix;
 
-    if (number === 0) {
-      return number;
-    }
-
-    if (unit === 'year' || unit === 'hour' || unit === 'week') {
-      if (number === 1) {
-        suffix = 'ère';
-      } else {
-        suffix = 'ème';
-      }
+    if (number === 1) {
+      suffix = unit && feminineUnits.includes(unit) ? 'ère' : 'er';
     } else {
-      if (number === 1) {
-        suffix = 'er';
-      } else {
-        suffix = 'ème';
-      }
+      suffix = 'ème';
     }
 
     return number + suffix;
-  }
+  };
 
-  var localize$1 = {
+  var localize$2 = {
     ordinalNumber: ordinalNumber$1,
     era: buildLocalizeFn({
       values: eraValues$1,
@@ -11604,7 +11857,7 @@
       values: quarterValues$1,
       defaultWidth: 'wide',
       argumentCallback: function (quarter) {
-        return Number(quarter) - 1;
+        return quarter - 1;
       }
     }),
     month: buildLocalizeFn({
@@ -11620,6 +11873,7 @@
       defaultWidth: 'wide'
     })
   };
+  var localize$3 = localize$2;
 
   var matchOrdinalNumberPattern$1 = /^(\d+)(ième|ère|ème|er|e)?/i;
   var parseOrdinalNumberPattern$1 = /\d+/i;
@@ -11632,8 +11886,8 @@
     any: [/^av/i, /^ap/i]
   };
   var matchQuarterPatterns$1 = {
-    narrow: /^[1234]/i,
-    abbreviated: /^t[1234]/i,
+    narrow: /^T?[1234]/i,
+    abbreviated: /^[1234](er|ème|e)? trim\.?/i,
     wide: /^[1234](er|ème|e)? trimestre/i
   };
   var parseQuarterPatterns$1 = {
@@ -11674,12 +11928,12 @@
       night: /nuit/i
     }
   };
-  var match$2 = {
+  var match$3 = {
     ordinalNumber: buildMatchPatternFn({
       matchPattern: matchOrdinalNumberPattern$1,
       parsePattern: parseOrdinalNumberPattern$1,
       valueCallback: function (value) {
-        return parseInt(value, 10);
+        return parseInt(value);
       }
     }),
     era: buildMatchFn({
@@ -11716,6 +11970,7 @@
       defaultParseWidth: 'any'
     })
   };
+  var match$4 = match$3;
 
   /**
    * @type {Locale}
@@ -11729,11 +11984,11 @@
 
   var locale$1 = {
     code: 'fr',
-    formatDistance: formatDistance$1,
-    formatLong: formatLong$1,
-    formatRelative: formatRelative$1,
-    localize: localize$1,
-    match: match$2,
+    formatDistance: formatDistance$2,
+    formatLong: formatLong$3,
+    formatRelative: formatRelative$2,
+    localize: localize$3,
+    match: match$4,
     options: {
       weekStartsOn: 1
       /* Monday */
@@ -11741,6 +11996,7 @@
       firstWeekContainsDate: 4
     }
   };
+  var fr = locale$1;
 
   var formatDistanceLocale = {
     lessThanXSeconds: {
@@ -11860,6 +12116,7 @@
       defaultWidth: 'full'
     })
   };
+  var formatLong$1 = formatLong;
 
   var formatRelativeLocale = {
     lastWeek: "'na última' eeee 'às' p",
@@ -11991,6 +12248,7 @@
       defaultFormattingWidth: 'wide'
     })
   };
+  var localize$1 = localize;
 
   var matchOrdinalNumberPattern = /^(\d+)(º|ª)?/i;
   var parseOrdinalNumberPattern = /\d+/i;
@@ -12088,6 +12346,7 @@
       defaultParseWidth: 'any'
     })
   };
+  var match$2 = match$1;
 
   /**
    * @type {Locale}
@@ -12102,10 +12361,10 @@
   var locale = {
     code: 'pt',
     formatDistance: formatDistance,
-    formatLong: formatLong,
+    formatLong: formatLong$1,
     formatRelative: formatRelative,
-    localize: localize,
-    match: match$1,
+    localize: localize$1,
+    match: match$2,
     options: {
       weekStartsOn: 1
       /* Monday */
@@ -12113,6 +12372,7 @@
       firstWeekContainsDate: 4
     }
   };
+  var pt = locale;
 
   var Helpers = /*#__PURE__*/function () {
     function Helpers() {
@@ -12175,9 +12435,9 @@
       value: function getDateLocaleOptions() {
         var shortLocale = dist_1().split("_")[0];
         var locales = {
-          de: locale$2,
-          fr: locale$1,
-          pt: locale
+          de: de,
+          fr: fr,
+          pt: pt
         };
         return {
           weekStartsOn: dist_6(),
@@ -12189,7 +12449,7 @@
     return Helpers;
   }();
 
-  function get_each_context$3(ctx, list, i) {
+  function get_each_context$4(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[24] = list[i];
     child_ctx[26] = i;
@@ -12202,7 +12462,7 @@
     return {
       c: function c() {
         h2 = element("h2");
-        h2.textContent = "".concat(dist_4$1("timemanager", "Statistics"));
+        h2.textContent = "".concat(dist_4$1('timemanager', 'Statistics'));
       },
       m: function m(target, anchor) {
         insert(target, h2, anchor);
@@ -12227,7 +12487,7 @@
     ctx[4]) + "";
     var t2;
     var t3;
-    var t4_value = dist_4$1("timemanager", "hrs.") + "";
+    var t4_value = dist_4$1('timemanager', 'hrs.') + "";
     var t4;
     var t5;
     var figure1;
@@ -12237,17 +12497,17 @@
     /*simpleRounding*/
     ctx[8](
     /*weekTotal*/
-    ctx[3]) + "";
+    ctx[5]) + "";
     var t8;
     var t9;
-    var t10_value = dist_4$1("timemanager", "hrs.") + "";
+    var t10_value = dist_4$1('timemanager', 'hrs.') + "";
     var t10;
     return {
       c: function c() {
         div = element("div");
         figure0 = element("figure");
         figcaption0 = element("figcaption");
-        figcaption0.textContent = "".concat(dist_4$1("timemanager", "Today"));
+        figcaption0.textContent = "".concat(dist_4$1('timemanager', 'Today'));
         t1 = space();
         t2 = text(t2_value);
         t3 = space();
@@ -12255,7 +12515,7 @@
         t5 = space();
         figure1 = element("figure");
         figcaption1 = element("figcaption");
-        figcaption1.textContent = "".concat(dist_4$1("timemanager", "Week"));
+        figcaption1.textContent = "".concat(dist_4$1('timemanager', 'Week'));
         t7 = space();
         t8 = text(t8_value);
         t9 = space();
@@ -12290,11 +12550,11 @@
         ctx[4]) + "")) set_data(t2, t2_value);
         if (dirty &
         /*weekTotal*/
-        8 && t8_value !== (t8_value =
+        32 && t8_value !== (t8_value =
         /*simpleRounding*/
         ctx[8](
         /*weekTotal*/
-        ctx[3]) + "")) set_data(t8, t8_value);
+        ctx[5]) + "")) set_data(t8, t8_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div);
@@ -12303,15 +12563,15 @@
   } // (243:3) {#if !loading && weekTotal > 0}
 
 
-  function create_if_block_3$2(ctx) {
+  function create_if_block_3$1(ctx) {
     var each_1_anchor;
     var each_value =
     /*points*/
-    ctx[2];
+    ctx[3];
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
     }
 
     return {
@@ -12332,20 +12592,20 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*formatDateForScale, points, highest, translate*/
-        2084) {
+        2120) {
           each_value =
           /*points*/
-          ctx[2];
+          ctx[3];
 
           var _i3;
 
           for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$3(ctx, each_value, _i3);
+            var child_ctx = get_each_context$4(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$3(child_ctx);
+              each_blocks[_i3] = create_each_block$4(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -12376,7 +12636,7 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, "primary") + "";
+    ctx[24].date, 'primary') + "";
     var t1;
     var t2;
     var span1;
@@ -12384,7 +12644,7 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, "secondary") + "";
+    ctx[24].date, 'secondary') + "";
     var t3;
     var if_block =
     /*point*/
@@ -12431,18 +12691,18 @@
 
         if (dirty &
         /*points*/
-        4 && t1_value !== (t1_value =
+        8 && t1_value !== (t1_value =
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, "primary") + "")) set_data(t1, t1_value);
+        ctx[24].date, 'primary') + "")) set_data(t1, t1_value);
         if (dirty &
         /*points*/
-        4 && t3_value !== (t3_value =
+        8 && t3_value !== (t3_value =
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, "secondary") + "")) set_data(t3, t3_value);
+        ctx[24].date, 'secondary') + "")) set_data(t3, t3_value);
       },
       d: function d(detaching) {
         if (if_block) if_block.d(detaching);
@@ -12460,7 +12720,7 @@
     ctx[24].stats.total + "";
     var t0;
     var t1;
-    var t2_value = dist_4$1("timemanager", "hrs.") + "";
+    var t2_value = dist_4$1('timemanager', 'hrs.') + "";
     var t2;
     var t3;
     var div;
@@ -12479,7 +12739,7 @@
         /*point*/
         ctx[24].stats.total /
         /*highest*/
-        ctx[5] * 100, "%"));
+        ctx[6] * 100, "%"));
       },
       m: function m(target, anchor) {
         insert(target, span, anchor);
@@ -12492,17 +12752,17 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*points*/
-        4 && t0_value !== (t0_value =
+        8 && t0_value !== (t0_value =
         /*point*/
         ctx[24].stats.total + "")) set_data(t0, t0_value);
 
         if (dirty &
         /*points, highest*/
-        36 && div_style_value !== (div_style_value = "height: ".concat(
+        72 && div_style_value !== (div_style_value = "height: ".concat(
         /*point*/
         ctx[24].stats.total /
         /*highest*/
-        ctx[5] * 100, "%"))) {
+        ctx[6] * 100, "%"))) {
           attr(div, "style", div_style_value);
         }
       },
@@ -12515,7 +12775,7 @@
   } // (244:4) {#each points as point, index}
 
 
-  function create_each_block$3(ctx) {
+  function create_each_block$4(ctx) {
     var div;
     var t;
     var if_block =
@@ -12566,7 +12826,7 @@
     return {
       c: function c() {
         p = element("p");
-        p.textContent = "".concat(dist_4$1("timemanager", "When you add entries for this week graphs will appear here."));
+        p.textContent = "".concat(dist_4$1('timemanager', 'When you add entries for this week graphs will appear here.'));
         attr(p, "class", "empty");
       },
       m: function m(target, anchor) {
@@ -12585,7 +12845,7 @@
     var button0;
     var t1;
     var span1;
-    var t2_value = dist_4$1("timemanager", "Week") + "";
+    var t2_value = dist_4$1('timemanager', 'Week') + "";
     var t2;
     var t3;
     var t4;
@@ -12594,18 +12854,18 @@
     var t6;
     var t7_value = format(startOfWeek(
     /*startCursor*/
-    ctx[6],
+    ctx[1],
     /*localeOptions*/
-    ctx[9]), "iiiiii d.MM.Y",
+    ctx[9]), 'iiiiii d.MM.Y',
     /*localeOptions*/
     ctx[9]) + "";
     var t7;
     var t8;
     var t9_value = format(endOfWeek(
     /*startCursor*/
-    ctx[6],
+    ctx[1],
     /*localeOptions*/
-    ctx[9]), "iiiiii d.MM.Y",
+    ctx[9]), 'iiiiii d.MM.Y',
     /*localeOptions*/
     ctx[9]) + "";
     var t9;
@@ -12616,7 +12876,7 @@
     /*localeOptions*/
     ctx[9]),
     /*startCursor*/
-    ctx[6]);
+    ctx[1]);
     var t12;
     var button1;
     var mounted;
@@ -12626,7 +12886,7 @@
       c: function c() {
         nav = element("nav");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4$1("timemanager", "Previous week"));
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Previous week'));
         t1 = space();
         span1 = element("span");
         t2 = text(t2_value);
@@ -12646,7 +12906,7 @@
         if (if_block) if_block.c();
         t12 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4$1("timemanager", "Next week"));
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Next week'));
         attr(button0, "class", "previous");
         attr(span0, "class", "dates");
         attr(button1, "class", "next");
@@ -12690,29 +12950,29 @@
         ctx[7]);
         if (dirty &
         /*startCursor*/
-        64 && t7_value !== (t7_value = format(startOfWeek(
+        2 && t7_value !== (t7_value = format(startOfWeek(
         /*startCursor*/
-        ctx[6],
+        ctx[1],
         /*localeOptions*/
-        ctx[9]), "iiiiii d.MM.Y",
+        ctx[9]), 'iiiiii d.MM.Y',
         /*localeOptions*/
         ctx[9]) + "")) set_data(t7, t7_value);
         if (dirty &
         /*startCursor*/
-        64 && t9_value !== (t9_value = format(endOfWeek(
+        2 && t9_value !== (t9_value = format(endOfWeek(
         /*startCursor*/
-        ctx[6],
+        ctx[1],
         /*localeOptions*/
-        ctx[9]), "iiiiii d.MM.Y",
+        ctx[9]), 'iiiiii d.MM.Y',
         /*localeOptions*/
         ctx[9]) + "")) set_data(t9, t9_value);
         if (dirty &
         /*startCursor*/
-        64) show_if = !isSameDay(startOfWeek(startOfToday(),
+        2) show_if = !isSameDay(startOfWeek(startOfToday(),
         /*localeOptions*/
         ctx[9]),
         /*startCursor*/
-        ctx[6]);
+        ctx[1]);
 
         if (show_if) {
           if (if_block) {
@@ -12744,7 +13004,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Current week"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Current week'));
         attr(button, "class", "current");
       },
       m: function m(target, anchor) {
@@ -12784,16 +13044,16 @@
     ctx[0] && create_if_block_6$1(ctx);
     var if_block2 = !
     /*loading*/
-    ctx[1] &&
+    ctx[2] &&
     /*weekTotal*/
-    ctx[3] > 0 && create_if_block_3$2(ctx);
+    ctx[5] > 0 && create_if_block_3$1(ctx);
     var if_block3 =
     /*controls*/
     ctx[0] && !
     /*loading*/
-    ctx[1] &&
+    ctx[2] &&
     /*weekTotal*/
-    ctx[3] === 0 && create_if_block_2$2();
+    ctx[5] === 0 && create_if_block_2$2();
     var if_block4 =
     /*controls*/
     ctx[0] && create_if_block$d(ctx);
@@ -12813,11 +13073,11 @@
         if (if_block4) if_block4.c();
         attr(div0, "class", div0_class_value = "hours-per-week ".concat(
         /*points*/
-        ctx[2].length > 12 || window.clientWidth < 768 ? "many" : "few"));
+        ctx[3].length > 12 || window.clientWidth < 768 ? 'many' : 'few'));
         attr(div1, "class", "graphs");
         attr(div2, "class", div2_class_value = "".concat(
         /*loading*/
-        ctx[1] ? "icon-loading" : ""));
+        ctx[2] ? 'icon-loading' : ''));
       },
       m: function m(target, anchor) {
         if (if_block0) if_block0.m(target, anchor);
@@ -12869,13 +13129,13 @@
 
         if (!
         /*loading*/
-        ctx[1] &&
+        ctx[2] &&
         /*weekTotal*/
-        ctx[3] > 0) {
+        ctx[5] > 0) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block_3$2(ctx);
+            if_block2 = create_if_block_3$1(ctx);
             if_block2.c();
             if_block2.m(div0, t2);
           }
@@ -12888,9 +13148,9 @@
         /*controls*/
         ctx[0] && !
         /*loading*/
-        ctx[1] &&
+        ctx[2] &&
         /*weekTotal*/
-        ctx[3] === 0) {
+        ctx[5] === 0) {
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
@@ -12905,9 +13165,9 @@
 
         if (dirty &
         /*points*/
-        4 && div0_class_value !== (div0_class_value = "hours-per-week ".concat(
+        8 && div0_class_value !== (div0_class_value = "hours-per-week ".concat(
         /*points*/
-        ctx[2].length > 12 || window.clientWidth < 768 ? "many" : "few"))) {
+        ctx[3].length > 12 || window.clientWidth < 768 ? 'many' : 'few'))) {
           attr(div0, "class", div0_class_value);
         }
 
@@ -12928,9 +13188,9 @@
 
         if (dirty &
         /*loading*/
-        2 && div2_class_value !== (div2_class_value = "".concat(
+        4 && div2_class_value !== (div2_class_value = "".concat(
         /*loading*/
-        ctx[1] ? "icon-loading" : ""))) {
+        ctx[2] ? 'icon-loading' : ''))) {
           attr(div2, "class", div2_class_value);
         }
       },
@@ -12976,9 +13236,9 @@
         end = _$$props$end === void 0 ? format(endOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$end;
 
     var updateWeek = function updateWeek() {
-      $$invalidate(3, weekTotal = 0);
+      $$invalidate(5, weekTotal = 0);
       $$invalidate(4, todayTotal = 0);
-      $$invalidate(5, highest = 0);
+      $$invalidate(6, highest = 0);
       $$invalidate(7, currentWeek = getWeek(startCursor, localeOptions));
     };
 
@@ -13006,9 +13266,9 @@
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                $$invalidate(1, loading = true); // Reset points
+                $$invalidate(2, loading = true); // Reset points
 
-                $$invalidate(2, points = []); // Determine duration between cursors
+                $$invalidate(3, points = []); // Determine duration between cursors
 
                 durationDays = differenceInDays(endCursor, startCursor);
                 durationMonths = differenceInMonths(endCursor, startCursor);
@@ -13054,7 +13314,7 @@
                 grouped = _yield$loadStats.grouped;
                 js_date_format = _yield$loadStats.js_date_format;
                 // Extract points from grouped array
-                $$invalidate(2, points = points.map(function (point) {
+                $$invalidate(3, points = points.map(function (point) {
                   // Get total from API response
                   var total = grouped[format(point.date, js_date_format)];
                   point.stats = {
@@ -13062,11 +13322,11 @@
                   }; // Find highest value
 
                   if (total > highest) {
-                    $$invalidate(5, highest = total);
+                    $$invalidate(6, highest = total);
                   } // Sum up total
 
 
-                  $$invalidate(3, weekTotal += point.stats.total); // Day total
+                  $$invalidate(5, weekTotal += point.stats.total); // Day total
 
                   if (isSameDay(point.date, startOfToday())) {
                     $$invalidate(4, todayTotal += point.stats.total);
@@ -13076,7 +13336,7 @@
                 })); // Set columns
 
                 document.documentElement.style.setProperty("--tm-stats-columns", points.length);
-                $$invalidate(1, loading = false);
+                $$invalidate(2, loading = false);
 
               case 15:
               case "end":
@@ -13167,13 +13427,13 @@
 
     var weekNavigation = function weekNavigation(mode) {
       if (mode === "reset") {
-        $$invalidate(6, startCursor = startOfWeek(startOfToday(), localeOptions));
+        $$invalidate(1, startCursor = startOfWeek(startOfToday(), localeOptions));
         endCursor = endOfWeek(startCursor, localeOptions);
       } else if (mode === "next") {
-        $$invalidate(6, startCursor = addWeeks(startCursor, 1));
+        $$invalidate(1, startCursor = addWeeks(startCursor, 1));
         endCursor = addWeeks(endCursor, 1);
       } else {
-        $$invalidate(6, startCursor = subWeeks(startCursor, 1));
+        $$invalidate(1, startCursor = subWeeks(startCursor, 1));
         endCursor = subWeeks(endCursor, 1);
       }
 
@@ -13216,30 +13476,30 @@
     };
 
     var click_handler = function click_handler() {
-      return weekNavigation("previous");
+      return weekNavigation('previous');
     };
 
     var click_handler_1 = function click_handler_1() {
-      return weekNavigation("reset");
+      return weekNavigation('reset');
     };
 
     var click_handler_2 = function click_handler_2() {
-      return weekNavigation("next");
+      return weekNavigation('next');
     };
 
     $$self.$$set = function ($$props) {
-      if ("statsApiUrl" in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
-      if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
-      if ("controls" in $$props) $$invalidate(0, controls = $$props.controls);
-      if ("start" in $$props) $$invalidate(14, start = $$props.start);
-      if ("end" in $$props) $$invalidate(15, end = $$props.end);
+      if ('statsApiUrl' in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
+      if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+      if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
+      if ('start' in $$props) $$invalidate(14, start = $$props.start);
+      if ('end' in $$props) $$invalidate(15, end = $$props.end);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*start*/
       16384) {
-        $$invalidate(6, startCursor = isDate(parse$1(start, dateFormat$1, new Date())) ? parse$1(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
+        $$invalidate(1, startCursor = isDate(parse$1(start, dateFormat$1, new Date())) ? parse$1(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
       }
 
       if ($$self.$$.dirty &
@@ -13249,21 +13509,21 @@
       }
     };
 
-    $$invalidate(1, loading = false);
+    $$invalidate(2, loading = false);
 
     scale = "day";
 
-    $$invalidate(2, points = []);
+    $$invalidate(3, points = []);
 
-    $$invalidate(3, weekTotal = 0);
+    $$invalidate(5, weekTotal = 0);
 
     $$invalidate(4, todayTotal = 0);
 
-    $$invalidate(5, highest = 0);
+    $$invalidate(6, highest = 0);
 
     $$invalidate(7, currentWeek = null);
 
-    return [controls, loading, points, weekTotal, todayTotal, highest, startCursor, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
+    return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
   }
 
   var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -13311,7 +13571,7 @@
         attr(div0, "class", "oc-dialog-dim");
         attr(div1, "class", div1_class_value = "oc-dialog ".concat(
         /*loading*/
-        ctx[0] ? "icon-loading" : ""));
+        ctx[0] ? 'icon-loading' : ''));
         set_style(div1, "position", "fixed");
       },
       m: function m(target, anchor) {
@@ -13333,9 +13593,13 @@
           if (default_slot.p && (!current || dirty &
           /*$$scope*/
           2)) {
-            update_slot(default_slot, default_slot_template, ctx,
+            update_slot_base(default_slot, default_slot_template, ctx,
             /*$$scope*/
-            ctx[1], !current ? -1 : dirty, null, null);
+            ctx[1], !current ? get_all_dirty_from_scope(
+            /*$$scope*/
+            ctx[1]) : get_slot_changes(default_slot_template,
+            /*$$scope*/
+            ctx[1], dirty, null), null);
           }
         }
 
@@ -13343,7 +13607,7 @@
         /*loading*/
         1 && div1_class_value !== (div1_class_value = "oc-dialog ".concat(
         /*loading*/
-        ctx[0] ? "icon-loading" : ""))) {
+        ctx[0] ? 'icon-loading' : ''))) {
           attr(div1, "class", div1_class_value);
         }
       },
@@ -13373,8 +13637,8 @@
         loading = _$$props$loading === void 0 ? false : _$$props$loading;
 
     $$self.$$set = function ($$props) {
-      if ("loading" in $$props) $$invalidate(0, loading = $$props.loading);
-      if ("$$scope" in $$props) $$invalidate(1, $$scope = $$props.$$scope);
+      if ('loading' in $$props) $$invalidate(0, loading = $$props.loading);
+      if ('$$scope' in $$props) $$invalidate(1, $$scope = $$props.$$scope);
     };
 
     return [loading, $$scope, slots];
@@ -13407,7 +13671,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -13443,7 +13707,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4$1("timemanager", "Client name") + "";
+    var t2_value = dist_4$1('timemanager', 'Client name') + "";
     var t2;
     var t3;
     var br0;
@@ -13451,7 +13715,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4$1("timemanager", "Note") + "";
+    var t6_value = dist_4$1('timemanager', 'Note') + "";
     var t6;
     var t7;
     var br1;
@@ -13506,7 +13770,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4$1("timemanager", "Example Corp."));
+        attr(input0, "placeholder", dist_4$1('timemanager', 'Example Corp.'));
         input0.required = true;
         attr(label0, "class", "space-top");
         set_style(textarea, "width", "100%");
@@ -13679,14 +13943,14 @@
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("isServer" in $$props) $$invalidate(2, isServer = $$props.isServer);
-      if ("onCancel" in $$props) $$invalidate(3, onCancel = $$props.onCancel);
-      if ("onSubmit" in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
-      if ("clientEditorButtonCaption" in $$props) $$invalidate(4, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
-      if ("clientEditorCaption" in $$props) $$invalidate(5, clientEditorCaption = $$props.clientEditorCaption);
-      if ("editClientData" in $$props) $$invalidate(10, editClientData = $$props.editClientData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('isServer' in $$props) $$invalidate(2, isServer = $$props.isServer);
+      if ('onCancel' in $$props) $$invalidate(3, onCancel = $$props.onCancel);
+      if ('onSubmit' in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
+      if ('clientEditorButtonCaption' in $$props) $$invalidate(4, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
+      if ('clientEditorCaption' in $$props) $$invalidate(5, clientEditorCaption = $$props.clientEditorCaption);
+      if ('editClientData' in $$props) $$invalidate(10, editClientData = $$props.editClientData);
     };
 
     return [action, requestToken, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, submit, onSubmit, editClientData, input0_input_handler, input_handler];
@@ -13726,7 +13990,7 @@
       props: {
         loading:
         /*loading*/
-        ctx[6],
+        ctx[5],
         $$slots: {
           default: [create_default_slot$6]
         },
@@ -13747,13 +14011,13 @@
         var overlay_changes = {};
         if (dirty &
         /*loading*/
-        64) overlay_changes.loading =
+        32) overlay_changes.loading =
         /*loading*/
-        ctx[6];
+        ctx[5];
 
         if (dirty &
         /*$$scope, action, requestToken, show, clientEditorButtonCaption, clientEditorCaption, editClientData*/
-        4159) {
+        4191) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -13828,7 +14092,7 @@
         ctx[1];
         if (dirty &
         /*show*/
-        32) clienteditor_changes.onCancel =
+        64) clienteditor_changes.onCancel =
         /*func*/
         ctx[11];
         if (dirty &
@@ -13874,7 +14138,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[5] && create_if_block$b(ctx);
+    ctx[6] && create_if_block$b(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -13916,13 +14180,13 @@
 
         if (
         /*show*/
-        ctx[5]) {
+        ctx[6]) {
           if (if_block) {
             if_block.p(ctx, dirty);
 
             if (dirty &
             /*show*/
-            32) {
+            64) {
               transition_in(if_block, 1);
             }
           } else {
@@ -13981,7 +14245,7 @@
             switch (_context.prev = _context.next) {
               case 0:
                 name = _ref4.name, note = _ref4.note;
-                $$invalidate(6, loading = true);
+                $$invalidate(5, loading = true);
                 _context.prev = 2;
                 client = {
                   name: name,
@@ -14008,7 +14272,7 @@
                 response = _context.sent;
 
                 if (response && response.ok) {
-                  $$invalidate(5, show = false);
+                  $$invalidate(6, show = false);
 
                   if (clientUuid) {
                     document.querySelector(".app-timemanager [data-current-link]").click();
@@ -14026,7 +14290,7 @@
                 console.error(_context.t0);
 
               case 14:
-                $$invalidate(6, loading = false);
+                $$invalidate(5, loading = false);
 
               case 15:
               case "end":
@@ -14042,28 +14306,28 @@
     }();
 
     var click_handler = function click_handler() {
-      return $$invalidate(5, show = !show);
+      return $$invalidate(6, show = !show);
     };
 
     var func = function func() {
-      return $$invalidate(5, show = false);
+      return $$invalidate(6, show = false);
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("editAction" in $$props) $$invalidate(8, editAction = $$props.editAction);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientEditorButtonCaption" in $$props) $$invalidate(2, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
-      if ("clientEditorCaption" in $$props) $$invalidate(3, clientEditorCaption = $$props.clientEditorCaption);
-      if ("clientUuid" in $$props) $$invalidate(9, clientUuid = $$props.clientUuid);
-      if ("editClientData" in $$props) $$invalidate(4, editClientData = $$props.editClientData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('editAction' in $$props) $$invalidate(8, editAction = $$props.editAction);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientEditorButtonCaption' in $$props) $$invalidate(2, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
+      if ('clientEditorCaption' in $$props) $$invalidate(3, clientEditorCaption = $$props.clientEditorCaption);
+      if ('clientUuid' in $$props) $$invalidate(9, clientUuid = $$props.clientUuid);
+      if ('editClientData' in $$props) $$invalidate(4, editClientData = $$props.editClientData);
     };
 
-    $$invalidate(5, show = false);
+    $$invalidate(6, show = false);
 
-    $$invalidate(6, loading = false);
+    $$invalidate(5, loading = false);
 
-    return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editClientData, show, loading, save, editAction, clientUuid, click_handler, func];
+    return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editClientData, loading, show, save, editAction, clientUuid, click_handler, func];
   }
 
   var ClientEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -14099,7 +14363,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -14135,7 +14399,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4$1("timemanager", "Project name") + "";
+    var t2_value = dist_4$1('timemanager', 'Project name') + "";
     var t2;
     var t3;
     var br0;
@@ -14143,7 +14407,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4$1("timemanager", "For client") + "";
+    var t6_value = dist_4$1('timemanager', 'For client') + "";
     var t6;
     var t7;
     var br1;
@@ -14206,7 +14470,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4$1("timemanager", "A project name"));
+        attr(input0, "placeholder", dist_4$1('timemanager', 'A project name'));
         input0.required = true;
         attr(label0, "class", "space-top");
         attr(label1, "class", "space-top");
@@ -14366,15 +14630,15 @@
     }
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-      if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
-      if ("onCancel" in $$props) $$invalidate(4, onCancel = $$props.onCancel);
-      if ("onSubmit" in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
-      if ("projectEditorButtonCaption" in $$props) $$invalidate(5, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
-      if ("projectEditorCaption" in $$props) $$invalidate(6, projectEditorCaption = $$props.projectEditorCaption);
-      if ("editProjectData" in $$props) $$invalidate(10, editProjectData = $$props.editProjectData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
+      if ('onCancel' in $$props) $$invalidate(4, onCancel = $$props.onCancel);
+      if ('onSubmit' in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
+      if ('projectEditorButtonCaption' in $$props) $$invalidate(5, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+      if ('projectEditorCaption' in $$props) $$invalidate(6, projectEditorCaption = $$props.projectEditorCaption);
+      if ('editProjectData' in $$props) $$invalidate(10, editProjectData = $$props.editProjectData);
     };
 
     return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editProjectData, input0_input_handler];
@@ -14415,7 +14679,7 @@
       props: {
         loading:
         /*loading*/
-        ctx[8],
+        ctx[7],
         $$slots: {
           default: [create_default_slot$5]
         },
@@ -14436,13 +14700,13 @@
         var overlay_changes = {};
         if (dirty &
         /*loading*/
-        256) overlay_changes.loading =
+        128) overlay_changes.loading =
         /*loading*/
-        ctx[8];
+        ctx[7];
 
         if (dirty &
         /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData*/
-        16639) {
+        16767) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -14523,7 +14787,7 @@
         ctx[1];
         if (dirty &
         /*show*/
-        128) projecteditor_changes.onCancel =
+        256) projecteditor_changes.onCancel =
         /*func*/
         ctx[13];
         if (dirty &
@@ -14579,7 +14843,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[7] && create_if_block$9(ctx);
+    ctx[8] && create_if_block$9(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14621,13 +14885,13 @@
 
         if (
         /*show*/
-        ctx[7]) {
+        ctx[8]) {
           if (if_block) {
             if_block.p(ctx, dirty);
 
             if (dirty &
             /*show*/
-            128) {
+            256) {
               transition_in(if_block, 1);
             }
           } else {
@@ -14688,7 +14952,7 @@
             switch (_context.prev = _context.next) {
               case 0:
                 name = _ref4.name;
-                $$invalidate(8, loading = true);
+                $$invalidate(7, loading = true);
                 _context.prev = 2;
                 project = {
                   name: name
@@ -14714,7 +14978,7 @@
                 response = _context.sent;
 
                 if (response && response.ok) {
-                  $$invalidate(7, show = false);
+                  $$invalidate(8, show = false);
                   document.querySelector(".app-timemanager [data-current-link]").click();
                 }
 
@@ -14727,7 +14991,7 @@
                 console.error(_context.t0);
 
               case 14:
-                $$invalidate(8, loading = false);
+                $$invalidate(7, loading = false);
 
               case 15:
               case "end":
@@ -14743,30 +15007,30 @@
     }();
 
     var click_handler = function click_handler() {
-      return $$invalidate(7, show = !show);
+      return $$invalidate(8, show = !show);
     };
 
     var func = function func() {
-      return $$invalidate(7, show = false);
+      return $$invalidate(8, show = false);
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("editAction" in $$props) $$invalidate(10, editAction = $$props.editAction);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-      if ("isServer" in $$props) $$invalidate(3, isServer = $$props.isServer);
-      if ("projectEditorButtonCaption" in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
-      if ("projectEditorCaption" in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
-      if ("projectUuid" in $$props) $$invalidate(11, projectUuid = $$props.projectUuid);
-      if ("editProjectData" in $$props) $$invalidate(6, editProjectData = $$props.editProjectData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('editAction' in $$props) $$invalidate(10, editAction = $$props.editAction);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
+      if ('projectEditorButtonCaption' in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+      if ('projectEditorCaption' in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
+      if ('projectUuid' in $$props) $$invalidate(11, projectUuid = $$props.projectUuid);
+      if ('editProjectData' in $$props) $$invalidate(6, editProjectData = $$props.editProjectData);
     };
 
-    $$invalidate(7, show = false);
+    $$invalidate(8, show = false);
 
-    $$invalidate(8, loading = false);
+    $$invalidate(7, loading = false);
 
-    return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, show, loading, save, editAction, projectUuid, click_handler, func];
+    return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, loading, show, save, editAction, projectUuid, click_handler, func];
   }
 
   var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -14804,7 +15068,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -14840,7 +15104,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4$1("timemanager", "Task name") + "";
+    var t2_value = dist_4$1('timemanager', 'Task name') + "";
     var t2;
     var t3;
     var br0;
@@ -14848,7 +15112,7 @@
     var input0;
     var t5;
     var label1;
-    var t6_value = dist_4$1("timemanager", "For project") + "";
+    var t6_value = dist_4$1('timemanager', 'For project') + "";
     var t6;
     var t7;
     var br1;
@@ -14857,7 +15121,7 @@
     var t9;
     var t10;
     var label2;
-    var t11_value = dist_4$1("timemanager", "For client") + "";
+    var t11_value = dist_4$1('timemanager', 'For client') + "";
     var t11;
     var t12;
     var br2;
@@ -14930,7 +15194,7 @@
         set_style(input0, "width", "100%");
         attr(input0, "class", "input-wide");
         attr(input0, "name", "name");
-        attr(input0, "placeholder", dist_4$1("timemanager", "A task name"));
+        attr(input0, "placeholder", dist_4$1('timemanager', 'A task name'));
         input0.required = true;
         attr(label0, "class", "space-top");
         attr(label1, "class", "space-top");
@@ -15105,16 +15369,16 @@
     }
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
-      if ("isServer" in $$props) $$invalidate(4, isServer = $$props.isServer);
-      if ("onCancel" in $$props) $$invalidate(5, onCancel = $$props.onCancel);
-      if ("onSubmit" in $$props) $$invalidate(10, onSubmit = $$props.onSubmit);
-      if ("taskEditorButtonCaption" in $$props) $$invalidate(6, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
-      if ("taskEditorCaption" in $$props) $$invalidate(7, taskEditorCaption = $$props.taskEditorCaption);
-      if ("editTaskData" in $$props) $$invalidate(11, editTaskData = $$props.editTaskData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ('isServer' in $$props) $$invalidate(4, isServer = $$props.isServer);
+      if ('onCancel' in $$props) $$invalidate(5, onCancel = $$props.onCancel);
+      if ('onSubmit' in $$props) $$invalidate(10, onSubmit = $$props.onSubmit);
+      if ('taskEditorButtonCaption' in $$props) $$invalidate(6, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
+      if ('taskEditorCaption' in $$props) $$invalidate(7, taskEditorCaption = $$props.taskEditorCaption);
+      if ('editTaskData' in $$props) $$invalidate(11, editTaskData = $$props.editTaskData);
     };
 
     return [action, requestToken, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, submit, onSubmit, editTaskData, input0_input_handler];
@@ -15156,7 +15420,7 @@
       props: {
         loading:
         /*loading*/
-        ctx[9],
+        ctx[8],
         $$slots: {
           default: [create_default_slot$4]
         },
@@ -15177,13 +15441,13 @@
         var overlay_changes = {};
         if (dirty &
         /*loading*/
-        512) overlay_changes.loading =
+        256) overlay_changes.loading =
         /*loading*/
-        ctx[9];
+        ctx[8];
 
         if (dirty &
         /*$$scope, action, requestToken, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData*/
-        33279) {
+        33535) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -15267,7 +15531,7 @@
         ctx[1];
         if (dirty &
         /*show*/
-        256) taskeditor_changes.onCancel =
+        512) taskeditor_changes.onCancel =
         /*func*/
         ctx[14];
         if (dirty &
@@ -15328,7 +15592,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[8] && create_if_block$7(ctx);
+    ctx[9] && create_if_block$7(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -15370,13 +15634,13 @@
 
         if (
         /*show*/
-        ctx[8]) {
+        ctx[9]) {
           if (if_block) {
             if_block.p(ctx, dirty);
 
             if (dirty &
             /*show*/
-            256) {
+            512) {
               transition_in(if_block, 1);
             }
           } else {
@@ -15438,7 +15702,7 @@
             switch (_context.prev = _context.next) {
               case 0:
                 name = _ref4.name;
-                $$invalidate(9, loading = true);
+                $$invalidate(8, loading = true);
                 _context.prev = 2;
                 task = {
                   name: name
@@ -15464,7 +15728,7 @@
                 response = _context.sent;
 
                 if (response && response.ok) {
-                  $$invalidate(8, show = false);
+                  $$invalidate(9, show = false);
                   document.querySelector(".app-timemanager [data-current-link]").click();
                 }
 
@@ -15477,7 +15741,7 @@
                 console.error(_context.t0);
 
               case 14:
-                $$invalidate(9, loading = false);
+                $$invalidate(8, loading = false);
 
               case 15:
               case "end":
@@ -15493,31 +15757,31 @@
     }();
 
     var click_handler = function click_handler() {
-      return $$invalidate(8, show = !show);
+      return $$invalidate(9, show = !show);
     };
 
     var func = function func() {
-      return $$invalidate(8, show = false);
+      return $$invalidate(9, show = false);
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("editAction" in $$props) $$invalidate(11, editAction = $$props.editAction);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
-      if ("isServer" in $$props) $$invalidate(4, isServer = $$props.isServer);
-      if ("taskEditorButtonCaption" in $$props) $$invalidate(5, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
-      if ("taskEditorCaption" in $$props) $$invalidate(6, taskEditorCaption = $$props.taskEditorCaption);
-      if ("taskUuid" in $$props) $$invalidate(12, taskUuid = $$props.taskUuid);
-      if ("editTaskData" in $$props) $$invalidate(7, editTaskData = $$props.editTaskData);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('editAction' in $$props) $$invalidate(11, editAction = $$props.editAction);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ('isServer' in $$props) $$invalidate(4, isServer = $$props.isServer);
+      if ('taskEditorButtonCaption' in $$props) $$invalidate(5, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
+      if ('taskEditorCaption' in $$props) $$invalidate(6, taskEditorCaption = $$props.taskEditorCaption);
+      if ('taskUuid' in $$props) $$invalidate(12, taskUuid = $$props.taskUuid);
+      if ('editTaskData' in $$props) $$invalidate(7, editTaskData = $$props.editTaskData);
     };
 
-    $$invalidate(8, show = false);
+    $$invalidate(9, show = false);
 
-    $$invalidate(9, loading = false);
+    $$invalidate(8, loading = false);
 
-    return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, show, loading, save, editAction, taskUuid, click_handler, func];
+    return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, loading, show, save, editAction, taskUuid, click_handler, func];
   }
 
   var TaskEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -15556,7 +15820,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button, "type", "reset");
         attr(button, "class", "button");
       },
@@ -15592,7 +15856,7 @@
     var t1;
     var form;
     var label0;
-    var t2_value = dist_4$1("timemanager", "Duration (in hrs.)") + "";
+    var t2_value = dist_4$1('timemanager', 'Duration (in hrs.)') + "";
     var t2;
     var t3;
     var br0;
@@ -15602,7 +15866,7 @@
     var br1;
     var t6;
     var label1;
-    var t7_value = dist_4$1("timemanager", "Date") + "";
+    var t7_value = dist_4$1('timemanager', 'Date') + "";
     var t7;
     var t8;
     var br2;
@@ -15612,7 +15876,7 @@
     var br3;
     var t11;
     var label2;
-    var t12_value = dist_4$1("timemanager", "Note") + "";
+    var t12_value = dist_4$1('timemanager', 'Note') + "";
     var t12;
     var t13;
     var br4;
@@ -15622,7 +15886,7 @@
     var br5;
     var t16;
     var label3;
-    var t17_value = dist_4$1("timemanager", "For task") + "";
+    var t17_value = dist_4$1('timemanager', 'For task') + "";
     var t17;
     var t18;
     var br6;
@@ -15631,7 +15895,7 @@
     var t20;
     var t21;
     var label4;
-    var t22_value = dist_4$1("timemanager", "For project") + "";
+    var t22_value = dist_4$1('timemanager', 'For project') + "";
     var t22;
     var t23;
     var br7;
@@ -15640,7 +15904,7 @@
     var t25;
     var t26;
     var label5;
-    var t27_value = dist_4$1("timemanager", "For client") + "";
+    var t27_value = dist_4$1('timemanager', 'For client') + "";
     var t27;
     var t28;
     var br8;
@@ -15753,7 +16017,7 @@
         set_style(textarea, "width", "100%");
         attr(textarea, "class", "input-wide");
         attr(textarea, "name", "note");
-        attr(textarea, "placeholder", dist_4$1("timemanager", "Describe what you did..."));
+        attr(textarea, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
         textarea.value =
         /*note*/
         ctx[11];
@@ -16002,18 +16266,18 @@
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(2, clientName = $$props.clientName);
-      if ("projectName" in $$props) $$invalidate(3, projectName = $$props.projectName);
-      if ("taskName" in $$props) $$invalidate(4, taskName = $$props.taskName);
-      if ("initialDate" in $$props) $$invalidate(13, initialDate = $$props.initialDate);
-      if ("isServer" in $$props) $$invalidate(5, isServer = $$props.isServer);
-      if ("onCancel" in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-      if ("onSubmit" in $$props) $$invalidate(14, onSubmit = $$props.onSubmit);
-      if ("editTimeEntryData" in $$props) $$invalidate(15, editTimeEntryData = $$props.editTimeEntryData);
-      if ("timeEditorCaption" in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
-      if ("timeEditorButtonCaption" in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+      if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
+      if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
+      if ('initialDate' in $$props) $$invalidate(13, initialDate = $$props.initialDate);
+      if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
+      if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
+      if ('onSubmit' in $$props) $$invalidate(14, onSubmit = $$props.onSubmit);
+      if ('editTimeEntryData' in $$props) $$invalidate(15, editTimeEntryData = $$props.editTimeEntryData);
+      if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
+      if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
     };
 
     return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, duration, date, note, submit, initialDate, onSubmit, editTimeEntryData, input0_input_handler, input1_input_handler, input_handler];
@@ -16146,7 +16410,7 @@
       props: {
         loading:
         /*loading*/
-        ctx[12],
+        ctx[11],
         $$slots: {
           default: [create_default_slot$3]
         },
@@ -16167,13 +16431,13 @@
         var overlay_changes = {};
         if (dirty &
         /*loading*/
-        4096) overlay_changes.loading =
+        2048) overlay_changes.loading =
         /*loading*/
-        ctx[12];
+        ctx[11];
 
         if (dirty &
         /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/
-        266237) {
+        268285) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -16263,7 +16527,7 @@
         ctx[2];
         if (dirty &
         /*show*/
-        2048) timeeditor_changes.onCancel =
+        4096) timeeditor_changes.onCancel =
         /*func*/
         ctx[17];
         if (dirty &
@@ -16339,7 +16603,7 @@
     var if_block0 = current_block_type(ctx);
     var if_block1 =
     /*show*/
-    ctx[11] && create_if_block$5(ctx);
+    ctx[12] && create_if_block$5(ctx);
     return {
       c: function c() {
         if_block0.c();
@@ -16372,13 +16636,13 @@
 
         if (
         /*show*/
-        ctx[11]) {
+        ctx[12]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
 
             if (dirty &
             /*show*/
-            2048) {
+            4096) {
               transition_in(if_block1, 1);
             }
           } else {
@@ -16440,7 +16704,7 @@
             switch (_context.prev = _context.next) {
               case 0:
                 duration = _ref4.duration, date = _ref4.date, note = _ref4.note;
-                $$invalidate(12, loading = true);
+                $$invalidate(11, loading = true);
                 _context.prev = 2;
                 entry = {
                   duration: duration,
@@ -16466,7 +16730,7 @@
                 response = _context.sent;
 
                 if (response && response.ok) {
-                  $$invalidate(11, show = false);
+                  $$invalidate(12, show = false);
                   document.querySelector(".app-timemanager [data-current-link]").click();
                 }
 
@@ -16479,7 +16743,7 @@
                 console.error(_context.t0);
 
               case 14:
-                $$invalidate(12, loading = false);
+                $$invalidate(11, loading = false);
 
               case 15:
               case "end":
@@ -16495,37 +16759,37 @@
     }();
 
     var click_handler = function click_handler() {
-      return $$invalidate(11, show = !show);
+      return $$invalidate(12, show = !show);
     };
 
     var click_handler_1 = function click_handler_1() {
-      return $$invalidate(11, show = !show);
+      return $$invalidate(12, show = !show);
     };
 
     var func = function func() {
-      return $$invalidate(11, show = false);
+      return $$invalidate(12, show = false);
     };
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(0, action = $$props.action);
-      if ("editTimeEntryAction" in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
-      if ("timeUuid" in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
-      if ("requestToken" in $$props) $$invalidate(2, requestToken = $$props.requestToken);
-      if ("clientName" in $$props) $$invalidate(3, clientName = $$props.clientName);
-      if ("projectName" in $$props) $$invalidate(4, projectName = $$props.projectName);
-      if ("taskName" in $$props) $$invalidate(5, taskName = $$props.taskName);
-      if ("initialDate" in $$props) $$invalidate(6, initialDate = $$props.initialDate);
-      if ("timeEditorButtonCaption" in $$props) $$invalidate(7, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
-      if ("timeEditorCaption" in $$props) $$invalidate(8, timeEditorCaption = $$props.timeEditorCaption);
-      if ("editTimeEntryData" in $$props) $$invalidate(9, editTimeEntryData = $$props.editTimeEntryData);
-      if ("isServer" in $$props) $$invalidate(10, isServer = $$props.isServer);
+      if ('action' in $$props) $$invalidate(0, action = $$props.action);
+      if ('editTimeEntryAction' in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
+      if ('timeUuid' in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
+      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
+      if ('clientName' in $$props) $$invalidate(3, clientName = $$props.clientName);
+      if ('projectName' in $$props) $$invalidate(4, projectName = $$props.projectName);
+      if ('taskName' in $$props) $$invalidate(5, taskName = $$props.taskName);
+      if ('initialDate' in $$props) $$invalidate(6, initialDate = $$props.initialDate);
+      if ('timeEditorButtonCaption' in $$props) $$invalidate(7, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+      if ('timeEditorCaption' in $$props) $$invalidate(8, timeEditorCaption = $$props.timeEditorCaption);
+      if ('editTimeEntryData' in $$props) $$invalidate(9, editTimeEntryData = $$props.editTimeEntryData);
+      if ('isServer' in $$props) $$invalidate(10, isServer = $$props.isServer);
     };
 
-    $$invalidate(11, show = false);
+    $$invalidate(12, show = false);
 
-    $$invalidate(12, loading = false);
+    $$invalidate(11, loading = false);
 
-    return [action, timeUuid, requestToken, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, show, loading, save, editTimeEntryAction, click_handler, click_handler_1, func];
+    return [action, timeUuid, requestToken, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
   }
 
   var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -16629,10 +16893,10 @@
         t1 = space();
         div0 = element("div");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4$1("timemanager", "Delete"));
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
         t3 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button0, "class", "button primary");
         attr(button1, "class", "button");
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -16839,18 +17103,18 @@
     };
 
     function form_1_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](function () {
+      binding_callbacks[$$value ? 'unshift' : 'push'](function () {
         form = $$value;
         $$invalidate(5, form);
       });
     }
 
     $$self.$$set = function ($$props) {
-      if ("deleteAction" in $$props) $$invalidate(0, deleteAction = $$props.deleteAction);
-      if ("deleteUuid" in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
-      if ("deleteButtonCaption" in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
-      if ("deleteQuestion" in $$props) $$invalidate(3, deleteQuestion = $$props.deleteQuestion);
-      if ("requestToken" in $$props) $$invalidate(4, requestToken = $$props.requestToken);
+      if ('deleteAction' in $$props) $$invalidate(0, deleteAction = $$props.deleteAction);
+      if ('deleteUuid' in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
+      if ('deleteButtonCaption' in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
+      if ('deleteQuestion' in $$props) $$invalidate(3, deleteQuestion = $$props.deleteQuestion);
+      if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
     };
 
     $$invalidate(6, confirmation = false);
@@ -16935,7 +17199,7 @@
 
   function create_default_slot$1(ctx) {
     var div1;
-    var t0_value = dist_4$1("timemanager", "Do you want to delete this time entry?") + "";
+    var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
     var t0;
     var t1;
     var div0;
@@ -16951,10 +17215,10 @@
         t1 = space();
         div0 = element("div");
         button0 = element("button");
-        button0.textContent = "".concat(dist_4$1("timemanager", "Delete"));
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
         t3 = space();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
         attr(button0, "class", "button primary");
         attr(button1, "class", "button");
         attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -17011,7 +17275,7 @@
         input1 = element("input");
         t2 = space();
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Delete"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
         attr(input0, "type", "hidden");
         attr(input0, "name", "uuid");
         input0.value =
@@ -17199,9 +17463,9 @@
     };
 
     $$self.$$set = function ($$props) {
-      if ("deleteTimeEntryAction" in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
-      if ("deleteTimeEntryUuid" in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
-      if ("requestToken" in $$props) $$invalidate(2, requestToken = $$props.requestToken);
+      if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
+      if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
+      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
     };
 
     $$invalidate(3, confirmation = false);
@@ -17277,13 +17541,22 @@
 
   addToUnscopables$1(FIND);
 
-  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.38.3 */
+  function isOutOfViewport (parent, container) {
+    const parentBounding = parent.getBoundingClientRect();
+    const boundingContainer = container.getBoundingClientRect();
+    const out = {};
+    out.top = parentBounding.top < 0;
+    out.left = parentBounding.left < 0;
+    out.bottom = parentBounding.bottom + boundingContainer.height > (window.innerHeight || document.documentElement.clientHeight);
+    out.right = parentBounding.right > (window.innerWidth || document.documentElement.clientWidth);
+    out.any = out.top || out.left || out.bottom || out.right;
+    return out;
+  }
 
-  function add_css$5() {
-    var style = element("style");
-    style.id = "svelte-bdnybl-style";
-    style.textContent = ".item.svelte-bdnybl{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-bdnybl{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-bdnybl{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-bdnybl:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-bdnybl{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.first.svelte-bdnybl{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-bdnybl:not(.active){background:var(--itemHoverBG, #e7f2ff)}";
-    append(document.head, style);
+  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.44.2 */
+
+  function add_css$5(target) {
+    append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
   }
 
   function create_fragment$b(ctx) {
@@ -17301,7 +17574,7 @@
         div = element("div");
         attr(div, "class", div_class_value = "item " +
         /*itemClasses*/
-        ctx[3] + " svelte-bdnybl");
+        ctx[3] + " svelte-3e0qet");
       },
 
       m(target, anchor) {
@@ -17324,7 +17597,7 @@
         /*itemClasses*/
         8 && div_class_value !== (div_class_value = "item " +
         /*itemClasses*/
-        ctx[3] + " svelte-bdnybl")) {
+        ctx[3] + " svelte-3e0qet")) {
           attr(div, "class", div_class_value);
         }
       },
@@ -17350,86 +17623,1759 @@
       isHover = false
     } = $$props;
     let {
+      isSelectable = false
+    } = $$props;
+    let {
       getOptionLabel = undefined
     } = $$props;
     let {
       item = undefined
     } = $$props;
     let {
-      filterText = ""
+      filterText = ''
     } = $$props;
-    let itemClasses = "";
+    let itemClasses = '';
 
     $$self.$$set = $$props => {
-      if ("isActive" in $$props) $$invalidate(4, isActive = $$props.isActive);
-      if ("isFirst" in $$props) $$invalidate(5, isFirst = $$props.isFirst);
-      if ("isHover" in $$props) $$invalidate(6, isHover = $$props.isHover);
-      if ("getOptionLabel" in $$props) $$invalidate(0, getOptionLabel = $$props.getOptionLabel);
-      if ("item" in $$props) $$invalidate(1, item = $$props.item);
-      if ("filterText" in $$props) $$invalidate(2, filterText = $$props.filterText);
+      if ('isActive' in $$props) $$invalidate(4, isActive = $$props.isActive);
+      if ('isFirst' in $$props) $$invalidate(5, isFirst = $$props.isFirst);
+      if ('isHover' in $$props) $$invalidate(6, isHover = $$props.isHover);
+      if ('isSelectable' in $$props) $$invalidate(7, isSelectable = $$props.isSelectable);
+      if ('getOptionLabel' in $$props) $$invalidate(0, getOptionLabel = $$props.getOptionLabel);
+      if ('item' in $$props) $$invalidate(1, item = $$props.item);
+      if ('filterText' in $$props) $$invalidate(2, filterText = $$props.filterText);
     };
 
     $$self.$$.update = () => {
       if ($$self.$$.dirty &
-      /*isActive, isFirst, isHover, item*/
-      114) {
+      /*isActive, isFirst, isHover, item, isSelectable*/
+      242) {
         {
           const classes = [];
 
           if (isActive) {
-            classes.push("active");
+            classes.push('active');
           }
 
           if (isFirst) {
-            classes.push("first");
+            classes.push('first');
           }
 
           if (isHover) {
-            classes.push("hover");
+            classes.push('hover');
           }
 
           if (item.isGroupHeader) {
-            classes.push("groupHeader");
+            classes.push('groupHeader');
           }
 
           if (item.isGroupItem) {
-            classes.push("groupItem");
+            classes.push('groupItem');
           }
 
-          $$invalidate(3, itemClasses = classes.join(" "));
+          if (!isSelectable) {
+            classes.push('notSelectable');
+          }
+
+          $$invalidate(3, itemClasses = classes.join(' '));
         }
       }
     };
 
-    return [getOptionLabel, item, filterText, itemClasses, isActive, isFirst, isHover];
+    return [getOptionLabel, item, filterText, itemClasses, isActive, isFirst, isHover, isSelectable];
   }
 
   class Item extends SvelteComponent {
     constructor(options) {
       super();
-      if (!document.getElementById("svelte-bdnybl-style")) add_css$5();
       init$1(this, options, instance$a, create_fragment$b, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
+        isSelectable: 7,
         getOptionLabel: 0,
         item: 1,
         filterText: 2
-      });
+      }, add_css$5);
     }
 
   }
 
-  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.38.3 */
+  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.44.2 */
 
-  function add_css$4() {
-    var style = element("style");
-    style.id = "svelte-p6ehlv-style";
-    style.textContent = "svelte-virtual-list-viewport.svelte-p6ehlv{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-p6ehlv,svelte-virtual-list-row.svelte-p6ehlv{display:block}svelte-virtual-list-row.svelte-p6ehlv{overflow:hidden}";
-    append(document.head, style);
+  function add_css$4(target) {
+    append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
+  }
+
+  function get_each_context$3(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[41] = list[i];
+    child_ctx[42] = i;
+    return child_ctx;
+  } // (309:4) {:else}
+
+
+  function create_else_block$1(ctx) {
+    let each_1_anchor;
+    let current;
+    let each_value =
+    /*items*/
+    ctx[1];
+    let each_blocks = [];
+
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+    }
+
+    const out = i => transition_out(each_blocks[i], 1, 1, () => {
+      each_blocks[i] = null;
+    });
+
+    let each_1_else = null;
+
+    if (!each_value.length) {
+      each_1_else = create_else_block_2(ctx);
+    }
+
+    return {
+      c() {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+
+        each_1_anchor = empty();
+
+        if (each_1_else) {
+          each_1_else.c();
+        }
+      },
+
+      m(target, anchor) {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].m(target, anchor);
+        }
+
+        insert(target, each_1_anchor, anchor);
+
+        if (each_1_else) {
+          each_1_else.m(target, anchor);
+        }
+
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*getGroupHeaderLabel, items, handleHover, handleClick, Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, noOptionsMessage, hideEmptyState*/
+        114390) {
+          each_value =
+          /*items*/
+          ctx[1];
+          let i;
+
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$3(ctx, each_value, i);
+
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+              transition_in(each_blocks[i], 1);
+            } else {
+              each_blocks[i] = create_each_block$3(child_ctx);
+              each_blocks[i].c();
+              transition_in(each_blocks[i], 1);
+              each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+            }
+          }
+
+          group_outros();
+
+          for (i = each_value.length; i < each_blocks.length; i += 1) {
+            out(i);
+          }
+
+          check_outros();
+
+          if (!each_value.length && each_1_else) {
+            each_1_else.p(ctx, dirty);
+          } else if (!each_value.length) {
+            each_1_else = create_else_block_2(ctx);
+            each_1_else.c();
+            each_1_else.m(each_1_anchor.parentNode, each_1_anchor);
+          } else if (each_1_else) {
+            each_1_else.d(1);
+            each_1_else = null;
+          }
+        }
+      },
+
+      i(local) {
+        if (current) return;
+
+        for (let i = 0; i < each_value.length; i += 1) {
+          transition_in(each_blocks[i]);
+        }
+
+        current = true;
+      },
+
+      o(local) {
+        each_blocks = each_blocks.filter(Boolean);
+
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          transition_out(each_blocks[i]);
+        }
+
+        current = false;
+      },
+
+      d(detaching) {
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(each_1_anchor);
+        if (each_1_else) each_1_else.d(detaching);
+      }
+
+    };
+  } // (286:4) {#if isVirtualList}
+
+
+  function create_if_block$2(ctx) {
+    let switch_instance;
+    let switch_instance_anchor;
+    let current;
+    var switch_value =
+    /*VirtualList*/
+    ctx[3];
+
+    function switch_props(ctx) {
+      return {
+        props: {
+          items:
+          /*items*/
+          ctx[1],
+          itemHeight:
+          /*itemHeight*/
+          ctx[8],
+          $$slots: {
+            default: [create_default_slot, ({
+              item,
+              i
+            }) => ({
+              41: item,
+              42: i
+            }), ({
+              item,
+              i
+            }) => [0, (item ? 1024 : 0) | (i ? 2048 : 0)]]
+          },
+          $$scope: {
+            ctx
+          }
+        }
+      };
+    }
+
+    if (switch_value) {
+      switch_instance = new switch_value(switch_props(ctx));
+    }
+
+    return {
+      c() {
+        if (switch_instance) create_component(switch_instance.$$.fragment);
+        switch_instance_anchor = empty();
+      },
+
+      m(target, anchor) {
+        if (switch_instance) {
+          mount_component(switch_instance, target, anchor);
+        }
+
+        insert(target, switch_instance_anchor, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        const switch_instance_changes = {};
+        if (dirty[0] &
+        /*items*/
+        2) switch_instance_changes.items =
+        /*items*/
+        ctx[1];
+        if (dirty[0] &
+        /*itemHeight*/
+        256) switch_instance_changes.itemHeight =
+        /*itemHeight*/
+        ctx[8];
+
+        if (dirty[0] &
+        /*Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, items*/
+        9814 | dirty[1] &
+        /*$$scope, item, i*/
+        11264) {
+          switch_instance_changes.$$scope = {
+            dirty,
+            ctx
+          };
+        }
+
+        if (switch_value !== (switch_value =
+        /*VirtualList*/
+        ctx[3])) {
+          if (switch_instance) {
+            group_outros();
+            const old_component = switch_instance;
+            transition_out(old_component.$$.fragment, 1, 0, () => {
+              destroy_component(old_component, 1);
+            });
+            check_outros();
+          }
+
+          if (switch_value) {
+            switch_instance = new switch_value(switch_props(ctx));
+            create_component(switch_instance.$$.fragment);
+            transition_in(switch_instance.$$.fragment, 1);
+            mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+          } else {
+            switch_instance = null;
+          }
+        } else if (switch_value) {
+          switch_instance.$set(switch_instance_changes);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(switch_instance_anchor);
+        if (switch_instance) destroy_component(switch_instance, detaching);
+      }
+
+    };
+  } // (331:8) {:else}
+
+
+  function create_else_block_2(ctx) {
+    let if_block_anchor;
+    let if_block = !
+    /*hideEmptyState*/
+    ctx[11] && create_if_block_2$1(ctx);
+    return {
+      c() {
+        if (if_block) if_block.c();
+        if_block_anchor = empty();
+      },
+
+      m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+      },
+
+      p(ctx, dirty) {
+        if (!
+        /*hideEmptyState*/
+        ctx[11]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_2$1(ctx);
+            if_block.c();
+            if_block.m(if_block_anchor.parentNode, if_block_anchor);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+
+      d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(if_block_anchor);
+      }
+
+    };
+  } // (332:12) {#if !hideEmptyState}
+
+
+  function create_if_block_2$1(ctx) {
+    let div;
+    let t;
+    return {
+      c() {
+        div = element("div");
+        t = text(
+        /*noOptionsMessage*/
+        ctx[12]);
+        attr(div, "class", "empty svelte-1uyqfml");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*noOptionsMessage*/
+        4096) set_data(t,
+        /*noOptionsMessage*/
+        ctx[12]);
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+      }
+
+    };
+  } // (313:12) {:else}
+
+
+  function create_else_block_1(ctx) {
+    let div;
+    let switch_instance;
+    let t;
+    let current;
+    let mounted;
+    let dispose;
+    var switch_value =
+    /*Item*/
+    ctx[4];
+
+    function switch_props(ctx) {
+      return {
+        props: {
+          item:
+          /*item*/
+          ctx[41],
+          filterText:
+          /*filterText*/
+          ctx[13],
+          getOptionLabel:
+          /*getOptionLabel*/
+          ctx[6],
+          isFirst: isItemFirst(
+          /*i*/
+          ctx[42]),
+          isActive: isItemActive(
+          /*item*/
+          ctx[41],
+          /*value*/
+          ctx[9],
+          /*optionIdentifier*/
+          ctx[10]),
+          isHover: isItemHover(
+          /*hoverItemIndex*/
+          ctx[2],
+          /*item*/
+          ctx[41],
+          /*i*/
+          ctx[42],
+          /*items*/
+          ctx[1]),
+          isSelectable: isItemSelectable(
+          /*item*/
+          ctx[41])
+        }
+      };
+    }
+
+    if (switch_value) {
+      switch_instance = new switch_value(switch_props(ctx));
+    }
+
+    function mouseover_handler_1() {
+      return (
+        /*mouseover_handler_1*/
+        ctx[29](
+        /*i*/
+        ctx[42])
+      );
+    }
+
+    function focus_handler_1() {
+      return (
+        /*focus_handler_1*/
+        ctx[30](
+        /*i*/
+        ctx[42])
+      );
+    }
+
+    function click_handler_1(...args) {
+      return (
+        /*click_handler_1*/
+        ctx[31](
+        /*item*/
+        ctx[41],
+        /*i*/
+        ctx[42], ...args)
+      );
+    }
+
+    return {
+      c() {
+        div = element("div");
+        if (switch_instance) create_component(switch_instance.$$.fragment);
+        t = space();
+        attr(div, "class", "listItem");
+        attr(div, "tabindex", "-1");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+
+        if (switch_instance) {
+          mount_component(switch_instance, div, null);
+        }
+
+        append(div, t);
+        current = true;
+
+        if (!mounted) {
+          dispose = [listen(div, "mouseover", mouseover_handler_1), listen(div, "focus", focus_handler_1), listen(div, "click", click_handler_1)];
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        const switch_instance_changes = {};
+        if (dirty[0] &
+        /*items*/
+        2) switch_instance_changes.item =
+        /*item*/
+        ctx[41];
+        if (dirty[0] &
+        /*filterText*/
+        8192) switch_instance_changes.filterText =
+        /*filterText*/
+        ctx[13];
+        if (dirty[0] &
+        /*getOptionLabel*/
+        64) switch_instance_changes.getOptionLabel =
+        /*getOptionLabel*/
+        ctx[6];
+        if (dirty[0] &
+        /*items, value, optionIdentifier*/
+        1538) switch_instance_changes.isActive = isItemActive(
+        /*item*/
+        ctx[41],
+        /*value*/
+        ctx[9],
+        /*optionIdentifier*/
+        ctx[10]);
+        if (dirty[0] &
+        /*hoverItemIndex, items*/
+        6) switch_instance_changes.isHover = isItemHover(
+        /*hoverItemIndex*/
+        ctx[2],
+        /*item*/
+        ctx[41],
+        /*i*/
+        ctx[42],
+        /*items*/
+        ctx[1]);
+        if (dirty[0] &
+        /*items*/
+        2) switch_instance_changes.isSelectable = isItemSelectable(
+        /*item*/
+        ctx[41]);
+
+        if (switch_value !== (switch_value =
+        /*Item*/
+        ctx[4])) {
+          if (switch_instance) {
+            group_outros();
+            const old_component = switch_instance;
+            transition_out(old_component.$$.fragment, 1, 0, () => {
+              destroy_component(old_component, 1);
+            });
+            check_outros();
+          }
+
+          if (switch_value) {
+            switch_instance = new switch_value(switch_props(ctx));
+            create_component(switch_instance.$$.fragment);
+            transition_in(switch_instance.$$.fragment, 1);
+            mount_component(switch_instance, div, t);
+          } else {
+            switch_instance = null;
+          }
+        } else if (switch_value) {
+          switch_instance.$set(switch_instance_changes);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+        if (switch_instance) destroy_component(switch_instance);
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
+
+
+  function create_if_block_1$1(ctx) {
+    let div;
+    let t_value =
+    /*getGroupHeaderLabel*/
+    ctx[7](
+    /*item*/
+    ctx[41]) + "";
+    let t;
+    return {
+      c() {
+        div = element("div");
+        t = text(t_value);
+        attr(div, "class", "listGroupTitle svelte-1uyqfml");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*getGroupHeaderLabel, items*/
+        130 && t_value !== (t_value =
+        /*getGroupHeaderLabel*/
+        ctx[7](
+        /*item*/
+        ctx[41]) + "")) set_data(t, t_value);
+      },
+
+      i: noop$1,
+      o: noop$1,
+
+      d(detaching) {
+        if (detaching) detach(div);
+      }
+
+    };
+  } // (310:8) {#each items as item, i}
+
+
+  function create_each_block$3(ctx) {
+    let current_block_type_index;
+    let if_block;
+    let if_block_anchor;
+    let current;
+    const if_block_creators = [create_if_block_1$1, create_else_block_1];
+    const if_blocks = [];
+
+    function select_block_type_1(ctx, dirty) {
+      if (
+      /*item*/
+      ctx[41].isGroupHeader && !
+      /*item*/
+      ctx[41].isSelectable) return 0;
+      return 1;
+    }
+
+    current_block_type_index = select_block_type_1(ctx);
+    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    return {
+      c() {
+        if_block.c();
+        if_block_anchor = empty();
+      },
+
+      m(target, anchor) {
+        if_blocks[current_block_type_index].m(target, anchor);
+        insert(target, if_block_anchor, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        let previous_block_index = current_block_type_index;
+        current_block_type_index = select_block_type_1(ctx);
+
+        if (current_block_type_index === previous_block_index) {
+          if_blocks[current_block_type_index].p(ctx, dirty);
+        } else {
+          group_outros();
+          transition_out(if_blocks[previous_block_index], 1, 1, () => {
+            if_blocks[previous_block_index] = null;
+          });
+          check_outros();
+          if_block = if_blocks[current_block_type_index];
+
+          if (!if_block) {
+            if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+            if_block.c();
+          } else {
+            if_block.p(ctx, dirty);
+          }
+
+          transition_in(if_block, 1);
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if_blocks[current_block_type_index].d(detaching);
+        if (detaching) detach(if_block_anchor);
+      }
+
+    };
+  } // (287:8) <svelte:component             this={VirtualList}             {items}             {itemHeight}             let:item             let:i>
+
+
+  function create_default_slot(ctx) {
+    let div;
+    let switch_instance;
+    let current;
+    let mounted;
+    let dispose;
+    var switch_value =
+    /*Item*/
+    ctx[4];
+
+    function switch_props(ctx) {
+      return {
+        props: {
+          item:
+          /*item*/
+          ctx[41],
+          filterText:
+          /*filterText*/
+          ctx[13],
+          getOptionLabel:
+          /*getOptionLabel*/
+          ctx[6],
+          isFirst: isItemFirst(
+          /*i*/
+          ctx[42]),
+          isActive: isItemActive(
+          /*item*/
+          ctx[41],
+          /*value*/
+          ctx[9],
+          /*optionIdentifier*/
+          ctx[10]),
+          isHover: isItemHover(
+          /*hoverItemIndex*/
+          ctx[2],
+          /*item*/
+          ctx[41],
+          /*i*/
+          ctx[42],
+          /*items*/
+          ctx[1]),
+          isSelectable: isItemSelectable(
+          /*item*/
+          ctx[41])
+        }
+      };
+    }
+
+    if (switch_value) {
+      switch_instance = new switch_value(switch_props(ctx));
+    }
+
+    function mouseover_handler() {
+      return (
+        /*mouseover_handler*/
+        ctx[26](
+        /*i*/
+        ctx[42])
+      );
+    }
+
+    function focus_handler() {
+      return (
+        /*focus_handler*/
+        ctx[27](
+        /*i*/
+        ctx[42])
+      );
+    }
+
+    function click_handler(...args) {
+      return (
+        /*click_handler*/
+        ctx[28](
+        /*item*/
+        ctx[41],
+        /*i*/
+        ctx[42], ...args)
+      );
+    }
+
+    return {
+      c() {
+        div = element("div");
+        if (switch_instance) create_component(switch_instance.$$.fragment);
+        attr(div, "class", "listItem");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+
+        if (switch_instance) {
+          mount_component(switch_instance, div, null);
+        }
+
+        current = true;
+
+        if (!mounted) {
+          dispose = [listen(div, "mouseover", mouseover_handler), listen(div, "focus", focus_handler), listen(div, "click", click_handler)];
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        const switch_instance_changes = {};
+        if (dirty[1] &
+        /*item*/
+        1024) switch_instance_changes.item =
+        /*item*/
+        ctx[41];
+        if (dirty[0] &
+        /*filterText*/
+        8192) switch_instance_changes.filterText =
+        /*filterText*/
+        ctx[13];
+        if (dirty[0] &
+        /*getOptionLabel*/
+        64) switch_instance_changes.getOptionLabel =
+        /*getOptionLabel*/
+        ctx[6];
+        if (dirty[1] &
+        /*i*/
+        2048) switch_instance_changes.isFirst = isItemFirst(
+        /*i*/
+        ctx[42]);
+        if (dirty[0] &
+        /*value, optionIdentifier*/
+        1536 | dirty[1] &
+        /*item*/
+        1024) switch_instance_changes.isActive = isItemActive(
+        /*item*/
+        ctx[41],
+        /*value*/
+        ctx[9],
+        /*optionIdentifier*/
+        ctx[10]);
+        if (dirty[0] &
+        /*hoverItemIndex, items*/
+        6 | dirty[1] &
+        /*item, i*/
+        3072) switch_instance_changes.isHover = isItemHover(
+        /*hoverItemIndex*/
+        ctx[2],
+        /*item*/
+        ctx[41],
+        /*i*/
+        ctx[42],
+        /*items*/
+        ctx[1]);
+        if (dirty[1] &
+        /*item*/
+        1024) switch_instance_changes.isSelectable = isItemSelectable(
+        /*item*/
+        ctx[41]);
+
+        if (switch_value !== (switch_value =
+        /*Item*/
+        ctx[4])) {
+          if (switch_instance) {
+            group_outros();
+            const old_component = switch_instance;
+            transition_out(old_component.$$.fragment, 1, 0, () => {
+              destroy_component(old_component, 1);
+            });
+            check_outros();
+          }
+
+          if (switch_value) {
+            switch_instance = new switch_value(switch_props(ctx));
+            create_component(switch_instance.$$.fragment);
+            transition_in(switch_instance.$$.fragment, 1);
+            mount_component(switch_instance, div, null);
+          } else {
+            switch_instance = null;
+          }
+        } else if (switch_value) {
+          switch_instance.$set(switch_instance_changes);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+        if (switch_instance) destroy_component(switch_instance);
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function create_fragment$a(ctx) {
+    let div;
+    let current_block_type_index;
+    let if_block;
+    let current;
+    let mounted;
+    let dispose;
+    const if_block_creators = [create_if_block$2, create_else_block$1];
+    const if_blocks = [];
+
+    function select_block_type(ctx, dirty) {
+      if (
+      /*isVirtualList*/
+      ctx[5]) return 0;
+      return 1;
+    }
+
+    current_block_type_index = select_block_type(ctx);
+    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    return {
+      c() {
+        div = element("div");
+        if_block.c();
+        attr(div, "class", "listContainer svelte-1uyqfml");
+        attr(div, "style",
+        /*listStyle*/
+        ctx[14]);
+        toggle_class(div, "virtualList",
+        /*isVirtualList*/
+        ctx[5]);
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+        if_blocks[current_block_type_index].m(div, null);
+        /*div_binding*/
+
+        ctx[32](div);
+        current = true;
+
+        if (!mounted) {
+          dispose = [listen(window, "keydown",
+          /*handleKeyDown*/
+          ctx[17]), listen(window, "resize",
+          /*computePlacement*/
+          ctx[18])];
+          mounted = true;
+        }
+      },
+
+      p(ctx, dirty) {
+        let previous_block_index = current_block_type_index;
+        current_block_type_index = select_block_type(ctx);
+
+        if (current_block_type_index === previous_block_index) {
+          if_blocks[current_block_type_index].p(ctx, dirty);
+        } else {
+          group_outros();
+          transition_out(if_blocks[previous_block_index], 1, 1, () => {
+            if_blocks[previous_block_index] = null;
+          });
+          check_outros();
+          if_block = if_blocks[current_block_type_index];
+
+          if (!if_block) {
+            if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+            if_block.c();
+          } else {
+            if_block.p(ctx, dirty);
+          }
+
+          transition_in(if_block, 1);
+          if_block.m(div, null);
+        }
+
+        if (!current || dirty[0] &
+        /*listStyle*/
+        16384) {
+          attr(div, "style",
+          /*listStyle*/
+          ctx[14]);
+        }
+
+        if (dirty[0] &
+        /*isVirtualList*/
+        32) {
+          toggle_class(div, "virtualList",
+          /*isVirtualList*/
+          ctx[5]);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+
+      o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+        if_blocks[current_block_type_index].d();
+        /*div_binding*/
+
+        ctx[32](null);
+        mounted = false;
+        run_all(dispose);
+      }
+
+    };
+  }
+
+  function isItemActive(item, value, optionIdentifier) {
+    return value && value[optionIdentifier] === item[optionIdentifier];
+  }
+
+  function isItemFirst(itemIndex) {
+    return itemIndex === 0;
+  }
+
+  function isItemHover(hoverItemIndex, item, itemIndex, items) {
+    return isItemSelectable(item) && (hoverItemIndex === itemIndex || items.length === 1);
+  }
+
+  function isItemSelectable(item) {
+    return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
+  }
+
+  function instance$9($$self, $$props, $$invalidate) {
+    const dispatch = createEventDispatcher();
+    let {
+      container = undefined
+    } = $$props;
+    let {
+      VirtualList = null
+    } = $$props;
+    let {
+      Item: Item$1 = Item
+    } = $$props;
+    let {
+      isVirtualList = false
+    } = $$props;
+    let {
+      items = []
+    } = $$props;
+    let {
+      labelIdentifier = 'label'
+    } = $$props;
+    let {
+      getOptionLabel = (option, filterText) => {
+        if (option) return option.isCreator ? `Create \"${filterText}\"` : option[labelIdentifier];
+      }
+    } = $$props;
+    let {
+      getGroupHeaderLabel = null
+    } = $$props;
+    let {
+      itemHeight = 40
+    } = $$props;
+    let {
+      hoverItemIndex = 0
+    } = $$props;
+    let {
+      value = undefined
+    } = $$props;
+    let {
+      optionIdentifier = 'value'
+    } = $$props;
+    let {
+      hideEmptyState = false
+    } = $$props;
+    let {
+      noOptionsMessage = 'No options'
+    } = $$props;
+    let {
+      isMulti = false
+    } = $$props;
+    let {
+      activeItemIndex = 0
+    } = $$props;
+    let {
+      filterText = ''
+    } = $$props;
+    let {
+      parent = null
+    } = $$props;
+    let {
+      listPlacement = null
+    } = $$props;
+    let {
+      listAutoWidth = null
+    } = $$props;
+    let {
+      listOffset = 5
+    } = $$props;
+    let isScrollingTimer = 0;
+    let isScrolling = false;
+    let prev_items;
+    onMount(() => {
+      if (items.length > 0 && !isMulti && value) {
+        const _hoverItemIndex = items.findIndex(item => item[optionIdentifier] === value[optionIdentifier]);
+
+        if (_hoverItemIndex) {
+          $$invalidate(2, hoverItemIndex = _hoverItemIndex);
+        }
+      }
+
+      scrollToActiveItem('active');
+      container.addEventListener('scroll', () => {
+        clearTimeout(isScrollingTimer);
+        isScrollingTimer = setTimeout(() => {
+          isScrolling = false;
+        }, 100);
+      }, false);
+    });
+    beforeUpdate(() => {
+      if (!items) $$invalidate(1, items = []);
+
+      if (items !== prev_items && items.length > 0) {
+        $$invalidate(2, hoverItemIndex = 0);
+      }
+
+      prev_items = items;
+    });
+
+    function handleSelect(item) {
+      if (item.isCreator) return;
+      dispatch('itemSelected', item);
+    }
+
+    function handleHover(i) {
+      if (isScrolling) return;
+      $$invalidate(2, hoverItemIndex = i);
+    }
+
+    function handleClick(args) {
+      const {
+        item,
+        i,
+        event
+      } = args;
+      event.stopPropagation();
+      if (value && !isMulti && value[optionIdentifier] === item[optionIdentifier]) return closeList();
+
+      if (item.isCreator) {
+        dispatch('itemCreated', filterText);
+      } else if (isItemSelectable(item)) {
+        $$invalidate(19, activeItemIndex = i);
+        $$invalidate(2, hoverItemIndex = i);
+        handleSelect(item);
+      }
+    }
+
+    function closeList() {
+      dispatch('closeList');
+    }
+
+    async function updateHoverItem(increment) {
+      if (isVirtualList) return;
+      let isNonSelectableItem = true;
+
+      while (isNonSelectableItem) {
+        if (increment > 0 && hoverItemIndex === items.length - 1) {
+          $$invalidate(2, hoverItemIndex = 0);
+        } else if (increment < 0 && hoverItemIndex === 0) {
+          $$invalidate(2, hoverItemIndex = items.length - 1);
+        } else {
+          $$invalidate(2, hoverItemIndex = hoverItemIndex + increment);
+        }
+
+        isNonSelectableItem = !isItemSelectable(items[hoverItemIndex]);
+      }
+
+      await tick();
+      scrollToActiveItem('hover');
+    }
+
+    function handleKeyDown(e) {
+      switch (e.key) {
+        case 'Escape':
+          e.preventDefault();
+          closeList();
+          break;
+
+        case 'ArrowDown':
+          e.preventDefault();
+          items.length && updateHoverItem(1);
+          break;
+
+        case 'ArrowUp':
+          e.preventDefault();
+          items.length && updateHoverItem(-1);
+          break;
+
+        case 'Enter':
+          e.preventDefault();
+          if (items.length === 0) break;
+          const hoverItem = items[hoverItemIndex];
+
+          if (value && !isMulti && value[optionIdentifier] === hoverItem[optionIdentifier]) {
+            closeList();
+            break;
+          }
+
+          if (hoverItem.isCreator) {
+            dispatch('itemCreated', filterText);
+          } else {
+            $$invalidate(19, activeItemIndex = hoverItemIndex);
+            handleSelect(items[hoverItemIndex]);
+          }
+
+          break;
+
+        case 'Tab':
+          e.preventDefault();
+
+          if (items.length === 0) {
+            return closeList();
+          }
+
+          if (value && value[optionIdentifier] === items[hoverItemIndex][optionIdentifier]) return closeList();
+          $$invalidate(19, activeItemIndex = hoverItemIndex);
+          handleSelect(items[hoverItemIndex]);
+          break;
+      }
+    }
+
+    function scrollToActiveItem(className) {
+      if (isVirtualList || !container) return;
+      let offsetBounding;
+      const focusedElemBounding = container.querySelector(`.listItem .${className}`);
+
+      if (focusedElemBounding) {
+        offsetBounding = container.getBoundingClientRect().bottom - focusedElemBounding.getBoundingClientRect().bottom;
+      }
+
+      $$invalidate(0, container.scrollTop -= offsetBounding, container);
+    }
+
+    let listStyle;
+
+    function computePlacement() {
+      const {
+        height,
+        width
+      } = parent.getBoundingClientRect();
+      $$invalidate(14, listStyle = '');
+      $$invalidate(14, listStyle += `min-width:${width}px;width:${listAutoWidth ? 'auto' : '100%'};`);
+
+      if (listPlacement === 'top' || listPlacement === 'auto' && isOutOfViewport(parent, container).bottom) {
+        $$invalidate(14, listStyle += `bottom:${height + listOffset}px;`);
+      } else {
+        $$invalidate(14, listStyle += `top:${height + listOffset}px;`);
+      }
+    }
+
+    const mouseover_handler = i => handleHover(i);
+
+    const focus_handler = i => handleHover(i);
+
+    const click_handler = (item, i, event) => handleClick({
+      item,
+      i,
+      event
+    });
+
+    const mouseover_handler_1 = i => handleHover(i);
+
+    const focus_handler_1 = i => handleHover(i);
+
+    const click_handler_1 = (item, i, event) => handleClick({
+      item,
+      i,
+      event
+    });
+
+    function div_binding($$value) {
+      binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+        container = $$value;
+        $$invalidate(0, container);
+      });
+    }
+
+    $$self.$$set = $$props => {
+      if ('container' in $$props) $$invalidate(0, container = $$props.container);
+      if ('VirtualList' in $$props) $$invalidate(3, VirtualList = $$props.VirtualList);
+      if ('Item' in $$props) $$invalidate(4, Item$1 = $$props.Item);
+      if ('isVirtualList' in $$props) $$invalidate(5, isVirtualList = $$props.isVirtualList);
+      if ('items' in $$props) $$invalidate(1, items = $$props.items);
+      if ('labelIdentifier' in $$props) $$invalidate(20, labelIdentifier = $$props.labelIdentifier);
+      if ('getOptionLabel' in $$props) $$invalidate(6, getOptionLabel = $$props.getOptionLabel);
+      if ('getGroupHeaderLabel' in $$props) $$invalidate(7, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
+      if ('itemHeight' in $$props) $$invalidate(8, itemHeight = $$props.itemHeight);
+      if ('hoverItemIndex' in $$props) $$invalidate(2, hoverItemIndex = $$props.hoverItemIndex);
+      if ('value' in $$props) $$invalidate(9, value = $$props.value);
+      if ('optionIdentifier' in $$props) $$invalidate(10, optionIdentifier = $$props.optionIdentifier);
+      if ('hideEmptyState' in $$props) $$invalidate(11, hideEmptyState = $$props.hideEmptyState);
+      if ('noOptionsMessage' in $$props) $$invalidate(12, noOptionsMessage = $$props.noOptionsMessage);
+      if ('isMulti' in $$props) $$invalidate(21, isMulti = $$props.isMulti);
+      if ('activeItemIndex' in $$props) $$invalidate(19, activeItemIndex = $$props.activeItemIndex);
+      if ('filterText' in $$props) $$invalidate(13, filterText = $$props.filterText);
+      if ('parent' in $$props) $$invalidate(22, parent = $$props.parent);
+      if ('listPlacement' in $$props) $$invalidate(23, listPlacement = $$props.listPlacement);
+      if ('listAutoWidth' in $$props) $$invalidate(24, listAutoWidth = $$props.listAutoWidth);
+      if ('listOffset' in $$props) $$invalidate(25, listOffset = $$props.listOffset);
+    };
+
+    $$self.$$.update = () => {
+      if ($$self.$$.dirty[0] &
+      /*parent, container*/
+      4194305) {
+        {
+          if (parent && container) computePlacement();
+        }
+      }
+    };
+
+    return [container, items, hoverItemIndex, VirtualList, Item$1, isVirtualList, getOptionLabel, getGroupHeaderLabel, itemHeight, value, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, listStyle, handleHover, handleClick, handleKeyDown, computePlacement, activeItemIndex, labelIdentifier, isMulti, parent, listPlacement, listAutoWidth, listOffset, mouseover_handler, focus_handler, click_handler, mouseover_handler_1, focus_handler_1, click_handler_1, div_binding];
+  }
+
+  class List extends SvelteComponent {
+    constructor(options) {
+      super();
+      init$1(this, options, instance$9, create_fragment$a, safe_not_equal, {
+        container: 0,
+        VirtualList: 3,
+        Item: 4,
+        isVirtualList: 5,
+        items: 1,
+        labelIdentifier: 20,
+        getOptionLabel: 6,
+        getGroupHeaderLabel: 7,
+        itemHeight: 8,
+        hoverItemIndex: 2,
+        value: 9,
+        optionIdentifier: 10,
+        hideEmptyState: 11,
+        noOptionsMessage: 12,
+        isMulti: 21,
+        activeItemIndex: 19,
+        filterText: 13,
+        parent: 22,
+        listPlacement: 23,
+        listAutoWidth: 24,
+        listOffset: 25
+      }, add_css$4, [-1, -1]);
+    }
+
+  }
+
+  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.44.2 */
+
+  function add_css$3(target) {
+    append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
+  }
+
+  function create_fragment$9(ctx) {
+    let div;
+    let raw_value =
+    /*getSelectionLabel*/
+    ctx[0](
+    /*item*/
+    ctx[1]) + "";
+    return {
+      c() {
+        div = element("div");
+        attr(div, "class", "selection svelte-pu1q1n");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+        div.innerHTML = raw_value;
+      },
+
+      p(ctx, [dirty]) {
+        if (dirty &
+        /*getSelectionLabel, item*/
+        3 && raw_value !== (raw_value =
+        /*getSelectionLabel*/
+        ctx[0](
+        /*item*/
+        ctx[1]) + "")) div.innerHTML = raw_value;
+      },
+
+      i: noop$1,
+      o: noop$1,
+
+      d(detaching) {
+        if (detaching) detach(div);
+      }
+
+    };
+  }
+
+  function instance$8($$self, $$props, $$invalidate) {
+    let {
+      getSelectionLabel = undefined
+    } = $$props;
+    let {
+      item = undefined
+    } = $$props;
+
+    $$self.$$set = $$props => {
+      if ('getSelectionLabel' in $$props) $$invalidate(0, getSelectionLabel = $$props.getSelectionLabel);
+      if ('item' in $$props) $$invalidate(1, item = $$props.item);
+    };
+
+    return [getSelectionLabel, item];
+  }
+
+  class Selection extends SvelteComponent {
+    constructor(options) {
+      super();
+      init$1(this, options, instance$8, create_fragment$9, safe_not_equal, {
+        getSelectionLabel: 0,
+        item: 1
+      }, add_css$3);
+    }
+
+  }
+
+  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.44.2 */
+
+  function add_css$2(target) {
+    append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
   }
 
   function get_each_context$2(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[9] = list[i];
+    child_ctx[11] = i;
+    return child_ctx;
+  } // (87:8) {#if !isDisabled && !multiFullItemClearable}
+
+
+  function create_if_block$1(ctx) {
+    let div;
+    let mounted;
+    let dispose;
+
+    function click_handler(...args) {
+      return (
+        /*click_handler*/
+        ctx[6](
+        /*i*/
+        ctx[11], ...args)
+      );
+    }
+
+    return {
+      c() {
+        div = element("div");
+        div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" aria-hidden="true" role="presentation" class="svelte-liu9pa"><path d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124 l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
+        attr(div, "class", "multiSelectItem_clear svelte-liu9pa");
+      },
+
+      m(target, anchor) {
+        insert(target, div, anchor);
+
+        if (!mounted) {
+          dispose = listen(div, "click", click_handler);
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+      },
+
+      d(detaching) {
+        if (detaching) detach(div);
+        mounted = false;
+        dispose();
+      }
+
+    };
+  } // (77:0) {#each value as item, i}
+
+
+  function create_each_block$2(ctx) {
+    let div1;
+    let div0;
+    let raw_value =
+    /*getSelectionLabel*/
+    ctx[4](
+    /*item*/
+    ctx[9]) + "";
+    let t0;
+    let t1;
+    let div1_class_value;
+    let mounted;
+    let dispose;
+    let if_block = !
+    /*isDisabled*/
+    ctx[2] && !
+    /*multiFullItemClearable*/
+    ctx[3] && create_if_block$1(ctx);
+
+    function click_handler_1(...args) {
+      return (
+        /*click_handler_1*/
+        ctx[7](
+        /*i*/
+        ctx[11], ...args)
+      );
+    }
+
+    return {
+      c() {
+        div1 = element("div");
+        div0 = element("div");
+        t0 = space();
+        if (if_block) if_block.c();
+        t1 = space();
+        attr(div0, "class", "multiSelectItem_label svelte-liu9pa");
+        attr(div1, "class", div1_class_value = "multiSelectItem " + (
+        /*activeValue*/
+        ctx[1] ===
+        /*i*/
+        ctx[11] ? 'active' : '') + " " + (
+        /*isDisabled*/
+        ctx[2] ? 'disabled' : '') + " svelte-liu9pa");
+      },
+
+      m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, div0);
+        div0.innerHTML = raw_value;
+        append(div1, t0);
+        if (if_block) if_block.m(div1, null);
+        append(div1, t1);
+
+        if (!mounted) {
+          dispose = listen(div1, "click", click_handler_1);
+          mounted = true;
+        }
+      },
+
+      p(new_ctx, dirty) {
+        ctx = new_ctx;
+        if (dirty &
+        /*getSelectionLabel, value*/
+        17 && raw_value !== (raw_value =
+        /*getSelectionLabel*/
+        ctx[4](
+        /*item*/
+        ctx[9]) + "")) div0.innerHTML = raw_value;
+
+        if (!
+        /*isDisabled*/
+        ctx[2] && !
+        /*multiFullItemClearable*/
+        ctx[3]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block$1(ctx);
+            if_block.c();
+            if_block.m(div1, t1);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*activeValue, isDisabled*/
+        6 && div1_class_value !== (div1_class_value = "multiSelectItem " + (
+        /*activeValue*/
+        ctx[1] ===
+        /*i*/
+        ctx[11] ? 'active' : '') + " " + (
+        /*isDisabled*/
+        ctx[2] ? 'disabled' : '') + " svelte-liu9pa")) {
+          attr(div1, "class", div1_class_value);
+        }
+      },
+
+      d(detaching) {
+        if (detaching) detach(div1);
+        if (if_block) if_block.d();
+        mounted = false;
+        dispose();
+      }
+
+    };
+  }
+
+  function create_fragment$8(ctx) {
+    let each_1_anchor;
+    let each_value =
+    /*value*/
+    ctx[0];
+    let each_blocks = [];
+
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    }
+
+    return {
+      c() {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+
+        each_1_anchor = empty();
+      },
+
+      m(target, anchor) {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].m(target, anchor);
+        }
+
+        insert(target, each_1_anchor, anchor);
+      },
+
+      p(ctx, [dirty]) {
+        if (dirty &
+        /*activeValue, isDisabled, multiFullItemClearable, handleClear, getSelectionLabel, value*/
+        63) {
+          each_value =
+          /*value*/
+          ctx[0];
+          let i;
+
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context$2(ctx, each_value, i);
+
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+            } else {
+              each_blocks[i] = create_each_block$2(child_ctx);
+              each_blocks[i].c();
+              each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+            }
+          }
+
+          for (; i < each_blocks.length; i += 1) {
+            each_blocks[i].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+
+      i: noop$1,
+      o: noop$1,
+
+      d(detaching) {
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(each_1_anchor);
+      }
+
+    };
+  }
+
+  function instance$7($$self, $$props, $$invalidate) {
+    const dispatch = createEventDispatcher();
+    let {
+      value = []
+    } = $$props;
+    let {
+      activeValue = undefined
+    } = $$props;
+    let {
+      isDisabled = false
+    } = $$props;
+    let {
+      multiFullItemClearable = false
+    } = $$props;
+    let {
+      getSelectionLabel = undefined
+    } = $$props;
+
+    function handleClear(i, event) {
+      event.stopPropagation();
+      dispatch('multiItemClear', {
+        i
+      });
+    }
+
+    const click_handler = (i, event) => handleClear(i, event);
+
+    const click_handler_1 = (i, event) => multiFullItemClearable ? handleClear(i, event) : {};
+
+    $$self.$$set = $$props => {
+      if ('value' in $$props) $$invalidate(0, value = $$props.value);
+      if ('activeValue' in $$props) $$invalidate(1, activeValue = $$props.activeValue);
+      if ('isDisabled' in $$props) $$invalidate(2, isDisabled = $$props.isDisabled);
+      if ('multiFullItemClearable' in $$props) $$invalidate(3, multiFullItemClearable = $$props.multiFullItemClearable);
+      if ('getSelectionLabel' in $$props) $$invalidate(4, getSelectionLabel = $$props.getSelectionLabel);
+    };
+
+    return [value, activeValue, isDisabled, multiFullItemClearable, getSelectionLabel, handleClear, click_handler, click_handler_1];
+  }
+
+  class MultiSelection extends SvelteComponent {
+    constructor(options) {
+      super();
+      init$1(this, options, instance$7, create_fragment$8, safe_not_equal, {
+        value: 0,
+        activeValue: 1,
+        isDisabled: 2,
+        multiFullItemClearable: 3,
+        getSelectionLabel: 4
+      }, add_css$2);
+    }
+
+  }
+
+  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.44.2 */
+
+  function add_css$1(target) {
+    append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
+  }
+
+  function get_each_context$1(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     return child_ctx;
@@ -17457,7 +19403,7 @@
     hoverItemIndex:
     /*hoverItemIndex*/
     ctx[1]
-  }); // (160:57) Missing template
+  }); // (154:69) Missing template
 
 
   function fallback_block(ctx) {
@@ -17476,10 +19422,10 @@
       }
 
     };
-  } // (158:2) {#each visible as row (row.index)}
+  } // (152:8) {#each visible as row (row.index)}
 
 
-  function create_each_block$2(key_1, ctx) {
+  function create_each_block$1(key_1, ctx) {
     let svelte_virtual_list_row;
     let t;
     let current;
@@ -17498,7 +19444,7 @@
         svelte_virtual_list_row = element("svelte-virtual-list-row");
         if (default_slot_or_fallback) default_slot_or_fallback.c();
         t = space();
-        set_custom_element_data(svelte_virtual_list_row, "class", "svelte-p6ehlv");
+        set_custom_element_data(svelte_virtual_list_row, "class", "svelte-g2cagw");
         this.first = svelte_virtual_list_row;
       },
 
@@ -17520,9 +19466,13 @@
           if (default_slot.p && (!current || dirty &
           /*$$scope, visible, hoverItemIndex*/
           16418)) {
-            update_slot(default_slot, default_slot_template, ctx,
+            update_slot_base(default_slot, default_slot_template, ctx,
             /*$$scope*/
-            ctx[14], !current ? -1 : dirty, get_default_slot_changes, get_default_slot_context);
+            ctx[14], !current ? get_all_dirty_from_scope(
+            /*$$scope*/
+            ctx[14]) : get_slot_changes(default_slot_template,
+            /*$$scope*/
+            ctx[14], dirty, get_default_slot_changes), get_default_slot_context);
           }
         }
       },
@@ -17546,7 +19496,7 @@
     };
   }
 
-  function create_fragment$a(ctx) {
+  function create_fragment$7(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -17564,9 +19514,9 @@
     ctx[23].index;
 
     for (let i = 0; i < each_value.length; i += 1) {
-      let child_ctx = get_each_context$2(ctx, each_value, i);
+      let child_ctx = get_each_context$1(ctx, each_value, i);
       let key = get_key(child_ctx);
-      each_1_lookup.set(key, each_blocks[i] = create_each_block$2(key, child_ctx));
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$1(key, child_ctx));
     }
 
     return {
@@ -17584,11 +19534,11 @@
         set_style(svelte_virtual_list_contents, "padding-bottom",
         /*bottom*/
         ctx[7] + "px");
-        set_custom_element_data(svelte_virtual_list_contents, "class", "svelte-p6ehlv");
+        set_custom_element_data(svelte_virtual_list_contents, "class", "svelte-g2cagw");
         set_style(svelte_virtual_list_viewport, "height",
         /*height*/
         ctx[0]);
-        set_custom_element_data(svelte_virtual_list_viewport, "class", "svelte-p6ehlv");
+        set_custom_element_data(svelte_virtual_list_viewport, "class", "svelte-g2cagw");
         add_render_callback(() =>
         /*svelte_virtual_list_viewport_elementresize_handler*/
         ctx[18].call(svelte_virtual_list_viewport));
@@ -17629,7 +19579,7 @@
           /*visible*/
           ctx[5];
           group_outros();
-          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$2, null, get_each_context$2);
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$1, null, get_each_context$1);
           check_outros();
         }
 
@@ -17697,7 +19647,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$6($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -17706,7 +19656,7 @@
       items = undefined
     } = $$props;
     let {
-      height = "100%"
+      height = '100%'
     } = $$props;
     let {
       itemHeight = 40
@@ -17719,8 +19669,7 @@
     } = $$props;
     let {
       end = 0
-    } = $$props; // local state
-
+    } = $$props;
     let height_map = [];
     let rows;
     let viewport;
@@ -17736,8 +19685,7 @@
       const {
         scrollTop
       } = viewport;
-      await tick(); // wait until the DOM is up to date
-
+      await tick();
       let content_height = top - scrollTop;
       let i = start;
 
@@ -17746,8 +19694,7 @@
 
         if (!row) {
           $$invalidate(10, end = i + 1);
-          await tick(); // render the newly visible row
-
+          await tick();
           row = rows[i - start];
         }
 
@@ -17761,7 +19708,7 @@
       average_height = (top + content_height) / end;
       $$invalidate(7, bottom = remaining * average_height);
       height_map.length = items.length;
-      $$invalidate(3, viewport.scrollTop = 0, viewport);
+      if (viewport) $$invalidate(3, viewport.scrollTop = 0, viewport);
     }
 
     async function handle_scroll() {
@@ -17802,7 +19749,7 @@
 
       while (i < items.length) height_map[i++] = average_height;
 
-      $$invalidate(7, bottom = remaining * average_height); // prevent jumping if we scrolled up into unknown territory
+      $$invalidate(7, bottom = remaining * average_height);
 
       if (start < old_start) {
         await tick();
@@ -17819,26 +19766,22 @@
         const d = actual_height - expected_height;
         viewport.scrollTo(0, scrollTop + d);
       }
-    } // TODO if we overestimated the space these
-    // rows would occupy we may need to add some
-    // more. maybe we can just call handle_scroll again?
-    // trigger initial refresh
-
+    }
 
     onMount(() => {
-      rows = contents.getElementsByTagName("svelte-virtual-list-row");
+      rows = contents.getElementsByTagName('svelte-virtual-list-row');
       $$invalidate(13, mounted = true);
     });
 
     function svelte_virtual_list_contents_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
+      binding_callbacks[$$value ? 'unshift' : 'push'](() => {
         contents = $$value;
         $$invalidate(4, contents);
       });
     }
 
     function svelte_virtual_list_viewport_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
+      binding_callbacks[$$value ? 'unshift' : 'push'](() => {
         viewport = $$value;
         $$invalidate(3, viewport);
       });
@@ -17850,13 +19793,13 @@
     }
 
     $$self.$$set = $$props => {
-      if ("items" in $$props) $$invalidate(11, items = $$props.items);
-      if ("height" in $$props) $$invalidate(0, height = $$props.height);
-      if ("itemHeight" in $$props) $$invalidate(12, itemHeight = $$props.itemHeight);
-      if ("hoverItemIndex" in $$props) $$invalidate(1, hoverItemIndex = $$props.hoverItemIndex);
-      if ("start" in $$props) $$invalidate(9, start = $$props.start);
-      if ("end" in $$props) $$invalidate(10, end = $$props.end);
-      if ("$$scope" in $$props) $$invalidate(14, $$scope = $$props.$$scope);
+      if ('items' in $$props) $$invalidate(11, items = $$props.items);
+      if ('height' in $$props) $$invalidate(0, height = $$props.height);
+      if ('itemHeight' in $$props) $$invalidate(12, itemHeight = $$props.itemHeight);
+      if ('hoverItemIndex' in $$props) $$invalidate(1, hoverItemIndex = $$props.hoverItemIndex);
+      if ('start' in $$props) $$invalidate(9, start = $$props.start);
+      if ('end' in $$props) $$invalidate(10, end = $$props.end);
+      if ('$$scope' in $$props) $$invalidate(14, $$scope = $$props.$$scope);
     };
 
     $$self.$$.update = () => {
@@ -17874,7 +19817,6 @@
       if ($$self.$$.dirty &
       /*mounted, items, viewport_height, itemHeight*/
       14340) {
-        // whenever `items` changes, invalidate the current heightmap
         if (mounted) refresh(items, viewport_height, itemHeight);
       }
     };
@@ -17885,1617 +19827,19 @@
   class VirtualList extends SvelteComponent {
     constructor(options) {
       super();
-      if (!document.getElementById("svelte-p6ehlv-style")) add_css$4();
-      init$1(this, options, instance$9, create_fragment$a, safe_not_equal, {
+      init$1(this, options, instance$6, create_fragment$7, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
         hoverItemIndex: 1,
         start: 9,
         end: 10
-      });
+      }, add_css$1);
     }
 
   }
 
-  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.38.3 */
-
-  function add_css$3() {
-    var style = element("style");
-    style.id = "svelte-ux0sbr-style";
-    style.textContent = ".listContainer.svelte-ux0sbr{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff)}.virtualList.svelte-ux0sbr{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-ux0sbr{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-ux0sbr{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848F)}";
-    append(document.head, style);
-  }
-
-  function get_each_context$1(ctx, list, i) {
-    const child_ctx = ctx.slice();
-    child_ctx[34] = list[i];
-    child_ctx[36] = i;
-    return child_ctx;
-  } // (210:0) {#if isVirtualList}
-
-
-  function create_if_block_3$1(ctx) {
-    let div;
-    let virtuallist;
-    let current;
-    virtuallist = new VirtualList({
-      props: {
-        items:
-        /*items*/
-        ctx[4],
-        itemHeight:
-        /*itemHeight*/
-        ctx[7],
-        $$slots: {
-          default: [create_default_slot, ({
-            item,
-            i
-          }) => ({
-            34: item,
-            36: i
-          }), ({
-            item,
-            i
-          }) => [0, (item ? 8 : 0) | (i ? 32 : 0)]]
-        },
-        $$scope: {
-          ctx
-        }
-      }
-    });
-    return {
-      c() {
-        div = element("div");
-        create_component(virtuallist.$$.fragment);
-        attr(div, "class", "listContainer virtualList svelte-ux0sbr");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-        mount_component(virtuallist, div, null);
-        /*div_binding*/
-
-        ctx[20](div);
-        current = true;
-      },
-
-      p(ctx, dirty) {
-        const virtuallist_changes = {};
-        if (dirty[0] &
-        /*items*/
-        16) virtuallist_changes.items =
-        /*items*/
-        ctx[4];
-        if (dirty[0] &
-        /*itemHeight*/
-        128) virtuallist_changes.itemHeight =
-        /*itemHeight*/
-        ctx[7];
-
-        if (dirty[0] &
-        /*Item, filterText, getOptionLabel, selectedValue, optionIdentifier, hoverItemIndex, items*/
-        4918 | dirty[1] &
-        /*$$scope, item, i*/
-        104) {
-          virtuallist_changes.$$scope = {
-            dirty,
-            ctx
-          };
-        }
-
-        virtuallist.$set(virtuallist_changes);
-      },
-
-      i(local) {
-        if (current) return;
-        transition_in(virtuallist.$$.fragment, local);
-        current = true;
-      },
-
-      o(local) {
-        transition_out(virtuallist.$$.fragment, local);
-        current = false;
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-        destroy_component(virtuallist);
-        /*div_binding*/
-
-        ctx[20](null);
-      }
-
-    };
-  } // (213:2) <VirtualList {items} {itemHeight} let:item let:i>
-
-
-  function create_default_slot(ctx) {
-    let div;
-    let switch_instance;
-    let current;
-    let mounted;
-    let dispose;
-    var switch_value =
-    /*Item*/
-    ctx[2];
-
-    function switch_props(ctx) {
-      return {
-        props: {
-          item:
-          /*item*/
-          ctx[34],
-          filterText:
-          /*filterText*/
-          ctx[12],
-          getOptionLabel:
-          /*getOptionLabel*/
-          ctx[5],
-          isFirst: isItemFirst(
-          /*i*/
-          ctx[36]),
-          isActive: isItemActive(
-          /*item*/
-          ctx[34],
-          /*selectedValue*/
-          ctx[8],
-          /*optionIdentifier*/
-          ctx[9]),
-          isHover: isItemHover(
-          /*hoverItemIndex*/
-          ctx[1],
-          /*item*/
-          ctx[34],
-          /*i*/
-          ctx[36],
-          /*items*/
-          ctx[4])
-        }
-      };
-    }
-
-    if (switch_value) {
-      switch_instance = new switch_value(switch_props(ctx));
-    }
-
-    function mouseover_handler() {
-      return (
-        /*mouseover_handler*/
-        ctx[18](
-        /*i*/
-        ctx[36])
-      );
-    }
-
-    function click_handler(...args) {
-      return (
-        /*click_handler*/
-        ctx[19](
-        /*item*/
-        ctx[34],
-        /*i*/
-        ctx[36], ...args)
-      );
-    }
-
-    return {
-      c() {
-        div = element("div");
-        if (switch_instance) create_component(switch_instance.$$.fragment);
-        attr(div, "class", "listItem");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-
-        if (switch_instance) {
-          mount_component(switch_instance, div, null);
-        }
-
-        current = true;
-
-        if (!mounted) {
-          dispose = [listen(div, "mouseover", mouseover_handler), listen(div, "click", click_handler)];
-          mounted = true;
-        }
-      },
-
-      p(new_ctx, dirty) {
-        ctx = new_ctx;
-        const switch_instance_changes = {};
-        if (dirty[1] &
-        /*item*/
-        8) switch_instance_changes.item =
-        /*item*/
-        ctx[34];
-        if (dirty[0] &
-        /*filterText*/
-        4096) switch_instance_changes.filterText =
-        /*filterText*/
-        ctx[12];
-        if (dirty[0] &
-        /*getOptionLabel*/
-        32) switch_instance_changes.getOptionLabel =
-        /*getOptionLabel*/
-        ctx[5];
-        if (dirty[1] &
-        /*i*/
-        32) switch_instance_changes.isFirst = isItemFirst(
-        /*i*/
-        ctx[36]);
-        if (dirty[0] &
-        /*selectedValue, optionIdentifier*/
-        768 | dirty[1] &
-        /*item*/
-        8) switch_instance_changes.isActive = isItemActive(
-        /*item*/
-        ctx[34],
-        /*selectedValue*/
-        ctx[8],
-        /*optionIdentifier*/
-        ctx[9]);
-        if (dirty[0] &
-        /*hoverItemIndex, items*/
-        18 | dirty[1] &
-        /*item, i*/
-        40) switch_instance_changes.isHover = isItemHover(
-        /*hoverItemIndex*/
-        ctx[1],
-        /*item*/
-        ctx[34],
-        /*i*/
-        ctx[36],
-        /*items*/
-        ctx[4]);
-
-        if (switch_value !== (switch_value =
-        /*Item*/
-        ctx[2])) {
-          if (switch_instance) {
-            group_outros();
-            const old_component = switch_instance;
-            transition_out(old_component.$$.fragment, 1, 0, () => {
-              destroy_component(old_component, 1);
-            });
-            check_outros();
-          }
-
-          if (switch_value) {
-            switch_instance = new switch_value(switch_props(ctx));
-            create_component(switch_instance.$$.fragment);
-            transition_in(switch_instance.$$.fragment, 1);
-            mount_component(switch_instance, div, null);
-          } else {
-            switch_instance = null;
-          }
-        } else if (switch_value) {
-          switch_instance.$set(switch_instance_changes);
-        }
-      },
-
-      i(local) {
-        if (current) return;
-        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
-        current = true;
-      },
-
-      o(local) {
-        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
-        current = false;
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-        if (switch_instance) destroy_component(switch_instance);
-        mounted = false;
-        run_all(dispose);
-      }
-
-    };
-  } // (232:0) {#if !isVirtualList}
-
-
-  function create_if_block$2(ctx) {
-    let div;
-    let current;
-    let each_value =
-    /*items*/
-    ctx[4];
-    let each_blocks = [];
-
-    for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
-    }
-
-    const out = i => transition_out(each_blocks[i], 1, 1, () => {
-      each_blocks[i] = null;
-    });
-
-    let each_1_else = null;
-
-    if (!each_value.length) {
-      each_1_else = create_else_block_1$1(ctx);
-    }
-
-    return {
-      c() {
-        div = element("div");
-
-        for (let i = 0; i < each_blocks.length; i += 1) {
-          each_blocks[i].c();
-        }
-
-        if (each_1_else) {
-          each_1_else.c();
-        }
-
-        attr(div, "class", "listContainer svelte-ux0sbr");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-
-        for (let i = 0; i < each_blocks.length; i += 1) {
-          each_blocks[i].m(div, null);
-        }
-
-        if (each_1_else) {
-          each_1_else.m(div, null);
-        }
-        /*div_binding_1*/
-
-
-        ctx[23](div);
-        current = true;
-      },
-
-      p(ctx, dirty) {
-        if (dirty[0] &
-        /*getGroupHeaderLabel, items, handleHover, handleClick, Item, filterText, getOptionLabel, selectedValue, optionIdentifier, hoverItemIndex, noOptionsMessage, hideEmptyState*/
-        32630) {
-          each_value =
-          /*items*/
-          ctx[4];
-          let i;
-
-          for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$1(ctx, each_value, i);
-
-            if (each_blocks[i]) {
-              each_blocks[i].p(child_ctx, dirty);
-              transition_in(each_blocks[i], 1);
-            } else {
-              each_blocks[i] = create_each_block$1(child_ctx);
-              each_blocks[i].c();
-              transition_in(each_blocks[i], 1);
-              each_blocks[i].m(div, null);
-            }
-          }
-
-          group_outros();
-
-          for (i = each_value.length; i < each_blocks.length; i += 1) {
-            out(i);
-          }
-
-          check_outros();
-
-          if (!each_value.length && each_1_else) {
-            each_1_else.p(ctx, dirty);
-          } else if (!each_value.length) {
-            each_1_else = create_else_block_1$1(ctx);
-            each_1_else.c();
-            each_1_else.m(div, null);
-          } else if (each_1_else) {
-            each_1_else.d(1);
-            each_1_else = null;
-          }
-        }
-      },
-
-      i(local) {
-        if (current) return;
-
-        for (let i = 0; i < each_value.length; i += 1) {
-          transition_in(each_blocks[i]);
-        }
-
-        current = true;
-      },
-
-      o(local) {
-        each_blocks = each_blocks.filter(Boolean);
-
-        for (let i = 0; i < each_blocks.length; i += 1) {
-          transition_out(each_blocks[i]);
-        }
-
-        current = false;
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-        destroy_each(each_blocks, detaching);
-        if (each_1_else) each_1_else.d();
-        /*div_binding_1*/
-
-        ctx[23](null);
-      }
-
-    };
-  } // (254:2) {:else}
-
-
-  function create_else_block_1$1(ctx) {
-    let if_block_anchor;
-    let if_block = !
-    /*hideEmptyState*/
-    ctx[10] && create_if_block_2$1(ctx);
-    return {
-      c() {
-        if (if_block) if_block.c();
-        if_block_anchor = empty();
-      },
-
-      m(target, anchor) {
-        if (if_block) if_block.m(target, anchor);
-        insert(target, if_block_anchor, anchor);
-      },
-
-      p(ctx, dirty) {
-        if (!
-        /*hideEmptyState*/
-        ctx[10]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
-          } else {
-            if_block = create_if_block_2$1(ctx);
-            if_block.c();
-            if_block.m(if_block_anchor.parentNode, if_block_anchor);
-          }
-        } else if (if_block) {
-          if_block.d(1);
-          if_block = null;
-        }
-      },
-
-      d(detaching) {
-        if (if_block) if_block.d(detaching);
-        if (detaching) detach(if_block_anchor);
-      }
-
-    };
-  } // (255:4) {#if !hideEmptyState}
-
-
-  function create_if_block_2$1(ctx) {
-    let div;
-    let t;
-    return {
-      c() {
-        div = element("div");
-        t = text(
-        /*noOptionsMessage*/
-        ctx[11]);
-        attr(div, "class", "empty svelte-ux0sbr");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-        append(div, t);
-      },
-
-      p(ctx, dirty) {
-        if (dirty[0] &
-        /*noOptionsMessage*/
-        2048) set_data(t,
-        /*noOptionsMessage*/
-        ctx[11]);
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-      }
-
-    };
-  } // (237:4) { :else }
-
-
-  function create_else_block$1(ctx) {
-    let div;
-    let switch_instance;
-    let t;
-    let current;
-    let mounted;
-    let dispose;
-    var switch_value =
-    /*Item*/
-    ctx[2];
-
-    function switch_props(ctx) {
-      return {
-        props: {
-          item:
-          /*item*/
-          ctx[34],
-          filterText:
-          /*filterText*/
-          ctx[12],
-          getOptionLabel:
-          /*getOptionLabel*/
-          ctx[5],
-          isFirst: isItemFirst(
-          /*i*/
-          ctx[36]),
-          isActive: isItemActive(
-          /*item*/
-          ctx[34],
-          /*selectedValue*/
-          ctx[8],
-          /*optionIdentifier*/
-          ctx[9]),
-          isHover: isItemHover(
-          /*hoverItemIndex*/
-          ctx[1],
-          /*item*/
-          ctx[34],
-          /*i*/
-          ctx[36],
-          /*items*/
-          ctx[4])
-        }
-      };
-    }
-
-    if (switch_value) {
-      switch_instance = new switch_value(switch_props(ctx));
-    }
-
-    function mouseover_handler_1() {
-      return (
-        /*mouseover_handler_1*/
-        ctx[21](
-        /*i*/
-        ctx[36])
-      );
-    }
-
-    function click_handler_1(...args) {
-      return (
-        /*click_handler_1*/
-        ctx[22](
-        /*item*/
-        ctx[34],
-        /*i*/
-        ctx[36], ...args)
-      );
-    }
-
-    return {
-      c() {
-        div = element("div");
-        if (switch_instance) create_component(switch_instance.$$.fragment);
-        t = space();
-        attr(div, "class", "listItem");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-
-        if (switch_instance) {
-          mount_component(switch_instance, div, null);
-        }
-
-        append(div, t);
-        current = true;
-
-        if (!mounted) {
-          dispose = [listen(div, "mouseover", mouseover_handler_1), listen(div, "click", click_handler_1)];
-          mounted = true;
-        }
-      },
-
-      p(new_ctx, dirty) {
-        ctx = new_ctx;
-        const switch_instance_changes = {};
-        if (dirty[0] &
-        /*items*/
-        16) switch_instance_changes.item =
-        /*item*/
-        ctx[34];
-        if (dirty[0] &
-        /*filterText*/
-        4096) switch_instance_changes.filterText =
-        /*filterText*/
-        ctx[12];
-        if (dirty[0] &
-        /*getOptionLabel*/
-        32) switch_instance_changes.getOptionLabel =
-        /*getOptionLabel*/
-        ctx[5];
-        if (dirty[0] &
-        /*items, selectedValue, optionIdentifier*/
-        784) switch_instance_changes.isActive = isItemActive(
-        /*item*/
-        ctx[34],
-        /*selectedValue*/
-        ctx[8],
-        /*optionIdentifier*/
-        ctx[9]);
-        if (dirty[0] &
-        /*hoverItemIndex, items*/
-        18) switch_instance_changes.isHover = isItemHover(
-        /*hoverItemIndex*/
-        ctx[1],
-        /*item*/
-        ctx[34],
-        /*i*/
-        ctx[36],
-        /*items*/
-        ctx[4]);
-
-        if (switch_value !== (switch_value =
-        /*Item*/
-        ctx[2])) {
-          if (switch_instance) {
-            group_outros();
-            const old_component = switch_instance;
-            transition_out(old_component.$$.fragment, 1, 0, () => {
-              destroy_component(old_component, 1);
-            });
-            check_outros();
-          }
-
-          if (switch_value) {
-            switch_instance = new switch_value(switch_props(ctx));
-            create_component(switch_instance.$$.fragment);
-            transition_in(switch_instance.$$.fragment, 1);
-            mount_component(switch_instance, div, t);
-          } else {
-            switch_instance = null;
-          }
-        } else if (switch_value) {
-          switch_instance.$set(switch_instance_changes);
-        }
-      },
-
-      i(local) {
-        if (current) return;
-        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
-        current = true;
-      },
-
-      o(local) {
-        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
-        current = false;
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-        if (switch_instance) destroy_component(switch_instance);
-        mounted = false;
-        run_all(dispose);
-      }
-
-    };
-  } // (235:4) {#if item.isGroupHeader && !item.isSelectable}
-
-
-  function create_if_block_1$1(ctx) {
-    let div;
-    let t_value =
-    /*getGroupHeaderLabel*/
-    ctx[6](
-    /*item*/
-    ctx[34]) + "";
-    let t;
-    return {
-      c() {
-        div = element("div");
-        t = text(t_value);
-        attr(div, "class", "listGroupTitle svelte-ux0sbr");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-        append(div, t);
-      },
-
-      p(ctx, dirty) {
-        if (dirty[0] &
-        /*getGroupHeaderLabel, items*/
-        80 && t_value !== (t_value =
-        /*getGroupHeaderLabel*/
-        ctx[6](
-        /*item*/
-        ctx[34]) + "")) set_data(t, t_value);
-      },
-
-      i: noop$1,
-      o: noop$1,
-
-      d(detaching) {
-        if (detaching) detach(div);
-      }
-
-    };
-  } // (234:2) {#each items as item, i}
-
-
-  function create_each_block$1(ctx) {
-    let current_block_type_index;
-    let if_block;
-    let if_block_anchor;
-    let current;
-    const if_block_creators = [create_if_block_1$1, create_else_block$1];
-    const if_blocks = [];
-
-    function select_block_type(ctx, dirty) {
-      if (
-      /*item*/
-      ctx[34].isGroupHeader && !
-      /*item*/
-      ctx[34].isSelectable) return 0;
-      return 1;
-    }
-
-    current_block_type_index = select_block_type(ctx);
-    if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-    return {
-      c() {
-        if_block.c();
-        if_block_anchor = empty();
-      },
-
-      m(target, anchor) {
-        if_blocks[current_block_type_index].m(target, anchor);
-        insert(target, if_block_anchor, anchor);
-        current = true;
-      },
-
-      p(ctx, dirty) {
-        let previous_block_index = current_block_type_index;
-        current_block_type_index = select_block_type(ctx);
-
-        if (current_block_type_index === previous_block_index) {
-          if_blocks[current_block_type_index].p(ctx, dirty);
-        } else {
-          group_outros();
-          transition_out(if_blocks[previous_block_index], 1, 1, () => {
-            if_blocks[previous_block_index] = null;
-          });
-          check_outros();
-          if_block = if_blocks[current_block_type_index];
-
-          if (!if_block) {
-            if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-            if_block.c();
-          } else {
-            if_block.p(ctx, dirty);
-          }
-
-          transition_in(if_block, 1);
-          if_block.m(if_block_anchor.parentNode, if_block_anchor);
-        }
-      },
-
-      i(local) {
-        if (current) return;
-        transition_in(if_block);
-        current = true;
-      },
-
-      o(local) {
-        transition_out(if_block);
-        current = false;
-      },
-
-      d(detaching) {
-        if_blocks[current_block_type_index].d(detaching);
-        if (detaching) detach(if_block_anchor);
-      }
-
-    };
-  }
-
-  function create_fragment$9(ctx) {
-    let t;
-    let if_block1_anchor;
-    let current;
-    let mounted;
-    let dispose;
-    let if_block0 =
-    /*isVirtualList*/
-    ctx[3] && create_if_block_3$1(ctx);
-    let if_block1 = !
-    /*isVirtualList*/
-    ctx[3] && create_if_block$2(ctx);
-    return {
-      c() {
-        if (if_block0) if_block0.c();
-        t = space();
-        if (if_block1) if_block1.c();
-        if_block1_anchor = empty();
-      },
-
-      m(target, anchor) {
-        if (if_block0) if_block0.m(target, anchor);
-        insert(target, t, anchor);
-        if (if_block1) if_block1.m(target, anchor);
-        insert(target, if_block1_anchor, anchor);
-        current = true;
-
-        if (!mounted) {
-          dispose = listen(window, "keydown",
-          /*handleKeyDown*/
-          ctx[15]);
-          mounted = true;
-        }
-      },
-
-      p(ctx, dirty) {
-        if (
-        /*isVirtualList*/
-        ctx[3]) {
-          if (if_block0) {
-            if_block0.p(ctx, dirty);
-
-            if (dirty[0] &
-            /*isVirtualList*/
-            8) {
-              transition_in(if_block0, 1);
-            }
-          } else {
-            if_block0 = create_if_block_3$1(ctx);
-            if_block0.c();
-            transition_in(if_block0, 1);
-            if_block0.m(t.parentNode, t);
-          }
-        } else if (if_block0) {
-          group_outros();
-          transition_out(if_block0, 1, 1, () => {
-            if_block0 = null;
-          });
-          check_outros();
-        }
-
-        if (!
-        /*isVirtualList*/
-        ctx[3]) {
-          if (if_block1) {
-            if_block1.p(ctx, dirty);
-
-            if (dirty[0] &
-            /*isVirtualList*/
-            8) {
-              transition_in(if_block1, 1);
-            }
-          } else {
-            if_block1 = create_if_block$2(ctx);
-            if_block1.c();
-            transition_in(if_block1, 1);
-            if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
-          }
-        } else if (if_block1) {
-          group_outros();
-          transition_out(if_block1, 1, 1, () => {
-            if_block1 = null;
-          });
-          check_outros();
-        }
-      },
-
-      i(local) {
-        if (current) return;
-        transition_in(if_block0);
-        transition_in(if_block1);
-        current = true;
-      },
-
-      o(local) {
-        transition_out(if_block0);
-        transition_out(if_block1);
-        current = false;
-      },
-
-      d(detaching) {
-        if (if_block0) if_block0.d(detaching);
-        if (detaching) detach(t);
-        if (if_block1) if_block1.d(detaching);
-        if (detaching) detach(if_block1_anchor);
-        mounted = false;
-        dispose();
-      }
-
-    };
-  }
-
-  function isItemActive(item, selectedValue, optionIdentifier) {
-    return selectedValue && selectedValue[optionIdentifier] === item[optionIdentifier];
-  }
-
-  function isItemFirst(itemIndex) {
-    return itemIndex === 0;
-  }
-
-  function isItemHover(hoverItemIndex, item, itemIndex, items) {
-    return hoverItemIndex === itemIndex || items.length === 1;
-  }
-
-  function instance$8($$self, $$props, $$invalidate) {
-    const dispatch = createEventDispatcher();
-    let {
-      container = undefined
-    } = $$props;
-    let {
-      Item: Item$1 = Item
-    } = $$props;
-    let {
-      isVirtualList = false
-    } = $$props;
-    let {
-      items = []
-    } = $$props;
-    let {
-      getOptionLabel = (option, filterText) => {
-        if (option) return option.isCreator ? `Create \"${filterText}\"` : option.label;
-      }
-    } = $$props;
-    let {
-      getGroupHeaderLabel = option => {
-        return option.label;
-      }
-    } = $$props;
-    let {
-      itemHeight = 40
-    } = $$props;
-    let {
-      hoverItemIndex = 0
-    } = $$props;
-    let {
-      selectedValue = undefined
-    } = $$props;
-    let {
-      optionIdentifier = "value"
-    } = $$props;
-    let {
-      hideEmptyState = false
-    } = $$props;
-    let {
-      noOptionsMessage = "No options"
-    } = $$props;
-    let {
-      isMulti = false
-    } = $$props;
-    let {
-      activeItemIndex = 0
-    } = $$props;
-    let {
-      filterText = ""
-    } = $$props;
-    let isScrollingTimer = 0;
-    let isScrolling = false;
-    let prev_items;
-    onMount(() => {
-      if (items.length > 0 && !isMulti && selectedValue) {
-        const _hoverItemIndex = items.findIndex(item => item[optionIdentifier] === selectedValue[optionIdentifier]);
-
-        if (_hoverItemIndex) {
-          $$invalidate(1, hoverItemIndex = _hoverItemIndex);
-        }
-      }
-
-      scrollToActiveItem("active");
-      container.addEventListener("scroll", () => {
-        clearTimeout(isScrollingTimer);
-        isScrollingTimer = setTimeout(() => {
-          isScrolling = false;
-        }, 100);
-      }, false);
-    });
-    onDestroy(() => {}); // clearTimeout(isScrollingTimer);
-
-    beforeUpdate(() => {
-      if (items !== prev_items && items.length > 0) {
-        $$invalidate(1, hoverItemIndex = 0);
-      } // if (prev_activeItemIndex && activeItemIndex > -1) {
-      //   hoverItemIndex = activeItemIndex;
-      //   scrollToActiveItem('active');
-      // }
-      // if (prev_selectedValue && selectedValue) {
-      //   scrollToActiveItem('active');
-      //   if (items && !isMulti) {
-      //     const hoverItemIndex = items.findIndex((item) => item[optionIdentifier] === selectedValue[optionIdentifier]);
-      //     if (hoverItemIndex) {
-      //       hoverItemIndex = hoverItemIndex;
-      //     }
-      //   }
-      // }
-
-
-      prev_items = items;
-    });
-
-    function handleSelect(item) {
-      if (item.isCreator) return;
-      dispatch("itemSelected", item);
-    }
-
-    function handleHover(i) {
-      if (isScrolling) return;
-      $$invalidate(1, hoverItemIndex = i);
-    }
-
-    function handleClick(args) {
-      const {
-        item,
-        i,
-        event
-      } = args;
-      event.stopPropagation();
-      if (selectedValue && !isMulti && selectedValue[optionIdentifier] === item[optionIdentifier]) return closeList();
-
-      if (item.isCreator) {
-        dispatch("itemCreated", filterText);
-      } else {
-        $$invalidate(16, activeItemIndex = i);
-        $$invalidate(1, hoverItemIndex = i);
-        handleSelect(item);
-      }
-    }
-
-    function closeList() {
-      dispatch("closeList");
-    }
-
-    async function updateHoverItem(increment) {
-      if (isVirtualList) return;
-      let isNonSelectableItem = true;
-
-      while (isNonSelectableItem) {
-        if (increment > 0 && hoverItemIndex === items.length - 1) {
-          $$invalidate(1, hoverItemIndex = 0);
-        } else if (increment < 0 && hoverItemIndex === 0) {
-          $$invalidate(1, hoverItemIndex = items.length - 1);
-        } else {
-          $$invalidate(1, hoverItemIndex = hoverItemIndex + increment);
-        }
-
-        isNonSelectableItem = items[hoverItemIndex].isGroupHeader && !items[hoverItemIndex].isSelectable;
-      }
-
-      await tick();
-      scrollToActiveItem("hover");
-    }
-
-    function handleKeyDown(e) {
-      switch (e.key) {
-        case "ArrowDown":
-          e.preventDefault();
-          items.length && updateHoverItem(1);
-          break;
-
-        case "ArrowUp":
-          e.preventDefault();
-          items.length && updateHoverItem(-1);
-          break;
-
-        case "Enter":
-          e.preventDefault();
-          if (items.length === 0) break;
-          const hoverItem = items[hoverItemIndex];
-
-          if (selectedValue && !isMulti && selectedValue[optionIdentifier] === hoverItem[optionIdentifier]) {
-            closeList();
-            break;
-          }
-
-          if (hoverItem.isCreator) {
-            dispatch("itemCreated", filterText);
-          } else {
-            $$invalidate(16, activeItemIndex = hoverItemIndex);
-            handleSelect(items[hoverItemIndex]);
-          }
-
-          break;
-
-        case "Tab":
-          e.preventDefault();
-          if (items.length === 0) break;
-          if (selectedValue && selectedValue[optionIdentifier] === items[hoverItemIndex][optionIdentifier]) return closeList();
-          $$invalidate(16, activeItemIndex = hoverItemIndex);
-          handleSelect(items[hoverItemIndex]);
-          break;
-      }
-    }
-
-    function scrollToActiveItem(className) {
-      if (isVirtualList || !container) return;
-      let offsetBounding;
-      const focusedElemBounding = container.querySelector(`.listItem .${className}`);
-
-      if (focusedElemBounding) {
-        offsetBounding = container.getBoundingClientRect().bottom - focusedElemBounding.getBoundingClientRect().bottom;
-      }
-
-      $$invalidate(0, container.scrollTop -= offsetBounding, container);
-    }
-
-    const mouseover_handler = i => handleHover(i);
-
-    const click_handler = (item, i, event) => handleClick({
-      item,
-      i,
-      event
-    });
-
-    function div_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
-        container = $$value;
-        $$invalidate(0, container);
-      });
-    }
-
-    const mouseover_handler_1 = i => handleHover(i);
-
-    const click_handler_1 = (item, i, event) => handleClick({
-      item,
-      i,
-      event
-    });
-
-    function div_binding_1($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
-        container = $$value;
-        $$invalidate(0, container);
-      });
-    }
-
-    $$self.$$set = $$props => {
-      if ("container" in $$props) $$invalidate(0, container = $$props.container);
-      if ("Item" in $$props) $$invalidate(2, Item$1 = $$props.Item);
-      if ("isVirtualList" in $$props) $$invalidate(3, isVirtualList = $$props.isVirtualList);
-      if ("items" in $$props) $$invalidate(4, items = $$props.items);
-      if ("getOptionLabel" in $$props) $$invalidate(5, getOptionLabel = $$props.getOptionLabel);
-      if ("getGroupHeaderLabel" in $$props) $$invalidate(6, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
-      if ("itemHeight" in $$props) $$invalidate(7, itemHeight = $$props.itemHeight);
-      if ("hoverItemIndex" in $$props) $$invalidate(1, hoverItemIndex = $$props.hoverItemIndex);
-      if ("selectedValue" in $$props) $$invalidate(8, selectedValue = $$props.selectedValue);
-      if ("optionIdentifier" in $$props) $$invalidate(9, optionIdentifier = $$props.optionIdentifier);
-      if ("hideEmptyState" in $$props) $$invalidate(10, hideEmptyState = $$props.hideEmptyState);
-      if ("noOptionsMessage" in $$props) $$invalidate(11, noOptionsMessage = $$props.noOptionsMessage);
-      if ("isMulti" in $$props) $$invalidate(17, isMulti = $$props.isMulti);
-      if ("activeItemIndex" in $$props) $$invalidate(16, activeItemIndex = $$props.activeItemIndex);
-      if ("filterText" in $$props) $$invalidate(12, filterText = $$props.filterText);
-    };
-
-    return [container, hoverItemIndex, Item$1, isVirtualList, items, getOptionLabel, getGroupHeaderLabel, itemHeight, selectedValue, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, handleHover, handleClick, handleKeyDown, activeItemIndex, isMulti, mouseover_handler, click_handler, div_binding, mouseover_handler_1, click_handler_1, div_binding_1];
-  }
-
-  class List extends SvelteComponent {
-    constructor(options) {
-      super();
-      if (!document.getElementById("svelte-ux0sbr-style")) add_css$3();
-      init$1(this, options, instance$8, create_fragment$9, safe_not_equal, {
-        container: 0,
-        Item: 2,
-        isVirtualList: 3,
-        items: 4,
-        getOptionLabel: 5,
-        getGroupHeaderLabel: 6,
-        itemHeight: 7,
-        hoverItemIndex: 1,
-        selectedValue: 8,
-        optionIdentifier: 9,
-        hideEmptyState: 10,
-        noOptionsMessage: 11,
-        isMulti: 17,
-        activeItemIndex: 16,
-        filterText: 12
-      }, [-1, -1]);
-    }
-
-  }
-
-  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.38.3 */
-
-  function add_css$2() {
-    var style = element("style");
-    style.id = "svelte-ch6bh7-style";
-    style.textContent = ".selection.svelte-ch6bh7{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}";
-    append(document.head, style);
-  }
-
-  function create_fragment$8(ctx) {
-    let div;
-    let raw_value =
-    /*getSelectionLabel*/
-    ctx[0](
-    /*item*/
-    ctx[1]) + "";
-    return {
-      c() {
-        div = element("div");
-        attr(div, "class", "selection svelte-ch6bh7");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-        div.innerHTML = raw_value;
-      },
-
-      p(ctx, [dirty]) {
-        if (dirty &
-        /*getSelectionLabel, item*/
-        3 && raw_value !== (raw_value =
-        /*getSelectionLabel*/
-        ctx[0](
-        /*item*/
-        ctx[1]) + "")) div.innerHTML = raw_value;
-      },
-
-      i: noop$1,
-      o: noop$1,
-
-      d(detaching) {
-        if (detaching) detach(div);
-      }
-
-    };
-  }
-
-  function instance$7($$self, $$props, $$invalidate) {
-    let {
-      getSelectionLabel = undefined
-    } = $$props;
-    let {
-      item = undefined
-    } = $$props;
-
-    $$self.$$set = $$props => {
-      if ("getSelectionLabel" in $$props) $$invalidate(0, getSelectionLabel = $$props.getSelectionLabel);
-      if ("item" in $$props) $$invalidate(1, item = $$props.item);
-    };
-
-    return [getSelectionLabel, item];
-  }
-
-  class Selection extends SvelteComponent {
-    constructor(options) {
-      super();
-      if (!document.getElementById("svelte-ch6bh7-style")) add_css$2();
-      init$1(this, options, instance$7, create_fragment$8, safe_not_equal, {
-        getSelectionLabel: 0,
-        item: 1
-      });
-    }
-
-  }
-
-  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.38.3 */
-
-  function add_css$1() {
-    var style = element("style");
-    style.id = "svelte-14r1jr2-style";
-    style.textContent = ".multiSelectItem.svelte-14r1jr2.svelte-14r1jr2{background:var(--multiItemBG, #EBEDEF);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-14r1jr2.svelte-14r1jr2{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-14r1jr2.svelte-14r1jr2:hover,.multiSelectItem.active.svelte-14r1jr2.svelte-14r1jr2{background-color:var(--multiItemActiveBG, #006FFF);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-14r1jr2.svelte-14r1jr2:hover{background:var(--multiItemDisabledHoverBg, #EBEDEF);color:var(--multiItemDisabledHoverColor, #C1C6CC)}.multiSelectItem_clear.svelte-14r1jr2.svelte-14r1jr2{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616F);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-14r1jr2.svelte-14r1jr2:hover,.active.svelte-14r1jr2 .multiSelectItem_clear.svelte-14r1jr2{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-14r1jr2:hover svg.svelte-14r1jr2,.active.svelte-14r1jr2 .multiSelectItem_clear svg.svelte-14r1jr2{fill:var(--multiClearHoverFill, #006FFF)}.multiSelectItem_clear.svelte-14r1jr2 svg.svelte-14r1jr2{fill:var(--multiClearFill, #EBEDEF);vertical-align:top}";
-    append(document.head, style);
-  }
-
-  function get_each_context(ctx, list, i) {
-    const child_ctx = ctx.slice();
-    child_ctx[9] = list[i];
-    child_ctx[11] = i;
-    return child_ctx;
-  } // (23:2) {#if !isDisabled && !multiFullItemClearable}
-
-
-  function create_if_block$1(ctx) {
-    let div;
-    let mounted;
-    let dispose;
-
-    function click_handler(...args) {
-      return (
-        /*click_handler*/
-        ctx[6](
-        /*i*/
-        ctx[11], ...args)
-      );
-    }
-
-    return {
-      c() {
-        div = element("div");
-        div.innerHTML = `<svg width="100%" height="100%" viewBox="-2 -2 50 50" focusable="false" role="presentation" class="svelte-14r1jr2"><path d="M34.923,37.251L24,26.328L13.077,37.251L9.436,33.61l10.923-10.923L9.436,11.765l3.641-3.641L24,19.047L34.923,8.124 l3.641,3.641L27.641,22.688L38.564,33.61L34.923,37.251z"></path></svg>`;
-        attr(div, "class", "multiSelectItem_clear svelte-14r1jr2");
-      },
-
-      m(target, anchor) {
-        insert(target, div, anchor);
-
-        if (!mounted) {
-          dispose = listen(div, "click", click_handler);
-          mounted = true;
-        }
-      },
-
-      p(new_ctx, dirty) {
-        ctx = new_ctx;
-      },
-
-      d(detaching) {
-        if (detaching) detach(div);
-        mounted = false;
-        dispose();
-      }
-
-    };
-  } // (18:0) {#each selectedValue as value, i}
-
-
-  function create_each_block(ctx) {
-    let div1;
-    let div0;
-    let raw_value =
-    /*getSelectionLabel*/
-    ctx[4](
-    /*value*/
-    ctx[9]) + "";
-    let t0;
-    let t1;
-    let div1_class_value;
-    let mounted;
-    let dispose;
-    let if_block = !
-    /*isDisabled*/
-    ctx[2] && !
-    /*multiFullItemClearable*/
-    ctx[3] && create_if_block$1(ctx);
-
-    function click_handler_1(...args) {
-      return (
-        /*click_handler_1*/
-        ctx[7](
-        /*i*/
-        ctx[11], ...args)
-      );
-    }
-
-    return {
-      c() {
-        div1 = element("div");
-        div0 = element("div");
-        t0 = space();
-        if (if_block) if_block.c();
-        t1 = space();
-        attr(div0, "class", "multiSelectItem_label svelte-14r1jr2");
-        attr(div1, "class", div1_class_value = "multiSelectItem " + (
-        /*activeSelectedValue*/
-        ctx[1] ===
-        /*i*/
-        ctx[11] ? "active" : "") + " " + (
-        /*isDisabled*/
-        ctx[2] ? "disabled" : "") + " svelte-14r1jr2");
-      },
-
-      m(target, anchor) {
-        insert(target, div1, anchor);
-        append(div1, div0);
-        div0.innerHTML = raw_value;
-        append(div1, t0);
-        if (if_block) if_block.m(div1, null);
-        append(div1, t1);
-
-        if (!mounted) {
-          dispose = listen(div1, "click", click_handler_1);
-          mounted = true;
-        }
-      },
-
-      p(new_ctx, dirty) {
-        ctx = new_ctx;
-        if (dirty &
-        /*getSelectionLabel, selectedValue*/
-        17 && raw_value !== (raw_value =
-        /*getSelectionLabel*/
-        ctx[4](
-        /*value*/
-        ctx[9]) + "")) div0.innerHTML = raw_value;
-
-        if (!
-        /*isDisabled*/
-        ctx[2] && !
-        /*multiFullItemClearable*/
-        ctx[3]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
-          } else {
-            if_block = create_if_block$1(ctx);
-            if_block.c();
-            if_block.m(div1, t1);
-          }
-        } else if (if_block) {
-          if_block.d(1);
-          if_block = null;
-        }
-
-        if (dirty &
-        /*activeSelectedValue, isDisabled*/
-        6 && div1_class_value !== (div1_class_value = "multiSelectItem " + (
-        /*activeSelectedValue*/
-        ctx[1] ===
-        /*i*/
-        ctx[11] ? "active" : "") + " " + (
-        /*isDisabled*/
-        ctx[2] ? "disabled" : "") + " svelte-14r1jr2")) {
-          attr(div1, "class", div1_class_value);
-        }
-      },
-
-      d(detaching) {
-        if (detaching) detach(div1);
-        if (if_block) if_block.d();
-        mounted = false;
-        dispose();
-      }
-
-    };
-  }
-
-  function create_fragment$7(ctx) {
-    let each_1_anchor;
-    let each_value =
-    /*selectedValue*/
-    ctx[0];
-    let each_blocks = [];
-
-    for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-    }
-
-    return {
-      c() {
-        for (let i = 0; i < each_blocks.length; i += 1) {
-          each_blocks[i].c();
-        }
-
-        each_1_anchor = empty();
-      },
-
-      m(target, anchor) {
-        for (let i = 0; i < each_blocks.length; i += 1) {
-          each_blocks[i].m(target, anchor);
-        }
-
-        insert(target, each_1_anchor, anchor);
-      },
-
-      p(ctx, [dirty]) {
-        if (dirty &
-        /*activeSelectedValue, isDisabled, multiFullItemClearable, handleClear, getSelectionLabel, selectedValue*/
-        63) {
-          each_value =
-          /*selectedValue*/
-          ctx[0];
-          let i;
-
-          for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context(ctx, each_value, i);
-
-            if (each_blocks[i]) {
-              each_blocks[i].p(child_ctx, dirty);
-            } else {
-              each_blocks[i] = create_each_block(child_ctx);
-              each_blocks[i].c();
-              each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-            }
-          }
-
-          for (; i < each_blocks.length; i += 1) {
-            each_blocks[i].d(1);
-          }
-
-          each_blocks.length = each_value.length;
-        }
-      },
-
-      i: noop$1,
-      o: noop$1,
-
-      d(detaching) {
-        destroy_each(each_blocks, detaching);
-        if (detaching) detach(each_1_anchor);
-      }
-
-    };
-  }
-
-  function instance$6($$self, $$props, $$invalidate) {
-    const dispatch = createEventDispatcher();
-    let {
-      selectedValue = []
-    } = $$props;
-    let {
-      activeSelectedValue = undefined
-    } = $$props;
-    let {
-      isDisabled = false
-    } = $$props;
-    let {
-      multiFullItemClearable = false
-    } = $$props;
-    let {
-      getSelectionLabel = undefined
-    } = $$props;
-
-    function handleClear(i, event) {
-      event.stopPropagation();
-      dispatch("multiItemClear", {
-        i
-      });
-    }
-
-    const click_handler = (i, event) => handleClear(i, event);
-
-    const click_handler_1 = (i, event) => multiFullItemClearable ? handleClear(i, event) : {};
-
-    $$self.$$set = $$props => {
-      if ("selectedValue" in $$props) $$invalidate(0, selectedValue = $$props.selectedValue);
-      if ("activeSelectedValue" in $$props) $$invalidate(1, activeSelectedValue = $$props.activeSelectedValue);
-      if ("isDisabled" in $$props) $$invalidate(2, isDisabled = $$props.isDisabled);
-      if ("multiFullItemClearable" in $$props) $$invalidate(3, multiFullItemClearable = $$props.multiFullItemClearable);
-      if ("getSelectionLabel" in $$props) $$invalidate(4, getSelectionLabel = $$props.getSelectionLabel);
-    };
-
-    return [selectedValue, activeSelectedValue, isDisabled, multiFullItemClearable, getSelectionLabel, handleClear, click_handler, click_handler_1];
-  }
-
-  class MultiSelection extends SvelteComponent {
-    constructor(options) {
-      super();
-      if (!document.getElementById("svelte-14r1jr2-style")) add_css$1();
-      init$1(this, options, instance$6, create_fragment$7, safe_not_equal, {
-        selectedValue: 0,
-        activeSelectedValue: 1,
-        isDisabled: 2,
-        multiFullItemClearable: 3,
-        getSelectionLabel: 4
-      });
-    }
-
-  }
-
-  function isOutOfViewport (elem) {
-    const bounding = elem.getBoundingClientRect();
-    const out = {};
-    out.top = bounding.top < 0;
-    out.left = bounding.left < 0;
-    out.bottom = bounding.bottom > (window.innerHeight || document.documentElement.clientHeight);
-    out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
-    out.any = out.top || out.left || out.bottom || out.right;
-    return out;
-  }
-
-  function debounce(func, wait, immediate) {
-    let timeout;
-    return function executedFunction() {
-      let context = this;
-      let args = arguments;
-
-      let later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-
-      let callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  }
-
-  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.38.3 */
+  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.44.2 */
 
   function create_fragment$6(ctx) {
     let svg;
@@ -19510,6 +19854,7 @@
         attr(svg, "height", "100%");
         attr(svg, "viewBox", "-2 -2 50 50");
         attr(svg, "focusable", "false");
+        attr(svg, "aria-hidden", "true");
         attr(svg, "role", "presentation");
       },
 
@@ -19537,20 +19882,90 @@
 
   }
 
-  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.38.3 */
-  const {
-    document: document_1
-  } = globals;
+  function debounce(func, wait, immediate) {
+    let timeout;
+    return function executedFunction() {
+      let context = this;
+      let args = arguments;
 
-  function add_css() {
-    var style = element("style");
-    style.id = "svelte-17qb5ew-style";
-    style.textContent = ".selectContainer.svelte-17qb5ew.svelte-17qb5ew{--padding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding);background:var(--background, #fff)}.selectContainer.svelte-17qb5ew input.svelte-17qb5ew{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0)}.selectContainer.svelte-17qb5ew input.svelte-17qb5ew::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17qb5ew input.svelte-17qb5ew:focus{outline:none}.selectContainer.svelte-17qb5ew.svelte-17qb5ew:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17qb5ew.svelte-17qb5ew{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17qb5ew.svelte-17qb5ew{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17qb5ew input.svelte-17qb5ew::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17qb5ew.svelte-17qb5ew{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17qb5ew.svelte-17qb5ew:focus{outline:none}.clearSelect.svelte-17qb5ew.svelte-17qb5ew{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17qb5ew.svelte-17qb5ew:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17qb5ew .clearSelect.svelte-17qb5ew{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17qb5ew.svelte-17qb5ew{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17qb5ew svg.svelte-17qb5ew{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17qb5ew.svelte-17qb5ew{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17qb5ew-rotate 0.75s linear infinite}.spinner_icon.svelte-17qb5ew.svelte-17qb5ew{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17qb5ew.svelte-17qb5ew{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17qb5ew.svelte-17qb5ew{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17qb5ew>.svelte-17qb5ew{flex:1 1 50px}.selectContainer.multiSelect.svelte-17qb5ew input.svelte-17qb5ew{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17qb5ew.svelte-17qb5ew{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}@keyframes svelte-17qb5ew-rotate{100%{transform:rotate(360deg)}}";
-    append(document_1.head, style);
-  } // (827:2) {#if Icon}
+      let later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+
+  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.44.2 */
+
+  function add_css(target) {
+    append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
+  }
+
+  function get_each_context(ctx, list, i) {
+    const child_ctx = ctx.slice();
+    child_ctx[103] = list[i];
+    return child_ctx;
+  } // (874:8) {#if isFocused}
 
 
-  function create_if_block_7(ctx) {
+  function create_if_block_10(ctx) {
+    let span0;
+    let t0;
+    let t1;
+    let span1;
+    let t2;
+    return {
+      c() {
+        span0 = element("span");
+        t0 = text(
+        /*ariaSelection*/
+        ctx[33]);
+        t1 = space();
+        span1 = element("span");
+        t2 = text(
+        /*ariaContext*/
+        ctx[32]);
+        attr(span0, "id", "aria-selection");
+        attr(span1, "id", "aria-context");
+      },
+
+      m(target, anchor) {
+        insert(target, span0, anchor);
+        append(span0, t0);
+        insert(target, t1, anchor);
+        insert(target, span1, anchor);
+        append(span1, t2);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[1] &
+        /*ariaSelection*/
+        4) set_data(t0,
+        /*ariaSelection*/
+        ctx[33]);
+        if (dirty[1] &
+        /*ariaContext*/
+        2) set_data(t2,
+        /*ariaContext*/
+        ctx[32]);
+      },
+
+      d(detaching) {
+        if (detaching) detach(span0);
+        if (detaching) detach(t1);
+        if (detaching) detach(span1);
+      }
+
+    };
+  } // (882:4) {#if Icon}
+
+
+  function create_if_block_9(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
@@ -19641,35 +20056,35 @@
       }
 
     };
-  } // (831:2) {#if isMulti && selectedValue && selectedValue.length > 0}
+  } // (886:4) {#if showMultiSelect}
 
 
-  function create_if_block_6(ctx) {
+  function create_if_block_8(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
     var switch_value =
     /*MultiSelection*/
-    ctx[7];
+    ctx[26];
 
     function switch_props(ctx) {
       return {
         props: {
-          selectedValue:
-          /*selectedValue*/
-          ctx[0],
+          value:
+          /*value*/
+          ctx[2],
           getSelectionLabel:
           /*getSelectionLabel*/
-          ctx[13],
-          activeSelectedValue:
-          /*activeSelectedValue*/
-          ctx[25],
+          ctx[12],
+          activeValue:
+          /*activeValue*/
+          ctx[30],
           isDisabled:
           /*isDisabled*/
-          ctx[10],
+          ctx[9],
           multiFullItemClearable:
           /*multiFullItemClearable*/
-          ctx[9]
+          ctx[8]
         }
       };
     }
@@ -19678,10 +20093,10 @@
       switch_instance = new switch_value(switch_props(ctx));
       switch_instance.$on("multiItemClear",
       /*handleMultiItemClear*/
-      ctx[29]);
+      ctx[38]);
       switch_instance.$on("focus",
       /*handleFocus*/
-      ctx[32]);
+      ctx[40]);
     }
 
     return {
@@ -19702,34 +20117,34 @@
       p(ctx, dirty) {
         const switch_instance_changes = {};
         if (dirty[0] &
-        /*selectedValue*/
-        1) switch_instance_changes.selectedValue =
-        /*selectedValue*/
-        ctx[0];
+        /*value*/
+        4) switch_instance_changes.value =
+        /*value*/
+        ctx[2];
         if (dirty[0] &
         /*getSelectionLabel*/
-        8192) switch_instance_changes.getSelectionLabel =
+        4096) switch_instance_changes.getSelectionLabel =
         /*getSelectionLabel*/
-        ctx[13];
+        ctx[12];
         if (dirty[0] &
-        /*activeSelectedValue*/
-        33554432) switch_instance_changes.activeSelectedValue =
-        /*activeSelectedValue*/
-        ctx[25];
+        /*activeValue*/
+        1073741824) switch_instance_changes.activeValue =
+        /*activeValue*/
+        ctx[30];
         if (dirty[0] &
         /*isDisabled*/
-        1024) switch_instance_changes.isDisabled =
+        512) switch_instance_changes.isDisabled =
         /*isDisabled*/
-        ctx[10];
-        if (dirty[0] &
-        /*multiFullItemClearable*/
-        512) switch_instance_changes.multiFullItemClearable =
-        /*multiFullItemClearable*/
         ctx[9];
+        if (dirty[0] &
+        /*multiFullItemClearable*/
+        256) switch_instance_changes.multiFullItemClearable =
+        /*multiFullItemClearable*/
+        ctx[8];
 
         if (switch_value !== (switch_value =
         /*MultiSelection*/
-        ctx[7])) {
+        ctx[26])) {
           if (switch_instance) {
             group_outros();
             const old_component = switch_instance;
@@ -19743,10 +20158,10 @@
             switch_instance = new switch_value(switch_props(ctx));
             switch_instance.$on("multiItemClear",
             /*handleMultiItemClear*/
-            ctx[29]);
+            ctx[38]);
             switch_instance.$on("focus",
             /*handleFocus*/
-            ctx[32]);
+            ctx[40]);
             create_component(switch_instance.$$.fragment);
             transition_in(switch_instance.$$.fragment, 1);
             mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
@@ -19775,198 +20190,10 @@
       }
 
     };
-  } // (852:2) {:else}
+  } // (908:4) {#if !isMulti && showSelectedItem}
 
 
-  function create_else_block_1(ctx) {
-    let input_1;
-    let mounted;
-    let dispose;
-    let input_1_levels = [
-    /*_inputAttributes*/
-    ctx[26], {
-      placeholder:
-      /*placeholderText*/
-      ctx[28]
-    }, {
-      style:
-      /*inputStyles*/
-      ctx[15]
-    }];
-    let input_1_data = {};
-
-    for (let i = 0; i < input_1_levels.length; i += 1) {
-      input_1_data = assign$1(input_1_data, input_1_levels[i]);
-    }
-
-    return {
-      c() {
-        input_1 = element("input");
-        set_attributes(input_1, input_1_data);
-        toggle_class(input_1, "svelte-17qb5ew", true);
-      },
-
-      m(target, anchor) {
-        insert(target, input_1, anchor);
-        /*input_1_binding_1*/
-
-        ctx[63](input_1);
-        set_input_value(input_1,
-        /*filterText*/
-        ctx[1]);
-
-        if (!mounted) {
-          dispose = [listen(input_1, "focus",
-          /*handleFocus*/
-          ctx[32]), listen(input_1, "input",
-          /*input_1_input_handler_1*/
-          ctx[64])];
-          mounted = true;
-        }
-      },
-
-      p(ctx, dirty) {
-        set_attributes(input_1, input_1_data = get_spread_update(input_1_levels, [dirty[0] &
-        /*_inputAttributes*/
-        67108864 &&
-        /*_inputAttributes*/
-        ctx[26], dirty[0] &
-        /*placeholderText*/
-        268435456 && {
-          placeholder:
-          /*placeholderText*/
-          ctx[28]
-        }, dirty[0] &
-        /*inputStyles*/
-        32768 && {
-          style:
-          /*inputStyles*/
-          ctx[15]
-        }]));
-
-        if (dirty[0] &
-        /*filterText*/
-        2 && input_1.value !==
-        /*filterText*/
-        ctx[1]) {
-          set_input_value(input_1,
-          /*filterText*/
-          ctx[1]);
-        }
-
-        toggle_class(input_1, "svelte-17qb5ew", true);
-      },
-
-      d(detaching) {
-        if (detaching) detach(input_1);
-        /*input_1_binding_1*/
-
-        ctx[63](null);
-        mounted = false;
-        run_all(dispose);
-      }
-
-    };
-  } // (843:2) {#if isDisabled}
-
-
-  function create_if_block_5(ctx) {
-    let input_1;
-    let mounted;
-    let dispose;
-    let input_1_levels = [
-    /*_inputAttributes*/
-    ctx[26], {
-      placeholder:
-      /*placeholderText*/
-      ctx[28]
-    }, {
-      style:
-      /*inputStyles*/
-      ctx[15]
-    }, {
-      disabled: true
-    }];
-    let input_1_data = {};
-
-    for (let i = 0; i < input_1_levels.length; i += 1) {
-      input_1_data = assign$1(input_1_data, input_1_levels[i]);
-    }
-
-    return {
-      c() {
-        input_1 = element("input");
-        set_attributes(input_1, input_1_data);
-        toggle_class(input_1, "svelte-17qb5ew", true);
-      },
-
-      m(target, anchor) {
-        insert(target, input_1, anchor);
-        /*input_1_binding*/
-
-        ctx[61](input_1);
-        set_input_value(input_1,
-        /*filterText*/
-        ctx[1]);
-
-        if (!mounted) {
-          dispose = [listen(input_1, "focus",
-          /*handleFocus*/
-          ctx[32]), listen(input_1, "input",
-          /*input_1_input_handler*/
-          ctx[62])];
-          mounted = true;
-        }
-      },
-
-      p(ctx, dirty) {
-        set_attributes(input_1, input_1_data = get_spread_update(input_1_levels, [dirty[0] &
-        /*_inputAttributes*/
-        67108864 &&
-        /*_inputAttributes*/
-        ctx[26], dirty[0] &
-        /*placeholderText*/
-        268435456 && {
-          placeholder:
-          /*placeholderText*/
-          ctx[28]
-        }, dirty[0] &
-        /*inputStyles*/
-        32768 && {
-          style:
-          /*inputStyles*/
-          ctx[15]
-        }, {
-          disabled: true
-        }]));
-
-        if (dirty[0] &
-        /*filterText*/
-        2 && input_1.value !==
-        /*filterText*/
-        ctx[1]) {
-          set_input_value(input_1,
-          /*filterText*/
-          ctx[1]);
-        }
-
-        toggle_class(input_1, "svelte-17qb5ew", true);
-      },
-
-      d(detaching) {
-        if (detaching) detach(input_1);
-        /*input_1_binding*/
-
-        ctx[61](null);
-        mounted = false;
-        run_all(dispose);
-      }
-
-    };
-  } // (862:2) {#if !isMulti && showSelectedItem}
-
-
-  function create_if_block_4(ctx) {
+  function create_if_block_7(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -19974,17 +20201,17 @@
     let dispose;
     var switch_value =
     /*Selection*/
-    ctx[6];
+    ctx[25];
 
     function switch_props(ctx) {
       return {
         props: {
           item:
-          /*selectedValue*/
-          ctx[0],
+          /*value*/
+          ctx[2],
           getSelectionLabel:
           /*getSelectionLabel*/
-          ctx[13]
+          ctx[12]
         }
       };
     }
@@ -19997,7 +20224,7 @@
       c() {
         div = element("div");
         if (switch_instance) create_component(switch_instance.$$.fragment);
-        attr(div, "class", "selectedItem svelte-17qb5ew");
+        attr(div, "class", "selectedItem svelte-17l1npl");
       },
 
       m(target, anchor) {
@@ -20012,7 +20239,7 @@
         if (!mounted) {
           dispose = listen(div, "focus",
           /*handleFocus*/
-          ctx[32]);
+          ctx[40]);
           mounted = true;
         }
       },
@@ -20020,19 +20247,19 @@
       p(ctx, dirty) {
         const switch_instance_changes = {};
         if (dirty[0] &
-        /*selectedValue*/
-        1) switch_instance_changes.item =
-        /*selectedValue*/
-        ctx[0];
+        /*value*/
+        4) switch_instance_changes.item =
+        /*value*/
+        ctx[2];
         if (dirty[0] &
         /*getSelectionLabel*/
-        8192) switch_instance_changes.getSelectionLabel =
+        4096) switch_instance_changes.getSelectionLabel =
         /*getSelectionLabel*/
-        ctx[13];
+        ctx[12];
 
         if (switch_value !== (switch_value =
         /*Selection*/
-        ctx[6])) {
+        ctx[25])) {
           if (switch_instance) {
             group_outros();
             const old_component = switch_instance;
@@ -20074,10 +20301,10 @@
       }
 
     };
-  } // (871:2) {#if showSelectedItem && isClearable && !isDisabled && !isWaiting}
+  } // (917:4) {#if showClearIcon}
 
 
-  function create_if_block_3(ctx) {
+  function create_if_block_6(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -20099,7 +20326,8 @@
       c() {
         div = element("div");
         if (switch_instance) create_component(switch_instance.$$.fragment);
-        attr(div, "class", "clearSelect svelte-17qb5ew");
+        attr(div, "class", "clearSelect svelte-17l1npl");
+        attr(div, "aria-hidden", "true");
       },
 
       m(target, anchor) {
@@ -20114,7 +20342,7 @@
         if (!mounted) {
           dispose = listen(div, "click", prevent_default(
           /*handleClear*/
-          ctx[24]));
+          ctx[27]));
           mounted = true;
         }
       },
@@ -20162,26 +20390,27 @@
       }
 
     };
-  } // (877:2) {#if showIndicator || (showChevron && !selectedValue || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
+  } // (926:4) {#if !showClearIcon && (showIndicator || (showChevron && !value) || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
 
 
-  function create_if_block_1(ctx) {
+  function create_if_block_4(ctx) {
     let div;
 
-    function select_block_type_1(ctx, dirty) {
+    function select_block_type(ctx, dirty) {
       if (
       /*indicatorSvg*/
-      ctx[22]) return create_if_block_2;
+      ctx[22]) return create_if_block_5;
       return create_else_block;
     }
 
-    let current_block_type = select_block_type_1(ctx);
+    let current_block_type = select_block_type(ctx);
     let if_block = current_block_type(ctx);
     return {
       c() {
         div = element("div");
         if_block.c();
-        attr(div, "class", "indicator svelte-17qb5ew");
+        attr(div, "class", "indicator svelte-17l1npl");
+        attr(div, "aria-hidden", "true");
       },
 
       m(target, anchor) {
@@ -20190,7 +20419,7 @@
       },
 
       p(ctx, dirty) {
-        if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+        if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
           if_block.p(ctx, dirty);
         } else {
           if_block.d(1);
@@ -20209,7 +20438,7 @@
       }
 
     };
-  } // (881:6) {:else}
+  } // (930:12) {:else}
 
 
   function create_else_block(ctx) {
@@ -20219,12 +20448,13 @@
       c() {
         svg = svg_element("svg");
         path = svg_element("path");
-        attr(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747\n            3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0\n            1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502\n            0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0\n            0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
+        attr(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747\n          3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0\n          1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502\n          0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0\n          0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
         attr(svg, "width", "100%");
         attr(svg, "height", "100%");
         attr(svg, "viewBox", "0 0 20 20");
         attr(svg, "focusable", "false");
-        attr(svg, "class", "svelte-17qb5ew");
+        attr(svg, "aria-hidden", "true");
+        attr(svg, "class", "svelte-17l1npl");
       },
 
       m(target, anchor) {
@@ -20239,10 +20469,10 @@
       }
 
     };
-  } // (879:6) {#if indicatorSvg}
+  } // (928:12) {#if indicatorSvg}
 
 
-  function create_if_block_2(ctx) {
+  function create_if_block_5(ctx) {
     let html_tag;
     let html_anchor;
     return {
@@ -20273,16 +20503,16 @@
       }
 
     };
-  } // (898:2) {#if isWaiting}
+  } // (948:4) {#if isWaiting}
 
 
-  function create_if_block(ctx) {
+  function create_if_block_3(ctx) {
     let div;
     return {
       c() {
         div = element("div");
-        div.innerHTML = `<svg class="spinner_icon svelte-17qb5ew" viewBox="25 25 50 50"><circle class="spinner_path svelte-17qb5ew" cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-miterlimit="10"></circle></svg>`;
-        attr(div, "class", "spinner svelte-17qb5ew");
+        div.innerHTML = `<svg class="spinner_icon svelte-17l1npl" viewBox="25 25 50 50"><circle class="spinner_path svelte-17l1npl" cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-miterlimit="10"></circle></svg>`;
+        attr(div, "class", "spinner svelte-17l1npl");
       },
 
       m(target, anchor) {
@@ -20294,189 +20524,557 @@
       }
 
     };
+  } // (964:4) {#if listOpen}
+
+
+  function create_if_block_2(ctx) {
+    let switch_instance;
+    let updating_hoverItemIndex;
+    let switch_instance_anchor;
+    let current;
+    const switch_instance_spread_levels = [
+    /*listProps*/
+    ctx[34]];
+
+    function switch_instance_hoverItemIndex_binding(value) {
+      /*switch_instance_hoverItemIndex_binding*/
+      ctx[84](value);
+    }
+
+    var switch_value =
+    /*List*/
+    ctx[24];
+
+    function switch_props(ctx) {
+      let switch_instance_props = {};
+
+      for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+        switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
+      }
+
+      if (
+      /*hoverItemIndex*/
+      ctx[28] !== void 0) {
+        switch_instance_props.hoverItemIndex =
+        /*hoverItemIndex*/
+        ctx[28];
+      }
+
+      return {
+        props: switch_instance_props
+      };
+    }
+
+    if (switch_value) {
+      switch_instance = new switch_value(switch_props(ctx));
+      binding_callbacks.push(() => bind(switch_instance, 'hoverItemIndex', switch_instance_hoverItemIndex_binding));
+      switch_instance.$on("itemSelected",
+      /*itemSelected*/
+      ctx[43]);
+      switch_instance.$on("itemCreated",
+      /*itemCreated*/
+      ctx[44]);
+      switch_instance.$on("closeList",
+      /*closeList*/
+      ctx[45]);
+    }
+
+    return {
+      c() {
+        if (switch_instance) create_component(switch_instance.$$.fragment);
+        switch_instance_anchor = empty();
+      },
+
+      m(target, anchor) {
+        if (switch_instance) {
+          mount_component(switch_instance, target, anchor);
+        }
+
+        insert(target, switch_instance_anchor, anchor);
+        current = true;
+      },
+
+      p(ctx, dirty) {
+        const switch_instance_changes = dirty[1] &
+        /*listProps*/
+        8 ? get_spread_update(switch_instance_spread_levels, [get_spread_object(
+        /*listProps*/
+        ctx[34])]) : {};
+
+        if (!updating_hoverItemIndex && dirty[0] &
+        /*hoverItemIndex*/
+        268435456) {
+          updating_hoverItemIndex = true;
+          switch_instance_changes.hoverItemIndex =
+          /*hoverItemIndex*/
+          ctx[28];
+          add_flush_callback(() => updating_hoverItemIndex = false);
+        }
+
+        if (switch_value !== (switch_value =
+        /*List*/
+        ctx[24])) {
+          if (switch_instance) {
+            group_outros();
+            const old_component = switch_instance;
+            transition_out(old_component.$$.fragment, 1, 0, () => {
+              destroy_component(old_component, 1);
+            });
+            check_outros();
+          }
+
+          if (switch_value) {
+            switch_instance = new switch_value(switch_props(ctx));
+            binding_callbacks.push(() => bind(switch_instance, 'hoverItemIndex', switch_instance_hoverItemIndex_binding));
+            switch_instance.$on("itemSelected",
+            /*itemSelected*/
+            ctx[43]);
+            switch_instance.$on("itemCreated",
+            /*itemCreated*/
+            ctx[44]);
+            switch_instance.$on("closeList",
+            /*closeList*/
+            ctx[45]);
+            create_component(switch_instance.$$.fragment);
+            transition_in(switch_instance.$$.fragment, 1);
+            mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+          } else {
+            switch_instance = null;
+          }
+        } else if (switch_value) {
+          switch_instance.$set(switch_instance_changes);
+        }
+      },
+
+      i(local) {
+        if (current) return;
+        if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+        current = true;
+      },
+
+      o(local) {
+        if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+        current = false;
+      },
+
+      d(detaching) {
+        if (detaching) detach(switch_instance_anchor);
+        if (switch_instance) destroy_component(switch_instance, detaching);
+      }
+
+    };
+  } // (974:4) {#if !isMulti || (isMulti && !showMultiSelect)}
+
+
+  function create_if_block_1(ctx) {
+    let input_1;
+    let input_1_name_value;
+    let input_1_value_value;
+    return {
+      c() {
+        input_1 = element("input");
+        attr(input_1, "name", input_1_name_value =
+        /*inputAttributes*/
+        ctx[16].name);
+        attr(input_1, "type", "hidden");
+        input_1.value = input_1_value_value =
+        /*value*/
+        ctx[2] ?
+        /*getSelectionLabel*/
+        ctx[12](
+        /*value*/
+        ctx[2]) : null;
+        attr(input_1, "class", "svelte-17l1npl");
+      },
+
+      m(target, anchor) {
+        insert(target, input_1, anchor);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*inputAttributes*/
+        65536 && input_1_name_value !== (input_1_name_value =
+        /*inputAttributes*/
+        ctx[16].name)) {
+          attr(input_1, "name", input_1_name_value);
+        }
+
+        if (dirty[0] &
+        /*value, getSelectionLabel*/
+        4100 && input_1_value_value !== (input_1_value_value =
+        /*value*/
+        ctx[2] ?
+        /*getSelectionLabel*/
+        ctx[12](
+        /*value*/
+        ctx[2]) : null)) {
+          input_1.value = input_1_value_value;
+        }
+      },
+
+      d(detaching) {
+        if (detaching) detach(input_1);
+      }
+
+    };
+  } // (981:4) {#if isMulti && showMultiSelect}
+
+
+  function create_if_block(ctx) {
+    let each_1_anchor;
+    let each_value =
+    /*value*/
+    ctx[2];
+    let each_blocks = [];
+
+    for (let i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    }
+
+    return {
+      c() {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].c();
+        }
+
+        each_1_anchor = empty();
+      },
+
+      m(target, anchor) {
+        for (let i = 0; i < each_blocks.length; i += 1) {
+          each_blocks[i].m(target, anchor);
+        }
+
+        insert(target, each_1_anchor, anchor);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*inputAttributes, value, getSelectionLabel*/
+        69636) {
+          each_value =
+          /*value*/
+          ctx[2];
+          let i;
+
+          for (i = 0; i < each_value.length; i += 1) {
+            const child_ctx = get_each_context(ctx, each_value, i);
+
+            if (each_blocks[i]) {
+              each_blocks[i].p(child_ctx, dirty);
+            } else {
+              each_blocks[i] = create_each_block(child_ctx);
+              each_blocks[i].c();
+              each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+            }
+          }
+
+          for (; i < each_blocks.length; i += 1) {
+            each_blocks[i].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+
+      d(detaching) {
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(each_1_anchor);
+      }
+
+    };
+  } // (982:8) {#each value as item}
+
+
+  function create_each_block(ctx) {
+    let input_1;
+    let input_1_name_value;
+    let input_1_value_value;
+    return {
+      c() {
+        input_1 = element("input");
+        attr(input_1, "name", input_1_name_value =
+        /*inputAttributes*/
+        ctx[16].name);
+        attr(input_1, "type", "hidden");
+        input_1.value = input_1_value_value =
+        /*item*/
+        ctx[103] ?
+        /*getSelectionLabel*/
+        ctx[12](
+        /*item*/
+        ctx[103]) : null;
+        attr(input_1, "class", "svelte-17l1npl");
+      },
+
+      m(target, anchor) {
+        insert(target, input_1, anchor);
+      },
+
+      p(ctx, dirty) {
+        if (dirty[0] &
+        /*inputAttributes*/
+        65536 && input_1_name_value !== (input_1_name_value =
+        /*inputAttributes*/
+        ctx[16].name)) {
+          attr(input_1, "name", input_1_name_value);
+        }
+
+        if (dirty[0] &
+        /*value, getSelectionLabel*/
+        4100 && input_1_value_value !== (input_1_value_value =
+        /*item*/
+        ctx[103] ?
+        /*getSelectionLabel*/
+        ctx[12](
+        /*item*/
+        ctx[103]) : null)) {
+          input_1.value = input_1_value_value;
+        }
+      },
+
+      d(detaching) {
+        if (detaching) detach(input_1);
+      }
+
+    };
   }
 
   function create_fragment$5(ctx) {
     let div;
+    let span;
     let t0;
     let t1;
     let t2;
+    let input_1;
+    let input_1_readonly_value;
     let t3;
     let t4;
     let t5;
+    let t6;
+    let t7;
+    let t8;
+    let t9;
     let div_class_value;
     let current;
     let mounted;
     let dispose;
     let if_block0 =
-    /*Icon*/
-    ctx[17] && create_if_block_7(ctx);
+    /*isFocused*/
+    ctx[1] && create_if_block_10(ctx);
     let if_block1 =
-    /*isMulti*/
-    ctx[8] &&
-    /*selectedValue*/
-    ctx[0] &&
-    /*selectedValue*/
-    ctx[0].length > 0 && create_if_block_6(ctx);
-
-    function select_block_type(ctx, dirty) {
-      if (
+    /*Icon*/
+    ctx[17] && create_if_block_9(ctx);
+    let if_block2 =
+    /*showMultiSelect*/
+    ctx[35] && create_if_block_8(ctx);
+    let input_1_levels = [{
+      readOnly: input_1_readonly_value = !
+      /*isSearchable*/
+      ctx[13]
+    },
+    /*_inputAttributes*/
+    ctx[31], {
+      placeholder:
+      /*placeholderText*/
+      ctx[36]
+    }, {
+      style:
+      /*inputStyles*/
+      ctx[14]
+    }, {
+      disabled:
       /*isDisabled*/
-      ctx[10]) return create_if_block_5;
-      return create_else_block_1;
+      ctx[9]
+    }];
+    let input_1_data = {};
+
+    for (let i = 0; i < input_1_levels.length; i += 1) {
+      input_1_data = assign$1(input_1_data, input_1_levels[i]);
     }
 
-    let current_block_type = select_block_type(ctx);
-    let if_block2 = current_block_type(ctx);
     let if_block3 = !
     /*isMulti*/
-    ctx[8] &&
+    ctx[7] &&
     /*showSelectedItem*/
-    ctx[27] && create_if_block_4(ctx);
+    ctx[29] && create_if_block_7(ctx);
     let if_block4 =
-    /*showSelectedItem*/
-    ctx[27] &&
-    /*isClearable*/
-    ctx[16] && !
-    /*isDisabled*/
-    ctx[10] && !
-    /*isWaiting*/
-    ctx[5] && create_if_block_3(ctx);
-    let if_block5 = (
+    /*showClearIcon*/
+    ctx[37] && create_if_block_6(ctx);
+    let if_block5 = !
+    /*showClearIcon*/
+    ctx[37] && (
     /*showIndicator*/
     ctx[20] ||
     /*showChevron*/
     ctx[19] && !
-    /*selectedValue*/
-    ctx[0] || !
+    /*value*/
+    ctx[2] || !
     /*isSearchable*/
-    ctx[14] && !
+    ctx[13] && !
     /*isDisabled*/
-    ctx[10] && !
+    ctx[9] && !
     /*isWaiting*/
-    ctx[5] && (
+    ctx[4] && (
     /*showSelectedItem*/
-    ctx[27] && !
+    ctx[29] && !
     /*isClearable*/
-    ctx[16] || !
+    ctx[15] || !
     /*showSelectedItem*/
-    ctx[27])) && create_if_block_1(ctx);
+    ctx[29])) && create_if_block_4(ctx);
     let if_block6 =
     /*isWaiting*/
-    ctx[5] && create_if_block();
+    ctx[4] && create_if_block_3();
+    let if_block7 =
+    /*listOpen*/
+    ctx[5] && create_if_block_2(ctx);
+    let if_block8 = (!
+    /*isMulti*/
+    ctx[7] ||
+    /*isMulti*/
+    ctx[7] && !
+    /*showMultiSelect*/
+    ctx[35]) && create_if_block_1(ctx);
+    let if_block9 =
+    /*isMulti*/
+    ctx[7] &&
+    /*showMultiSelect*/
+    ctx[35] && create_if_block(ctx);
     return {
       c() {
         div = element("div");
+        span = element("span");
         if (if_block0) if_block0.c();
         t0 = space();
         if (if_block1) if_block1.c();
         t1 = space();
-        if_block2.c();
+        if (if_block2) if_block2.c();
         t2 = space();
-        if (if_block3) if_block3.c();
+        input_1 = element("input");
         t3 = space();
-        if (if_block4) if_block4.c();
+        if (if_block3) if_block3.c();
         t4 = space();
-        if (if_block5) if_block5.c();
+        if (if_block4) if_block4.c();
         t5 = space();
+        if (if_block5) if_block5.c();
+        t6 = space();
         if (if_block6) if_block6.c();
+        t7 = space();
+        if (if_block7) if_block7.c();
+        t8 = space();
+        if (if_block8) if_block8.c();
+        t9 = space();
+        if (if_block9) if_block9.c();
+        attr(span, "aria-live", "polite");
+        attr(span, "aria-atomic", "false");
+        attr(span, "aria-relevant", "additions text");
+        attr(span, "class", "a11yText svelte-17l1npl");
+        set_attributes(input_1, input_1_data);
+        toggle_class(input_1, "svelte-17l1npl", true);
         attr(div, "class", div_class_value = "selectContainer " +
         /*containerClasses*/
-        ctx[21] + " svelte-17qb5ew");
+        ctx[21] + " svelte-17l1npl");
         attr(div, "style",
         /*containerStyles*/
-        ctx[12]);
+        ctx[11]);
         toggle_class(div, "hasError",
         /*hasError*/
-        ctx[11]);
+        ctx[10]);
         toggle_class(div, "multiSelect",
         /*isMulti*/
-        ctx[8]);
+        ctx[7]);
         toggle_class(div, "disabled",
         /*isDisabled*/
-        ctx[10]);
+        ctx[9]);
         toggle_class(div, "focused",
         /*isFocused*/
-        ctx[4]);
+        ctx[1]);
       },
 
       m(target, anchor) {
         insert(target, div, anchor);
-        if (if_block0) if_block0.m(div, null);
+        append(div, span);
+        if (if_block0) if_block0.m(span, null);
         append(div, t0);
         if (if_block1) if_block1.m(div, null);
         append(div, t1);
-        if_block2.m(div, null);
+        if (if_block2) if_block2.m(div, null);
         append(div, t2);
-        if (if_block3) if_block3.m(div, null);
+        append(div, input_1);
+        if (input_1.autofocus) input_1.focus();
+        /*input_1_binding*/
+
+        ctx[82](input_1);
+        set_input_value(input_1,
+        /*filterText*/
+        ctx[3]);
         append(div, t3);
-        if (if_block4) if_block4.m(div, null);
+        if (if_block3) if_block3.m(div, null);
         append(div, t4);
-        if (if_block5) if_block5.m(div, null);
+        if (if_block4) if_block4.m(div, null);
         append(div, t5);
+        if (if_block5) if_block5.m(div, null);
+        append(div, t6);
         if (if_block6) if_block6.m(div, null);
+        append(div, t7);
+        if (if_block7) if_block7.m(div, null);
+        append(div, t8);
+        if (if_block8) if_block8.m(div, null);
+        append(div, t9);
+        if (if_block9) if_block9.m(div, null);
         /*div_binding*/
 
-        ctx[65](div);
+        ctx[85](div);
         current = true;
 
         if (!mounted) {
           dispose = [listen(window, "click",
-          /*handleWindowClick*/
-          ctx[33]), listen(window, "keydown",
+          /*handleWindowEvent*/
+          ctx[41]), listen(window, "focusin",
+          /*handleWindowEvent*/
+          ctx[41]), listen(window, "keydown",
           /*handleKeyDown*/
-          ctx[31]), listen(window, "resize",
-          /*getPosition*/
-          ctx[30]), listen(div, "click",
+          ctx[39]), listen(input_1, "focus",
+          /*handleFocus*/
+          ctx[40]), listen(input_1, "input",
+          /*input_1_input_handler*/
+          ctx[83]), listen(div, "click",
           /*handleClick*/
-          ctx[34])];
+          ctx[42])];
           mounted = true;
         }
       },
 
       p(ctx, dirty) {
         if (
-        /*Icon*/
-        ctx[17]) {
+        /*isFocused*/
+        ctx[1]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
-
-            if (dirty[0] &
-            /*Icon*/
-            131072) {
-              transition_in(if_block0, 1);
-            }
           } else {
-            if_block0 = create_if_block_7(ctx);
+            if_block0 = create_if_block_10(ctx);
             if_block0.c();
-            transition_in(if_block0, 1);
-            if_block0.m(div, t0);
+            if_block0.m(span, null);
           }
         } else if (if_block0) {
-          group_outros();
-          transition_out(if_block0, 1, 1, () => {
-            if_block0 = null;
-          });
-          check_outros();
+          if_block0.d(1);
+          if_block0 = null;
         }
 
         if (
-        /*isMulti*/
-        ctx[8] &&
-        /*selectedValue*/
-        ctx[0] &&
-        /*selectedValue*/
-        ctx[0].length > 0) {
+        /*Icon*/
+        ctx[17]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
 
             if (dirty[0] &
-            /*isMulti, selectedValue*/
-            257) {
+            /*Icon*/
+            131072) {
               transition_in(if_block1, 1);
             }
           } else {
-            if_block1 = create_if_block_6(ctx);
+            if_block1 = create_if_block_9(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
             if_block1.m(div, t1);
@@ -20489,36 +21087,91 @@
           check_outros();
         }
 
-        if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block2) {
-          if_block2.p(ctx, dirty);
-        } else {
-          if_block2.d(1);
-          if_block2 = current_block_type(ctx);
-
+        if (
+        /*showMultiSelect*/
+        ctx[35]) {
           if (if_block2) {
+            if_block2.p(ctx, dirty);
+
+            if (dirty[1] &
+            /*showMultiSelect*/
+            16) {
+              transition_in(if_block2, 1);
+            }
+          } else {
+            if_block2 = create_if_block_8(ctx);
             if_block2.c();
+            transition_in(if_block2, 1);
             if_block2.m(div, t2);
           }
+        } else if (if_block2) {
+          group_outros();
+          transition_out(if_block2, 1, 1, () => {
+            if_block2 = null;
+          });
+          check_outros();
         }
+
+        set_attributes(input_1, input_1_data = get_spread_update(input_1_levels, [(!current || dirty[0] &
+        /*isSearchable*/
+        8192 && input_1_readonly_value !== (input_1_readonly_value = !
+        /*isSearchable*/
+        ctx[13])) && {
+          readOnly: input_1_readonly_value
+        }, dirty[1] &
+        /*_inputAttributes*/
+        1 &&
+        /*_inputAttributes*/
+        ctx[31], (!current || dirty[1] &
+        /*placeholderText*/
+        32) && {
+          placeholder:
+          /*placeholderText*/
+          ctx[36]
+        }, (!current || dirty[0] &
+        /*inputStyles*/
+        16384) && {
+          style:
+          /*inputStyles*/
+          ctx[14]
+        }, (!current || dirty[0] &
+        /*isDisabled*/
+        512) && {
+          disabled:
+          /*isDisabled*/
+          ctx[9]
+        }]));
+
+        if (dirty[0] &
+        /*filterText*/
+        8 && input_1.value !==
+        /*filterText*/
+        ctx[3]) {
+          set_input_value(input_1,
+          /*filterText*/
+          ctx[3]);
+        }
+
+        toggle_class(input_1, "svelte-17l1npl", true);
 
         if (!
         /*isMulti*/
-        ctx[8] &&
+        ctx[7] &&
         /*showSelectedItem*/
-        ctx[27]) {
+        ctx[29]) {
           if (if_block3) {
             if_block3.p(ctx, dirty);
 
             if (dirty[0] &
             /*isMulti, showSelectedItem*/
-            134217984) {
+            536871040) {
               transition_in(if_block3, 1);
             }
           } else {
-            if_block3 = create_if_block_4(ctx);
+            if_block3 = create_if_block_7(ctx);
             if_block3.c();
             transition_in(if_block3, 1);
-            if_block3.m(div, t3);
+            if_block3.m(div, t4);
           }
         } else if (if_block3) {
           group_outros();
@@ -20529,27 +21182,21 @@
         }
 
         if (
-        /*showSelectedItem*/
-        ctx[27] &&
-        /*isClearable*/
-        ctx[16] && !
-        /*isDisabled*/
-        ctx[10] && !
-        /*isWaiting*/
-        ctx[5]) {
+        /*showClearIcon*/
+        ctx[37]) {
           if (if_block4) {
             if_block4.p(ctx, dirty);
 
-            if (dirty[0] &
-            /*showSelectedItem, isClearable, isDisabled, isWaiting*/
-            134284320) {
+            if (dirty[1] &
+            /*showClearIcon*/
+            64) {
               transition_in(if_block4, 1);
             }
           } else {
-            if_block4 = create_if_block_3(ctx);
+            if_block4 = create_if_block_6(ctx);
             if_block4.c();
             transition_in(if_block4, 1);
-            if_block4.m(div, t4);
+            if_block4.m(div, t5);
           }
         } else if (if_block4) {
           group_outros();
@@ -20559,31 +21206,33 @@
           check_outros();
         }
 
-        if (
+        if (!
+        /*showClearIcon*/
+        ctx[37] && (
         /*showIndicator*/
         ctx[20] ||
         /*showChevron*/
         ctx[19] && !
-        /*selectedValue*/
-        ctx[0] || !
+        /*value*/
+        ctx[2] || !
         /*isSearchable*/
-        ctx[14] && !
+        ctx[13] && !
         /*isDisabled*/
-        ctx[10] && !
+        ctx[9] && !
         /*isWaiting*/
-        ctx[5] && (
+        ctx[4] && (
         /*showSelectedItem*/
-        ctx[27] && !
+        ctx[29] && !
         /*isClearable*/
-        ctx[16] || !
+        ctx[15] || !
         /*showSelectedItem*/
-        ctx[27])) {
+        ctx[29]))) {
           if (if_block5) {
             if_block5.p(ctx, dirty);
           } else {
-            if_block5 = create_if_block_1(ctx);
+            if_block5 = create_if_block_4(ctx);
             if_block5.c();
-            if_block5.m(div, t5);
+            if_block5.m(div, t6);
           }
         } else if (if_block5) {
           if_block5.d(1);
@@ -20592,80 +21241,143 @@
 
         if (
         /*isWaiting*/
-        ctx[5]) {
+        ctx[4]) {
           if (if_block6) ; else {
-            if_block6 = create_if_block();
+            if_block6 = create_if_block_3();
             if_block6.c();
-            if_block6.m(div, null);
+            if_block6.m(div, t7);
           }
         } else if (if_block6) {
           if_block6.d(1);
           if_block6 = null;
         }
 
+        if (
+        /*listOpen*/
+        ctx[5]) {
+          if (if_block7) {
+            if_block7.p(ctx, dirty);
+
+            if (dirty[0] &
+            /*listOpen*/
+            32) {
+              transition_in(if_block7, 1);
+            }
+          } else {
+            if_block7 = create_if_block_2(ctx);
+            if_block7.c();
+            transition_in(if_block7, 1);
+            if_block7.m(div, t8);
+          }
+        } else if (if_block7) {
+          group_outros();
+          transition_out(if_block7, 1, 1, () => {
+            if_block7 = null;
+          });
+          check_outros();
+        }
+
+        if (!
+        /*isMulti*/
+        ctx[7] ||
+        /*isMulti*/
+        ctx[7] && !
+        /*showMultiSelect*/
+        ctx[35]) {
+          if (if_block8) {
+            if_block8.p(ctx, dirty);
+          } else {
+            if_block8 = create_if_block_1(ctx);
+            if_block8.c();
+            if_block8.m(div, t9);
+          }
+        } else if (if_block8) {
+          if_block8.d(1);
+          if_block8 = null;
+        }
+
+        if (
+        /*isMulti*/
+        ctx[7] &&
+        /*showMultiSelect*/
+        ctx[35]) {
+          if (if_block9) {
+            if_block9.p(ctx, dirty);
+          } else {
+            if_block9 = create_if_block(ctx);
+            if_block9.c();
+            if_block9.m(div, null);
+          }
+        } else if (if_block9) {
+          if_block9.d(1);
+          if_block9 = null;
+        }
+
         if (!current || dirty[0] &
         /*containerClasses*/
         2097152 && div_class_value !== (div_class_value = "selectContainer " +
         /*containerClasses*/
-        ctx[21] + " svelte-17qb5ew")) {
+        ctx[21] + " svelte-17l1npl")) {
           attr(div, "class", div_class_value);
         }
 
         if (!current || dirty[0] &
         /*containerStyles*/
-        4096) {
+        2048) {
           attr(div, "style",
           /*containerStyles*/
-          ctx[12]);
-        }
-
-        if (dirty[0] &
-        /*containerClasses, hasError*/
-        2099200) {
-          toggle_class(div, "hasError",
-          /*hasError*/
           ctx[11]);
         }
 
         if (dirty[0] &
-        /*containerClasses, isMulti*/
-        2097408) {
-          toggle_class(div, "multiSelect",
-          /*isMulti*/
-          ctx[8]);
-        }
-
-        if (dirty[0] &
-        /*containerClasses, isDisabled*/
+        /*containerClasses, hasError*/
         2098176) {
-          toggle_class(div, "disabled",
-          /*isDisabled*/
+          toggle_class(div, "hasError",
+          /*hasError*/
           ctx[10]);
         }
 
         if (dirty[0] &
+        /*containerClasses, isMulti*/
+        2097280) {
+          toggle_class(div, "multiSelect",
+          /*isMulti*/
+          ctx[7]);
+        }
+
+        if (dirty[0] &
+        /*containerClasses, isDisabled*/
+        2097664) {
+          toggle_class(div, "disabled",
+          /*isDisabled*/
+          ctx[9]);
+        }
+
+        if (dirty[0] &
         /*containerClasses, isFocused*/
-        2097168) {
+        2097154) {
           toggle_class(div, "focused",
           /*isFocused*/
-          ctx[4]);
+          ctx[1]);
         }
       },
 
       i(local) {
         if (current) return;
-        transition_in(if_block0);
         transition_in(if_block1);
+        transition_in(if_block2);
         transition_in(if_block3);
         transition_in(if_block4);
+        transition_in(if_block7);
         current = true;
       },
 
       o(local) {
-        transition_out(if_block0);
         transition_out(if_block1);
+        transition_out(if_block2);
         transition_out(if_block3);
         transition_out(if_block4);
+        transition_out(if_block7);
         current = false;
       },
 
@@ -20673,14 +21385,20 @@
         if (detaching) detach(div);
         if (if_block0) if_block0.d();
         if (if_block1) if_block1.d();
-        if_block2.d();
+        if (if_block2) if_block2.d();
+        /*input_1_binding*/
+
+        ctx[82](null);
         if (if_block3) if_block3.d();
         if (if_block4) if_block4.d();
         if (if_block5) if_block5.d();
         if (if_block6) if_block6.d();
+        if (if_block7) if_block7.d();
+        if (if_block8) if_block8.d();
+        if (if_block9) if_block9.d();
         /*div_binding*/
 
-        ctx[65](null);
+        ctx[85](null);
         mounted = false;
         run_all(dispose);
       }
@@ -20688,24 +21406,34 @@
     };
   }
 
+  function convertStringItemsToObjects(_items) {
+    return _items.map((item, index) => {
+      return {
+        index,
+        value: item,
+        label: `${item}`
+      };
+    });
+  }
+
   function instance$5($$self, $$props, $$invalidate) {
+    let filteredItems;
     let showSelectedItem;
+    let showClearIcon;
     let placeholderText;
+    let showMultiSelect;
+    let listProps;
+    let ariaSelection;
+    let ariaContext;
     const dispatch = createEventDispatcher();
+    let {
+      id = null
+    } = $$props;
     let {
       container = undefined
     } = $$props;
     let {
       input = undefined
-    } = $$props;
-    let {
-      Item: Item$1 = Item
-    } = $$props;
-    let {
-      Selection: Selection$1 = Selection
-    } = $$props;
-    let {
-      MultiSelection: MultiSelection$1 = MultiSelection
     } = $$props;
     let {
       isMulti = false
@@ -20723,19 +21451,22 @@
       isFocused = false
     } = $$props;
     let {
-      selectedValue = undefined
+      value = null
     } = $$props;
     let {
-      filterText = ""
+      filterText = ''
     } = $$props;
     let {
-      placeholder = "Select..."
+      placeholder = 'Select...'
     } = $$props;
     let {
-      items = []
+      placeholderAlwaysShow = false
     } = $$props;
     let {
-      itemFilter = (label, filterText, option) => label.toLowerCase().includes(filterText.toLowerCase())
+      items = null
+    } = $$props;
+    let {
+      itemFilter = (label, filterText, option) => `${label}`.toLowerCase().includes(filterText.toLowerCase())
     } = $$props;
     let {
       groupBy = undefined
@@ -20748,16 +21479,19 @@
     } = $$props;
     let {
       getGroupHeaderLabel = option => {
-        return option.label;
+        return option[labelIdentifier] || option.id;
       }
+    } = $$props;
+    let {
+      labelIdentifier = 'label'
     } = $$props;
     let {
       getOptionLabel = (option, filterText) => {
-        return option.isCreator ? `Create \"${filterText}\"` : option.label;
+        return option.isCreator ? `Create \"${filterText}\"` : option[labelIdentifier];
       }
     } = $$props;
     let {
-      optionIdentifier = "value"
+      optionIdentifier = 'value'
     } = $$props;
     let {
       loadOptions = undefined
@@ -20766,11 +21500,11 @@
       hasError = false
     } = $$props;
     let {
-      containerStyles = ""
+      containerStyles = ''
     } = $$props;
     let {
       getSelectionLabel = option => {
-        if (option) return option.label;
+        if (option) return option[labelIdentifier];else return null;
       }
     } = $$props;
     let {
@@ -20789,11 +21523,16 @@
         };
       }
     } = $$props;
+
+    const getFilteredItems = () => {
+      return filteredItems;
+    };
+
     let {
       isSearchable = true
     } = $$props;
     let {
-      inputStyles = ""
+      inputStyles = ''
     } = $$props;
     let {
       isClearable = true
@@ -20802,13 +21541,10 @@
       isWaiting = false
     } = $$props;
     let {
-      listPlacement = "auto"
+      listPlacement = 'auto'
     } = $$props;
     let {
       listOpen = false
-    } = $$props;
-    let {
-      list = undefined
     } = $$props;
     let {
       isVirtualList = false
@@ -20817,13 +21553,10 @@
       loadOptionsInterval = 300
     } = $$props;
     let {
-      noOptionsMessage = "No options"
+      noOptionsMessage = 'No options'
     } = $$props;
     let {
       hideEmptyState = false
-    } = $$props;
-    let {
-      filteredItems = []
     } = $$props;
     let {
       inputAttributes = {}
@@ -20847,161 +21580,251 @@
       showIndicator = false
     } = $$props;
     let {
-      containerClasses = ""
+      containerClasses = ''
     } = $$props;
     let {
       indicatorSvg = undefined
     } = $$props;
     let {
+      listOffset = 5
+    } = $$props;
+    let {
       ClearIcon: ClearIcon$1 = ClearIcon
     } = $$props;
-    let target;
-    let activeSelectedValue;
-    let originalItemsClone;
-    let prev_selectedValue;
-    let prev_listOpen;
-    let prev_filterText;
-    let prev_isFocused;
-    let prev_filteredItems;
+    let {
+      Item: Item$1 = Item
+    } = $$props;
+    let {
+      List: List$1 = List
+    } = $$props;
+    let {
+      Selection: Selection$1 = Selection
+    } = $$props;
+    let {
+      MultiSelection: MultiSelection$1 = MultiSelection
+    } = $$props;
+    let {
+      VirtualList: VirtualList$1 = VirtualList
+    } = $$props;
 
-    async function resetFilter() {
-      await tick();
-      $$invalidate(1, filterText = "");
+    function filterMethod(args) {
+      if (args.loadOptions && args.filterText.length > 0) return;
+      if (!args.items) return [];
+
+      if (args.items && args.items.length > 0 && typeof args.items[0] !== 'object') {
+        args.items = convertStringItemsToObjects(args.items);
+      }
+
+      let filterResults = args.items.filter(item => {
+        let matchesFilter = itemFilter(getOptionLabel(item, args.filterText), args.filterText, item);
+
+        if (matchesFilter && args.isMulti && args.value && Array.isArray(args.value)) {
+          matchesFilter = !args.value.some(x => {
+            return x[args.optionIdentifier] === item[args.optionIdentifier];
+          });
+        }
+
+        return matchesFilter;
+      });
+
+      if (args.groupBy) {
+        filterResults = filterGroupedItems(filterResults);
+      }
+
+      if (args.isCreatable) {
+        filterResults = addCreatableItem(filterResults, args.filterText);
+      }
+
+      return filterResults;
     }
 
-    let getItemsHasInvoked = false;
+    function addCreatableItem(_items, _filterText) {
+      if (_filterText.length === 0) return _items;
+      const itemToCreate = createItem(_filterText);
+      if (_items[0] && _filterText === _items[0][labelIdentifier]) return _items;
+      itemToCreate.isCreator = true;
+      return [..._items, itemToCreate];
+    }
+
+    let {
+      selectedValue = null
+    } = $$props;
+    let activeValue;
+    let prev_value;
+    let prev_filterText;
+    let prev_isFocused;
+    let prev_isMulti;
+    let hoverItemIndex;
     const getItems = debounce(async () => {
-      getItemsHasInvoked = true;
-      $$invalidate(5, isWaiting = true);
+      $$invalidate(4, isWaiting = true);
       let res = await loadOptions(filterText).catch(err => {
-        console.warn("svelte-select loadOptions error :>> ", err);
-        dispatch("error", {
-          type: "loadOptions",
+        console.warn('svelte-select loadOptions error :>> ', err);
+        dispatch('error', {
+          type: 'loadOptions',
           details: err
         });
       });
 
       if (res && !res.cancelled) {
         if (res) {
-          $$invalidate(35, items = [...res]);
-          dispatch("loaded", {
-            items
+          if (res && res.length > 0 && typeof res[0] !== 'object') {
+            res = convertStringItemsToObjects(res);
+          }
+
+          $$invalidate(81, filteredItems = [...res]);
+          dispatch('loaded', {
+            items: filteredItems
           });
         } else {
-          $$invalidate(35, items = []);
+          $$invalidate(81, filteredItems = []);
         }
 
-        $$invalidate(5, isWaiting = false);
-        $$invalidate(4, isFocused = true);
-        $$invalidate(37, listOpen = true);
+        if (isCreatable) {
+          $$invalidate(81, filteredItems = addCreatableItem(filteredItems, filterText));
+        }
+
+        $$invalidate(4, isWaiting = false);
+        $$invalidate(1, isFocused = true);
+        $$invalidate(5, listOpen = true);
       }
     }, loadOptionsInterval);
-    let _inputAttributes = {};
-    beforeUpdate(() => {
-      if (isMulti && selectedValue && selectedValue.length > 1) {
-        checkSelectedValueForDuplicates();
+
+    function setValue() {
+      if (typeof value === 'string') {
+        $$invalidate(2, value = {
+          [optionIdentifier]: value,
+          label: value
+        });
+      } else if (isMulti && Array.isArray(value) && value.length > 0) {
+        $$invalidate(2, value = value.map(item => typeof item === 'string' ? {
+          value: item,
+          label: item
+        } : item));
+      }
+    }
+
+    let _inputAttributes;
+
+    function assignInputAttributes() {
+      $$invalidate(31, _inputAttributes = Object.assign({
+        autocapitalize: 'none',
+        autocomplete: 'off',
+        autocorrect: 'off',
+        spellcheck: false,
+        tabindex: 0,
+        type: 'text',
+        'aria-autocomplete': 'list'
+      }, inputAttributes));
+
+      if (id) {
+        $$invalidate(31, _inputAttributes.id = id, _inputAttributes);
       }
 
-      if (!isMulti && selectedValue && prev_selectedValue !== selectedValue) {
-        if (!prev_selectedValue || JSON.stringify(selectedValue[optionIdentifier]) !== JSON.stringify(prev_selectedValue[optionIdentifier])) {
-          dispatch("select", selectedValue);
-        }
+      if (!isSearchable) {
+        $$invalidate(31, _inputAttributes.readonly = true, _inputAttributes);
       }
+    }
 
-      if (isMulti && JSON.stringify(selectedValue) !== JSON.stringify(prev_selectedValue)) {
-        if (checkSelectedValueForDuplicates()) {
-          dispatch("select", selectedValue);
-        }
-      }
+    function filterGroupedItems(_items) {
+      const groupValues = [];
+      const groups = {};
 
-      if (container && listOpen !== prev_listOpen) {
-        if (listOpen) {
-          loadList();
-        } else {
-          removeList();
-        }
-      }
+      _items.forEach(item => {
+        const groupValue = groupBy(item);
 
-      if (filterText !== prev_filterText) {
-        if (filterText.length > 0) {
-          $$invalidate(4, isFocused = true);
-          $$invalidate(37, listOpen = true);
+        if (!groupValues.includes(groupValue)) {
+          groupValues.push(groupValue);
+          groups[groupValue] = [];
 
-          if (loadOptions) {
-            getItems();
-          } else {
-            loadList();
-            $$invalidate(37, listOpen = true);
-
-            if (isMulti) {
-              $$invalidate(25, activeSelectedValue = undefined);
-            }
-          }
-        } else {
-          setList([]);
-        }
-
-        if (list) {
-          list.$set({
-            filterText
-          });
-        }
-      }
-
-      if (isFocused !== prev_isFocused) {
-        if (isFocused || listOpen) {
-          handleFocus();
-        } else {
-          resetFilter();
-          if (input) input.blur();
-        }
-      }
-
-      if (prev_filteredItems !== filteredItems) {
-        let _filteredItems = [...filteredItems];
-
-        if (isCreatable && filterText) {
-          const itemToCreate = createItem(filterText);
-          itemToCreate.isCreator = true;
-
-          const existingItemWithFilterValue = _filteredItems.find(item => {
-            return item[optionIdentifier] === itemToCreate[optionIdentifier];
-          });
-
-          let existingSelectionWithFilterValue;
-
-          if (selectedValue) {
-            if (isMulti) {
-              existingSelectionWithFilterValue = selectedValue.find(selection => {
-                return selection[optionIdentifier] === itemToCreate[optionIdentifier];
-              });
-            } else if (selectedValue[optionIdentifier] === itemToCreate[optionIdentifier]) {
-              existingSelectionWithFilterValue = selectedValue;
-            }
-          }
-
-          if (!existingItemWithFilterValue && !existingSelectionWithFilterValue) {
-            _filteredItems = [..._filteredItems, itemToCreate];
+          if (groupValue) {
+            groups[groupValue].push(Object.assign(createGroupHeaderItem(groupValue, item), {
+              id: groupValue,
+              isGroupHeader: true,
+              isSelectable: isGroupHeaderSelectable
+            }));
           }
         }
 
-        setList(_filteredItems);
+        groups[groupValue].push(Object.assign({
+          isGroupItem: !!groupValue
+        }, item));
+      });
+
+      const sortedGroupedItems = [];
+      groupFilter(groupValues).forEach(groupValue => {
+        sortedGroupedItems.push(...groups[groupValue]);
+      });
+      return sortedGroupedItems;
+    }
+
+    function dispatchSelectedItem() {
+      if (isMulti) {
+        if (JSON.stringify(value) !== JSON.stringify(prev_value)) {
+          if (checkValueForDuplicates()) {
+            dispatch('select', value);
+          }
+        }
+
+        return;
       }
 
-      prev_selectedValue = selectedValue;
-      prev_listOpen = listOpen;
-      prev_filterText = filterText;
-      prev_isFocused = isFocused;
-      prev_filteredItems = filteredItems;
+      if (!prev_value || JSON.stringify(value[optionIdentifier]) !== JSON.stringify(prev_value[optionIdentifier])) {
+        dispatch('select', value);
+      }
+    }
+
+    function setupFocus() {
+      if (isFocused || listOpen) {
+        handleFocus();
+      } else {
+        if (input) input.blur();
+      }
+    }
+
+    function setupMulti() {
+      if (value) {
+        if (Array.isArray(value)) {
+          $$invalidate(2, value = [...value]);
+        } else {
+          $$invalidate(2, value = [value]);
+        }
+      }
+    }
+
+    function setupSingle() {
+      if (value) $$invalidate(2, value = null);
+    }
+
+    function setupFilterText() {
+      if (filterText.length === 0) return;
+      $$invalidate(1, isFocused = true);
+      $$invalidate(5, listOpen = true);
+
+      if (loadOptions) {
+        getItems();
+      } else {
+        $$invalidate(5, listOpen = true);
+
+        if (isMulti) {
+          $$invalidate(30, activeValue = undefined);
+        }
+      }
+    }
+
+    beforeUpdate(async () => {
+      $$invalidate(77, prev_value = value);
+      $$invalidate(78, prev_filterText = filterText);
+      $$invalidate(79, prev_isFocused = isFocused);
+      $$invalidate(80, prev_isMulti = isMulti);
     });
 
-    function checkSelectedValueForDuplicates() {
+    function checkValueForDuplicates() {
       let noDuplicates = true;
 
-      if (selectedValue) {
+      if (value) {
         const ids = [];
         const uniqueValues = [];
-        selectedValue.forEach(val => {
+        value.forEach(val => {
           if (!ids.includes(val[optionIdentifier])) {
             ids.push(val[optionIdentifier]);
             uniqueValues.push(val);
@@ -21009,138 +21832,94 @@
             noDuplicates = false;
           }
         });
-        if (!noDuplicates) $$invalidate(0, selectedValue = uniqueValues);
+        if (!noDuplicates) $$invalidate(2, value = uniqueValues);
       }
 
       return noDuplicates;
     }
 
     function findItem(selection) {
-      let matchTo = selection ? selection[optionIdentifier] : selectedValue[optionIdentifier];
+      let matchTo = selection ? selection[optionIdentifier] : value[optionIdentifier];
       return items.find(item => item[optionIdentifier] === matchTo);
     }
 
-    function updateSelectedValueDisplay(items) {
-      if (!items || items.length === 0 || items.some(item => typeof item !== "object")) return;
-      if (!selectedValue || (isMulti ? selectedValue.some(selection => !selection || !selection[optionIdentifier]) : !selectedValue[optionIdentifier])) return;
+    function updateValueDisplay(items) {
+      if (!items || items.length === 0 || items.some(item => typeof item !== 'object')) return;
+      if (!value || (isMulti ? value.some(selection => !selection || !selection[optionIdentifier]) : !value[optionIdentifier])) return;
 
-      if (Array.isArray(selectedValue)) {
-        $$invalidate(0, selectedValue = selectedValue.map(selection => findItem(selection) || selection));
+      if (Array.isArray(value)) {
+        $$invalidate(2, value = value.map(selection => findItem(selection) || selection));
       } else {
-        $$invalidate(0, selectedValue = findItem() || selectedValue);
+        $$invalidate(2, value = findItem() || value);
       }
-    }
-
-    async function setList(items) {
-      await tick();
-      if (!listOpen) return;
-      if (list) return list.$set({
-        items
-      });
-      if (loadOptions && getItemsHasInvoked && items.length > 0) loadList();
     }
 
     function handleMultiItemClear(event) {
       const {
         detail
       } = event;
-      const itemToRemove = selectedValue[detail ? detail.i : selectedValue.length - 1];
+      const itemToRemove = value[detail ? detail.i : value.length - 1];
 
-      if (selectedValue.length === 1) {
-        $$invalidate(0, selectedValue = undefined);
+      if (value.length === 1) {
+        $$invalidate(2, value = undefined);
       } else {
-        $$invalidate(0, selectedValue = selectedValue.filter(item => {
+        $$invalidate(2, value = value.filter(item => {
           return item !== itemToRemove;
         }));
       }
 
-      dispatch("clear", itemToRemove);
-      getPosition();
-    }
-
-    async function getPosition() {
-      await tick();
-      if (!target || !container) return;
-      const {
-        top,
-        height,
-        width
-      } = container.getBoundingClientRect();
-      target.style["min-width"] = `${width}px`;
-      target.style.width = `${listAutoWidth ? "auto" : "100%"}`;
-      target.style.left = "0";
-
-      if (listPlacement === "top") {
-        target.style.bottom = `${height + 5}px`;
-      } else {
-        target.style.top = `${height + 5}px`;
-      }
-
-      target = target;
-
-      if (listPlacement === "auto" && isOutOfViewport(target).bottom) {
-        target.style.top = ``;
-        target.style.bottom = `${height + 5}px`;
-      }
-
-      target.style.visibility = "";
+      dispatch('clear', itemToRemove);
     }
 
     function handleKeyDown(e) {
       if (!isFocused) return;
 
       switch (e.key) {
-        case "ArrowDown":
+        case 'ArrowDown':
           e.preventDefault();
-          $$invalidate(37, listOpen = true);
-          $$invalidate(25, activeSelectedValue = undefined);
+          $$invalidate(5, listOpen = true);
+          $$invalidate(30, activeValue = undefined);
           break;
 
-        case "ArrowUp":
+        case 'ArrowUp':
           e.preventDefault();
-          $$invalidate(37, listOpen = true);
-          $$invalidate(25, activeSelectedValue = undefined);
+          $$invalidate(5, listOpen = true);
+          $$invalidate(30, activeValue = undefined);
           break;
 
-        case "Tab":
-          if (!listOpen) $$invalidate(4, isFocused = false);
+        case 'Tab':
+          if (!listOpen) $$invalidate(1, isFocused = false);
           break;
 
-        case "Backspace":
+        case 'Backspace':
           if (!isMulti || filterText.length > 0) return;
 
-          if (isMulti && selectedValue && selectedValue.length > 0) {
-            handleMultiItemClear(activeSelectedValue !== undefined ? activeSelectedValue : selectedValue.length - 1);
-            if (activeSelectedValue === 0 || activeSelectedValue === undefined) break;
-            $$invalidate(25, activeSelectedValue = selectedValue.length > activeSelectedValue ? activeSelectedValue - 1 : undefined);
+          if (isMulti && value && value.length > 0) {
+            handleMultiItemClear(activeValue !== undefined ? activeValue : value.length - 1);
+            if (activeValue === 0 || activeValue === undefined) break;
+            $$invalidate(30, activeValue = value.length > activeValue ? activeValue - 1 : undefined);
           }
 
           break;
 
-        case "ArrowLeft":
-          if (list) list.$set({
-            hoverItemIndex: -1
-          });
+        case 'ArrowLeft':
           if (!isMulti || filterText.length > 0) return;
 
-          if (activeSelectedValue === undefined) {
-            $$invalidate(25, activeSelectedValue = selectedValue.length - 1);
-          } else if (selectedValue.length > activeSelectedValue && activeSelectedValue !== 0) {
-            $$invalidate(25, activeSelectedValue -= 1);
+          if (activeValue === undefined) {
+            $$invalidate(30, activeValue = value.length - 1);
+          } else if (value.length > activeValue && activeValue !== 0) {
+            $$invalidate(30, activeValue -= 1);
           }
 
           break;
 
-        case "ArrowRight":
-          if (list) list.$set({
-            hoverItemIndex: -1
-          });
-          if (!isMulti || filterText.length > 0 || activeSelectedValue === undefined) return;
+        case 'ArrowRight':
+          if (!isMulti || filterText.length > 0 || activeValue === undefined) return;
 
-          if (activeSelectedValue === selectedValue.length - 1) {
-            $$invalidate(25, activeSelectedValue = undefined);
-          } else if (activeSelectedValue < selectedValue.length - 1) {
-            $$invalidate(25, activeSelectedValue += 1);
+          if (activeValue === value.length - 1) {
+            $$invalidate(30, activeValue = undefined);
+          } else if (activeValue < value.length - 1) {
+            $$invalidate(30, activeValue += 1);
           }
 
           break;
@@ -21148,436 +21927,472 @@
     }
 
     function handleFocus() {
-      $$invalidate(4, isFocused = true);
+      $$invalidate(1, isFocused = true);
       if (input) input.focus();
     }
 
-    function removeList() {
-      resetFilter();
-      $$invalidate(25, activeSelectedValue = undefined);
-      if (!list) return;
-      list.$destroy();
-      $$invalidate(36, list = undefined);
-      if (!target) return;
-      if (target.parentNode) target.parentNode.removeChild(target);
-      target = undefined;
-      $$invalidate(36, list);
-      target = target;
-    }
-
-    function handleWindowClick(event) {
+    function handleWindowEvent(event) {
       if (!container) return;
       const eventTarget = event.path && event.path.length > 0 ? event.path[0] : event.target;
       if (container.contains(eventTarget)) return;
-      $$invalidate(4, isFocused = false);
-      $$invalidate(37, listOpen = false);
-      $$invalidate(25, activeSelectedValue = undefined);
+      $$invalidate(1, isFocused = false);
+      $$invalidate(5, listOpen = false);
+      $$invalidate(30, activeValue = undefined);
       if (input) input.blur();
     }
 
     function handleClick() {
       if (isDisabled) return;
-      $$invalidate(4, isFocused = true);
-      $$invalidate(37, listOpen = !listOpen);
+      $$invalidate(1, isFocused = true);
+      $$invalidate(5, listOpen = !listOpen);
     }
 
     function handleClear() {
-      $$invalidate(0, selectedValue = undefined);
-      $$invalidate(37, listOpen = false);
-      dispatch("clear", selectedValue);
+      $$invalidate(2, value = undefined);
+      $$invalidate(5, listOpen = false);
+      dispatch('clear', value);
       handleFocus();
     }
 
-    async function loadList() {
-      await tick();
-      if (target && list) return;
-      const data = {
-        Item: Item$1,
-        filterText,
-        optionIdentifier,
-        noOptionsMessage,
-        hideEmptyState,
-        isVirtualList,
-        selectedValue,
-        isMulti,
-        getGroupHeaderLabel,
-        items: filteredItems,
-        itemHeight
-      };
+    onMount(() => {
+      if (isFocused && input) input.focus();
+    });
 
-      if (getOptionLabel) {
-        data.getOptionLabel = getOptionLabel;
-      }
+    function itemSelected(event) {
+      const {
+        detail
+      } = event;
 
-      target = document.createElement("div");
-      Object.assign(target.style, {
-        position: "absolute",
-        "z-index": 2,
-        visibility: "hidden"
-      });
-      $$invalidate(36, list);
-      target = target;
-      if (container) container.appendChild(target);
-      $$invalidate(36, list = new List({
-        target,
-        props: data
-      }));
-      list.$on("itemSelected", event => {
-        const {
-          detail
-        } = event;
+      if (detail) {
+        $$invalidate(3, filterText = '');
+        const item = Object.assign({}, detail);
 
-        if (detail) {
-          const item = Object.assign({}, detail);
-
-          if (!item.isGroupHeader || item.isSelectable) {
-            if (isMulti) {
-              $$invalidate(0, selectedValue = selectedValue ? selectedValue.concat([item]) : [item]);
-            } else {
-              $$invalidate(0, selectedValue = item);
-            }
-
-            resetFilter();
-            ($$invalidate(0, selectedValue), $$invalidate(48, optionIdentifier)), $$invalidate(8, isMulti);
-            setTimeout(() => {
-              $$invalidate(37, listOpen = false);
-              $$invalidate(25, activeSelectedValue = undefined);
-            });
+        if (!item.isGroupHeader || item.isSelectable) {
+          if (isMulti) {
+            $$invalidate(2, value = value ? value.concat([item]) : [item]);
+          } else {
+            $$invalidate(2, value = item);
           }
-        }
-      });
-      list.$on("itemCreated", event => {
-        const {
-          detail
-        } = event;
 
-        if (isMulti) {
-          $$invalidate(0, selectedValue = selectedValue || []);
-          $$invalidate(0, selectedValue = [...selectedValue, createItem(detail)]);
-        } else {
-          $$invalidate(0, selectedValue = createItem(detail));
+          $$invalidate(2, value);
+          setTimeout(() => {
+            $$invalidate(5, listOpen = false);
+            $$invalidate(30, activeValue = undefined);
+          });
         }
-
-        dispatch("itemCreated", detail);
-        $$invalidate(1, filterText = "");
-        $$invalidate(37, listOpen = false);
-        $$invalidate(25, activeSelectedValue = undefined);
-        resetFilter();
-      });
-      list.$on("closeList", () => {
-        $$invalidate(37, listOpen = false);
-      });
-      $$invalidate(36, list), target = target;
-      getPosition();
+      }
     }
 
-    onMount(() => {
-      if (isFocused) input.focus();
-      if (listOpen) loadList();
+    function itemCreated(event) {
+      const {
+        detail
+      } = event;
 
-      if (items && items.length > 0) {
-        $$invalidate(60, originalItemsClone = JSON.stringify(items));
+      if (isMulti) {
+        $$invalidate(2, value = value || []);
+        $$invalidate(2, value = [...value, createItem(detail)]);
+      } else {
+        $$invalidate(2, value = createItem(detail));
       }
-    });
-    onDestroy(() => {
-      removeList();
-    });
+
+      dispatch('itemCreated', detail);
+      $$invalidate(3, filterText = '');
+      $$invalidate(5, listOpen = false);
+      $$invalidate(30, activeValue = undefined);
+    }
+
+    function closeList() {
+      $$invalidate(3, filterText = '');
+      $$invalidate(5, listOpen = false);
+    }
+
+    let {
+      ariaValues = values => {
+        return `Option ${values}, selected.`;
+      }
+    } = $$props;
+    let {
+      ariaListOpen = (label, count) => {
+        return `You are currently focused on option ${label}. There are ${count} results available.`;
+      }
+    } = $$props;
+    let {
+      ariaFocused = () => {
+        return `Select is focused, type to refine list, press down to open the menu.`;
+      }
+    } = $$props;
+
+    function handleAriaSelection() {
+      let selected = undefined;
+
+      if (isMulti && value.length > 0) {
+        selected = value.map(v => getSelectionLabel(v)).join(', ');
+      } else {
+        selected = getSelectionLabel(value);
+      }
+
+      return ariaValues(selected);
+    }
+
+    function handleAriaContent() {
+      if (!isFocused || !filteredItems || filteredItems.length === 0) return '';
+      let _item = filteredItems[hoverItemIndex];
+
+      if (listOpen && _item) {
+        let label = getSelectionLabel(_item);
+        let count = filteredItems ? filteredItems.length : 0;
+        return ariaListOpen(label, count);
+      } else {
+        return ariaFocused();
+      }
+    }
 
     function input_1_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
+      binding_callbacks[$$value ? 'unshift' : 'push'](() => {
         input = $$value;
-        $$invalidate(3, input);
+        $$invalidate(6, input);
       });
     }
 
     function input_1_input_handler() {
       filterText = this.value;
-      $$invalidate(1, filterText);
+      $$invalidate(3, filterText);
     }
 
-    function input_1_binding_1($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
-        input = $$value;
-        $$invalidate(3, input);
-      });
-    }
-
-    function input_1_input_handler_1() {
-      filterText = this.value;
-      $$invalidate(1, filterText);
+    function switch_instance_hoverItemIndex_binding(value) {
+      hoverItemIndex = value;
+      $$invalidate(28, hoverItemIndex);
     }
 
     function div_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](() => {
+      binding_callbacks[$$value ? 'unshift' : 'push'](() => {
         container = $$value;
-        $$invalidate(2, container);
+        $$invalidate(0, container);
       });
     }
 
     $$self.$$set = $$props => {
-      if ("container" in $$props) $$invalidate(2, container = $$props.container);
-      if ("input" in $$props) $$invalidate(3, input = $$props.input);
-      if ("Item" in $$props) $$invalidate(39, Item$1 = $$props.Item);
-      if ("Selection" in $$props) $$invalidate(6, Selection$1 = $$props.Selection);
-      if ("MultiSelection" in $$props) $$invalidate(7, MultiSelection$1 = $$props.MultiSelection);
-      if ("isMulti" in $$props) $$invalidate(8, isMulti = $$props.isMulti);
-      if ("multiFullItemClearable" in $$props) $$invalidate(9, multiFullItemClearable = $$props.multiFullItemClearable);
-      if ("isDisabled" in $$props) $$invalidate(10, isDisabled = $$props.isDisabled);
-      if ("isCreatable" in $$props) $$invalidate(40, isCreatable = $$props.isCreatable);
-      if ("isFocused" in $$props) $$invalidate(4, isFocused = $$props.isFocused);
-      if ("selectedValue" in $$props) $$invalidate(0, selectedValue = $$props.selectedValue);
-      if ("filterText" in $$props) $$invalidate(1, filterText = $$props.filterText);
-      if ("placeholder" in $$props) $$invalidate(41, placeholder = $$props.placeholder);
-      if ("items" in $$props) $$invalidate(35, items = $$props.items);
-      if ("itemFilter" in $$props) $$invalidate(42, itemFilter = $$props.itemFilter);
-      if ("groupBy" in $$props) $$invalidate(43, groupBy = $$props.groupBy);
-      if ("groupFilter" in $$props) $$invalidate(44, groupFilter = $$props.groupFilter);
-      if ("isGroupHeaderSelectable" in $$props) $$invalidate(45, isGroupHeaderSelectable = $$props.isGroupHeaderSelectable);
-      if ("getGroupHeaderLabel" in $$props) $$invalidate(46, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
-      if ("getOptionLabel" in $$props) $$invalidate(47, getOptionLabel = $$props.getOptionLabel);
-      if ("optionIdentifier" in $$props) $$invalidate(48, optionIdentifier = $$props.optionIdentifier);
-      if ("loadOptions" in $$props) $$invalidate(49, loadOptions = $$props.loadOptions);
-      if ("hasError" in $$props) $$invalidate(11, hasError = $$props.hasError);
-      if ("containerStyles" in $$props) $$invalidate(12, containerStyles = $$props.containerStyles);
-      if ("getSelectionLabel" in $$props) $$invalidate(13, getSelectionLabel = $$props.getSelectionLabel);
-      if ("createGroupHeaderItem" in $$props) $$invalidate(50, createGroupHeaderItem = $$props.createGroupHeaderItem);
-      if ("createItem" in $$props) $$invalidate(51, createItem = $$props.createItem);
-      if ("isSearchable" in $$props) $$invalidate(14, isSearchable = $$props.isSearchable);
-      if ("inputStyles" in $$props) $$invalidate(15, inputStyles = $$props.inputStyles);
-      if ("isClearable" in $$props) $$invalidate(16, isClearable = $$props.isClearable);
-      if ("isWaiting" in $$props) $$invalidate(5, isWaiting = $$props.isWaiting);
-      if ("listPlacement" in $$props) $$invalidate(52, listPlacement = $$props.listPlacement);
-      if ("listOpen" in $$props) $$invalidate(37, listOpen = $$props.listOpen);
-      if ("list" in $$props) $$invalidate(36, list = $$props.list);
-      if ("isVirtualList" in $$props) $$invalidate(53, isVirtualList = $$props.isVirtualList);
-      if ("loadOptionsInterval" in $$props) $$invalidate(54, loadOptionsInterval = $$props.loadOptionsInterval);
-      if ("noOptionsMessage" in $$props) $$invalidate(55, noOptionsMessage = $$props.noOptionsMessage);
-      if ("hideEmptyState" in $$props) $$invalidate(56, hideEmptyState = $$props.hideEmptyState);
-      if ("filteredItems" in $$props) $$invalidate(38, filteredItems = $$props.filteredItems);
-      if ("inputAttributes" in $$props) $$invalidate(57, inputAttributes = $$props.inputAttributes);
-      if ("listAutoWidth" in $$props) $$invalidate(58, listAutoWidth = $$props.listAutoWidth);
-      if ("itemHeight" in $$props) $$invalidate(59, itemHeight = $$props.itemHeight);
-      if ("Icon" in $$props) $$invalidate(17, Icon = $$props.Icon);
-      if ("iconProps" in $$props) $$invalidate(18, iconProps = $$props.iconProps);
-      if ("showChevron" in $$props) $$invalidate(19, showChevron = $$props.showChevron);
-      if ("showIndicator" in $$props) $$invalidate(20, showIndicator = $$props.showIndicator);
-      if ("containerClasses" in $$props) $$invalidate(21, containerClasses = $$props.containerClasses);
-      if ("indicatorSvg" in $$props) $$invalidate(22, indicatorSvg = $$props.indicatorSvg);
-      if ("ClearIcon" in $$props) $$invalidate(23, ClearIcon$1 = $$props.ClearIcon);
+      if ('id' in $$props) $$invalidate(46, id = $$props.id);
+      if ('container' in $$props) $$invalidate(0, container = $$props.container);
+      if ('input' in $$props) $$invalidate(6, input = $$props.input);
+      if ('isMulti' in $$props) $$invalidate(7, isMulti = $$props.isMulti);
+      if ('multiFullItemClearable' in $$props) $$invalidate(8, multiFullItemClearable = $$props.multiFullItemClearable);
+      if ('isDisabled' in $$props) $$invalidate(9, isDisabled = $$props.isDisabled);
+      if ('isCreatable' in $$props) $$invalidate(47, isCreatable = $$props.isCreatable);
+      if ('isFocused' in $$props) $$invalidate(1, isFocused = $$props.isFocused);
+      if ('value' in $$props) $$invalidate(2, value = $$props.value);
+      if ('filterText' in $$props) $$invalidate(3, filterText = $$props.filterText);
+      if ('placeholder' in $$props) $$invalidate(48, placeholder = $$props.placeholder);
+      if ('placeholderAlwaysShow' in $$props) $$invalidate(49, placeholderAlwaysShow = $$props.placeholderAlwaysShow);
+      if ('items' in $$props) $$invalidate(50, items = $$props.items);
+      if ('itemFilter' in $$props) $$invalidate(51, itemFilter = $$props.itemFilter);
+      if ('groupBy' in $$props) $$invalidate(52, groupBy = $$props.groupBy);
+      if ('groupFilter' in $$props) $$invalidate(53, groupFilter = $$props.groupFilter);
+      if ('isGroupHeaderSelectable' in $$props) $$invalidate(54, isGroupHeaderSelectable = $$props.isGroupHeaderSelectable);
+      if ('getGroupHeaderLabel' in $$props) $$invalidate(55, getGroupHeaderLabel = $$props.getGroupHeaderLabel);
+      if ('labelIdentifier' in $$props) $$invalidate(56, labelIdentifier = $$props.labelIdentifier);
+      if ('getOptionLabel' in $$props) $$invalidate(57, getOptionLabel = $$props.getOptionLabel);
+      if ('optionIdentifier' in $$props) $$invalidate(58, optionIdentifier = $$props.optionIdentifier);
+      if ('loadOptions' in $$props) $$invalidate(59, loadOptions = $$props.loadOptions);
+      if ('hasError' in $$props) $$invalidate(10, hasError = $$props.hasError);
+      if ('containerStyles' in $$props) $$invalidate(11, containerStyles = $$props.containerStyles);
+      if ('getSelectionLabel' in $$props) $$invalidate(12, getSelectionLabel = $$props.getSelectionLabel);
+      if ('createGroupHeaderItem' in $$props) $$invalidate(60, createGroupHeaderItem = $$props.createGroupHeaderItem);
+      if ('createItem' in $$props) $$invalidate(61, createItem = $$props.createItem);
+      if ('isSearchable' in $$props) $$invalidate(13, isSearchable = $$props.isSearchable);
+      if ('inputStyles' in $$props) $$invalidate(14, inputStyles = $$props.inputStyles);
+      if ('isClearable' in $$props) $$invalidate(15, isClearable = $$props.isClearable);
+      if ('isWaiting' in $$props) $$invalidate(4, isWaiting = $$props.isWaiting);
+      if ('listPlacement' in $$props) $$invalidate(63, listPlacement = $$props.listPlacement);
+      if ('listOpen' in $$props) $$invalidate(5, listOpen = $$props.listOpen);
+      if ('isVirtualList' in $$props) $$invalidate(64, isVirtualList = $$props.isVirtualList);
+      if ('loadOptionsInterval' in $$props) $$invalidate(65, loadOptionsInterval = $$props.loadOptionsInterval);
+      if ('noOptionsMessage' in $$props) $$invalidate(66, noOptionsMessage = $$props.noOptionsMessage);
+      if ('hideEmptyState' in $$props) $$invalidate(67, hideEmptyState = $$props.hideEmptyState);
+      if ('inputAttributes' in $$props) $$invalidate(16, inputAttributes = $$props.inputAttributes);
+      if ('listAutoWidth' in $$props) $$invalidate(68, listAutoWidth = $$props.listAutoWidth);
+      if ('itemHeight' in $$props) $$invalidate(69, itemHeight = $$props.itemHeight);
+      if ('Icon' in $$props) $$invalidate(17, Icon = $$props.Icon);
+      if ('iconProps' in $$props) $$invalidate(18, iconProps = $$props.iconProps);
+      if ('showChevron' in $$props) $$invalidate(19, showChevron = $$props.showChevron);
+      if ('showIndicator' in $$props) $$invalidate(20, showIndicator = $$props.showIndicator);
+      if ('containerClasses' in $$props) $$invalidate(21, containerClasses = $$props.containerClasses);
+      if ('indicatorSvg' in $$props) $$invalidate(22, indicatorSvg = $$props.indicatorSvg);
+      if ('listOffset' in $$props) $$invalidate(70, listOffset = $$props.listOffset);
+      if ('ClearIcon' in $$props) $$invalidate(23, ClearIcon$1 = $$props.ClearIcon);
+      if ('Item' in $$props) $$invalidate(71, Item$1 = $$props.Item);
+      if ('List' in $$props) $$invalidate(24, List$1 = $$props.List);
+      if ('Selection' in $$props) $$invalidate(25, Selection$1 = $$props.Selection);
+      if ('MultiSelection' in $$props) $$invalidate(26, MultiSelection$1 = $$props.MultiSelection);
+      if ('VirtualList' in $$props) $$invalidate(72, VirtualList$1 = $$props.VirtualList);
+      if ('selectedValue' in $$props) $$invalidate(73, selectedValue = $$props.selectedValue);
+      if ('ariaValues' in $$props) $$invalidate(74, ariaValues = $$props.ariaValues);
+      if ('ariaListOpen' in $$props) $$invalidate(75, ariaListOpen = $$props.ariaListOpen);
+      if ('ariaFocused' in $$props) $$invalidate(76, ariaFocused = $$props.ariaFocused);
     };
 
     $$self.$$.update = () => {
       if ($$self.$$.dirty[0] &
-      /*isDisabled*/
-      1024) ;
+      /*filterText, value, isMulti*/
+      140 | $$self.$$.dirty[1] &
+      /*loadOptions, items, optionIdentifier, groupBy, isCreatable*/
+      405340160) {
+        $$invalidate(81, filteredItems = filterMethod({
+          loadOptions,
+          filterText,
+          items,
+          value,
+          isMulti,
+          optionIdentifier,
+          groupBy,
+          isCreatable
+        }));
+      }
+
+      if ($$self.$$.dirty[2] &
+      /*selectedValue*/
+      2048) {
+        {
+          if (selectedValue) console.warn('selectedValue is no longer used. Please use value instead.');
+        }
+      }
 
       if ($$self.$$.dirty[1] &
       /*items*/
-      16) {
-        updateSelectedValueDisplay(items);
+      524288) {
+        updateValueDisplay(items);
       }
 
       if ($$self.$$.dirty[0] &
-      /*selectedValue, isMulti*/
-      257 | $$self.$$.dirty[1] &
-      /*optionIdentifier*/
+      /*value*/
+      4) {
+        {
+          if (value) setValue();
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*inputAttributes, isSearchable*/
+      73728) {
+        {
+          if (inputAttributes || !isSearchable) assignInputAttributes();
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*isMulti*/
+      128 | $$self.$$.dirty[2] &
+      /*prev_isMulti*/
+      262144) {
+        {
+          if (isMulti) {
+            setupMulti();
+          }
+
+          if (prev_isMulti && !isMulti) {
+            setupSingle();
+          }
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*isMulti, value*/
+      132) {
+        {
+          if (isMulti && value && value.length > 1) {
+            checkValueForDuplicates();
+          }
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*value*/
+      4) {
+        {
+          if (value) dispatchSelectedItem();
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*value, isMulti*/
+      132 | $$self.$$.dirty[2] &
+      /*prev_value*/
+      32768) {
+        {
+          if (!value && isMulti && prev_value) {
+            dispatch('select', value);
+          }
+        }
+      }
+
+      if ($$self.$$.dirty[0] &
+      /*isFocused*/
+      2 | $$self.$$.dirty[2] &
+      /*prev_isFocused*/
       131072) {
         {
-          if (typeof selectedValue === "string") {
-            $$invalidate(0, selectedValue = {
-              [optionIdentifier]: selectedValue,
-              label: selectedValue
-            });
-          } else if (isMulti && Array.isArray(selectedValue) && selectedValue.length > 0) {
-            $$invalidate(0, selectedValue = selectedValue.map(item => typeof item === "string" ? {
-              value: item,
-              label: item
-            } : item));
+          if (isFocused !== prev_isFocused) {
+            setupFocus();
           }
         }
       }
 
-      if ($$self.$$.dirty[1] &
-      /*noOptionsMessage, list*/
-      16777248) {
+      if ($$self.$$.dirty[0] &
+      /*filterText*/
+      8 | $$self.$$.dirty[2] &
+      /*prev_filterText*/
+      65536) {
         {
-          if (noOptionsMessage && list) list.$set({
-            noOptionsMessage
-          });
-        }
-      }
-
-      if ($$self.$$.dirty[0] &
-      /*selectedValue, filterText*/
-      3) {
-        $$invalidate(27, showSelectedItem = selectedValue && filterText.length === 0);
-      }
-
-      if ($$self.$$.dirty[0] &
-      /*selectedValue*/
-      1 | $$self.$$.dirty[1] &
-      /*placeholder*/
-      1024) {
-        $$invalidate(28, placeholderText = selectedValue ? "" : placeholder);
-      }
-
-      if ($$self.$$.dirty[0] &
-      /*isSearchable*/
-      16384 | $$self.$$.dirty[1] &
-      /*inputAttributes*/
-      67108864) {
-        {
-          $$invalidate(26, _inputAttributes = Object.assign({
-            autocomplete: "off",
-            autocorrect: "off",
-            spellcheck: false
-          }, inputAttributes));
-
-          if (!isSearchable) {
-            $$invalidate(26, _inputAttributes.readonly = true, _inputAttributes);
+          if (filterText !== prev_filterText) {
+            setupFilterText();
           }
         }
       }
 
       if ($$self.$$.dirty[0] &
-      /*filterText, isMulti, selectedValue*/
-      259 | $$self.$$.dirty[1] &
-      /*items, loadOptions, originalItemsClone, optionIdentifier, itemFilter, getOptionLabel, groupBy, createGroupHeaderItem, isGroupHeaderSelectable, groupFilter*/
-      537884688) {
-        {
-          let _filteredItems;
+      /*value, filterText*/
+      12) {
+        $$invalidate(29, showSelectedItem = value && filterText.length === 0);
+      }
 
-          let _items = items;
+      if ($$self.$$.dirty[0] &
+      /*showSelectedItem, isClearable, isDisabled, isWaiting*/
+      536904208) {
+        $$invalidate(37, showClearIcon = showSelectedItem && isClearable && !isDisabled && !isWaiting);
+      }
 
-          if (items && items.length > 0 && typeof items[0] !== "object") {
-            _items = items.map((item, index) => {
-              return {
-                index,
-                value: item,
-                label: item
-              };
-            });
-          }
+      if ($$self.$$.dirty[0] &
+      /*isMulti, value*/
+      132 | $$self.$$.dirty[1] &
+      /*placeholderAlwaysShow, placeholder*/
+      393216) {
+        $$invalidate(36, placeholderText = placeholderAlwaysShow && isMulti ? placeholder : value ? '' : placeholder);
+      }
 
-          if (loadOptions && filterText.length === 0 && originalItemsClone) {
-            _filteredItems = JSON.parse(originalItemsClone);
-            _items = JSON.parse(originalItemsClone);
-          } else {
-            _filteredItems = loadOptions ? filterText.length === 0 ? [] : _items : _items.filter(item => {
-              let keepItem = true;
+      if ($$self.$$.dirty[0] &
+      /*isMulti, value*/
+      132) {
+        $$invalidate(35, showMultiSelect = isMulti && value && value.length > 0);
+      }
 
-              if (isMulti && selectedValue) {
-                keepItem = !selectedValue.some(value => {
-                  return value[optionIdentifier] === item[optionIdentifier];
-                });
-              }
+      if ($$self.$$.dirty[0] &
+      /*filterText, value, isMulti, container*/
+      141 | $$self.$$.dirty[1] &
+      /*optionIdentifier, getGroupHeaderLabel, getOptionLabel*/
+      218103808 | $$self.$$.dirty[2] &
+      /*Item, noOptionsMessage, hideEmptyState, isVirtualList, VirtualList, filteredItems, itemHeight, listPlacement, listAutoWidth, listOffset*/
+      526326) {
+        $$invalidate(34, listProps = {
+          Item: Item$1,
+          filterText,
+          optionIdentifier,
+          noOptionsMessage,
+          hideEmptyState,
+          isVirtualList,
+          VirtualList: VirtualList$1,
+          value,
+          isMulti,
+          getGroupHeaderLabel,
+          items: filteredItems,
+          itemHeight,
+          getOptionLabel,
+          listPlacement,
+          parent: container,
+          listAutoWidth,
+          listOffset
+        });
+      }
 
-              if (!keepItem) return false;
-              if (filterText.length < 1) return true;
-              return itemFilter(getOptionLabel(item, filterText), filterText, item);
-            });
-          }
+      if ($$self.$$.dirty[0] &
+      /*value, isMulti*/
+      132) {
+        $$invalidate(33, ariaSelection = value ? handleAriaSelection() : '');
+      }
 
-          if (groupBy) {
-            const groupValues = [];
-            const groups = {};
-
-            _filteredItems.forEach(item => {
-              const groupValue = groupBy(item);
-
-              if (!groupValues.includes(groupValue)) {
-                groupValues.push(groupValue);
-                groups[groupValue] = [];
-
-                if (groupValue) {
-                  groups[groupValue].push(Object.assign(createGroupHeaderItem(groupValue, item), {
-                    id: groupValue,
-                    isGroupHeader: true,
-                    isSelectable: isGroupHeaderSelectable
-                  }));
-                }
-              }
-
-              groups[groupValue].push(Object.assign({
-                isGroupItem: !!groupValue
-              }, item));
-            });
-
-            const sortedGroupedItems = [];
-            groupFilter(groupValues).forEach(groupValue => {
-              sortedGroupedItems.push(...groups[groupValue]);
-            });
-            $$invalidate(38, filteredItems = sortedGroupedItems);
-          } else {
-            $$invalidate(38, filteredItems = _filteredItems);
-          }
-        }
+      if ($$self.$$.dirty[0] &
+      /*hoverItemIndex, isFocused, listOpen*/
+      268435490 | $$self.$$.dirty[2] &
+      /*filteredItems*/
+      524288) {
+        $$invalidate(32, ariaContext = handleAriaContent());
       }
     };
 
-    return [selectedValue, filterText, container, input, isFocused, isWaiting, Selection$1, MultiSelection$1, isMulti, multiFullItemClearable, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, Icon, iconProps, showChevron, showIndicator, containerClasses, indicatorSvg, ClearIcon$1, handleClear, activeSelectedValue, _inputAttributes, showSelectedItem, placeholderText, handleMultiItemClear, getPosition, handleKeyDown, handleFocus, handleWindowClick, handleClick, items, list, listOpen, filteredItems, Item$1, isCreatable, placeholder, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, inputAttributes, listAutoWidth, itemHeight, originalItemsClone, input_1_binding, input_1_input_handler, input_1_binding_1, input_1_input_handler_1, div_binding];
+    return [container, isFocused, value, filterText, isWaiting, listOpen, input, isMulti, multiFullItemClearable, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, inputAttributes, Icon, iconProps, showChevron, showIndicator, containerClasses, indicatorSvg, ClearIcon$1, List$1, Selection$1, MultiSelection$1, handleClear, hoverItemIndex, showSelectedItem, activeValue, _inputAttributes, ariaContext, ariaSelection, listProps, showMultiSelect, placeholderText, showClearIcon, handleMultiItemClear, handleKeyDown, handleFocus, handleWindowEvent, handleClick, itemSelected, itemCreated, closeList, id, isCreatable, placeholder, placeholderAlwaysShow, items, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, labelIdentifier, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, getFilteredItems, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, listAutoWidth, itemHeight, listOffset, Item$1, VirtualList$1, selectedValue, ariaValues, ariaListOpen, ariaFocused, prev_value, prev_filterText, prev_isFocused, prev_isMulti, filteredItems, input_1_binding, input_1_input_handler, switch_instance_hoverItemIndex_binding, div_binding];
   }
 
   class Select extends SvelteComponent {
     constructor(options) {
       super();
-      if (!document_1.getElementById("svelte-17qb5ew-style")) add_css();
       init$1(this, options, instance$5, create_fragment$5, safe_not_equal, {
-        container: 2,
-        input: 3,
-        Item: 39,
-        Selection: 6,
-        MultiSelection: 7,
-        isMulti: 8,
-        multiFullItemClearable: 9,
-        isDisabled: 10,
-        isCreatable: 40,
-        isFocused: 4,
-        selectedValue: 0,
-        filterText: 1,
-        placeholder: 41,
-        items: 35,
-        itemFilter: 42,
-        groupBy: 43,
-        groupFilter: 44,
-        isGroupHeaderSelectable: 45,
-        getGroupHeaderLabel: 46,
-        getOptionLabel: 47,
-        optionIdentifier: 48,
-        loadOptions: 49,
-        hasError: 11,
-        containerStyles: 12,
-        getSelectionLabel: 13,
-        createGroupHeaderItem: 50,
-        createItem: 51,
-        isSearchable: 14,
-        inputStyles: 15,
-        isClearable: 16,
-        isWaiting: 5,
-        listPlacement: 52,
-        listOpen: 37,
-        list: 36,
-        isVirtualList: 53,
-        loadOptionsInterval: 54,
-        noOptionsMessage: 55,
-        hideEmptyState: 56,
-        filteredItems: 38,
-        inputAttributes: 57,
-        listAutoWidth: 58,
-        itemHeight: 59,
+        id: 46,
+        container: 0,
+        input: 6,
+        isMulti: 7,
+        multiFullItemClearable: 8,
+        isDisabled: 9,
+        isCreatable: 47,
+        isFocused: 1,
+        value: 2,
+        filterText: 3,
+        placeholder: 48,
+        placeholderAlwaysShow: 49,
+        items: 50,
+        itemFilter: 51,
+        groupBy: 52,
+        groupFilter: 53,
+        isGroupHeaderSelectable: 54,
+        getGroupHeaderLabel: 55,
+        labelIdentifier: 56,
+        getOptionLabel: 57,
+        optionIdentifier: 58,
+        loadOptions: 59,
+        hasError: 10,
+        containerStyles: 11,
+        getSelectionLabel: 12,
+        createGroupHeaderItem: 60,
+        createItem: 61,
+        getFilteredItems: 62,
+        isSearchable: 13,
+        inputStyles: 14,
+        isClearable: 15,
+        isWaiting: 4,
+        listPlacement: 63,
+        listOpen: 5,
+        isVirtualList: 64,
+        loadOptionsInterval: 65,
+        noOptionsMessage: 66,
+        hideEmptyState: 67,
+        inputAttributes: 16,
+        listAutoWidth: 68,
+        itemHeight: 69,
         Icon: 17,
         iconProps: 18,
         showChevron: 19,
         showIndicator: 20,
         containerClasses: 21,
         indicatorSvg: 22,
+        listOffset: 70,
         ClearIcon: 23,
-        handleClear: 24
-      }, [-1, -1, -1]);
+        Item: 71,
+        List: 24,
+        Selection: 25,
+        MultiSelection: 26,
+        VirtualList: 72,
+        selectedValue: 73,
+        handleClear: 27,
+        ariaValues: 74,
+        ariaListOpen: 75,
+        ariaFocused: 76
+      }, add_css, [-1, -1, -1, -1]);
+    }
+
+    get getFilteredItems() {
+      return this.$$.ctx[62];
     }
 
     get handleClear() {
-      return this.$$.ctx[24];
+      return this.$$.ctx[27];
     }
 
   }
@@ -21585,14 +22400,14 @@
   function create_fragment$4(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4$1("timemanager", "Note") + "";
+    var t0_value = dist_4$1('timemanager', 'Note') + "";
     var t0;
     var t1;
     var input0;
     var t2;
     var label1;
     var html_tag;
-    var raw0_value = dist_4$1("timemanager", "Duration (in hrs.) & Date") + "";
+    var raw0_value = dist_4$1('timemanager', 'Duration (in hrs.) & Date') + "";
     var t3;
     var span0;
     var input1;
@@ -21600,17 +22415,17 @@
     var input2;
     var t5;
     var label2;
-    var t6_value = dist_4$1("timemanager", "Client") + "";
+    var t6_value = dist_4$1('timemanager', 'Client') + "";
     var t6;
     var t7;
     var select0;
-    var updating_selectedValue;
+    var updating_value;
     var label2_class_value;
     var t8;
     var label3;
     var span1;
     var html_tag_1;
-    var raw1_value = dist_4$1("timemanager", "Project & Task for") + "";
+    var raw1_value = dist_4$1('timemanager', 'Project & Task for') + "";
     var t9;
     var strong;
     var t10_value = (
@@ -21623,26 +22438,26 @@
     var a;
     var t13;
     var select1;
-    var updating_selectedValue_1;
+    var updating_value_1;
     var label3_class_value;
     var t14;
     var span2;
     var button;
-    var t15_value = dist_4$1("timemanager", "Add") + "";
+    var t15_value = dist_4$1('timemanager', 'Add') + "";
     var t15;
     var form_class_value;
     var current;
     var mounted;
     var dispose;
 
-    function select0_selectedValue_binding(value) {
-      /*select0_selectedValue_binding*/
+    function select0_value_binding(value) {
+      /*select0_value_binding*/
       ctx[21](value);
     }
 
     var select0_props = {
-      noOptionsMessage: dist_4$1("timemanager", "No options"),
-      placeholder: dist_4$1("timemanager", "Select..."),
+      noOptionsMessage: dist_4$1('timemanager', 'No options'),
+      placeholder: dist_4$1('timemanager', 'Select...'),
       items:
       /*clients*/
       ctx[0]
@@ -21651,7 +22466,7 @@
     if (
     /*client*/
     ctx[4] !== void 0) {
-      select0_props.selectedValue =
+      select0_props.value =
       /*client*/
       ctx[4];
     }
@@ -21660,14 +22475,14 @@
       props: select0_props
     });
     binding_callbacks.push(function () {
-      return bind(select0, "selectedValue", select0_selectedValue_binding);
+      return bind(select0, 'value', select0_value_binding);
     });
     select0.$on("select",
     /*clientSelected*/
     ctx[11]);
 
-    function select1_selectedValue_binding(value) {
-      /*select1_selectedValue_binding*/
+    function select1_value_binding(value) {
+      /*select1_value_binding*/
       ctx[24](value);
     }
 
@@ -21680,14 +22495,14 @@
       /*func*/
       ctx[23]),
       groupBy: func_1,
-      noOptionsMessage: dist_4$1("timemanager", "No projects/tasks or no client selected."),
-      placeholder: dist_4$1("timemanager", "Select...")
+      noOptionsMessage: dist_4$1('timemanager', 'No projects/tasks or no client selected.'),
+      placeholder: dist_4$1('timemanager', 'Select...')
     };
 
     if (
     /*task*/
     ctx[5] !== void 0) {
-      select1_props.selectedValue =
+      select1_props.value =
       /*task*/
       ctx[5];
     }
@@ -21696,7 +22511,7 @@
       props: select1_props
     });
     binding_callbacks.push(function () {
-      return bind(select1, "selectedValue", select1_selectedValue_binding);
+      return bind(select1, 'value', select1_value_binding);
     });
     return {
       c: function c() {
@@ -21727,7 +22542,7 @@
         t10 = text(t10_value);
         t11 = space();
         a = element("a");
-        a.textContent = "".concat(dist_4$1("timemanager", "Change client"));
+        a.textContent = "".concat(dist_4$1('timemanager', 'Change client'));
         t13 = space();
         create_component(select1.$$.fragment);
         t14 = space();
@@ -21737,7 +22552,7 @@
         attr(input0, "type", "text");
         attr(input0, "name", "note");
         attr(input0, "class", "note");
-        attr(input0, "placeholder", dist_4$1("timemanager", "Describe what you did..."));
+        attr(input0, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
         attr(label0, "class", "note");
         html_tag.a = t3;
         attr(input1, "type", "number");
@@ -21751,18 +22566,18 @@
         attr(span0, "class", "double");
         attr(label2, "class", label2_class_value = "client".concat(
         /*taskError*/
-        ctx[8] ? " error" : "").concat(
+        ctx[8] ? ' error' : '').concat(
         /*client*/
-        ctx[4] ? " hidden-visually" : ""));
+        ctx[4] ? ' hidden-visually' : ''));
         html_tag_1.a = t9;
         attr(a, "href", "#/");
         attr(a, "class", "change");
         attr(span1, "class", "task-caption");
         attr(label3, "class", label3_class_value = "task".concat(
         /*taskError*/
-        ctx[8] ? " error" : "").concat(!
+        ctx[8] ? ' error' : '').concat(!
         /*client*/
-        ctx[4] ? " hidden-visually" : ""));
+        ctx[4] ? ' hidden-visually' : ''));
         button.disabled =
         /*loading*/
         ctx[7];
@@ -21771,7 +22586,7 @@
         attr(span2, "class", "actions");
         attr(form, "class", form_class_value = "quick-add".concat(
         /*loading*/
-        ctx[7] ? " icon-loading" : ""));
+        ctx[7] ? ' icon-loading' : ''));
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
@@ -21875,15 +22690,15 @@
         /*clients*/
         ctx[0];
 
-        if (!updating_selectedValue && dirty &
+        if (!updating_value && dirty &
         /*client*/
         16) {
-          updating_selectedValue = true;
-          select0_changes.selectedValue =
+          updating_value = true;
+          select0_changes.value =
           /*client*/
           ctx[4];
           add_flush_callback(function () {
-            return updating_selectedValue = false;
+            return updating_value = false;
           });
         }
 
@@ -21893,9 +22708,9 @@
         /*taskError, client*/
         272 && label2_class_value !== (label2_class_value = "client".concat(
         /*taskError*/
-        ctx[8] ? " error" : "").concat(
+        ctx[8] ? ' error' : '').concat(
         /*client*/
-        ctx[4] ? " hidden-visually" : ""))) {
+        ctx[4] ? ' hidden-visually' : ''))) {
           attr(label2, "class", label2_class_value);
         }
 
@@ -21917,15 +22732,15 @@
         /*func*/
         ctx[23]);
 
-        if (!updating_selectedValue_1 && dirty &
+        if (!updating_value_1 && dirty &
         /*task*/
         32) {
-          updating_selectedValue_1 = true;
-          select1_changes.selectedValue =
+          updating_value_1 = true;
+          select1_changes.value =
           /*task*/
           ctx[5];
           add_flush_callback(function () {
-            return updating_selectedValue_1 = false;
+            return updating_value_1 = false;
           });
         }
 
@@ -21935,9 +22750,9 @@
         /*taskError, client*/
         272 && label3_class_value !== (label3_class_value = "task".concat(
         /*taskError*/
-        ctx[8] ? " error" : "").concat(!
+        ctx[8] ? ' error' : '').concat(!
         /*client*/
-        ctx[4] ? " hidden-visually" : ""))) {
+        ctx[4] ? ' hidden-visually' : ''))) {
           attr(label3, "class", label3_class_value);
         }
 
@@ -21953,7 +22768,7 @@
         /*loading*/
         128 && form_class_value !== (form_class_value = "quick-add".concat(
         /*loading*/
-        ctx[7] ? " icon-loading" : ""))) {
+        ctx[7] ? ' icon-loading' : ''))) {
           attr(form, "class", form_class_value);
         }
       },
@@ -22100,7 +22915,7 @@
     }
 
     function input0_binding($$value) {
-      binding_callbacks[$$value ? "unshift" : "push"](function () {
+      binding_callbacks[$$value ? 'unshift' : 'push'](function () {
         noteInput = $$value;
         $$invalidate(6, noteInput);
       });
@@ -22116,7 +22931,7 @@
       $$invalidate(2, date);
     }
 
-    function select0_selectedValue_binding(value) {
+    function select0_value_binding(value) {
       client = value;
       $$invalidate(4, client);
     }
@@ -22129,25 +22944,25 @@
       return client && oneTask.project.clientUuid === client.value;
     };
 
-    function select1_selectedValue_binding(value) {
+    function select1_value_binding(value) {
       task = value;
       $$invalidate(5, task);
     }
 
     $$self.$$set = function ($$props) {
-      if ("action" in $$props) $$invalidate(12, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(13, requestToken = $$props.requestToken);
-      if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-      if ("projects" in $$props) $$invalidate(14, projects = $$props.projects);
-      if ("tasks" in $$props) $$invalidate(15, tasks = $$props.tasks);
-      if ("initialDate" in $$props) $$invalidate(16, initialDate = $$props.initialDate);
+      if ('action' in $$props) $$invalidate(12, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+      if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
+      if ('projects' in $$props) $$invalidate(14, projects = $$props.projects);
+      if ('tasks' in $$props) $$invalidate(15, tasks = $$props.tasks);
+      if ('initialDate' in $$props) $$invalidate(16, initialDate = $$props.initialDate);
     };
 
     $$invalidate(7, loading = false);
 
     $$invalidate(8, taskError = false);
 
-    return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_selectedValue_binding, click_handler, func, select1_selectedValue_binding];
+    return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_value_binding, click_handler, func, select1_value_binding];
   }
 
   var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -22203,7 +23018,7 @@
         attr(input, "class", "checkbox");
         input.checked = input_checked_value =
         /*initialState*/
-        ctx[1] === "paid";
+        ctx[1] === 'paid';
         input.disabled =
         /*loading*/
         ctx[3];
@@ -22213,7 +23028,7 @@
         attr(span0, "class", "checkbox-action");
         attr(span1, "class", span1_class_value = "checkbox-action-loading".concat(
         /*loading*/
-        ctx[3] ? " icon-loading" : ""));
+        ctx[3] ? ' icon-loading' : ''));
       },
       m: function m(target, anchor) {
         insert(target, span0, anchor);
@@ -22246,7 +23061,7 @@
         /*initialState*/
         2 && input_checked_value !== (input_checked_value =
         /*initialState*/
-        ctx[1] === "paid")) {
+        ctx[1] === 'paid')) {
           input.checked = input_checked_value;
         }
 
@@ -22270,7 +23085,7 @@
         /*loading*/
         8 && span1_class_value !== (span1_class_value = "checkbox-action-loading".concat(
         /*loading*/
-        ctx[3] ? " icon-loading" : ""))) {
+        ctx[3] ? ' icon-loading' : ''))) {
           attr(span1, "class", span1_class_value);
         }
       },
@@ -22351,15 +23166,15 @@
     }();
 
     var change_handler = function change_handler() {
-      $$invalidate(2, state = state === "paid" ? "unpaid" : "paid");
+      $$invalidate(2, state = state === 'paid' ? 'unpaid' : 'paid');
       save();
     };
 
     $$self.$$set = function ($$props) {
-      if ("uuid" in $$props) $$invalidate(0, uuid = $$props.uuid);
-      if ("initialState" in $$props) $$invalidate(1, initialState = $$props.initialState);
-      if ("action" in $$props) $$invalidate(5, action = $$props.action);
-      if ("requestToken" in $$props) $$invalidate(6, requestToken = $$props.requestToken);
+      if ('uuid' in $$props) $$invalidate(0, uuid = $$props.uuid);
+      if ('initialState' in $$props) $$invalidate(1, initialState = $$props.initialState);
+      if ('action' in $$props) $$invalidate(5, action = $$props.action);
+      if ('requestToken' in $$props) $$invalidate(6, requestToken = $$props.requestToken);
     };
 
     $$invalidate(3, loading = false);
@@ -22393,32 +23208,32 @@
   function create_fragment$2(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4$1("timemanager", "Clients") + "";
+    var t0_value = dist_4$1('timemanager', 'Clients') + "";
     var t0;
     var t1;
     var select0;
     var t2;
     var label1;
-    var t3_value = dist_4$1("timemanager", "Projects") + "";
+    var t3_value = dist_4$1('timemanager', 'Projects') + "";
     var t3;
     var t4;
     var select1;
     var t5;
     var label2;
-    var t6_value = dist_4$1("timemanager", "Tasks") + "";
+    var t6_value = dist_4$1('timemanager', 'Tasks') + "";
     var t6;
     var t7;
     var select2;
     var t8;
     var label3;
-    var t9_value = dist_4$1("timemanager", "Status") + "";
+    var t9_value = dist_4$1('timemanager', 'Status') + "";
     var t9;
     var t10;
     var select3;
     var t11;
     var span;
     var button;
-    var t12_value = dist_4$1("timemanager", "Apply filters") + "";
+    var t12_value = dist_4$1('timemanager', 'Apply filters') + "";
     var t12;
     var form_class_value;
     var current;
@@ -22426,15 +23241,15 @@
     var dispose;
     select0 = new Select({
       props: {
-        noOptionsMessage: dist_4$1("timemanager", "No options"),
-        placeholder: dist_4$1("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
         inputAttributes: {
-          id: "client-select"
+          id: 'client-select'
         },
         items:
         /*clients*/
         ctx[0],
-        selectedValue:
+        value:
         /*selectedClients*/
         ctx[1],
         isMulti: true
@@ -22445,15 +23260,15 @@
     ctx[10]);
     select1 = new Select({
       props: {
-        noOptionsMessage: dist_4$1("timemanager", "No options"),
-        placeholder: dist_4$1("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
         inputAttributes: {
-          id: "projects-select"
+          id: 'projects-select'
         },
         items:
         /*availableProjects*/
         ctx[6],
-        selectedValue:
+        value:
         /*selectedProjects*/
         ctx[2],
         isMulti: true
@@ -22464,15 +23279,15 @@
     ctx[11]);
     select2 = new Select({
       props: {
-        noOptionsMessage: dist_4$1("timemanager", "No options"),
-        placeholder: dist_4$1("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
         inputAttributes: {
-          id: "tasks-select"
+          id: 'tasks-select'
         },
         items:
         /*availableTasks*/
-        ctx[7],
-        selectedValue:
+        ctx[5],
+        value:
         /*selectedTasks*/
         ctx[3],
         isMulti: true
@@ -22483,15 +23298,15 @@
     ctx[12]);
     select3 = new Select({
       props: {
-        noOptionsMessage: dist_4$1("timemanager", "No options"),
-        placeholder: dist_4$1("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
         inputAttributes: {
-          id: "status-select"
+          id: 'status-select'
         },
         items:
         /*availableStatus*/
         ctx[8],
-        selectedValue:
+        value:
         /*selectedStatus*/
         ctx[4]
       }
@@ -22538,13 +23353,13 @@
         attr(label3, "class", "status");
         button.disabled =
         /*loading*/
-        ctx[5];
+        ctx[7];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
         attr(span, "class", "actions");
         attr(form, "class", form_class_value = "reports-filters".concat(
         /*loading*/
-        ctx[5] ? " icon-loading" : ""));
+        ctx[7] ? ' icon-loading' : ''));
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
@@ -22592,7 +23407,7 @@
         ctx[0];
         if (dirty &
         /*selectedClients*/
-        2) select0_changes.selectedValue =
+        2) select0_changes.value =
         /*selectedClients*/
         ctx[1];
         select0.$set(select0_changes);
@@ -22604,43 +23419,43 @@
         ctx[6];
         if (dirty &
         /*selectedProjects*/
-        4) select1_changes.selectedValue =
+        4) select1_changes.value =
         /*selectedProjects*/
         ctx[2];
         select1.$set(select1_changes);
         var select2_changes = {};
         if (dirty &
         /*availableTasks*/
-        128) select2_changes.items =
+        32) select2_changes.items =
         /*availableTasks*/
-        ctx[7];
+        ctx[5];
         if (dirty &
         /*selectedTasks*/
-        8) select2_changes.selectedValue =
+        8) select2_changes.value =
         /*selectedTasks*/
         ctx[3];
         select2.$set(select2_changes);
         var select3_changes = {};
         if (dirty &
         /*selectedStatus*/
-        16) select3_changes.selectedValue =
+        16) select3_changes.value =
         /*selectedStatus*/
         ctx[4];
         select3.$set(select3_changes);
 
         if (!current || dirty &
         /*loading*/
-        32) {
+        128) {
           button.disabled =
           /*loading*/
-          ctx[5];
+          ctx[7];
         }
 
         if (!current || dirty &
         /*loading*/
-        32 && form_class_value !== (form_class_value = "reports-filters".concat(
+        128 && form_class_value !== (form_class_value = "reports-filters".concat(
         /*loading*/
-        ctx[5] ? " icon-loading" : ""))) {
+        ctx[7] ? ' icon-loading' : ''))) {
           attr(form, "class", form_class_value);
         }
       },
@@ -22726,13 +23541,13 @@
       }
 
       if (selectedProjects && selectedProjects.length) {
-        $$invalidate(7, availableTasks = tasks.filter(function (task) {
+        $$invalidate(5, availableTasks = tasks.filter(function (task) {
           return selectedProjects.find(function (project) {
             return task.projectUuid === project.value;
           });
         }));
       } else {
-        $$invalidate(7, availableTasks = tasks);
+        $$invalidate(5, availableTasks = tasks);
       }
     };
 
@@ -22750,13 +23565,13 @@
       }
 
       if (selectedProjects && selectedProjects.length) {
-        $$invalidate(7, availableTasks = tasks.filter(function (task) {
+        $$invalidate(5, availableTasks = tasks.filter(function (task) {
           return selectedProjects.find(function (project) {
             return task.projectUuid === project.value;
           });
         }));
       } else {
-        $$invalidate(7, availableTasks = tasks);
+        $$invalidate(5, availableTasks = tasks);
       }
     };
 
@@ -22827,9 +23642,9 @@
     });
 
     $$self.$$set = function ($$props) {
-      if ("clients" in $$props) $$invalidate(0, clients = $$props.clients);
-      if ("projects" in $$props) $$invalidate(15, projects = $$props.projects);
-      if ("tasks" in $$props) $$invalidate(16, tasks = $$props.tasks);
+      if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
+      if ('projects' in $$props) $$invalidate(15, projects = $$props.projects);
+      if ('tasks' in $$props) $$invalidate(16, tasks = $$props.tasks);
     };
 
     $$self.$$.update = function () {
@@ -22842,13 +23657,13 @@
       if ($$self.$$.dirty &
       /*tasks*/
       65536) {
-        $$invalidate(7, availableTasks = tasks);
+        $$invalidate(5, availableTasks = tasks);
       }
     };
 
-    $$invalidate(5, loading = false);
+    $$invalidate(7, loading = false);
 
-    return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, loading, availableProjects, availableTasks, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+    return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
   }
 
   var Filters = /*#__PURE__*/function (_SvelteComponent) {
@@ -22876,26 +23691,26 @@
   function create_fragment$1(ctx) {
     var form;
     var label0;
-    var t0_value = dist_4$1("timemanager", "From") + "";
+    var t0_value = dist_4$1('timemanager', 'From') + "";
     var t0;
     var t1;
     var input0;
     var t2;
     var label1;
-    var t3_value = dist_4$1("timemanager", "To") + "";
+    var t3_value = dist_4$1('timemanager', 'To') + "";
     var t3;
     var t4;
     var input1;
     var t5;
     var label2;
-    var t6_value = dist_4$1("timemanager", "Presets") + "";
+    var t6_value = dist_4$1('timemanager', 'Presets') + "";
     var t6;
     var t7;
     var select;
     var t8;
     var span;
     var button;
-    var t9_value = dist_4$1("timemanager", "Apply range") + "";
+    var t9_value = dist_4$1('timemanager', 'Apply range') + "";
     var t9;
     var form_class_value;
     var current;
@@ -22903,10 +23718,10 @@
     var dispose;
     select = new Select({
       props: {
-        noOptionsMessage: dist_4$1("timemanager", "No options"),
-        placeholder: dist_4$1("timemanager", "Select..."),
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
         inputAttributes: {
-          id: "preset-select"
+          id: 'preset-select'
         },
         items:
         /*presets*/
@@ -22951,13 +23766,13 @@
         attr(label2, "class", "status");
         button.disabled =
         /*loading*/
-        ctx[0];
+        ctx[2];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
         attr(span, "class", "actions");
         attr(form, "class", form_class_value = "reports-timerange".concat(
         /*loading*/
-        ctx[0] ? " icon-loading" : ""));
+        ctx[2] ? ' icon-loading' : ''));
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
@@ -22975,7 +23790,7 @@
         append(label1, input1);
         set_input_value(input1,
         /*end*/
-        ctx[2]);
+        ctx[0]);
         append(form, t5);
         append(form, label2);
         append(label2, t6);
@@ -23012,25 +23827,25 @@
 
         if (dirty &
         /*end*/
-        4) {
+        1) {
           set_input_value(input1,
           /*end*/
-          ctx[2]);
+          ctx[0]);
         }
 
         if (!current || dirty &
         /*loading*/
-        1) {
+        4) {
           button.disabled =
           /*loading*/
-          ctx[0];
+          ctx[2];
         }
 
         if (!current || dirty &
         /*loading*/
-        1 && form_class_value !== (form_class_value = "reports-timerange".concat(
+        4 && form_class_value !== (form_class_value = "reports-timerange".concat(
         /*loading*/
-        ctx[0] ? " icon-loading" : ""))) {
+        ctx[2] ? ' icon-loading' : ''))) {
           attr(form, "class", form_class_value);
         }
       },
@@ -23106,19 +23921,19 @@
       switch (preset) {
         case "today":
           $$invalidate(1, start = format(startOfToday(), dateFormat));
-          $$invalidate(2, end = format(startOfToday(), dateFormat));
+          $$invalidate(0, end = format(startOfToday(), dateFormat));
           break;
 
         case "yesterday":
           $$invalidate(1, start = format(startOfYesterday(), dateFormat));
-          $$invalidate(2, end = format(startOfYesterday(), dateFormat));
+          $$invalidate(0, end = format(startOfYesterday(), dateFormat));
           break;
 
         case "week":
           $$invalidate(1, start = format(startOfWeek(startOfToday(), {
             weekStartsOn: dist_6()
           }), dateFormat));
-          $$invalidate(2, end = format(endOfWeek(startOfToday(), {
+          $$invalidate(0, end = format(endOfWeek(startOfToday(), {
             weekStartsOn: dist_6()
           }), dateFormat));
           break;
@@ -23129,7 +23944,7 @@
           }), {
             weekStartsOn: dist_6()
           }), dateFormat));
-          $$invalidate(2, end = format(endOfWeek(sub(startOfToday(), {
+          $$invalidate(0, end = format(endOfWeek(sub(startOfToday(), {
             weeks: 1
           }), {
             weekStartsOn: dist_6()
@@ -23138,28 +23953,28 @@
 
         case "month":
           $$invalidate(1, start = format(startOfMonth(startOfToday()), dateFormat));
-          $$invalidate(2, end = format(endOfMonth(startOfToday()), dateFormat));
+          $$invalidate(0, end = format(endOfMonth(startOfToday()), dateFormat));
           break;
 
         case "month-1":
           $$invalidate(1, start = format(startOfMonth(sub(startOfToday(), {
             months: 1
           })), dateFormat));
-          $$invalidate(2, end = format(endOfMonth(sub(startOfToday(), {
+          $$invalidate(0, end = format(endOfMonth(sub(startOfToday(), {
             months: 1
           })), dateFormat));
           break;
 
         case "year":
           $$invalidate(1, start = format(startOfYear(startOfToday()), dateFormat));
-          $$invalidate(2, end = format(endOfYear(startOfToday()), dateFormat));
+          $$invalidate(0, end = format(endOfYear(startOfToday()), dateFormat));
           break;
 
         case "year-1":
           $$invalidate(1, start = format(startOfYear(sub(startOfToday(), {
             years: 1
           })), dateFormat));
-          $$invalidate(2, end = format(endOfYear(sub(startOfToday(), {
+          $$invalidate(0, end = format(endOfYear(sub(startOfToday(), {
             years: 1
           })), dateFormat));
           break;
@@ -23188,7 +24003,7 @@
           }
 
           if (name === "end" && value) {
-            $$invalidate(2, end = value);
+            $$invalidate(0, end = value);
           }
         });
       }
@@ -23201,12 +24016,12 @@
 
     function input1_input_handler() {
       end = this.value;
-      $$invalidate(2, end), $$invalidate(7, endOfMonth$1);
+      $$invalidate(0, end), $$invalidate(7, endOfMonth$1);
     }
 
     $$self.$$set = function ($$props) {
-      if ("startOfMonth" in $$props) $$invalidate(6, startOfMonth$1 = $$props.startOfMonth);
-      if ("endOfMonth" in $$props) $$invalidate(7, endOfMonth$1 = $$props.endOfMonth);
+      if ('startOfMonth' in $$props) $$invalidate(6, startOfMonth$1 = $$props.startOfMonth);
+      if ('endOfMonth' in $$props) $$invalidate(7, endOfMonth$1 = $$props.endOfMonth);
     };
 
     $$self.$$.update = function () {
@@ -23219,13 +24034,13 @@
       if ($$self.$$.dirty &
       /*endOfMonth*/
       128) {
-        $$invalidate(2, end = endOfMonth$1);
+        $$invalidate(0, end = endOfMonth$1);
       }
     };
 
-    $$invalidate(0, loading = false);
+    $$invalidate(2, loading = false);
 
-    return [loading, start, end, presets, applyRange, handleSelectPreset, startOfMonth$1, endOfMonth$1, input0_input_handler, input1_input_handler];
+    return [end, start, loading, presets, applyRange, handleSelectPreset, startOfMonth$1, endOfMonth$1, input0_input_handler, input1_input_handler];
   }
 
   var Timerange = /*#__PURE__*/function (_SvelteComponent) {
@@ -23256,7 +24071,7 @@
     return {
       c: function c() {
         button = element("button");
-        button.textContent = "".concat(dist_4$1("timemanager", "Print report"));
+        button.textContent = "".concat(dist_4$1('timemanager', 'Print report'));
         attr(button, "type", "button");
         attr(button, "class", "button secondary");
       },
@@ -23693,8 +24508,8 @@
         console.log.apply(console, arguments);
       } // IE is weird
       else if (console.log) {
-          console.log(arguments);
-        }
+        console.log(arguments);
+      }
     }
   };
 
@@ -24332,16 +25147,16 @@
     module.exports = Pjax;
   } // if there isn’t required browser functions, returning stupid api
   else {
-      var stupidPjax = noop;
+    var stupidPjax = noop;
 
-      for (var key in Pjax.prototype) {
-        if (Pjax.prototype.hasOwnProperty(key) && typeof Pjax.prototype[key] === "function") {
-          stupidPjax[key] = noop;
-        }
+    for (var key in Pjax.prototype) {
+      if (Pjax.prototype.hasOwnProperty(key) && typeof Pjax.prototype[key] === "function") {
+        stupidPjax[key] = noop;
       }
-
-      module.exports = stupidPjax;
     }
+
+    module.exports = stupidPjax;
+  }
   });
 
   var dist$1 = createCommonjsModule$1(function (module, exports) {
@@ -26264,9 +27079,9 @@
         };
     }
 
-    return function ()
-    /* ...args */
-    {
+    return function
+      /* ...args */
+    () {
       return fn.apply(that, arguments);
     };
   };
@@ -26298,30 +27113,30 @@
         if (TYPE) {
           if (IS_MAP) target[index] = result; // map
           else if (result) switch (TYPE) {
-              case 3:
-                return true;
-              // some
+            case 3:
+              return true;
+            // some
 
-              case 5:
-                return value;
-              // find
+            case 5:
+              return value;
+            // find
 
-              case 6:
-                return index;
-              // findIndex
+            case 6:
+              return index;
+            // findIndex
 
-              case 2:
-                push.call(target, value);
-              // filter
-            } else switch (TYPE) {
-              case 4:
-                return false;
-              // every
+            case 2:
+              push.call(target, value);
+            // filter
+          } else switch (TYPE) {
+            case 4:
+              return false;
+            // every
 
-              case 7:
-                push.call(target, value);
-              // filterOut
-            }
+            case 7:
+              push.call(target, value);
+            // filterOut
+          }
         }
       }
 
@@ -28313,4 +29128,4 @@
   init();
   components.push(new PagePjax(init));
 
-}());
+})();
