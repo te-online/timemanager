@@ -134,7 +134,7 @@
 			inputAttributes={{ id: 'client-select' }}
 			items={clients}
 			on:select={handleSelectClients}
-			selectedValue={selectedClients}
+			value={selectedClients}
 			isMulti={true} />
 	</label>
 
@@ -146,7 +146,7 @@
 			inputAttributes={{ id: 'projects-select' }}
 			items={availableProjects}
 			on:select={handleSelectProjects}
-			selectedValue={selectedProjects}
+			value={selectedProjects}
 			isMulti={true} />
 	</label>
 
@@ -158,7 +158,7 @@
 			inputAttributes={{ id: 'tasks-select' }}
 			items={availableTasks}
 			on:select={handleSelectTasks}
-			selectedValue={selectedTasks}
+			value={selectedTasks}
 			isMulti={true} />
 	</label>
 
@@ -169,7 +169,7 @@
 			placeholder={translate('timemanager', 'Select...')}
 			inputAttributes={{ id: 'status-select' }}
 			items={availableStatus}
-			selectedValue={selectedStatus}
+			value={selectedStatus}
 			on:select={handleSelectStatus}
 			on:clear={handleClearStatus} />
 	</label>

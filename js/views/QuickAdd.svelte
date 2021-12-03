@@ -102,7 +102,7 @@
 			noOptionsMessage={translate('timemanager', 'No options')}
 			placeholder={translate('timemanager', 'Select...')}
 			items={clients}
-			bind:selectedValue={client}
+			bind:value={client}
 			on:select={clientSelected} />
 	</label>
 	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
@@ -118,7 +118,7 @@
 			groupBy={item => item.project.label}
 			noOptionsMessage={translate('timemanager', 'No projects/tasks or no client selected.')}
 			placeholder={translate('timemanager', 'Select...')}
-			bind:selectedValue={task} />
+			bind:value={task} />
 	</label>
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
