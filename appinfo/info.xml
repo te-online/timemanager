@@ -17,15 +17,15 @@ Please refer to the [changelog](https://github.com/te-online/timemanager/#change
 	<author>Thomas Ebert</author>
 	<version>0.2.6</version>
 	<category>tools</category>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_statistics.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_overview.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_clients.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_projects.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_tasks.png</screenshot>
-	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/master/img/timemanager_entries.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_clients.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_projects.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_tasks.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_entries.png</screenshot>
 	<documentation>
-		<user>https://github.com/te-online/timemanager/blob/master/README.md</user>
-		<admin>https://github.com/te-online/timemanager/blob/master/README.md</admin>
+		<user>https://github.com/te-online/timemanager/blob/main/README.md</user>
+		<admin>https://github.com/te-online/timemanager/blob/main/README.md</admin>
 	</documentation>
 	<website>https://github.com/te-online/timemanager</website>
 	<repository type="git">https://github.com/te-online/timemanager.git</repository>
