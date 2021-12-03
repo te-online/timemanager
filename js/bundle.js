@@ -29004,6 +29004,21 @@
     }
   });
 
+  var safelyCreateComponent = function safelyCreateComponent(_ref) {
+    var component = _ref.component,
+        selector = _ref.selector,
+        _ref$props = _ref.props,
+        props = _ref$props === void 0 ? {} : _ref$props;
+    var node = document.querySelector(selector);
+
+    if (node) {
+      return new component({
+        target: Helpers.replaceNode(document.querySelector(selector)),
+        props: props
+      });
+    }
+  };
+
   var init = function init() {
     var store = {};
     var storeElement = document.querySelector("#content.app-timemanager [data-store]");
@@ -29016,45 +29031,53 @@
       }
     }
 
-    components.push(new Statistics({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Statistics.svelte']")),
+    components.push(safelyCreateComponent({
+      component: Statistics,
+      selector: "#content.app-timemanager [data-svelte='Statistics.svelte']",
       props: _objectSpread2({}, store)
     }));
-    components.push(new Filters({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Filters.svelte']")),
+    components.push(safelyCreateComponent({
+      component: Filters,
+      selector: "#content.app-timemanager [data-svelte='Filters.svelte']",
       props: _objectSpread2({}, store)
     }));
-    components.push(new Timerange({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Timerange.svelte']")),
+    components.push(safelyCreateComponent({
+      component: Timerange,
+      selector: "#content.app-timemanager [data-svelte='Timerange.svelte']",
       props: _objectSpread2({}, store)
     }));
-    components.push(new ClientEditorDialog({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']")),
+    components.push(safelyCreateComponent({
+      component: ClientEditorDialog,
+      selector: "#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         action: "",
         requestToken: token
       })
     }));
-    components.push(new ProjectEditorDialog({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']")),
+    components.push(safelyCreateComponent({
+      component: ProjectEditorDialog,
+      selector: "#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
     }));
-    components.push(new TaskEditorDialog({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']")),
+    components.push(safelyCreateComponent({
+      component: TaskEditorDialog,
+      selector: "#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
     }));
-    components.push(new TimeEditorDialog({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']")),
+    components.push(safelyCreateComponent({
+      component: TimeEditorDialog,
+      selector: "#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
     }));
-    components.push(new DeleteButton({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='DeleteButton.svelte']")),
+    components.push(safelyCreateComponent({
+      component: DeleteButton,
+      selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
@@ -29090,8 +29113,9 @@
       });
     }
 
-    components.push(new QuickAdd({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='QuickAdd.svelte']")),
+    components.push(safelyCreateComponent({
+      component: QuickAdd,
+      target: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
@@ -29112,8 +29136,9 @@
       });
     }
 
-    components.push(new PrintButton({
-      target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='PrintButton.svelte']"))
+    components.push(safelyCreateComponent({
+      component: PrintButton,
+      selector: "#content.app-timemanager [data-svelte='PrintButton.svelte']"
     })); // components.push(
     // 	new Settings({
     // 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),

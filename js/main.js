@@ -24,6 +24,13 @@ $(document).ready(function () {
 	}
 });
 
+const safelyCreateComponent = ({ component, selector, props = {} }) => {
+	const node = document.querySelector(selector);
+	if (node) {
+		return new component({ target: Helpers.replaceNode(document.querySelector(selector)), props });
+	}
+};
+
 const init = () => {
 	let store = {};
 	const storeElement = document.querySelector("#content.app-timemanager [data-store]");
@@ -36,31 +43,33 @@ const init = () => {
 	}
 
 	components.push(
-		new Statistics({
-			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Statistics.svelte']")),
+		safelyCreateComponent({
+			component: Statistics,
+			selector: "#content.app-timemanager [data-svelte='Statistics.svelte']",
 			props: { ...store },
 		})
 	);
 
 	components.push(
-		new Filters({
-			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Filters.svelte']")),
+		safelyCreateComponent({
+			component: Filters,
+			selector: "#content.app-timemanager [data-svelte='Filters.svelte']",
 			props: { ...store },
 		})
 	);
 
 	components.push(
-		new Timerange({
-			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Timerange.svelte']")),
+		safelyCreateComponent({
+			component: Timerange,
+			selector: "#content.app-timemanager [data-svelte='Timerange.svelte']",
 			props: { ...store },
 		})
 	);
 
 	components.push(
-		new ClientEditorDialog({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']")
-			),
+		safelyCreateComponent({
+			component: ClientEditorDialog,
+			selector: "#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']",
 			props: {
 				...store,
 				action: "",
@@ -70,10 +79,9 @@ const init = () => {
 	);
 
 	components.push(
-		new ProjectEditorDialog({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']")
-			),
+		safelyCreateComponent({
+			component: ProjectEditorDialog,
+			selector: "#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']",
 			props: {
 				...store,
 				requestToken: token,
@@ -82,10 +90,9 @@ const init = () => {
 	);
 
 	components.push(
-		new TaskEditorDialog({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']")
-			),
+		safelyCreateComponent({
+			component: TaskEditorDialog,
+			selector: "#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']",
 			props: {
 				...store,
 				requestToken: token,
@@ -94,10 +101,9 @@ const init = () => {
 	);
 
 	components.push(
-		new TimeEditorDialog({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']")
-			),
+		safelyCreateComponent({
+			component: TimeEditorDialog,
+			selector: "#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']",
 			props: {
 				...store,
 				requestToken: token,
@@ -106,10 +112,9 @@ const init = () => {
 	);
 
 	components.push(
-		new DeleteButton({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='DeleteButton.svelte']")
-			),
+		safelyCreateComponent({
+			component: DeleteButton,
+			selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
 			props: {
 				...store,
 				requestToken: token,
@@ -157,8 +162,9 @@ const init = () => {
 	}
 
 	components.push(
-		new QuickAdd({
-			target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='QuickAdd.svelte']")),
+		safelyCreateComponent({
+			component: QuickAdd,
+			target: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
 			props: {
 				...store,
 				requestToken: token,
@@ -185,10 +191,9 @@ const init = () => {
 	}
 
 	components.push(
-		new PrintButton({
-			target: Helpers.replaceNode(
-				document.querySelector("#content.app-timemanager [data-svelte='PrintButton.svelte']")
-			),
+		safelyCreateComponent({
+			component: PrintButton,
+			selector: "#content.app-timemanager [data-svelte='PrintButton.svelte']",
 		})
 	);
 
