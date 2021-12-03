@@ -100,7 +100,7 @@ class ObjectMapper extends Mapper {
 				$this->tableName .
 				"` " .
 				"WHERE `user_id` = ? AND `status` != ? " .
-				"AND start >= ? AND start <= ? ";
+				"AND date(start) >= ? AND date(start) <= ? ";
 		}
 		if (isset($status) && $status) {
 			if ($status === "paid") {
