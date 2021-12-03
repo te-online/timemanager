@@ -29013,7 +29013,7 @@
 
     if (node) {
       return new component({
-        target: Helpers.replaceNode(document.querySelector(selector)),
+        target: Helpers.replaceNode(node),
         props: props
       });
     }
@@ -29115,7 +29115,7 @@
 
     components.push(safelyCreateComponent({
       component: QuickAdd,
-      target: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
+      selector: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })

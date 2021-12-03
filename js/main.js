@@ -27,7 +27,7 @@ $(document).ready(function () {
 const safelyCreateComponent = ({ component, selector, props = {} }) => {
 	const node = document.querySelector(selector);
 	if (node) {
-		return new component({ target: Helpers.replaceNode(document.querySelector(selector)), props });
+		return new component({ target: Helpers.replaceNode(node), props });
 	}
 };
 
@@ -164,7 +164,7 @@ const init = () => {
 	components.push(
 		safelyCreateComponent({
 			component: QuickAdd,
-			target: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
+			selector: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
 			props: {
 				...store,
 				requestToken: token,
