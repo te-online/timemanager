@@ -30,6 +30,12 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.7 Beta, 4. December 2021
+- Maintenance: Bump compatibility to Nextcloud 23
+- Maintenance: Update JS dependencies
+- Bugfix: Filter selects – Add missing color customisations for dark-mode (issue #59)
+- Bugfix: Reports – Improve completeness of reports at the beginning and end of an interval (issue #58)
+
 ### 0.2.6 Beta, 13. November 2021
 #### IMPORTANT
 **If you experience sync issues with the Android app by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app), please install this update at your earliest convenience and restart the Android app to clear the sync queue. It will most likely resolve those issues. Details below.**

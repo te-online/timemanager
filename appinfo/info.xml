@@ -3,14 +3,20 @@
 	<id>timemanager</id>
 	<name>TimeManager</name>
 	<summary>An app to track how you spend your time.</summary>
-	<description><![CDATA[Time tracking in Nextcloud!
-
+	<description><![CDATA[### Time tracking in Nextcloud!
 * 📁 **organize time entries** based on tasks, projects and clients
 * ⏱ **quickly record** a time entry for your latest tasks
 * ✅ **check or uncheck** a time entry (e.g. to save whether you've billed it)
 * 📈 make use of simple, but useful **statistics** and **reports**.
 
-Please refer to the [changelog](https://github.com/te-online/timemanager/#changelog) to see what's new in this version 🎉
+#### Latest changes 🎉
+**0.2.7 Beta, 4. December 2021**
+- Maintenance: Bump compatibility to Nextcloud 23
+- Maintenance: Update JS dependencies
+- Bugfix: Filter selects – Add missing color customisations for dark-mode (issue #59)
+- Bugfix: Reports – Improve completeness of reports at the beginning and end of an interval (issue #58)
+
+_Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
 
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
 	<licence>AGPL</licence>
