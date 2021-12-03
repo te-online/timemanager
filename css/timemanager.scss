@@ -623,9 +623,12 @@ label {
 }
 
 :root {
+	// svelte-select theming
 	--background: var(--color-main-background);
 	--listBackground: var(--color-main-background);
 	--itemHoverBG: var(--color-primary-light);
+	--multiItemActiveBG: var(--color-primary-element);
+	--multiItemBG: var(--color-primary-light);
 }
 
 @media print {
