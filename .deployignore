@@ -10,3 +10,4 @@ test
 js/lib/*
 js/main.js
 rollup.config.js
+.gitlab-ci.yml
