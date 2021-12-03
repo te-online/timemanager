@@ -31,7 +31,7 @@ Please refer to the [changelog](https://github.com/te-online/timemanager/#change
 	<repository type="git">https://github.com/te-online/timemanager.git</repository>
 	<bugs>https://github.com/te-online/timemanager/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="13" max-version="22" />
+		<nextcloud min-version="13" max-version="23" />
 	</dependencies>
 	<navigations>
 		<navigation>
