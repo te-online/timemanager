@@ -1,7 +1,7 @@
 OC.L10N.register(
 	"timemanager",
 	{
-        "TimeManager":"时间管理器",
+		"TimeManager": "时间管理器",
 		Client: "客户",
 		Project: "项目",
 		"Client name": "客户名称",
