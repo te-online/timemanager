@@ -202,6 +202,10 @@ const init = () => {
 		safelyCreateComponent({
 			component: Import,
 			selector: "#content.app-timemanager [data-svelte='Import.svelte']",
+			props: {
+				...store,
+				requestToken: token,
+			},
 		})
 	);
 

@@ -20,7 +20,8 @@
 		padding: 0;
 	}
 
-	.reports &.with-link > a {
+	.reports &.with-link > a,
+	.tools & {
 		display: grid;
 		grid-template-columns: 70% 30%;
 		padding-top: 8px;
@@ -29,6 +30,16 @@
 		h3 {
 			margin: 0;
 		}
+
+		details {
+			margin-top: 6px;
+			grid-column-start: 1;
+			grid-column-end: 3;
+		}
+	}
+
+	.tools & {
+		padding-right: 0;
 	}
 
 	a:hover,
@@ -588,6 +599,10 @@ label {
 		.csv_list {
 			display: grid;
 			grid-template-columns: 150px 1fr;
+		}
+
+		form {
+			margin-top: 12px;
 		}
 	}
 }

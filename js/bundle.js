@@ -197,8 +197,20 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -246,6 +258,10 @@
     for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 
     return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   function _nonIterableRest() {
@@ -12449,7 +12465,7 @@
     return Helpers;
   }();
 
-  function get_each_context$4(ctx, list, i) {
+  function get_each_context$5(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[24] = list[i];
     child_ctx[26] = i;
@@ -12563,7 +12579,7 @@
   } // (243:3) {#if !loading && weekTotal > 0}
 
 
-  function create_if_block_3$1(ctx) {
+  function create_if_block_3$2(ctx) {
     var each_1_anchor;
     var each_value =
     /*points*/
@@ -12571,7 +12587,7 @@
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
+      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
     }
 
     return {
@@ -12600,12 +12616,12 @@
           var _i3;
 
           for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$4(ctx, each_value, _i3);
+            var child_ctx = get_each_context$5(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$4(child_ctx);
+              each_blocks[_i3] = create_each_block$5(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -12628,7 +12644,7 @@
   } // (246:6) {#if point && point.stats}
 
 
-  function create_if_block_4$1(ctx) {
+  function create_if_block_4$2(ctx) {
     var t0;
     var div;
     var span0;
@@ -12648,7 +12664,7 @@
     var t3;
     var if_block =
     /*point*/
-    ctx[24].stats.total > 0 && create_if_block_5$1(ctx);
+    ctx[24].stats.total > 0 && create_if_block_5$2(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -12680,7 +12696,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_5$1(ctx);
+            if_block = create_if_block_5$2(ctx);
             if_block.c();
             if_block.m(t0.parentNode, t0);
           }
@@ -12713,7 +12729,7 @@
   } // (247:7) {#if point.stats.total > 0}
 
 
-  function create_if_block_5$1(ctx) {
+  function create_if_block_5$2(ctx) {
     var span;
     var t0_value =
     /*point*/
@@ -12775,14 +12791,14 @@
   } // (244:4) {#each points as point, index}
 
 
-  function create_each_block$4(ctx) {
+  function create_each_block$5(ctx) {
     var div;
     var t;
     var if_block =
     /*point*/
     ctx[24] &&
     /*point*/
-    ctx[24].stats && create_if_block_4$1(ctx);
+    ctx[24].stats && create_if_block_4$2(ctx);
     return {
       c: function c() {
         div = element("div");
@@ -12804,7 +12820,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_4$1(ctx);
+            if_block = create_if_block_4$2(ctx);
             if_block.c();
             if_block.m(div, t);
           }
@@ -12821,7 +12837,7 @@
   } // (259:3) {#if controls && !loading && weekTotal === 0}
 
 
-  function create_if_block_2$2(ctx) {
+  function create_if_block_2$3(ctx) {
     var p;
     return {
       c: function c() {
@@ -12840,7 +12856,7 @@
   } // (263:2) {#if controls}
 
 
-  function create_if_block$d(ctx) {
+  function create_if_block$e(ctx) {
     var nav;
     var button0;
     var t1;
@@ -12881,7 +12897,7 @@
     var button1;
     var mounted;
     var dispose;
-    var if_block = show_if && create_if_block_1$3(ctx);
+    var if_block = show_if && create_if_block_1$4(ctx);
     return {
       c: function c() {
         nav = element("nav");
@@ -12978,7 +12994,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_1$3(ctx);
+            if_block = create_if_block_1$4(ctx);
             if_block.c();
             if_block.m(span2, t12);
           }
@@ -12997,7 +13013,7 @@
   } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
-  function create_if_block_1$3(ctx) {
+  function create_if_block_1$4(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13046,17 +13062,17 @@
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] > 0 && create_if_block_3$1(ctx);
+    ctx[5] > 0 && create_if_block_3$2(ctx);
     var if_block3 =
     /*controls*/
     ctx[0] && !
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] === 0 && create_if_block_2$2();
+    ctx[5] === 0 && create_if_block_2$3();
     var if_block4 =
     /*controls*/
-    ctx[0] && create_if_block$d(ctx);
+    ctx[0] && create_if_block$e(ctx);
     return {
       c: function c() {
         if (if_block0) if_block0.c();
@@ -13135,7 +13151,7 @@
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block_3$1(ctx);
+            if_block2 = create_if_block_3$2(ctx);
             if_block2.c();
             if_block2.m(div0, t2);
           }
@@ -13154,7 +13170,7 @@
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
-            if_block3 = create_if_block_2$2();
+            if_block3 = create_if_block_2$3();
             if_block3.c();
             if_block3.m(div0, null);
           }
@@ -13177,7 +13193,7 @@
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
-            if_block4 = create_if_block$d(ctx);
+            if_block4 = create_if_block$e(ctx);
             if_block4.c();
             if_block4.m(div1, null);
           }
@@ -13664,7 +13680,7 @@
     return Overlay;
   }(SvelteComponent);
 
-  function create_if_block$c(ctx) {
+  function create_if_block$d(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13732,7 +13748,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[2] && create_if_block$c(ctx);
+    ctx[2] && create_if_block$d(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -13886,7 +13902,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$c(ctx);
+            if_block = create_if_block$d(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -13983,7 +13999,7 @@
     return ClientEditor;
   }(SvelteComponent);
 
-  function create_if_block$b(ctx) {
+  function create_if_block$c(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14138,7 +14154,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[6] && create_if_block$b(ctx);
+    ctx[6] && create_if_block$c(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14190,7 +14206,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$b(ctx);
+            if_block = create_if_block$c(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14356,7 +14372,7 @@
     return ClientEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$a(ctx) {
+  function create_if_block$b(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -14427,7 +14443,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[3] && create_if_block$a(ctx);
+    ctx[3] && create_if_block$b(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -14578,7 +14594,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$a(ctx);
+            if_block = create_if_block$b(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -14672,7 +14688,7 @@
     return ProjectEditor;
   }(SvelteComponent);
 
-  function create_if_block$9(ctx) {
+  function create_if_block$a(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14843,7 +14859,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[8] && create_if_block$9(ctx);
+    ctx[8] && create_if_block$a(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14895,7 +14911,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$9(ctx);
+            if_block = create_if_block$a(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15061,7 +15077,7 @@
     return ProjectEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$8(ctx) {
+  function create_if_block$9(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15141,7 +15157,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[4] && create_if_block$8(ctx);
+    ctx[4] && create_if_block$9(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -15316,7 +15332,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$8(ctx);
+            if_block = create_if_block$9(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -15413,7 +15429,7 @@
     return TaskEditor;
   }(SvelteComponent);
 
-  function create_if_block$7(ctx) {
+  function create_if_block$8(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -15592,7 +15608,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[9] && create_if_block$7(ctx);
+    ctx[9] && create_if_block$8(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -15644,7 +15660,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$7(ctx);
+            if_block = create_if_block$8(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15813,7 +15829,7 @@
     return TaskEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$6(ctx) {
+  function create_if_block$7(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15924,7 +15940,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[5] && create_if_block$6(ctx);
+    ctx[5] && create_if_block$7(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -16197,7 +16213,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$6(ctx);
+            if_block = create_if_block$7(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -16359,7 +16375,7 @@
   } // (53:0) {#if !timeUuid}
 
 
-  function create_if_block_1$2(ctx) {
+  function create_if_block_1$3(ctx) {
     var a;
     var span;
     var t;
@@ -16403,7 +16419,7 @@
   } // (62:0) {#if show}
 
 
-  function create_if_block$5(ctx) {
+  function create_if_block$6(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16595,7 +16611,7 @@
     function select_block_type(ctx, dirty) {
       if (!
       /*timeUuid*/
-      ctx[1]) return create_if_block_1$2;
+      ctx[1]) return create_if_block_1$3;
       return create_else_block$2;
     }
 
@@ -16603,7 +16619,7 @@
     var if_block0 = current_block_type(ctx);
     var if_block1 =
     /*show*/
-    ctx[12] && create_if_block$5(ctx);
+    ctx[12] && create_if_block$6(ctx);
     return {
       c: function c() {
         if_block0.c();
@@ -16646,7 +16662,7 @@
               transition_in(if_block1, 1);
             }
           } else {
-            if_block1 = create_if_block$5(ctx);
+            if_block1 = create_if_block$6(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
             if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -16823,7 +16839,7 @@
     return TimeEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$4(ctx) {
+  function create_if_block$5(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16947,7 +16963,7 @@
     var current;
     var if_block =
     /*confirmation*/
-    ctx[6] && create_if_block$4(ctx);
+    ctx[6] && create_if_block$5(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -17011,7 +17027,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$4(ctx);
+            if_block = create_if_block$5(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(t0.parentNode, t0);
@@ -17146,7 +17162,7 @@
     return DeleteButton;
   }(SvelteComponent);
 
-  function create_if_block$3(ctx) {
+  function create_if_block$4(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -17264,7 +17280,7 @@
     var dispose;
     var if_block =
     /*confirmation*/
-    ctx[3] && create_if_block$3(ctx);
+    ctx[3] && create_if_block$4(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -17330,7 +17346,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$3(ctx);
+            if_block = create_if_block$4(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(t0.parentNode, t0);
@@ -17707,7 +17723,7 @@
     append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
   }
 
-  function get_each_context$3(ctx, list, i) {
+  function get_each_context$4(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[41] = list[i];
     child_ctx[42] = i;
@@ -17724,7 +17740,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
     }
 
     const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -17774,13 +17790,13 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$3(ctx, each_value, i);
+            const child_ctx = get_each_context$4(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
               transition_in(each_blocks[i], 1);
             } else {
-              each_blocks[i] = create_each_block$3(child_ctx);
+              each_blocks[i] = create_each_block$4(child_ctx);
               each_blocks[i].c();
               transition_in(each_blocks[i], 1);
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -17838,7 +17854,7 @@
   } // (286:4) {#if isVirtualList}
 
 
-  function create_if_block$2(ctx) {
+  function create_if_block$3(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
@@ -17966,7 +17982,7 @@
     let if_block_anchor;
     let if_block = !
     /*hideEmptyState*/
-    ctx[11] && create_if_block_2$1(ctx);
+    ctx[11] && create_if_block_2$2(ctx);
     return {
       c() {
         if (if_block) if_block.c();
@@ -17985,7 +18001,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_2$1(ctx);
+            if_block = create_if_block_2$2(ctx);
             if_block.c();
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
           }
@@ -18004,7 +18020,7 @@
   } // (332:12) {#if !hideEmptyState}
 
 
-  function create_if_block_2$1(ctx) {
+  function create_if_block_2$2(ctx) {
     let div;
     let t;
     return {
@@ -18235,7 +18251,7 @@
   } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
 
 
-  function create_if_block_1$1(ctx) {
+  function create_if_block_1$2(ctx) {
     let div;
     let t_value =
     /*getGroupHeaderLabel*/
@@ -18276,12 +18292,12 @@
   } // (310:8) {#each items as item, i}
 
 
-  function create_each_block$3(ctx) {
+  function create_each_block$4(ctx) {
     let current_block_type_index;
     let if_block;
     let if_block_anchor;
     let current;
-    const if_block_creators = [create_if_block_1$1, create_else_block_1];
+    const if_block_creators = [create_if_block_1$2, create_else_block_1];
     const if_blocks = [];
 
     function select_block_type_1(ctx, dirty) {
@@ -18562,7 +18578,7 @@
     let current;
     let mounted;
     let dispose;
-    const if_block_creators = [create_if_block$2, create_else_block$1];
+    const if_block_creators = [create_if_block$3, create_else_block$1];
     const if_blocks = [];
 
     function select_block_type(ctx, dirty) {
@@ -19086,7 +19102,7 @@
     append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
   }
 
-  function get_each_context$2(ctx, list, i) {
+  function get_each_context$3(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[9] = list[i];
     child_ctx[11] = i;
@@ -19094,7 +19110,7 @@
   } // (87:8) {#if !isDisabled && !multiFullItemClearable}
 
 
-  function create_if_block$1(ctx) {
+  function create_if_block$2(ctx) {
     let div;
     let mounted;
     let dispose;
@@ -19138,7 +19154,7 @@
   } // (77:0) {#each value as item, i}
 
 
-  function create_each_block$2(ctx) {
+  function create_each_block$3(ctx) {
     let div1;
     let div0;
     let raw_value =
@@ -19155,7 +19171,7 @@
     /*isDisabled*/
     ctx[2] && !
     /*multiFullItemClearable*/
-    ctx[3] && create_if_block$1(ctx);
+    ctx[3] && create_if_block$2(ctx);
 
     function click_handler_1(...args) {
       return (
@@ -19215,7 +19231,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$1(ctx);
+            if_block = create_if_block$2(ctx);
             if_block.c();
             if_block.m(div1, t1);
           }
@@ -19255,7 +19271,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     }
 
     return {
@@ -19285,12 +19301,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$2(ctx, each_value, i);
+            const child_ctx = get_each_context$3(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$2(child_ctx);
+              each_blocks[i] = create_each_block$3(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -19375,7 +19391,7 @@
     append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
   }
 
-  function get_each_context$1(ctx, list, i) {
+  function get_each_context$2(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     return child_ctx;
@@ -19425,7 +19441,7 @@
   } // (152:8) {#each visible as row (row.index)}
 
 
-  function create_each_block$1(key_1, ctx) {
+  function create_each_block$2(key_1, ctx) {
     let svelte_virtual_list_row;
     let t;
     let current;
@@ -19514,9 +19530,9 @@
     ctx[23].index;
 
     for (let i = 0; i < each_value.length; i += 1) {
-      let child_ctx = get_each_context$1(ctx, each_value, i);
+      let child_ctx = get_each_context$2(ctx, each_value, i);
       let key = get_key(child_ctx);
-      each_1_lookup.set(key, each_blocks[i] = create_each_block$1(key, child_ctx));
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$2(key, child_ctx));
     }
 
     return {
@@ -19579,7 +19595,7 @@
           /*visible*/
           ctx[5];
           group_outros();
-          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$1, null, get_each_context$1);
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$2, null, get_each_context$2);
           check_outros();
         }
 
@@ -19906,7 +19922,7 @@
     append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
   }
 
-  function get_each_context(ctx, list, i) {
+  function get_each_context$1(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[103] = list[i];
     return child_ctx;
@@ -20393,13 +20409,13 @@
   } // (926:4) {#if !showClearIcon && (showIndicator || (showChevron && !value) || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
 
 
-  function create_if_block_4(ctx) {
+  function create_if_block_4$1(ctx) {
     let div;
 
     function select_block_type(ctx, dirty) {
       if (
       /*indicatorSvg*/
-      ctx[22]) return create_if_block_5;
+      ctx[22]) return create_if_block_5$1;
       return create_else_block;
     }
 
@@ -20472,7 +20488,7 @@
   } // (928:12) {#if indicatorSvg}
 
 
-  function create_if_block_5(ctx) {
+  function create_if_block_5$1(ctx) {
     let html_tag;
     let html_anchor;
     return {
@@ -20506,7 +20522,7 @@
   } // (948:4) {#if isWaiting}
 
 
-  function create_if_block_3(ctx) {
+  function create_if_block_3$1(ctx) {
     let div;
     return {
       c() {
@@ -20527,7 +20543,7 @@
   } // (964:4) {#if listOpen}
 
 
-  function create_if_block_2(ctx) {
+  function create_if_block_2$1(ctx) {
     let switch_instance;
     let updating_hoverItemIndex;
     let switch_instance_anchor;
@@ -20666,7 +20682,7 @@
   } // (974:4) {#if !isMulti || (isMulti && !showMultiSelect)}
 
 
-  function create_if_block_1(ctx) {
+  function create_if_block_1$1(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20721,7 +20737,7 @@
   } // (981:4) {#if isMulti && showMultiSelect}
 
 
-  function create_if_block(ctx) {
+  function create_if_block$1(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -20729,7 +20745,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
     }
 
     return {
@@ -20759,12 +20775,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context(ctx, each_value, i);
+            const child_ctx = get_each_context$1(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block(child_ctx);
+              each_blocks[i] = create_each_block$1(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -20787,7 +20803,7 @@
   } // (982:8) {#each value as item}
 
 
-  function create_each_block(ctx) {
+  function create_each_block$1(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20922,25 +20938,25 @@
     /*isClearable*/
     ctx[15] || !
     /*showSelectedItem*/
-    ctx[29])) && create_if_block_4(ctx);
+    ctx[29])) && create_if_block_4$1(ctx);
     let if_block6 =
     /*isWaiting*/
-    ctx[4] && create_if_block_3();
+    ctx[4] && create_if_block_3$1();
     let if_block7 =
     /*listOpen*/
-    ctx[5] && create_if_block_2(ctx);
+    ctx[5] && create_if_block_2$1(ctx);
     let if_block8 = (!
     /*isMulti*/
     ctx[7] ||
     /*isMulti*/
     ctx[7] && !
     /*showMultiSelect*/
-    ctx[35]) && create_if_block_1(ctx);
+    ctx[35]) && create_if_block_1$1(ctx);
     let if_block9 =
     /*isMulti*/
     ctx[7] &&
     /*showMultiSelect*/
-    ctx[35] && create_if_block(ctx);
+    ctx[35] && create_if_block$1(ctx);
     return {
       c() {
         div = element("div");
@@ -21230,7 +21246,7 @@
           if (if_block5) {
             if_block5.p(ctx, dirty);
           } else {
-            if_block5 = create_if_block_4(ctx);
+            if_block5 = create_if_block_4$1(ctx);
             if_block5.c();
             if_block5.m(div, t6);
           }
@@ -21243,7 +21259,7 @@
         /*isWaiting*/
         ctx[4]) {
           if (if_block6) ; else {
-            if_block6 = create_if_block_3();
+            if_block6 = create_if_block_3$1();
             if_block6.c();
             if_block6.m(div, t7);
           }
@@ -21264,7 +21280,7 @@
               transition_in(if_block7, 1);
             }
           } else {
-            if_block7 = create_if_block_2(ctx);
+            if_block7 = create_if_block_2$1(ctx);
             if_block7.c();
             transition_in(if_block7, 1);
             if_block7.m(div, t8);
@@ -21287,7 +21303,7 @@
           if (if_block8) {
             if_block8.p(ctx, dirty);
           } else {
-            if_block8 = create_if_block_1(ctx);
+            if_block8 = create_if_block_1$1(ctx);
             if_block8.c();
             if_block8.m(div, t9);
           }
@@ -21304,7 +21320,7 @@
           if (if_block9) {
             if_block9.p(ctx, dirty);
           } else {
-            if_block9 = create_if_block(ctx);
+            if_block9 = create_if_block$1(ctx);
             if_block9.c();
             if_block9.m(div, null);
           }
@@ -30746,6 +30762,583 @@
     return stringify(rnds);
   }
 
+  function get_each_context(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[16] = list[i];
+    return child_ctx;
+  }
+
+  function get_each_context_1(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[19] = list[i];
+    return child_ctx;
+  }
+
+  function get_each_context_2(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[22] = list[i];
+    return child_ctx;
+  } // (185:0) {#if parseError}
+
+
+  function create_if_block_5(ctx) {
+    var div;
+    var t0;
+    var t1;
+    return {
+      c: function c() {
+        div = element("div");
+        t0 = text("CSV parse error: ");
+        t1 = text(
+        /*parseError*/
+        ctx[5]);
+        attr(div, "class", "error");
+      },
+      m: function m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t0);
+        append(div, t1);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*parseError*/
+        32) set_data(t1,
+        /*parseError*/
+        ctx[5]);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div);
+      }
+    };
+  } // (189:0) {#if importError}
+
+
+  function create_if_block_4(ctx) {
+    var div;
+    var t0;
+    var t1;
+    return {
+      c: function c() {
+        div = element("div");
+        t0 = text("Import API error: ");
+        t1 = text(
+        /*importError*/
+        ctx[2]);
+        attr(div, "class", "error");
+      },
+      m: function m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t0);
+        append(div, t1);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importError*/
+        4) set_data(t1,
+        /*importError*/
+        ctx[2]);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div);
+      }
+    };
+  } // (193:0) {#if successMessage}
+
+
+  function create_if_block_3(ctx) {
+    var div;
+    var t0;
+    var t1;
+    return {
+      c: function c() {
+        div = element("div");
+        t0 = text("Done: ");
+        t1 = text(
+        /*successMessage*/
+        ctx[3]);
+        attr(div, "class", "success");
+      },
+      m: function m(target, anchor) {
+        insert(target, div, anchor);
+        append(div, t0);
+        append(div, t1);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*successMessage*/
+        8) set_data(t1,
+        /*successMessage*/
+        ctx[3]);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div);
+      }
+    };
+  } // (207:2) {#if client.projects}
+
+
+  function create_if_block_1(ctx) {
+    var details;
+    var summary;
+    var t1;
+    var each_value_1 =
+    /*client*/
+    ctx[16].projects;
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value_1.length; i += 1) {
+      each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    }
+
+    return {
+      c: function c() {
+        details = element("details");
+        summary = element("summary");
+        summary.textContent = "Projects";
+        t1 = space$1();
+
+        for (var _i = 0; _i < each_blocks.length; _i += 1) {
+          each_blocks[_i].c();
+        }
+
+        details.open = true;
+      },
+      m: function m(target, anchor) {
+        insert(target, details, anchor);
+        append(details, summary);
+        append(details, t1);
+
+        for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+          each_blocks[_i2].m(details, null);
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importPreviewData*/
+        16) {
+          each_value_1 =
+          /*client*/
+          ctx[16].projects;
+
+          var _i3;
+
+          for (_i3 = 0; _i3 < each_value_1.length; _i3 += 1) {
+            var child_ctx = get_each_context_1(ctx, each_value_1, _i3);
+
+            if (each_blocks[_i3]) {
+              each_blocks[_i3].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i3] = create_each_block_1(child_ctx);
+
+              each_blocks[_i3].c();
+
+              each_blocks[_i3].m(details, null);
+            }
+          }
+
+          for (; _i3 < each_blocks.length; _i3 += 1) {
+            each_blocks[_i3].d(1);
+          }
+
+          each_blocks.length = each_value_1.length;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(details);
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  } // (220:6) {#if project.tasks}
+
+
+  function create_if_block_2(ctx) {
+    var details;
+    var summary;
+    var t1;
+    var each_value_2 =
+    /*project*/
+    ctx[19].tasks;
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value_2.length; i += 1) {
+      each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    }
+
+    return {
+      c: function c() {
+        details = element("details");
+        summary = element("summary");
+        summary.textContent = "Tasks";
+        t1 = space$1();
+
+        for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
+          each_blocks[_i4].c();
+        }
+
+        details.open = true;
+      },
+      m: function m(target, anchor) {
+        insert(target, details, anchor);
+        append(details, summary);
+        append(details, t1);
+
+        for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
+          each_blocks[_i5].m(details, null);
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importPreviewData*/
+        16) {
+          each_value_2 =
+          /*project*/
+          ctx[19].tasks;
+
+          var _i6;
+
+          for (_i6 = 0; _i6 < each_value_2.length; _i6 += 1) {
+            var child_ctx = get_each_context_2(ctx, each_value_2, _i6);
+
+            if (each_blocks[_i6]) {
+              each_blocks[_i6].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i6] = create_each_block_2(child_ctx);
+
+              each_blocks[_i6].c();
+
+              each_blocks[_i6].m(details, null);
+            }
+          }
+
+          for (; _i6 < each_blocks.length; _i6 += 1) {
+            each_blocks[_i6].d(1);
+          }
+
+          each_blocks.length = each_value_2.length;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(details);
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  } // (223:8) {#each project.tasks as task}
+
+
+  function create_each_block_2(ctx) {
+    var div2;
+    var div0;
+    var span0;
+    var t1;
+    var h3;
+    var t2_value =
+    /*task*/
+    ctx[22].name + "";
+    var t2;
+    var t3;
+    var div1;
+    var span1;
+    var t5;
+    var t6_value =
+    /*task*/
+    ctx[22].note + "";
+    var t6;
+    return {
+      c: function c() {
+        div2 = element("div");
+        div0 = element("div");
+        span0 = element("span");
+        span0.textContent = "Task Name";
+        t1 = space$1();
+        h3 = element("h3");
+        t2 = text(t2_value);
+        t3 = space$1();
+        div1 = element("div");
+        span1 = element("span");
+        span1.textContent = "Note";
+        t5 = space$1();
+        t6 = text(t6_value);
+        attr(span0, "class", "tm_label");
+        attr(span1, "class", "tm_label");
+        attr(div2, "class", "tm_item-row");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div0, span0);
+        append(div0, t1);
+        append(div0, h3);
+        append(h3, t2);
+        append(div2, t3);
+        append(div2, div1);
+        append(div1, span1);
+        append(div1, t5);
+        append(div1, t6);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importPreviewData*/
+        16 && t2_value !== (t2_value =
+        /*task*/
+        ctx[22].name + "")) set_data(t2, t2_value);
+        if (dirty &
+        /*importPreviewData*/
+        16 && t6_value !== (t6_value =
+        /*task*/
+        ctx[22].note + "")) set_data(t6, t6_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div2);
+      }
+    };
+  } // (210:4) {#each client.projects as project}
+
+
+  function create_each_block_1(ctx) {
+    var div2;
+    var div0;
+    var span0;
+    var t1;
+    var h3;
+    var t2_value =
+    /*project*/
+    ctx[19].name + "";
+    var t2;
+    var t3;
+    var div1;
+    var span1;
+    var t5;
+    var t6_value =
+    /*project*/
+    ctx[19].note + "";
+    var t6;
+    var t7;
+    var if_block =
+    /*project*/
+    ctx[19].tasks && create_if_block_2(ctx);
+    return {
+      c: function c() {
+        div2 = element("div");
+        div0 = element("div");
+        span0 = element("span");
+        span0.textContent = "Project Name";
+        t1 = space$1();
+        h3 = element("h3");
+        t2 = text(t2_value);
+        t3 = space$1();
+        div1 = element("div");
+        span1 = element("span");
+        span1.textContent = "Note";
+        t5 = space$1();
+        t6 = text(t6_value);
+        t7 = space$1();
+        if (if_block) if_block.c();
+        attr(span0, "class", "tm_label");
+        attr(span1, "class", "tm_label");
+        attr(div2, "class", "tm_item-row");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div0, span0);
+        append(div0, t1);
+        append(div0, h3);
+        append(h3, t2);
+        append(div2, t3);
+        append(div2, div1);
+        append(div1, span1);
+        append(div1, t5);
+        append(div1, t6);
+        append(div2, t7);
+        if (if_block) if_block.m(div2, null);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importPreviewData*/
+        16 && t2_value !== (t2_value =
+        /*project*/
+        ctx[19].name + "")) set_data(t2, t2_value);
+        if (dirty &
+        /*importPreviewData*/
+        16 && t6_value !== (t6_value =
+        /*project*/
+        ctx[19].note + "")) set_data(t6, t6_value);
+
+        if (
+        /*project*/
+        ctx[19].tasks) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_2(ctx);
+            if_block.c();
+            if_block.m(div2, null);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div2);
+        if (if_block) if_block.d();
+      }
+    };
+  } // (197:0) {#each importPreviewData as client}
+
+
+  function create_each_block(ctx) {
+    var div2;
+    var div0;
+    var span0;
+    var t1;
+    var h3;
+    var t2_value =
+    /*client*/
+    ctx[16].name + "";
+    var t2;
+    var t3;
+    var div1;
+    var span1;
+    var t5;
+    var t6_value =
+    /*client*/
+    ctx[16].note + "";
+    var t6;
+    var t7;
+    var if_block =
+    /*client*/
+    ctx[16].projects && create_if_block_1(ctx);
+    return {
+      c: function c() {
+        div2 = element("div");
+        div0 = element("div");
+        span0 = element("span");
+        span0.textContent = "Client";
+        t1 = space$1();
+        h3 = element("h3");
+        t2 = text(t2_value);
+        t3 = space$1();
+        div1 = element("div");
+        span1 = element("span");
+        span1.textContent = "Note";
+        t5 = space$1();
+        t6 = text(t6_value);
+        t7 = space$1();
+        if (if_block) if_block.c();
+        attr(span0, "class", "tm_label");
+        attr(span1, "class", "tm_label");
+        attr(div2, "class", "tm_item-row");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div0, span0);
+        append(div0, t1);
+        append(div0, h3);
+        append(h3, t2);
+        append(div2, t3);
+        append(div2, div1);
+        append(div1, span1);
+        append(div1, t5);
+        append(div1, t6);
+        append(div2, t7);
+        if (if_block) if_block.m(div2, null);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*importPreviewData*/
+        16 && t2_value !== (t2_value =
+        /*client*/
+        ctx[16].name + "")) set_data(t2, t2_value);
+        if (dirty &
+        /*importPreviewData*/
+        16 && t6_value !== (t6_value =
+        /*client*/
+        ctx[16].note + "")) set_data(t6, t6_value);
+
+        if (
+        /*client*/
+        ctx[16].projects) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_1(ctx);
+            if_block.c();
+            if_block.m(div2, null);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div2);
+        if (if_block) if_block.d();
+      }
+    };
+  } // (244:0) {#if importPreviewData.length}
+
+
+  function create_if_block(ctx) {
+    var form;
+    var button;
+    var t_value = dist_4$1('timemanager', 'Import now') + "";
+    var t;
+    var form_class_value;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        form = element("form");
+        button = element("button");
+        t = text(t_value);
+        button.disabled =
+        /*loading*/
+        ctx[1];
+        attr(button, "type", "submit");
+        attr(button, "class", "button primary");
+        attr(form, "class", form_class_value =
+        /*loading*/
+        ctx[1] ? ' icon-loading' : '');
+      },
+      m: function m(target, anchor) {
+        insert(target, form, anchor);
+        append(form, button);
+        append(button, t);
+
+        if (!mounted) {
+          dispose = listen(form, "submit", prevent_default(
+          /*doImport*/
+          ctx[6]));
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*loading*/
+        2) {
+          button.disabled =
+          /*loading*/
+          ctx[1];
+        }
+
+        if (dirty &
+        /*loading*/
+        2 && form_class_value !== (form_class_value =
+        /*loading*/
+        ctx[1] ? ' icon-loading' : '')) {
+          attr(form, "class", form_class_value);
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(form);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+
   function create_fragment(ctx) {
     var label;
     var t0;
@@ -30753,30 +31346,55 @@
     var t1;
     var input;
     var t2;
-    var div;
     var t3;
     var t4;
-    var pre;
     var t5;
+    var t6;
+    var if_block3_anchor;
+    var if_block0 =
+    /*parseError*/
+    ctx[5] && create_if_block_5(ctx);
+    var if_block1 =
+    /*importError*/
+    ctx[2] && create_if_block_4(ctx);
+    var if_block2 =
+    /*successMessage*/
+    ctx[3] && create_if_block_3(ctx);
+    var each_value =
+    /*importPreviewData*/
+    ctx[4];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    }
+
+    var if_block3 =
+    /*importPreviewData*/
+    ctx[4].length && create_if_block(ctx);
     return {
       c: function c() {
         label = element("label");
-        t0 = text("Select CSV\n\t");
+        t0 = text("Select CSV file\n\t");
         br = element("br");
         t1 = space$1();
         input = element("input");
         t2 = space$1();
-        div = element("div");
-        t3 = text(
-        /*parseError*/
-        ctx[2]);
+        if (if_block0) if_block0.c();
+        t3 = space$1();
+        if (if_block1) if_block1.c();
         t4 = space$1();
-        pre = element("pre");
-        t5 = text(
-        /*parseResult*/
-        ctx[1]);
+        if (if_block2) if_block2.c();
+        t5 = space$1();
+
+        for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
+          each_blocks[_i7].c();
+        }
+
+        t6 = space$1();
+        if (if_block3) if_block3.c();
+        if_block3_anchor = empty();
         attr(input, "type", "file");
-        attr(div, "class", "error");
       },
       m: function m(target, anchor) {
         insert(target, label, anchor);
@@ -30786,28 +31404,116 @@
         append(label, input);
         /*input_binding*/
 
-        ctx[3](input);
+        ctx[9](input);
         insert(target, t2, anchor);
-        insert(target, div, anchor);
-        append(div, t3);
+        if (if_block0) if_block0.m(target, anchor);
+        insert(target, t3, anchor);
+        if (if_block1) if_block1.m(target, anchor);
         insert(target, t4, anchor);
-        insert(target, pre, anchor);
-        append(pre, t5);
+        if (if_block2) if_block2.m(target, anchor);
+        insert(target, t5, anchor);
+
+        for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
+          each_blocks[_i8].m(target, anchor);
+        }
+
+        insert(target, t6, anchor);
+        if (if_block3) if_block3.m(target, anchor);
+        insert(target, if_block3_anchor, anchor);
       },
       p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
-        if (dirty &
+        if (
         /*parseError*/
-        4) set_data(t3,
-        /*parseError*/
-        ctx[2]);
+        ctx[5]) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
+          } else {
+            if_block0 = create_if_block_5(ctx);
+            if_block0.c();
+            if_block0.m(t3.parentNode, t3);
+          }
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+
+        if (
+        /*importError*/
+        ctx[2]) {
+          if (if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if_block1 = create_if_block_4(ctx);
+            if_block1.c();
+            if_block1.m(t4.parentNode, t4);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+
+        if (
+        /*successMessage*/
+        ctx[3]) {
+          if (if_block2) {
+            if_block2.p(ctx, dirty);
+          } else {
+            if_block2 = create_if_block_3(ctx);
+            if_block2.c();
+            if_block2.m(t5.parentNode, t5);
+          }
+        } else if (if_block2) {
+          if_block2.d(1);
+          if_block2 = null;
+        }
+
         if (dirty &
-        /*parseResult*/
-        2) set_data(t5,
-        /*parseResult*/
-        ctx[1]);
+        /*importPreviewData*/
+        16) {
+          each_value =
+          /*importPreviewData*/
+          ctx[4];
+
+          var _i9;
+
+          for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
+            var child_ctx = get_each_context(ctx, each_value, _i9);
+
+            if (each_blocks[_i9]) {
+              each_blocks[_i9].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i9] = create_each_block(child_ctx);
+
+              each_blocks[_i9].c();
+
+              each_blocks[_i9].m(t6.parentNode, t6);
+            }
+          }
+
+          for (; _i9 < each_blocks.length; _i9 += 1) {
+            each_blocks[_i9].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+
+        if (
+        /*importPreviewData*/
+        ctx[4].length) {
+          if (if_block3) {
+            if_block3.p(ctx, dirty);
+          } else {
+            if_block3 = create_if_block(ctx);
+            if_block3.c();
+            if_block3.m(if_block3_anchor.parentNode, if_block3_anchor);
+          }
+        } else if (if_block3) {
+          if_block3.d(1);
+          if_block3 = null;
+        }
       },
       i: noop$1,
       o: noop$1,
@@ -30815,27 +31521,42 @@
         if (detaching) detach(label);
         /*input_binding*/
 
-        ctx[3](null);
+        ctx[9](null);
         if (detaching) detach(t2);
-        if (detaching) detach(div);
+        if (if_block0) if_block0.d(detaching);
+        if (detaching) detach(t3);
+        if (if_block1) if_block1.d(detaching);
         if (detaching) detach(t4);
-        if (detaching) detach(pre);
+        if (if_block2) if_block2.d(detaching);
+        if (detaching) detach(t5);
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(t6);
+        if (if_block3) if_block3.d(detaching);
+        if (detaching) detach(if_block3_anchor);
       }
     };
   }
 
   function instance($$self, $$props, $$invalidate) {
     var parseError;
-    var parseResult;
-    var fileInput = document.createElement("input"); // this is just for types
-    // Converts all keys of an object to lowercase
+    var importError;
+    var successMessage;
+    var importPreviewData;
+    var loading;
+    var updateObjectsApiUrl = $$props.updateObjectsApiUrl;
+    var requestToken = $$props.requestToken;
+    var fileInput; // Collect updated objects in here
+
+    var preparedClients = [];
+    var preparedProjects = [];
+    var preparedTasks = []; // Converts all keys of an object to lowercase
 
     var keysToLowerCase = function keysToLowerCase(object) {
       var result = {};
 
       if (object) {
-        for (var _i = 0, _Object$entries = Object.entries(object); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+        for (var _i10 = 0, _Object$entries = Object.entries(object); _i10 < _Object$entries.length; _i10++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i10], 2),
               key = _Object$entries$_i[0],
               value = _Object$entries$_i[1];
 
@@ -30855,109 +31576,217 @@
           uuid: v4()
         });
       });
-    };
+    }; // Previews a given file
+
+
+    var previewFile = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+        var _e$target$files, file, fileReader, contents, clients, projects, tasks, associated;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(e && e.target && e.target.files && e.target.files.length)) {
+                  _context.next = 25;
+                  break;
+                }
+
+                $$invalidate(5, parseError = "");
+                _e$target$files = _slicedToArray(e.target.files, 1), file = _e$target$files[0];
+                fileReader = new FileReader();
+                fileReader.readAsText(file);
+                _context.next = 7;
+                return new Promise(function (resolve, reject) {
+                  fileReader.onload = function () {
+                    resolve(null);
+                  };
+
+                  fileReader.onerror = function (error) {
+                    reject(error);
+                  };
+                });
+
+              case 7:
+                contents = [];
+                _context.prev = 8;
+                _context.next = 11;
+                return new Promise(function (resolve, reject) {
+                  return parse$1(fileReader.result, {
+                    // @TODO: Make delimiter configurable
+                    delimiter: ";",
+                    // @TODO: Make encoding configurable
+                    encoding: "utf-8",
+                    columns: true
+                  }, function (err, records) {
+                    if (err) {
+                      reject(err);
+                    }
+
+                    resolve(records);
+                  });
+                });
+
+              case 11:
+                contents = _context.sent;
+                _context.next = 17;
+                break;
+
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](8);
+                $$invalidate(5, parseError = _context.t0);
+
+              case 17:
+                // Filter by type and assign uuids
+                clients = filter(contents, "client");
+                projects = filter(contents, "project");
+                tasks = filter(contents, "task"); // Empty arrays
+
+                preparedClients = [];
+                preparedProjects = [];
+                preparedTasks = []; // Group entities
+
+                associated = clients.map(function (client) {
+                  var _preparedProjects;
+
+                  client.projects = projects.filter(function (project) {
+                    return project.client === client.name;
+                  }).map(function (project) {
+                    return _objectSpread2(_objectSpread2({}, project), {}, {
+                      client_uuid: client.uuid
+                    });
+                  }).map(function (project) {
+                    var _preparedTasks;
+
+                    project.tasks = tasks.filter(function (task) {
+                      return task.project === project.name;
+                    }).map(function (task) {
+                      return _objectSpread2(_objectSpread2({}, task), {}, {
+                        project_uuid: project.uuid
+                      });
+                    });
+
+                    (_preparedTasks = preparedTasks).push.apply(_preparedTasks, _toConsumableArray(project.tasks));
+
+                    return project;
+                  });
+
+                  (_preparedProjects = preparedProjects).push.apply(_preparedProjects, _toConsumableArray(client.projects));
+
+                  preparedClients.push(client);
+                  return client;
+                });
+                $$invalidate(4, importPreviewData = associated);
+
+              case 25:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[8, 14]]);
+      }));
+
+      return function previewFile(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }(); // @TODO: LOW: List unassociated elements (not in import & not in store)
+
 
     onMount(function () {
-      fileInput.addEventListener("change", /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-          var _e$target$files, file, fileReader, contents, clients, projects, tasks, associated;
+      fileInput.addEventListener("change", previewFile);
+      return function () {
+        fileInput.removeEventListener("change", previewFile);
+      };
+    }); // Post data to JSON API
 
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  if (!(e && e.target && e.target.files && e.target.files.length)) {
-                    _context.next = 21;
-                    break;
+    var doImport = /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var convertedImportData, response;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                $$invalidate(1, loading = true);
+                $$invalidate(2, importError = "");
+                convertedImportData = {
+                  lastCommit: "",
+                  data: {
+                    clients: {
+                      created: preparedClients.map(function (client) {
+                        delete client.type;
+                        delete client.projects;
+                        return client;
+                      }),
+                      updated: [],
+                      deleted: []
+                    },
+                    projects: {
+                      created: preparedProjects.map(function (project) {
+                        delete project.type;
+                        delete project.tasks;
+                        return project;
+                      }),
+                      updated: [],
+                      deleted: []
+                    },
+                    tasks: {
+                      created: preparedTasks.map(function (task) {
+                        delete task.type;
+                        return task;
+                      }),
+                      updated: [],
+                      deleted: []
+                    },
+                    times: {
+                      created: [],
+                      updated: [],
+                      deleted: []
+                    }
                   }
+                };
+                _context2.prev = 3;
+                _context2.next = 6;
+                return fetch(updateObjectsApiUrl, {
+                  method: "POST",
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  },
+                  body: JSON.stringify(convertedImportData)
+                });
 
-                  _e$target$files = _slicedToArray(e.target.files, 1), file = _e$target$files[0];
-                  fileReader = new FileReader();
-                  fileReader.readAsText(file);
-                  _context.next = 6;
-                  return new Promise(function (resolve, reject) {
-                    fileReader.onload = function () {
-                      resolve(null);
-                    };
+              case 6:
+                response = _context2.sent;
 
-                    fileReader.onerror = function (error) {
-                      reject(error);
-                    };
-                  });
+                if (response.ok) {
+                  $$invalidate(4, importPreviewData = []);
+                  $$invalidate(3, successMessage = "Import succeeded");
+                }
 
-                case 6:
-                  contents = [];
-                  _context.prev = 7;
-                  _context.next = 10;
-                  return new Promise(function (resolve, reject) {
-                    return parse$1(fileReader.result, {
-                      // @TODO: Make delimiter configurable
-                      delimiter: ";",
-                      // @TODO: Make encoding configurable
-                      encoding: "utf-8",
-                      columns: true
-                    }, function (err, records) {
-                      if (err) {
-                        reject(err);
-                      }
+                _context2.next = 13;
+                break;
 
-                      resolve(records);
-                    });
-                  });
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](3);
+                $$invalidate(2, importError = _context2.t0);
 
-                case 10:
-                  contents = _context.sent;
-                  _context.next = 16;
-                  break;
+              case 13:
+                $$invalidate(1, loading = false);
 
-                case 13:
-                  _context.prev = 13;
-                  _context.t0 = _context["catch"](7);
-                  $$invalidate(2, parseError = _context.t0);
-
-                case 16:
-                  // Filter by type and assign uuids
-                  clients = filter(contents, "client");
-                  projects = filter(contents, "project");
-                  tasks = filter(contents, "task"); // Group entities
-
-                  associated = clients.map(function (client) {
-                    client.projects = projects.filter(function (project) {
-                      return project.client === client.name;
-                    }).map(function (project) {
-                      return _objectSpread2(_objectSpread2({}, project), {}, {
-                        client_uuid: client.uuid
-                      });
-                    }).map(function (project) {
-                      project.tasks = tasks.filter(function (task) {
-                        return task.project === project.name;
-                      }).map(function (task) {
-                        return _objectSpread2(_objectSpread2({}, task), {}, {
-                          project_uuid: project.uuid
-                        });
-                      });
-                      return project;
-                    });
-                    return client;
-                  });
-                  $$invalidate(1, parseResult = JSON.stringify(associated, null, 2));
-
-                case 21:
-                case "end":
-                  return _context.stop();
-              }
+              case 14:
+              case "end":
+                return _context2.stop();
             }
-          }, _callee, null, [[7, 13]]);
-        }));
+          }
+        }, _callee2, null, [[3, 10]]);
+      }));
 
-        return function (_x) {
-          return _ref3.apply(this, arguments);
-        };
-      }()); // @TODO: Look up unassociated elements with existing elements from store
-      // @TODO: List unassociated elements (not in import & not in store)
-      // @TODO: Generate uuids for all elements
-      // @TODO: Post to JSON API if confirmed by user
-    });
+      return function doImport() {
+        return _ref4.apply(this, arguments);
+      };
+    }();
 
     function input_binding($$value) {
       binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -30966,11 +31795,22 @@
       });
     }
 
-    $$invalidate(2, parseError = "");
+    $$self.$$set = function ($$props) {
+      if ('updateObjectsApiUrl' in $$props) $$invalidate(7, updateObjectsApiUrl = $$props.updateObjectsApiUrl);
+      if ('requestToken' in $$props) $$invalidate(8, requestToken = $$props.requestToken);
+    };
 
-    $$invalidate(1, parseResult = "");
+    $$invalidate(5, parseError = "");
 
-    return [fileInput, parseResult, parseError, input_binding];
+    $$invalidate(2, importError = "");
+
+    $$invalidate(3, successMessage = "");
+
+    $$invalidate(4, importPreviewData = []);
+
+    $$invalidate(1, loading = false);
+
+    return [fileInput, loading, importError, successMessage, importPreviewData, parseError, doImport, updateObjectsApiUrl, requestToken, input_binding];
   }
 
   var Import = /*#__PURE__*/function (_SvelteComponent) {
@@ -30984,7 +31824,10 @@
       _classCallCheck$1(this, Import);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {});
+      init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+        updateObjectsApiUrl: 7,
+        requestToken: 8
+      });
       return _this;
     }
 
@@ -35984,7 +36827,10 @@
     }));
     components.push(safelyCreateComponent({
       component: Import,
-      selector: "#content.app-timemanager [data-svelte='Import.svelte']"
+      selector: "#content.app-timemanager [data-svelte='Import.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
     })); // components.push(
     // 	new Settings({
     // 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
