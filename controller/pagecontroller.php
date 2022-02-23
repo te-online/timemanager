@@ -936,4 +936,44 @@ class PageController extends Controller {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.index"));
 	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	function tools() {
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+		$all_times = $this->timeMapper->findActiveForCurrentUser();
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
+
+		$store = [
+			"clients" => $all_clients,
+			"projects" => $all_projects,
+			"tasks" => $all_tasks,
+			"times" => $all_times,
+			"action" => $urlGenerator->linkToRoute("timemanager.page.tools"),
+			"updateObjectsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.updateObjects"),
+			"requestToken" => $requestToken,
+			"isServer" => true,
+			// "settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			// "settings" => [
+			// 	"handle_conflicts" =>
+			// 		$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
+			// 		"handle_conflicts",
+			// ],
+		];
+
+		return new TemplateResponse("timemanager", "tools", [
+			"clients" => $all_clients,
+			"projects" => $all_projects,
+			"tasks" => $all_tasks,
+			"times" => $all_times,
+			"store" => json_encode($store),
+			"page" => "tools",
+		]);
+	}
 }

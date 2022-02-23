@@ -583,6 +583,13 @@ label {
 			}
 		}
 	}
+
+	.tools {
+		.csv_list {
+			display: grid;
+			grid-template-columns: 150px 1fr;
+		}
+	}
 }
 
 .oc-dialog-buttonrow.reverse {

@@ -59,6 +59,15 @@ $l = \OC::$server->getL10N('timemanager');
 				<span><?php p($l->t('Time entries')); ?></span>
 			</a>
     </li>
+    <li>
+      <a
+				class="timemanager-pjax-link<?php echo $_['page'] === 'tools' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tools'); ?>"
+			>
+				<img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/integration.svg')); ?>">
+				<span><?php p($l->t('Tools')); ?></span>
+			</a>
+    </li>
   </ul>
 
 	<!-- <div id="app-settings">
