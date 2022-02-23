@@ -956,7 +956,7 @@ class PageController extends Controller {
 			"tasks" => $all_tasks,
 			"times" => $all_times,
 			"action" => $urlGenerator->linkToRoute("timemanager.page.tools"),
-			"updateObjectsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.updateObjects"),
+			"syncApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
 			"requestToken" => $requestToken,
 			"isServer" => true,
 			// "settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),

@@ -1,5 +1,5 @@
 <script>
-	export let updateObjectsApiUrl;
+	export let syncApiUrl;
 	export let requestToken;
 
 	import { onMount } from "svelte";
@@ -157,7 +157,7 @@
 		};
 
 		try {
-			const response = await fetch(updateObjectsApiUrl, {
+			const response = await fetch(syncApiUrl, {
 				method: "POST",
 				headers: {
 					requesttoken: requestToken,

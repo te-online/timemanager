@@ -31543,7 +31543,7 @@
     var successMessage;
     var importPreviewData;
     var loading;
-    var updateObjectsApiUrl = $$props.updateObjectsApiUrl;
+    var syncApiUrl = $$props.syncApiUrl;
     var requestToken = $$props.requestToken;
     var fileInput; // Collect updated objects in here
 
@@ -31747,7 +31747,7 @@
                 };
                 _context2.prev = 3;
                 _context2.next = 6;
-                return fetch(updateObjectsApiUrl, {
+                return fetch(syncApiUrl, {
                   method: "POST",
                   headers: {
                     requesttoken: requestToken,
@@ -31796,7 +31796,7 @@
     }
 
     $$self.$$set = function ($$props) {
-      if ('updateObjectsApiUrl' in $$props) $$invalidate(7, updateObjectsApiUrl = $$props.updateObjectsApiUrl);
+      if ('syncApiUrl' in $$props) $$invalidate(7, syncApiUrl = $$props.syncApiUrl);
       if ('requestToken' in $$props) $$invalidate(8, requestToken = $$props.requestToken);
     };
 
@@ -31810,7 +31810,7 @@
 
     $$invalidate(1, loading = false);
 
-    return [fileInput, loading, importError, successMessage, importPreviewData, parseError, doImport, updateObjectsApiUrl, requestToken, input_binding];
+    return [fileInput, loading, importError, successMessage, importPreviewData, parseError, doImport, syncApiUrl, requestToken, input_binding];
   }
 
   var Import = /*#__PURE__*/function (_SvelteComponent) {
@@ -31825,7 +31825,7 @@
 
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-        updateObjectsApiUrl: 7,
+        syncApiUrl: 7,
         requestToken: 8
       });
       return _this;

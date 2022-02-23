@@ -27,6 +27,7 @@ return [
 		["name" => "t_api#get", "url" => "/api/items", "verb" => "GET"],
 		["name" => "t_api#post", "url" => "/api/items", "verb" => "POST"],
 		["name" => "t_api#updateObjects", "url" => "/api/updateObjects", "verb" => "POST"],
+		["name" => "t_api#updateObjectsFromWeb", "url" => "/api/sync-web", "verb" => "POST"],
 		["name" => "t_api#getHoursInPeriodStats", "url" => "/api/hoursInPeriod", "verb" => "GET"],
 	],
 ];
