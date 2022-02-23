@@ -10,6 +10,7 @@ import Checkmark from "./views/Checkmark.svelte";
 import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
+import Import from "./views/Import.svelte";
 // import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
@@ -24,10 +25,10 @@ $(document).ready(function () {
 	}
 });
 
-const safelyCreateComponent = ({ component, selector, props = {} }) => {
+const safelyCreateComponent = ({ component: Component, selector, props = {} }) => {
 	const node = document.querySelector(selector);
 	if (node) {
-		return new component({ target: Helpers.replaceNode(node), props });
+		return new Component({ target: Helpers.replaceNode(node), props });
 	}
 };
 
@@ -194,6 +195,13 @@ const init = () => {
 		safelyCreateComponent({
 			component: PrintButton,
 			selector: "#content.app-timemanager [data-svelte='PrintButton.svelte']",
+		})
+	);
+
+	components.push(
+		safelyCreateComponent({
+			component: Import,
+			selector: "#content.app-timemanager [data-svelte='Import.svelte']",
 		})
 	);
 
