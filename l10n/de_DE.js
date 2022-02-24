@@ -123,6 +123,36 @@ OC.L10N.register(
 		"Export report to CSV": "Report als CSV exportieren",
 		"report_%s_%s.csv": "Report_%s_%s.csv",
 		"report_%s.csv": "Report_%s.csv",
+		Tools: "Werkzeuge",
+		"Import (feature preview)": "Import (Feature Vorschau)",
+		"Select a file to see a preview of your import.": "Wählen Sie eine Datei, um eine Vorschau des Imports zu sehen.",
+		"Current limitations:": "Derzeitige Begrenzungen:",
+		"Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks":
+			"Beim Importieren können keine existierenden Daten referenziert werden (z.B. übergeordnete Kunden oder Projekte). Alle importierten Einträge werden neu erstellt.",
+		"Within the CSV file, relationships are determined by %sName%s, so make sure there are no duplicate names within each type of object":
+			"Verknüpfungen innerhalb der CSV-Datei werden über die %sName%s Spalte gemacht; daher sollte es keine Einträge mit gleichem Namen innerhalb eines Objektstyps geben",
+		"UTF-8 is the only supported file encoding": "UTF-8 ist die einzige unterstützte Dateikodierung",
+		"%s;%s is the only supported delimiter": "%s;%s ist das einzige unterstützte Trennzeichen",
+		"Time entries cannot be imported": "Zeiteinträge können nicht importiert werden",
+		"Show overview of expected CSV columns": "Zeige Überblick der erwarteten CSV Spalten",
+		"Column name": "Titel der Spalte",
+		Description: "Beschreibung",
+		"The type of object %sClient%s, %sProject%s, %sTask%s":
+			"Der Typ des Eintrags auf Englisch %sClient%s, %sProject%s, %sTask%s",
+		"The name of the object": "Der Name des Eintrags",
+		"The parent client name (if type is project)": "Der Name des übergeordneten Kunden (nur bei Projekten)",
+		"The parent project name (if type is task)": "Der Name des übergeordneten Projekts (nur bei Aufgaben)",
+		"An optional note": "Eine optionale Beschreibung",
+		"Select CSV file": "CSV-Datei auswählen",
+		"CSV parse error:": "CSV Lesefehler:",
+		"Import API error:": "Import API Fehler:",
+		"Done:": "Fertig:",
+		"Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)":
+			"{clientsCount} Kunde(n), {projectsCount} Projekt(e), {tasksCount} Aufgabe(n) importiert",
+		Preview: "Vorschau",
+		"Collapse all": "Alle einklappen",
+		"Expand all": "Alle ausklappen",
+		"Import now": "Importieren",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

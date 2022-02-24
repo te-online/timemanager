@@ -95,6 +95,16 @@ class TApiController extends ApiController {
 
 	/**
 	 * @NoAdminRequired
+	 *
+	 * @param json $data
+	 * @return DataResponse
+	 */
+	function updateObjectsFromWeb($data, $lastCommit) {
+		return $this->updateObjects($data, $lastCommit);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 *
