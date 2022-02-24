@@ -32,6 +32,7 @@ Before building or development, dependencies need to be installed once by runnin
 
 ### 0.2.8 Beta, 24. February 2022
 - Add feature-preview of import functionality for clients, projects and tasks from a CSV file
+- Add Chinese simplified localization (thanks to @lakehy)
 
 ### 0.2.7 Beta, 4. December 2021
 - Maintenance: Bump compatibility to Nextcloud 23

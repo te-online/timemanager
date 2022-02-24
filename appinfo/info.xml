@@ -12,6 +12,7 @@
 #### Latest changes 🎉
 **0.2.8 Beta, 24. February 2022**
 - Add feature-preview of import functionality for clients, projects and tasks from a CSV file
+- Add Chinese simplified localization (thanks to @lakehy)
 
 _Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
 
