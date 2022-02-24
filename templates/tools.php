@@ -12,14 +12,14 @@ $l = \OC::$server->getL10N("timemanager");
 	<div class="container">
 		<section class="section">
 			<h2><?php p($l->t("Tools")); ?></h2>
-			<h3><?php p($l->t("Import (experimental)")); ?></h3>
+			<h3><?php p($l->t("Import (feature preview)")); ?></h3>
 
 			<div class="tm_object-details-item">
 				<p>Select a file to see a preview of your import.</p>
 			</div>
 			
 			<div class="tm_object-details-item">
-				<p><strong>Limitations while import is experimental:</strong></p>
+				<p><strong>Current limitations:</strong></p>
 				<ul style="list-style: initial; padding-left: 18px;">
 					<li>Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks</li>
 					<li>Within the CSV file, relationships are determined by <code>Name</code>, so make sure there are no duplicate names within each type of object</li>
@@ -31,7 +31,7 @@ $l = \OC::$server->getL10N("timemanager");
 
 			<div class="tm_object-details-item">
 				<details>
-					<summary>Show CSV format</summary>
+					<summary>Show overview of expected CSV columns</summary>
 						<dl class="csv_list">
 							<dt><strong>Column name</strong></dt>
 							<dd><strong>Description</strong></dd>
