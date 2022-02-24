@@ -30762,18 +30762,21 @@
     var child_ctx = ctx.slice();
     child_ctx[25] = list[i];
     return child_ctx;
-  } // (200:0) {#if parseError}
+  } // (208:0) {#if parseError}
 
 
   function create_if_block_6(ctx) {
     var div;
+    var t0_value = dist_4$1('timemanager', 'CSV parse error:') + "";
     var t0;
     var t1;
+    var t2;
     return {
       c: function c() {
         div = element("div");
-        t0 = text("CSV parse error: ");
-        t1 = text(
+        t0 = text(t0_value);
+        t1 = space$1();
+        t2 = text(
         /*parseError*/
         ctx[8]);
         attr(div, "class", "error");
@@ -30782,11 +30785,12 @@
         insert(target, div, anchor);
         append(div, t0);
         append(div, t1);
+        append(div, t2);
       },
       p: function p(ctx, dirty) {
         if (dirty &
         /*parseError*/
-        256) set_data(t1,
+        256) set_data(t2,
         /*parseError*/
         ctx[8]);
       },
@@ -30794,18 +30798,21 @@
         if (detaching) detach(div);
       }
     };
-  } // (204:0) {#if importError}
+  } // (212:0) {#if importError}
 
 
   function create_if_block_5(ctx) {
     var div;
+    var t0_value = dist_4$1('timemanager', 'Import API error:') + "";
     var t0;
     var t1;
+    var t2;
     return {
       c: function c() {
         div = element("div");
-        t0 = text("Import API error: ");
-        t1 = text(
+        t0 = text(t0_value);
+        t1 = space$1();
+        t2 = text(
         /*importError*/
         ctx[5]);
         attr(div, "class", "error");
@@ -30814,11 +30821,12 @@
         insert(target, div, anchor);
         append(div, t0);
         append(div, t1);
+        append(div, t2);
       },
       p: function p(ctx, dirty) {
         if (dirty &
         /*importError*/
-        32) set_data(t1,
+        32) set_data(t2,
         /*importError*/
         ctx[5]);
       },
@@ -30826,18 +30834,21 @@
         if (detaching) detach(div);
       }
     };
-  } // (208:0) {#if successMessage}
+  } // (216:0) {#if successMessage}
 
 
   function create_if_block_4(ctx) {
     var div;
+    var t0_value = dist_4$1('timemanager', 'Done:') + "";
     var t0;
     var t1;
+    var t2;
     return {
       c: function c() {
         div = element("div");
-        t0 = text("Done: ");
-        t1 = text(
+        t0 = text(t0_value);
+        t1 = space$1();
+        t2 = text(
         /*successMessage*/
         ctx[6]);
         attr(div, "class", "success");
@@ -30846,11 +30857,12 @@
         insert(target, div, anchor);
         append(div, t0);
         append(div, t1);
+        append(div, t2);
       },
       p: function p(ctx, dirty) {
         if (dirty &
         /*successMessage*/
-        64) set_data(t1,
+        64) set_data(t2,
         /*successMessage*/
         ctx[6]);
       },
@@ -30858,12 +30870,13 @@
         if (detaching) detach(div);
       }
     };
-  } // (212:0) {#if importPreviewData.length}
+  } // (220:0) {#if importPreviewData.length}
 
 
   function create_if_block_3(ctx) {
     var div0;
     var p;
+    var strong;
     var t1;
     var button0;
     var t3;
@@ -30895,26 +30908,27 @@
       c: function c() {
         div0 = element("div");
         p = element("p");
-        p.innerHTML = "<strong>Preview</strong>";
+        strong = element("strong");
+        strong.textContent = "".concat(dist_4$1('timemanager', 'Preview'));
         t1 = space$1();
         button0 = element("button");
-        button0.textContent = "Collapse all";
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Collapse all'));
         t3 = space$1();
         button1 = element("button");
-        button1.textContent = "Expand all";
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Expand all'));
         t5 = space$1();
         div1 = element("div");
         dl = element("dl");
         dt0 = element("dt");
-        dt0.textContent = "Clients";
+        dt0.textContent = "".concat(dist_4$1('timemanager', 'Clients'));
         dd0 = element("dd");
         t7 = text(t7_value);
         dt1 = element("dt");
-        dt1.textContent = "Projects";
+        dt1.textContent = "".concat(dist_4$1('timemanager', 'Projects'));
         dd1 = element("dd");
         t9 = text(t9_value);
         dt2 = element("dt");
-        dt2.textContent = "Tasks";
+        dt2.textContent = "".concat(dist_4$1('timemanager', 'Tasks'));
         dd2 = element("dd");
         t11 = text(t11_value);
         attr(button0, "class", "button");
@@ -30925,6 +30939,7 @@
       m: function m(target, anchor) {
         insert(target, div0, anchor);
         append(div0, p);
+        append(p, strong);
         append(div0, t1);
         append(div0, button0);
         append(div0, t3);
@@ -30976,7 +30991,7 @@
         run_all(dispose);
       }
     };
-  } // (243:2) {#if client.projects}
+  } // (255:2) {#if client.projects}
 
 
   function create_if_block_1(ctx) {
@@ -30996,7 +31011,7 @@
       c: function c() {
         details = element("details");
         summary = element("summary");
-        summary.textContent = "Projects";
+        summary.textContent = "".concat(dist_4$1('timemanager', 'Projects'));
         t1 = space$1();
 
         for (var _i = 0; _i < each_blocks.length; _i += 1) {
@@ -31018,7 +31033,7 @@
       },
       p: function p(ctx, dirty) {
         if (dirty &
-        /*allOpen, importPreviewData*/
+        /*allOpen, importPreviewData, translate*/
         640) {
           each_value_1 =
           /*client*/
@@ -31060,7 +31075,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (256:6) {#if project.tasks}
+  } // (268:6) {#if project.tasks}
 
 
   function create_if_block_2(ctx) {
@@ -31080,7 +31095,7 @@
       c: function c() {
         details = element("details");
         summary = element("summary");
-        summary.textContent = "Tasks";
+        summary.textContent = "".concat(dist_4$1('timemanager', 'Tasks'));
         t1 = space$1();
 
         for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
@@ -31102,7 +31117,7 @@
       },
       p: function p(ctx, dirty) {
         if (dirty &
-        /*importPreviewData*/
+        /*importPreviewData, translate*/
         128) {
           each_value_2 =
           /*project*/
@@ -31144,7 +31159,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (259:8) {#each project.tasks as task}
+  } // (271:8) {#each project.tasks as task}
 
 
   function create_each_block_2(ctx) {
@@ -31170,14 +31185,14 @@
         div2 = element("div");
         div0 = element("div");
         span0 = element("span");
-        span0.textContent = "Task Name";
+        span0.textContent = "".concat(dist_4$1('timemanager', 'Task name'));
         t1 = space$1();
         h3 = element("h3");
         t2 = text(t2_value);
         t3 = space$1();
         div1 = element("div");
         span1 = element("span");
-        span1.textContent = "Note";
+        span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
         t5 = space$1();
         t6 = text(t6_value);
         attr(span0, "class", "tm_label");
@@ -31213,7 +31228,7 @@
         if (detaching) detach(div2);
       }
     };
-  } // (246:4) {#each client.projects as project}
+  } // (258:4) {#each client.projects as project}
 
 
   function create_each_block_1(ctx) {
@@ -31243,14 +31258,14 @@
         div2 = element("div");
         div0 = element("div");
         span0 = element("span");
-        span0.textContent = "Project Name";
+        span0.textContent = "".concat(dist_4$1('timemanager', 'Project name'));
         t1 = space$1();
         h3 = element("h3");
         t2 = text(t2_value);
         t3 = space$1();
         div1 = element("div");
         span1 = element("span");
-        span1.textContent = "Note";
+        span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
         t5 = space$1();
         t6 = text(t6_value);
         t7 = space$1();
@@ -31306,7 +31321,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (233:0) {#each importPreviewData as client}
+  } // (245:0) {#each importPreviewData as client}
 
 
   function create_each_block(ctx) {
@@ -31336,14 +31351,14 @@
         div2 = element("div");
         div0 = element("div");
         span0 = element("span");
-        span0.textContent = "Client";
+        span0.textContent = "".concat(dist_4$1('timemanager', 'Client'));
         t1 = space$1();
         h3 = element("h3");
         t2 = text(t2_value);
         t3 = space$1();
         div1 = element("div");
         span1 = element("span");
-        span1.textContent = "Note";
+        span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
         t5 = space$1();
         t6 = text(t6_value);
         t7 = space$1();
@@ -31399,7 +31414,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (280:0) {#if importPreviewData.length}
+  } // (292:0) {#if importPreviewData.length}
 
 
   function create_if_block(ctx) {
@@ -31463,16 +31478,18 @@
 
   function create_fragment(ctx) {
     var label;
+    var t0_value = dist_4$1('timemanager', 'Select CSV file') + "";
     var t0;
-    var br;
     var t1;
-    var input;
+    var br;
     var t2;
+    var input;
     var t3;
     var t4;
     var t5;
     var t6;
     var t7;
+    var t8;
     var if_block4_anchor;
     var if_block0 =
     /*parseError*/
@@ -31501,25 +31518,26 @@
     return {
       c: function c() {
         label = element("label");
-        t0 = text("Select CSV file\n\t");
-        br = element("br");
+        t0 = text(t0_value);
         t1 = space$1();
-        input = element("input");
+        br = element("br");
         t2 = space$1();
-        if (if_block0) if_block0.c();
+        input = element("input");
         t3 = space$1();
-        if (if_block1) if_block1.c();
+        if (if_block0) if_block0.c();
         t4 = space$1();
-        if (if_block2) if_block2.c();
+        if (if_block1) if_block1.c();
         t5 = space$1();
-        if (if_block3) if_block3.c();
+        if (if_block2) if_block2.c();
         t6 = space$1();
+        if (if_block3) if_block3.c();
+        t7 = space$1();
 
         for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
           each_blocks[_i7].c();
         }
 
-        t7 = space$1();
+        t8 = space$1();
         if (if_block4) if_block4.c();
         if_block4_anchor = empty();
         attr(input, "type", "file");
@@ -31527,27 +31545,28 @@
       m: function m(target, anchor) {
         insert(target, label, anchor);
         append(label, t0);
-        append(label, br);
         append(label, t1);
+        append(label, br);
+        append(label, t2);
         append(label, input);
         /*input_binding*/
 
         ctx[13](input);
-        insert(target, t2, anchor);
-        if (if_block0) if_block0.m(target, anchor);
         insert(target, t3, anchor);
-        if (if_block1) if_block1.m(target, anchor);
+        if (if_block0) if_block0.m(target, anchor);
         insert(target, t4, anchor);
-        if (if_block2) if_block2.m(target, anchor);
+        if (if_block1) if_block1.m(target, anchor);
         insert(target, t5, anchor);
-        if (if_block3) if_block3.m(target, anchor);
+        if (if_block2) if_block2.m(target, anchor);
         insert(target, t6, anchor);
+        if (if_block3) if_block3.m(target, anchor);
+        insert(target, t7, anchor);
 
         for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
           each_blocks[_i8].m(target, anchor);
         }
 
-        insert(target, t7, anchor);
+        insert(target, t8, anchor);
         if (if_block4) if_block4.m(target, anchor);
         insert(target, if_block4_anchor, anchor);
       },
@@ -31563,7 +31582,7 @@
           } else {
             if_block0 = create_if_block_6(ctx);
             if_block0.c();
-            if_block0.m(t3.parentNode, t3);
+            if_block0.m(t4.parentNode, t4);
           }
         } else if (if_block0) {
           if_block0.d(1);
@@ -31578,7 +31597,7 @@
           } else {
             if_block1 = create_if_block_5(ctx);
             if_block1.c();
-            if_block1.m(t4.parentNode, t4);
+            if_block1.m(t5.parentNode, t5);
           }
         } else if (if_block1) {
           if_block1.d(1);
@@ -31593,7 +31612,7 @@
           } else {
             if_block2 = create_if_block_4(ctx);
             if_block2.c();
-            if_block2.m(t5.parentNode, t5);
+            if_block2.m(t6.parentNode, t6);
           }
         } else if (if_block2) {
           if_block2.d(1);
@@ -31608,7 +31627,7 @@
           } else {
             if_block3 = create_if_block_3(ctx);
             if_block3.c();
-            if_block3.m(t6.parentNode, t6);
+            if_block3.m(t7.parentNode, t7);
           }
         } else if (if_block3) {
           if_block3.d(1);
@@ -31616,7 +31635,7 @@
         }
 
         if (dirty &
-        /*allOpen, importPreviewData*/
+        /*allOpen, importPreviewData, translate*/
         640) {
           each_value =
           /*importPreviewData*/
@@ -31634,7 +31653,7 @@
 
               each_blocks[_i9].c();
 
-              each_blocks[_i9].m(t7.parentNode, t7);
+              each_blocks[_i9].m(t8.parentNode, t8);
             }
           }
 
@@ -31667,17 +31686,17 @@
         /*input_binding*/
 
         ctx[13](null);
-        if (detaching) detach(t2);
-        if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t3);
-        if (if_block1) if_block1.d(detaching);
+        if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t4);
-        if (if_block2) if_block2.d(detaching);
+        if (if_block1) if_block1.d(detaching);
         if (detaching) detach(t5);
-        if (if_block3) if_block3.d(detaching);
+        if (if_block2) if_block2.d(detaching);
         if (detaching) detach(t6);
-        destroy_each(each_blocks, detaching);
+        if (if_block3) if_block3.d(detaching);
         if (detaching) detach(t7);
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(t8);
         if (if_block4) if_block4.d(detaching);
         if (detaching) detach(if_block4_anchor);
       }
@@ -31919,7 +31938,11 @@
 
                 if (response.ok) {
                   $$invalidate(7, importPreviewData = []);
-                  $$invalidate(6, successMessage = "Imported ".concat(preparedClients.length, " client(s), ").concat(preparedProjects.length, " project(s), ").concat(preparedTasks.length, " task(s)"));
+                  $$invalidate(6, successMessage = dist_4$1("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
+                    clientsCount: preparedClients.length,
+                    projectsCount: preparedProjects.length,
+                    tasksCount: preparedTasks.length
+                  }));
                 }
 
                 _context2.next = 13;

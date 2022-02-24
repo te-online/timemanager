@@ -182,7 +182,15 @@
 			});
 			if (response.ok) {
 				importPreviewData = [];
-				successMessage = `Imported ${preparedClients.length} client(s), ${preparedProjects.length} project(s), ${preparedTasks.length} task(s)`;
+				successMessage = translate(
+					"timemanager",
+					"Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)",
+					{
+						clientsCount: preparedClients.length,
+						projectsCount: preparedProjects.length,
+						tasksCount: preparedTasks.length
+					}
+				);
 			}
 		} catch (error) {
 			importError = error;
@@ -192,39 +200,43 @@
 </script>
 
 <label>
-	Select CSV file
+	{translate('timemanager', 'Select CSV file')}
 	<br />
 	<input type="file" bind:this={fileInput} />
 </label>
 
 {#if parseError}
-	<div class="error">CSV parse error: {parseError}</div>
+	<div class="error">{translate('timemanager', 'CSV parse error:')} {parseError}</div>
 {/if}
 
 {#if importError}
-	<div class="error">Import API error: {importError}</div>
+	<div class="error">{translate('timemanager', 'Import API error:')} {importError}</div>
 {/if}
 
 {#if successMessage}
-	<div class="success">Done: {successMessage}</div>
+	<div class="success">{translate('timemanager', 'Done:')} {successMessage}</div>
 {/if}
 
 {#if importPreviewData.length}
 	<div class="tm_object-details-item">
 		<p>
-			<strong>Preview</strong>
+			<strong>{translate('timemanager', 'Preview')}</strong>
 		</p>
-		<button class="button" on:click|preventDefault={() => (allOpen = false)}>Collapse all</button>
-		<button class="button" on:click|preventDefault={() => (allOpen = true)}>Expand all</button>
+		<button class="button" on:click|preventDefault={() => (allOpen = false)}>
+			{translate('timemanager', 'Collapse all')}
+		</button>
+		<button class="button" on:click|preventDefault={() => (allOpen = true)}>
+			{translate('timemanager', 'Expand all')}
+		</button>
 	</div>
 
 	<div class="tm_object-details-item">
 		<dl>
-			<dt>Clients</dt>
+			<dt>{translate('timemanager', 'Clients')}</dt>
 			<dd>{preparedClients.length}</dd>
-			<dt>Projects</dt>
+			<dt>{translate('timemanager', 'Projects')}</dt>
 			<dd>{preparedProjects.length}</dd>
-			<dt>Tasks</dt>
+			<dt>{translate('timemanager', 'Tasks')}</dt>
 			<dd>{preparedTasks.length}</dd>
 		</dl>
 	</div>
@@ -233,37 +245,37 @@
 {#each importPreviewData as client}
 	<div class="tm_item-row">
 		<div>
-			<span class="tm_label">Client</span>
+			<span class="tm_label">{translate('timemanager', 'Client')}</span>
 			<h3>{client.name}</h3>
 		</div>
 		<div>
-			<span class="tm_label">Note</span>
+			<span class="tm_label">{translate('timemanager', 'Note')}</span>
 			{client.note}
 		</div>
 		{#if client.projects}
 			<details open={allOpen}>
-				<summary>Projects</summary>
+				<summary>{translate('timemanager', 'Projects')}</summary>
 				{#each client.projects as project}
 					<div class="tm_item-row">
 						<div>
-							<span class="tm_label">Project Name</span>
+							<span class="tm_label">{translate('timemanager', 'Project name')}</span>
 							<h3>{project.name}</h3>
 						</div>
 						<div>
-							<span class="tm_label">Note</span>
+							<span class="tm_label">{translate('timemanager', 'Note')}</span>
 							{project.note}
 						</div>
 						{#if project.tasks}
 							<details open={allOpen}>
-								<summary>Tasks</summary>
+								<summary>{translate('timemanager', 'Tasks')}</summary>
 								{#each project.tasks as task}
 									<div class="tm_item-row">
 										<div>
-											<span class="tm_label">Task Name</span>
+											<span class="tm_label">{translate('timemanager', 'Task name')}</span>
 											<h3>{task.name}</h3>
 										</div>
 										<div>
-											<span class="tm_label">Note</span>
+											<span class="tm_label">{translate('timemanager', 'Note')}</span>
 											{task.note}
 										</div>
 									</div>

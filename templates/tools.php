@@ -15,53 +15,48 @@ $l = \OC::$server->getL10N("timemanager");
 			<h3><?php p($l->t("Import (feature preview)")); ?></h3>
 
 			<div class="tm_object-details-item">
-				<p>Select a file to see a preview of your import.</p>
+				<p><?php p($l->t("Select a file to see a preview of your import.")); ?></p>
 			</div>
 			
 			<div class="tm_object-details-item">
-				<p><strong>Current limitations:</strong></p>
+				<p><strong><?php p($l->t("Current limitations:")); ?></strong></p>
 				<ul style="list-style: initial; padding-left: 18px;">
-					<li>Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks</li>
-					<li>Within the CSV file, relationships are determined by <code>Name</code>, so make sure there are no duplicate names within each type of object</li>
-					<li>UTF-8 is the only supported file encoding</li>
-					<li><code>;</code> is the only supported delimiter</li>
-					<li>Time entries cannot be imported</li>
+					<li><?php p($l->t("Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks")); ?></li>
+					<li><?php echo $l->t("Within the CSV file, relationships are determined by %sName%s, so make sure there are no duplicate names within each type of object", ['<code>', '</code>']); ?></li>
+					<li><?php p($l->t("UTF-8 is the only supported file encoding")); ?></li>
+					<li><?php echo $l->t("%s;%s is the only supported delimiter", ['<code>', '</code>']); ?></li>
+					<li><?php p($l->t("Time entries cannot be imported")); ?></li>
 				</ul>
 			</div>
 
 			<div class="tm_object-details-item">
 				<details>
-					<summary>Show overview of expected CSV columns</summary>
+					<summary><?php p($l->t("Show overview of expected CSV columns")); ?></summary>
 						<dl class="csv_list">
-							<dt><strong>Column name</strong></dt>
-							<dd><strong>Description</strong></dd>
+							<dt><strong><?php p($l->t("Column name")); ?></strong></dt>
+							<dd><strong><?php p($l->t("Description")); ?></strong></dd>
 
 							<dt><code>Type</code></dt>
 							<dd>
-								The type of object
-								<code>Client</code>
-								,
-								<code>Project</code>
-								,
-								<code>Task</code>
+								<?php echo $l->t("The type of object %sClient%s, %sProject%s, %sTask%s", ['<code>', '</code>', '<code>', '</code>', '<code>', '</code>']); ?>
 								<!-- , -->
 								<!-- <code>Time</code> -->
 							</dd>
 							
 							<dt><code>Name</code></dt>
-							<dd>The name of the object</dd>
+							<dd><?php p($l->t("The name of the object")); ?></dd>
 
 							<dt><code>Client</code></dt>
-							<dd>The parent client name (if type is project)</dd>
+							<dd><?php p($l->t("The parent client name (if type is project)")); ?></dd>
 
 							<dt><code>Project</code></dt>
-							<dd>The parent project name (if type is task)</dd>
+							<dd><?php p($l->t("The parent project name (if type is task)")); ?></dd>
 
 							<!-- <dt><code>Task</code></dt> -->
 							<!-- <dd>The parent task name (if time entry)</dd> -->
 
 							<dt><code>Note</code></dt>
-							<dd>The note (if type is client or project)</dd>
+							<dd><?php p($l->t("An optional note")); ?></dd>
 
 							<!-- <dt><code>Done</code></dt>
 							<dd>
