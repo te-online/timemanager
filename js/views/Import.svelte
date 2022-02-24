@@ -13,6 +13,7 @@
 	$: successMessage = "";
 	$: importPreviewData = [];
 	$: loading = false;
+	$: allOpen = false;
 	// Collect updated objects in here
 	let preparedClients = [];
 	let preparedProjects = [];
@@ -88,16 +89,30 @@
 			// Group entities
 			const associated = clients.map(client => {
 				client.projects = projects
-					.filter(project => project.client === client.name)
+					.filter(
+						project =>
+							project.client === client.name && !preparedProjects.find(oneProject => oneProject.uuid === project.uuid)
+					)
 					.map(project => ({ ...project, client_uuid: client.uuid }))
 					.map(project => {
 						project.tasks = tasks
-							.filter(task => task.project === project.name)
+							.filter(
+								task => task.project === project.name && !preparedTasks.find(oneTask => oneTask.uuid === task.uuid)
+							)
 							.map(task => ({ ...task, project_uuid: project.uuid }));
-						preparedTasks.push(...project.tasks);
+						// Add tasks if not exists
+						project.tasks.forEach(task => {
+							if (!preparedTasks.find(oneTask => oneTask.uuid === task.uuid)) {
+								preparedTasks.push(task);
+							}
+						});
+						// Add project if not exists
+						if (!preparedProjects.find(oneProject => oneProject.uuid === project.uuid)) {
+							preparedProjects.push(project);
+						}
 						return project;
 					});
-				preparedProjects.push(...client.projects);
+				// Add client
 				preparedClients.push(client);
 				return client;
 			});
@@ -167,7 +182,7 @@
 			});
 			if (response.ok) {
 				importPreviewData = [];
-				successMessage = "Import succeeded";
+				successMessage = `Imported ${preparedClients.length} client(s), ${preparedProjects.length} project(s), ${preparedTasks.length} task(s)`;
 			}
 		} catch (error) {
 			importError = error;
@@ -194,6 +209,27 @@
 	<div class="success">Done: {successMessage}</div>
 {/if}
 
+{#if importPreviewData.length}
+	<div class="tm_object-details-item">
+		<p>
+			<strong>Preview</strong>
+		</p>
+		<button class="button" on:click|preventDefault={() => (allOpen = false)}>Collapse all</button>
+		<button class="button" on:click|preventDefault={() => (allOpen = true)}>Expand all</button>
+	</div>
+
+	<div class="tm_object-details-item">
+		<dl>
+			<dt>Clients</dt>
+			<dd>{preparedClients.length}</dd>
+			<dt>Projects</dt>
+			<dd>{preparedProjects.length}</dd>
+			<dt>Tasks</dt>
+			<dd>{preparedTasks.length}</dd>
+		</dl>
+	</div>
+{/if}
+
 {#each importPreviewData as client}
 	<div class="tm_item-row">
 		<div>
@@ -205,7 +241,7 @@
 			{client.note}
 		</div>
 		{#if client.projects}
-			<details open>
+			<details open={allOpen}>
 				<summary>Projects</summary>
 				{#each client.projects as project}
 					<div class="tm_item-row">
@@ -218,7 +254,7 @@
 							{project.note}
 						</div>
 						{#if project.tasks}
-							<details open>
+							<details open={allOpen}>
 								<summary>Tasks</summary>
 								{#each project.tasks as task}
 									<div class="tm_item-row">

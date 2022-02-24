@@ -197,20 +197,8 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-  }
-
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
-  }
-
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -258,10 +246,6 @@
     for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 
     return arr2;
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   function _nonIterableRest() {
@@ -12491,7 +12475,7 @@
   } // (229:1) {#if controls}
 
 
-  function create_if_block_6$1(ctx) {
+  function create_if_block_6$2(ctx) {
     var div;
     var figure0;
     var figcaption0;
@@ -13057,7 +13041,7 @@
     ctx[0] && create_if_block_7$1();
     var if_block1 =
     /*controls*/
-    ctx[0] && create_if_block_6$1(ctx);
+    ctx[0] && create_if_block_6$2(ctx);
     var if_block2 = !
     /*loading*/
     ctx[2] &&
@@ -13134,7 +13118,7 @@
           if (if_block1) {
             if_block1.p(ctx, dirty);
           } else {
-            if_block1 = create_if_block_6$1(ctx);
+            if_block1 = create_if_block_6$2(ctx);
             if_block1.c();
             if_block1.m(div2, t1);
           }
@@ -20320,7 +20304,7 @@
   } // (917:4) {#if showClearIcon}
 
 
-  function create_if_block_6(ctx) {
+  function create_if_block_6$1(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -20917,7 +20901,7 @@
     ctx[29] && create_if_block_7(ctx);
     let if_block4 =
     /*showClearIcon*/
-    ctx[37] && create_if_block_6(ctx);
+    ctx[37] && create_if_block_6$1(ctx);
     let if_block5 = !
     /*showClearIcon*/
     ctx[37] && (
@@ -21209,7 +21193,7 @@
               transition_in(if_block4, 1);
             }
           } else {
-            if_block4 = create_if_block_6(ctx);
+            if_block4 = create_if_block_6$1(ctx);
             if_block4.c();
             transition_in(if_block4, 1);
             if_block4.m(div, t5);
@@ -30764,24 +30748,24 @@
 
   function get_each_context(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[16] = list[i];
+    child_ctx[19] = list[i];
     return child_ctx;
   }
 
   function get_each_context_1(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[19] = list[i];
+    child_ctx[22] = list[i];
     return child_ctx;
   }
 
   function get_each_context_2(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[22] = list[i];
+    child_ctx[25] = list[i];
     return child_ctx;
-  } // (185:0) {#if parseError}
+  } // (200:0) {#if parseError}
 
 
-  function create_if_block_5(ctx) {
+  function create_if_block_6(ctx) {
     var div;
     var t0;
     var t1;
@@ -30791,7 +30775,7 @@
         t0 = text("CSV parse error: ");
         t1 = text(
         /*parseError*/
-        ctx[5]);
+        ctx[8]);
         attr(div, "class", "error");
       },
       m: function m(target, anchor) {
@@ -30802,18 +30786,18 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*parseError*/
-        32) set_data(t1,
+        256) set_data(t1,
         /*parseError*/
-        ctx[5]);
+        ctx[8]);
       },
       d: function d(detaching) {
         if (detaching) detach(div);
       }
     };
-  } // (189:0) {#if importError}
+  } // (204:0) {#if importError}
 
 
-  function create_if_block_4(ctx) {
+  function create_if_block_5(ctx) {
     var div;
     var t0;
     var t1;
@@ -30823,7 +30807,7 @@
         t0 = text("Import API error: ");
         t1 = text(
         /*importError*/
-        ctx[2]);
+        ctx[5]);
         attr(div, "class", "error");
       },
       m: function m(target, anchor) {
@@ -30834,18 +30818,18 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*importError*/
-        4) set_data(t1,
+        32) set_data(t1,
         /*importError*/
-        ctx[2]);
+        ctx[5]);
       },
       d: function d(detaching) {
         if (detaching) detach(div);
       }
     };
-  } // (193:0) {#if successMessage}
+  } // (208:0) {#if successMessage}
 
 
-  function create_if_block_3(ctx) {
+  function create_if_block_4(ctx) {
     var div;
     var t0;
     var t1;
@@ -30855,7 +30839,7 @@
         t0 = text("Done: ");
         t1 = text(
         /*successMessage*/
-        ctx[3]);
+        ctx[6]);
         attr(div, "class", "success");
       },
       m: function m(target, anchor) {
@@ -30866,15 +30850,133 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*successMessage*/
-        8) set_data(t1,
+        64) set_data(t1,
         /*successMessage*/
-        ctx[3]);
+        ctx[6]);
       },
       d: function d(detaching) {
         if (detaching) detach(div);
       }
     };
-  } // (207:2) {#if client.projects}
+  } // (212:0) {#if importPreviewData.length}
+
+
+  function create_if_block_3(ctx) {
+    var div0;
+    var p;
+    var t1;
+    var button0;
+    var t3;
+    var button1;
+    var t5;
+    var div1;
+    var dl;
+    var dt0;
+    var dd0;
+    var t7_value =
+    /*preparedClients*/
+    ctx[1].length + "";
+    var t7;
+    var dt1;
+    var dd1;
+    var t9_value =
+    /*preparedProjects*/
+    ctx[2].length + "";
+    var t9;
+    var dt2;
+    var dd2;
+    var t11_value =
+    /*preparedTasks*/
+    ctx[3].length + "";
+    var t11;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div0 = element("div");
+        p = element("p");
+        p.innerHTML = "<strong>Preview</strong>";
+        t1 = space$1();
+        button0 = element("button");
+        button0.textContent = "Collapse all";
+        t3 = space$1();
+        button1 = element("button");
+        button1.textContent = "Expand all";
+        t5 = space$1();
+        div1 = element("div");
+        dl = element("dl");
+        dt0 = element("dt");
+        dt0.textContent = "Clients";
+        dd0 = element("dd");
+        t7 = text(t7_value);
+        dt1 = element("dt");
+        dt1.textContent = "Projects";
+        dd1 = element("dd");
+        t9 = text(t9_value);
+        dt2 = element("dt");
+        dt2.textContent = "Tasks";
+        dd2 = element("dd");
+        t11 = text(t11_value);
+        attr(button0, "class", "button");
+        attr(button1, "class", "button");
+        attr(div0, "class", "tm_object-details-item");
+        attr(div1, "class", "tm_object-details-item");
+      },
+      m: function m(target, anchor) {
+        insert(target, div0, anchor);
+        append(div0, p);
+        append(div0, t1);
+        append(div0, button0);
+        append(div0, t3);
+        append(div0, button1);
+        insert(target, t5, anchor);
+        insert(target, div1, anchor);
+        append(div1, dl);
+        append(dl, dt0);
+        append(dl, dd0);
+        append(dd0, t7);
+        append(dl, dt1);
+        append(dl, dd1);
+        append(dd1, t9);
+        append(dl, dt2);
+        append(dl, dd2);
+        append(dd2, t11);
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*click_handler*/
+          ctx[14])), listen(button1, "click", prevent_default(
+          /*click_handler_1*/
+          ctx[15]))];
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*preparedClients*/
+        2 && t7_value !== (t7_value =
+        /*preparedClients*/
+        ctx[1].length + "")) set_data(t7, t7_value);
+        if (dirty &
+        /*preparedProjects*/
+        4 && t9_value !== (t9_value =
+        /*preparedProjects*/
+        ctx[2].length + "")) set_data(t9, t9_value);
+        if (dirty &
+        /*preparedTasks*/
+        8 && t11_value !== (t11_value =
+        /*preparedTasks*/
+        ctx[3].length + "")) set_data(t11, t11_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div0);
+        if (detaching) detach(t5);
+        if (detaching) detach(div1);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  } // (243:2) {#if client.projects}
 
 
   function create_if_block_1(ctx) {
@@ -30883,7 +30985,7 @@
     var t1;
     var each_value_1 =
     /*client*/
-    ctx[16].projects;
+    ctx[19].projects;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_1.length; i += 1) {
@@ -30901,7 +31003,9 @@
           each_blocks[_i].c();
         }
 
-        details.open = true;
+        details.open =
+        /*allOpen*/
+        ctx[9];
       },
       m: function m(target, anchor) {
         insert(target, details, anchor);
@@ -30914,11 +31018,11 @@
       },
       p: function p(ctx, dirty) {
         if (dirty &
-        /*importPreviewData*/
-        16) {
+        /*allOpen, importPreviewData*/
+        640) {
           each_value_1 =
           /*client*/
-          ctx[16].projects;
+          ctx[19].projects;
 
           var _i3;
 
@@ -30942,13 +31046,21 @@
 
           each_blocks.length = each_value_1.length;
         }
+
+        if (dirty &
+        /*allOpen*/
+        512) {
+          details.open =
+          /*allOpen*/
+          ctx[9];
+        }
       },
       d: function d(detaching) {
         if (detaching) detach(details);
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (220:6) {#if project.tasks}
+  } // (256:6) {#if project.tasks}
 
 
   function create_if_block_2(ctx) {
@@ -30957,7 +31069,7 @@
     var t1;
     var each_value_2 =
     /*project*/
-    ctx[19].tasks;
+    ctx[22].tasks;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_2.length; i += 1) {
@@ -30975,7 +31087,9 @@
           each_blocks[_i4].c();
         }
 
-        details.open = true;
+        details.open =
+        /*allOpen*/
+        ctx[9];
       },
       m: function m(target, anchor) {
         insert(target, details, anchor);
@@ -30989,10 +31103,10 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*importPreviewData*/
-        16) {
+        128) {
           each_value_2 =
           /*project*/
-          ctx[19].tasks;
+          ctx[22].tasks;
 
           var _i6;
 
@@ -31016,13 +31130,21 @@
 
           each_blocks.length = each_value_2.length;
         }
+
+        if (dirty &
+        /*allOpen*/
+        512) {
+          details.open =
+          /*allOpen*/
+          ctx[9];
+        }
       },
       d: function d(detaching) {
         if (detaching) detach(details);
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (223:8) {#each project.tasks as task}
+  } // (259:8) {#each project.tasks as task}
 
 
   function create_each_block_2(ctx) {
@@ -31033,7 +31155,7 @@
     var h3;
     var t2_value =
     /*task*/
-    ctx[22].name + "";
+    ctx[25].name + "";
     var t2;
     var t3;
     var div1;
@@ -31041,7 +31163,7 @@
     var t5;
     var t6_value =
     /*task*/
-    ctx[22].note + "";
+    ctx[25].note + "";
     var t6;
     return {
       c: function c() {
@@ -31078,20 +31200,20 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*importPreviewData*/
-        16 && t2_value !== (t2_value =
+        128 && t2_value !== (t2_value =
         /*task*/
-        ctx[22].name + "")) set_data(t2, t2_value);
+        ctx[25].name + "")) set_data(t2, t2_value);
         if (dirty &
         /*importPreviewData*/
-        16 && t6_value !== (t6_value =
+        128 && t6_value !== (t6_value =
         /*task*/
-        ctx[22].note + "")) set_data(t6, t6_value);
+        ctx[25].note + "")) set_data(t6, t6_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
       }
     };
-  } // (210:4) {#each client.projects as project}
+  } // (246:4) {#each client.projects as project}
 
 
   function create_each_block_1(ctx) {
@@ -31102,7 +31224,7 @@
     var h3;
     var t2_value =
     /*project*/
-    ctx[19].name + "";
+    ctx[22].name + "";
     var t2;
     var t3;
     var div1;
@@ -31110,12 +31232,12 @@
     var t5;
     var t6_value =
     /*project*/
-    ctx[19].note + "";
+    ctx[22].note + "";
     var t6;
     var t7;
     var if_block =
     /*project*/
-    ctx[19].tasks && create_if_block_2(ctx);
+    ctx[22].tasks && create_if_block_2(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -31155,18 +31277,18 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*importPreviewData*/
-        16 && t2_value !== (t2_value =
+        128 && t2_value !== (t2_value =
         /*project*/
-        ctx[19].name + "")) set_data(t2, t2_value);
+        ctx[22].name + "")) set_data(t2, t2_value);
         if (dirty &
         /*importPreviewData*/
-        16 && t6_value !== (t6_value =
+        128 && t6_value !== (t6_value =
         /*project*/
-        ctx[19].note + "")) set_data(t6, t6_value);
+        ctx[22].note + "")) set_data(t6, t6_value);
 
         if (
         /*project*/
-        ctx[19].tasks) {
+        ctx[22].tasks) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -31184,7 +31306,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (197:0) {#each importPreviewData as client}
+  } // (233:0) {#each importPreviewData as client}
 
 
   function create_each_block(ctx) {
@@ -31195,7 +31317,7 @@
     var h3;
     var t2_value =
     /*client*/
-    ctx[16].name + "";
+    ctx[19].name + "";
     var t2;
     var t3;
     var div1;
@@ -31203,12 +31325,12 @@
     var t5;
     var t6_value =
     /*client*/
-    ctx[16].note + "";
+    ctx[19].note + "";
     var t6;
     var t7;
     var if_block =
     /*client*/
-    ctx[16].projects && create_if_block_1(ctx);
+    ctx[19].projects && create_if_block_1(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -31248,18 +31370,18 @@
       p: function p(ctx, dirty) {
         if (dirty &
         /*importPreviewData*/
-        16 && t2_value !== (t2_value =
+        128 && t2_value !== (t2_value =
         /*client*/
-        ctx[16].name + "")) set_data(t2, t2_value);
+        ctx[19].name + "")) set_data(t2, t2_value);
         if (dirty &
         /*importPreviewData*/
-        16 && t6_value !== (t6_value =
+        128 && t6_value !== (t6_value =
         /*client*/
-        ctx[16].note + "")) set_data(t6, t6_value);
+        ctx[19].note + "")) set_data(t6, t6_value);
 
         if (
         /*client*/
-        ctx[16].projects) {
+        ctx[19].projects) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -31277,7 +31399,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (244:0) {#if importPreviewData.length}
+  } // (280:0) {#if importPreviewData.length}
 
 
   function create_if_block(ctx) {
@@ -31295,12 +31417,12 @@
         t = text(t_value);
         button.disabled =
         /*loading*/
-        ctx[1];
+        ctx[4];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
         attr(form, "class", form_class_value =
         /*loading*/
-        ctx[1] ? ' icon-loading' : '');
+        ctx[4] ? ' icon-loading' : '');
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
@@ -31310,24 +31432,24 @@
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*doImport*/
-          ctx[6]));
+          ctx[10]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty &
         /*loading*/
-        2) {
+        16) {
           button.disabled =
           /*loading*/
-          ctx[1];
+          ctx[4];
         }
 
         if (dirty &
         /*loading*/
-        2 && form_class_value !== (form_class_value =
+        16 && form_class_value !== (form_class_value =
         /*loading*/
-        ctx[1] ? ' icon-loading' : '')) {
+        ctx[4] ? ' icon-loading' : '')) {
           attr(form, "class", form_class_value);
         }
       },
@@ -31350,28 +31472,32 @@
     var t4;
     var t5;
     var t6;
-    var if_block3_anchor;
+    var t7;
+    var if_block4_anchor;
     var if_block0 =
     /*parseError*/
-    ctx[5] && create_if_block_5(ctx);
+    ctx[8] && create_if_block_6(ctx);
     var if_block1 =
     /*importError*/
-    ctx[2] && create_if_block_4(ctx);
+    ctx[5] && create_if_block_5(ctx);
     var if_block2 =
     /*successMessage*/
-    ctx[3] && create_if_block_3(ctx);
+    ctx[6] && create_if_block_4(ctx);
+    var if_block3 =
+    /*importPreviewData*/
+    ctx[7].length && create_if_block_3(ctx);
     var each_value =
     /*importPreviewData*/
-    ctx[4];
+    ctx[7];
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
       each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
     }
 
-    var if_block3 =
+    var if_block4 =
     /*importPreviewData*/
-    ctx[4].length && create_if_block(ctx);
+    ctx[7].length && create_if_block(ctx);
     return {
       c: function c() {
         label = element("label");
@@ -31386,14 +31512,16 @@
         t4 = space$1();
         if (if_block2) if_block2.c();
         t5 = space$1();
+        if (if_block3) if_block3.c();
+        t6 = space$1();
 
         for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
           each_blocks[_i7].c();
         }
 
-        t6 = space$1();
-        if (if_block3) if_block3.c();
-        if_block3_anchor = empty();
+        t7 = space$1();
+        if (if_block4) if_block4.c();
+        if_block4_anchor = empty();
         attr(input, "type", "file");
       },
       m: function m(target, anchor) {
@@ -31404,7 +31532,7 @@
         append(label, input);
         /*input_binding*/
 
-        ctx[9](input);
+        ctx[13](input);
         insert(target, t2, anchor);
         if (if_block0) if_block0.m(target, anchor);
         insert(target, t3, anchor);
@@ -31412,14 +31540,16 @@
         insert(target, t4, anchor);
         if (if_block2) if_block2.m(target, anchor);
         insert(target, t5, anchor);
+        if (if_block3) if_block3.m(target, anchor);
+        insert(target, t6, anchor);
 
         for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
           each_blocks[_i8].m(target, anchor);
         }
 
-        insert(target, t6, anchor);
-        if (if_block3) if_block3.m(target, anchor);
-        insert(target, if_block3_anchor, anchor);
+        insert(target, t7, anchor);
+        if (if_block4) if_block4.m(target, anchor);
+        insert(target, if_block4_anchor, anchor);
       },
       p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
@@ -31427,11 +31557,11 @@
 
         if (
         /*parseError*/
-        ctx[5]) {
+        ctx[8]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
           } else {
-            if_block0 = create_if_block_5(ctx);
+            if_block0 = create_if_block_6(ctx);
             if_block0.c();
             if_block0.m(t3.parentNode, t3);
           }
@@ -31442,11 +31572,11 @@
 
         if (
         /*importError*/
-        ctx[2]) {
+        ctx[5]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
           } else {
-            if_block1 = create_if_block_4(ctx);
+            if_block1 = create_if_block_5(ctx);
             if_block1.c();
             if_block1.m(t4.parentNode, t4);
           }
@@ -31457,11 +31587,11 @@
 
         if (
         /*successMessage*/
-        ctx[3]) {
+        ctx[6]) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block_3(ctx);
+            if_block2 = create_if_block_4(ctx);
             if_block2.c();
             if_block2.m(t5.parentNode, t5);
           }
@@ -31470,12 +31600,27 @@
           if_block2 = null;
         }
 
-        if (dirty &
+        if (
         /*importPreviewData*/
-        16) {
+        ctx[7].length) {
+          if (if_block3) {
+            if_block3.p(ctx, dirty);
+          } else {
+            if_block3 = create_if_block_3(ctx);
+            if_block3.c();
+            if_block3.m(t6.parentNode, t6);
+          }
+        } else if (if_block3) {
+          if_block3.d(1);
+          if_block3 = null;
+        }
+
+        if (dirty &
+        /*allOpen, importPreviewData*/
+        640) {
           each_value =
           /*importPreviewData*/
-          ctx[4];
+          ctx[7];
 
           var _i9;
 
@@ -31489,7 +31634,7 @@
 
               each_blocks[_i9].c();
 
-              each_blocks[_i9].m(t6.parentNode, t6);
+              each_blocks[_i9].m(t7.parentNode, t7);
             }
           }
 
@@ -31502,17 +31647,17 @@
 
         if (
         /*importPreviewData*/
-        ctx[4].length) {
-          if (if_block3) {
-            if_block3.p(ctx, dirty);
+        ctx[7].length) {
+          if (if_block4) {
+            if_block4.p(ctx, dirty);
           } else {
-            if_block3 = create_if_block(ctx);
-            if_block3.c();
-            if_block3.m(if_block3_anchor.parentNode, if_block3_anchor);
+            if_block4 = create_if_block(ctx);
+            if_block4.c();
+            if_block4.m(if_block4_anchor.parentNode, if_block4_anchor);
           }
-        } else if (if_block3) {
-          if_block3.d(1);
-          if_block3 = null;
+        } else if (if_block4) {
+          if_block4.d(1);
+          if_block4 = null;
         }
       },
       i: noop$1,
@@ -31521,7 +31666,7 @@
         if (detaching) detach(label);
         /*input_binding*/
 
-        ctx[9](null);
+        ctx[13](null);
         if (detaching) detach(t2);
         if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t3);
@@ -31529,10 +31674,12 @@
         if (detaching) detach(t4);
         if (if_block2) if_block2.d(detaching);
         if (detaching) detach(t5);
-        destroy_each(each_blocks, detaching);
-        if (detaching) detach(t6);
         if (if_block3) if_block3.d(detaching);
-        if (detaching) detach(if_block3_anchor);
+        if (detaching) detach(t6);
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(t7);
+        if (if_block4) if_block4.d(detaching);
+        if (detaching) detach(if_block4_anchor);
       }
     };
   }
@@ -31543,6 +31690,7 @@
     var successMessage;
     var importPreviewData;
     var loading;
+    var allOpen;
     var syncApiUrl = $$props.syncApiUrl;
     var requestToken = $$props.requestToken;
     var fileInput; // Collect updated objects in here
@@ -31592,7 +31740,7 @@
                   break;
                 }
 
-                $$invalidate(5, parseError = "");
+                $$invalidate(8, parseError = "");
                 _e$target$files = _slicedToArray(e.target.files, 1), file = _e$target$files[0];
                 fileReader = new FileReader();
                 fileReader.readAsText(file);
@@ -31635,7 +31783,7 @@
               case 14:
                 _context.prev = 14;
                 _context.t0 = _context["catch"](8);
-                $$invalidate(5, parseError = _context.t0);
+                $$invalidate(8, parseError = _context.t0);
 
               case 17:
                 // Filter by type and assign uuids
@@ -31643,41 +31791,51 @@
                 projects = filter(contents, "project");
                 tasks = filter(contents, "task"); // Empty arrays
 
-                preparedClients = [];
-                preparedProjects = [];
-                preparedTasks = []; // Group entities
+                $$invalidate(1, preparedClients = []);
+                $$invalidate(2, preparedProjects = []);
+                $$invalidate(3, preparedTasks = []); // Group entities
 
                 associated = clients.map(function (client) {
-                  var _preparedProjects;
-
                   client.projects = projects.filter(function (project) {
-                    return project.client === client.name;
+                    return project.client === client.name && !preparedProjects.find(function (oneProject) {
+                      return oneProject.uuid === project.uuid;
+                    });
                   }).map(function (project) {
                     return _objectSpread2(_objectSpread2({}, project), {}, {
                       client_uuid: client.uuid
                     });
                   }).map(function (project) {
-                    var _preparedTasks;
-
                     project.tasks = tasks.filter(function (task) {
-                      return task.project === project.name;
+                      return task.project === project.name && !preparedTasks.find(function (oneTask) {
+                        return oneTask.uuid === task.uuid;
+                      });
                     }).map(function (task) {
                       return _objectSpread2(_objectSpread2({}, task), {}, {
                         project_uuid: project.uuid
                       });
-                    });
+                    }); // Add tasks if not exists
 
-                    (_preparedTasks = preparedTasks).push.apply(_preparedTasks, _toConsumableArray(project.tasks));
+                    project.tasks.forEach(function (task) {
+                      if (!preparedTasks.find(function (oneTask) {
+                        return oneTask.uuid === task.uuid;
+                      })) {
+                        preparedTasks.push(task);
+                      }
+                    }); // Add project if not exists
+
+                    if (!preparedProjects.find(function (oneProject) {
+                      return oneProject.uuid === project.uuid;
+                    })) {
+                      preparedProjects.push(project);
+                    }
 
                     return project;
-                  });
-
-                  (_preparedProjects = preparedProjects).push.apply(_preparedProjects, _toConsumableArray(client.projects));
+                  }); // Add client
 
                   preparedClients.push(client);
                   return client;
                 });
-                $$invalidate(4, importPreviewData = associated);
+                $$invalidate(7, importPreviewData = associated);
 
               case 25:
               case "end":
@@ -31707,8 +31865,8 @@
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                $$invalidate(1, loading = true);
-                $$invalidate(2, importError = "");
+                $$invalidate(4, loading = true);
+                $$invalidate(5, importError = "");
                 convertedImportData = {
                   lastCommit: "",
                   data: {
@@ -31760,8 +31918,8 @@
                 response = _context2.sent;
 
                 if (response.ok) {
-                  $$invalidate(4, importPreviewData = []);
-                  $$invalidate(3, successMessage = "Import succeeded");
+                  $$invalidate(7, importPreviewData = []);
+                  $$invalidate(6, successMessage = "Imported ".concat(preparedClients.length, " client(s), ").concat(preparedProjects.length, " project(s), ").concat(preparedTasks.length, " task(s)"));
                 }
 
                 _context2.next = 13;
@@ -31770,10 +31928,10 @@
               case 10:
                 _context2.prev = 10;
                 _context2.t0 = _context2["catch"](3);
-                $$invalidate(2, importError = _context2.t0);
+                $$invalidate(5, importError = _context2.t0);
 
               case 13:
-                $$invalidate(1, loading = false);
+                $$invalidate(4, loading = false);
 
               case 14:
               case "end":
@@ -31795,22 +31953,32 @@
       });
     }
 
-    $$self.$$set = function ($$props) {
-      if ('syncApiUrl' in $$props) $$invalidate(7, syncApiUrl = $$props.syncApiUrl);
-      if ('requestToken' in $$props) $$invalidate(8, requestToken = $$props.requestToken);
+    var click_handler = function click_handler() {
+      return $$invalidate(9, allOpen = false);
     };
 
-    $$invalidate(5, parseError = "");
+    var click_handler_1 = function click_handler_1() {
+      return $$invalidate(9, allOpen = true);
+    };
 
-    $$invalidate(2, importError = "");
+    $$self.$$set = function ($$props) {
+      if ('syncApiUrl' in $$props) $$invalidate(11, syncApiUrl = $$props.syncApiUrl);
+      if ('requestToken' in $$props) $$invalidate(12, requestToken = $$props.requestToken);
+    };
 
-    $$invalidate(3, successMessage = "");
+    $$invalidate(8, parseError = "");
 
-    $$invalidate(4, importPreviewData = []);
+    $$invalidate(5, importError = "");
 
-    $$invalidate(1, loading = false);
+    $$invalidate(6, successMessage = "");
 
-    return [fileInput, loading, importError, successMessage, importPreviewData, parseError, doImport, syncApiUrl, requestToken, input_binding];
+    $$invalidate(7, importPreviewData = []);
+
+    $$invalidate(4, loading = false);
+
+    $$invalidate(9, allOpen = false);
+
+    return [fileInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, doImport, syncApiUrl, requestToken, input_binding, click_handler, click_handler_1];
   }
 
   var Import = /*#__PURE__*/function (_SvelteComponent) {
@@ -31825,8 +31993,8 @@
 
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-        syncApiUrl: 7,
-        requestToken: 8
+        syncApiUrl: 11,
+        requestToken: 12
       });
       return _this;
     }
