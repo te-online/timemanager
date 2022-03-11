@@ -141,7 +141,7 @@
 
 .tm_object-details form {
 	display: inline;
-	margin-right: 5px;
+	margin-right: 3px;
 
 	button {
 		margin-right: 0;
@@ -174,6 +174,7 @@
 	margin-left: 5px;
 }
 
+.btn.small,
 .tm_inline-hover-form .btn {
 	padding: 3px 6px;
 	min-height: initial;
@@ -247,10 +248,6 @@ body.loading-error #content.app-timemanager:before {
 
 	.urldisplay {
 		word-wrap: break-word;
-	}
-
-	&.sharing {
-		min-height: 50vh;
 	}
 }
 
@@ -621,6 +618,50 @@ label {
 	flex-flow: row-reverse;
 }
 
+.sharing-dialog {
+	.sharee-list {
+		margin-top: 15px;
+		margin-bottom: 25px;
+
+		li {
+			min-height: 30px;
+			margin-top: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			figure {
+				display: flex;
+				align-items: center;
+			}
+
+			img {
+				margin: auto 5px auto 0;
+				border-radius: 100%;
+			}
+		}
+	}
+}
+
+.existing-sharees {
+	display: flex;
+	align-items: center;
+	min-height: 32px;
+	margin-top: 5px;
+
+	li {
+		list-style-type: none;
+		margin-right: 5px;
+		display: flex;
+		align-items: center;
+
+		img {
+			margin: auto 5px;
+			border-radius: 100%;
+		}
+	}
+}
+
 @keyframes fallback {
 	0% {
 		height: 0;
@@ -661,6 +702,7 @@ label {
 	--itemHoverBG: var(--color-primary-light);
 	--multiItemActiveBG: var(--color-primary-element);
 	--multiItemBG: var(--color-primary-light);
+	--spinnerColor: var(--color-primary);
 }
 
 @media print {

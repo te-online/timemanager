@@ -23,4 +23,14 @@ class ShareMapper extends ObjectMapper {
 			"WHERE (`recipient_user_id` = ? OR `author_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
 		return $this->findEntities($sql, [$this->userId, $this->userId, $client_uuid]);
 	}
+
+	public function findByUuid($uuid): array {
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE (`author_user_id` = ?) AND `uuid` = ? AND `entity_type` = 'client';";
+		return $this->findEntities($sql, [$this->userId, $uuid]);
+	}
 }

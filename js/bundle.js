@@ -4233,6 +4233,14 @@
   function safe_not_equal(a, b) {
       return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
   }
+  let src_url_equal_anchor;
+  function src_url_equal(element_src, url) {
+      if (!src_url_equal_anchor) {
+          src_url_equal_anchor = document.createElement('a');
+      }
+      src_url_equal_anchor.href = url;
+      return element_src === src_url_equal_anchor.href;
+  }
   function is_empty(obj) {
       return Object.keys(obj).length === 0;
   }
@@ -12579,7 +12587,7 @@
   } // (243:3) {#if !loading && weekTotal > 0}
 
 
-  function create_if_block_3$2(ctx) {
+  function create_if_block_3$3(ctx) {
     var each_1_anchor;
     var each_value =
     /*points*/
@@ -12837,7 +12845,7 @@
   } // (259:3) {#if controls && !loading && weekTotal === 0}
 
 
-  function create_if_block_2$3(ctx) {
+  function create_if_block_2$4(ctx) {
     var p;
     return {
       c: function c() {
@@ -12897,7 +12905,7 @@
     var button1;
     var mounted;
     var dispose;
-    var if_block = show_if && create_if_block_1$4(ctx);
+    var if_block = show_if && create_if_block_1$5(ctx);
     return {
       c: function c() {
         nav = element("nav");
@@ -12994,7 +13002,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_1$4(ctx);
+            if_block = create_if_block_1$5(ctx);
             if_block.c();
             if_block.m(span2, t12);
           }
@@ -13013,7 +13021,7 @@
   } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
-  function create_if_block_1$4(ctx) {
+  function create_if_block_1$5(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13062,14 +13070,14 @@
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] > 0 && create_if_block_3$2(ctx);
+    ctx[5] > 0 && create_if_block_3$3(ctx);
     var if_block3 =
     /*controls*/
     ctx[0] && !
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] === 0 && create_if_block_2$3();
+    ctx[5] === 0 && create_if_block_2$4();
     var if_block4 =
     /*controls*/
     ctx[0] && create_if_block$f(ctx);
@@ -13151,7 +13159,7 @@
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block_3$2(ctx);
+            if_block2 = create_if_block_3$3(ctx);
             if_block2.c();
             if_block2.m(div0, t2);
           }
@@ -13170,7 +13178,7 @@
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
-            if_block3 = create_if_block_2$3();
+            if_block3 = create_if_block_2$4();
             if_block3.c();
             if_block3.m(div0, null);
           }
@@ -16375,7 +16383,7 @@
   } // (53:0) {#if !timeUuid}
 
 
-  function create_if_block_1$3(ctx) {
+  function create_if_block_1$4(ctx) {
     var a;
     var span;
     var t;
@@ -16611,7 +16619,7 @@
     function select_block_type(ctx, dirty) {
       if (!
       /*timeUuid*/
-      ctx[1]) return create_if_block_1$3;
+      ctx[1]) return create_if_block_1$4;
       return create_else_block$2;
     }
 
@@ -17670,7 +17678,7 @@
     let if_block_anchor;
     let if_block = !
     /*hideEmptyState*/
-    ctx[11] && create_if_block_2$2(ctx);
+    ctx[11] && create_if_block_2$3(ctx);
     return {
       c() {
         if (if_block) if_block.c();
@@ -17689,7 +17697,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_2$2(ctx);
+            if_block = create_if_block_2$3(ctx);
             if_block.c();
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
           }
@@ -17708,7 +17716,7 @@
   } // (332:12) {#if !hideEmptyState}
 
 
-  function create_if_block_2$2(ctx) {
+  function create_if_block_2$3(ctx) {
     let div;
     let t;
     return {
@@ -17939,7 +17947,7 @@
   } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
 
 
-  function create_if_block_1$2(ctx) {
+  function create_if_block_1$3(ctx) {
     let div;
     let t_value =
     /*getGroupHeaderLabel*/
@@ -17985,7 +17993,7 @@
     let if_block;
     let if_block_anchor;
     let current;
-    const if_block_creators = [create_if_block_1$2, create_else_block_1];
+    const if_block_creators = [create_if_block_1$3, create_else_block_1];
     const if_blocks = [];
 
     function select_block_type_1(ctx, dirty) {
@@ -20210,7 +20218,7 @@
   } // (948:4) {#if isWaiting}
 
 
-  function create_if_block_3$1(ctx) {
+  function create_if_block_3$2(ctx) {
     let div;
     return {
       c() {
@@ -20231,7 +20239,7 @@
   } // (964:4) {#if listOpen}
 
 
-  function create_if_block_2$1(ctx) {
+  function create_if_block_2$2(ctx) {
     let switch_instance;
     let updating_hoverItemIndex;
     let switch_instance_anchor;
@@ -20370,7 +20378,7 @@
   } // (974:4) {#if !isMulti || (isMulti && !showMultiSelect)}
 
 
-  function create_if_block_1$1(ctx) {
+  function create_if_block_1$2(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20629,17 +20637,17 @@
     ctx[29])) && create_if_block_4$1(ctx);
     let if_block6 =
     /*isWaiting*/
-    ctx[4] && create_if_block_3$1();
+    ctx[4] && create_if_block_3$2();
     let if_block7 =
     /*listOpen*/
-    ctx[5] && create_if_block_2$1(ctx);
+    ctx[5] && create_if_block_2$2(ctx);
     let if_block8 = (!
     /*isMulti*/
     ctx[7] ||
     /*isMulti*/
     ctx[7] && !
     /*showMultiSelect*/
-    ctx[35]) && create_if_block_1$1(ctx);
+    ctx[35]) && create_if_block_1$2(ctx);
     let if_block9 =
     /*isMulti*/
     ctx[7] &&
@@ -20947,7 +20955,7 @@
         /*isWaiting*/
         ctx[4]) {
           if (if_block6) ; else {
-            if_block6 = create_if_block_3$1();
+            if_block6 = create_if_block_3$2();
             if_block6.c();
             if_block6.m(div, t7);
           }
@@ -20968,7 +20976,7 @@
               transition_in(if_block7, 1);
             }
           } else {
-            if_block7 = create_if_block_2$1(ctx);
+            if_block7 = create_if_block_2$2(ctx);
             if_block7.c();
             transition_in(if_block7, 1);
             if_block7.m(div, t8);
@@ -20991,7 +20999,7 @@
           if (if_block8) {
             if_block8.p(ctx, dirty);
           } else {
-            if_block8 = create_if_block_1$1(ctx);
+            if_block8 = create_if_block_1$2(ctx);
             if_block8.c();
             if_block8.m(div, t9);
           }
@@ -22335,12 +22343,19 @@
 
   function get_each_context$1(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[14] = list[i];
+    child_ctx[15] = list[i];
+    child_ctx[17] = i;
     return child_ctx;
-  } // (71:0) {#if confirmation}
+  }
+
+  function get_each_context_1$1(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[15] = list[i];
+    return child_ctx;
+  } // (70:0) {#if dialogVisible}
 
 
-  function create_if_block$2(ctx) {
+  function create_if_block_2$1(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -22365,8 +22380,8 @@
         var overlay_changes = {};
 
         if (dirty &
-        /*$$scope, shares, selectedSharee*/
-        131106) {
+        /*$$scope, shares, deleteShareAction, requestToken, clientUuid, selectedSharee*/
+        1048670) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -22388,51 +22403,208 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (86:4) {#each shares as share}
+  } // (85:4) {#if !shares || !shares.length}
 
 
-  function create_each_block$1(ctx) {
+  function create_if_block_3$1(ctx) {
+    var p;
+    var em;
+    return {
+      c: function c() {
+        p = element("p");
+        em = element("em");
+        em.textContent = "".concat(dist_4$1('timemanager', "You haven't shared this client with anyone"));
+      },
+      m: function m(target, anchor) {
+        insert(target, p, anchor);
+        append(p, em);
+      },
+      p: noop$1,
+      d: function d(detaching) {
+        if (detaching) detach(p);
+      }
+    };
+  } // (91:5) {#each shares as share}
+
+
+  function create_each_block_1$1(ctx) {
     var li;
-    var t_value =
+    var figure;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t0;
+    var figcaption;
+    var t1_value =
     /*share*/
-    ctx[14].recipient_user_id + "";
-    var t;
+    ctx[15].recipient_user_id + "";
+    var t1;
+    var t2;
+    var form_1;
+    var input0;
+    var t3;
+    var input1;
+    var input1_value_value;
+    var t4;
+    var input2;
+    var t5;
+    var button;
+    var t7;
     return {
       c: function c() {
         li = element("li");
-        t = text(t_value);
+        figure = element("figure");
+        img = element("img");
+        t0 = space$1();
+        figcaption = element("figcaption");
+        t1 = text(t1_value);
+        t2 = space$1();
+        form_1 = element("form");
+        input0 = element("input");
+        t3 = space$1();
+        input1 = element("input");
+        t4 = space$1();
+        input2 = element("input");
+        t5 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+        t7 = space$1();
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "client_uuid");
+        input0.value =
+        /*clientUuid*/
+        ctx[3];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "uuid");
+        input1.value = input1_value_value =
+        /*share*/
+        ctx[15].uuid;
+        attr(input2, "type", "hidden");
+        attr(input2, "name", "requesttoken");
+        input2.value =
+        /*requestToken*/
+        ctx[4];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "delete";
+        attr(button, "class", "btn small");
+        attr(form_1, "action",
+        /*deleteShareAction*/
+        ctx[1]);
+        attr(form_1, "method", "post");
       },
       m: function m(target, anchor) {
         insert(target, li, anchor);
-        append(li, t);
+        append(li, figure);
+        append(figure, img);
+        append(figure, t0);
+        append(figure, figcaption);
+        append(figcaption, t1);
+        append(li, t2);
+        append(li, form_1);
+        append(form_1, input0);
+        append(form_1, t3);
+        append(form_1, input1);
+        append(form_1, t4);
+        append(form_1, input2);
+        append(form_1, t5);
+        append(form_1, button);
+        append(li, t7);
       },
       p: function p(ctx, dirty) {
         if (dirty &
         /*shares*/
-        2 && t_value !== (t_value =
+        4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
         /*share*/
-        ctx[14].recipient_user_id + "")) set_data(t, t_value);
+        ctx[15].recipient_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*shares*/
+        4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*shares*/
+        4 && t1_value !== (t1_value =
+        /*share*/
+        ctx[15].recipient_user_id + "")) set_data(t1, t1_value);
+
+        if (dirty &
+        /*clientUuid*/
+        8) {
+          input0.value =
+          /*clientUuid*/
+          ctx[3];
+        }
+
+        if (dirty &
+        /*shares*/
+        4 && input1_value_value !== (input1_value_value =
+        /*share*/
+        ctx[15].uuid)) {
+          input1.value = input1_value_value;
+        }
+
+        if (dirty &
+        /*requestToken*/
+        16) {
+          input2.value =
+          /*requestToken*/
+          ctx[4];
+        }
+
+        if (dirty &
+        /*deleteShareAction*/
+        2) {
+          attr(form_1, "action",
+          /*deleteShareAction*/
+          ctx[1]);
+        }
       },
       d: function d(detaching) {
         if (detaching) detach(li);
       }
     };
-  } // (72:1) <Overlay>
+  } // (71:1) <Overlay>
 
 
   function create_default_slot$1(ctx) {
-    var div1;
+    var div2;
     var label;
     var t0_value = dist_4$1('timemanager', 'Share with') + "";
     var t0;
     var t1;
     var select;
     var t2;
-    var ul;
-    var t3;
     var div0;
-    var button0;
+    var h4;
+    var t4;
     var t5;
+    var ul;
+    var t6;
+    var div1;
+    var button0;
+    var t8;
     var button1;
     var current;
     var mounted;
@@ -22446,78 +22618,96 @@
         },
         loadOptions:
         /*search*/
-        ctx[8],
+        ctx[9],
         value:
         /*selectedSharee*/
-        ctx[5]
+        ctx[6]
       }
     });
     select.$on("select",
     /*handleSelectSharee*/
-    ctx[10]);
-    var each_value =
+    ctx[11]);
+    var if_block = (!
     /*shares*/
-    ctx[1];
+    ctx[2] || !
+    /*shares*/
+    ctx[2].length) && create_if_block_3$1();
+    var each_value_1 =
+    /*shares*/
+    ctx[2];
     var each_blocks = [];
 
-    for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    for (var i = 0; i < each_value_1.length; i += 1) {
+      each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
     }
 
     return {
       c: function c() {
-        div1 = element("div");
+        div2 = element("div");
         label = element("label");
         t0 = text(t0_value);
         t1 = space$1();
         create_component(select.$$.fragment);
-        t2 = text("\n\t\t\tExisting shares\n\t\t\t");
+        t2 = space$1();
+        div0 = element("div");
+        h4 = element("h4");
+        h4.textContent = "".concat(dist_4$1('timemanager', 'Existing shares'));
+        t4 = space$1();
+        if (if_block) if_block.c();
+        t5 = space$1();
         ul = element("ul");
 
         for (var _i = 0; _i < each_blocks.length; _i += 1) {
           each_blocks[_i].c();
         }
 
-        t3 = space$1();
-        div0 = element("div");
+        t6 = space$1();
+        div1 = element("div");
         button0 = element("button");
         button0.textContent = "".concat(dist_4$1('timemanager', 'Add'));
-        t5 = space$1();
+        t8 = space$1();
         button1 = element("button");
-        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Close'));
         attr(label, "for", "sharee-select");
         attr(label, "class", "sharees");
+        attr(h4, "class", "tm_label");
+        attr(div0, "class", "sharee-list");
         attr(button0, "class", "button primary");
         attr(button1, "class", "button");
-        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
-        attr(div1, "class", "inner tm_new-item sharing");
+        attr(div1, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div2, "class", "inner tm_new-item sharing-dialog");
       },
       m: function m(target, anchor) {
-        insert(target, div1, anchor);
-        append(div1, label);
+        insert(target, div2, anchor);
+        append(div2, label);
         append(label, t0);
         append(label, t1);
         mount_component(select, label, null);
-        append(div1, t2);
-        append(div1, ul);
+        append(div2, t2);
+        append(div2, div0);
+        append(div0, h4);
+        append(div0, t4);
+        if (if_block) if_block.m(div0, null);
+        append(div0, t5);
+        append(div0, ul);
 
         for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
           each_blocks[_i2].m(ul, null);
         }
 
-        append(div1, t3);
-        append(div1, div0);
-        append(div0, button0);
-        append(div0, t5);
-        append(div0, button1);
+        append(div2, t6);
+        append(div2, div1);
+        append(div1, button0);
+        append(div1, t8);
+        append(div1, button1);
         current = true;
 
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
           /*addShare*/
-          ctx[7])), listen(button1, "click", prevent_default(
-          /*cancelShare*/
-          ctx[9]))];
+          ctx[8])), listen(button1, "click", prevent_default(
+          /*closeDialog*/
+          ctx[10]))];
           mounted = true;
         }
       },
@@ -22525,27 +22715,44 @@
         var select_changes = {};
         if (dirty &
         /*selectedSharee*/
-        32) select_changes.value =
+        64) select_changes.value =
         /*selectedSharee*/
-        ctx[5];
+        ctx[6];
         select.$set(select_changes);
 
-        if (dirty &
+        if (!
         /*shares*/
-        2) {
-          each_value =
+        ctx[2] || !
+        /*shares*/
+        ctx[2].length) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_3$1();
+            if_block.c();
+            if_block.m(div0, t5);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*deleteShareAction, translate, requestToken, shares, clientUuid, generateUrl*/
+        30) {
+          each_value_1 =
           /*shares*/
-          ctx[1];
+          ctx[2];
 
           var _i3;
 
-          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$1(ctx, each_value, _i3);
+          for (_i3 = 0; _i3 < each_value_1.length; _i3 += 1) {
+            var child_ctx = get_each_context_1$1(ctx, each_value_1, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$1(child_ctx);
+              each_blocks[_i3] = create_each_block_1$1(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -22557,7 +22764,7 @@
             each_blocks[_i3].d(1);
           }
 
-          each_blocks.length = each_value.length;
+          each_blocks.length = each_value_1.length;
         }
       },
       i: function i(local) {
@@ -22570,11 +22777,199 @@
         current = false;
       },
       d: function d(detaching) {
-        if (detaching) detach(div1);
+        if (detaching) detach(div2);
         destroy_component(select);
+        if (if_block) if_block.d();
         destroy_each(each_blocks, detaching);
         mounted = false;
         run_all(dispose);
+      }
+    };
+  } // (128:0) {#if shares && shares.length}
+
+
+  function create_if_block$2(ctx) {
+    var ul;
+    var li;
+    var t1;
+    var each_value =
+    /*shares*/
+    ctx[2];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    }
+
+    return {
+      c: function c() {
+        ul = element("ul");
+        li = element("li");
+        li.textContent = "".concat(dist_4$1('timemanager', 'Shared with'));
+        t1 = space$1();
+
+        for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
+          each_blocks[_i4].c();
+        }
+
+        attr(ul, "class", "existing-sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, ul, anchor);
+        append(ul, li);
+        append(ul, t1);
+
+        for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
+          each_blocks[_i5].m(ul, null);
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*shares, generateUrl*/
+        4) {
+          each_value =
+          /*shares*/
+          ctx[2];
+
+          var _i6;
+
+          for (_i6 = 0; _i6 < each_value.length; _i6 += 1) {
+            var child_ctx = get_each_context$1(ctx, each_value, _i6);
+
+            if (each_blocks[_i6]) {
+              each_blocks[_i6].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i6] = create_each_block$1(child_ctx);
+
+              each_blocks[_i6].c();
+
+              each_blocks[_i6].m(ul, null);
+            }
+          }
+
+          for (; _i6 < each_blocks.length; _i6 += 1) {
+            each_blocks[_i6].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(ul);
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  } // (139:4) {#if index < shares.length - 1}
+
+
+  function create_if_block_1$1(ctx) {
+    var t;
+    return {
+      c: function c() {
+        t = text(" ·");
+      },
+      m: function m(target, anchor) {
+        insert(target, t, anchor);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(t);
+      }
+    };
+  } // (131:2) {#each shares as share, index}
+
+
+  function create_each_block$1(ctx) {
+    var li;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t0;
+    var t1_value =
+    /*share*/
+    ctx[15].recipient_user_id + "";
+    var t1;
+    var t2;
+    var t3;
+    var if_block =
+    /*index*/
+    ctx[17] <
+    /*shares*/
+    ctx[2].length - 1 && create_if_block_1$1();
+    return {
+      c: function c() {
+        li = element("li");
+        img = element("img");
+        t0 = space$1();
+        t1 = text(t1_value);
+        t2 = space$1();
+        if (if_block) if_block.c();
+        t3 = space$1();
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+      },
+      m: function m(target, anchor) {
+        insert(target, li, anchor);
+        append(li, img);
+        append(li, t0);
+        append(li, t1);
+        append(li, t2);
+        if (if_block) if_block.m(li, null);
+        append(li, t3);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*shares*/
+        4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*shares*/
+        4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*share*/
+        ctx[15].recipient_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*shares*/
+        4 && t1_value !== (t1_value =
+        /*share*/
+        ctx[15].recipient_user_id + "")) set_data(t1, t1_value);
+
+        if (
+        /*index*/
+        ctx[17] <
+        /*shares*/
+        ctx[2].length - 1) {
+          if (if_block) ; else {
+            if_block = create_if_block_1$1();
+            if_block.c();
+            if_block.m(li, t3);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(li);
+        if (if_block) if_block.d();
       }
     };
   }
@@ -22590,13 +22985,20 @@
     var input2;
     var t3;
     var button;
+    var t5;
+    var if_block1_anchor;
     var current;
-    var if_block =
-    /*confirmation*/
-    ctx[6] && create_if_block$2(ctx);
+    var if_block0 =
+    /*dialogVisible*/
+    ctx[7] && create_if_block_2$1(ctx);
+    var if_block1 =
+    /*shares*/
+    ctx[2] &&
+    /*shares*/
+    ctx[2].length && create_if_block$2(ctx);
     return {
       c: function c() {
-        if (if_block) if_block.c();
+        if (if_block0) if_block0.c();
         t0 = space$1();
         form_1 = element("form");
         input0 = element("input");
@@ -22607,23 +23009,26 @@
         t3 = space$1();
         button = element("button");
         button.textContent = "".concat(dist_4$1('timemanager', 'Share client'));
+        t5 = space$1();
+        if (if_block1) if_block1.c();
+        if_block1_anchor = empty();
         attr(input0, "type", "hidden");
         attr(input0, "name", "client_uuid");
         input0.value =
         /*clientUuid*/
-        ctx[2];
+        ctx[3];
         attr(input1, "type", "hidden");
         attr(input1, "name", "user_id");
         input1.value = input1_value_value =
         /*selectedSharee*/
-        ctx[5] ?
+        ctx[6] ?
         /*selectedSharee*/
-        ctx[5].value.shareWith : '';
+        ctx[6].value.shareWith : '';
         attr(input2, "type", "hidden");
         attr(input2, "name", "requesttoken");
         input2.value =
         /*requestToken*/
-        ctx[3];
+        ctx[4];
         attr(button, "type", "submit");
         attr(button, "name", "action");
         button.value = "share";
@@ -22634,7 +23039,7 @@
         attr(form_1, "method", "post");
       },
       m: function m(target, anchor) {
-        if (if_block) if_block.m(target, anchor);
+        if (if_block0) if_block0.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, form_1, anchor);
         append(form_1, input0);
@@ -22646,7 +23051,10 @@
         append(form_1, button);
         /*form_1_binding*/
 
-        ctx[12](form_1);
+        ctx[13](form_1);
+        insert(target, t5, anchor);
+        if (if_block1) if_block1.m(target, anchor);
+        insert(target, if_block1_anchor, anchor);
         current = true;
       },
       p: function p(ctx, _ref) {
@@ -22654,54 +23062,54 @@
             dirty = _ref2[0];
 
         if (
-        /*confirmation*/
-        ctx[6]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
+        /*dialogVisible*/
+        ctx[7]) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
 
             if (dirty &
-            /*confirmation*/
-            64) {
-              transition_in(if_block, 1);
+            /*dialogVisible*/
+            128) {
+              transition_in(if_block0, 1);
             }
           } else {
-            if_block = create_if_block$2(ctx);
-            if_block.c();
-            transition_in(if_block, 1);
-            if_block.m(t0.parentNode, t0);
+            if_block0 = create_if_block_2$1(ctx);
+            if_block0.c();
+            transition_in(if_block0, 1);
+            if_block0.m(t0.parentNode, t0);
           }
-        } else if (if_block) {
+        } else if (if_block0) {
           group_outros();
-          transition_out(if_block, 1, 1, function () {
-            if_block = null;
+          transition_out(if_block0, 1, 1, function () {
+            if_block0 = null;
           });
           check_outros();
         }
 
         if (!current || dirty &
         /*clientUuid*/
-        4) {
+        8) {
           input0.value =
           /*clientUuid*/
-          ctx[2];
+          ctx[3];
         }
 
         if (!current || dirty &
         /*selectedSharee*/
-        32 && input1_value_value !== (input1_value_value =
+        64 && input1_value_value !== (input1_value_value =
         /*selectedSharee*/
-        ctx[5] ?
+        ctx[6] ?
         /*selectedSharee*/
-        ctx[5].value.shareWith : '')) {
+        ctx[6].value.shareWith : '')) {
           input1.value = input1_value_value;
         }
 
         if (!current || dirty &
         /*requestToken*/
-        8) {
+        16) {
           input2.value =
           /*requestToken*/
-          ctx[3];
+          ctx[4];
         }
 
         if (!current || dirty &
@@ -22711,30 +23119,51 @@
           /*shareAction*/
           ctx[0]);
         }
+
+        if (
+        /*shares*/
+        ctx[2] &&
+        /*shares*/
+        ctx[2].length) {
+          if (if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if_block1 = create_if_block$2(ctx);
+            if_block1.c();
+            if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
       },
       i: function i(local) {
         if (current) return;
-        transition_in(if_block);
+        transition_in(if_block0);
         current = true;
       },
       o: function o(local) {
-        transition_out(if_block);
+        transition_out(if_block0);
         current = false;
       },
       d: function d(detaching) {
-        if (if_block) if_block.d(detaching);
+        if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(form_1);
         /*form_1_binding*/
 
-        ctx[12](null);
+        ctx[13](null);
+        if (detaching) detach(t5);
+        if (if_block1) if_block1.d(detaching);
+        if (detaching) detach(if_block1_anchor);
       }
     };
   }
 
   function instance$7($$self, $$props, $$invalidate) {
-    var confirmation;
+    var dialogVisible;
     var shareAction = $$props.shareAction;
+    var deleteShareAction = $$props.deleteShareAction;
     var shares = $$props.shares;
     var clientUuid = $$props.clientUuid;
     var requestToken = $$props.requestToken;
@@ -22751,12 +23180,10 @@
 
     var submit = function submit(e) {
       e.preventDefault();
-      $$invalidate(6, confirmation = true);
+      $$invalidate(7, dialogVisible = true);
     };
 
     var addShare = function addShare() {
-      $$invalidate(6, confirmation = false);
-      form.removeEventListener("submit", submit);
       form.submit();
     };
 
@@ -22819,32 +23246,33 @@
       };
     }();
 
-    var cancelShare = function cancelShare() {
-      $$invalidate(6, confirmation = false);
+    var closeDialog = function closeDialog() {
+      $$invalidate(7, dialogVisible = false);
     };
 
     var handleSelectSharee = function handleSelectSharee(event) {
-      $$invalidate(5, selectedSharee = event.detail);
+      $$invalidate(6, selectedSharee = event.detail);
     };
 
     function form_1_binding($$value) {
       binding_callbacks[$$value ? 'unshift' : 'push'](function () {
         form = $$value;
-        $$invalidate(4, form);
+        $$invalidate(5, form);
       });
     }
 
     $$self.$$set = function ($$props) {
       if ('shareAction' in $$props) $$invalidate(0, shareAction = $$props.shareAction);
-      if ('shares' in $$props) $$invalidate(1, shares = $$props.shares);
-      if ('clientUuid' in $$props) $$invalidate(2, clientUuid = $$props.clientUuid);
-      if ('requestToken' in $$props) $$invalidate(3, requestToken = $$props.requestToken);
-      if ('userId' in $$props) $$invalidate(11, userId = $$props.userId);
+      if ('deleteShareAction' in $$props) $$invalidate(1, deleteShareAction = $$props.deleteShareAction);
+      if ('shares' in $$props) $$invalidate(2, shares = $$props.shares);
+      if ('clientUuid' in $$props) $$invalidate(3, clientUuid = $$props.clientUuid);
+      if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
+      if ('userId' in $$props) $$invalidate(12, userId = $$props.userId);
     };
 
-    $$invalidate(6, confirmation = false);
+    $$invalidate(7, dialogVisible = false);
 
-    return [shareAction, shares, clientUuid, requestToken, form, selectedSharee, confirmation, addShare, search, cancelShare, handleSelectSharee, userId, form_1_binding];
+    return [shareAction, deleteShareAction, shares, clientUuid, requestToken, form, selectedSharee, dialogVisible, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
   }
 
   var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -22860,10 +23288,11 @@
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
         shareAction: 0,
-        shares: 1,
-        clientUuid: 2,
-        requestToken: 3,
-        userId: 11
+        deleteShareAction: 1,
+        shares: 2,
+        clientUuid: 3,
+        requestToken: 4,
+        userId: 12
       });
       return _this;
     }

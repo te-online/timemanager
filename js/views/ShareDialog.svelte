@@ -1,5 +1,6 @@
 <script>
 	export let shareAction;
+	export let deleteShareAction;
 	export let shares;
 	export let clientUuid;
 	export let requestToken;
@@ -10,9 +11,9 @@
 	import { Helpers } from "../lib/helpers";
 	import Overlay from "./Overlay.svelte";
 	import { translate } from "@nextcloud/l10n";
-	import { generateOcsUrl } from "@nextcloud/router";
+	import { generateOcsUrl, generateUrl } from "@nextcloud/router";
 
-	$: confirmation = false;
+	$: dialogVisible = false;
 	let form;
 	let selectedSharee;
 
@@ -27,12 +28,10 @@
 
 	const submit = e => {
 		e.preventDefault();
-		confirmation = true;
+		dialogVisible = true;
 	};
 
 	const addShare = () => {
-		confirmation = false;
-		form.removeEventListener("submit", submit);
 		form.submit();
 	};
 
@@ -59,8 +58,8 @@
 		}
 	};
 
-	const cancelShare = () => {
-		confirmation = false;
+	const closeDialog = () => {
+		dialogVisible = false;
 	};
 
 	const handleSelectSharee = event => {
@@ -68,9 +67,9 @@
 	};
 </script>
 
-{#if confirmation}
+{#if dialogVisible}
 	<Overlay>
-		<div class="inner tm_new-item sharing">
+		<div class="inner tm_new-item sharing-dialog">
 			<label for="sharee-select" class="sharees">
 				{translate('timemanager', 'Share with')}
 				<Select
@@ -81,15 +80,39 @@
 					loadOptions={search}
 					value={selectedSharee} />
 			</label>
-			Existing shares
-			<ul>
-				{#each shares as share}
-					<li>{share.recipient_user_id}</li>
-				{/each}
-			</ul>
+			<div class="sharee-list">
+				<h4 class="tm_label">{translate('timemanager', 'Existing shares')}</h4>
+				{#if !shares || !shares.length}
+					<p>
+						<em>{translate('timemanager', "You haven't shared this client with anyone")}</em>
+					</p>
+				{/if}
+				<ul>
+					{#each shares as share}
+						<li>
+							<figure>
+								<img
+									src={generateUrl(`avatar/${share.recipient_user_id}/32`)}
+									srcset={`${generateUrl(`avatar/${share.recipient_user_id}/32`)} 1x, ${generateUrl(`avatar/${share.recipient_user_id}/64`)} 2x,
+					${generateUrl(`avatar/${share.recipient_user_id}/128`)} 4x`}
+									alt="" />
+								<figcaption>{share.recipient_user_id}</figcaption>
+							</figure>
+							<form action={deleteShareAction} method="post">
+								<input type="hidden" name="client_uuid" value={clientUuid} />
+								<input type="hidden" name="uuid" value={share.uuid} />
+								<input type="hidden" name="requesttoken" value={requestToken} />
+								<button type="submit" name="action" value="delete" class="btn small">
+									{translate('timemanager', 'Delete')}
+								</button>
+							</form>
+						</li>
+					{/each}
+				</ul>
+			</div>
 			<div class="oc-dialog-buttonrow twobuttons reverse">
 				<button class="button primary" on:click|preventDefault={addShare}>{translate('timemanager', 'Add')}</button>
-				<button class="button" on:click|preventDefault={cancelShare}>{translate('timemanager', 'Cancel')}</button>
+				<button class="button" on:click|preventDefault={closeDialog}>{translate('timemanager', 'Close')}</button>
 			</div>
 		</div>
 	</Overlay>
@@ -101,3 +124,20 @@
 	<input type="hidden" name="requesttoken" value={requestToken} />
 	<button type="submit" name="action" value="share" class="btn">{translate('timemanager', 'Share client')}</button>
 </form>
+
+{#if shares && shares.length}
+	<ul class="existing-sharees">
+		<li>{translate('timemanager', 'Shared with')}</li>
+		{#each shares as share, index}
+			<li>
+				<img
+					src={generateUrl(`avatar/${share.recipient_user_id}/32`)}
+					srcset={`${generateUrl(`avatar/${share.recipient_user_id}/32`)} 1x, ${generateUrl(`avatar/${share.recipient_user_id}/64`)} 2x,
+					${generateUrl(`avatar/${share.recipient_user_id}/128`)} 4x`}
+					alt="" />
+				{share.recipient_user_id}
+				{#if index < shares.length - 1}&nbsp;&middot;{/if}
+			</li>
+		{/each}
+	</ul>
+{/if}

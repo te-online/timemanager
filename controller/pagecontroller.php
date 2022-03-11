@@ -436,9 +436,10 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 */
 	function deleteClientShare($uuid, $client_uuid) {
-		$share = new Share();
-		$share->setUuid($uuid);
-		$this->shareMapper->delete($share);
+		$shares = $this->shareMapper->findByUuid($uuid);
+		if (count($shares) > 0) {
+			$this->shareMapper->delete($shares[0]);
+		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
@@ -507,6 +508,7 @@ class PageController extends Controller {
 				[$client_name]
 			),
 			"shareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
+			"deleteShareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
 			"shares" => array_map(function ($share) {
 				return $share->toArray();
 			}, $shares),
