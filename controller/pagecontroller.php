@@ -307,7 +307,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function clients() {
-		$clients = $this->clientMapper->findActiveForCurrentUser("name");
+		$clients = $this->clientMapper->findActiveForCurrentUser("name", true);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
@@ -415,13 +415,44 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function addClientShare($client_uuid, $user_id) {
+		$today = date("Y-m-d H:i:s");
+		$share = new Share();
+		$share->setUuid(UUID::v4());
+		$share->setCreated($today);
+		$share->setChanged($today);
+		$share->setObjectUuid($client_uuid);
+		$share->setEntityType("client");
+		$share->setRecipientUserId($user_id);
+		$share->setAuthorUserId($this->userId);
+		$this->shareMapper->insert($share);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function deleteClientShare($uuid, $client_uuid) {
+		$share = new Share();
+		$share->setUuid($uuid);
+		$this->shareMapper->delete($share);
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function projects($client = null) {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		if ($client) {
-			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name");
+			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client, "created", true);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name", "created", true);
 			// Sum up client times
 			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
@@ -446,6 +477,8 @@ class PageController extends Controller {
 
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
+
+		$shares = $this->shareMapper->findForClient($client_uuid);
 
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
@@ -473,6 +506,11 @@ class PageController extends Controller {
 				"Do you want to delete the client %s and all associated projects, tasks and time entries?",
 				[$client_name]
 			),
+			"shareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
+			"shares" => array_map(function ($share) {
+				return $share->toArray();
+			}, $shares),
+			"userId" => $this->userId,
 			"isServer" => true,
 		];
 
@@ -485,6 +523,7 @@ class PageController extends Controller {
 			"templates" => [
 				"ProjectEditor.svelte" => PHP_Svelte::render_template("ProjectEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareDialog.svelte" => PHP_Svelte::render_template("ShareDialog.svelte", $form_props),
 			],
 			"page" => "projects",
 		]);
@@ -562,12 +601,13 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		if ($project) {
-			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $project);
-			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $project);
+			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $project, "created", true);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $project, "created", true);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
 				"uuid",
 				$project_data[0]->getClientUuid(),
-				"name"
+				"name",
+				true
 			);
 			// Sum up project times
 			if (count($project_data) === 1) {
@@ -713,13 +753,19 @@ class PageController extends Controller {
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$tasks = $this->taskMapper->findActiveForCurrentUser();
 		if ($task) {
-			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start");
-			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task);
-			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $task_data[0]->getProjectUuid());
+			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start", true);
+			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task, "created", true);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue(
+				"uuid",
+				$task_data[0]->getProjectUuid(),
+				"created",
+				true
+			);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
 				"uuid",
 				$project_data[0]->getClientUuid(),
-				"name"
+				"name",
+				true
 			);
 			// Sum up task times
 			if (count($task_data) === 1) {
