@@ -4,6 +4,7 @@ import ProjectEditorDialog from "./views/ProjectEditorDialog.svelte";
 import TaskEditorDialog from "./views/TaskEditorDialog.svelte";
 import TimeEditorDialog from "./views/TimeEditorDialog.svelte";
 import DeleteButton from "./views/DeleteButton.svelte";
+import ShareDialog from "./views/ShareDialog.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
 import QuickAdd from "./views/QuickAdd.svelte";
 import Checkmark from "./views/Checkmark.svelte";
@@ -116,6 +117,17 @@ const init = () => {
 		safelyCreateComponent({
 			component: DeleteButton,
 			selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
+			props: {
+				...store,
+				requestToken: token,
+			},
+		})
+	);
+
+	components.push(
+		safelyCreateComponent({
+			component: ShareDialog,
+			selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
 			props: {
 				...store,
 				requestToken: token,

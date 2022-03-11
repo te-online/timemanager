@@ -197,8 +197,20 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -246,6 +258,10 @@
     for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
 
     return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   function _nonIterableRest() {
@@ -319,11 +335,11 @@
     };
   };
 
-  var TypeError$f = global_1.TypeError; // `RequireObjectCoercible` abstract operation
+  var TypeError$g = global_1.TypeError; // `RequireObjectCoercible` abstract operation
   // https://tc39.es/ecma262/#sec-requireobjectcoercible
 
   var requireObjectCoercible$1 = function (it) {
-    if (it == undefined) throw TypeError$f("Can't call method on " + it);
+    if (it == undefined) throw TypeError$g("Can't call method on " + it);
     return it;
   };
 
@@ -481,11 +497,11 @@
   });
 
   var String$5 = global_1.String;
-  var TypeError$e = global_1.TypeError; // `Assert: Type(argument) is Object`
+  var TypeError$f = global_1.TypeError; // `Assert: Type(argument) is Object`
 
   var anObject$1 = function (argument) {
     if (isObject$3(argument)) return argument;
-    throw TypeError$e(String$5(argument) + ' is not an object');
+    throw TypeError$f(String$5(argument) + ' is not an object');
   };
 
   var call$1 = Function.prototype.call;
@@ -513,11 +529,11 @@
     }
   };
 
-  var TypeError$d = global_1.TypeError; // `Assert: IsCallable(argument) is true`
+  var TypeError$e = global_1.TypeError; // `Assert: IsCallable(argument) is true`
 
   var aCallable = function (argument) {
     if (isCallable(argument)) return argument;
-    throw TypeError$d(tryToString(argument) + ' is not a function');
+    throw TypeError$e(tryToString(argument) + ' is not a function');
   };
 
   // `GetMethod` abstract operation
@@ -529,7 +545,7 @@
     return func == null ? undefined : aCallable(func);
   };
 
-  var TypeError$c = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
+  var TypeError$d = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
   // https://tc39.es/ecma262/#sec-ordinarytoprimitive
 
   var ordinaryToPrimitive = function (input, pref) {
@@ -537,10 +553,10 @@
     if (pref === 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
     if (isCallable(fn = input.valueOf) && !isObject$3(val = functionCall(fn, input))) return val;
     if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
-    throw TypeError$c("Can't convert object to primitive value");
+    throw TypeError$d("Can't convert object to primitive value");
   };
 
-  var TypeError$b = global_1.TypeError;
+  var TypeError$c = global_1.TypeError;
   var TO_PRIMITIVE = wellKnownSymbol$1('toPrimitive'); // `ToPrimitive` abstract operation
   // https://tc39.es/ecma262/#sec-toprimitive
 
@@ -553,7 +569,7 @@
       if (pref === undefined) pref = 'default';
       result = functionCall(exoticToPrim, input, pref);
       if (!isObject$3(result) || isSymbol(result)) return result;
-      throw TypeError$b("Can't convert object to primitive value");
+      throw TypeError$c("Can't convert object to primitive value");
     }
 
     if (pref === undefined) pref = 'number';
@@ -569,7 +585,7 @@
     return isSymbol(key) ? key : key + '';
   };
 
-  var TypeError$a = global_1.TypeError; // eslint-disable-next-line es/no-object-defineproperty -- safe
+  var TypeError$b = global_1.TypeError; // eslint-disable-next-line es/no-object-defineproperty -- safe
 
   var $defineProperty$1 = Object.defineProperty; // `Object.defineProperty` method
   // https://tc39.es/ecma262/#sec-object.defineproperty
@@ -583,7 +599,7 @@
     } catch (error) {
       /* empty */
     }
-    if ('get' in Attributes || 'set' in Attributes) throw TypeError$a('Accessors not supported');
+    if ('get' in Attributes || 'set' in Attributes) throw TypeError$b('Accessors not supported');
     if ('value' in Attributes) O[P] = Attributes.value;
     return O;
   };
@@ -630,7 +646,7 @@
   var hiddenKeys$3 = {};
 
   var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
-  var TypeError$9 = global_1.TypeError;
+  var TypeError$a = global_1.TypeError;
   var WeakMap$2 = global_1.WeakMap;
   var set$2, get$1, has$2;
 
@@ -643,7 +659,7 @@
       var state;
 
       if (!isObject$3(it) || (state = get$1(it)).type !== TYPE) {
-        throw TypeError$9('Incompatible receiver, ' + TYPE + ' required');
+        throw TypeError$a('Incompatible receiver, ' + TYPE + ' required');
       }
 
       return state;
@@ -657,7 +673,7 @@
     var wmset$1 = functionUncurryThis(store$2.set);
 
     set$2 = function (it, metadata) {
-      if (wmhas$1(store$2, it)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      if (wmhas$1(store$2, it)) throw new TypeError$a(OBJECT_ALREADY_INITIALIZED$1);
       metadata.facade = it;
       wmset$1(store$2, it, metadata);
       return metadata;
@@ -675,7 +691,7 @@
     hiddenKeys$3[STATE$1] = true;
 
     set$2 = function (it, metadata) {
-      if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$a(OBJECT_ALREADY_INITIALIZED$1);
       metadata.facade = it;
       createNonEnumerableProperty$1(it, STATE$1, metadata);
       return metadata;
@@ -2183,12 +2199,12 @@
     if (it != undefined) return getMethod(it, ITERATOR$a) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
   };
 
-  var TypeError$8 = global_1.TypeError;
+  var TypeError$9 = global_1.TypeError;
 
   var getIterator = function (argument, usingIterator) {
     var iteratorMethod = arguments.length < 2 ? getIteratorMethod$1(argument) : usingIterator;
     if (aCallable(iteratorMethod)) return anObject$1(functionCall(iteratorMethod, argument));
-    throw TypeError$8(tryToString(argument) + ' is not iterable');
+    throw TypeError$9(tryToString(argument) + ' is not iterable');
   };
 
   var Array$2 = global_1.Array; // `Array.from` method implementation
@@ -2559,11 +2575,11 @@
   };
 
   var String$2 = global_1.String;
-  var TypeError$7 = global_1.TypeError;
+  var TypeError$8 = global_1.TypeError;
 
   var aPossiblePrototype$1 = function (argument) {
     if (typeof argument == 'object' || isCallable(argument)) return argument;
-    throw TypeError$7("Can't set " + String$2(argument) + ' as a prototype');
+    throw TypeError$8("Can't set " + String$2(argument) + ' as a prototype');
   };
 
   /* eslint-disable no-proto -- safe */
@@ -2878,7 +2894,7 @@
   var IS_CONCAT_SPREADABLE$1 = wellKnownSymbol$1('isConcatSpreadable');
   var MAX_SAFE_INTEGER$3 = 0x1FFFFFFFFFFFFF;
   var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded';
-  var TypeError$6 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
+  var TypeError$7 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
   // deoptimization and serious performance degradation
   // https://github.com/zloirock/core-js/issues/679
 
@@ -2916,11 +2932,11 @@
 
         if (isConcatSpreadable$1(E)) {
           len = lengthOfArrayLike(E);
-          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$7(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
 
           for (k = 0; k < len; k++, n++) if (k in E) createProperty$1(A, n, E[k]);
         } else {
-          if (n >= MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          if (n >= MAX_SAFE_INTEGER$3) throw TypeError$7(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
           createProperty$1(A, n++, E);
         }
       }
@@ -3221,19 +3237,19 @@
     if (SHAM) createNonEnumerableProperty$1(RegExpPrototype$2[SYMBOL], 'sham', true);
   };
 
-  var MATCH$2 = wellKnownSymbol$1('match'); // `IsRegExp` abstract operation
+  var MATCH$3 = wellKnownSymbol$1('match'); // `IsRegExp` abstract operation
   // https://tc39.es/ecma262/#sec-isregexp
 
   var isRegexp$1 = function (it) {
     var isRegExp;
-    return isObject$3(it) && ((isRegExp = it[MATCH$2]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
+    return isObject$3(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
   };
 
-  var TypeError$5 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
+  var TypeError$6 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
 
   var aConstructor = function (argument) {
     if (isConstructor(argument)) return argument;
-    throw TypeError$5(tryToString(argument) + ' is not a constructor');
+    throw TypeError$6(tryToString(argument) + ' is not a constructor');
   };
 
   var SPECIES$7 = wellKnownSymbol$1('species'); // `SpeciesConstructor` abstract operation
@@ -3268,7 +3284,7 @@
     return result;
   };
 
-  var TypeError$4 = global_1.TypeError; // `RegExpExec` abstract operation
+  var TypeError$5 = global_1.TypeError; // `RegExpExec` abstract operation
   // https://tc39.es/ecma262/#sec-regexpexec
 
   var regexpExecAbstract$1 = function (R, S) {
@@ -3281,7 +3297,7 @@
     }
 
     if (classofRaw$1(R) === 'RegExp') return functionCall(regexpExec$1, R, S);
-    throw TypeError$4('RegExp#exec called on incompatible receiver');
+    throw TypeError$5('RegExp#exec called on incompatible receiver');
   };
 
   var UNSUPPORTED_Y$4 = regexpStickyHelpers$1.UNSUPPORTED_Y;
@@ -3435,14 +3451,14 @@
     }
   };
 
-  var TypeError$3 = global_1.TypeError;
+  var TypeError$4 = global_1.TypeError;
 
   var anInstance$1 = function (it, Prototype) {
     if (objectIsPrototypeOf(Prototype, it)) return it;
-    throw TypeError$3('Incorrect invocation');
+    throw TypeError$4('Incorrect invocation');
   };
 
-  var TypeError$2 = global_1.TypeError;
+  var TypeError$3 = global_1.TypeError;
 
   var Result$1 = function (stopped, result) {
     this.stopped = stopped;
@@ -3477,7 +3493,7 @@
       iterator = iterable;
     } else {
       iterFn = getIteratorMethod$1(iterable);
-      if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
+      if (!iterFn) throw TypeError$3(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
 
       if (isArrayIteratorMethod$1(iterFn)) {
         for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
@@ -3801,7 +3817,7 @@
   var NativePromisePrototype = nativePromiseConstructor && nativePromiseConstructor.prototype;
   var PromiseConstructor = nativePromiseConstructor;
   var PromisePrototype = NativePromisePrototype;
-  var TypeError$1 = global_1.TypeError;
+  var TypeError$2 = global_1.TypeError;
   var document$2 = global_1.document;
   var process$2 = global_1.process;
   var newPromiseCapability = newPromiseCapability$1.f;
@@ -3896,7 +3912,7 @@
             }
 
             if (result === reaction.promise) {
-              reject(TypeError$1('Promise-chain cycle'));
+              reject(TypeError$2('Promise-chain cycle'));
             } else if (then = isThenable(result)) {
               functionCall(then, result, resolve, reject);
             } else resolve(result);
@@ -3985,7 +4001,7 @@
     if (unwrap) state = unwrap;
 
     try {
-      if (state.facade === value) throw TypeError$1("Promise can't be resolved itself");
+      if (state.facade === value) throw TypeError$2("Promise can't be resolved itself");
       var then = isThenable(value);
 
       if (then) {
@@ -10805,7 +10821,7 @@
   var min$3 = Math.min;
   var concat = functionUncurryThis([].concat);
   var push$2 = functionUncurryThis([].push);
-  var stringIndexOf = functionUncurryThis(''.indexOf);
+  var stringIndexOf$1 = functionUncurryThis(''.indexOf);
   var stringSlice = functionUncurryThis(''.slice);
 
   var maybeToString = function (it) {
@@ -10857,7 +10873,7 @@
       var rx = anObject$1(this);
       var S = toString_1(string);
 
-      if (typeof replaceValue == 'string' && stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf(replaceValue, '$<') === -1) {
+      if (typeof replaceValue == 'string' && stringIndexOf$1(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf$1(replaceValue, '$<') === -1) {
         var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
         if (res.done) return res.value;
       }
@@ -12449,7 +12465,7 @@
     return Helpers;
   }();
 
-  function get_each_context$5(ctx, list, i) {
+  function get_each_context$6(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[24] = list[i];
     child_ctx[26] = i;
@@ -12571,7 +12587,7 @@
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
+      each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
     }
 
     return {
@@ -12600,12 +12616,12 @@
           var _i3;
 
           for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$5(ctx, each_value, _i3);
+            var child_ctx = get_each_context$6(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$5(child_ctx);
+              each_blocks[_i3] = create_each_block$6(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -12775,7 +12791,7 @@
   } // (244:4) {#each points as point, index}
 
 
-  function create_each_block$5(ctx) {
+  function create_each_block$6(ctx) {
     var div;
     var t;
     var if_block =
@@ -12840,7 +12856,7 @@
   } // (263:2) {#if controls}
 
 
-  function create_if_block$e(ctx) {
+  function create_if_block$f(ctx) {
     var nav;
     var button0;
     var t1;
@@ -13026,7 +13042,7 @@
     };
   }
 
-  function create_fragment$o(ctx) {
+  function create_fragment$p(ctx) {
     var t0;
     var div2;
     var t1;
@@ -13056,7 +13072,7 @@
     ctx[5] === 0 && create_if_block_2$3();
     var if_block4 =
     /*controls*/
-    ctx[0] && create_if_block$e(ctx);
+    ctx[0] && create_if_block$f(ctx);
     return {
       c: function c() {
         if (if_block0) if_block0.c();
@@ -13177,7 +13193,7 @@
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
-            if_block4 = create_if_block$e(ctx);
+            if_block4 = create_if_block$f(ctx);
             if_block4.c();
             if_block4.m(div1, null);
           }
@@ -13210,7 +13226,7 @@
 
   var dateFormat$1 = "yyyy-MM-dd";
 
-  function instance$n($$self, $$props, $$invalidate) {
+  function instance$o($$self, $$props, $$invalidate) {
     var loading;
     var scale;
     var points;
@@ -13537,7 +13553,7 @@
       _classCallCheck$1(this, Statistics);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
         statsApiUrl: 12,
         requestToken: 13,
         controls: 0,
@@ -13550,7 +13566,7 @@
     return Statistics;
   }(SvelteComponent);
 
-  function create_fragment$n(ctx) {
+  function create_fragment$o(ctx) {
     var div0;
     var t;
     var div1;
@@ -13629,7 +13645,7 @@
     };
   }
 
-  function instance$m($$self, $$props, $$invalidate) {
+  function instance$n($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -13655,7 +13671,7 @@
       _classCallCheck$1(this, Overlay);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
         loading: 0
       });
       return _this;
@@ -13664,7 +13680,7 @@
     return Overlay;
   }(SvelteComponent);
 
-  function create_if_block$d(ctx) {
+  function create_if_block$e(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13700,7 +13716,7 @@
     };
   }
 
-  function create_fragment$m(ctx) {
+  function create_fragment$n(ctx) {
     var div1;
     var h3;
     var t0;
@@ -13732,7 +13748,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[2] && create_if_block$d(ctx);
+    ctx[2] && create_if_block$e(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -13886,7 +13902,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$d(ctx);
+            if_block = create_if_block$e(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -13914,7 +13930,7 @@
     };
   }
 
-  function instance$l($$self, $$props, $$invalidate) {
+  function instance$m($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -13967,7 +13983,7 @@
       _classCallCheck$1(this, ClientEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -13983,7 +13999,7 @@
     return ClientEditor;
   }(SvelteComponent);
 
-  function create_if_block$c(ctx) {
+  function create_if_block$d(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -13992,7 +14008,7 @@
         /*loading*/
         ctx[5],
         $$slots: {
-          default: [create_default_slot$6]
+          default: [create_default_slot$7]
         },
         $$scope: {
           ctx: ctx
@@ -14042,7 +14058,7 @@
   } // (56:1) <Overlay {loading}>
 
 
-  function create_default_slot$6(ctx) {
+  function create_default_slot$7(ctx) {
     var clienteditor;
     var current;
     clienteditor = new ClientEditor({
@@ -14127,7 +14143,7 @@
     };
   }
 
-  function create_fragment$l(ctx) {
+  function create_fragment$m(ctx) {
     var a;
     var span;
     var t0;
@@ -14138,7 +14154,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[6] && create_if_block$c(ctx);
+    ctx[6] && create_if_block$d(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14190,7 +14206,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$c(ctx);
+            if_block = create_if_block$d(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14223,7 +14239,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -14341,7 +14357,7 @@
       _classCallCheck$1(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -14356,7 +14372,7 @@
     return ClientEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$b(ctx) {
+  function create_if_block$c(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -14392,7 +14408,7 @@
     };
   }
 
-  function create_fragment$k(ctx) {
+  function create_fragment$l(ctx) {
     var div1;
     var h3;
     var t0;
@@ -14427,7 +14443,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[3] && create_if_block$b(ctx);
+    ctx[3] && create_if_block$c(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -14578,7 +14594,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$b(ctx);
+            if_block = create_if_block$c(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -14606,7 +14622,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -14655,7 +14671,7 @@
       _classCallCheck$1(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -14672,7 +14688,7 @@
     return ProjectEditor;
   }(SvelteComponent);
 
-  function create_if_block$a(ctx) {
+  function create_if_block$b(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14681,7 +14697,7 @@
         /*loading*/
         ctx[7],
         $$slots: {
-          default: [create_default_slot$5]
+          default: [create_default_slot$6]
         },
         $$scope: {
           ctx: ctx
@@ -14731,7 +14747,7 @@
   } // (54:1) <Overlay {loading}>
 
 
-  function create_default_slot$5(ctx) {
+  function create_default_slot$6(ctx) {
     var projecteditor;
     var current;
     projecteditor = new ProjectEditor({
@@ -14832,7 +14848,7 @@
     };
   }
 
-  function create_fragment$j(ctx) {
+  function create_fragment$k(ctx) {
     var a;
     var span;
     var t0;
@@ -14843,7 +14859,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[8] && create_if_block$a(ctx);
+    ctx[8] && create_if_block$b(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14895,7 +14911,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$a(ctx);
+            if_block = create_if_block$b(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14928,7 +14944,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15044,7 +15060,7 @@
       _classCallCheck$1(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -15061,7 +15077,7 @@
     return ProjectEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$9(ctx) {
+  function create_if_block$a(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15097,7 +15113,7 @@
     };
   }
 
-  function create_fragment$i(ctx) {
+  function create_fragment$j(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15141,7 +15157,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[4] && create_if_block$9(ctx);
+    ctx[4] && create_if_block$a(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -15316,7 +15332,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$9(ctx);
+            if_block = create_if_block$a(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -15344,7 +15360,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -15395,7 +15411,7 @@
       _classCallCheck$1(this, TaskEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -15413,7 +15429,7 @@
     return TaskEditor;
   }(SvelteComponent);
 
-  function create_if_block$8(ctx) {
+  function create_if_block$9(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -15422,7 +15438,7 @@
         /*loading*/
         ctx[8],
         $$slots: {
-          default: [create_default_slot$4]
+          default: [create_default_slot$5]
         },
         $$scope: {
           ctx: ctx
@@ -15472,7 +15488,7 @@
   } // (55:1) <Overlay {loading}>
 
 
-  function create_default_slot$4(ctx) {
+  function create_default_slot$5(ctx) {
     var taskeditor;
     var current;
     taskeditor = new TaskEditor({
@@ -15581,7 +15597,7 @@
     };
   }
 
-  function create_fragment$h(ctx) {
+  function create_fragment$i(ctx) {
     var a;
     var span;
     var t0;
@@ -15592,7 +15608,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[9] && create_if_block$8(ctx);
+    ctx[9] && create_if_block$9(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -15644,7 +15660,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$8(ctx);
+            if_block = create_if_block$9(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15677,7 +15693,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15795,7 +15811,7 @@
       _classCallCheck$1(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -15813,7 +15829,7 @@
     return TaskEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$7(ctx) {
+  function create_if_block$8(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15849,7 +15865,7 @@
     };
   }
 
-  function create_fragment$g(ctx) {
+  function create_fragment$h(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15924,7 +15940,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[5] && create_if_block$7(ctx);
+    ctx[5] && create_if_block$8(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -16197,7 +16213,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$7(ctx);
+            if_block = create_if_block$8(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -16225,7 +16241,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -16294,7 +16310,7 @@
       _classCallCheck$1(this, TimeEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -16403,7 +16419,7 @@
   } // (62:0) {#if show}
 
 
-  function create_if_block$6(ctx) {
+  function create_if_block$7(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16412,7 +16428,7 @@
         /*loading*/
         ctx[11],
         $$slots: {
-          default: [create_default_slot$3]
+          default: [create_default_slot$4]
         },
         $$scope: {
           ctx: ctx
@@ -16462,7 +16478,7 @@
   } // (63:1) <Overlay {loading}>
 
 
-  function create_default_slot$3(ctx) {
+  function create_default_slot$4(ctx) {
     var timeeditor;
     var current;
     timeeditor = new TimeEditor({
@@ -16587,7 +16603,7 @@
     };
   }
 
-  function create_fragment$f(ctx) {
+  function create_fragment$g(ctx) {
     var t;
     var if_block1_anchor;
     var current;
@@ -16603,7 +16619,7 @@
     var if_block0 = current_block_type(ctx);
     var if_block1 =
     /*show*/
-    ctx[12] && create_if_block$6(ctx);
+    ctx[12] && create_if_block$7(ctx);
     return {
       c: function c() {
         if_block0.c();
@@ -16646,7 +16662,7 @@
               transition_in(if_block1, 1);
             }
           } else {
-            if_block1 = create_if_block$6(ctx);
+            if_block1 = create_if_block$7(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
             if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -16677,7 +16693,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -16803,7 +16819,7 @@
       _classCallCheck$1(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -16823,13 +16839,13 @@
     return TimeEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$5(ctx) {
+  function create_if_block$6(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
       props: {
         $$slots: {
-          default: [create_default_slot$2]
+          default: [create_default_slot$3]
         },
         $$scope: {
           ctx: ctx
@@ -16874,7 +16890,7 @@
   } // (38:1) <Overlay>
 
 
-  function create_default_slot$2(ctx) {
+  function create_default_slot$3(ctx) {
     var div1;
     var t0;
     var t1;
@@ -16935,7 +16951,7 @@
     };
   }
 
-  function create_fragment$e(ctx) {
+  function create_fragment$f(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -16947,7 +16963,7 @@
     var current;
     var if_block =
     /*confirmation*/
-    ctx[6] && create_if_block$5(ctx);
+    ctx[6] && create_if_block$6(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -17011,7 +17027,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$5(ctx);
+            if_block = create_if_block$6(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(t0.parentNode, t0);
@@ -17074,7 +17090,7 @@
     };
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -17133,7 +17149,7 @@
       _classCallCheck$1(this, DeleteButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$d, create_fragment$e, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -17144,355 +17160,6 @@
     }
 
     return DeleteButton;
-  }(SvelteComponent);
-
-  function create_if_block$4(ctx) {
-    var overlay;
-    var current;
-    overlay = new Overlay({
-      props: {
-        $$slots: {
-          default: [create_default_slot$1]
-        },
-        $$scope: {
-          ctx: ctx
-        }
-      }
-    });
-    return {
-      c: function c() {
-        create_component(overlay.$$.fragment);
-      },
-      m: function m(target, anchor) {
-        mount_component(overlay, target, anchor);
-        current = true;
-      },
-      p: function p(ctx, dirty) {
-        var overlay_changes = {};
-
-        if (dirty &
-        /*$$scope*/
-        128) {
-          overlay_changes.$$scope = {
-            dirty: dirty,
-            ctx: ctx
-          };
-        }
-
-        overlay.$set(overlay_changes);
-      },
-      i: function i(local) {
-        if (current) return;
-        transition_in(overlay.$$.fragment, local);
-        current = true;
-      },
-      o: function o(local) {
-        transition_out(overlay.$$.fragment, local);
-        current = false;
-      },
-      d: function d(detaching) {
-        destroy_component(overlay, detaching);
-      }
-    };
-  } // (56:1) <Overlay>
-
-
-  function create_default_slot$1(ctx) {
-    var div1;
-    var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
-    var t0;
-    var t1;
-    var div0;
-    var button0;
-    var t3;
-    var button1;
-    var mounted;
-    var dispose;
-    return {
-      c: function c() {
-        div1 = element("div");
-        t0 = text(t0_value);
-        t1 = space$1();
-        div0 = element("div");
-        button0 = element("button");
-        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
-        t3 = space$1();
-        button1 = element("button");
-        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
-        attr(button0, "class", "button primary");
-        attr(button1, "class", "button");
-        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
-        attr(div1, "class", "inner tm_new-item");
-      },
-      m: function m(target, anchor) {
-        insert(target, div1, anchor);
-        append(div1, t0);
-        append(div1, t1);
-        append(div1, div0);
-        append(div0, button0);
-        append(div0, t3);
-        append(div0, button1);
-
-        if (!mounted) {
-          dispose = [listen(button0, "click", prevent_default(
-          /*doDelete*/
-          ctx[5])), listen(button1, "click", prevent_default(
-          /*cancelDelete*/
-          ctx[6]))];
-          mounted = true;
-        }
-      },
-      p: noop$1,
-      d: function d(detaching) {
-        if (detaching) detach(div1);
-        mounted = false;
-        run_all(dispose);
-      }
-    };
-  }
-
-  function create_fragment$d(ctx) {
-    var t0;
-    var form;
-    var input0;
-    var t1;
-    var input1;
-    var t2;
-    var button;
-    var current;
-    var mounted;
-    var dispose;
-    var if_block =
-    /*confirmation*/
-    ctx[3] && create_if_block$4(ctx);
-    return {
-      c: function c() {
-        if (if_block) if_block.c();
-        t0 = space$1();
-        form = element("form");
-        input0 = element("input");
-        t1 = space$1();
-        input1 = element("input");
-        t2 = space$1();
-        button = element("button");
-        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
-        attr(input0, "type", "hidden");
-        attr(input0, "name", "uuid");
-        input0.value =
-        /*deleteTimeEntryUuid*/
-        ctx[1];
-        attr(input1, "type", "hidden");
-        attr(input1, "name", "requesttoken");
-        input1.value =
-        /*requestToken*/
-        ctx[2];
-        attr(button, "type", "submit");
-        attr(button, "name", "action");
-        button.value = "delete";
-        attr(button, "class", "btn");
-        attr(form, "action",
-        /*deleteTimeEntryAction*/
-        ctx[0]);
-        attr(form, "method", "post");
-        attr(form, "class", "tm_inline-hover-form");
-      },
-      m: function m(target, anchor) {
-        if (if_block) if_block.m(target, anchor);
-        insert(target, t0, anchor);
-        insert(target, form, anchor);
-        append(form, input0);
-        append(form, t1);
-        append(form, input1);
-        append(form, t2);
-        append(form, button);
-        current = true;
-
-        if (!mounted) {
-          dispose = listen(form, "submit",
-          /*submit*/
-          ctx[4]);
-          mounted = true;
-        }
-      },
-      p: function p(ctx, _ref) {
-        var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-
-        if (
-        /*confirmation*/
-        ctx[3]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
-
-            if (dirty &
-            /*confirmation*/
-            8) {
-              transition_in(if_block, 1);
-            }
-          } else {
-            if_block = create_if_block$4(ctx);
-            if_block.c();
-            transition_in(if_block, 1);
-            if_block.m(t0.parentNode, t0);
-          }
-        } else if (if_block) {
-          group_outros();
-          transition_out(if_block, 1, 1, function () {
-            if_block = null;
-          });
-          check_outros();
-        }
-
-        if (!current || dirty &
-        /*deleteTimeEntryUuid*/
-        2) {
-          input0.value =
-          /*deleteTimeEntryUuid*/
-          ctx[1];
-        }
-
-        if (!current || dirty &
-        /*requestToken*/
-        4) {
-          input1.value =
-          /*requestToken*/
-          ctx[2];
-        }
-
-        if (!current || dirty &
-        /*deleteTimeEntryAction*/
-        1) {
-          attr(form, "action",
-          /*deleteTimeEntryAction*/
-          ctx[0]);
-        }
-      },
-      i: function i(local) {
-        if (current) return;
-        transition_in(if_block);
-        current = true;
-      },
-      o: function o(local) {
-        transition_out(if_block);
-        current = false;
-      },
-      d: function d(detaching) {
-        if (if_block) if_block.d(detaching);
-        if (detaching) detach(t0);
-        if (detaching) detach(form);
-        mounted = false;
-        dispose();
-      }
-    };
-  }
-
-  function instance$c($$self, $$props, $$invalidate) {
-    var confirmation;
-    var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
-    var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
-    var requestToken = $$props.requestToken;
-    onMount(function () {
-      Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
-    });
-
-    var submit = function submit(e) {
-      e.preventDefault();
-      $$invalidate(3, confirmation = true);
-    };
-
-    var doDelete = /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _element, response;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                $$invalidate(3, confirmation = false);
-                _context.prev = 1;
-                _element = document.querySelector("#content.app-timemanager [data-remove-on-delete='".concat(deleteTimeEntryUuid, "']"));
-
-                if (_element) {
-                  _element.classList.add("warning");
-                }
-
-                _context.next = 6;
-                return window.fetch(deleteTimeEntryAction, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    uuid: deleteTimeEntryUuid
-                  }),
-                  headers: {
-                    requesttoken: requestToken,
-                    "content-type": "application/json"
-                  }
-                });
-
-              case 6:
-                response = _context.sent;
-
-                if (response && response.ok) {
-                  _element.remove();
-
-                  document.querySelector(".app-timemanager [data-current-link]").click();
-                }
-
-                _context.next = 13;
-                break;
-
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](1);
-                console.error(_context.t0);
-
-              case 13:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[1, 10]]);
-      }));
-
-      return function doDelete() {
-        return _ref3.apply(this, arguments);
-      };
-    }();
-
-    var cancelDelete = function cancelDelete() {
-      $$invalidate(3, confirmation = false);
-    };
-
-    $$self.$$set = function ($$props) {
-      if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
-      if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
-      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
-    };
-
-    $$invalidate(3, confirmation = false);
-
-    return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
-  }
-
-  var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
-    _inherits(DeleteTimeEntryButton, _SvelteComponent);
-
-    var _super = _createSuper(DeleteTimeEntryButton);
-
-    function DeleteTimeEntryButton(options) {
-      var _this;
-
-      _classCallCheck$1(this, DeleteTimeEntryButton);
-
-      _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$c, create_fragment$d, safe_not_equal, {
-        deleteTimeEntryAction: 0,
-        deleteTimeEntryUuid: 1,
-        requestToken: 2
-      });
-      return _this;
-    }
-
-    return DeleteTimeEntryButton;
   }(SvelteComponent);
 
   var $filter$1 = arrayIteration$1.filter;
@@ -17515,31 +17182,68 @@
     }
   });
 
-  var $find = arrayIteration$1.find;
+  var $includes = arrayIncludes$1.includes;
 
+   // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
 
-
-  var FIND = 'find';
-  var SKIPS_HOLES = true; // Shouldn't skip holes
-
-  if (FIND in []) Array(1)[FIND](function () {
-    SKIPS_HOLES = false;
-  }); // `Array.prototype.find` method
-  // https://tc39.es/ecma262/#sec-array.prototype.find
 
   _export$1({
     target: 'Array',
-    proto: true,
-    forced: SKIPS_HOLES
+    proto: true
   }, {
-    find: function find(callbackfn
-    /* , that = undefined */
+    includes: function includes(el
+    /* , fromIndex = 0 */
     ) {
-      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
     }
   }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 
-  addToUnscopables$1(FIND);
+  addToUnscopables$1('includes');
+
+  var TypeError$1 = global_1.TypeError;
+
+  var notARegexp = function (it) {
+    if (isRegexp$1(it)) {
+      throw TypeError$1("The method doesn't accept regular expressions");
+    }
+
+    return it;
+  };
+
+  var MATCH$2 = wellKnownSymbol$1('match');
+
+  var correctIsRegexpLogic = function (METHOD_NAME) {
+    var regexp = /./;
+
+    try {
+      '/./'[METHOD_NAME](regexp);
+    } catch (error1) {
+      try {
+        regexp[MATCH$2] = false;
+        return '/./'[METHOD_NAME](regexp);
+      } catch (error2) {
+        /* empty */
+      }
+    }
+
+    return false;
+  };
+
+  var stringIndexOf = functionUncurryThis(''.indexOf); // `String.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-string.prototype.includes
+
+  _export$1({
+    target: 'String',
+    proto: true,
+    forced: !correctIsRegexpLogic('includes')
+  }, {
+    includes: function includes(searchString
+    /* , position = 0 */
+    ) {
+      return !!~stringIndexOf(toString_1(requireObjectCoercible$1(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
 
   function isOutOfViewport (parent, container) {
     const parentBounding = parent.getBoundingClientRect();
@@ -17559,7 +17263,7 @@
     append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
   }
 
-  function create_fragment$c(ctx) {
+  function create_fragment$e(ctx) {
     let div;
     let raw_value =
     /*getOptionLabel*/
@@ -17612,7 +17316,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -17688,7 +17392,7 @@
   class Item$1 extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
+      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -17707,7 +17411,7 @@
     append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
   }
 
-  function get_each_context$4(ctx, list, i) {
+  function get_each_context$5(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[41] = list[i];
     child_ctx[42] = i;
@@ -17724,7 +17428,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
+      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
     }
 
     const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -17774,13 +17478,13 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$4(ctx, each_value, i);
+            const child_ctx = get_each_context$5(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
               transition_in(each_blocks[i], 1);
             } else {
-              each_blocks[i] = create_each_block$4(child_ctx);
+              each_blocks[i] = create_each_block$5(child_ctx);
               each_blocks[i].c();
               transition_in(each_blocks[i], 1);
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -17838,7 +17542,7 @@
   } // (286:4) {#if isVirtualList}
 
 
-  function create_if_block$3(ctx) {
+  function create_if_block$5(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
@@ -17856,7 +17560,7 @@
           /*itemHeight*/
           ctx[8],
           $$slots: {
-            default: [create_default_slot, ({
+            default: [create_default_slot$2, ({
               item,
               i
             }) => ({
@@ -18276,7 +17980,7 @@
   } // (310:8) {#each items as item, i}
 
 
-  function create_each_block$4(ctx) {
+  function create_each_block$5(ctx) {
     let current_block_type_index;
     let if_block;
     let if_block_anchor;
@@ -18353,7 +18057,7 @@
   } // (287:8) <svelte:component             this={VirtualList}             {items}             {itemHeight}             let:item             let:i>
 
 
-  function create_default_slot(ctx) {
+  function create_default_slot$2(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -18555,14 +18259,14 @@
     };
   }
 
-  function create_fragment$b(ctx) {
+  function create_fragment$d(ctx) {
     let div;
     let current_block_type_index;
     let if_block;
     let current;
     let mounted;
     let dispose;
-    const if_block_creators = [create_if_block$3, create_else_block$1];
+    const if_block_creators = [create_if_block$5, create_else_block$1];
     const if_blocks = [];
 
     function select_block_type(ctx, dirty) {
@@ -18687,7 +18391,7 @@
     return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -18982,7 +18686,7 @@
   class List extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
+      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
         container: 0,
         VirtualList: 3,
         Item: 4,
@@ -19015,7 +18719,7 @@
     append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
   }
 
-  function create_fragment$a(ctx) {
+  function create_fragment$c(ctx) {
     let div;
     let raw_value =
     /*getSelectionLabel*/
@@ -19053,7 +18757,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -19072,7 +18776,7 @@
   class Selection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$9, create_fragment$a, safe_not_equal, {
+      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       }, add_css$3);
@@ -19086,7 +18790,7 @@
     append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
   }
 
-  function get_each_context$3(ctx, list, i) {
+  function get_each_context$4(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[9] = list[i];
     child_ctx[11] = i;
@@ -19094,7 +18798,7 @@
   } // (87:8) {#if !isDisabled && !multiFullItemClearable}
 
 
-  function create_if_block$2(ctx) {
+  function create_if_block$4(ctx) {
     let div;
     let mounted;
     let dispose;
@@ -19138,7 +18842,7 @@
   } // (77:0) {#each value as item, i}
 
 
-  function create_each_block$3(ctx) {
+  function create_each_block$4(ctx) {
     let div1;
     let div0;
     let raw_value =
@@ -19155,7 +18859,7 @@
     /*isDisabled*/
     ctx[2] && !
     /*multiFullItemClearable*/
-    ctx[3] && create_if_block$2(ctx);
+    ctx[3] && create_if_block$4(ctx);
 
     function click_handler_1(...args) {
       return (
@@ -19215,7 +18919,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$2(ctx);
+            if_block = create_if_block$4(ctx);
             if_block.c();
             if_block.m(div1, t1);
           }
@@ -19247,7 +18951,7 @@
     };
   }
 
-  function create_fragment$9(ctx) {
+  function create_fragment$b(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -19255,7 +18959,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
     }
 
     return {
@@ -19285,12 +18989,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$3(ctx, each_value, i);
+            const child_ctx = get_each_context$4(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$3(child_ctx);
+              each_blocks[i] = create_each_block$4(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -19315,7 +19019,7 @@
     };
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       value = []
@@ -19358,7 +19062,7 @@
   class MultiSelection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$8, create_fragment$9, safe_not_equal, {
+      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
         value: 0,
         activeValue: 1,
         isDisabled: 2,
@@ -19375,7 +19079,7 @@
     append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
   }
 
-  function get_each_context$2(ctx, list, i) {
+  function get_each_context$3(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     return child_ctx;
@@ -19425,7 +19129,7 @@
   } // (152:8) {#each visible as row (row.index)}
 
 
-  function create_each_block$2(key_1, ctx) {
+  function create_each_block$3(key_1, ctx) {
     let svelte_virtual_list_row;
     let t;
     let current;
@@ -19496,7 +19200,7 @@
     };
   }
 
-  function create_fragment$8(ctx) {
+  function create_fragment$a(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -19514,9 +19218,9 @@
     ctx[23].index;
 
     for (let i = 0; i < each_value.length; i += 1) {
-      let child_ctx = get_each_context$2(ctx, each_value, i);
+      let child_ctx = get_each_context$3(ctx, each_value, i);
       let key = get_key(child_ctx);
-      each_1_lookup.set(key, each_blocks[i] = create_each_block$2(key, child_ctx));
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$3(key, child_ctx));
     }
 
     return {
@@ -19579,7 +19283,7 @@
           /*visible*/
           ctx[5];
           group_outros();
-          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$2, null, get_each_context$2);
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$3, null, get_each_context$3);
           check_outros();
         }
 
@@ -19647,7 +19351,7 @@
     };
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -19827,7 +19531,7 @@
   class VirtualList extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$7, create_fragment$8, safe_not_equal, {
+      init$2(this, options, instance$9, create_fragment$a, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -19841,7 +19545,7 @@
 
   /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.44.2 */
 
-  function create_fragment$7(ctx) {
+  function create_fragment$9(ctx) {
     let svg;
     let path;
     return {
@@ -19877,7 +19581,7 @@
   class ClearIcon extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, null, create_fragment$7, safe_not_equal, {});
+      init$2(this, options, null, create_fragment$9, safe_not_equal, {});
     }
 
   }
@@ -19906,7 +19610,7 @@
     append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
   }
 
-  function get_each_context$1(ctx, list, i) {
+  function get_each_context$2(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[103] = list[i];
     return child_ctx;
@@ -20721,7 +20425,7 @@
   } // (981:4) {#if isMulti && showMultiSelect}
 
 
-  function create_if_block$1(ctx) {
+  function create_if_block$3(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -20729,7 +20433,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
     }
 
     return {
@@ -20759,12 +20463,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$1(ctx, each_value, i);
+            const child_ctx = get_each_context$2(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$1(child_ctx);
+              each_blocks[i] = create_each_block$2(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -20787,7 +20491,7 @@
   } // (982:8) {#each value as item}
 
 
-  function create_each_block$1(ctx) {
+  function create_each_block$2(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20841,7 +20545,7 @@
     };
   }
 
-  function create_fragment$6(ctx) {
+  function create_fragment$8(ctx) {
     let div;
     let span;
     let t0;
@@ -20940,7 +20644,7 @@
     /*isMulti*/
     ctx[7] &&
     /*showMultiSelect*/
-    ctx[35] && create_if_block$1(ctx);
+    ctx[35] && create_if_block$3(ctx);
     return {
       c() {
         div = element("div");
@@ -21304,7 +21008,7 @@
           if (if_block9) {
             if_block9.p(ctx, dirty);
           } else {
-            if_block9 = create_if_block$1(ctx);
+            if_block9 = create_if_block$3(ctx);
             if_block9.c();
             if_block9.m(div, null);
           }
@@ -21416,7 +21120,7 @@
     });
   }
 
-  function instance$6($$self, $$props, $$invalidate) {
+  function instance$8($$self, $$props, $$invalidate) {
     let filteredItems;
     let showSelectedItem;
     let showClearIcon;
@@ -22324,7 +22028,7 @@
   class Select extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$6, create_fragment$6, safe_not_equal, {
+      init$2(this, options, instance$8, create_fragment$8, safe_not_equal, {
         id: 46,
         container: 0,
         input: 6,
@@ -22396,6 +22100,1151 @@
     }
 
   }
+
+  var dist$1 = createCommonjsModule$1(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.getRootUrl = exports.generateFilePath = exports.imagePath = exports.generateUrl = exports.generateOcsUrl = exports.generateRemoteUrl = exports.linkTo = void 0;
+
+   /// <reference types="@nextcloud/typings" />
+
+  /**
+   * Get an url with webroot to a file in an app
+   *
+   * @param {string} app the id of the app the file belongs to
+   * @param {string} file the file path relative to the app folder
+   * @return {string} URL with webroot to a file
+   */
+
+
+  const linkTo = (app, file) => generateFilePath(app, '', file);
+  /**
+   * Creates a relative url for remote use
+   *
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  exports.linkTo = linkTo;
+
+  const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
+  /**
+   * @brief Creates an absolute url for remote use
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
+  /**
+   * Get the base path for the given OCS API service
+   *
+   * @param {string} url OCS API service url
+   * @param {object} params parameters to be replaced into the service url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
+   * @return {string} Absolute path for the OCS URL
+   */
+
+
+  exports.generateRemoteUrl = generateRemoteUrl;
+
+  const generateOcsUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      ocsVersion: 2
+    }, options || {});
+    const version = allOptions.ocsVersion === 1 ? 1 : 2;
+    return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
+  };
+
+  exports.generateOcsUrl = generateOcsUrl;
+  /**
+   * Generate a url path, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the address
+   * @param {UrlOptions} options options for the parameter replacement
+   * @return {string} Path part for the given URL
+   */
+
+  const _generateUrlPath = (url, params, options) => {
+    const allOptions = Object.assign({
+      escape: true
+    }, options || {});
+
+    const _build = function (text, vars) {
+      vars = vars || {};
+      return text.replace(/{([^{}]*)}/g, function (a, b) {
+        var r = vars[b];
+
+        if (allOptions.escape) {
+          return typeof r === 'string' || typeof r === 'number' ? encodeURIComponent(r.toString()) : encodeURIComponent(a);
+        } else {
+          return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
+        }
+      });
+    };
+
+    if (url.charAt(0) !== '/') {
+      url = '/' + url;
+    }
+
+    return _build(url, params || {});
+  };
+  /**
+   * Generate the url with webroot for the given relative url, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.noRewrite True if you want to force index.php being added
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @return {string} URL with webroot for the given relative URL
+   */
+
+
+  const generateUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      noRewrite: false
+    }, options || {});
+
+    if (OC.config.modRewriteWorking === true && !allOptions.noRewrite) {
+      return getRootUrl() + _generateUrlPath(url, params, options);
+    }
+
+    return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
+  };
+  /**
+   * Get the path with webroot to an image file
+   * if no extension is given for the image, it will automatically decide
+   * between .png and .svg based on what the browser supports
+   *
+   * @param {string} app the app id to which the image belongs
+   * @param {string} file the name of the image file
+   * @return {string}
+   */
+
+
+  exports.generateUrl = generateUrl;
+
+  const imagePath = (app, file) => {
+    if (file.indexOf('.') === -1) {
+      //if no extension is given, use svg
+      return generateFilePath(app, 'img', file + '.svg');
+    }
+
+    return generateFilePath(app, 'img', file);
+  };
+  /**
+   * Get the url with webroot for a file in an app
+   *
+   * @param {string} app the id of the app
+   * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
+   * @param {string} file the filename
+   * @return {string} URL with webroot for a file in an app
+   */
+
+
+  exports.imagePath = imagePath;
+
+  const generateFilePath = (app, type, file) => {
+    const isCore = OC.coreApps.indexOf(app) !== -1;
+    let link = getRootUrl();
+
+    if (file.substring(file.length - 3) === 'php' && !isCore) {
+      link += '/index.php/apps/' + app;
+
+      if (file !== 'index.php') {
+        link += '/';
+
+        if (type) {
+          link += encodeURI(type + '/');
+        }
+
+        link += file;
+      }
+    } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
+      link = OC.appswebroots[app];
+
+      if (type) {
+        link += '/' + type + '/';
+      }
+
+      if (link.substring(link.length - 1) !== '/') {
+        link += '/';
+      }
+
+      link += file;
+    } else {
+      if ((app === 'settings' || app === 'core' || app === 'search') && type === 'ajax') {
+        link += '/index.php/';
+      } else {
+        link += '/';
+      }
+
+      if (!isCore) {
+        link += 'apps/';
+      }
+
+      if (app !== '') {
+        app += '/';
+        link += app;
+      }
+
+      if (type) {
+        link += type + '/';
+      }
+
+      link += file;
+    }
+
+    return link;
+  };
+  /**
+   * Return the web root path where this Nextcloud instance
+   * is accessible, with a leading slash.
+   * For example "/nextcloud".
+   *
+   * @return {string} web root path
+   */
+
+
+  exports.generateFilePath = generateFilePath;
+
+  const getRootUrl = () => OC.webroot;
+
+  exports.getRootUrl = getRootUrl;
+  });
+
+  unwrapExports(dist$1);
+  dist$1.getRootUrl;
+  dist$1.generateFilePath;
+  dist$1.imagePath;
+  var dist_4 = dist$1.generateUrl;
+  var dist_5 = dist$1.generateOcsUrl;
+  dist$1.generateRemoteUrl;
+  dist$1.linkTo;
+
+  function get_each_context$1(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[14] = list[i];
+    return child_ctx;
+  } // (71:0) {#if confirmation}
+
+
+  function create_if_block$2(ctx) {
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot$1]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
+    return {
+      c: function c() {
+        create_component(overlay.$$.fragment);
+      },
+      m: function m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+      p: function p(ctx, dirty) {
+        var overlay_changes = {};
+
+        if (dirty &
+        /*$$scope, shares, selectedSharee*/
+        131106) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (86:4) {#each shares as share}
+
+
+  function create_each_block$1(ctx) {
+    var li;
+    var t_value =
+    /*share*/
+    ctx[14].recipient_user_id + "";
+    var t;
+    return {
+      c: function c() {
+        li = element("li");
+        t = text(t_value);
+      },
+      m: function m(target, anchor) {
+        insert(target, li, anchor);
+        append(li, t);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*shares*/
+        2 && t_value !== (t_value =
+        /*share*/
+        ctx[14].recipient_user_id + "")) set_data(t, t_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(li);
+      }
+    };
+  } // (72:1) <Overlay>
+
+
+  function create_default_slot$1(ctx) {
+    var div1;
+    var label;
+    var t0_value = dist_4$1('timemanager', 'Share with') + "";
+    var t0;
+    var t1;
+    var select;
+    var t2;
+    var ul;
+    var t3;
+    var div0;
+    var button0;
+    var t5;
+    var button1;
+    var current;
+    var mounted;
+    var dispose;
+    select = new Select({
+      props: {
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Search...'),
+        inputAttributes: {
+          id: 'sharee-select'
+        },
+        loadOptions:
+        /*search*/
+        ctx[8],
+        value:
+        /*selectedSharee*/
+        ctx[5]
+      }
+    });
+    select.$on("select",
+    /*handleSelectSharee*/
+    ctx[10]);
+    var each_value =
+    /*shares*/
+    ctx[1];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    }
+
+    return {
+      c: function c() {
+        div1 = element("div");
+        label = element("label");
+        t0 = text(t0_value);
+        t1 = space$1();
+        create_component(select.$$.fragment);
+        t2 = text("\n\t\t\tExisting shares\n\t\t\t");
+        ul = element("ul");
+
+        for (var _i = 0; _i < each_blocks.length; _i += 1) {
+          each_blocks[_i].c();
+        }
+
+        t3 = space$1();
+        div0 = element("div");
+        button0 = element("button");
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Add'));
+        t5 = space$1();
+        button1 = element("button");
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+        attr(label, "for", "sharee-select");
+        attr(label, "class", "sharees");
+        attr(button0, "class", "button primary");
+        attr(button1, "class", "button");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div1, "class", "inner tm_new-item sharing");
+      },
+      m: function m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, label);
+        append(label, t0);
+        append(label, t1);
+        mount_component(select, label, null);
+        append(div1, t2);
+        append(div1, ul);
+
+        for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+          each_blocks[_i2].m(ul, null);
+        }
+
+        append(div1, t3);
+        append(div1, div0);
+        append(div0, button0);
+        append(div0, t5);
+        append(div0, button1);
+        current = true;
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*addShare*/
+          ctx[7])), listen(button1, "click", prevent_default(
+          /*cancelShare*/
+          ctx[9]))];
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        var select_changes = {};
+        if (dirty &
+        /*selectedSharee*/
+        32) select_changes.value =
+        /*selectedSharee*/
+        ctx[5];
+        select.$set(select_changes);
+
+        if (dirty &
+        /*shares*/
+        2) {
+          each_value =
+          /*shares*/
+          ctx[1];
+
+          var _i3;
+
+          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+            var child_ctx = get_each_context$1(ctx, each_value, _i3);
+
+            if (each_blocks[_i3]) {
+              each_blocks[_i3].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i3] = create_each_block$1(child_ctx);
+
+              each_blocks[_i3].c();
+
+              each_blocks[_i3].m(ul, null);
+            }
+          }
+
+          for (; _i3 < each_blocks.length; _i3 += 1) {
+            each_blocks[_i3].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(select.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(select.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div1);
+        destroy_component(select);
+        destroy_each(each_blocks, detaching);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+
+  function create_fragment$7(ctx) {
+    var t0;
+    var form_1;
+    var input0;
+    var t1;
+    var input1;
+    var input1_value_value;
+    var t2;
+    var input2;
+    var t3;
+    var button;
+    var current;
+    var if_block =
+    /*confirmation*/
+    ctx[6] && create_if_block$2(ctx);
+    return {
+      c: function c() {
+        if (if_block) if_block.c();
+        t0 = space$1();
+        form_1 = element("form");
+        input0 = element("input");
+        t1 = space$1();
+        input1 = element("input");
+        t2 = space$1();
+        input2 = element("input");
+        t3 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Share client'));
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "client_uuid");
+        input0.value =
+        /*clientUuid*/
+        ctx[2];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "user_id");
+        input1.value = input1_value_value =
+        /*selectedSharee*/
+        ctx[5] ?
+        /*selectedSharee*/
+        ctx[5].value.shareWith : '';
+        attr(input2, "type", "hidden");
+        attr(input2, "name", "requesttoken");
+        input2.value =
+        /*requestToken*/
+        ctx[3];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "share";
+        attr(button, "class", "btn");
+        attr(form_1, "action",
+        /*shareAction*/
+        ctx[0]);
+        attr(form_1, "method", "post");
+      },
+      m: function m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, form_1, anchor);
+        append(form_1, input0);
+        append(form_1, t1);
+        append(form_1, input1);
+        append(form_1, t2);
+        append(form_1, input2);
+        append(form_1, t3);
+        append(form_1, button);
+        /*form_1_binding*/
+
+        ctx[12](form_1);
+        current = true;
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*confirmation*/
+        ctx[6]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*confirmation*/
+            64) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$2(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+
+        if (!current || dirty &
+        /*clientUuid*/
+        4) {
+          input0.value =
+          /*clientUuid*/
+          ctx[2];
+        }
+
+        if (!current || dirty &
+        /*selectedSharee*/
+        32 && input1_value_value !== (input1_value_value =
+        /*selectedSharee*/
+        ctx[5] ?
+        /*selectedSharee*/
+        ctx[5].value.shareWith : '')) {
+          input1.value = input1_value_value;
+        }
+
+        if (!current || dirty &
+        /*requestToken*/
+        8) {
+          input2.value =
+          /*requestToken*/
+          ctx[3];
+        }
+
+        if (!current || dirty &
+        /*shareAction*/
+        1) {
+          attr(form_1, "action",
+          /*shareAction*/
+          ctx[0]);
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(form_1);
+        /*form_1_binding*/
+
+        ctx[12](null);
+      }
+    };
+  }
+
+  function instance$7($$self, $$props, $$invalidate) {
+    var confirmation;
+    var shareAction = $$props.shareAction;
+    var shares = $$props.shares;
+    var clientUuid = $$props.clientUuid;
+    var requestToken = $$props.requestToken;
+    var userId = $$props.userId;
+    var form;
+    var selectedSharee;
+    onMount(function () {
+      Helpers.hideFallbacks("ShareDialog.svelte");
+      form.addEventListener("submit", submit);
+      return function () {
+        form.removeEventListener("submit", submit);
+      };
+    });
+
+    var submit = function submit(e) {
+      e.preventDefault();
+      $$invalidate(6, confirmation = true);
+    };
+
+    var addShare = function addShare() {
+      $$invalidate(6, confirmation = false);
+      form.removeEventListener("submit", submit);
+      form.submit();
+    };
+
+    var search = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
+        var response, _yield$response$json$, users, exact, existing;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(typeof query === "undefined")) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                _context.next = 4;
+                return fetch(dist_5("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 4:
+                response = _context.sent;
+
+                if (!response.ok) {
+                  _context.next = 13;
+                  break;
+                }
+
+                _context.next = 8;
+                return response.json();
+
+              case 8:
+                _yield$response$json$ = _context.sent.ocs.data;
+                users = _yield$response$json$.users;
+                exact = _yield$response$json$.exact;
+                existing = shares.map(function (share) {
+                  return share.recipient_user_id;
+                });
+                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)).filter(function (user) {
+                  return !existing.includes(user.value.shareWith) && user.value.shareWith !== userId;
+                }));
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function search(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var cancelShare = function cancelShare() {
+      $$invalidate(6, confirmation = false);
+    };
+
+    var handleSelectSharee = function handleSelectSharee(event) {
+      $$invalidate(5, selectedSharee = event.detail);
+    };
+
+    function form_1_binding($$value) {
+      binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+        form = $$value;
+        $$invalidate(4, form);
+      });
+    }
+
+    $$self.$$set = function ($$props) {
+      if ('shareAction' in $$props) $$invalidate(0, shareAction = $$props.shareAction);
+      if ('shares' in $$props) $$invalidate(1, shares = $$props.shares);
+      if ('clientUuid' in $$props) $$invalidate(2, clientUuid = $$props.clientUuid);
+      if ('requestToken' in $$props) $$invalidate(3, requestToken = $$props.requestToken);
+      if ('userId' in $$props) $$invalidate(11, userId = $$props.userId);
+    };
+
+    $$invalidate(6, confirmation = false);
+
+    return [shareAction, shares, clientUuid, requestToken, form, selectedSharee, confirmation, addShare, search, cancelShare, handleSelectSharee, userId, form_1_binding];
+  }
+
+  var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ShareDialog, _SvelteComponent);
+
+    var _super = _createSuper(ShareDialog);
+
+    function ShareDialog(options) {
+      var _this;
+
+      _classCallCheck$1(this, ShareDialog);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        shareAction: 0,
+        shares: 1,
+        clientUuid: 2,
+        requestToken: 3,
+        userId: 11
+      });
+      return _this;
+    }
+
+    return ShareDialog;
+  }(SvelteComponent);
+
+  function create_if_block$1(ctx) {
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
+    return {
+      c: function c() {
+        create_component(overlay.$$.fragment);
+      },
+      m: function m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+      p: function p(ctx, dirty) {
+        var overlay_changes = {};
+
+        if (dirty &
+        /*$$scope*/
+        128) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (56:1) <Overlay>
+
+
+  function create_default_slot(ctx) {
+    var div1;
+    var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
+    var t0;
+    var t1;
+    var div0;
+    var button0;
+    var t3;
+    var button1;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div1 = element("div");
+        t0 = text(t0_value);
+        t1 = space$1();
+        div0 = element("div");
+        button0 = element("button");
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+        t3 = space$1();
+        button1 = element("button");
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+        attr(button0, "class", "button primary");
+        attr(button1, "class", "button");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div1, "class", "inner tm_new-item");
+      },
+      m: function m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, t0);
+        append(div1, t1);
+        append(div1, div0);
+        append(div0, button0);
+        append(div0, t3);
+        append(div0, button1);
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*doDelete*/
+          ctx[5])), listen(button1, "click", prevent_default(
+          /*cancelDelete*/
+          ctx[6]))];
+          mounted = true;
+        }
+      },
+      p: noop$1,
+      d: function d(detaching) {
+        if (detaching) detach(div1);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+
+  function create_fragment$6(ctx) {
+    var t0;
+    var form;
+    var input0;
+    var t1;
+    var input1;
+    var t2;
+    var button;
+    var current;
+    var mounted;
+    var dispose;
+    var if_block =
+    /*confirmation*/
+    ctx[3] && create_if_block$1(ctx);
+    return {
+      c: function c() {
+        if (if_block) if_block.c();
+        t0 = space$1();
+        form = element("form");
+        input0 = element("input");
+        t1 = space$1();
+        input1 = element("input");
+        t2 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "uuid");
+        input0.value =
+        /*deleteTimeEntryUuid*/
+        ctx[1];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "requesttoken");
+        input1.value =
+        /*requestToken*/
+        ctx[2];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "delete";
+        attr(button, "class", "btn");
+        attr(form, "action",
+        /*deleteTimeEntryAction*/
+        ctx[0]);
+        attr(form, "method", "post");
+        attr(form, "class", "tm_inline-hover-form");
+      },
+      m: function m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, form, anchor);
+        append(form, input0);
+        append(form, t1);
+        append(form, input1);
+        append(form, t2);
+        append(form, button);
+        current = true;
+
+        if (!mounted) {
+          dispose = listen(form, "submit",
+          /*submit*/
+          ctx[4]);
+          mounted = true;
+        }
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*confirmation*/
+        ctx[3]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*confirmation*/
+            8) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$1(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+
+        if (!current || dirty &
+        /*deleteTimeEntryUuid*/
+        2) {
+          input0.value =
+          /*deleteTimeEntryUuid*/
+          ctx[1];
+        }
+
+        if (!current || dirty &
+        /*requestToken*/
+        4) {
+          input1.value =
+          /*requestToken*/
+          ctx[2];
+        }
+
+        if (!current || dirty &
+        /*deleteTimeEntryAction*/
+        1) {
+          attr(form, "action",
+          /*deleteTimeEntryAction*/
+          ctx[0]);
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(form);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+
+  function instance$6($$self, $$props, $$invalidate) {
+    var confirmation;
+    var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
+    var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
+    var requestToken = $$props.requestToken;
+    onMount(function () {
+      Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
+    });
+
+    var submit = function submit(e) {
+      e.preventDefault();
+      $$invalidate(3, confirmation = true);
+    };
+
+    var doDelete = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _element, response;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                $$invalidate(3, confirmation = false);
+                _context.prev = 1;
+                _element = document.querySelector("#content.app-timemanager [data-remove-on-delete='".concat(deleteTimeEntryUuid, "']"));
+
+                if (_element) {
+                  _element.classList.add("warning");
+                }
+
+                _context.next = 6;
+                return window.fetch(deleteTimeEntryAction, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    uuid: deleteTimeEntryUuid
+                  }),
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 6:
+                response = _context.sent;
+
+                if (response && response.ok) {
+                  _element.remove();
+
+                  document.querySelector(".app-timemanager [data-current-link]").click();
+                }
+
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](1);
+                console.error(_context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 10]]);
+      }));
+
+      return function doDelete() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var cancelDelete = function cancelDelete() {
+      $$invalidate(3, confirmation = false);
+    };
+
+    $$self.$$set = function ($$props) {
+      if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
+      if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
+      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
+    };
+
+    $$invalidate(3, confirmation = false);
+
+    return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
+  }
+
+  var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(DeleteTimeEntryButton, _SvelteComponent);
+
+    var _super = _createSuper(DeleteTimeEntryButton);
+
+    function DeleteTimeEntryButton(options) {
+      var _this;
+
+      _classCallCheck$1(this, DeleteTimeEntryButton);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        deleteTimeEntryAction: 0,
+        deleteTimeEntryUuid: 1,
+        requestToken: 2
+      });
+      return _this;
+    }
+
+    return DeleteTimeEntryButton;
+  }(SvelteComponent);
+
+  var $find = arrayIteration$1.find;
+
+
+
+  var FIND = 'find';
+  var SKIPS_HOLES = true; // Shouldn't skip holes
+
+  if (FIND in []) Array(1)[FIND](function () {
+    SKIPS_HOLES = false;
+  }); // `Array.prototype.find` method
+  // https://tc39.es/ecma262/#sec-array.prototype.find
+
+  _export$1({
+    target: 'Array',
+    proto: true,
+    forced: SKIPS_HOLES
+  }, {
+    find: function find(callbackfn
+    /* , that = undefined */
+    ) {
+      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+
+  addToUnscopables$1(FIND);
 
   function create_fragment$5(ctx) {
     var form;
@@ -33035,238 +33884,6 @@
   }
   });
 
-  var dist$1 = createCommonjsModule$1(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.getRootUrl = exports.generateFilePath = exports.imagePath = exports.generateUrl = exports.generateOcsUrl = exports.generateRemoteUrl = exports.linkTo = void 0;
-
-   /// <reference types="@nextcloud/typings" />
-
-  /**
-   * Get an url with webroot to a file in an app
-   *
-   * @param {string} app the id of the app the file belongs to
-   * @param {string} file the file path relative to the app folder
-   * @return {string} URL with webroot to a file
-   */
-
-
-  const linkTo = (app, file) => generateFilePath(app, '', file);
-  /**
-   * Creates a relative url for remote use
-   *
-   * @param {string} service id
-   * @return {string} the url
-   */
-
-
-  exports.linkTo = linkTo;
-
-  const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
-  /**
-   * @brief Creates an absolute url for remote use
-   * @param {string} service id
-   * @return {string} the url
-   */
-
-
-  const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
-  /**
-   * Get the base path for the given OCS API service
-   *
-   * @param {string} url OCS API service url
-   * @param {object} params parameters to be replaced into the service url
-   * @param {UrlOptions} options options for the parameter replacement
-   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
-   * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
-   * @return {string} Absolute path for the OCS URL
-   */
-
-
-  exports.generateRemoteUrl = generateRemoteUrl;
-
-  const generateOcsUrl = (url, params, options) => {
-    const allOptions = Object.assign({
-      ocsVersion: 2
-    }, options || {});
-    const version = allOptions.ocsVersion === 1 ? 1 : 2;
-    return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
-  };
-
-  exports.generateOcsUrl = generateOcsUrl;
-  /**
-   * Generate a url path, which can contain parameters
-   *
-   * Parameters will be URL encoded automatically
-   *
-   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
-   * @param {object} params parameters to be replaced into the address
-   * @param {UrlOptions} options options for the parameter replacement
-   * @return {string} Path part for the given URL
-   */
-
-  const _generateUrlPath = (url, params, options) => {
-    const allOptions = Object.assign({
-      escape: true
-    }, options || {});
-
-    const _build = function (text, vars) {
-      vars = vars || {};
-      return text.replace(/{([^{}]*)}/g, function (a, b) {
-        var r = vars[b];
-
-        if (allOptions.escape) {
-          return typeof r === 'string' || typeof r === 'number' ? encodeURIComponent(r.toString()) : encodeURIComponent(a);
-        } else {
-          return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
-        }
-      });
-    };
-
-    if (url.charAt(0) !== '/') {
-      url = '/' + url;
-    }
-
-    return _build(url, params || {});
-  };
-  /**
-   * Generate the url with webroot for the given relative url, which can contain parameters
-   *
-   * Parameters will be URL encoded automatically
-   *
-   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
-   * @param {object} params parameters to be replaced into the url
-   * @param {UrlOptions} options options for the parameter replacement
-   * @param {boolean} options.noRewrite True if you want to force index.php being added
-   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
-   * @return {string} URL with webroot for the given relative URL
-   */
-
-
-  const generateUrl = (url, params, options) => {
-    const allOptions = Object.assign({
-      noRewrite: false
-    }, options || {});
-
-    if (OC.config.modRewriteWorking === true && !allOptions.noRewrite) {
-      return getRootUrl() + _generateUrlPath(url, params, options);
-    }
-
-    return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
-  };
-  /**
-   * Get the path with webroot to an image file
-   * if no extension is given for the image, it will automatically decide
-   * between .png and .svg based on what the browser supports
-   *
-   * @param {string} app the app id to which the image belongs
-   * @param {string} file the name of the image file
-   * @return {string}
-   */
-
-
-  exports.generateUrl = generateUrl;
-
-  const imagePath = (app, file) => {
-    if (file.indexOf('.') === -1) {
-      //if no extension is given, use svg
-      return generateFilePath(app, 'img', file + '.svg');
-    }
-
-    return generateFilePath(app, 'img', file);
-  };
-  /**
-   * Get the url with webroot for a file in an app
-   *
-   * @param {string} app the id of the app
-   * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
-   * @param {string} file the filename
-   * @return {string} URL with webroot for a file in an app
-   */
-
-
-  exports.imagePath = imagePath;
-
-  const generateFilePath = (app, type, file) => {
-    const isCore = OC.coreApps.indexOf(app) !== -1;
-    let link = getRootUrl();
-
-    if (file.substring(file.length - 3) === 'php' && !isCore) {
-      link += '/index.php/apps/' + app;
-
-      if (file !== 'index.php') {
-        link += '/';
-
-        if (type) {
-          link += encodeURI(type + '/');
-        }
-
-        link += file;
-      }
-    } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
-      link = OC.appswebroots[app];
-
-      if (type) {
-        link += '/' + type + '/';
-      }
-
-      if (link.substring(link.length - 1) !== '/') {
-        link += '/';
-      }
-
-      link += file;
-    } else {
-      if ((app === 'settings' || app === 'core' || app === 'search') && type === 'ajax') {
-        link += '/index.php/';
-      } else {
-        link += '/';
-      }
-
-      if (!isCore) {
-        link += 'apps/';
-      }
-
-      if (app !== '') {
-        app += '/';
-        link += app;
-      }
-
-      if (type) {
-        link += type + '/';
-      }
-
-      link += file;
-    }
-
-    return link;
-  };
-  /**
-   * Return the web root path where this Nextcloud instance
-   * is accessible, with a leading slash.
-   * For example "/nextcloud".
-   *
-   * @return {string} web root path
-   */
-
-
-  exports.generateFilePath = generateFilePath;
-
-  const getRootUrl = () => OC.webroot;
-
-  exports.getRootUrl = getRootUrl;
-  });
-
-  unwrapExports(dist$1);
-  dist$1.getRootUrl;
-  dist$1.generateFilePath;
-  dist$1.imagePath;
-  var dist_4 = dist$1.generateUrl;
-  dist$1.generateOcsUrl;
-  dist$1.generateRemoteUrl;
-  dist$1.linkTo;
-
   var PagePjax = function PagePjax(reload) {
     _classCallCheck$1(this, PagePjax);
 
@@ -36954,6 +37571,13 @@
     components.push(safelyCreateComponent({
       component: DeleteButton,
       selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
+    }));
+    components.push(safelyCreateComponent({
+      component: ShareDialog,
+      selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })

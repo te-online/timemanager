@@ -39,6 +39,10 @@ $l = \OC::$server->getL10N('timemanager');
 						<span data-svelte-hide="DeleteButton.svelte">
 							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
 						</span>
+						<span data-svelte="ShareDialog.svelte"></span>
+						<span data-svelte-hide="ShareDialog.svelte">
+							<?php print_unescaped($_['templates']['ShareDialog.svelte']); ?>
+						</span>
 					<?php } ?>
 				</div>
 				<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">

@@ -142,6 +142,10 @@
 .tm_object-details form {
 	display: inline;
 	margin-right: 5px;
+
+	button {
+		margin-right: 0;
+	}
 }
 
 .tm_add {
@@ -243,6 +247,10 @@ body.loading-error #content.app-timemanager:before {
 
 	.urldisplay {
 		word-wrap: break-word;
+	}
+
+	&.sharing {
+		min-height: 50vh;
 	}
 }
 
