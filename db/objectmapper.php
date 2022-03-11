@@ -55,7 +55,7 @@ class ObjectMapper extends Mapper {
 	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created", $shared = false) {
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM (`" .
@@ -76,7 +76,7 @@ class ObjectMapper extends Mapper {
 			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted", $value]);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM (`" .
@@ -97,7 +97,7 @@ class ObjectMapper extends Mapper {
 			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM ((`" .
@@ -122,7 +122,7 @@ class ObjectMapper extends Mapper {
 			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM (((`" .
@@ -132,8 +132,8 @@ class ObjectMapper extends Mapper {
 				".task_uuid = *PREFIX*timemanager_task.uuid) INNER JOIN *PREFIX*timemanager_project ON *PREFIX*timemanager_task.project_uuid = *PREFIX*timemanager_project.uuid)" .
 				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
 				"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
-				"*PREFIX*timemanager_share.author_user_id != ?)) " .
-				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				"*PREFIX*timemanager_share.author_user_id = ?)) " .
+				"WHERE (*PREFIX*timemanager_share.author_user_id = ? OR " .
 				$this->tableName .
 				".user_id = ?) AND " .
 				$this->tableName .
@@ -222,14 +222,8 @@ class ObjectMapper extends Mapper {
 		}
 	}
 
-	function getActiveObjectById($uuid) {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? AND `uuid` = ? AND `status` != ? LIMIT 1;";
-		$objects = $this->findEntities($sql, [$this->userId, $uuid, "deleted"]);
+	function getActiveObjectById($uuid, $shared = false) {
+		$objects = $this->getActiveObjectsByAttributeValue("uuid", $uuid, "created", $shared);
 		if (count($objects) > 0) {
 			return $objects[0];
 		} else {
@@ -321,7 +315,7 @@ class ObjectMapper extends Mapper {
 	function findActiveForCurrentUser($orderby = "created", $shared = false) {
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM (`" .
@@ -338,7 +332,7 @@ class ObjectMapper extends Mapper {
 			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql =
-				"SELECT " .
+				"SELECT DISTINCT " .
 				$this->tableName .
 				".* " .
 				"FROM (`" .
@@ -353,6 +347,27 @@ class ObjectMapper extends Mapper {
 				$this->getOrderByClause($orderby) .
 				";";
 			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
+		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
+			$sql =
+				"SELECT DISTINCT " .
+				$this->tableName .
+				".* " .
+				"FROM ((`" .
+				$this->tableName .
+				"` INNER JOIN *PREFIX*timemanager_project ON " .
+				$this->tableName .
+				".project_uuid = *PREFIX*timemanager_project.uuid)" .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
+				"*PREFIX*timemanager_share.author_user_id != ?)) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND " .
+				$this->tableName .
+				".status != ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted"]);
 		} else {
 			$sql =
 				"SELECT * " .

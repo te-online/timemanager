@@ -17,7 +17,7 @@ class ProjectMapper extends ObjectMapper {
 	}
 
 	public function deleteWithChildrenByClientId($uuid, $commit) {
-		$projects = $this->getObjectsByAttributeValue("client_uuid", $uuid);
+		$projects = $this->getActiveObjectsByAttributeValue("client_uuid", $uuid);
 		foreach ($projects as $project) {
 			$project->setCommit($commit);
 			$project->setChanged(date("Y-m-d H:i:s"));
@@ -38,12 +38,12 @@ class ProjectMapper extends ObjectMapper {
 	 * @return Client[] list if matching items
 	 */
 	public function countTasks($uuid) {
-		$tasks = $this->taskMapper->getObjectsByAttributeValue("project_uuid", $uuid);
+		$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $uuid, "created", true);
 		return count($tasks);
 	}
 
 	public function getHours($uuid) {
-		$tasks = $this->taskMapper->getObjectsByAttributeValue("project_uuid", $uuid);
+		$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $uuid, "created", true);
 		$sum = 0;
 		if (count($tasks) > 0) {
 			foreach ($tasks as $task) {

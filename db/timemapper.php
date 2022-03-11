@@ -16,7 +16,7 @@ class TimeMapper extends ObjectMapper {
 	}
 
 	public function deleteByTaskId($uuid, $commit) {
-		$times = $this->getObjectsByAttributeValue("task_uuid", $uuid);
+		$times = $this->getActiveObjectsByAttributeValue("task_uuid", $uuid);
 		foreach ($times as $time) {
 			$time->setCommit($commit);
 			$time->setChanged(date("Y-m-d H:i:s"));
