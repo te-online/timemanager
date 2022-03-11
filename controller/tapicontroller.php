@@ -8,6 +8,7 @@ use OCA\TimeManager\Db\ProjectMapper;
 use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
+use OCA\TimeManager\Db\ShareMapper;
 use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\ApiController;
@@ -28,6 +29,8 @@ class TApiController extends ApiController {
 	protected $timeMapper;
 	/** @var ClientMapper mapper for client entity */
 	protected $commitMapper;
+	/** @var ShareMapper mapper for client entity */
+	protected $shareMapper;
 	/** @var StorageHelper helper for working on the stored data */
 	protected $storageHelper;
 	/** @var string user ID */
@@ -54,6 +57,7 @@ class TApiController extends ApiController {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		ShareMapper $shareMapper,
 		IConfig $config,
 		$userId
 	) {
@@ -63,6 +67,7 @@ class TApiController extends ApiController {
 		$this->taskMapper = $taskMapper;
 		$this->timeMapper = $timeMapper;
 		$this->commitMapper = $commitMapper;
+		$this->shareMapper = $shareMapper;
 		$this->config = $config;
 		$this->userId = $userId;
 		$this->storageHelper = new StorageHelper(
@@ -71,6 +76,7 @@ class TApiController extends ApiController {
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
+			$this->shareMapper,
 			$this->config,
 			$userId
 		);

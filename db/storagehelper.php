@@ -21,6 +21,8 @@ class StorageHelper {
 	protected $timeMapper;
 	/** @var CommitMapper */
 	protected $commitMapper;
+	/** @var ShareMapper */
+	protected $shareMapper;
 	/** @var string user ID */
 	protected $userId;
 	/** @var IConfig */
@@ -32,6 +34,7 @@ class StorageHelper {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		ShareMapper $shareMapper,
 		IConfig $config,
 		string $userId
 	) {
@@ -45,6 +48,8 @@ class StorageHelper {
 		$this->timeMapper->setCurrentUser($userId);
 		$this->commitMapper = $commitMapper;
 		$this->commitMapper->setCurrentUser($userId);
+		$this->shareMapper = $shareMapper;
+		$this->shareMapper->setCurrentUser($userId);
 		$this->config = $config;
 		$this->userId = $userId;
 	}

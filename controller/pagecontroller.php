@@ -10,6 +10,8 @@ use OCA\TimeManager\Db\ProjectMapper;
 use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
+use OCA\TimeManager\Db\Share;
+use OCA\TimeManager\Db\ShareMapper;
 use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
@@ -55,6 +57,7 @@ class PageController extends Controller {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		ShareMapper $shareMapper,
 		IConfig $config,
 		$userId
 	) {
@@ -64,6 +67,7 @@ class PageController extends Controller {
 		$this->taskMapper = $taskMapper;
 		$this->timeMapper = $timeMapper;
 		$this->commitMapper = $commitMapper;
+		$this->shareMapper = $shareMapper;
 		$this->userId = $userId;
 		$this->config = $config;
 		$this->storageHelper = new StorageHelper(
@@ -72,6 +76,7 @@ class PageController extends Controller {
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
+			$this->shareMapper,
 			$this->config,
 			(string) $userId
 		);
