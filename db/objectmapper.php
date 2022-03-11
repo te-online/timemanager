@@ -52,18 +52,112 @@ class ObjectMapper extends Mapper {
 	 * @param string $value the attribute value
 	 * @return Object[] list if matching items
 	 */
-	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created") {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? AND `status` != ? AND `" .
-			$attr .
-			"` = ? " .
-			$this->getOrderByClause($orderby) .
-			";";
-		return $this->findEntities($sql, [$this->userId, "deleted", $value]);
+	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created", $shared = false) {
+		if ($shared && strpos($this->tableName, "_client") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM (`" .
+				$this->tableName .
+				"` " .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				$this->tableName .
+				".uuid = *PREFIX*timemanager_share.object_uuid) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND `status` != ? AND " .
+				$this->tableName .
+				"." .
+				$attr .
+				" = ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted", $value]);
+		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM (`" .
+				$this->tableName .
+				"` " .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON (" .
+				$this->tableName .
+				".client_uuid = *PREFIX*timemanager_share.object_uuid AND *PREFIX*timemanager_share.author_user_id != ?)) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND `status` != ? AND " .
+				$this->tableName .
+				"." .
+				$attr .
+				" = ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM ((`" .
+				$this->tableName .
+				"` INNER JOIN *PREFIX*timemanager_project ON " .
+				$this->tableName .
+				".project_uuid = *PREFIX*timemanager_project.uuid)" .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
+				"*PREFIX*timemanager_share.author_user_id != ?)) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND " .
+				$this->tableName .
+				".status != ? AND " .
+				$this->tableName .
+				"." .
+				$attr .
+				" = ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM (((`" .
+				$this->tableName .
+				"` INNER JOIN *PREFIX*timemanager_task ON " .
+				$this->tableName .
+				".task_uuid = *PREFIX*timemanager_task.uuid) INNER JOIN *PREFIX*timemanager_project ON *PREFIX*timemanager_task.project_uuid = *PREFIX*timemanager_project.uuid)" .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
+				"*PREFIX*timemanager_share.author_user_id != ?)) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND " .
+				$this->tableName .
+				".status != ? AND " .
+				$this->tableName .
+				"." .
+				$attr .
+				" = ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+		} else {
+			$sql =
+				"SELECT * " .
+				"FROM `" .
+				$this->tableName .
+				"` " .
+				"WHERE `user_id` = ? AND `status` != ? AND `" .
+				$attr .
+				"` = ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, "deleted", $value]);
+		}
 	}
 
 	/**
@@ -224,16 +318,52 @@ class ObjectMapper extends Mapper {
 	 *
 	 * @return Object[] list if matching items
 	 */
-	function findActiveForCurrentUser($orderby = "created") {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? AND `status` != ? " .
-			$this->getOrderByClause($orderby) .
-			";";
-		return $this->findEntities($sql, [$this->userId, "deleted"]);
+	function findActiveForCurrentUser($orderby = "created", $shared = false) {
+		if ($shared && strpos($this->tableName, "_client") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM (`" .
+				$this->tableName .
+				"` " .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				$this->tableName .
+				".uuid = *PREFIX*timemanager_share.object_uuid) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND `status` != ?" .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
+		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
+			$sql =
+				"SELECT " .
+				$this->tableName .
+				".* " .
+				"FROM (`" .
+				$this->tableName .
+				"` " .
+				"LEFT JOIN `*PREFIX*timemanager_share` ON " .
+				$this->tableName .
+				".client_uuid = *PREFIX*timemanager_share.object_uuid) " .
+				"WHERE (*PREFIX*timemanager_share.recipient_user_id = ? OR " .
+				$this->tableName .
+				".user_id = ?) AND `status` != ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
+		} else {
+			$sql =
+				"SELECT * " .
+				"FROM `" .
+				$this->tableName .
+				"` " .
+				"WHERE `user_id` = ? AND `status` != ? " .
+				$this->getOrderByClause($orderby) .
+				";";
+			return $this->findEntities($sql, [$this->userId, "deleted"]);
+		}
 	}
 
 	/**
