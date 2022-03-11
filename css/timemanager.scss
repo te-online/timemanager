@@ -644,16 +644,16 @@ label {
 }
 
 .existing-sharees {
-	display: flex;
-	align-items: center;
-	min-height: 32px;
-	margin-top: 5px;
-
 	li {
 		list-style-type: none;
-		margin-right: 5px;
+		margin-bottom: 5px;
 		display: flex;
 		align-items: center;
+
+		&:nth-child(2) {
+			margin-top: 5px;
+			min-height: 32px;
+		}
 
 		img {
 			margin: auto 5px;

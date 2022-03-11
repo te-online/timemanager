@@ -30,11 +30,17 @@ $l = \OC::$server->getL10N('timemanager');
 						<span class="tm_label"><?php p($l->t('Created')); ?></span>
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
-					<?php if($_['task']) { ?>
+					<?php if($_['task'] && $_['canEdit']) { ?>
 						<span data-svelte="TaskEditorDialog.svelte"></span>
 						<span data-svelte="DeleteButton.svelte"></span>
 						<span data-svelte-hide="DeleteButton.svelte">
 							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
+						</span>
+					<?php } ?>
+					<?php if(!$_['canEdit']) { ?>
+						<span data-svelte="ShareStatus.svelte"></span>
+						<span data-svelte-hide="ShareStatus.svelte">
+							<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
 						</span>
 					<?php } ?>
 				</div>
@@ -55,7 +61,7 @@ $l = \OC::$server->getL10N('timemanager');
 				<?php if(!$_['task']) { ?>
 					<p><?php p($l->t('Select a task to show time entries for')); ?></p>
 					<form action="" method="get">
-						<?php if(count($_['tasks']) > 0 ) { ?>
+						<?php if(count($_['tasks']) > 0) { ?>
 							<select name="task">
 								<?php foreach(array_reverse($_['tasks']) as $task) {
 									// Look up project for task

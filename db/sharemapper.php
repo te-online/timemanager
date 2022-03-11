@@ -14,14 +14,24 @@ class ShareMapper extends ObjectMapper {
 		parent::__construct($db, $commitMapper, "timemanager_share");
 	}
 
-	public function findForClient($client_uuid): array {
+	public function findShareesForClient($client_uuid): array {
 		$sql =
 			"SELECT * " .
 			"FROM `" .
 			$this->tableName .
 			"` " .
-			"WHERE (`recipient_user_id` = ? OR `author_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
-		return $this->findEntities($sql, [$this->userId, $this->userId, $client_uuid]);
+			"WHERE (`author_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
+		return $this->findEntities($sql, [$this->userId, $client_uuid]);
+	}
+
+	public function findSharerForClient($client_uuid): array {
+		$sql =
+			"SELECT * " .
+			"FROM `" .
+			$this->tableName .
+			"` " .
+			"WHERE (`recipient_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
+		return $this->findEntities($sql, [$this->userId, $client_uuid]);
 	}
 
 	public function findByUuid($uuid): array {

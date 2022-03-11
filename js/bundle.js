@@ -12473,7 +12473,7 @@
     return Helpers;
   }();
 
-  function get_each_context$6(ctx, list, i) {
+  function get_each_context$7(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[24] = list[i];
     child_ctx[26] = i;
@@ -12587,7 +12587,7 @@
   } // (243:3) {#if !loading && weekTotal > 0}
 
 
-  function create_if_block_3$3(ctx) {
+  function create_if_block_3$2(ctx) {
     var each_1_anchor;
     var each_value =
     /*points*/
@@ -12595,7 +12595,7 @@
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
+      each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
     }
 
     return {
@@ -12624,12 +12624,12 @@
           var _i3;
 
           for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$6(ctx, each_value, _i3);
+            var child_ctx = get_each_context$7(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$6(child_ctx);
+              each_blocks[_i3] = create_each_block$7(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -12799,7 +12799,7 @@
   } // (244:4) {#each points as point, index}
 
 
-  function create_each_block$6(ctx) {
+  function create_each_block$7(ctx) {
     var div;
     var t;
     var if_block =
@@ -12845,7 +12845,7 @@
   } // (259:3) {#if controls && !loading && weekTotal === 0}
 
 
-  function create_if_block_2$4(ctx) {
+  function create_if_block_2$3(ctx) {
     var p;
     return {
       c: function c() {
@@ -12864,7 +12864,7 @@
   } // (263:2) {#if controls}
 
 
-  function create_if_block$f(ctx) {
+  function create_if_block$g(ctx) {
     var nav;
     var button0;
     var t1;
@@ -12905,7 +12905,7 @@
     var button1;
     var mounted;
     var dispose;
-    var if_block = show_if && create_if_block_1$5(ctx);
+    var if_block = show_if && create_if_block_1$6(ctx);
     return {
       c: function c() {
         nav = element("nav");
@@ -13002,7 +13002,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_1$5(ctx);
+            if_block = create_if_block_1$6(ctx);
             if_block.c();
             if_block.m(span2, t12);
           }
@@ -13021,7 +13021,7 @@
   } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
-  function create_if_block_1$5(ctx) {
+  function create_if_block_1$6(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13050,7 +13050,7 @@
     };
   }
 
-  function create_fragment$p(ctx) {
+  function create_fragment$q(ctx) {
     var t0;
     var div2;
     var t1;
@@ -13070,17 +13070,17 @@
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] > 0 && create_if_block_3$3(ctx);
+    ctx[5] > 0 && create_if_block_3$2(ctx);
     var if_block3 =
     /*controls*/
     ctx[0] && !
     /*loading*/
     ctx[2] &&
     /*weekTotal*/
-    ctx[5] === 0 && create_if_block_2$4();
+    ctx[5] === 0 && create_if_block_2$3();
     var if_block4 =
     /*controls*/
-    ctx[0] && create_if_block$f(ctx);
+    ctx[0] && create_if_block$g(ctx);
     return {
       c: function c() {
         if (if_block0) if_block0.c();
@@ -13159,7 +13159,7 @@
           if (if_block2) {
             if_block2.p(ctx, dirty);
           } else {
-            if_block2 = create_if_block_3$3(ctx);
+            if_block2 = create_if_block_3$2(ctx);
             if_block2.c();
             if_block2.m(div0, t2);
           }
@@ -13178,7 +13178,7 @@
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
-            if_block3 = create_if_block_2$4();
+            if_block3 = create_if_block_2$3();
             if_block3.c();
             if_block3.m(div0, null);
           }
@@ -13201,7 +13201,7 @@
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
-            if_block4 = create_if_block$f(ctx);
+            if_block4 = create_if_block$g(ctx);
             if_block4.c();
             if_block4.m(div1, null);
           }
@@ -13234,7 +13234,7 @@
 
   var dateFormat$1 = "yyyy-MM-dd";
 
-  function instance$o($$self, $$props, $$invalidate) {
+  function instance$p($$self, $$props, $$invalidate) {
     var loading;
     var scale;
     var points;
@@ -13561,7 +13561,7 @@
       _classCallCheck$1(this, Statistics);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
         statsApiUrl: 12,
         requestToken: 13,
         controls: 0,
@@ -13574,7 +13574,7 @@
     return Statistics;
   }(SvelteComponent);
 
-  function create_fragment$o(ctx) {
+  function create_fragment$p(ctx) {
     var div0;
     var t;
     var div1;
@@ -13653,7 +13653,7 @@
     };
   }
 
-  function instance$n($$self, $$props, $$invalidate) {
+  function instance$o($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -13679,7 +13679,7 @@
       _classCallCheck$1(this, Overlay);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
         loading: 0
       });
       return _this;
@@ -13688,7 +13688,7 @@
     return Overlay;
   }(SvelteComponent);
 
-  function create_if_block$e(ctx) {
+  function create_if_block$f(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13724,7 +13724,7 @@
     };
   }
 
-  function create_fragment$n(ctx) {
+  function create_fragment$o(ctx) {
     var div1;
     var h3;
     var t0;
@@ -13756,7 +13756,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[2] && create_if_block$e(ctx);
+    ctx[2] && create_if_block$f(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -13910,7 +13910,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$e(ctx);
+            if_block = create_if_block$f(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -13938,7 +13938,7 @@
     };
   }
 
-  function instance$m($$self, $$props, $$invalidate) {
+  function instance$n($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -13991,7 +13991,7 @@
       _classCallCheck$1(this, ClientEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -14007,7 +14007,7 @@
     return ClientEditor;
   }(SvelteComponent);
 
-  function create_if_block$d(ctx) {
+  function create_if_block$e(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14151,7 +14151,7 @@
     };
   }
 
-  function create_fragment$m(ctx) {
+  function create_fragment$n(ctx) {
     var a;
     var span;
     var t0;
@@ -14162,7 +14162,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[6] && create_if_block$d(ctx);
+    ctx[6] && create_if_block$e(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14214,7 +14214,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$d(ctx);
+            if_block = create_if_block$e(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14247,7 +14247,7 @@
     };
   }
 
-  function instance$l($$self, $$props, $$invalidate) {
+  function instance$m($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -14365,7 +14365,7 @@
       _classCallCheck$1(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -14380,7 +14380,7 @@
     return ClientEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$c(ctx) {
+  function create_if_block$d(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -14416,7 +14416,7 @@
     };
   }
 
-  function create_fragment$l(ctx) {
+  function create_fragment$m(ctx) {
     var div1;
     var h3;
     var t0;
@@ -14451,7 +14451,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[3] && create_if_block$c(ctx);
+    ctx[3] && create_if_block$d(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -14602,7 +14602,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$c(ctx);
+            if_block = create_if_block$d(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -14630,7 +14630,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -14679,7 +14679,7 @@
       _classCallCheck$1(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -14696,7 +14696,7 @@
     return ProjectEditor;
   }(SvelteComponent);
 
-  function create_if_block$b(ctx) {
+  function create_if_block$c(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14856,7 +14856,7 @@
     };
   }
 
-  function create_fragment$k(ctx) {
+  function create_fragment$l(ctx) {
     var a;
     var span;
     var t0;
@@ -14867,7 +14867,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[8] && create_if_block$b(ctx);
+    ctx[8] && create_if_block$c(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14919,7 +14919,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$b(ctx);
+            if_block = create_if_block$c(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14952,7 +14952,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15068,7 +15068,7 @@
       _classCallCheck$1(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -15085,7 +15085,7 @@
     return ProjectEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$a(ctx) {
+  function create_if_block$b(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15121,7 +15121,7 @@
     };
   }
 
-  function create_fragment$j(ctx) {
+  function create_fragment$k(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15165,7 +15165,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[4] && create_if_block$a(ctx);
+    ctx[4] && create_if_block$b(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -15340,7 +15340,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$a(ctx);
+            if_block = create_if_block$b(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -15368,7 +15368,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -15419,7 +15419,7 @@
       _classCallCheck$1(this, TaskEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -15437,7 +15437,7 @@
     return TaskEditor;
   }(SvelteComponent);
 
-  function create_if_block$9(ctx) {
+  function create_if_block$a(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -15605,7 +15605,7 @@
     };
   }
 
-  function create_fragment$i(ctx) {
+  function create_fragment$j(ctx) {
     var a;
     var span;
     var t0;
@@ -15616,7 +15616,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[9] && create_if_block$9(ctx);
+    ctx[9] && create_if_block$a(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -15668,7 +15668,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$9(ctx);
+            if_block = create_if_block$a(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15701,7 +15701,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15819,7 +15819,7 @@
       _classCallCheck$1(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -15837,7 +15837,7 @@
     return TaskEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$8(ctx) {
+  function create_if_block$9(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15873,7 +15873,7 @@
     };
   }
 
-  function create_fragment$h(ctx) {
+  function create_fragment$i(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15948,7 +15948,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[5] && create_if_block$8(ctx);
+    ctx[5] && create_if_block$9(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -16221,7 +16221,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$8(ctx);
+            if_block = create_if_block$9(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -16249,7 +16249,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -16318,7 +16318,7 @@
       _classCallCheck$1(this, TimeEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -16383,7 +16383,7 @@
   } // (53:0) {#if !timeUuid}
 
 
-  function create_if_block_1$4(ctx) {
+  function create_if_block_1$5(ctx) {
     var a;
     var span;
     var t;
@@ -16427,7 +16427,7 @@
   } // (62:0) {#if show}
 
 
-  function create_if_block$7(ctx) {
+  function create_if_block$8(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16611,7 +16611,7 @@
     };
   }
 
-  function create_fragment$g(ctx) {
+  function create_fragment$h(ctx) {
     var t;
     var if_block1_anchor;
     var current;
@@ -16619,7 +16619,7 @@
     function select_block_type(ctx, dirty) {
       if (!
       /*timeUuid*/
-      ctx[1]) return create_if_block_1$4;
+      ctx[1]) return create_if_block_1$5;
       return create_else_block$2;
     }
 
@@ -16627,7 +16627,7 @@
     var if_block0 = current_block_type(ctx);
     var if_block1 =
     /*show*/
-    ctx[12] && create_if_block$7(ctx);
+    ctx[12] && create_if_block$8(ctx);
     return {
       c: function c() {
         if_block0.c();
@@ -16670,7 +16670,7 @@
               transition_in(if_block1, 1);
             }
           } else {
-            if_block1 = create_if_block$7(ctx);
+            if_block1 = create_if_block$8(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
             if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -16701,7 +16701,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -16827,7 +16827,7 @@
       _classCallCheck$1(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -16847,7 +16847,7 @@
     return TimeEditorDialog;
   }(SvelteComponent);
 
-  function create_if_block$6(ctx) {
+  function create_if_block$7(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16959,7 +16959,7 @@
     };
   }
 
-  function create_fragment$f(ctx) {
+  function create_fragment$g(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -16971,7 +16971,7 @@
     var current;
     var if_block =
     /*confirmation*/
-    ctx[6] && create_if_block$6(ctx);
+    ctx[6] && create_if_block$7(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -17035,7 +17035,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$6(ctx);
+            if_block = create_if_block$7(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(t0.parentNode, t0);
@@ -17098,7 +17098,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -17157,7 +17157,7 @@
       _classCallCheck$1(this, DeleteButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -17271,7 +17271,7 @@
     append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
   }
 
-  function create_fragment$e(ctx) {
+  function create_fragment$f(ctx) {
     let div;
     let raw_value =
     /*getOptionLabel*/
@@ -17324,7 +17324,7 @@
     };
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -17400,7 +17400,7 @@
   class Item$1 extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
+      init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -17419,7 +17419,7 @@
     append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
   }
 
-  function get_each_context$5(ctx, list, i) {
+  function get_each_context$6(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[41] = list[i];
     child_ctx[42] = i;
@@ -17436,7 +17436,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
+      each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
     }
 
     const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -17486,13 +17486,13 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$5(ctx, each_value, i);
+            const child_ctx = get_each_context$6(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
               transition_in(each_blocks[i], 1);
             } else {
-              each_blocks[i] = create_each_block$5(child_ctx);
+              each_blocks[i] = create_each_block$6(child_ctx);
               each_blocks[i].c();
               transition_in(each_blocks[i], 1);
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -17550,7 +17550,7 @@
   } // (286:4) {#if isVirtualList}
 
 
-  function create_if_block$5(ctx) {
+  function create_if_block$6(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
@@ -17678,7 +17678,7 @@
     let if_block_anchor;
     let if_block = !
     /*hideEmptyState*/
-    ctx[11] && create_if_block_2$3(ctx);
+    ctx[11] && create_if_block_2$2(ctx);
     return {
       c() {
         if (if_block) if_block.c();
@@ -17697,7 +17697,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_2$3(ctx);
+            if_block = create_if_block_2$2(ctx);
             if_block.c();
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
           }
@@ -17716,7 +17716,7 @@
   } // (332:12) {#if !hideEmptyState}
 
 
-  function create_if_block_2$3(ctx) {
+  function create_if_block_2$2(ctx) {
     let div;
     let t;
     return {
@@ -17947,7 +17947,7 @@
   } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
 
 
-  function create_if_block_1$3(ctx) {
+  function create_if_block_1$4(ctx) {
     let div;
     let t_value =
     /*getGroupHeaderLabel*/
@@ -17988,12 +17988,12 @@
   } // (310:8) {#each items as item, i}
 
 
-  function create_each_block$5(ctx) {
+  function create_each_block$6(ctx) {
     let current_block_type_index;
     let if_block;
     let if_block_anchor;
     let current;
-    const if_block_creators = [create_if_block_1$3, create_else_block_1];
+    const if_block_creators = [create_if_block_1$4, create_else_block_1];
     const if_blocks = [];
 
     function select_block_type_1(ctx, dirty) {
@@ -18267,14 +18267,14 @@
     };
   }
 
-  function create_fragment$d(ctx) {
+  function create_fragment$e(ctx) {
     let div;
     let current_block_type_index;
     let if_block;
     let current;
     let mounted;
     let dispose;
-    const if_block_creators = [create_if_block$5, create_else_block$1];
+    const if_block_creators = [create_if_block$6, create_else_block$1];
     const if_blocks = [];
 
     function select_block_type(ctx, dirty) {
@@ -18399,7 +18399,7 @@
     return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
   }
 
-  function instance$c($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -18694,7 +18694,7 @@
   class List extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
+      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
         container: 0,
         VirtualList: 3,
         Item: 4,
@@ -18727,7 +18727,7 @@
     append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
   }
 
-  function create_fragment$c(ctx) {
+  function create_fragment$d(ctx) {
     let div;
     let raw_value =
     /*getSelectionLabel*/
@@ -18765,7 +18765,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -18784,7 +18784,7 @@
   class Selection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
+      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       }, add_css$3);
@@ -18798,7 +18798,7 @@
     append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
   }
 
-  function get_each_context$4(ctx, list, i) {
+  function get_each_context$5(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[9] = list[i];
     child_ctx[11] = i;
@@ -18806,7 +18806,7 @@
   } // (87:8) {#if !isDisabled && !multiFullItemClearable}
 
 
-  function create_if_block$4(ctx) {
+  function create_if_block$5(ctx) {
     let div;
     let mounted;
     let dispose;
@@ -18850,7 +18850,7 @@
   } // (77:0) {#each value as item, i}
 
 
-  function create_each_block$4(ctx) {
+  function create_each_block$5(ctx) {
     let div1;
     let div0;
     let raw_value =
@@ -18867,7 +18867,7 @@
     /*isDisabled*/
     ctx[2] && !
     /*multiFullItemClearable*/
-    ctx[3] && create_if_block$4(ctx);
+    ctx[3] && create_if_block$5(ctx);
 
     function click_handler_1(...args) {
       return (
@@ -18927,7 +18927,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$4(ctx);
+            if_block = create_if_block$5(ctx);
             if_block.c();
             if_block.m(div1, t1);
           }
@@ -18959,7 +18959,7 @@
     };
   }
 
-  function create_fragment$b(ctx) {
+  function create_fragment$c(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -18967,7 +18967,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
+      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
     }
 
     return {
@@ -18997,12 +18997,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$4(ctx, each_value, i);
+            const child_ctx = get_each_context$5(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$4(child_ctx);
+              each_blocks[i] = create_each_block$5(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -19027,7 +19027,7 @@
     };
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       value = []
@@ -19070,7 +19070,7 @@
   class MultiSelection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
+      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
         value: 0,
         activeValue: 1,
         isDisabled: 2,
@@ -19087,7 +19087,7 @@
     append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
   }
 
-  function get_each_context$3(ctx, list, i) {
+  function get_each_context$4(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     return child_ctx;
@@ -19137,7 +19137,7 @@
   } // (152:8) {#each visible as row (row.index)}
 
 
-  function create_each_block$3(key_1, ctx) {
+  function create_each_block$4(key_1, ctx) {
     let svelte_virtual_list_row;
     let t;
     let current;
@@ -19208,7 +19208,7 @@
     };
   }
 
-  function create_fragment$a(ctx) {
+  function create_fragment$b(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -19226,9 +19226,9 @@
     ctx[23].index;
 
     for (let i = 0; i < each_value.length; i += 1) {
-      let child_ctx = get_each_context$3(ctx, each_value, i);
+      let child_ctx = get_each_context$4(ctx, each_value, i);
       let key = get_key(child_ctx);
-      each_1_lookup.set(key, each_blocks[i] = create_each_block$3(key, child_ctx));
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$4(key, child_ctx));
     }
 
     return {
@@ -19291,7 +19291,7 @@
           /*visible*/
           ctx[5];
           group_outros();
-          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$3, null, get_each_context$3);
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$4, null, get_each_context$4);
           check_outros();
         }
 
@@ -19359,7 +19359,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -19539,7 +19539,7 @@
   class VirtualList extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$9, create_fragment$a, safe_not_equal, {
+      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -19553,7 +19553,7 @@
 
   /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.44.2 */
 
-  function create_fragment$9(ctx) {
+  function create_fragment$a(ctx) {
     let svg;
     let path;
     return {
@@ -19589,7 +19589,7 @@
   class ClearIcon extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, null, create_fragment$9, safe_not_equal, {});
+      init$2(this, options, null, create_fragment$a, safe_not_equal, {});
     }
 
   }
@@ -19618,7 +19618,7 @@
     append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
   }
 
-  function get_each_context$2(ctx, list, i) {
+  function get_each_context$3(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[103] = list[i];
     return child_ctx;
@@ -20218,7 +20218,7 @@
   } // (948:4) {#if isWaiting}
 
 
-  function create_if_block_3$2(ctx) {
+  function create_if_block_3$1(ctx) {
     let div;
     return {
       c() {
@@ -20239,7 +20239,7 @@
   } // (964:4) {#if listOpen}
 
 
-  function create_if_block_2$2(ctx) {
+  function create_if_block_2$1(ctx) {
     let switch_instance;
     let updating_hoverItemIndex;
     let switch_instance_anchor;
@@ -20378,7 +20378,7 @@
   } // (974:4) {#if !isMulti || (isMulti && !showMultiSelect)}
 
 
-  function create_if_block_1$2(ctx) {
+  function create_if_block_1$3(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20433,7 +20433,7 @@
   } // (981:4) {#if isMulti && showMultiSelect}
 
 
-  function create_if_block$3(ctx) {
+  function create_if_block$4(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -20441,7 +20441,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     }
 
     return {
@@ -20471,12 +20471,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$2(ctx, each_value, i);
+            const child_ctx = get_each_context$3(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$2(child_ctx);
+              each_blocks[i] = create_each_block$3(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -20499,7 +20499,7 @@
   } // (982:8) {#each value as item}
 
 
-  function create_each_block$2(ctx) {
+  function create_each_block$3(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20553,7 +20553,7 @@
     };
   }
 
-  function create_fragment$8(ctx) {
+  function create_fragment$9(ctx) {
     let div;
     let span;
     let t0;
@@ -20637,22 +20637,22 @@
     ctx[29])) && create_if_block_4$1(ctx);
     let if_block6 =
     /*isWaiting*/
-    ctx[4] && create_if_block_3$2();
+    ctx[4] && create_if_block_3$1();
     let if_block7 =
     /*listOpen*/
-    ctx[5] && create_if_block_2$2(ctx);
+    ctx[5] && create_if_block_2$1(ctx);
     let if_block8 = (!
     /*isMulti*/
     ctx[7] ||
     /*isMulti*/
     ctx[7] && !
     /*showMultiSelect*/
-    ctx[35]) && create_if_block_1$2(ctx);
+    ctx[35]) && create_if_block_1$3(ctx);
     let if_block9 =
     /*isMulti*/
     ctx[7] &&
     /*showMultiSelect*/
-    ctx[35] && create_if_block$3(ctx);
+    ctx[35] && create_if_block$4(ctx);
     return {
       c() {
         div = element("div");
@@ -20955,7 +20955,7 @@
         /*isWaiting*/
         ctx[4]) {
           if (if_block6) ; else {
-            if_block6 = create_if_block_3$2();
+            if_block6 = create_if_block_3$1();
             if_block6.c();
             if_block6.m(div, t7);
           }
@@ -20976,7 +20976,7 @@
               transition_in(if_block7, 1);
             }
           } else {
-            if_block7 = create_if_block_2$2(ctx);
+            if_block7 = create_if_block_2$1(ctx);
             if_block7.c();
             transition_in(if_block7, 1);
             if_block7.m(div, t8);
@@ -20999,7 +20999,7 @@
           if (if_block8) {
             if_block8.p(ctx, dirty);
           } else {
-            if_block8 = create_if_block_1$2(ctx);
+            if_block8 = create_if_block_1$3(ctx);
             if_block8.c();
             if_block8.m(div, t9);
           }
@@ -21016,7 +21016,7 @@
           if (if_block9) {
             if_block9.p(ctx, dirty);
           } else {
-            if_block9 = create_if_block$3(ctx);
+            if_block9 = create_if_block$4(ctx);
             if_block9.c();
             if_block9.m(div, null);
           }
@@ -21128,7 +21128,7 @@
     });
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     let filteredItems;
     let showSelectedItem;
     let showClearIcon;
@@ -22036,7 +22036,7 @@
   class Select extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$8, create_fragment$8, safe_not_equal, {
+      init$2(this, options, instance$9, create_fragment$9, safe_not_equal, {
         id: 46,
         container: 0,
         input: 6,
@@ -22341,21 +22341,14 @@
   dist$1.generateRemoteUrl;
   dist$1.linkTo;
 
-  function get_each_context$1(ctx, list, i) {
-    var child_ctx = ctx.slice();
-    child_ctx[15] = list[i];
-    child_ctx[17] = i;
-    return child_ctx;
-  }
-
-  function get_each_context_1$1(ctx, list, i) {
+  function get_each_context$2(ctx, list, i) {
     var child_ctx = ctx.slice();
     child_ctx[15] = list[i];
     return child_ctx;
-  } // (70:0) {#if dialogVisible}
+  } // (72:0) {#if dialogVisible}
 
 
-  function create_if_block_2$1(ctx) {
+  function create_if_block$3(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -22380,8 +22373,8 @@
         var overlay_changes = {};
 
         if (dirty &
-        /*$$scope, shares, deleteShareAction, requestToken, clientUuid, selectedSharee*/
-        1048670) {
+        /*$$scope, sharees, deleteShareAction, requestToken, clientUuid, selectedSharee*/
+        262238) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -22403,10 +22396,10 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (85:4) {#if !shares || !shares.length}
+  } // (87:4) {#if !sharees || !sharees.length}
 
 
-  function create_if_block_3$1(ctx) {
+  function create_if_block_1$2(ctx) {
     var p;
     var em;
     return {
@@ -22424,10 +22417,10 @@
         if (detaching) detach(p);
       }
     };
-  } // (91:5) {#each shares as share}
+  } // (93:5) {#each sharees as sharee}
 
 
-  function create_each_block_1$1(ctx) {
+  function create_each_block$2(ctx) {
     var li;
     var figure;
     var img;
@@ -22435,9 +22428,11 @@
     var img_srcset_value;
     var t0;
     var figcaption;
-    var t1_value =
-    /*share*/
-    ctx[15].recipient_user_id + "";
+    var t1_value = (
+    /*sharee*/
+    ctx[15].recipient_display_name ||
+    /*sharee*/
+    ctx[15].recipient_user_id) + "";
     var t1;
     var t2;
     var form_1;
@@ -22470,14 +22465,14 @@
         button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
         t7 = space$1();
         if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
         attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/128")), " 4x"));
         attr(img, "alt", "");
         attr(input0, "type", "hidden");
@@ -22488,7 +22483,7 @@
         attr(input1, "type", "hidden");
         attr(input1, "name", "uuid");
         input1.value = input1_value_value =
-        /*share*/
+        /*sharee*/
         ctx[15].uuid;
         attr(input2, "type", "hidden");
         attr(input2, "name", "requesttoken");
@@ -22524,30 +22519,32 @@
       },
       p: function p(ctx, dirty) {
         if (dirty &
-        /*shares*/
+        /*sharees*/
         4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/32")))) {
           attr(img, "src", img_src_value);
         }
 
         if (dirty &
-        /*shares*/
+        /*sharees*/
         4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
-        /*share*/
+        /*sharee*/
         ctx[15].recipient_user_id, "/128")), " 4x"))) {
           attr(img, "srcset", img_srcset_value);
         }
 
         if (dirty &
-        /*shares*/
-        4 && t1_value !== (t1_value =
-        /*share*/
-        ctx[15].recipient_user_id + "")) set_data(t1, t1_value);
+        /*sharees*/
+        4 && t1_value !== (t1_value = (
+        /*sharee*/
+        ctx[15].recipient_display_name ||
+        /*sharee*/
+        ctx[15].recipient_user_id) + "")) set_data(t1, t1_value);
 
         if (dirty &
         /*clientUuid*/
@@ -22558,9 +22555,9 @@
         }
 
         if (dirty &
-        /*shares*/
+        /*sharees*/
         4 && input1_value_value !== (input1_value_value =
-        /*share*/
+        /*sharee*/
         ctx[15].uuid)) {
           input1.value = input1_value_value;
         }
@@ -22585,7 +22582,7 @@
         if (detaching) detach(li);
       }
     };
-  } // (71:1) <Overlay>
+  } // (73:1) <Overlay>
 
 
   function create_default_slot$1(ctx) {
@@ -22628,17 +22625,17 @@
     /*handleSelectSharee*/
     ctx[11]);
     var if_block = (!
-    /*shares*/
+    /*sharees*/
     ctx[2] || !
-    /*shares*/
-    ctx[2].length) && create_if_block_3$1();
-    var each_value_1 =
-    /*shares*/
+    /*sharees*/
+    ctx[2].length) && create_if_block_1$2();
+    var each_value =
+    /*sharees*/
     ctx[2];
     var each_blocks = [];
 
-    for (var i = 0; i < each_value_1.length; i += 1) {
-      each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
     }
 
     return {
@@ -22721,14 +22718,14 @@
         select.$set(select_changes);
 
         if (!
-        /*shares*/
+        /*sharees*/
         ctx[2] || !
-        /*shares*/
+        /*sharees*/
         ctx[2].length) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_3$1();
+            if_block = create_if_block_1$2();
             if_block.c();
             if_block.m(div0, t5);
           }
@@ -22738,21 +22735,21 @@
         }
 
         if (dirty &
-        /*deleteShareAction, translate, requestToken, shares, clientUuid, generateUrl*/
+        /*deleteShareAction, translate, requestToken, sharees, clientUuid, generateUrl*/
         30) {
-          each_value_1 =
-          /*shares*/
+          each_value =
+          /*sharees*/
           ctx[2];
 
           var _i3;
 
-          for (_i3 = 0; _i3 < each_value_1.length; _i3 += 1) {
-            var child_ctx = get_each_context_1$1(ctx, each_value_1, _i3);
+          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+            var child_ctx = get_each_context$2(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block_1$1(child_ctx);
+              each_blocks[_i3] = create_each_block$2(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -22764,7 +22761,7 @@
             each_blocks[_i3].d(1);
           }
 
-          each_blocks.length = each_value_1.length;
+          each_blocks.length = each_value.length;
         }
       },
       i: function i(local) {
@@ -22785,196 +22782,9 @@
         run_all(dispose);
       }
     };
-  } // (128:0) {#if shares && shares.length}
-
-
-  function create_if_block$2(ctx) {
-    var ul;
-    var li;
-    var t1;
-    var each_value =
-    /*shares*/
-    ctx[2];
-    var each_blocks = [];
-
-    for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
-    }
-
-    return {
-      c: function c() {
-        ul = element("ul");
-        li = element("li");
-        li.textContent = "".concat(dist_4$1('timemanager', 'Shared with'));
-        t1 = space$1();
-
-        for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
-          each_blocks[_i4].c();
-        }
-
-        attr(ul, "class", "existing-sharees");
-      },
-      m: function m(target, anchor) {
-        insert(target, ul, anchor);
-        append(ul, li);
-        append(ul, t1);
-
-        for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
-          each_blocks[_i5].m(ul, null);
-        }
-      },
-      p: function p(ctx, dirty) {
-        if (dirty &
-        /*shares, generateUrl*/
-        4) {
-          each_value =
-          /*shares*/
-          ctx[2];
-
-          var _i6;
-
-          for (_i6 = 0; _i6 < each_value.length; _i6 += 1) {
-            var child_ctx = get_each_context$1(ctx, each_value, _i6);
-
-            if (each_blocks[_i6]) {
-              each_blocks[_i6].p(child_ctx, dirty);
-            } else {
-              each_blocks[_i6] = create_each_block$1(child_ctx);
-
-              each_blocks[_i6].c();
-
-              each_blocks[_i6].m(ul, null);
-            }
-          }
-
-          for (; _i6 < each_blocks.length; _i6 += 1) {
-            each_blocks[_i6].d(1);
-          }
-
-          each_blocks.length = each_value.length;
-        }
-      },
-      d: function d(detaching) {
-        if (detaching) detach(ul);
-        destroy_each(each_blocks, detaching);
-      }
-    };
-  } // (139:4) {#if index < shares.length - 1}
-
-
-  function create_if_block_1$1(ctx) {
-    var t;
-    return {
-      c: function c() {
-        t = text(" ·");
-      },
-      m: function m(target, anchor) {
-        insert(target, t, anchor);
-      },
-      d: function d(detaching) {
-        if (detaching) detach(t);
-      }
-    };
-  } // (131:2) {#each shares as share, index}
-
-
-  function create_each_block$1(ctx) {
-    var li;
-    var img;
-    var img_src_value;
-    var img_srcset_value;
-    var t0;
-    var t1_value =
-    /*share*/
-    ctx[15].recipient_user_id + "";
-    var t1;
-    var t2;
-    var t3;
-    var if_block =
-    /*index*/
-    ctx[17] <
-    /*shares*/
-    ctx[2].length - 1 && create_if_block_1$1();
-    return {
-      c: function c() {
-        li = element("li");
-        img = element("img");
-        t0 = space$1();
-        t1 = text(t1_value);
-        t2 = space$1();
-        if (if_block) if_block.c();
-        t3 = space$1();
-        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
-        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/128")), " 4x"));
-        attr(img, "alt", "");
-      },
-      m: function m(target, anchor) {
-        insert(target, li, anchor);
-        append(li, img);
-        append(li, t0);
-        append(li, t1);
-        append(li, t2);
-        if (if_block) if_block.m(li, null);
-        append(li, t3);
-      },
-      p: function p(ctx, dirty) {
-        if (dirty &
-        /*shares*/
-        4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/32")))) {
-          attr(img, "src", img_src_value);
-        }
-
-        if (dirty &
-        /*shares*/
-        4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
-        /*share*/
-        ctx[15].recipient_user_id, "/128")), " 4x"))) {
-          attr(img, "srcset", img_srcset_value);
-        }
-
-        if (dirty &
-        /*shares*/
-        4 && t1_value !== (t1_value =
-        /*share*/
-        ctx[15].recipient_user_id + "")) set_data(t1, t1_value);
-
-        if (
-        /*index*/
-        ctx[17] <
-        /*shares*/
-        ctx[2].length - 1) {
-          if (if_block) ; else {
-            if_block = create_if_block_1$1();
-            if_block.c();
-            if_block.m(li, t3);
-          }
-        } else if (if_block) {
-          if_block.d(1);
-          if_block = null;
-        }
-      },
-      d: function d(detaching) {
-        if (detaching) detach(li);
-        if (if_block) if_block.d();
-      }
-    };
   }
 
-  function create_fragment$7(ctx) {
+  function create_fragment$8(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -22985,20 +22795,13 @@
     var input2;
     var t3;
     var button;
-    var t5;
-    var if_block1_anchor;
     var current;
-    var if_block0 =
+    var if_block =
     /*dialogVisible*/
-    ctx[7] && create_if_block_2$1(ctx);
-    var if_block1 =
-    /*shares*/
-    ctx[2] &&
-    /*shares*/
-    ctx[2].length && create_if_block$2(ctx);
+    ctx[7] && create_if_block$3(ctx);
     return {
       c: function c() {
-        if (if_block0) if_block0.c();
+        if (if_block) if_block.c();
         t0 = space$1();
         form_1 = element("form");
         input0 = element("input");
@@ -23009,9 +22812,6 @@
         t3 = space$1();
         button = element("button");
         button.textContent = "".concat(dist_4$1('timemanager', 'Share client'));
-        t5 = space$1();
-        if (if_block1) if_block1.c();
-        if_block1_anchor = empty();
         attr(input0, "type", "hidden");
         attr(input0, "name", "client_uuid");
         input0.value =
@@ -23039,7 +22839,7 @@
         attr(form_1, "method", "post");
       },
       m: function m(target, anchor) {
-        if (if_block0) if_block0.m(target, anchor);
+        if (if_block) if_block.m(target, anchor);
         insert(target, t0, anchor);
         insert(target, form_1, anchor);
         append(form_1, input0);
@@ -23052,9 +22852,6 @@
         /*form_1_binding*/
 
         ctx[13](form_1);
-        insert(target, t5, anchor);
-        if (if_block1) if_block1.m(target, anchor);
-        insert(target, if_block1_anchor, anchor);
         current = true;
       },
       p: function p(ctx, _ref) {
@@ -23064,24 +22861,24 @@
         if (
         /*dialogVisible*/
         ctx[7]) {
-          if (if_block0) {
-            if_block0.p(ctx, dirty);
+          if (if_block) {
+            if_block.p(ctx, dirty);
 
             if (dirty &
             /*dialogVisible*/
             128) {
-              transition_in(if_block0, 1);
+              transition_in(if_block, 1);
             }
           } else {
-            if_block0 = create_if_block_2$1(ctx);
-            if_block0.c();
-            transition_in(if_block0, 1);
-            if_block0.m(t0.parentNode, t0);
+            if_block = create_if_block$3(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
           }
-        } else if (if_block0) {
+        } else if (if_block) {
           group_outros();
-          transition_out(if_block0, 1, 1, function () {
-            if_block0 = null;
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
           });
           check_outros();
         }
@@ -23119,52 +22916,32 @@
           /*shareAction*/
           ctx[0]);
         }
-
-        if (
-        /*shares*/
-        ctx[2] &&
-        /*shares*/
-        ctx[2].length) {
-          if (if_block1) {
-            if_block1.p(ctx, dirty);
-          } else {
-            if_block1 = create_if_block$2(ctx);
-            if_block1.c();
-            if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
-          }
-        } else if (if_block1) {
-          if_block1.d(1);
-          if_block1 = null;
-        }
       },
       i: function i(local) {
         if (current) return;
-        transition_in(if_block0);
+        transition_in(if_block);
         current = true;
       },
       o: function o(local) {
-        transition_out(if_block0);
+        transition_out(if_block);
         current = false;
       },
       d: function d(detaching) {
-        if (if_block0) if_block0.d(detaching);
+        if (if_block) if_block.d(detaching);
         if (detaching) detach(t0);
         if (detaching) detach(form_1);
         /*form_1_binding*/
 
         ctx[13](null);
-        if (detaching) detach(t5);
-        if (if_block1) if_block1.d(detaching);
-        if (detaching) detach(if_block1_anchor);
       }
     };
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$8($$self, $$props, $$invalidate) {
     var dialogVisible;
     var shareAction = $$props.shareAction;
     var deleteShareAction = $$props.deleteShareAction;
-    var shares = $$props.shares;
+    var sharees = $$props.sharees;
     var clientUuid = $$props.clientUuid;
     var requestToken = $$props.requestToken;
     var userId = $$props.userId;
@@ -23172,10 +22949,13 @@
     var selectedSharee;
     onMount(function () {
       Helpers.hideFallbacks("ShareDialog.svelte");
-      form.addEventListener("submit", submit);
-      return function () {
-        form.removeEventListener("submit", submit);
-      };
+
+      if (form) {
+        form.addEventListener("submit", submit);
+        return function () {
+          form.removeEventListener("submit", submit);
+        };
+      }
     });
 
     var submit = function submit(e) {
@@ -23226,7 +23006,7 @@
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
-                existing = shares.map(function (share) {
+                existing = sharees.map(function (share) {
                   return share.recipient_user_id;
                 });
                 return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)).filter(function (user) {
@@ -23264,7 +23044,7 @@
     $$self.$$set = function ($$props) {
       if ('shareAction' in $$props) $$invalidate(0, shareAction = $$props.shareAction);
       if ('deleteShareAction' in $$props) $$invalidate(1, deleteShareAction = $$props.deleteShareAction);
-      if ('shares' in $$props) $$invalidate(2, shares = $$props.shares);
+      if ('sharees' in $$props) $$invalidate(2, sharees = $$props.sharees);
       if ('clientUuid' in $$props) $$invalidate(3, clientUuid = $$props.clientUuid);
       if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
       if ('userId' in $$props) $$invalidate(12, userId = $$props.userId);
@@ -23272,7 +23052,7 @@
 
     $$invalidate(7, dialogVisible = false);
 
-    return [shareAction, deleteShareAction, shares, clientUuid, requestToken, form, selectedSharee, dialogVisible, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
+    return [shareAction, deleteShareAction, sharees, clientUuid, requestToken, form, selectedSharee, dialogVisible, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
   }
 
   var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -23286,10 +23066,10 @@
       _classCallCheck$1(this, ShareDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
         shareAction: 0,
         deleteShareAction: 1,
-        shares: 2,
+        sharees: 2,
         clientUuid: 3,
         requestToken: 4,
         userId: 12
@@ -23298,6 +23078,354 @@
     }
 
     return ShareDialog;
+  }(SvelteComponent);
+
+  function get_each_context$1(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[5] = list[i];
+    child_ctx[7] = i;
+    return child_ctx;
+  } // (19:0) {#if sharees && sharees.length}
+
+
+  function create_if_block_1$1(ctx) {
+    var ul;
+    var li;
+    var t1;
+    var each_value =
+    /*sharees*/
+    ctx[0];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    }
+
+    return {
+      c: function c() {
+        ul = element("ul");
+        li = element("li");
+        li.textContent = "".concat(dist_4$1('timemanager', 'Shared with'));
+        t1 = space$1();
+
+        for (var _i = 0; _i < each_blocks.length; _i += 1) {
+          each_blocks[_i].c();
+        }
+
+        attr(li, "class", "tm_label");
+        attr(ul, "class", "existing-sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, ul, anchor);
+        append(ul, li);
+        append(ul, t1);
+
+        for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+          each_blocks[_i2].m(ul, null);
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharees, generateUrl*/
+        1) {
+          each_value =
+          /*sharees*/
+          ctx[0];
+
+          var _i3;
+
+          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+            var child_ctx = get_each_context$1(ctx, each_value, _i3);
+
+            if (each_blocks[_i3]) {
+              each_blocks[_i3].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i3] = create_each_block$1(child_ctx);
+
+              each_blocks[_i3].c();
+
+              each_blocks[_i3].m(ul, null);
+            }
+          }
+
+          for (; _i3 < each_blocks.length; _i3 += 1) {
+            each_blocks[_i3].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(ul);
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  } // (22:2) {#each sharees as sharee, index}
+
+
+  function create_each_block$1(ctx) {
+    var li;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t0;
+    var t1_value = (
+    /*sharee*/
+    ctx[5].recipient_display_name ||
+    /*sharee*/
+    ctx[5].recipient_user_id) + "";
+    var t1;
+    var t2;
+    return {
+      c: function c() {
+        li = element("li");
+        img = element("img");
+        t0 = space$1();
+        t1 = text(t1_value);
+        t2 = space$1();
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+      },
+      m: function m(target, anchor) {
+        insert(target, li, anchor);
+        append(li, img);
+        append(li, t0);
+        append(li, t1);
+        append(li, t2);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharees*/
+        1 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        1 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[5].recipient_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        1 && t1_value !== (t1_value = (
+        /*sharee*/
+        ctx[5].recipient_display_name ||
+        /*sharee*/
+        ctx[5].recipient_user_id) + "")) set_data(t1, t1_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(li);
+      }
+    };
+  } // (35:0) {#if sharedBy}
+
+
+  function create_if_block$2(ctx) {
+    var ul;
+    var li0;
+    var t1;
+    var li1;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t2;
+    var t3_value = (
+    /*sharedBy*/
+    ctx[1].author_display_name ||
+    /*sharedBy*/
+    ctx[1].author_user_id) + "";
+    var t3;
+    return {
+      c: function c() {
+        ul = element("ul");
+        li0 = element("li");
+        li0.textContent = "".concat(dist_4$1('timemanager', 'Shared with you by'));
+        t1 = space$1();
+        li1 = element("li");
+        img = element("img");
+        t2 = space$1();
+        t3 = text(t3_value);
+        attr(li0, "class", "tm_label");
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+        attr(ul, "class", "existing-sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, ul, anchor);
+        append(ul, li0);
+        append(ul, t1);
+        append(ul, li1);
+        append(li1, img);
+        append(li1, t2);
+        append(li1, t3);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharedBy*/
+        2 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*sharedBy*/
+        2 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*sharedBy*/
+        2 && t3_value !== (t3_value = (
+        /*sharedBy*/
+        ctx[1].author_display_name ||
+        /*sharedBy*/
+        ctx[1].author_user_id) + "")) set_data(t3, t3_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(ul);
+      }
+    };
+  }
+
+  function create_fragment$7(ctx) {
+    var t;
+    var if_block1_anchor;
+    var if_block0 =
+    /*sharees*/
+    ctx[0] &&
+    /*sharees*/
+    ctx[0].length && create_if_block_1$1(ctx);
+    var if_block1 =
+    /*sharedBy*/
+    ctx[1] && create_if_block$2(ctx);
+    return {
+      c: function c() {
+        if (if_block0) if_block0.c();
+        t = space$1();
+        if (if_block1) if_block1.c();
+        if_block1_anchor = empty();
+      },
+      m: function m(target, anchor) {
+        if (if_block0) if_block0.m(target, anchor);
+        insert(target, t, anchor);
+        if (if_block1) if_block1.m(target, anchor);
+        insert(target, if_block1_anchor, anchor);
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*sharees*/
+        ctx[0] &&
+        /*sharees*/
+        ctx[0].length) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
+          } else {
+            if_block0 = create_if_block_1$1(ctx);
+            if_block0.c();
+            if_block0.m(t.parentNode, t);
+          }
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+
+        if (
+        /*sharedBy*/
+        ctx[1]) {
+          if (if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if_block1 = create_if_block$2(ctx);
+            if_block1.c();
+            if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+      },
+      i: noop$1,
+      o: noop$1,
+      d: function d(detaching) {
+        if (if_block0) if_block0.d(detaching);
+        if (detaching) detach(t);
+        if (if_block1) if_block1.d(detaching);
+        if (detaching) detach(if_block1_anchor);
+      }
+    };
+  }
+
+  function instance$7($$self, $$props, $$invalidate) {
+    var sharees = $$props.sharees;
+    var sharedBy = $$props.sharedBy;
+    onMount(function () {
+      Helpers.hideFallbacks("ShareDialog.svelte");
+    });
+
+    $$self.$$set = function ($$props) {
+      if ('sharees' in $$props) $$invalidate(0, sharees = $$props.sharees);
+      if ('sharedBy' in $$props) $$invalidate(1, sharedBy = $$props.sharedBy);
+    };
+
+    return [sharees, sharedBy];
+  }
+
+  var ShareStatus = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ShareStatus, _SvelteComponent);
+
+    var _super = _createSuper(ShareStatus);
+
+    function ShareStatus(options) {
+      var _this;
+
+      _classCallCheck$1(this, ShareStatus);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        sharees: 0,
+        sharedBy: 1
+      });
+      return _this;
+    }
+
+    return ShareStatus;
   }(SvelteComponent);
 
   function create_if_block$1(ctx) {
@@ -38007,6 +38135,13 @@
     components.push(safelyCreateComponent({
       component: ShareDialog,
       selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
+    }));
+    components.push(safelyCreateComponent({
+      component: ShareStatus,
+      selector: "#content.app-timemanager [data-svelte='ShareStatus.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })
