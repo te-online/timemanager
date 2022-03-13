@@ -1,5 +1,8 @@
 image: docker/compose:latest
 
+services:
+  - docker:dind
+
 stages:
   - test
 
