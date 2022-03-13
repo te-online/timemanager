@@ -644,15 +644,21 @@ label {
 }
 
 .existing-sharees {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+
 	li {
 		list-style-type: none;
 		margin-bottom: 5px;
+		margin-right: 5px;
 		display: flex;
 		align-items: center;
+		min-height: 32px;
 
-		&:nth-child(2) {
-			margin-top: 5px;
-			min-height: 32px;
+		&:first-child {
+			flex: 100%;
+			min-height: auto;
 		}
 
 		img {
