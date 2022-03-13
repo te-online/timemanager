@@ -334,6 +334,27 @@ class PageController extends Controller {
 				$clients[$index]->project_count = $this->clientMapper->countProjects($client->getUuid());
 				// Sum up client times
 				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
+				// Get sharees, if user has shared this client
+				$clients[$index]->sharees = array_map(function ($share) {
+					$share_array = $share->toArray();
+					$user = $this->userManager->get($share->getRecipientUserId());
+					if ($user instanceof IUser) {
+						$share_array["recipient_display_name"] = $user->getDisplayName();
+					}
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client->getUuid()));
+				// Get share author, if client is shared with current user
+				$sharedByList = $this->shareMapper->findSharerForClient($client->getUuid());
+				$sharedBy = null;
+				if (count($sharedByList) > 0) {
+					$sharedBy = $sharedByList[0]->toArray();
+					$user = $this->userManager->get($sharedBy["author_user_id"]);
+					if ($user instanceof IUser) {
+						$sharedBy["author_display_name"] = $user->getDisplayName();
+					}
+				}
+				$clients[$index]->sharedBy = $sharedBy;
 			}
 		}
 
@@ -491,7 +512,16 @@ class PageController extends Controller {
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
 
-		$sharees = $this->shareMapper->findShareesForClient($client_uuid);
+		$sharees = array_map(function ($share) {
+			$share_array = $share->toArray();
+			$user = $this->userManager->get($share->getRecipientUserId());
+			if ($user instanceof IUser) {
+				$share_array["recipient_display_name"] = $user->getDisplayName();
+			}
+
+			return $share_array;
+		}, $this->shareMapper->findShareesForClient($client_uuid));
+
 		$sharedByList = $this->shareMapper->findSharerForClient($client_uuid);
 		$sharedBy = null;
 		if (count($sharedByList) > 0) {
@@ -530,15 +560,7 @@ class PageController extends Controller {
 			),
 			"shareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
 			"deleteShareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
-			"sharees" => array_map(function ($share) {
-				$share_array = $share->toArray();
-				$user = $this->userManager->get($share->getRecipientUserId());
-				if ($user instanceof IUser) {
-					$share_array["recipient_display_name"] = $user->getDisplayName();
-				}
-
-				return $share_array;
-			}, $sharees),
+			"sharees" => $sharees,
 			"sharedBy" => $sharedBy,
 			"canEdit" => $sharedBy === null,
 			"userId" => $this->userId,
@@ -633,6 +655,7 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$sharedBy = null;
+		$sharees = [];
 		if ($project) {
 			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $project, "created", true);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $project, "created", true);
@@ -658,6 +681,16 @@ class PageController extends Controller {
 						$sharedBy["author_display_name"] = $user->getDisplayName();
 					}
 				}
+
+				$sharees = array_map(function ($share) {
+					$share_array = $share->toArray();
+					$user = $this->userManager->get($share->getRecipientUserId());
+					if ($user instanceof IUser) {
+						$share_array["recipient_display_name"] = $user->getDisplayName();
+					}
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
 			$tasks = $this->taskMapper->findActiveForCurrentUser();
@@ -704,6 +737,7 @@ class PageController extends Controller {
 				"name" => $project_name,
 			],
 			"sharedBy" => $sharedBy,
+			"sharees" => $sharees,
 			"canEdit" => $sharedBy === null,
 			"isServer" => true,
 		];
@@ -798,6 +832,7 @@ class PageController extends Controller {
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$tasks = $this->taskMapper->findActiveForCurrentUser();
 		$sharedBy = null;
+		$sharees = [];
 		if ($task) {
 			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start", true);
 			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task, "created", true);
@@ -833,6 +868,16 @@ class PageController extends Controller {
 						$sharedBy["author_display_name"] = $user->getDisplayName();
 					}
 				}
+
+				$sharees = array_map(function ($share) {
+					$share_array = $share->toArray();
+					$user = $this->userManager->get($share->getRecipientUserId());
+					if ($user instanceof IUser) {
+						$share_array["recipient_display_name"] = $user->getDisplayName();
+					}
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
 			$times = $this->timeMapper->findActiveForCurrentUser();
@@ -873,6 +918,7 @@ class PageController extends Controller {
 			"timeEditorCaption" => $l->t("New time entry"),
 			"editTimeEntryAction" => $urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"sharedBy" => $sharedBy,
+			"sharees" => $sharees,
 			"canEdit" => $sharedBy === null,
 			"isServer" => true,
 		];

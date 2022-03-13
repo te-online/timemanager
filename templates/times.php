@@ -30,17 +30,17 @@ $l = \OC::$server->getL10N('timemanager');
 						<span class="tm_label"><?php p($l->t('Created')); ?></span>
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
+					<div class="tm_object-details-item">
+						<span data-svelte="ShareStatus.svelte"></span>
+						<span data-svelte-hide="ShareStatus.svelte">
+							<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
+						</span>
+					</div>
 					<?php if($_['task'] && $_['canEdit']) { ?>
 						<span data-svelte="TaskEditorDialog.svelte"></span>
 						<span data-svelte="DeleteButton.svelte"></span>
 						<span data-svelte-hide="DeleteButton.svelte">
 							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
-						</span>
-					<?php } ?>
-					<?php if(!$_['canEdit']) { ?>
-						<span data-svelte="ShareStatus.svelte"></span>
-						<span data-svelte-hide="ShareStatus.svelte">
-							<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
 						</span>
 					<?php } ?>
 				</div>

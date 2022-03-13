@@ -23089,9 +23089,9 @@
 
 
   function create_if_block_1$1(ctx) {
-    var ul;
-    var li;
+    var span;
     var t1;
+    var ul;
     var each_value =
     /*sharees*/
     ctx[0];
@@ -23103,22 +23103,22 @@
 
     return {
       c: function c() {
-        ul = element("ul");
-        li = element("li");
-        li.textContent = "".concat(dist_4$1('timemanager', 'Shared with'));
+        span = element("span");
+        span.textContent = "".concat(dist_4$1('timemanager', 'Shared with'));
         t1 = space$1();
+        ul = element("ul");
 
         for (var _i = 0; _i < each_blocks.length; _i += 1) {
           each_blocks[_i].c();
         }
 
-        attr(li, "class", "tm_label");
+        attr(span, "class", "tm_label");
         attr(ul, "class", "existing-sharees");
       },
       m: function m(target, anchor) {
+        insert(target, span, anchor);
+        insert(target, t1, anchor);
         insert(target, ul, anchor);
-        append(ul, li);
-        append(ul, t1);
 
         for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
           each_blocks[_i2].m(ul, null);
@@ -23156,6 +23156,8 @@
         }
       },
       d: function d(detaching) {
+        if (detaching) detach(span);
+        if (detaching) detach(t1);
         if (detaching) detach(ul);
         destroy_each(each_blocks, detaching);
       }
@@ -23239,10 +23241,10 @@
 
 
   function create_if_block$2(ctx) {
-    var ul;
-    var li0;
+    var span;
     var t1;
-    var li1;
+    var ul;
+    var li;
     var img;
     var img_src_value;
     var img_srcset_value;
@@ -23255,15 +23257,15 @@
     var t3;
     return {
       c: function c() {
-        ul = element("ul");
-        li0 = element("li");
-        li0.textContent = "".concat(dist_4$1('timemanager', 'Shared with you by'));
+        span = element("span");
+        span.textContent = "".concat(dist_4$1('timemanager', 'Shared with you by'));
         t1 = space$1();
-        li1 = element("li");
+        ul = element("ul");
+        li = element("li");
         img = element("img");
         t2 = space$1();
         t3 = text(t3_value);
-        attr(li0, "class", "tm_label");
+        attr(span, "class", "tm_label");
         if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
         /*sharedBy*/
         ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
@@ -23278,13 +23280,13 @@
         attr(ul, "class", "existing-sharees");
       },
       m: function m(target, anchor) {
+        insert(target, span, anchor);
+        insert(target, t1, anchor);
         insert(target, ul, anchor);
-        append(ul, li0);
-        append(ul, t1);
-        append(ul, li1);
-        append(li1, img);
-        append(li1, t2);
-        append(li1, t3);
+        append(ul, li);
+        append(li, img);
+        append(li, t2);
+        append(li, t3);
       },
       p: function p(ctx, dirty) {
         if (dirty &
@@ -23316,6 +23318,8 @@
         ctx[1].author_user_id) + "")) set_data(t3, t3_value);
       },
       d: function d(detaching) {
+        if (detaching) detach(span);
+        if (detaching) detach(t1);
         if (detaching) detach(ul);
       }
     };

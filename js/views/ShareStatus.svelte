@@ -17,8 +17,8 @@
 </script>
 
 {#if sharees && sharees.length}
+	<span class="tm_label">{translate('timemanager', 'Shared with')}</span>
 	<ul class="existing-sharees">
-		<li class="tm_label">{translate('timemanager', 'Shared with')}</li>
 		{#each sharees as sharee, index}
 			<li>
 				<img
@@ -33,8 +33,8 @@
 {/if}
 
 {#if sharedBy}
+	<span class="tm_label">{translate('timemanager', 'Shared with you by')}</span>
 	<ul class="existing-sharees">
-		<li class="tm_label">{translate('timemanager', 'Shared with you by')}</li>
 		<li>
 			<img
 				src={generateUrl(`avatar/${sharedBy.author_user_id}/32`)}
