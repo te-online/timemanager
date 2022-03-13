@@ -1,41 +1,25 @@
-version: '3.4'
+version: "3.4"
 
 x-restart-policy: &restart_policy
   restart: unless-stopped
 x-logging-config: &logging_config
   logging:
-    driver: 'json-file'
+    driver: "json-file"
     options:
-      max-file: '10'
-      max-size: '50m'
+      max-file: "10"
+      max-size: "50m"
 
 volumes:
-  nginx-dhparam:
-  nginx-vhost:
-  nginx-html:
   nextcloud:
   db:
 
 services:
-  nginx-proxy:
-    <<: *restart_policy
-    <<: *logging_config
-    image: nginxproxy/nginx-proxy
-    container_name: nginx-proxy
-    ports:
-      - '8000:80'
-    volumes:
-      - nginx-html:/usr/share/nginx/html
-      - nginx-dhparam:/etc/nginx/dhparam
-      - nginx-vhost:/etc/nginx/vhost.d
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
   web:
-    <<: *restart_policy 
+    <<: *restart_policy
     <<: *logging_config
     image: nginx:alpine
     ports:
-      - 8080:80
+      - 8000:80
     links:
       - app
     volumes:
@@ -53,7 +37,7 @@ services:
     hostname: nextcloud-redis
     command: redis-server --requirepass df9dbf12f78f9bb9e9902ac99c3f32a834df91a7e1d07baeb2ca84ee4e4cb620
     ports:
-      - '6379:6379'
+      - "6379:6379"
 
   db:
     <<: *restart_policy
@@ -79,7 +63,7 @@ services:
       - redis
     volumes:
       - nextcloud:/var/www/html
-      - ../:/var/www/html/custom_apps/timemanager:ro
+      - ../:/var/www/html/custom_apps/timemanager
     environment:
       - REDIS_HOST=redis
       - MYSQL_DATABASE=nextcloud
