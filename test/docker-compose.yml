@@ -1,0 +1,89 @@
+version: '3.4'
+
+x-restart-policy: &restart_policy
+  restart: unless-stopped
+x-logging-config: &logging_config
+  logging:
+    driver: 'json-file'
+    options:
+      max-file: '10'
+      max-size: '50m'
+
+volumes:
+  nginx-dhparam:
+  nginx-vhost:
+  nginx-html:
+  nextcloud:
+  db:
+
+services:
+  nginx-proxy:
+    <<: *restart_policy
+    <<: *logging_config
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - '8000:80'
+    volumes:
+      - nginx-html:/usr/share/nginx/html
+      - nginx-dhparam:/etc/nginx/dhparam
+      - nginx-vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  web:
+    <<: *restart_policy 
+    <<: *logging_config
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    links:
+      - app
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - nextcloud:/var/www/html:ro
+      - ../:/var/www/html/custom_apps/timemanager:ro
+    environment:
+      - VIRTUAL_PORT=80
+      - VIRTUAL_HOST=nextcloud.localhost
+
+  redis:
+    <<: *restart_policy
+    <<: *logging_config
+    image: redis:alpine
+    hostname: nextcloud-redis
+    command: redis-server --requirepass df9dbf12f78f9bb9e9902ac99c3f32a834df91a7e1d07baeb2ca84ee4e4cb620
+    ports:
+      - '6379:6379'
+
+  db:
+    <<: *restart_policy
+    <<: *logging_config
+    image: mariadb:10.5
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=7fd7504c5d556c09bedfda10785574e2285952ba0c1796373d51aa8b278210c1
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    <<: *restart_policy
+    <<: *logging_config
+    image: nextcloud:stable-fpm-alpine
+    ports:
+      - 9000:9000
+    links:
+      - db
+      - redis
+    volumes:
+      - nextcloud:/var/www/html
+      - ../:/var/www/html/custom_apps/timemanager:ro
+    environment:
+      - REDIS_HOST=redis
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=7fd7504c5d556c09bedfda10785574e2285952ba0c1796373d51aa8b278210c1
+      - MYSQL_HOST=db
+      - REDIS_HOST_PASSWORD=df9dbf12f78f9bb9e9902ac99c3f32a834df91a7e1d07baeb2ca84ee4e4cb620
