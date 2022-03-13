@@ -9,9 +9,11 @@ stages:
 sync_api_test:
   script:
     - cd test
-    - docker-compose up
+    - docker-compose up -d
+    - sleep 30
     - docker exec -it $(docker ps -aqf "name=app") sh -c 'chown www-data:root custom_apps'
     - echo "Start cypress here"
     - echo "Navigate to homepage and enter admin username and password"
     - echo "Skip onboarding and navigate to TimeManager page"
     - echo "Run other test fixtures here"
+    - docker-compose down
