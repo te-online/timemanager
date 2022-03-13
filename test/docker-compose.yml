@@ -44,6 +44,8 @@ services:
     <<: *logging_config
     image: mariadb:10.5
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    ports:
+      - 3306:3306
     volumes:
       - db:/var/lib/mysql
     environment:
