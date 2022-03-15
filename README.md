@@ -30,6 +30,10 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.2.9 Beta, 15. March 2022
+- Bugfix: Import UI will now create a commit and show the success message even if importing to an empty database
+- Bugfix: Navigation button will stay visible and interactive when navigating client-side (issue #70)
+
 ### 0.2.8 Beta, 24. February 2022
 - Add feature-preview of import functionality for clients, projects and tasks from a CSV file
 - Add Chinese simplified localization (thanks to @lakehy)
