@@ -111,6 +111,15 @@
 						</li>
 					{/each}
 				</ul>
+				<aside>
+					<p>
+						{translate('timemanager', 'You automatically grant read-only access to projects and tasks by sharing.')}
+					</p>
+					<p>{translate('timemanager', 'Users you share with can create time entries.')}</p>
+					<p>
+						{translate('timemanager', 'You can see all time entries, while others can only see and edit their own time entries.')}
+					</p>
+				</aside>
 			</div>
 			<div class="oc-dialog-buttonrow twobuttons reverse">
 				<button class="button primary" on:click|preventDefault={addShare}>{translate('timemanager', 'Add')}</button>
