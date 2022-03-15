@@ -27,12 +27,7 @@ class ObjectMapper extends Mapper {
 		$this->commitMapper->setCurrentUser($this->userId);
 	}
 
-	function getObjectsByAttributeValue($attr, $value) {
-		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `" . $attr . "` = ?;";
-		return $this->findEntities($sql, [$this->userId, $value]);
-	}
-
-	function getActiveObjects($orderby = "created", $sort) {
+	function getActiveObjects($orderby = "created", $sort = "ASC"): array {
 		$sql =
 			"SELECT * " .
 			"FROM `" .
@@ -52,7 +47,7 @@ class ObjectMapper extends Mapper {
 	 * @param string $value the attribute value
 	 * @return Object[] list if matching items
 	 */
-	function getActiveObjectsByAttributeValue($attr, $value, $orderby = "created", $shared = false) {
+	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false): array {
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql =
 				"SELECT DISTINCT " .
@@ -175,7 +170,7 @@ class ObjectMapper extends Mapper {
 		string $status = null,
 		array $filter_tasks = [],
 		string $orderby = "start"
-	) {
+	): array {
 		$params = [$this->userId, "deleted", $date_start, $date_end];
 		// Range can be one day as well
 		if ($date_start === $date_end) {
@@ -212,7 +207,7 @@ class ObjectMapper extends Mapper {
 		return $this->findEntities($sql, $params);
 	}
 
-	function getObjectById($uuid): \OCP\AppFramework\Db\Entity {
+	function getObjectById(string $uuid): ?\OCP\AppFramework\Db\Entity {
 		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;";
 		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
 		if (count($objects) > 0) {
@@ -222,7 +217,7 @@ class ObjectMapper extends Mapper {
 		}
 	}
 
-	function getActiveObjectById($uuid, $shared = false) {
+	function getActiveObjectById(string $uuid, $shared = false): ?\OCP\AppFramework\Db\Entity {
 		$objects = $this->getActiveObjectsByAttributeValue("uuid", $uuid, "created", $shared);
 		if (count($objects) > 0) {
 			return $objects[0];
@@ -294,16 +289,6 @@ class ObjectMapper extends Mapper {
 			return $client->toArray();
 		}, $this->findEntities($sql, [$this->userId, "deleted"]));
 		return $clients;
-	}
-
-	/**
-	 * Fetch all items that are associated to the current user
-	 *
-	 * @return Object[] list if matching items
-	 */
-	function findAllForCurrentUser() {
-		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ?;";
-		return $this->findEntities($sql, [$this->userId]);
 	}
 
 	/**
