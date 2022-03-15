@@ -10,16 +10,16 @@
 * 📈 make use of simple, but useful **statistics** and **reports**.
 
 #### Latest changes 🎉
-**0.2.8 Beta, 24. February 2022**
-- Add feature-preview of import functionality for clients, projects and tasks from a CSV file
-- Add Chinese simplified localization (thanks to @lakehy)
+**0.2.9 Beta, 15. March 2022**
+- Bugfix: Import UI will now create a commit and show the success message even if importing to an empty database
+- Bugfix: Navigation button will stay visible and interactive when navigating client-side (issue #70)
 
 _Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
 
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.2.8</version>
+	<version>0.2.9</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>

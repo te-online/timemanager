@@ -194,7 +194,6 @@ class TApiController extends ApiController {
 			$results[] = $this->storageHelper->getObjectsAfterCommit($entity, $clientCommit);
 		}
 
-		$lastCommit = $this->storageHelper->getLatestCommit();
 		$response = ["data" => []];
 
 		$index = 0;
@@ -206,12 +205,14 @@ class TApiController extends ApiController {
 		if (!$noData) {
 			$response["commit"] = $commit;
 			$this->storageHelper->insertCommit($commit);
+			$logger->info("Sending response [omitted] and commit " . $commit, ["app" => "timemanager"]);
 		} else {
+			$lastCommit = $this->storageHelper->getLatestCommit();
 			$response["commit"] = $lastCommit;
+			$logger->info("Sending response [omitted] and commit " . $lastCommit, ["app" => "timemanager"]);
 		}
 
 		$logger->debug("Sending response... " . json_encode($response), ["app" => "timemanager"]);
-		$logger->info("Sending response [omitted] and commit " . $lastCommit, ["app" => "timemanager"]);
 
 		return new JSONResponse($response);
 	}

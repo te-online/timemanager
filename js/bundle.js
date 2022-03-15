@@ -33275,7 +33275,7 @@
      */
     this.pjaxInstance = new pjax({
       elements: [".timemanager-pjax-link"],
-      selectors: [".app-timemanager #app-navigation", ".app-timemanager #app-content"],
+      selectors: [".app-timemanager #app-navigation ul", ".app-timemanager #app-content .container"],
       cacheBust: false,
       scrollTo: true
     });
