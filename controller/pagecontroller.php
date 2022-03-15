@@ -2,6 +2,7 @@
 
 namespace OCA\TimeManager\Controller;
 
+use OC\Remote\Api\NotFoundException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -97,9 +98,9 @@ class PageController extends Controller {
 	function index() {
 		// Find the latest time entries
 		$times = $this->timeMapper->getActiveObjects("start", "DESC");
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
 		$entries = [];
 		$tasks = [];
 
@@ -114,9 +115,9 @@ class PageController extends Controller {
 				}
 				// Find details for parents of time entry
 				$tasks[] = $time->getTaskUuid();
-				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid());
-				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid());
-				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid());
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
 				// Compile a template object
 				$entries[] = (object) [
 					"time" => $time,
@@ -577,6 +578,7 @@ class PageController extends Controller {
 				"ProjectEditor.svelte" => PHP_Svelte::render_template("ProjectEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
 				"ShareDialog.svelte" => PHP_Svelte::render_template("ShareDialog.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "projects",
 			"canEdit" => $sharedBy === null,
@@ -753,6 +755,7 @@ class PageController extends Controller {
 			"templates" => [
 				"TaskEditor.svelte" => PHP_Svelte::render_template("TaskEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "tasks",
 			"canEdit" => $sharedBy === null,
@@ -936,6 +939,7 @@ class PageController extends Controller {
 			"templates" => [
 				"TimeEditor.svelte" => PHP_Svelte::render_template("TimeEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "times",
 			"canEdit" => $sharedBy === null,
@@ -977,31 +981,36 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function deleteTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Delete object
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setStatus("deleted");
-		$this->timeMapper->update($time);
+	function deleteTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Delete object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setStatus("deleted");
+			$this->timeMapper->update($time);
 
-		// Delete children
-		$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
+			// Delete children
+			$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
 	function editTime($uuid, $duration, $date, $note) {
-		$commit = UUID::v4();
-		$time = $this->timeMapper->getActiveObjectById($uuid);
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
 		if ($time) {
+			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
 			// Convert 1,25 to 1.25
 			$duration = str_replace(",", ".", $duration);
@@ -1027,56 +1036,69 @@ class PageController extends Controller {
 				$end = $time->getEndFormatted("Y-m-d H:i:s");
 			}
 
-			$this->storageHelper->addOrUpdateObject(
-				[
-					"uuid" => $uuid,
-					"start" => $start, // given date
-					"end" => $end, // date + duration
-					"note" => $note,
-					"commit" => $time->getCommit(),
-					"desiredCommit" => $commit,
-				],
-				"times"
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setStart($start); // given date
+			$time->setEnd($end); // date + duration
+			$time->setNote($note); // date + duration
+			$this->timeMapper->update($time);
+
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->task_uuid);
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	function payTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Adjust payment status object
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setPaymentStatus("paid");
-		$this->timeMapper->update($time);
+	function payTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setPaymentStatus("paid");
+			$this->timeMapper->update($time);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	function unpayTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Adjust payment status
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setPaymentStatus("");
-		$this->timeMapper->update($time);
+	function unpayTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setPaymentStatus("");
+			$this->timeMapper->update($time);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
