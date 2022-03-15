@@ -116,8 +116,17 @@ class PageController extends Controller {
 				// Find details for parents of time entry
 				$tasks[] = $time->getTaskUuid();
 				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				if (!$task) {
+					continue;
+				}
 				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				if (!$project) {
+					continue;
+				}
 				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				if (!$client) {
+					continue;
+				}
 				// Compile a template object
 				$entries[] = (object) [
 					"time" => $time,
@@ -194,9 +203,9 @@ class PageController extends Controller {
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
 
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true);
 
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
 
 		// Group times by client
 		$times_grouped_by_client = [];
@@ -206,8 +215,17 @@ class PageController extends Controller {
 			foreach ($times as $time) {
 				// Find details for parents of time entry
 				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				if (!$task) {
+					continue;
+				}
 				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				if (!$project) {
+					continue;
+				}
 				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				if (!$client) {
+					continue;
+				}
 				// Compile a template object
 				if (!isset($times_grouped_by_client[$client->getUuid()])) {
 					$times_grouped_by_client[$client->getUuid()] = (object) [
@@ -289,6 +307,7 @@ class PageController extends Controller {
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
 				],
+				"includeShared" => true,
 			];
 
 			return new TemplateResponse("timemanager", "reports", [

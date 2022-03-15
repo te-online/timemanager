@@ -2,6 +2,7 @@
 	export let statsApiUrl;
 	export let requestToken;
 	export let controls = true;
+	export let includeShared = false;
 
 	import { onMount } from "svelte";
 	import {
@@ -136,7 +137,7 @@
 	const loadStats = async () => {
 		const start = format(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
 		const end = format(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
-		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}`;
+		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}`;
 
 		// Parse current URL for filters
 		const urlParts = document.location.href.split("?");

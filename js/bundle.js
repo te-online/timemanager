@@ -12475,10 +12475,10 @@
 
   function get_each_context$7(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[24] = list[i];
-    child_ctx[26] = i;
+    child_ctx[25] = list[i];
+    child_ctx[27] = i;
     return child_ctx;
-  } // (225:0) {#if controls}
+  } // (226:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -12496,7 +12496,7 @@
         if (detaching) detach(h2);
       }
     };
-  } // (229:1) {#if controls}
+  } // (230:1) {#if controls}
 
 
   function create_if_block_6$2(ctx) {
@@ -12584,7 +12584,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (243:3) {#if !loading && weekTotal > 0}
+  } // (244:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -12649,7 +12649,7 @@
         if (detaching) detach(each_1_anchor);
       }
     };
-  } // (246:6) {#if point && point.stats}
+  } // (247:6) {#if point && point.stats}
 
 
   function create_if_block_4$2(ctx) {
@@ -12660,7 +12660,7 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, 'primary') + "";
+    ctx[25].date, 'primary') + "";
     var t1;
     var t2;
     var span1;
@@ -12668,11 +12668,11 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, 'secondary') + "";
+    ctx[25].date, 'secondary') + "";
     var t3;
     var if_block =
     /*point*/
-    ctx[24].stats.total > 0 && create_if_block_5$2(ctx);
+    ctx[25].stats.total > 0 && create_if_block_5$2(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -12700,7 +12700,7 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[24].stats.total > 0) {
+        ctx[25].stats.total > 0) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12719,14 +12719,14 @@
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, 'primary') + "")) set_data(t1, t1_value);
+        ctx[25].date, 'primary') + "")) set_data(t1, t1_value);
         if (dirty &
         /*points*/
         8 && t3_value !== (t3_value =
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, 'secondary') + "")) set_data(t3, t3_value);
+        ctx[25].date, 'secondary') + "")) set_data(t3, t3_value);
       },
       d: function d(detaching) {
         if (if_block) if_block.d(detaching);
@@ -12734,14 +12734,14 @@
         if (detaching) detach(div);
       }
     };
-  } // (247:7) {#if point.stats.total > 0}
+  } // (248:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$2(ctx) {
     var span;
     var t0_value =
     /*point*/
-    ctx[24].stats.total + "";
+    ctx[25].stats.total + "";
     var t0;
     var t1;
     var t2_value = dist_4$1('timemanager', 'hrs.') + "";
@@ -12761,7 +12761,7 @@
         attr(div, "class", "column-inner");
         attr(div, "style", div_style_value = "height: ".concat(
         /*point*/
-        ctx[24].stats.total /
+        ctx[25].stats.total /
         /*highest*/
         ctx[6] * 100, "%"));
       },
@@ -12778,13 +12778,13 @@
         /*points*/
         8 && t0_value !== (t0_value =
         /*point*/
-        ctx[24].stats.total + "")) set_data(t0, t0_value);
+        ctx[25].stats.total + "")) set_data(t0, t0_value);
 
         if (dirty &
         /*points, highest*/
         72 && div_style_value !== (div_style_value = "height: ".concat(
         /*point*/
-        ctx[24].stats.total /
+        ctx[25].stats.total /
         /*highest*/
         ctx[6] * 100, "%"))) {
           attr(div, "style", div_style_value);
@@ -12796,7 +12796,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (244:4) {#each points as point, index}
+  } // (245:4) {#each points as point, index}
 
 
   function create_each_block$7(ctx) {
@@ -12804,9 +12804,9 @@
     var t;
     var if_block =
     /*point*/
-    ctx[24] &&
+    ctx[25] &&
     /*point*/
-    ctx[24].stats && create_if_block_4$2(ctx);
+    ctx[25].stats && create_if_block_4$2(ctx);
     return {
       c: function c() {
         div = element("div");
@@ -12822,9 +12822,9 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[24] &&
+        ctx[25] &&
         /*point*/
-        ctx[24].stats) {
+        ctx[25].stats) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12842,7 +12842,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (259:3) {#if controls && !loading && weekTotal === 0}
+  } // (260:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$3(ctx) {
@@ -12861,7 +12861,7 @@
         if (detaching) detach(p);
       }
     };
-  } // (263:2) {#if controls}
+  } // (264:2) {#if controls}
 
 
   function create_if_block$g(ctx) {
@@ -12960,9 +12960,9 @@
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
           /*click_handler*/
-          ctx[16])), listen(button1, "click", prevent_default(
+          ctx[17])), listen(button1, "click", prevent_default(
           /*click_handler_2*/
-          ctx[18]))];
+          ctx[19]))];
           mounted = true;
         }
       },
@@ -13018,7 +13018,7 @@
         run_all(dispose);
       }
     };
-  } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (276:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
   function create_if_block_1$6(ctx) {
@@ -13037,7 +13037,7 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_1*/
-          ctx[17]));
+          ctx[18]));
           mounted = true;
         }
       },
@@ -13248,6 +13248,8 @@
     var requestToken = $$props.requestToken;
     var _$$props$controls = $$props.controls,
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
+    var _$$props$includeShare = $$props.includeShared,
+        includeShared = _$$props$includeShare === void 0 ? false : _$$props$includeShare;
 
     var simpleRounding = function simpleRounding(number) {
       return Math.round(number * 100) / 100;
@@ -13384,7 +13386,7 @@
               case 0:
                 start = format$1(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
                 end = format$1(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
-                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale); // Parse current URL for filters
+                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
 
                 urlParts = document.location.href.split("?");
 
@@ -13515,20 +13517,21 @@
       if ('statsApiUrl' in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
       if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
       if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
-      if ('start' in $$props) $$invalidate(14, start = $$props.start);
-      if ('end' in $$props) $$invalidate(15, end = $$props.end);
+      if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
+      if ('start' in $$props) $$invalidate(15, start = $$props.start);
+      if ('end' in $$props) $$invalidate(16, end = $$props.end);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*start*/
-      16384) {
+      32768) {
         $$invalidate(1, startCursor = isDate$1(parse$2(start, dateFormat$1, new Date())) ? parse$2(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
       }
 
       if ($$self.$$.dirty &
       /*end*/
-      32768) {
+      65536) {
         endCursor = isDate$1(parse$2(end, dateFormat$1, new Date())) ? parse$2(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
       }
     };
@@ -13547,7 +13550,7 @@
 
     $$invalidate(7, currentWeek = null);
 
-    return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
+    return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
   }
 
   var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -13565,8 +13568,9 @@
         statsApiUrl: 12,
         requestToken: 13,
         controls: 0,
-        start: 14,
-        end: 15
+        includeShared: 14,
+        start: 15,
+        end: 16
       });
       return _this;
     }
@@ -22599,9 +22603,16 @@
     var t5;
     var ul;
     var t6;
+    var aside;
+    var p0;
+    var t8;
+    var p1;
+    var t10;
+    var p2;
+    var t12;
     var div1;
     var button0;
-    var t8;
+    var t14;
     var button1;
     var current;
     var mounted;
@@ -22659,10 +22670,20 @@
         }
 
         t6 = space$1();
+        aside = element("aside");
+        p0 = element("p");
+        p0.textContent = "".concat(dist_4$1('timemanager', 'You automatically grant read-only access to projects and tasks by sharing.'));
+        t8 = space$1();
+        p1 = element("p");
+        p1.textContent = "".concat(dist_4$1('timemanager', 'Users you share with can create time entries.'));
+        t10 = space$1();
+        p2 = element("p");
+        p2.textContent = "".concat(dist_4$1('timemanager', 'You can see all time entries, while others can only see and edit their own time entries.'));
+        t12 = space$1();
         div1 = element("div");
         button0 = element("button");
         button0.textContent = "".concat(dist_4$1('timemanager', 'Add'));
-        t8 = space$1();
+        t14 = space$1();
         button1 = element("button");
         button1.textContent = "".concat(dist_4$1('timemanager', 'Close'));
         attr(label, "for", "sharee-select");
@@ -22692,10 +22713,17 @@
           each_blocks[_i2].m(ul, null);
         }
 
-        append(div2, t6);
+        append(div0, t6);
+        append(div0, aside);
+        append(aside, p0);
+        append(aside, t8);
+        append(aside, p1);
+        append(aside, t10);
+        append(aside, p2);
+        append(div2, t12);
         append(div2, div1);
         append(div1, button0);
-        append(div1, t8);
+        append(div1, t14);
         append(div1, button1);
         current = true;
 

@@ -29,7 +29,13 @@ class TimeMapper extends ObjectMapper {
 		// Do nothing here, because times have no children.
 	}
 
-	public function findForReport(string $start, string $end, string $status = null, array $filter_tasks = []) {
-		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks);
+	public function findForReport(
+		string $start,
+		string $end,
+		string $status = null,
+		array $filter_tasks = [],
+		$shared = false
+	) {
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared);
 	}
 }

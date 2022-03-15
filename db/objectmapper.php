@@ -169,27 +169,78 @@ class ObjectMapper extends Mapper {
 		string $date_end,
 		string $status = null,
 		array $filter_tasks = [],
-		string $orderby = "start"
+		string $orderby = "start",
+		$shared = false
 	): array {
 		$params = [$this->userId, "deleted", $date_start, $date_end];
 		// Range can be one day as well
 		if ($date_start === $date_end) {
 			array_pop($params);
-			$sql =
-				"SELECT * " .
-				"FROM `" .
-				$this->tableName .
-				"` " .
-				"WHERE `user_id` = ? AND `status` != ? " .
-				"AND date(start) = ?";
+			if ($shared) {
+				$sql =
+					"SELECT DISTINCT " .
+					$this->tableName .
+					".* " .
+					"FROM (((`" .
+					$this->tableName .
+					"` INNER JOIN *PREFIX*timemanager_task ON " .
+					$this->tableName .
+					".task_uuid = *PREFIX*timemanager_task.uuid) INNER JOIN *PREFIX*timemanager_project ON *PREFIX*timemanager_task.project_uuid = *PREFIX*timemanager_project.uuid)" .
+					" LEFT JOIN `*PREFIX*timemanager_share` ON " .
+					"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
+					"*PREFIX*timemanager_share.author_user_id = ?)) " .
+					"WHERE (*PREFIX*timemanager_share.author_user_id = ? OR " .
+					$this->tableName .
+					".user_id = ?) AND " .
+					$this->tableName .
+					".status != ? " .
+					"AND date(" .
+					$this->tableName .
+					".start) = ?";
+				$params = array_merge([$this->userId, $this->userId], $params);
+			} else {
+				$sql =
+					"SELECT * " .
+					"FROM `" .
+					$this->tableName .
+					"` " .
+					"WHERE `user_id` = ? AND `status` != ? " .
+					"AND date(start) = ?";
+			}
 		} else {
-			$sql =
-				"SELECT * " .
-				"FROM `" .
-				$this->tableName .
-				"` " .
-				"WHERE `user_id` = ? AND `status` != ? " .
-				"AND date(start) >= ? AND date(start) <= ? ";
+			if ($shared) {
+				$sql =
+					"SELECT DISTINCT " .
+					$this->tableName .
+					".* " .
+					"FROM (((`" .
+					$this->tableName .
+					"` INNER JOIN *PREFIX*timemanager_task ON " .
+					$this->tableName .
+					".task_uuid = *PREFIX*timemanager_task.uuid) INNER JOIN *PREFIX*timemanager_project ON *PREFIX*timemanager_task.project_uuid = *PREFIX*timemanager_project.uuid)" .
+					" LEFT JOIN `*PREFIX*timemanager_share` ON " .
+					"(*PREFIX*timemanager_project.client_uuid = *PREFIX*timemanager_share.object_uuid AND " .
+					"*PREFIX*timemanager_share.author_user_id = ?)) " .
+					"WHERE (*PREFIX*timemanager_share.author_user_id = ? OR " .
+					$this->tableName .
+					".user_id = ?) AND " .
+					$this->tableName .
+					".status != ? " .
+					"AND date(" .
+					$this->tableName .
+					".start) >= ? AND date(" .
+					$this->tableName .
+					".start) <= ? ";
+				$params = array_merge([$this->userId, $this->userId], $params);
+			} else {
+				$sql =
+					"SELECT * " .
+					"FROM `" .
+					$this->tableName .
+					"` " .
+					"WHERE `user_id` = ? AND `status` != ? " .
+					"AND date(start) >= ? AND date(start) <= ? ";
+			}
 		}
 		if (isset($status) && $status) {
 			if ($status === "paid") {

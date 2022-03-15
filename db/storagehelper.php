@@ -312,9 +312,9 @@ class StorageHelper {
 	 * @param string|null $tasks A comma-separated list of task uuids
 	 * @return array A comma-separated list of task uuids
 	 */
-	function getTaskListFromFilters(string $clients = null, string $projects = null, string $tasks = null): array {
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+	function getTaskListFromFilters(string $clients = null, string $projects = null, string $tasks = null, $shared = false): array {
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
 
 		// Get task uuids related to filters.
 		// Filters are exclusive from finer to coarse.

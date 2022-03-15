@@ -233,13 +233,14 @@ class TApiController extends ApiController {
 		string $clients = null,
 		string $projects = null,
 		string $tasks = null,
-		string $status = null
+		string $status = null,
+		$shared = false
 	) {
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared);
 
 		// Get all time entries for time period
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared);
 		$sum = 0;
 
 		// Calculate sum
