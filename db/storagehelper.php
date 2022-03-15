@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Db;
 
 use OCA\TimeManager\Helper\UUID;
+use OCP\AppFramework\Db\Entity;
 use OCP\IConfig;
 
 /**
@@ -351,5 +352,32 @@ class StorageHelper {
 		$filter_tasks = array_unique($filter_tasks);
 
 		return $filter_tasks;
+	}
+
+	/**
+	 * Returns a time entry if user is allowed to edit the entry
+	 * @param string $time_uuid
+	 * @return Entity
+	 */
+	function getTimeEntryByIdForEditing(string $time_uuid): ?\OCP\AppFramework\Db\Entity {
+		// Here it's okay to fetch a shared time entry, since sharer is allowed to edit
+		$time = $this->timeMapper->getActiveObjectById($time_uuid, true);
+		if ($time) {
+			$canEdit = $time->getUserId() === $this->userId;
+
+			if (!$canEdit) {
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				// Maybe current user is author of the parent client
+				$sharees = $this->shareMapper->findShareesForClient($project->getClientUuid());
+				$canEdit = isset($sharees) && count($sharees) > 0 && $sharees[0]->getAuthorUserId() === $this->userId;
+			}
+
+			if ($canEdit) {
+				return $time;
+			}
+		}
+
+		return null;
 	}
 }
