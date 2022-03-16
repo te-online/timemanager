@@ -870,8 +870,29 @@ class PageController extends Controller {
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
-			$times = $this->timeMapper->findActiveForCurrentUser();
+			$times = $this->timeMapper->findActiveForCurrentUser("created", true);
 		}
+
+		// Resolve author display names for time entries
+		$user_display_names = [];
+		$times = array_map(function ($time) use ($user_display_names) {
+			$user_id = $time->getUserId();
+			// Only add display name for other users
+			$time->current_user_is_author = $user_id === $this->userId;
+
+			if (isset($user_display_names[$time->getUserId()])) {
+				$time->author_display_name = $user_display_names[$user_id];
+			} else {
+				$user = $this->userManager->get($user_id);
+				if ($user instanceof IUser) {
+					$display_name = $user->getDisplayName();
+					$user_display_names[$user_id] = $display_name;
+					$time->author_display_name = $display_name;
+				}
+			}
+
+			return $time;
+		}, $times);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
