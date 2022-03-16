@@ -356,11 +356,7 @@ class PageController extends Controller {
 				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
 				// Get sharees, if user has shared this client
 				$clients[$index]->sharees = array_map(function ($share) {
-					$share_array = $share->toArray();
-					$user = $this->userManager->get($share->getRecipientUserId());
-					if ($user instanceof IUser) {
-						$share_array["recipient_display_name"] = $user->getDisplayName();
-					}
+					$share_array = $share->toArray($this->userManager);
 
 					return $share_array;
 				}, $this->shareMapper->findShareesForClient($client->getUuid()));
@@ -368,11 +364,7 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($client->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray();
-					$user = $this->userManager->get($sharedBy["author_user_id"]);
-					if ($user instanceof IUser) {
-						$sharedBy["author_display_name"] = $user->getDisplayName();
-					}
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
 				}
 				$clients[$index]->sharedBy = $sharedBy;
 			}
@@ -533,11 +525,7 @@ class PageController extends Controller {
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
 
 		$sharees = array_map(function ($share) {
-			$share_array = $share->toArray();
-			$user = $this->userManager->get($share->getRecipientUserId());
-			if ($user instanceof IUser) {
-				$share_array["recipient_display_name"] = $user->getDisplayName();
-			}
+			$share_array = $share->toArray($this->userManager);
 
 			return $share_array;
 		}, $this->shareMapper->findShareesForClient($client_uuid));
@@ -545,11 +533,7 @@ class PageController extends Controller {
 		$sharedByList = $this->shareMapper->findSharerForClient($client_uuid);
 		$sharedBy = null;
 		if (count($sharedByList) > 0) {
-			$sharedBy = $sharedByList[0]->toArray();
-			$user = $this->userManager->get($sharedBy["author_user_id"]);
-			if ($user instanceof IUser) {
-				$sharedBy["author_display_name"] = $user->getDisplayName();
-			}
+			$sharedBy = $sharedByList[0]->toArray($this->userManager);
 		}
 
 		$form_props = [
@@ -696,19 +680,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray();
-					$user = $this->userManager->get($sharedBy["author_user_id"]);
-					if ($user instanceof IUser) {
-						$sharedBy["author_display_name"] = $user->getDisplayName();
-					}
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$share_array = $share->toArray();
-					$user = $this->userManager->get($share->getRecipientUserId());
-					if ($user instanceof IUser) {
-						$share_array["recipient_display_name"] = $user->getDisplayName();
-					}
+					$share_array = $share->toArray($this->userManager);
 
 					return $share_array;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
@@ -884,19 +860,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray();
-					$user = $this->userManager->get($sharedBy["author_user_id"]);
-					if ($user instanceof IUser) {
-						$sharedBy["author_display_name"] = $user->getDisplayName();
-					}
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$share_array = $share->toArray();
-					$user = $this->userManager->get($share->getRecipientUserId());
-					if ($user instanceof IUser) {
-						$share_array["recipient_display_name"] = $user->getDisplayName();
-					}
+					$share_array = $share->toArray($this->userManager);
 
 					return $share_array;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
