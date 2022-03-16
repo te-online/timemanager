@@ -287,59 +287,68 @@ class ObjectMapper extends Mapper {
 
 	function getCreatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? " .
-			'AND `commit` IN ( "' .
-			implode('","', $applicable_commits) .
-			'" ) ' .
-			"AND `created` = `changed` AND `status` != ? " .
-			"ORDER BY `changed`;";
-		$clients = array_map(function ($client) {
-			return $client->toArray();
-		}, $this->findEntities($sql, [$this->userId, "deleted"]));
-		return $clients;
+		$sql = "SELECT `$this->tableName`.* ";
+		$params = [$this->userId, "deleted"];
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$params = [$this->userId, $this->userId, "deleted"];
+		} else {
+			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+		}
+
+		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
+		$sql .= "`$this->tableName`.`created` = `$this->tableName`.`changed` AND `$this->tableName`.`status` != ? ORDER BY `$this->tableName`.`changed`;";
+
+		$objects = array_map(function ($object) {
+			return $object->toArray();
+		}, $this->findEntities($sql, $params));
+
+		return $objects;
 	}
 
 	function getUpdatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? " .
-			'AND `commit` IN ( "' .
-			implode('","', $applicable_commits) .
-			'" ) ' .
-			"AND `created` != `changed` AND `status` != ? " .
-			"ORDER BY `changed`;";
-		$clients = array_map(function ($client) {
-			return $client->toArray();
-		}, $this->findEntities($sql, [$this->userId, "deleted"]));
-		return $clients;
+		$sql = "SELECT `$this->tableName`.* ";
+		$params = [$this->userId, "deleted"];
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$params = [$this->userId, $this->userId, "deleted"];
+		} else {
+			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+		}
+
+		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
+		$sql .= "`$this->tableName`.`created` != `$this->tableName`.`changed` AND `$this->tableName`.`status` != ? ORDER BY `$this->tableName`.`changed`;";
+
+		$objects = array_map(function ($object) {
+			return $object->toArray();
+		}, $this->findEntities($sql, $params));
+
+		return $objects;
 	}
 
 	function getDeletedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE `user_id` = ? " .
-			'AND `commit` IN ( "' .
-			implode('","', $applicable_commits) .
-			'" ) ' .
-			"AND `status` = ? " .
-			"ORDER BY `changed`;";
-		$clients = array_map(function ($client) {
-			return $client->toArray();
-		}, $this->findEntities($sql, [$this->userId, "deleted"]));
-		return $clients;
+		$sql = "SELECT `$this->tableName`.* ";
+		$params = [$this->userId, "deleted"];
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$params = [$this->userId, $this->userId, "deleted"];
+		} else {
+			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+		}
+
+		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
+		$sql .= "`$this->tableName`.`status` = ? ORDER BY `$this->tableName`.`changed`;";
+
+		$objects = array_map(function ($object) {
+			return $object->toArray();
+		}, $this->findEntities($sql, $params));
+
+		return $objects;
 	}
 
 	/**
