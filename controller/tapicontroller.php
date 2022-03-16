@@ -241,6 +241,15 @@ class TApiController extends ApiController {
 
 		// Get all time entries for time period
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared);
+		$times = array_filter($times, function ($time) {
+			// Find details for parents of time entry. If it doesn't exist, we should filter out time entry
+			$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+			if (!$task) {
+				return false;
+			}
+
+			return true;
+		});
 		$sum = 0;
 
 		// Calculate sum
