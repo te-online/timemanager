@@ -5,6 +5,8 @@ namespace OCA\TimeManager\Db;
 use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\Db\Entity;
 use OCP\IConfig;
+use OCP\IUser;
+use OCP\IUserManager;
 
 /**
  * Class StorageHelper
@@ -312,7 +314,12 @@ class StorageHelper {
 	 * @param string|null $tasks A comma-separated list of task uuids
 	 * @return array A comma-separated list of task uuids
 	 */
-	function getTaskListFromFilters(string $clients = null, string $projects = null, string $tasks = null, $shared = false): array {
+	function getTaskListFromFilters(
+		string $clients = null,
+		string $projects = null,
+		string $tasks = null,
+		$shared = false
+	): array {
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
 
@@ -379,5 +386,33 @@ class StorageHelper {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Resolves all display names of authors of time entries
+	 * @param array $times The array of time entries
+	 * @return array The array of time entries with author display names resolved
+	 */
+	function resolveAuthorDisplayNamesForTimes(array $times, IUserManager $userManager): array {
+		// Resolve author display names for time entries
+		$userDisplayNames = [];
+		return array_map(function ($time) use ($userDisplayNames, $userManager) {
+			$userId = $time->getUserId();
+			// Only add display name for other users
+			$time->current_user_is_author = $userId === $this->userId;
+
+			if (isset($userDisplayNames[$time->getUserId()])) {
+				$time->author_display_name = $userDisplayNames[$userId];
+			} else {
+				$user = $userManager->get($userId);
+				if ($user instanceof IUser) {
+					$display_name = $user->getDisplayName();
+					$userDisplayNames[$userId] = $display_name;
+					$time->author_display_name = $display_name;
+				}
+			}
+
+			return $time;
+		}, $times);
 	}
 }
