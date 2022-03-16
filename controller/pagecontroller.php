@@ -211,8 +211,8 @@ class PageController extends Controller {
 		$hours_total = 0;
 		$all_time_entries = [];
 		if ($times && is_array($times) && count($times) > 0) {
+			$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 			foreach ($times as $time) {
-				$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 				// Find details for parents of time entry
 				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
 				if (!$task) {
@@ -254,6 +254,7 @@ class PageController extends Controller {
 						"client" => $client->getName(),
 						"project" => $project->getName(),
 						"task" => $task->getName(),
+						"author" => $time->author_display_name,
 					];
 				}
 			}
