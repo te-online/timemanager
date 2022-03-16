@@ -132,7 +132,7 @@ $l = \OC::$server->getL10N('timemanager');
 										<?php p($time->getStartLocalized()); ?>
 										<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
 											&nbsp;&middot;&nbsp;
-											<span>
+											<span class="author">
 												<ul class="existing-sharees compact">
 													<li>
 														<img
