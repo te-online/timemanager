@@ -1,9 +1,9 @@
 image: docker/compose:latest
 
 before_script:
-  - apk add node
+  - apk add nodejs
   - apk add npm
-  - npm ci
+  - cd tests && npm ci
 
 services:
   - docker:dind
@@ -13,7 +13,7 @@ stages:
 
 sync_api_test:
   script:
-    - cd test
+    - cd tests
     - echo "$ENV" > .env
     - echo "$CYPRESS_ENV_JSON" > cypress.env.json
     - docker-compose up -d
@@ -21,4 +21,5 @@ sync_api_test:
     - docker exec -it $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
     - npm test
   after_script:
+    - cd tests
     - docker-compose down -v
