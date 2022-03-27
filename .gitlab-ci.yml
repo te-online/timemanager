@@ -23,7 +23,7 @@ app_tests:
     # Get the IP of this container
     - export SERVER_IP=$(getent hosts $(hostname) | awk '{ print $1 }')
     # Run tests in cypress container
-    - docker run -i --volumes-from $CID -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh 'npm ci && npx wait-on http://$SERVER_IP:8000 && npm test'
+    - docker run -i -v ../:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh 'cd tests && npm ci && npx wait-on http://$SERVER_IP:8000 && npm test'
   after_script:
     - cd tests
     - docker-compose down -v
