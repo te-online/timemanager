@@ -1,7 +1,6 @@
 image: docker/compose:latest
 
 before_script:
-  - apk add nodejs npm xvfb
   - cd tests
   - echo "$ENV" > .env
   - echo "$CYPRESS_ENV_JSON" > cypress.env.json
@@ -18,10 +17,10 @@ app_tests:
     - docker-compose up -d
     # Fix permissions of custom apps folder
     - docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
-    # Get the IP of this container
-    - export SERVER_IP=$(getent hosts $(hostname) | awk '{ print $1 }')
+    # Get the IP of the web container
+    - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
     # Run tests in cypress container
-    - docker run -i -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c 'cd tests && npm ci && npx wait-on http://$SERVER_IP:8000 && npm test'
+    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npx wait-on http://$SERVER_IP && npm test -- --config baseUrl=http://$SERVER_IP"
   after_script:
     - cd tests
     - docker-compose down -v

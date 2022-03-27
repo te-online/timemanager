@@ -4,7 +4,7 @@ describe("TimeManager", () => {
 	// eslint-disable-next-line no-undef
 	before(() => {
 		// Log in
-		cy.visit("http://localhost:8000");
+		cy.visit("/");
 		cy.get('input[name="user"]').type(Cypress.env("NEXTCLOUD_ADMIN_USER"));
 		cy.get('input[name="password"]').type(Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
 		cy.get('input[type="submit"]').click();
@@ -26,12 +26,12 @@ describe("TimeManager", () => {
 	});
 
 	it("can activate app", () => {
-		cy.visit("http://localhost:8000/settings/apps");
+		cy.visit("/settings/apps");
 		cy.get(".apps-list-container div.section").contains("TimeManager").parent().find("input[value='Enable']").click();
 	});
 
 	it("can create clients", () => {
-		cy.visit("http://localhost:8000/apps/timemanager");
+		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
 		for (const [index, clientName] of clients.entries()) {
 			cy.wait(1000);
