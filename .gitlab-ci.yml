@@ -20,7 +20,7 @@ app_tests:
     # Get the IP of the web container
     - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
     # Run tests in cypress container
-    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npx wait-on http://$SERVER_IP && npm test -- --config baseUrl=http://$SERVER_IP"
+    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npm test -- --config baseUrl=http://$SERVER_IP"
   after_script:
     - cd tests
     - docker-compose down -v
