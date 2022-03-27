@@ -1,8 +1,7 @@
 image: docker/compose:latest
 
 before_script:
-  - apk add nodejs
-  - apk add npm
+  - apk add nodejs npm xvfb
   - cd tests && npm ci
   - echo "$ENV" > .env
   - echo "$CYPRESS_ENV_JSON" > cypress.env.json
@@ -13,7 +12,7 @@ services:
 stages:
   - test
 
-sync_api_test:
+app_tests:
   script:
     - docker-compose up -d
     - sleep 180
