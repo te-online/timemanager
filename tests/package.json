@@ -1,0 +1,16 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "timemanager.spec.js",
+  "scripts": {
+    "test": "cypress run",
+    "start": "cypress open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "9.5.2"
+  }
+}

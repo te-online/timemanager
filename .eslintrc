@@ -6,7 +6,9 @@
     "OCA": true,
     "describe": true,
     "it": true,
-    "expect": true
+    "expect": true,
+    "cy": true,
+    "Cypress": true,
   },
   "extends": [
     "standard",

@@ -1,5 +1,10 @@
 image: docker/compose:latest
 
+before_script:
+  - apk add node
+  - apk add npm
+  - npm ci
+
 services:
   - docker:dind
 
@@ -9,11 +14,11 @@ stages:
 sync_api_test:
   script:
     - cd test
+    - echo "$ENV" > .env
+    - echo "$CYPRESS_ENV_JSON" > cypress.env.json
     - docker-compose up -d
-    - sleep 30
-    - docker exec -it $(docker ps -aqf "name=app") sh -c 'chown www-data:root custom_apps'
-    - echo "Start cypress here"
-    - echo "Navigate to homepage and enter admin username and password"
-    - echo "Skip onboarding and navigate to TimeManager page"
-    - echo "Run other test fixtures here"
-    - docker-compose down
+    - sleep 180
+    - docker exec -it $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
+    - npm test
+  after_script:
+    - docker-compose down -v
