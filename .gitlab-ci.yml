@@ -2,7 +2,7 @@ image: docker/compose:latest
 
 before_script:
   - apk add nodejs npm xvfb
-  - cd tests && npm ci
+  - cd tests
   - echo "$ENV" > .env
   - echo "$CYPRESS_ENV_JSON" > cypress.env.json
 
@@ -15,9 +15,8 @@ stages:
 app_tests:
   script:
     - docker-compose up -d
-    - sleep 180
     - docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
-    - npm test
+    - docker run --volumes-from $CID -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh 'npm ci && npx wait-on http://localhost:8000 && npm test'
   after_script:
     - cd tests
     - docker-compose down -v
