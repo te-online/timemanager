@@ -21,6 +21,15 @@ app_tests:
     - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
     # Run tests in cypress container
     - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npm test -- --config baseUrl=http://$SERVER_IP"
+  artifacts:
+    expire_in: 1 week
+    when: always
+    paths:
+      - tests/cypress/screenshots
+      - tests/cypress/videos
+    reports:
+      junit:
+        - tests/results/TEST-*.xml
   after_script:
     - cd tests
     - docker-compose down -v
