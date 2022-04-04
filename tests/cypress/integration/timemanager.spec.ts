@@ -133,7 +133,7 @@ describe("TimeManager", () => {
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 
-		for (const [index, project] of projects.entries()) {
+		for (const [index, project] of projects.filter((project) => project.Client === secondClient.Name).entries()) {
 			cy.wait(1000);
 			cy.contains("a", "Add project", { timeout: 4000 }).click();
 			cy.get('input[name="name"]').type(project.Name);
@@ -151,8 +151,10 @@ describe("TimeManager", () => {
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
 
-		const thirdProject = projects[2];
+		const thirdProject = projects.filter((project) => project.Client === secondClient.Name)[2];
 		cy.contains("div.tm_item-row", thirdProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
 		cy.contains("a", "Edit project", { timeout: 4000 }).click();
 		cy.get('input[name="name"]').type(" (changed)");
 		cy.contains("button", "Edit project").click();
@@ -161,7 +163,10 @@ describe("TimeManager", () => {
 		cy.contains("span.tm_label", "Project").parent().contains(`${thirdProject.Name} (changed)`).should("be.visible");
 
 		cy.get("a").contains(secondClient.Name).click();
-		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", projects.length);
+		cy.get("div.tm_item-row", { timeout: 4000 }).should(
+			"have.length",
+			projects.filter((project) => project.Client === secondClient.Name).length
+		);
 		cy.contains("div.tm_item-row", `${thirdProject.Name} (changed)`, { timeout: 4000 }).should("be.visible");
 	});
 
@@ -172,20 +177,92 @@ describe("TimeManager", () => {
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
 
-		const secondProject = projects[1];
+		const secondProject = projects.filter((project) => project.Client === secondClient.Name)[1];
 		cy.contains("div.tm_item-row", secondProject.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
 
 		cy.contains("button", "Delete project", { timeout: 4000 }).click();
 		cy.contains("button", "Delete", { timeout: 4000 }).click();
-		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", projects.length - 1);
+		cy.get("div.tm_item-row", { timeout: 4000 }).should(
+			"have.length",
+			projects.filter((project) => project.Client === secondClient.Name).length - 1
+		);
 	});
 
-	// it("can create task on a project", () => {});
+	it("can create tasks on a project", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can edit task on a project", () => {});
+		const fifthProject = projects.filter((project) => project.Client === secondClient.Name)[4];
+		cy.contains("div.tm_item-row", fifthProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can delete task on a project", () => {});
+		for (const [index, task] of tasks.filter((task) => task.Project === fifthProject.Name).entries()) {
+			cy.wait(1000);
+			cy.contains("a", "Add task", { timeout: 4000 }).click();
+			cy.get('input[name="name"]').type(task.Name);
+			cy.get(".oc-dialog form").submit();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", task.Name, { timeout: 4000 }).should("be.visible");
+			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+		}
+	});
+
+	it("can edit task on a project", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const fifthProject = projects.filter((project) => project.Client === secondClient.Name)[4];
+		cy.contains("div.tm_item-row", fifthProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const thirdTask = tasks.filter((task) => task.Project === fifthProject.Name)[2];
+		cy.contains("div.tm_item-row", thirdTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		cy.contains("a", "Edit task", { timeout: 4000 }).click();
+		cy.get('input[name="name"]').type(" (changed)");
+		cy.contains("button", "Edit task").click();
+
+		cy.wait(1000);
+		cy.contains("span.tm_label", "Task").parent().contains(`${thirdTask.Name} (changed)`).should("be.visible");
+
+		cy.get("a").contains(fifthProject.Name).click();
+		cy.get("div.tm_item-row", { timeout: 4000 }).should(
+			"have.length",
+			tasks.filter((task) => task.Project === fifthProject.Name).length
+		);
+		cy.contains("div.tm_item-row", `${thirdTask.Name} (changed)`, { timeout: 4000 }).should("be.visible");
+	});
+
+	it("can delete task on a project", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const fifthProject = projects.filter((project) => project.Client === secondClient.Name)[4];
+		cy.contains("div.tm_item-row", fifthProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const thirdTask = tasks.filter((task) => task.Project === fifthProject.Name)[2];
+		cy.contains("div.tm_item-row", thirdTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		cy.contains("button", "Delete task", { timeout: 4000 }).click();
+		cy.contains("button", "Delete", { timeout: 4000 }).click();
+		cy.get("div.tm_item-row", { timeout: 4000 }).should(
+			"have.length",
+			tasks.filter((task) => task.Project === fifthProject.Name).length - 1
+		);
+	});
 
 	// it("can create time entry", () => {});
 
