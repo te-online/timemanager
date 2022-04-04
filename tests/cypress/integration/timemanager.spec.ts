@@ -98,6 +98,8 @@ describe("TimeManager", () => {
 
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
 		cy.contains("a", "Edit client", { timeout: 4000 }).click();
 		cy.get('input[name="name"]').type(" (changed)");
 		cy.get('textarea[name="note"]').type(" (note updated)");
