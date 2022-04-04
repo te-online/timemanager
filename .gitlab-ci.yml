@@ -17,6 +17,9 @@ app_tests:
     - docker-compose up -d
     # Fix permissions of custom apps folder
     - docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
+    # Disable first run wizard app when nextcloud is up
+    - sleep 10
+    - docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'
     # Get the IP of the web container
     - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
     # Run tests in cypress container

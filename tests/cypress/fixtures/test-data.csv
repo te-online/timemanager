@@ -1,0 +1,134 @@
+Type;Name;Client;Project;Note
+Client;McGlynn Group;;;Seamless grid-enabled time-frame
+Client;Crooks-Gulgowski;;;Decentralized 5th generation encoding
+Client;Grimes, Cronin and Cruickshank;;;Assimilated radical archive
+Project;Cake Banana;Crooks-Gulgowski;;Gummy Bears
+Project;Cake Strawberry;McGlynn Group;;Chocolate Sprinkles
+Project;Doughnut Apple;Grimes, Cronin and Cruickshank;;Walnuts
+Project;Fruit Cake Pistachio;Grimes, Cronin and Cruickshank;;Mocha Drizzle
+Project;Sundae Neapolitan;Grimes, Cronin and Cruickshank;;Whipped Cream
+Project;Upside Down Pineapple Cake French Vanilla;McGlynn Group;;Peanuts
+Project;Frozen Yogurt Chocolate Chip Cookie Dough;Grimes, Cronin and Cruickshank;;Mocha Drizzle
+Project;Upside Down Pineapple Cake Chocolate Chip Cookie Dough;Grimes, Cronin and Cruickshank;;Gummy Bears
+Project;Parfait French Vanilla;Grimes, Cronin and Cruickshank;;Walnuts
+Project;Key Lime Pie Caramel;Crooks-Gulgowski;;Chocolate Syrup
+Project;Ice Cream Apple;Grimes, Cronin and Cruickshank;;Chocolate Syrup
+Project;Frozen Yogurt Caramel;Crooks-Gulgowski;;Rainbow Sprinkles
+Project;Fruit Cake Banana;Grimes, Cronin and Cruickshank;;Walnuts
+Project;Cake Butterscotch;Grimes, Cronin and Cruickshank;;Chocolate Sprinkles
+Project;Trifle Pumpkin;Grimes, Cronin and Cruickshank;;Walnuts
+Project;Sundae Coconut;Crooks-Gulgowski;;Chocolate Syrup
+Project;Cheesecake Strawberry;McGlynn Group;;Chocolate Chips
+Project;Upside Down Pineapple Cake Chocolate;Grimes, Cronin and Cruickshank;;Peanut Butter
+Project;Upside Down Pineapple Cake Butter Pecan;Crooks-Gulgowski;;Peanuts
+Project;Cupcake Peanut Butter;McGlynn Group;;Bacon
+Project;Coffee Cake Birthday Cake;Grimes, Cronin and Cruickshank;;Chocolate Syrup
+Project;Fruit Cake Blondie;Crooks-Gulgowski;;Granola
+Project;Cookie Chocolate Chip Cookie Dough;McGlynn Group;;Chocolate Sprinkles
+Project;Trifle Neapolitan;Grimes, Cronin and Cruickshank;;Glaze
+Project;Fruit Cake Lemon;Crooks-Gulgowski;;Mocha Drizzle
+Project;Cookie French Vanilla;McGlynn Group;;Toffee Bits
+Project;Cobbler Birthday Cake;Grimes, Cronin and Cruickshank;;Berry Compote
+Project;Cupcake Strawberry;Grimes, Cronin and Cruickshank;;Toffee Bits
+Project;Cupcake Banana;Crooks-Gulgowski;;Bacon
+Project;Pie Funfetti;Crooks-Gulgowski;;Chocolate Chips
+Task;Beirut;;Upside Down Pineapple Cake Butter Pecan;buzkashi
+Task;Bandar Seri Begawan;;Sundae Coconut;golf
+Task;Sao Tome;;Sundae Coconut;soccer
+Task;Brasilia;;Parfait French Vanilla;rugby union
+Task;Kabul;;Cupcake Banana;association
+Task;Caracas;;Sundae Coconut;association
+Task;Washington D.C.;;Parfait French Vanilla;league
+Task;Tallinn;;Cake Strawberry;lacrosse
+Task;Astana;;Cobbler Birthday Cake;lacrosse
+Task;Vaiaku village;;Cupcake Banana;pesäpallo
+Task;Luanda;;Ice Cream Apple;sumo
+Task;Conakry;;Cheesecake Strawberry;field hockey
+Task;Maputo;;Cookie Chocolate Chip Cookie Dough;arnis
+Task;Tbilisi;;Ice Cream Apple;league
+Task;Mogadishu;;Upside Down Pineapple Cake Chocolate;rugby
+Task;Dhaka;;Sundae Neapolitan;gymnastics
+Task;New Delhi;;Upside Down Pineapple Cake French Vanilla;golf
+Task;Buenos Aires;;Cake Strawberry;field hockey
+Task;Muscat;;Trifle Pumpkin;hockey
+Task;Bucharest;;Doughnut Apple;pesäpallo
+Task;Mogadishu;;Cupcake Peanut Butter;rugby union
+Task;Reykjavik;;Cheesecake Strawberry;oil wrestling
+Task;Gaborone;;Upside Down Pineapple Cake Chocolate Chip Cookie Dough;volley ball
+Task;Abuja;;Cookie Chocolate Chip Cookie Dough;bull fighting
+Task;Niamey;;Cobbler Birthday Cake;association
+Task;Melekeok;;Trifle Neapolitan;golf
+Task;Tbilisi;;Cake Butterscotch;gymnastics
+Task;Castries;;Trifle Neapolitan;rugby union
+Task;Asuncion;;Trifle Neapolitan;water polo
+Task;Lilongwe;;Cupcake Peanut Butter;hockey
+Task;Kingstown;;Doughnut Apple;volley ball
+Task;Beijing;;Key Lime Pie Caramel;rugby union
+Task;Lusaka;;Fruit Cake Pistachio;pesäpallo
+Task;Georgetown;;Trifle Neapolitan;gymnastics
+Task;Canberra;;Cheesecake Strawberry;water polo
+Task;Yerevan;;Cobbler Birthday Cake;bandy
+Task;Lisbon;;Cheesecake Strawberry;rugby union
+Task;Melekeok;;Cupcake Strawberry;oil wrestling
+Task;Mexico City;;Cobbler Birthday Cake;pesäpallo
+Task;Athens;;Cake Banana;water polo
+Task;Berlin;;Parfait French Vanilla;baseball
+Task;Khartoum;;Ice Cream Apple;lacrosse
+Task;Nairobi;;Cake Butterscotch;buzkashi
+Task;Beijing;;Cupcake Strawberry;oil wrestling
+Task;Ankara;;Fruit Cake Lemon;dandi biyo
+Task;Georgetown;;Cupcake Strawberry;arnis
+Task;Asuncion;;Cobbler Birthday Cake;taekwondo
+Task;Tegucigalpa;;Frozen Yogurt Caramel;cricket
+Task;Dili;;Frozen Yogurt Caramel;hockey
+Task;Buenos Aires;;Fruit Cake Blondie;rugby union
+Task;Dushanbe;;Ice Cream Apple;volley ball
+Task;Prague;;Cheesecake Strawberry;baseball
+Task;Cairo;;Cake Butterscotch;kabaddi
+Task;Buenos Aires;;Parfait French Vanilla;kabaddi
+Task;Port-of-Spain;;Ice Cream Apple;bandy
+Task;London;;Cake Banana;oil wrestling
+Task;Juba;;Cake Strawberry;shooting
+Task;Bern;;Upside Down Pineapple Cake Chocolate;arnis
+Task;Basseterre;;Cupcake Banana;buzkashi
+Task;Tarawa Atoll;;Upside Down Pineapple Cake Chocolate;gymnastics
+Task;Juba;;Pie Funfetti;football
+Task;Accra;;Coffee Cake Birthday Cake;league
+Task;Port Moresby;;Upside Down Pineapple Cake Butter Pecan;shooting
+Task;Nassau;;Trifle Neapolitan;golf
+Task;Madrid;;Fruit Cake Blondie;cricket
+Task;Caracas;;Upside Down Pineapple Cake Chocolate Chip Cookie Dough;hockey
+Task;Pristina;;Upside Down Pineapple Cake Butter Pecan;bull fighting
+Task;Accra;;Sundae Neapolitan;arnis
+Task;Gaborone;;Cupcake Peanut Butter;buzkashi
+Task;Nairobi;;Frozen Yogurt Chocolate Chip Cookie Dough;taekwondo
+Task;Paris;;Cake Strawberry;rugby
+Task;San Jose;;Upside Down Pineapple Cake Butter Pecan;bandy
+Task;Bishkek;;Key Lime Pie Caramel;bull fighting
+Task;Harare;;Upside Down Pineapple Cake Chocolate;football
+Task;Sanaa;;Ice Cream Apple;dandi biyo
+Task;Dushanbe;;Cookie French Vanilla;taekwondo
+Task;Vaiaku village;;Fruit Cake Blondie;taekwondo
+Task;New Delhi;;Coffee Cake Birthday Cake;golf
+Task;Khartoum;;Ice Cream Apple;gymnastics
+Task;Madrid;;Upside Down Pineapple Cake Chocolate Chip Cookie Dough;rugby
+Task;San Salvador;;Fruit Cake Blondie;cricket
+Task;Phnom Penh;;Cake Strawberry;bandy
+Task;Panama City;;Cake Banana;bull fighting
+Task;Dar es Salaam;;Cake Strawberry;bull fighting
+Task;Monaco;;Fruit Cake Pistachio;bandy
+Task;Jakarta;;Cupcake Peanut Butter;handball
+Task;Astana;;Doughnut Apple;soccer
+Task;Madrid;;Trifle Neapolitan;soccer
+Task;Nuku'alofa;;Sundae Coconut;soccer
+Task;Kathmandu;;Cookie Chocolate Chip Cookie Dough;basketball
+Task;Managua;;Sundae Neapolitan;bull fighting
+Task;Mexico City;;Frozen Yogurt Chocolate Chip Cookie Dough;bandy
+Task;Harare;;Cheesecake Strawberry;bandy
+Task;Chisinau;;Upside Down Pineapple Cake French Vanilla;association
+Task;Maseru;;Fruit Cake Lemon;sumo
+Task;Roseau;;Upside Down Pineapple Cake Butter Pecan;basketball
+Task;Libreville;;Cobbler Birthday Cake;association
+Task;Accra;;Upside Down Pineapple Cake French Vanilla;sumo
+Task;Melekeok;;Cake Banana;bandy
+Task;Ankara;;Cake Strawberry;hockey
