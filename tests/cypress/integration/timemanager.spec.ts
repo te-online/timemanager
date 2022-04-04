@@ -1,8 +1,7 @@
-import { dataset } from "../fixtures/test-data";
+import { dataset, timeEntries, sharedTimeEntries, testusers } from "../fixtures/test-data";
 const clients = dataset.filter((data) => data.Type === "Client");
 const projects = dataset.filter((data) => data.Type === "Project");
 const tasks = dataset.filter((data) => data.Type === "Task");
-const testusers = ["import-test", "testuser-1", "testuser-2"];
 
 describe("TimeManager", () => {
 	// eslint-disable-next-line no-undef
@@ -114,6 +113,39 @@ describe("TimeManager", () => {
 		cy.contains("div.tm_item-row", `${secondClient.Name} (changed)`, { timeout: 4000 }).should("be.visible");
 	});
 
+	it("can share clients", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const firstClient = clients[0];
+		cy.contains("div.tm_item-row", firstClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		for (const username of testusers.slice(1)) {
+			cy.contains("button", "Share client", { timeout: 4000 }).click();
+			cy.get("input#sharee-select").type(username);
+			cy.get("label.sharees .item.first", { timeout: 4000 }).click();
+			cy.contains("button", "Add", { timeout: 4000 }).click();
+
+			cy.wait(1000);
+			cy.contains("span.tm_label", "Shared with").parent().contains(username).should("be.visible");
+		}
+
+		cy.get("a").contains("Clients").click();
+		const thirdClient = clients[2];
+		cy.contains("div.tm_item-row", thirdClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		for (const username of testusers.slice(1)) {
+			cy.contains("button", "Share client", { timeout: 4000 }).click();
+			cy.get("input#sharee-select").type(username);
+			cy.get("label.sharees .item.first", { timeout: 4000 }).click();
+			cy.contains("button", "Add", { timeout: 4000 }).click();
+
+			cy.wait(1000);
+			cy.contains("span.tm_label", "Shared with").parent().contains(username).should("be.visible");
+		}
+	});
+
 	it("can delete client", () => {
 		const firstClient = clients[0];
 
@@ -127,20 +159,22 @@ describe("TimeManager", () => {
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", clients.length - 1);
 	});
 
-	it("can create projects on a client", () => {
+	it("can create projects on clients", () => {
 		cy.visit("/apps/timemanager");
-		cy.get("a").contains("Clients").click();
-		const secondClient = clients[1];
-		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		for (const client of clients.filter(({}, index) => index !== 0)) {
+			cy.get("a").contains("Clients").click();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", client.Name, { timeout: 4000 }).click();
 
-		for (const [index, project] of projects.filter((project) => project.Client === secondClient.Name).entries()) {
-			cy.wait(1000);
-			cy.contains("a", "Add project", { timeout: 4000 }).click();
-			cy.get('input[name="name"]').type(project.Name);
-			cy.get(".oc-dialog form").submit();
-			cy.wait(1000);
-			cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).should("be.visible");
-			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+			for (const [index, project] of projects.filter((project) => project.Client === client.Name).entries()) {
+				cy.wait(1000);
+				cy.contains("a", "Add project", { timeout: 4000 }).click();
+				cy.get('input[name="name"]').type(project.Name);
+				cy.get(".oc-dialog form").submit();
+				cy.wait(1000);
+				cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).should("be.visible");
+				cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+			}
 		}
 	});
 
@@ -189,25 +223,37 @@ describe("TimeManager", () => {
 		);
 	});
 
-	it("can create tasks on a project", () => {
+	it("can create tasks on projects", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
-		const secondClient = clients[1];
-		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
-		cy.wait(1000);
 
-		const fifthProject = projects.filter((project) => project.Client === secondClient.Name)[4];
-		cy.contains("div.tm_item-row", fifthProject.Name, { timeout: 4000 }).click();
-		cy.wait(1000);
+		for (const client of clients.filter(({}, index) => index !== 0)) {
+			cy.get("a").contains("Clients").click();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", client.Name, { timeout: 4000 }).click();
 
-		for (const [index, task] of tasks.filter((task) => task.Project === fifthProject.Name).entries()) {
-			cy.wait(1000);
-			cy.contains("a", "Add task", { timeout: 4000 }).click();
-			cy.get('input[name="name"]').type(task.Name);
-			cy.get(".oc-dialog form").submit();
-			cy.wait(1000);
-			cy.contains("div.tm_item-row", task.Name, { timeout: 4000 }).should("be.visible");
-			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+			for (const project of projects
+				.filter(
+					(project, index) => project.Client === client.Name || (project.Client === clients[1].Name && index !== 1)
+				)
+				.slice(0, 5)) {
+				cy.get("a").contains(client.Name).click();
+				cy.wait(1000);
+				cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).click();
+
+				for (const [index, task] of tasks
+					.filter((task) => task.Project === project.Name)
+					.slice(0, 3)
+					.entries()) {
+					cy.wait(1000);
+					cy.contains("a", "Add task", { timeout: 4000 }).click();
+					cy.get('input[name="name"]').type(task.Name);
+					cy.get(".oc-dialog form").submit();
+					cy.wait(1000);
+					cy.contains("div.tm_item-row", task.Name, { timeout: 4000 }).should("be.visible");
+					cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+				}
+			}
 		}
 	});
 
@@ -264,19 +310,83 @@ describe("TimeManager", () => {
 		);
 	});
 
-	// it("can create time entry", () => {});
+	it("can create time entries", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can edit time entry", () => {});
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can check time entry", () => {});
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can uncheck time entry", () => {});
+		for (const [index, timeEntry] of timeEntries.entries()) {
+			cy.wait(1000);
+			cy.contains("a", "Add time entry", { timeout: 4000 }).click();
+			cy.get('input[name="duration"]').type(timeEntry.time);
+			cy.get('input[name="date"]').type(timeEntry.date);
+			cy.get('textarea[name="note"]').type(timeEntry.note);
+			cy.get(".oc-dialog form").submit();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", "."), { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note, { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate, { timeout: 4000 }).should("be.visible");
+			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+		}
+	});
 
-	// it("can delete time entry", () => {});
+	it("can create time entries in shared client", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const thirdClient = clients[2];
+		cy.contains("div.tm_item-row", thirdClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstProject = projects.filter((project) => project.Client === thirdClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		for (const [index, timeEntry] of sharedTimeEntries.entries()) {
+			cy.wait(1000);
+			cy.contains("a", "Add time entry", { timeout: 4000 }).click();
+			cy.get('input[name="duration"]').type(timeEntry.time);
+			cy.get('input[name="date"]').type(timeEntry.date);
+			cy.get('textarea[name="note"]').type(timeEntry.note);
+			cy.get(".oc-dialog form").submit();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", "."), { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note, { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate, { timeout: 4000 }).should("be.visible");
+			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+		}
+	});
+
+	// it("can edit time entry", () => {
+	// 	// @TODO:
+	// });
+
+	// it("can mark time entry", () => {
+	// 	// @TODO:
+	// });
+
+	// it("can unmark time entry", () => {
+	// 	// @TODO:
+	// });
+
+	// it("can delete time entry", () => {
+	// 	// @TODO:
+	// });
 
 	// it("can display correct totals", () => {});
-
-	// it("can share clients", () => {});
 
 	// it("can see clients, projects, tasks shared with me", () => {});
 

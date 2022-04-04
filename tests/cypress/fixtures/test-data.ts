@@ -931,3 +931,47 @@ export const dataset = [
 		Note: "hockey",
 	},
 ];
+
+export const testusers = ["import-test", "testuser-1", "testuser-2"];
+
+export const timeEntries = [
+	{
+		time: "2.75",
+		note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+		date: "2022-04-04",
+		formattedDate: "Monday, April 4, 2022",
+	},
+	{
+		time: "5.5",
+		note: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+		date: "2022-03-25",
+		formattedDate: "Friday, March 25, 2022",
+	},
+	{
+		time: "1.25",
+		note: "Vitae tempus quam pellentesque nec nam.",
+		date: "2021-12-14",
+		formattedDate: "Tuesday, December 14, 2021",
+	},
+];
+
+export const sharedTimeEntries = [
+	{
+		time: "0.75",
+		note: "Excepteur sint occaecat cupidatat non proident",
+		date: "2022-04-05",
+		formattedDate: "Tuesday, April 5, 2022",
+	},
+	{
+		time: "2.5",
+		note: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+		date: "2021-04-04",
+		formattedDate: "Moday, April 4, 2022",
+	},
+	{
+		time: "7.5",
+		note: "sunt in culpa qui officia deserunt",
+		date: "2021-11-08",
+		formattedDate: "Monday, November 8, 2021",
+	},
+];
