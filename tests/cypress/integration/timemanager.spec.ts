@@ -225,7 +225,6 @@ describe("TimeManager", () => {
 
 	it("can create tasks on projects", () => {
 		cy.visit("/apps/timemanager");
-		cy.get("a").contains("Clients").click();
 
 		for (const client of clients.filter(({}, index) => index !== 0)) {
 			cy.get("a").contains("Clients").click();
