@@ -30,6 +30,12 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
+### 0.3.0 Beta, 12. April 2022
+- Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks
+  - Allows users you shared the client with to create and edit time entries in tasks you created
+	- Only you can see everyone's time entries (also in reports), everyone else only sees their entries
+	- Shared clients are currently not reflected in the Android app / REST API
+
 ### 0.2.9 Beta, 15. March 2022
 - Bugfix: Import UI will now create a commit and show the success message even if importing to an empty database
 - Bugfix: Navigation button will stay visible and interactive when navigating client-side (issue #70)
@@ -48,11 +54,11 @@ Before building or development, dependencies need to be installed once by runnin
 #### IMPORTANT
 **If you experience sync issues with the Android app by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app), please install this update at your earliest convenience and restart the Android app to clear the sync queue. It will most likely resolve those issues. Details below.**
 
-- Bugfix: Don't assume that clients can handle sync conflicts (issue #53). 
+- Bugfix: Don't assume that clients can handle sync conflicts (issue #53).
 
-> This is sort of a regression, caused by #48 being fixed. Previously the bug described in #48 prevented the API to ask for client-side conflict handling, making the Android app work as it did. 
+> This is sort of a regression, caused by #48 being fixed. Previously the bug described in #48 prevented the API to ask for client-side conflict handling, making the Android app work as it did.
 
-> Since there's no API documentation and the API changed because of this bugfix, the Android app is not to blame for this. This release makes sync behavior configurable, defaulting to the sync behavior previous to 0.2.5. I've opened an [issue in the app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app/-/issues/4) to work on adjusting to the different API signature and getting conflict handling implemented in the Android app. If you've left a negative review in the PlayStore based on this issue, please consider updating it, if this release fixes the issue for you. If not, please open an issue in this repository or the [Android app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app). 
+> Since there's no API documentation and the API changed because of this bugfix, the Android app is not to blame for this. This release makes sync behavior configurable, defaulting to the sync behavior previous to 0.2.5. I've opened an [issue in the app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app/-/issues/4) to work on adjusting to the different API signature and getting conflict handling implemented in the Android app. If you've left a negative review in the PlayStore based on this issue, please consider updating it, if this release fixes the issue for you. If not, please open an issue in this repository or the [Android app's repository](https://gitlab.com/joleaf/nc-timemanager-mobile-app).
 
 > **Note:** If you've synced your [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) with release 0.2.5 you might experience duplicate objects. **This release contains a database migration that will fix these duplicate objects and prevent them in the future**, however you might need to sort out manually which ones you'd like to keep and which ones to delete. Very sorry for the inconvenience!
 
