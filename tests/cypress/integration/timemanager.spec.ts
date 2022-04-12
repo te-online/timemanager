@@ -500,6 +500,7 @@ describe("TimeManager", () => {
 			.contains("button", "Delete")
 			// Button is only visible on hover, force needed
 			.click({ force: true });
+		cy.contains("button", "Delete", { timeout: 4000 }).click();
 		cy.wait(1000);
 
 		cy.wait(1000);
