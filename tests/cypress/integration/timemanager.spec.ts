@@ -226,18 +226,24 @@ describe("TimeManager", () => {
 	it("can create tasks on projects", () => {
 		cy.visit("/apps/timemanager");
 
-		for (const client of clients.filter(({}, index) => index !== 0)) {
+		for (const [clientIndex, client] of clients.entries()) {
+			if (clientIndex === 0) {
+				// Client got deleted earlier, skip
+				continue;
+			}
 			cy.get("a").contains("Clients").click();
 			cy.wait(1000);
 			cy.contains("div.tm_item-row", client.Name, { timeout: 4000 }).click();
 
-			for (const [index, project] of projects
-				.filter(
-					(project, index) => project.Client === client.Name || (project.Client === clients[1].Name && index !== 1)
-				)
+			for (const [projectIndex, project] of projects
+				.filter((project) => project.Client === client.Name)
 				.slice(0, 5)
 				.entries()) {
-				if (index > 0) {
+				if (clientIndex === 1 && projectIndex === 1) {
+					// Project got deleted earlier, skip
+					continue;
+				}
+				if (projectIndex > 0) {
 					cy.get("a").contains(client.Name).click();
 					cy.wait(1000);
 				}
