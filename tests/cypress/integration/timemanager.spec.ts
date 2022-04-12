@@ -244,9 +244,10 @@ describe("TimeManager", () => {
 					continue;
 				}
 				if (projectIndex > 0) {
-					cy.get("a").contains(client.Name).click();
 					cy.wait(1000);
+					cy.get("a").contains(client.Name, { timeout: 4000 }).click();
 				}
+				cy.wait(1000);
 				cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).click();
 
 				for (const [index, task] of tasks
@@ -254,9 +255,10 @@ describe("TimeManager", () => {
 					// .slice(0, 3)
 					.entries()) {
 					if (index > 0) {
-						cy.get("a").contains(project.Name).click();
 						cy.wait(1000);
+						cy.get("a").contains(project.Name, { timeout: 4000 }).click();
 					}
+					cy.wait(1000);
 					cy.contains("a", "Add task", { timeout: 4000 }).click();
 					cy.get('input[name="name"]').type(task.Name);
 					cy.get(".oc-dialog form").submit();
@@ -419,6 +421,8 @@ describe("TimeManager", () => {
 	it("can mark time entry", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
@@ -454,6 +458,8 @@ describe("TimeManager", () => {
 	it("can unmark time entry", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
