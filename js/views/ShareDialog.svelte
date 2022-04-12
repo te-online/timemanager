@@ -123,7 +123,7 @@
 			</div>
 			<div class="oc-dialog-buttonrow twobuttons reverse">
 				<button class="button primary" on:click|preventDefault={addShare}>{translate('timemanager', 'Add')}</button>
-				<button class="button" on:click|preventDefault={closeDialog}>{translate('timemanager', 'Close')}</button>
+				<button class="button" on:click|preventDefault={closeDialog}>{translate('timemanager', 'Cancel')}</button>
 			</div>
 		</div>
 	</Overlay>
