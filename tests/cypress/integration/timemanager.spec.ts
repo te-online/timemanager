@@ -257,7 +257,6 @@ describe("TimeManager", () => {
 						cy.get("a").contains(project.Name).click();
 						cy.wait(1000);
 					}
-					cy.wait(1000);
 					cy.contains("a", "Add task", { timeout: 4000 }).click();
 					cy.get('input[name="name"]').type(task.Name);
 					cy.get(".oc-dialog form").submit();
