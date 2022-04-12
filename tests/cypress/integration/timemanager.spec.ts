@@ -399,9 +399,9 @@ describe("TimeManager", () => {
 
 		const secondTimeEntry = timeEntries[1];
 		cy.contains("div.tm_item-row", secondTimeEntry.note, { timeout: 4000 })
-			.invoke("show")
 			.contains("button", "Edit")
-			.click();
+			// Button is only visible on hover, force needed
+			.click({ force: true });
 		cy.wait(1000);
 
 		cy.get('input[name="duration"]').clear().type("5.75");
@@ -436,14 +436,14 @@ describe("TimeManager", () => {
 
 		cy.wait(1000);
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).to.be.checked;
+		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("be.visible");
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 
 		// See if status survives a page refresh
 		cy.reload(true);
 
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).to.be.checked;
+		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("be.visible");
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	});
 
@@ -469,14 +469,14 @@ describe("TimeManager", () => {
 
 		cy.wait(1000);
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).not.to.be.checked;
+		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("not.be.visible");
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 
 		// See if status survives a page refresh
 		cy.reload(true);
 
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).not.to.be.checked;
+		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("not.be.visible");
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	});
 
@@ -497,9 +497,9 @@ describe("TimeManager", () => {
 
 		const secondTimeEntry = timeEntries[1];
 		cy.contains("div.tm_item-row", secondTimeEntry.note, { timeout: 4000 })
-			.invoke("show")
 			.contains("button", "Delete")
-			.click();
+			// Button is only visible on hover, force needed
+			.click({ force: true });
 		cy.wait(1000);
 
 		cy.wait(1000);
