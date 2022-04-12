@@ -369,21 +369,130 @@ describe("TimeManager", () => {
 		}
 	});
 
-	// it("can edit time entry", () => {
-	// 	// @TODO:
-	// });
+	it("can edit time entry", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can mark time entry", () => {
-	// 	// @TODO:
-	// });
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can unmark time entry", () => {
-	// 	// @TODO:
-	// });
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
 
-	// it("can delete time entry", () => {
-	// 	// @TODO:
-	// });
+		const secondTimeEntry = timeEntries[1];
+		cy.contains("div.tm_item-row", secondTimeEntry.note, { timeout: 4000 })
+			.invoke("show")
+			.contains("button", "Edit")
+			.click();
+		cy.wait(1000);
+
+		cy.get('input[name="duration"]').clear().type("5.75");
+		cy.get('input[name="date"]').clear().type("2021-03-26");
+		cy.get('textarea[name="note"]').type(" (changed)");
+		cy.get(".oc-dialog form").submit();
+
+		cy.wait(1000);
+		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("be.visible");
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+	});
+
+	it("can mark time entry", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTimeEntry = timeEntries[0];
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
+			.click();
+
+		cy.wait(1000);
+		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).to.be.checked;
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+
+		// See if status survives a page refresh
+		cy.reload(true);
+
+		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).to.be.checked;
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+	});
+
+	it("can unmark time entry", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTimeEntry = timeEntries[0];
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
+			.click();
+
+		cy.wait(1000);
+		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).not.to.be.checked;
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+
+		// See if status survives a page refresh
+		cy.reload(true);
+
+		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		expect(cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]')).not.to.be.checked;
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+	});
+
+	it("can delete time entry", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		const secondClient = clients[1];
+		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.wait(1000);
+
+		const secondTimeEntry = timeEntries[1];
+		cy.contains("div.tm_item-row", secondTimeEntry.note, { timeout: 4000 })
+			.invoke("show")
+			.contains("button", "Delete")
+			.click();
+		cy.wait(1000);
+
+		cy.wait(1000);
+		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("not.be.visible");
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length - 1);
+	});
 
 	// it("can display correct totals", () => {});
 
