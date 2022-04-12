@@ -966,7 +966,7 @@ export const sharedTimeEntries = [
 		time: "2.5",
 		note: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
 		date: "2021-04-04",
-		formattedDate: "Moday, April 4, 2022",
+		formattedDate: "Sunday, April 4, 2021",
 	},
 	{
 		time: "7.5",
