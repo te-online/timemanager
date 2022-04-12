@@ -150,6 +150,19 @@ OC.L10N.register(
 		"Collapse all": "Alle einklappen",
 		"Expand all": "Alle ausklappen",
 		"Import now": "Importieren",
+		"shared with you by:": "geteilt von:",
+		"Shared with": "Geteilt mit",
+		"Shared with you by": "Geteilt von",
+		"Share with": "Teilen mit",
+		"Search...": "Suche...",
+		"Existing shares": "Schon geteilt mit",
+		"You haven't shared this client with anyone": "Du hast diesen Kunden mit niemandem geteilt",
+		"You automatically grant read-only access to associated projects and tasks by sharing.":
+			"Du gibst beim Teilen automatisch Lesezugriff auf untergeordnete Projkete und Aufgaben.",
+		"Users you share with can create time entries.": "Benutzer, mit denen du teilst, können Zeiteinträge erstellen.",
+		"You can see all time entries, while others can only see and edit their own time entries.":
+			"Du kannst alle Zeiteinträge sehen, während andere nur ihre eigenen Zeiteinträge sehen und ändern können.",
+		"Share client": "Kunde teilen",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
