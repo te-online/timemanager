@@ -289,7 +289,10 @@ describe("TimeManager", () => {
 		cy.contains("button", "Edit task").click();
 
 		cy.wait(1000);
-		cy.contains("span.tm_label", "Task").parent().contains(`${thirdTask.Name} (changed)`).should("be.visible");
+		cy.contains("span.tm_label", "Task", { timeout: 4000 })
+			.parent()
+			.contains(`${thirdTask.Name} (changed)`, { timeout: 4000 })
+			.should("be.visible");
 
 		cy.get("a").contains(fifthProject.Name).click();
 		cy.get("div.tm_item-row", { timeout: 4000 }).should(
@@ -430,7 +433,9 @@ describe("TimeManager", () => {
 		cy.wait(1000);
 
 		const firstTimeEntry = timeEntries[0];
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
+		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
+			.parent()
+			.parent()
 			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
 			.click();
 
@@ -463,7 +468,9 @@ describe("TimeManager", () => {
 		cy.wait(1000);
 
 		const firstTimeEntry = timeEntries[0];
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
+		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
+			.parent()
+			.parent()
 			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
 			.click();
 
