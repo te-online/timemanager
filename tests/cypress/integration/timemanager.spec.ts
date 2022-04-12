@@ -237,7 +237,7 @@ describe("TimeManager", () => {
 
 			for (const [projectIndex, project] of projects
 				.filter((project) => project.Client === client.Name)
-				.slice(0, 5)
+				// .slice(0, 5)
 				.entries()) {
 				if (clientIndex === 1 && projectIndex === 1) {
 					// Project got deleted earlier, skip
@@ -251,7 +251,7 @@ describe("TimeManager", () => {
 
 				for (const [index, task] of tasks
 					.filter((task) => task.Project === project.Name)
-					.slice(0, 3)
+					// .slice(0, 3)
 					.entries()) {
 					if (index > 0) {
 						cy.get("a").contains(project.Name).click();
