@@ -231,19 +231,26 @@ describe("TimeManager", () => {
 			cy.wait(1000);
 			cy.contains("div.tm_item-row", client.Name, { timeout: 4000 }).click();
 
-			for (const project of projects
+			for (const [index, project] of projects
 				.filter(
 					(project, index) => project.Client === client.Name || (project.Client === clients[1].Name && index !== 1)
 				)
-				.slice(0, 5)) {
-				cy.get("a").contains(client.Name).click();
-				cy.wait(1000);
+				.slice(0, 5)
+				.entries()) {
+				if (index > 0) {
+					cy.get("a").contains(client.Name).click();
+					cy.wait(1000);
+				}
 				cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).click();
 
 				for (const [index, task] of tasks
 					.filter((task) => task.Project === project.Name)
 					.slice(0, 3)
 					.entries()) {
+					if (index > 0) {
+						cy.get("a").contains(project.Name).click();
+						cy.wait(1000);
+					}
 					cy.wait(1000);
 					cy.contains("a", "Add task", { timeout: 4000 }).click();
 					cy.get('input[name="name"]').type(task.Name);
