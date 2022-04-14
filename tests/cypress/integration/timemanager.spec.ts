@@ -250,11 +250,13 @@ describe("TimeManager", () => {
 				cy.wait(1000);
 				cy.contains("div.tm_item-row", project.Name, { timeout: 4000 }).click();
 
-				for (const [index, task] of tasks
+				let numTasks = 0;
+				for (const [taskIndex, task] of tasks
 					.filter((task) => task.Project === project.Name)
 					// .slice(0, 3)
 					.entries()) {
-					if (index > 0) {
+					numTasks++;
+					if (taskIndex > 0) {
 						cy.wait(1000);
 						cy.get("a").contains(project.Name, { timeout: 4000 }).click();
 					}
@@ -264,7 +266,7 @@ describe("TimeManager", () => {
 					cy.get(".oc-dialog form").submit();
 					cy.wait(1000);
 					cy.contains("div.tm_item-row", task.Name, { timeout: 4000 }).should("be.visible");
-					cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+					cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", numTasks);
 				}
 			}
 		}
@@ -389,6 +391,8 @@ describe("TimeManager", () => {
 	it("can edit time entry", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
@@ -437,21 +441,23 @@ describe("TimeManager", () => {
 
 		const firstTimeEntry = timeEntries[0];
 		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
-			.parent()
-			.parent()
-			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
-			.click();
+			.children('input[type="checkbox"]', { timeout: 4000 })
+			.click({ force: true });
 
 		cy.wait(1000);
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.children('input[type="checkbox"]:checked')
+			.should("have.length", 1);
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 
 		// See if status survives a page refresh
 		cy.reload(true);
 
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.children('input[type="checkbox"]:checked')
+			.should("have.length", 1);
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	});
 
@@ -474,27 +480,31 @@ describe("TimeManager", () => {
 
 		const firstTimeEntry = timeEntries[0];
 		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
-			.parent()
-			.parent()
-			.get('.checkbox-action input[type="checkbox"]', { timeout: 4000 })
-			.click();
+			.children('input[type="checkbox"]', { timeout: 4000 })
+			.click({ force: true });
 
 		cy.wait(1000);
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("not.be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.children('input[type="checkbox"]:checked')
+			.should("have.length", 0);
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 
 		// See if status survives a page refresh
 		cy.reload(true);
 
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]:checked').should("not.be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note)
+			.children('input[type="checkbox"]:checked')
+			.should("have.length", 0);
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	});
 
 	it("can delete time entry", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
 		const secondClient = clients[1];
 		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
 		cy.wait(1000);
@@ -512,11 +522,11 @@ describe("TimeManager", () => {
 			.contains("button", "Delete")
 			// Button is only visible on hover, force needed
 			.click({ force: true });
-		cy.contains("button", "Delete", { timeout: 4000 }).click();
+		cy.contains(".oc-dialog button", "Delete", { timeout: 4000 }).click();
 		cy.wait(1000);
 
 		cy.wait(1000);
-		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("not.be.visible");
+		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("not.exist");
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length - 1);
 	});
 
