@@ -1,7 +1,21 @@
 import { dataset, timeEntries, sharedTimeEntries, testusers } from "../fixtures/test-data";
 const clients = dataset.filter((data) => data.Type === "Client");
-const projects = dataset.filter((data) => data.Type === "Project");
-const tasks = dataset.filter((data) => data.Type === "Task");
+const allProjects = dataset.filter((data) => data.Type === "Project");
+const projects: typeof dataset = [];
+allProjects.forEach((project) => {
+	// Add max 5 projects per client
+	if (projects.filter((oneP) => oneP.Client === project.Client).length <= 5) {
+		projects.push(project);
+	}
+});
+const allTasks = dataset.filter((data) => data.Type === "Task");
+const tasks: typeof dataset = [];
+allTasks.forEach((task) => {
+	// Add max 3 tasks per project
+	if (tasks.filter((oneT) => oneT.Project === task.Project).length <= 5) {
+		tasks.push(task);
+	}
+});
 
 describe("TimeManager", () => {
 	// eslint-disable-next-line no-undef
@@ -51,8 +65,8 @@ describe("TimeManager", () => {
 
 		// Check counts in preview
 		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).should("be.visible");
-		cy.contains("dt", "Projects").siblings("dd").contains(projects.length).should("be.visible");
-		cy.contains("dt", "Tasks").siblings("dd").contains(tasks.length).should("be.visible");
+		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).should("be.visible");
+		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).should("be.visible");
 		cy.contains("button", "Import now").click();
 
 		// Inspect rows of clients after import
@@ -64,15 +78,15 @@ describe("TimeManager", () => {
 		cy.contains("div.tm_item-row", testClient.Name, { timeout: 4000 }).click();
 		cy.get("div.tm_item-row", { timeout: 4000 }).should(
 			"have.length",
-			projects.filter((project) => project.Client === testClient.Name).length
+			allProjects.filter((project) => project.Client === testClient.Name).length
 		);
 
 		// Rows of tasks
-		const testProject = projects.filter((project) => project.Client === testClient.Name)[0];
+		const testProject = allProjects.filter((project) => project.Client === testClient.Name)[0];
 		cy.contains("div.tm_item-row", testProject.Name, { timeout: 4000 }).click();
 		cy.get("div.tm_item-row", { timeout: 4000 }).should(
 			"have.length",
-			tasks.filter((task) => task.Project === testProject.Name).length
+			allTasks.filter((task) => task.Project === testProject.Name).length
 		);
 	});
 
