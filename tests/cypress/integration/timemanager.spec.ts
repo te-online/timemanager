@@ -436,7 +436,7 @@ describe("TimeManager", () => {
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	});
 
-	it("can mark time entry", () => {
+	const markTimeEntry = (should: "exist" | "not.exist") => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
 		cy.contains(".list-title", "Clients", { timeout: 4000 });
@@ -454,64 +454,33 @@ describe("TimeManager", () => {
 		cy.wait(1000);
 
 		const firstTimeEntry = timeEntries[0];
-		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
-			.children('input[type="checkbox"]', { timeout: 4000 })
-			.click({ force: true });
+		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 }).within(() => {
+			cy.get('input[type="checkbox"]', { timeout: 4000 }).click({ force: true });
+		});
 
 		cy.wait(1000);
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
-			.children('input[type="checkbox"]:checked')
-			.should("have.length", 1);
+		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
+			cy.get('input[type="checkbox"]:checked').should(should);
+		});
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 
 		// See if status survives a page refresh
 		cy.reload(true);
 
 		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
-			.children('input[type="checkbox"]:checked')
-			.should("have.length", 1);
+		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
+			cy.get('input[type="checkbox"]:checked').should(should);
+		});
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+	};
+
+	it.only("can mark time entry", () => {
+		markTimeEntry("exist");
 	});
 
-	it("can unmark time entry", () => {
-		cy.visit("/apps/timemanager");
-		cy.get("a").contains("Clients").click();
-		cy.contains(".list-title", "Clients", { timeout: 4000 });
-
-		const secondClient = clients[1];
-		cy.contains("div.tm_item-row", secondClient.Name, { timeout: 4000 }).click();
-		cy.wait(1000);
-
-		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
-		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
-		cy.wait(1000);
-
-		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
-		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
-		cy.wait(1000);
-
-		const firstTimeEntry = timeEntries[0];
-		cy.contains("div.tm_item-row", firstTimeEntry.note, { timeout: 4000 })
-			.children('input[type="checkbox"]', { timeout: 4000 })
-			.click({ force: true });
-
-		cy.wait(1000);
-		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
-			.children('input[type="checkbox"]:checked')
-			.should("have.length", 0);
-		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
-
-		// See if status survives a page refresh
-		cy.reload(true);
-
-		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", firstTimeEntry.note)
-			.children('input[type="checkbox"]:checked')
-			.should("have.length", 0);
-		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
+	it.only("can unmark time entry", () => {
+		markTimeEntry("not.exist");
 	});
 
 	it("can delete time entry", () => {
