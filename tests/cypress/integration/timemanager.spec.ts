@@ -475,11 +475,11 @@ describe("TimeManager", () => {
 		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length);
 	};
 
-	it.only("can mark time entry", () => {
+	it("can mark time entry", () => {
 		markTimeEntry("exist");
 	});
 
-	it.only("can unmark time entry", () => {
+	it("can unmark time entry", () => {
 		markTimeEntry("not.exist");
 	});
 
