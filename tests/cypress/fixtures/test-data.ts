@@ -21,6 +21,13 @@ export const dataset = [
 		Note: "Assimilated radical archive",
 	},
 	{
+		Type: "Client",
+		Name: "Sirius Cybernetics Corp.",
+		Client: "",
+		Project: "",
+		Note: "",
+	},
+	{
 		Type: "Project",
 		Name: "Cake Banana",
 		Client: "Crooks-Gulgowski",
@@ -954,6 +961,7 @@ export const timeEntries = [
 		formattedDate: "Tuesday, December 14, 2021",
 	},
 ];
+export const timeEntriesTotalFormatted = "9.5 hrs.";
 
 export const sharedTimeEntries = [
 	{
@@ -975,3 +983,4 @@ export const sharedTimeEntries = [
 		formattedDate: "Monday, November 8, 2021",
 	},
 ];
+export const sharedTimeEntriesFormatted = "10.75 hrs.";
