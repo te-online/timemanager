@@ -736,8 +736,8 @@ describe("TimeManager", () => {
 		}
 
 		cy.visit("/apps/timemanager");
-		// Latest entries contains latest time entry
-		cy.contains(".tm_item-row", `[Sharee entry]: ${timeEntries[timeEntries.length - 1].note}`);
+		// Latest entries contains latest time entry (first one has latest date)
+		cy.contains(".tm_item-row", `[Sharee entry]: ${timeEntries[0].note}`);
 	});
 
 	it("can see all time entries in shared clients (as a sharer)", () => {
