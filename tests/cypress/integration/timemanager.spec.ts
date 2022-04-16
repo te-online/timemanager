@@ -740,7 +740,7 @@ describe("TimeManager", () => {
 		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`);
 	});
 
-	it("can see all time entries in shared clients (as a sharer)", () => {
+	const inspectSharedTimeEntries = () => {
 		const sharedClient = clients[2];
 
 		cy.visit("/apps/timemanager");
@@ -768,6 +768,10 @@ describe("TimeManager", () => {
 			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`, { timeout: 4000 }).should("be.visible");
 			cy.contains("div.tm_item-row", timeEntry.formattedDate, { timeout: 4000 }).should("be.visible");
 		}
+	};
+
+	it("can see all time entries in shared clients (as a sharer)", () => {
+		inspectSharedTimeEntries();
 	});
 
 	it("cannot see other's time entries in shared clients (as a sharee)", () => {
@@ -989,9 +993,58 @@ describe("TimeManager", () => {
 		}
 	});
 
-	// it("cannot send created, updated, deleted items for shared clients", () => {});
+	it("can unshare a currently shared client from one user", () => {
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
 
-	// it("cannot access unshared clients or time entries", () => {});
+		const thirdClient = clients[2];
+		cy.contains("div.tm_item-row", thirdClient.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Projects", { timeout: 4000 });
 
-	// it("can access time entries for previously shared client", () => {});
+		// Remove user 1 from list of sharees
+		const username = testusers[1];
+		cy.contains("button", "Share client", { timeout: 4000 }).click();
+		cy.contains("Existing shares")
+			.parent()
+			.within(() => {
+				cy.contains("li", username).within(() => {
+					cy.contains("button", "Delete", { timeout: 4000 }).click();
+				});
+			});
+		cy.contains("span.tm_label", "Shared with", { timeout: 4000 })
+			.parent()
+			.contains(username, { timeout: 4000 })
+			.should("not.exist");
+	});
+
+	it("cannot access unshared clients or time entries (as a sharee)", () => {
+		const sharedClient = clients[2];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as sharee test user
+		cy.get('input[name="user"]', { timeout: 4000 }).type(testusers[1]);
+		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.wait(2000);
+
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
+		cy.get("div.tm_item-row").should("have.length", 1);
+		cy.contains("div.tm_item-row", "You don't have any clients, yet. Get started by clicking “Add client”.");
+		cy.contains(".tm_item-row", sharedClient.Name).should("not.exist");
+
+		cy.visit("/apps/timemanager");
+		// Latest entries contains latest time entry (first one has latest date)
+		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`).should("not.exist");
+	});
+
+	it("can access time entries for previously shared client (as a sharer)", () => {
+		inspectSharedTimeEntries();
+	});
 });
