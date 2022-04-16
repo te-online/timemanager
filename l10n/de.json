@@ -143,7 +143,8 @@
 		"You automatically grant read-only access to associated projects and tasks by sharing.": "Du gibst beim Teilen automatisch Lesezugriff auf untergeordnete Projkete und Aufgaben.",
 		"Users you share with can create time entries.": "Benutzer, mit denen du teilst, können Zeiteinträge erstellen.",
 		"You can see all time entries, while others can only see and edit their own time entries.": "Du kannst alle Zeiteinträge sehen, während andere nur ihre eigenen Zeiteinträge sehen und ändern können.",
-		"Share client": "Kunde teilen"
+		"Share client": "Kunde teilen",
+		"Loading...": "Lädt..."
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

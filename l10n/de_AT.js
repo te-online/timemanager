@@ -163,6 +163,7 @@ OC.L10N.register(
 		"You can see all time entries, while others can only see and edit their own time entries.":
 			"Du kannst alle Zeiteinträge sehen, während andere nur ihre eigenen Zeiteinträge sehen und ändern können.",
 		"Share client": "Kunde teilen",
+		"Loading...": "Lädt...",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
