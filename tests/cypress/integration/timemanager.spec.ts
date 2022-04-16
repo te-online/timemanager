@@ -690,17 +690,287 @@ describe("TimeManager", () => {
 		}
 	});
 
-	// it("can see all time entries in shared clients", () => {});
+	it("can create time entries in a shared client (as a sharee)", () => {
+		const sharedClient = clients[2];
+		const testuser = testusers[1];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
 
-	// it("cannot see other's time entries in shared clients", () => {});
+		// Log in as sharee test user
+		cy.get('input[name="user"]', { timeout: 4000 }).type(testuser);
+		cy.get('input[name="password"]').type(`${testuser}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.wait(2000);
 
-	// it("cannot edit/delete clients, projects, tasks shared with me", () => {});
+		cy.visit("/apps/timemanager");
+		cy.contains("No activity, yet. Check back later.");
 
-	// it("cannot edit/delete other's time entries", () => {});
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
 
-	// it("can get API response with created, updated, deleted items", () => {});
+		cy.contains("div.tm_item-row", sharedClient.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Projects", { timeout: 4000 });
 
-	// it("API response doesn't include time entries on shared clients", () => {});
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Tasks", { timeout: 4000 });
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Time entries", { timeout: 4000 });
+
+		for (const [index, timeEntry] of sharedTimeEntries.entries()) {
+			cy.wait(1000);
+			cy.contains("a", "Add time entry", { timeout: 4000 }).click();
+			cy.get('input[name="duration"]').type(timeEntry.time);
+			cy.get('input[name="date"]').type(timeEntry.date);
+			cy.get('textarea[name="note"]').type(`[Sharee entry]: ${timeEntry.note}`);
+			cy.get(".oc-dialog form").submit();
+			cy.wait(1000);
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", "."), { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`, { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate, { timeout: 4000 }).should("be.visible");
+			cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", index + 1);
+		}
+
+		cy.visit("/apps/timemanager");
+		// Latest entries contains latest time entry
+		cy.contains(".tm_item-row", `[Sharee entry]: ${timeEntries[timeEntries.length - 1].note}`);
+	});
+
+	it("can see all time entries in shared clients (as a sharer)", () => {
+		const sharedClient = clients[2];
+
+		cy.visit("/apps/timemanager");
+		// Latest time entries is not supposed to contain sharee's entries
+		cy.contains(".tm_item-row", "[Sharee entry]:").should("not.exist");
+
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
+		cy.contains("div.tm_item-row", sharedClient.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Projects", { timeout: 4000 });
+
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Tasks", { timeout: 4000 });
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Time entries", { timeout: 4000 });
+
+		cy.get("div.tm_item-row", { timeout: 4000 }).should("have.length", timeEntries.length * 2);
+		for (const timeEntry of sharedTimeEntries) {
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", "."), { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note, { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`, { timeout: 4000 }).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate, { timeout: 4000 }).should("be.visible");
+		}
+	});
+
+	it("cannot see other's time entries in shared clients (as a sharee)", () => {
+		const sharedClient = clients[2];
+		const testuser = testusers[2];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as sharee test user
+		cy.get('input[name="user"]', { timeout: 4000 }).type(testuser);
+		cy.get('input[name="password"]').type(`${testuser}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.wait(2000);
+
+		cy.visit("/apps/timemanager");
+		cy.contains("No activity, yet. Check back later.");
+
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
+		cy.get("div.tm_item-row").each(() => {
+			cy.contains("0 hrs.");
+		});
+
+		cy.contains("div.tm_item-row", sharedClient.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Projects", { timeout: 4000 });
+
+		cy.get("div.tm_item-row").each(() => {
+			cy.contains("0 hrs.");
+		});
+
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Tasks", { timeout: 4000 });
+
+		cy.get("div.tm_item-row").each(() => {
+			cy.contains("0 hrs.");
+		});
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Time entries", { timeout: 4000 });
+
+		cy.get("div.tm_item-row").should("have.length", 1);
+		cy.contains(
+			"div.tm_item-row",
+			"You don't have any time entries, yet. Try adding one by clicking “Add time entry”."
+		);
+	});
+
+	it("cannot edit/delete clients, projects, tasks shared with me", () => {
+		const sharedClient = clients[2];
+		const testuser = testusers[1];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as sharee test user
+		cy.get('input[name="user"]', { timeout: 4000 }).type(testuser);
+		cy.get('input[name="password"]').type(`${testuser}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.wait(2000);
+
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Clients").click();
+		cy.contains(".list-title", "Clients", { timeout: 4000 });
+
+		cy.contains("div.tm_item-row", sharedClient.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Projects", { timeout: 4000 });
+
+		cy.contains("button", "Edit client").should("not.exist");
+
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Tasks", { timeout: 4000 });
+
+		cy.contains("button", "Edit project").should("not.exist");
+
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name, { timeout: 4000 }).click();
+		cy.contains(".list-title", "Time entries", { timeout: 4000 });
+
+		cy.contains("button", "Edit task").should("not.exist");
+	});
+
+	it.skip("can get API response with created, updated, deleted items", () => {
+		const sharedClient = clients[2];
+		const sharedProjects = projects.filter((p) => p.Client === sharedClient.Project);
+		const sharedTasks = tasks.filter((t) => sharedProjects.find((p) => p.Name === t.Project));
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Check API response for each user
+		for (const [index, user] of [Cypress.env("NEXTCLOUD_ADMIN_USER"), ...testusers].entries()) {
+			if (index > 0) {
+				continue;
+			}
+			cy.request({
+				method: "POST",
+				url: "/index.php/apps/timemanager/api/updateObjects",
+				auth: {
+					user: user,
+					pass:
+						user === Cypress.env("NEXTCLOUD_ADMIN_USER") ? Cypress.env("NEXTCLOUD_ADMIN_PASSWORD") : `${user}-password`,
+				},
+				body: {
+					data: {
+						clients: {
+							created: [],
+							updated: [],
+							deleted: [],
+						},
+						projects: {
+							created: [],
+							updated: [],
+							deleted: [],
+						},
+						tasks: {
+							created: [],
+							updated: [],
+							deleted: [],
+						},
+						times: {
+							created: [],
+							updated: [],
+							deleted: [],
+						},
+					},
+					lastCommit: "none",
+				},
+			}).then((response) => {
+				let clientsCount = 0;
+				let projectsCount = 0;
+				let tasksCount = 0;
+				let timesCount = 0;
+
+				let deletedClientsCount = 0;
+				let deletedProjectsCount = 0;
+				let deletedTasksCount = 0;
+				let deletedTimesCount = 0;
+
+				if (user === Cypress.env("NEXTCLOUD_ADMIN_USER")) {
+					clientsCount = clients.length - 1;
+					projectsCount = projects.length - 1;
+					tasksCount = tasks.length - 1;
+					timesCount = timeEntries.length - 1;
+					deletedClientsCount = 1;
+					deletedProjectsCount = 1;
+					deletedTasksCount = 1;
+					deletedTimesCount = 1;
+				} else if (user === "import-test") {
+					clientsCount = clients.length;
+					projectsCount = allProjects.length;
+					tasksCount = allTasks.length;
+				} else if (user === "testuser-1" || user === "testuser-2") {
+					clientsCount = 1;
+					projectsCount = sharedProjects.length;
+					tasksCount = sharedTasks.length;
+					timesCount = sharedTimeEntries.length;
+				}
+
+				expect(response.isOkStatusCode).to.be.true;
+				expect(response.body).to.have.property("data");
+
+				expect(response.body.data).to.have.property("clients");
+				expect(response.body.data.clients).to.have.property("created");
+				expect(response.body.data.clients.created.length).to.equal(clientsCount);
+				expect(response.body.data.clients).to.have.property("updated");
+				expect(response.body.data.clients.updated.length).to.equal(0);
+				expect(response.body.data.clients).to.have.property("deleted");
+				expect(response.body.data.clients.deleted.length).to.equal(deletedClientsCount);
+
+				expect(response.body.data).to.have.property("projects");
+				expect(response.body.data.projects).to.have.property("created");
+				expect(response.body.data.projects.created.length).to.equal(projectsCount);
+				expect(response.body.data.projects).to.have.property("updated");
+				expect(response.body.data.projects.updated.length).to.equal(0);
+				expect(response.body.data.projects).to.have.property("deleted");
+				expect(response.body.data.projects.deleted.length).to.equal(deletedProjectsCount);
+
+				expect(response.body.data).to.have.property("tasks");
+				expect(response.body.data.tasks).to.have.property("created");
+				expect(response.body.data.tasks.created.length).to.equal(tasksCount);
+				expect(response.body.data.tasks).to.have.property("updated");
+				expect(response.body.data.tasks.updated.length).to.equal(0);
+				expect(response.body.data.tasks).to.have.property("deleted");
+				expect(response.body.data.tasks.deleted.length).to.equal(deletedTasksCount);
+
+				expect(response.body.data).to.have.property("times");
+				expect(response.body.data.times).to.have.property("created");
+				expect(response.body.data.times.created.length).to.equal(timesCount);
+				expect(response.body.data.times).to.have.property("updated");
+				expect(response.body.data.times.updated.length).to.equal(0);
+				expect(response.body.data.times).to.have.property("deleted");
+				expect(response.body.data.times.deleted.length).to.equal(deletedTimesCount);
+			});
+		}
+	});
 
 	// it("cannot send created, updated, deleted items for shared clients", () => {});
 
