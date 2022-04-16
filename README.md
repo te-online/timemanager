@@ -34,7 +34,7 @@ Before building or development, dependencies need to be installed once by runnin
 - Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks
   - Allows users you shared the client with to create and edit time entries in tasks you created
 	- Only you can see everyone's time entries (also in reports), everyone else only sees their entries
-	- Shared clients are currently not reflected in the Android app / REST API
+	- The sharing feature is currently **not supported** in the Android app and/or REST API
 
 ### 0.2.9 Beta, 15. March 2022
 - Bugfix: Import UI will now create a commit and show the success message even if importing to an empty database
