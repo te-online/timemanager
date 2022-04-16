@@ -856,10 +856,7 @@ describe("TimeManager", () => {
 		cy.contains("button", "Edit task").should("not.exist");
 	});
 
-	it.skip("can get API response with created, updated, deleted items", () => {
-		const sharedClient = clients[2];
-		const sharedProjects = projects.filter((p) => p.Client === sharedClient.Project);
-		const sharedTasks = tasks.filter((t) => sharedProjects.find((p) => p.Name === t.Project));
+	it("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
 		cy.get("div#settings div#expand").click({ timeout: 4000 });
 		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
@@ -870,6 +867,9 @@ describe("TimeManager", () => {
 			if (index > 0) {
 				continue;
 			}
+
+			cy.log(`Response for user ${user}`);
+
 			cy.request({
 				method: "POST",
 				url: "/index.php/apps/timemanager/api/updateObjects",
@@ -904,34 +904,51 @@ describe("TimeManager", () => {
 					lastCommit: "none",
 				},
 			}).then((response) => {
-				let clientsCount = 0;
-				let projectsCount = 0;
-				let tasksCount = 0;
-				let timesCount = 0;
-
-				let deletedClientsCount = 0;
-				let deletedProjectsCount = 0;
-				let deletedTasksCount = 0;
-				let deletedTimesCount = 0;
+				const counts = {
+					clients: {
+						created: 0,
+						updated: 0,
+						deleted: 0,
+					},
+					projects: {
+						created: 0,
+						updated: 0,
+						deleted: 0,
+					},
+					tasks: {
+						created: 0,
+						updated: 0,
+						deleted: 0,
+					},
+					times: {
+						created: 0,
+						updated: 0,
+						deleted: 0,
+					},
+				};
 
 				if (user === Cypress.env("NEXTCLOUD_ADMIN_USER")) {
-					clientsCount = clients.length - 1;
-					projectsCount = projects.length - 1;
-					tasksCount = tasks.length - 1;
-					timesCount = timeEntries.length - 1;
-					deletedClientsCount = 1;
-					deletedProjectsCount = 1;
-					deletedTasksCount = 1;
-					deletedTimesCount = 1;
+					const deletedClient = clients[0];
+					const deletedProject = projects.filter((p) => p.Client === clients[1].Name)[1];
+					const availableProjects = projects.filter(
+						(p) => p.Client !== deletedClient.Name && p.Name !== deletedProject.Name
+					);
+					counts.clients.created = clients.length - 1;
+					counts.clients.updated = 0;
+					counts.clients.deleted = 1;
+					counts.projects.created = projects.filter((p) => p.Client !== deletedClient.Name).length - 1;
+					counts.projects.updated = 0;
+					counts.projects.deleted = 1; // 1 project got deleted
+					counts.tasks.created = tasks.filter((t) => availableProjects.find((p) => t.Project === p.Name)).length - 1;
+					counts.tasks.updated = 0;
+					counts.tasks.deleted = 1; // 1 task got deleted
+					counts.times.created = timeEntries.length + sharedTimeEntries.length - 1;
+					counts.times.updated = 1; // 1 time entry got checked (`updated` property changes then)
+					counts.times.deleted = 1; // 1 time entry got deleted
 				} else if (user === "import-test") {
-					clientsCount = clients.length;
-					projectsCount = allProjects.length;
-					tasksCount = allTasks.length;
-				} else if (user === "testuser-1" || user === "testuser-2") {
-					clientsCount = 1;
-					projectsCount = sharedProjects.length;
-					tasksCount = sharedTasks.length;
-					timesCount = sharedTimeEntries.length;
+					counts.clients.created = clients.length;
+					counts.projects.created = allProjects.length;
+					counts.tasks.created = allTasks.length;
 				}
 
 				expect(response.isOkStatusCode).to.be.true;
@@ -939,35 +956,35 @@ describe("TimeManager", () => {
 
 				expect(response.body.data).to.have.property("clients");
 				expect(response.body.data.clients).to.have.property("created");
-				expect(response.body.data.clients.created.length).to.equal(clientsCount);
+				expect(response.body.data.clients.created.length).to.equal(counts.clients.created);
 				expect(response.body.data.clients).to.have.property("updated");
-				expect(response.body.data.clients.updated.length).to.equal(0);
+				expect(response.body.data.clients.updated.length).to.equal(counts.clients.updated);
 				expect(response.body.data.clients).to.have.property("deleted");
-				expect(response.body.data.clients.deleted.length).to.equal(deletedClientsCount);
+				expect(response.body.data.clients.deleted.length).to.equal(counts.clients.deleted);
 
 				expect(response.body.data).to.have.property("projects");
 				expect(response.body.data.projects).to.have.property("created");
-				expect(response.body.data.projects.created.length).to.equal(projectsCount);
+				expect(response.body.data.projects.created.length).to.equal(counts.projects.created);
 				expect(response.body.data.projects).to.have.property("updated");
-				expect(response.body.data.projects.updated.length).to.equal(0);
+				expect(response.body.data.projects.updated.length).to.equal(counts.projects.updated);
 				expect(response.body.data.projects).to.have.property("deleted");
-				expect(response.body.data.projects.deleted.length).to.equal(deletedProjectsCount);
+				expect(response.body.data.projects.deleted.length).to.equal(counts.projects.deleted);
 
 				expect(response.body.data).to.have.property("tasks");
 				expect(response.body.data.tasks).to.have.property("created");
-				expect(response.body.data.tasks.created.length).to.equal(tasksCount);
+				expect(response.body.data.tasks.created.length).to.equal(counts.tasks.created);
 				expect(response.body.data.tasks).to.have.property("updated");
-				expect(response.body.data.tasks.updated.length).to.equal(0);
+				expect(response.body.data.tasks.updated.length).to.equal(counts.tasks.updated);
 				expect(response.body.data.tasks).to.have.property("deleted");
-				expect(response.body.data.tasks.deleted.length).to.equal(deletedTasksCount);
+				expect(response.body.data.tasks.deleted.length).to.equal(counts.tasks.deleted);
 
 				expect(response.body.data).to.have.property("times");
 				expect(response.body.data.times).to.have.property("created");
-				expect(response.body.data.times.created.length).to.equal(timesCount);
+				expect(response.body.data.times.created.length).to.equal(counts.times.created);
 				expect(response.body.data.times).to.have.property("updated");
-				expect(response.body.data.times.updated.length).to.equal(0);
+				expect(response.body.data.times.updated.length).to.equal(counts.times.updated);
 				expect(response.body.data.times).to.have.property("deleted");
-				expect(response.body.data.times.deleted.length).to.equal(deletedTimesCount);
+				expect(response.body.data.times.deleted.length).to.equal(counts.times.deleted);
 			});
 		}
 	});
