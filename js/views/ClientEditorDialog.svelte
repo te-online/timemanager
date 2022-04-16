@@ -17,6 +17,7 @@
 
 	onMount(() => {
 		Helpers.hideFallbacks("ClientEditor.svelte");
+		document.body.classList.add("tm_dialog_ready")
 	});
 
 	const save = async ({ name, note }) => {

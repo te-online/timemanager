@@ -16,6 +16,7 @@ export class PagePjax {
 		document.addEventListener("pjax:send", () => {
 			document.body.classList.add("loading");
 			document.body.classList.remove("loading-error");
+			document.body.classList.remove("tm_ready");
 		});
 
 		document.addEventListener("pjax:success", () => {

@@ -242,6 +242,8 @@ const init = () => {
 	// 		},
 	// 	})
 	// );
+
+	document.body.classList.add("tm_ready");
 };
 
 init();

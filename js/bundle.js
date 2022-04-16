@@ -14067,7 +14067,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (56:1) <Overlay {loading}>
+  } // (57:1) <Overlay {loading}>
 
 
   function create_default_slot$7(ctx) {
@@ -14263,6 +14263,7 @@
     var editClientData = $$props.editClientData;
     onMount(function () {
       Helpers.hideFallbacks("ClientEditor.svelte");
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var save = /*#__PURE__*/function () {
@@ -14756,7 +14757,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (54:1) <Overlay {loading}>
+  } // (55:1) <Overlay {loading}>
 
 
   function create_default_slot$6(ctx) {
@@ -14970,6 +14971,7 @@
     var editProjectData = $$props.editProjectData;
     onMount(function () {
       Helpers.hideFallbacks("ProjectEditor.svelte");
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var save = /*#__PURE__*/function () {
@@ -15497,7 +15499,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (55:1) <Overlay {loading}>
+  } // (56:1) <Overlay {loading}>
 
 
   function create_default_slot$5(ctx) {
@@ -15720,6 +15722,7 @@
     var editTaskData = $$props.editTaskData;
     onMount(function () {
       Helpers.hideFallbacks("TaskEditor.svelte");
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var save = /*#__PURE__*/function () {
@@ -16384,7 +16387,7 @@
         dispose();
       }
     };
-  } // (53:0) {#if !timeUuid}
+  } // (54:0) {#if !timeUuid}
 
 
   function create_if_block_1$5(ctx) {
@@ -16428,7 +16431,7 @@
         dispose();
       }
     };
-  } // (62:0) {#if show}
+  } // (63:0) {#if show}
 
 
   function create_if_block$8(ctx) {
@@ -16487,7 +16490,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (63:1) <Overlay {loading}>
+  } // (64:1) <Overlay {loading}>
 
 
   function create_default_slot$4(ctx) {
@@ -16722,6 +16725,7 @@
     var isServer = $$props.isServer;
     onMount(function () {
       Helpers.hideFallbacks("TimeEditor.svelte");
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var save = /*#__PURE__*/function () {
@@ -16899,7 +16903,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (38:1) <Overlay>
+  } // (39:1) <Overlay>
 
 
   function create_default_slot$3(ctx) {
@@ -17113,6 +17117,7 @@
     onMount(function () {
       Helpers.hideFallbacks("DeleteButton.svelte");
       form.addEventListener("submit", submit);
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var submit = function submit(e) {
@@ -22349,7 +22354,7 @@
     var child_ctx = ctx.slice();
     child_ctx[16] = list[i];
     return child_ctx;
-  } // (78:0) {#if dialogVisible}
+  } // (79:0) {#if dialogVisible}
 
 
   function create_if_block$3(ctx) {
@@ -22400,7 +22405,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (94:4) {#if !sharees || !sharees.length}
+  } // (95:4) {#if !sharees || !sharees.length}
 
 
   function create_if_block_1$2(ctx) {
@@ -22421,7 +22426,7 @@
         if (detaching) detach(p);
       }
     };
-  } // (100:5) {#each sharees as sharee}
+  } // (101:5) {#each sharees as sharee}
 
 
   function create_each_block$2(ctx) {
@@ -22586,7 +22591,7 @@
         if (detaching) detach(li);
       }
     };
-  } // (79:1) <Overlay>
+  } // (80:1) <Overlay>
 
 
   function create_default_slot$1(ctx) {
@@ -22992,6 +22997,8 @@
           form.removeEventListener("submit", submit);
         };
       }
+
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var submit = function submit(e) {
@@ -23520,7 +23527,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (56:1) <Overlay>
+  } // (57:1) <Overlay>
 
 
   function create_default_slot(ctx) {
@@ -23719,6 +23726,7 @@
     var requestToken = $$props.requestToken;
     onMount(function () {
       Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
+      document.body.classList.add("tm_dialog_ready");
     });
 
     var submit = function submit(e) {
@@ -34500,6 +34508,7 @@
     document.addEventListener("pjax:send", function () {
       document.body.classList.add("loading");
       document.body.classList.remove("loading-error");
+      document.body.classList.remove("tm_ready");
     });
     document.addEventListener("pjax:success", function () {
       setTimeout(function () {
@@ -38263,6 +38272,8 @@
     // 		},
     // 	})
     // );
+
+    document.body.classList.add("tm_ready");
   };
 
   init();
