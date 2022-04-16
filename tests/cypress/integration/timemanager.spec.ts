@@ -25,8 +25,7 @@ allTasks.forEach((task) => {
 });
 
 const waitForOcDialog = () => {
-	// @TODO: OC-Dialog auto-closes if opened too earlier after page-load
-	cy.wait(500);
+	cy.get("body").should((body) => expect(body).to.have.class("tm_dialog_ready"));
 };
 
 const waitForPjax = () => {
