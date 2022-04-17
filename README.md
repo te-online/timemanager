@@ -31,7 +31,7 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Changelog
 
-### 0.3.0 Beta, 17. April 2022
+### 0.3.0 Beta, 18. April 2022
 
 - Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks (issues #65 and possibly #1)
   - Allows users you shared the client with to create and edit time entries in tasks you created
