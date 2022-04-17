@@ -116,74 +116,71 @@ class StorageHelper {
 		switch ($entity) {
 			case "clients":
 				$client = new Client();
-				$client->setChanged(isset($object["changed"]) ? $object["changed"] : "");
-				$client->setCreated(isset($object["created"]) ? $object["created"] : "");
-				$client->setCity(isset($object["city"]) ? $object["city"] : "");
-				$client->setEmail(isset($object["email"]) ? $object["email"] : "");
-				$client->setName(isset($object["name"]) ? $object["name"] : "");
-				$client->setNote(isset($object["note"]) ? $object["note"] : "");
-				$client->setPhone(isset($object["phone"]) ? $object["phone"] : "");
-				$client->setPostcode(isset($object["postcode"]) ? $object["postcode"] : "");
-				$client->setStreet(isset($object["street"]) ? $object["street"] : "");
-				$client->setUuid(isset($object["uuid"]) ? $object["uuid"] : "");
-				$client->setWeb(isset($object["web"]) ? $object["web"] : "");
-				$client->setCommit(isset($object["commit"]) ? $object["commit"] : "");
+				$client->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$client->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$client->setCity(isset($object["city"]) ? $object["city"] : null);
+				$client->setEmail(isset($object["email"]) ? $object["email"] : null);
+				$client->setName(isset($object["name"]) ? $object["name"] : null);
+				$client->setNote(isset($object["note"]) ? $object["note"] : null);
+				$client->setPhone(isset($object["phone"]) ? $object["phone"] : null);
+				$client->setPostcode(isset($object["postcode"]) ? $object["postcode"] : null);
+				$client->setStreet(isset($object["street"]) ? $object["street"] : null);
+				$client->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$client->setWeb(isset($object["web"]) ? $object["web"] : null);
+				$client->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$client->setUserId($this->userId);
 				$client->setStatus($deleted);
 				$client->setBillableDefault(true);
 				if ($includeId) {
-					$client->setId(isset($object["id"]) ? $object["id"] : "");
+					$client->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $client;
 			case "projects":
 				$project = new Project();
-				$project->setChanged(isset($object["changed"]) ? $object["changed"] : "");
-				$project->setCreated(isset($object["created"]) ? $object["created"] : "");
-				$project->setName(isset($object["name"]) ? $object["name"] : "");
-				$project->setNote(isset($object["note"]) ? $object["note"] : "");
-				$project->setColor(isset($object["color"]) ? $object["color"] : "");
-				$project->setClientUuid(isset($object["client_uuid"]) ? $object["client_uuid"] : "");
-				$project->setUuid(isset($object["uuid"]) ? $object["uuid"] : "");
-				$project->setCommit(isset($object["commit"]) ? $object["commit"] : "");
+				$project->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$project->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$project->setName(isset($object["name"]) ? $object["name"] : null);
+				$project->setNote(isset($object["note"]) ? $object["note"] : null);
+				$project->setColor(isset($object["color"]) ? $object["color"] : null);
+				$project->setClientUuid(isset($object["client_uuid"]) ? $object["client_uuid"] : null);
+				$project->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$project->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$project->setUserId($this->userId);
 				$project->setStatus($deleted);
-				// $project->setBillable(isset($object['billable'])?$object['billable']:'');
 				$project->setBillable(true);
 				if ($includeId) {
-					$project->setId(isset($object["id"]) ? $object["id"] : "");
+					$project->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $project;
 			case "tasks":
 				$task = new Task();
-				$task->setChanged(isset($object["changed"]) ? $object["changed"] : "");
-				$task->setCreated(isset($object["created"]) ? $object["created"] : "");
-				$task->setName(isset($object["name"]) ? $object["name"] : "");
-				$task->setProjectUuid(isset($object["project_uuid"]) ? $object["project_uuid"] : "");
-				$task->setUuid(isset($object["uuid"]) ? $object["uuid"] : "");
-				$task->setCommit(isset($object["commit"]) ? $object["commit"] : "");
+				$task->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$task->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$task->setName(isset($object["name"]) ? $object["name"] : null);
+				$task->setProjectUuid(isset($object["project_uuid"]) ? $object["project_uuid"] : null);
+				$task->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$task->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$task->setUserId($this->userId);
 				$task->setStatus($deleted);
-				// $task->setBillable(isset($object['billable']) ? $object['billable'] : '');
 				$task->setBillable(true);
 				if ($includeId) {
-					$task->setId(isset($object["id"]) ? $object["id"] : "");
+					$task->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $task;
 			case "times":
 				$time = new Time();
-				$time->setChanged(isset($object["changed"]) ? $object["changed"] : "");
-				$time->setCreated(isset($object["created"]) ? $object["created"] : "");
-				$time->setStart(isset($object["start"]) ? $object["start"] : "");
-				$time->setEnd(isset($object["end"]) ? $object["end"] : "");
-				$time->setTaskUuid(isset($object["task_uuid"]) ? $object["task_uuid"] : "");
-				$time->setUuid(isset($object["uuid"]) ? $object["uuid"] : "");
-				$time->setCommit(isset($object["commit"]) ? $object["commit"] : "");
-				$time->setNote(isset($object["note"]) ? $object["note"] : "");
+				$time->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$time->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$time->setStart(isset($object["start"]) ? $object["start"] : null);
+				$time->setEnd(isset($object["end"]) ? $object["end"] : null);
+				$time->setTaskUuid(isset($object["task_uuid"]) ? $object["task_uuid"] : null);
+				$time->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$time->setCommit(isset($object["commit"]) ? $object["commit"] : null);
+				$time->setNote(isset($object["note"]) ? $object["note"] : null);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
-				// $time->setPaymentStatus((isset($object['payment_status'])) ? $object['payment_status'] : '');
 				if ($includeId) {
-					$time->setId(isset($object["id"]) ? $object["id"] : "");
+					$time->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $time;
 		}
