@@ -33,10 +33,12 @@ Before building or development, dependencies need to be installed once by runnin
 
 ### 0.3.0 Beta, 17. April 2022
 
-- Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks
+- Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks (issues #65 and possibly #1)
   - Allows users you shared the client with to create and edit time entries in tasks you created
   - Only you can see everyone's time entries (also in reports), everyone else only sees their entries
   - The sharing feature is currently **not supported** in the Android app and/or REST API
+- Maintenance: Update JS dependencies
+- Bugfix: Some variables weren't checked properly before accessing them, causing warnings to be logged (issue #72)
 
 ### 0.2.9 Beta, 15. March 2022
 
