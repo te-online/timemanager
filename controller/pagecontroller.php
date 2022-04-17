@@ -894,7 +894,7 @@ class PageController extends Controller {
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
-			"taskName" => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : "",
+			"taskName" => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "",
 			"initialDate" => date("Y-m-d"),
 			"taskEditorButtonCaption" => $l->t("Edit task"),
 			"taskEditorCaption" => $l->t("Edit task"),
@@ -918,9 +918,9 @@ class PageController extends Controller {
 
 		return new TemplateResponse("timemanager", "times", [
 			"times" => $times,
-			"task" => $task_data && count($task_data) > 0 ? $task_data[0] : null,
-			"project" => $project_data && count($project_data) > 0 ? $project_data[0] : null,
-			"client" => $client_data && count($client_data) > 0 ? $client_data[0] : null,
+			"task" => isset($task_data) && count($task_data) > 0 ? $task_data[0] : null,
+			"project" => isset($project_data) && count($project_data) > 0 ? $project_data[0] : null,
+			"client" => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			"tasks" => $tasks,
 			"projects" => $projects,
 			"clients" => $clients,
