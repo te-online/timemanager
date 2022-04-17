@@ -26,12 +26,14 @@ app_tests:
     # Run tests in cypress container
     - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npm test -- --config baseUrl=http://$SERVER_IP"
     # Echo log file for debug purposes
-    - docker exec $(docker ps -qf "name=app") sh -c 'cat data/nextcloud.log' | jq .message
+    - docker exec $(docker ps -qf "name=app") sh -c 'cat data/nextcloud.log' > nextcloud.log
+    - echo nextcloud.log | jq .message
   artifacts:
     expire_in: 1 week
     when: always
     paths:
       - tests/cypress/screenshots
+      - tests/nextcloud.log
     reports:
       junit:
         - tests/results/TEST-*.xml
