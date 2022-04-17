@@ -16,7 +16,6 @@
 	onMount(() => {
 		Helpers.hideFallbacks("DeleteButton.svelte");
 		form.addEventListener("submit", submit);
-		document.body.classList.add("tm_dialog_ready")
 	});
 
 	const submit = (e) => {

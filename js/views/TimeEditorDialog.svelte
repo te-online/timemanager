@@ -22,7 +22,6 @@
 
 	onMount(() => {
 		Helpers.hideFallbacks("TimeEditor.svelte");
-		document.body.classList.add("tm_dialog_ready")
 	});
 
 	const save = async ({ duration, date, note }) => {
