@@ -29,6 +29,24 @@ The client-side JavaScript of this plugin uses ES6 features and needs to be tran
 
 Before building or development, dependencies need to be installed once by running `npm install`.
 
+## Automated testing
+
+Some end-to-end testing is done using [Cypress](https://www.cypress.io/). Tests currently cover basic features of the app and run in a headless Chrome browser on a dockerized Nextcloud instance. For this repository tests run on [a mirror repository on Gitlab](https://gitlab.com/te-online/timemanager).
+
+To run tests locally, change into the `tests` directory. Before running or working on tests, run `npm install` to install dependencies. Make sure to create a `.env` file based on `.env.example` and a `cypress.env.json` based on `cypress.env.example.json`; values can be chosen freely, only make sure they align between the two files.
+
+To run the app install docker and docker-compose on your machine. Then run `docker-compose up`, followed by `docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'`. Wait for the app to be ready, then run `docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'`.
+
+Finally, run `npm start` and use Cypress' UI to start running the tests included in the spec file.
+
+To shut down containers and delete the temporary volumes, run `docker-compose down -v` in a second terminal while you're in the same `tests` directory.
+
+Test cases might depend on running in a specific order. This means you might need to wind down your docker containers and start them again as described above when re-running tests.
+
+**New features** are supposed to be covered by end-to-end tests in a way that reflects their average usage.
+
+**Bugfixes** are supposed to include a test case that demonstrates the bug being fixed and prevent it to be re-introduced in the future.
+
 ## Changelog
 
 ### 0.3.0 Beta, 18. April 2022
