@@ -886,7 +886,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Edit task").should("not.exist");
 	});
 
-	it.only("can get API response with created, updated, deleted items", () => {
+	it("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
 		cy.get("div#settings div#expand").click({ timeout: 4000 });
 		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
