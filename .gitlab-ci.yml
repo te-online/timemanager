@@ -13,6 +13,8 @@ stages:
   - test
 
 app_tests:
+  except:
+    - merge_requests
   script:
     # Start containers
     - docker-compose up -d
