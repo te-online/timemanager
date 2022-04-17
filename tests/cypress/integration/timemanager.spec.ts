@@ -75,7 +75,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -681,7 +681,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -728,7 +728,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -812,7 +812,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -862,7 +862,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -886,7 +886,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Edit task").should("not.exist");
 	});
 
-	it("can get API response with created, updated, deleted items", () => {
+	it.only("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
 		cy.get("div#settings div#expand").click({ timeout: 4000 });
 		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
@@ -1052,7 +1052,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
 		cy.get('input[type="submit"]').click();
-		cy.contains("#app-dashboard", "Hello").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
