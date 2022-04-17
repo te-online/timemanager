@@ -46,6 +46,8 @@ class Share extends Entity {
 		if ($user instanceof IUser) {
 			return $user->getDisplayName();
 		}
+		$l = \OC::$server->getL10N("timemanager");
+		return $l->t("Deleted user");
 	}
 
 	public function getRecipientUserDisplayName(IUserManager $userManager): ?string {
@@ -53,5 +55,7 @@ class Share extends Entity {
 		if ($user instanceof IUser) {
 			return $user->getDisplayName();
 		}
+		$l = \OC::$server->getL10N("timemanager");
+		return $l->t("Deleted user");
 	}
 }

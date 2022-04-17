@@ -144,7 +144,8 @@
 		"Users you share with can create time entries.": "Benutzer, mit denen Sie teilen, können Zeiteinträge erstellen.",
 		"You can see all time entries, while others can only see and edit their own time entries.": "Sie können alle Zeiteinträge sehen, während andere nur ihre eigenen Zeiteinträge sehen und ändern können.",
 		"Share client": "Kunde teilen",
-		"Loading...": "Lädt..."
+		"Loading...": "Lädt...",
+		"Deleted user": "Gelöschter Benutzer"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }
