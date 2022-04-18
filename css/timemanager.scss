@@ -68,6 +68,11 @@
 	align-items: center;
 	padding-bottom: 5px;
 	flex-flow: row wrap;
+
+	& > span {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .tm_item-note {
@@ -80,6 +85,11 @@
 	min-height: 34px;
 	display: flex;
 	align-items: center;
+
+	& > .author {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .tm_object-details {
@@ -141,7 +151,11 @@
 
 .tm_object-details form {
 	display: inline;
-	margin-right: 5px;
+	margin-right: 3px;
+
+	button {
+		margin-right: 0;
+	}
 }
 
 .tm_add {
@@ -170,6 +184,7 @@
 	margin-left: 5px;
 }
 
+.btn.small,
 .tm_inline-hover-form .btn {
 	padding: 3px 6px;
 	min-height: initial;
@@ -613,6 +628,79 @@ label {
 	flex-flow: row-reverse;
 }
 
+.sharing-dialog {
+	.sharee-list {
+		margin-top: 15px;
+		margin-bottom: 25px;
+
+		li {
+			min-height: 30px;
+			margin-top: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			figure {
+				display: flex;
+				align-items: center;
+			}
+
+			img {
+				margin: auto 5px auto 0;
+				border-radius: 100%;
+				width: 32px;
+				height: 32px;
+			}
+		}
+	}
+
+	aside {
+		// The explainer text
+		margin-top: 24px;
+
+		p {
+			font-size: 14px;
+			color: var(--color-text-lighter);
+			line-height: 24px;
+			margin-top: 12px;
+		}
+	}
+}
+
+.existing-sharees {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+
+	li {
+		margin-bottom: 5px;
+		margin-right: 5px;
+		display: flex;
+		align-items: center;
+		min-height: 32px;
+
+		img {
+			margin: auto 5px;
+			border-radius: 100%;
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	&.compact {
+		li {
+			margin-bottom: 0;
+			min-height: 16px;
+			color: var(--color-text-lighter);
+		}
+
+		img {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
 @keyframes fallback {
 	0% {
 		height: 0;
@@ -653,6 +741,7 @@ label {
 	--itemHoverBG: var(--color-primary-light);
 	--multiItemActiveBG: var(--color-primary-element);
 	--multiItemBG: var(--color-primary-light);
+	--spinnerColor: var(--color-primary);
 }
 
 @media print {

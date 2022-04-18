@@ -16,7 +16,7 @@ class TimeMapper extends ObjectMapper {
 	}
 
 	public function deleteByTaskId($uuid, $commit) {
-		$times = $this->getObjectsByAttributeValue("task_uuid", $uuid);
+		$times = $this->getActiveObjectsByAttributeValue("task_uuid", $uuid);
 		foreach ($times as $time) {
 			$time->setCommit($commit);
 			$time->setChanged(date("Y-m-d H:i:s"));
@@ -29,7 +29,13 @@ class TimeMapper extends ObjectMapper {
 		// Do nothing here, because times have no children.
 	}
 
-	public function findForReport(string $start, string $end, string $status = null, array $filter_tasks = []) {
-		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks);
+	public function findForReport(
+		string $start,
+		string $end,
+		string $status = null,
+		array $filter_tasks = [],
+		$shared = false
+	) {
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared);
 	}
 }

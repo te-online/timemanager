@@ -30,7 +30,13 @@ $l = \OC::$server->getL10N('timemanager');
 						<span class="tm_label"><?php p($l->t('Created')); ?></span>
 						<?php p($_['task']->getCreatedDate()); ?>
 					</div>
-					<?php if($_['task']) { ?>
+					<div class="tm_object-details-item">
+						<span data-svelte="ShareStatus.svelte"></span>
+						<span data-svelte-hide="ShareStatus.svelte">
+							<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
+						</span>
+					</div>
+					<?php if($_['task'] && $_['canEdit']) { ?>
 						<span data-svelte="TaskEditorDialog.svelte"></span>
 						<span data-svelte="DeleteButton.svelte"></span>
 						<span data-svelte-hide="DeleteButton.svelte">
@@ -55,7 +61,7 @@ $l = \OC::$server->getL10N('timemanager');
 				<?php if(!$_['task']) { ?>
 					<p><?php p($l->t('Select a task to show time entries for')); ?></p>
 					<form action="" method="get">
-						<?php if(count($_['tasks']) > 0 ) { ?>
+						<?php if(count($_['tasks']) > 0) { ?>
 							<select name="task">
 								<?php foreach(array_reverse($_['tasks']) as $task) {
 									// Look up project for task
@@ -124,6 +130,23 @@ $l = \OC::$server->getL10N('timemanager');
 									</div>
 									<div class="tm_item-date">
 										<?php p($time->getStartLocalized()); ?>
+										<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
+											&nbsp;&middot;&nbsp;
+											<span class="author">
+												<ul class="existing-sharees compact">
+													<li>
+														<img
+															src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/16'); ?>"
+															srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/16'); ?> 1x, 
+															<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/32'); ?> 2x, 
+															<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/64'); ?> 4x"
+															alt="" 
+														/>
+														<?php p($time->author_display_name); ?>
+													</li>
+												</ul>
+											</span>
+										<?php } ?>
 										<span
 											data-svelte="EditTimeEntryButton.svelte"
 											data-uuid="<?php p($time->getUuid()); ?>"

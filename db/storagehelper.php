@@ -3,7 +3,10 @@
 namespace OCA\TimeManager\Db;
 
 use OCA\TimeManager\Helper\UUID;
+use OCP\AppFramework\Db\Entity;
 use OCP\IConfig;
+use OCP\IUser;
+use OCP\IUserManager;
 
 /**
  * Class StorageHelper
@@ -21,6 +24,8 @@ class StorageHelper {
 	protected $timeMapper;
 	/** @var CommitMapper */
 	protected $commitMapper;
+	/** @var ShareMapper */
+	protected $shareMapper;
 	/** @var string user ID */
 	protected $userId;
 	/** @var IConfig */
@@ -32,6 +37,7 @@ class StorageHelper {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		ShareMapper $shareMapper,
 		IConfig $config,
 		string $userId
 	) {
@@ -45,6 +51,8 @@ class StorageHelper {
 		$this->timeMapper->setCurrentUser($userId);
 		$this->commitMapper = $commitMapper;
 		$this->commitMapper->setCurrentUser($userId);
+		$this->shareMapper = $shareMapper;
+		$this->shareMapper->setCurrentUser($userId);
 		$this->config = $config;
 		$this->userId = $userId;
 	}
@@ -108,74 +116,71 @@ class StorageHelper {
 		switch ($entity) {
 			case "clients":
 				$client = new Client();
-				$client->setChanged($object["changed"]);
-				$client->setCreated($object["created"]);
-				$client->setCity($object["city"]);
-				$client->setEmail($object["email"]);
-				$client->setName($object["name"]);
-				$client->setNote($object["note"]);
-				$client->setPhone($object["phone"]);
-				$client->setPostcode($object["postcode"]);
-				$client->setStreet($object["street"]);
-				$client->setUuid($object["uuid"]);
-				$client->setWeb($object["web"]);
-				$client->setCommit($object["commit"]);
+				$client->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$client->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$client->setCity(isset($object["city"]) ? $object["city"] : null);
+				$client->setEmail(isset($object["email"]) ? $object["email"] : null);
+				$client->setName(isset($object["name"]) ? $object["name"] : null);
+				$client->setNote(isset($object["note"]) ? $object["note"] : null);
+				$client->setPhone(isset($object["phone"]) ? $object["phone"] : null);
+				$client->setPostcode(isset($object["postcode"]) ? $object["postcode"] : null);
+				$client->setStreet(isset($object["street"]) ? $object["street"] : null);
+				$client->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$client->setWeb(isset($object["web"]) ? $object["web"] : null);
+				$client->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$client->setUserId($this->userId);
 				$client->setStatus($deleted);
 				$client->setBillableDefault(true);
 				if ($includeId) {
-					$client->setId($object["id"]);
+					$client->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $client;
 			case "projects":
 				$project = new Project();
-				$project->setChanged($object["changed"]);
-				$project->setCreated($object["created"]);
-				$project->setName($object["name"]);
-				$project->setNote($object["note"]);
-				$project->setColor($object["color"]);
-				$project->setClientUuid($object["client_uuid"]);
-				$project->setUuid($object["uuid"]);
-				$project->setCommit($object["commit"]);
+				$project->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$project->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$project->setName(isset($object["name"]) ? $object["name"] : null);
+				$project->setNote(isset($object["note"]) ? $object["note"] : null);
+				$project->setColor(isset($object["color"]) ? $object["color"] : null);
+				$project->setClientUuid(isset($object["client_uuid"]) ? $object["client_uuid"] : null);
+				$project->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$project->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$project->setUserId($this->userId);
 				$project->setStatus($deleted);
-				// $project->setBillable($object['billable']);
 				$project->setBillable(true);
 				if ($includeId) {
-					$project->setId($object["id"]);
+					$project->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $project;
 			case "tasks":
 				$task = new Task();
-				$task->setChanged($object["changed"]);
-				$task->setCreated($object["created"]);
-				$task->setName($object["name"]);
-				$task->setProjectUuid($object["project_uuid"]);
-				$task->setUuid($object["uuid"]);
-				$task->setCommit($object["commit"]);
+				$task->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$task->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$task->setName(isset($object["name"]) ? $object["name"] : null);
+				$task->setProjectUuid(isset($object["project_uuid"]) ? $object["project_uuid"] : null);
+				$task->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$task->setCommit(isset($object["commit"]) ? $object["commit"] : null);
 				$task->setUserId($this->userId);
 				$task->setStatus($deleted);
-				// $task->setBillable($object['billable']);
 				$task->setBillable(true);
 				if ($includeId) {
-					$task->setId($object["id"]);
+					$task->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $task;
 			case "times":
 				$time = new Time();
-				$time->setChanged($object["changed"]);
-				$time->setCreated($object["created"]);
-				$time->setStart($object["start"]);
-				$time->setEnd($object["end"]);
-				$time->setTaskUuid($object["task_uuid"]);
-				$time->setUuid($object["uuid"]);
-				$time->setCommit($object["commit"]);
-				$time->setNote($object["note"]);
+				$time->setChanged(isset($object["changed"]) ? $object["changed"] : null);
+				$time->setCreated(isset($object["created"]) ? $object["created"] : null);
+				$time->setStart(isset($object["start"]) ? $object["start"] : null);
+				$time->setEnd(isset($object["end"]) ? $object["end"] : null);
+				$time->setTaskUuid(isset($object["task_uuid"]) ? $object["task_uuid"] : null);
+				$time->setUuid(isset($object["uuid"]) ? $object["uuid"] : null);
+				$time->setCommit(isset($object["commit"]) ? $object["commit"] : null);
+				$time->setNote(isset($object["note"]) ? $object["note"] : null);
 				$time->setUserId($this->userId);
 				$time->setStatus($deleted);
-				// $time->setPaymentStatus((isset($object['payment_status'])) ? $object['payment_status'] : '');
 				if ($includeId) {
-					$time->setId($object["id"]);
+					$time->setId(isset($object["id"]) ? $object["id"] : null);
 				}
 				return $time;
 		}
@@ -306,9 +311,14 @@ class StorageHelper {
 	 * @param string|null $tasks A comma-separated list of task uuids
 	 * @return array A comma-separated list of task uuids
 	 */
-	function getTaskListFromFilters(string $clients = null, string $projects = null, string $tasks = null): array {
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+	function getTaskListFromFilters(
+		string $clients = null,
+		string $projects = null,
+		string $tasks = null,
+		$shared = false
+	): array {
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
 
 		// Get task uuids related to filters.
 		// Filters are exclusive from finer to coarse.
@@ -346,5 +356,60 @@ class StorageHelper {
 		$filter_tasks = array_unique($filter_tasks);
 
 		return $filter_tasks;
+	}
+
+	/**
+	 * Returns a time entry if user is allowed to edit the entry
+	 * @param string $time_uuid
+	 * @return Entity
+	 */
+	function getTimeEntryByIdForEditing(string $time_uuid): ?\OCP\AppFramework\Db\Entity {
+		// Here it's okay to fetch a shared time entry, since sharer is allowed to edit
+		$time = $this->timeMapper->getActiveObjectById($time_uuid, true);
+		if ($time) {
+			$canEdit = $time->getUserId() === $this->userId;
+
+			if (!$canEdit) {
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				// Maybe current user is author of the parent client
+				$sharees = $this->shareMapper->findShareesForClient($project->getClientUuid());
+				$canEdit = isset($sharees) && count($sharees) > 0 && $sharees[0]->getAuthorUserId() === $this->userId;
+			}
+
+			if ($canEdit) {
+				return $time;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Resolves all display names of authors of time entries
+	 * @param array $times The array of time entries
+	 * @return array The array of time entries with author display names resolved
+	 */
+	function resolveAuthorDisplayNamesForTimes(array $times, IUserManager $userManager): array {
+		// Resolve author display names for time entries
+		$userDisplayNames = [];
+		return array_map(function ($time) use ($userDisplayNames, $userManager) {
+			$userId = $time->getUserId();
+			// Only add display name for other users
+			$time->current_user_is_author = $userId === $this->userId;
+
+			if (isset($userDisplayNames[$time->getUserId()])) {
+				$time->author_display_name = $userDisplayNames[$userId];
+			} else {
+				$user = $userManager->get($userId);
+				if ($user instanceof IUser) {
+					$display_name = $user->getDisplayName();
+					$userDisplayNames[$userId] = $display_name;
+					$time->author_display_name = $display_name;
+				}
+			}
+
+			return $time;
+		}, $times);
 	}
 }

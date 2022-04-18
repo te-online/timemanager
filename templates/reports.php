@@ -87,6 +87,23 @@ $l = \OC::$server->getL10N("timemanager");
 							</div>
 							<div class="tm_item-date">
 								<?php p($entry->project->getName()); ?>&nbsp;&middot;&nbsp;<?php p($entry->task->getName()); ?>&nbsp;&middot;&nbsp;<?php p($time->getStartLocalized()); ?>
+								<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
+									&nbsp;&middot;&nbsp;
+									<span class="author">
+										<ul class="existing-sharees compact">
+											<li>
+												<img
+													src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/16'); ?>"
+													srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/16'); ?> 1x, 
+													<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/32'); ?> 2x, 
+													<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $time->getUserId() . '/64'); ?> 4x"
+													alt="" 
+												/>
+												<?php p($time->author_display_name); ?>
+											</li>
+										</ul>
+									</span>
+								<?php } ?>
 							</div>
 						</div>
 					</div>

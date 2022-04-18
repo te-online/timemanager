@@ -34,27 +34,41 @@ $l = \OC::$server->getL10N('timemanager');
 						</div>
 					<?php } ?>
 					<?php if($_['client']) { ?>
-						<span data-svelte="ClientEditorDialog.svelte"></span>
-						<span data-svelte="DeleteButton.svelte"></span>
-						<span data-svelte-hide="DeleteButton.svelte">
-							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
-						</span>
+						<div class="tm_object-details-item">
+							<span data-svelte="ShareStatus.svelte"></span>
+							<span data-svelte-hide="ShareStatus.svelte">
+								<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
+							</span>
+						</div>
+						<?php if($_['canEdit']) { ?>
+							<span data-svelte="ClientEditorDialog.svelte"></span>
+							<span data-svelte="DeleteButton.svelte"></span>
+							<span data-svelte-hide="DeleteButton.svelte">
+								<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
+							</span>
+							<span data-svelte="ShareDialog.svelte"></span>
+							<span data-svelte-hide="ShareDialog.svelte">
+								<?php print_unescaped($_['templates']['ShareDialog.svelte']); ?>
+							</span>
+						<?php } ?>
 					<?php } ?>
 				</div>
-				<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">
-					<div id="new-item" class="tm_new-item">
-						<?php print_unescaped($_['templates']['ProjectEditor.svelte']); ?>
+				<?php if($_['canEdit']) { ?>
+					<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">
+						<div id="new-item" class="tm_new-item">
+							<?php print_unescaped($_['templates']['ProjectEditor.svelte']); ?>
+						</div>
 					</div>
-				</div>
+				<?php } ?>
 			</div>
 		<?php } ?>
 		<div class="section">
 			<div class="tm_item-list">
 				<h2 class="list-title"><?php p($l->t('Projects')); ?></h2>
-				<?php if($_['client']) { ?>
+				<?php if($_['client'] && $_['canEdit']) { ?>
 					<span data-svelte="ProjectEditorDialog.svelte"></span>
-					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
+				<span data-store="<?php p($_['store']); ?>"></span>
 				<?php if(!$_['client']) { ?>
 					<p><?php p($l->t('Select a client to show projects for')); ?></p>
 					<form action="" method="get">

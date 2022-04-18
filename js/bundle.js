@@ -6,14 +6,9 @@
 
     if (Object.getOwnPropertySymbols) {
       var symbols = Object.getOwnPropertySymbols(object);
-
-      if (enumerableOnly) {
-        symbols = symbols.filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-        });
-      }
-
-      keys.push.apply(keys, symbols);
+      enumerableOnly && (symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      })), keys.push.apply(keys, symbols);
     }
 
     return keys;
@@ -21,19 +16,12 @@
 
   function _objectSpread2(target) {
     for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-
-      if (i % 2) {
-        ownKeys$2(Object(source), true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys$2(Object(source)).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
+      var source = null != arguments[i] ? arguments[i] : {};
+      i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
     }
 
     return target;
@@ -94,6 +82,9 @@
   function _createClass$1(Constructor, protoProps, staticProps) {
     if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties$1(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
     return Constructor;
   }
 
@@ -123,6 +114,9 @@
         writable: true,
         configurable: true
       }
+    });
+    Object.defineProperty(subClass, "prototype", {
+      writable: false
     });
     if (superClass) _setPrototypeOf(subClass, superClass);
   }
@@ -197,8 +191,20 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -248,6 +254,10 @@
     return arr2;
   }
 
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
   function _nonIterableRest() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
@@ -267,21 +277,21 @@
   }; // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 
 
-  var global_1 = // eslint-disable-next-line es/no-global-this -- safe
+  var global_1 = // eslint-disable-next-line es-x/no-global-this -- safe
   check$1(typeof globalThis == 'object' && globalThis) || check$1(typeof window == 'object' && window) || // eslint-disable-next-line no-restricted-globals -- safe
   check$1(typeof self == 'object' && self) || check$1(typeof commonjsGlobal$1 == 'object' && commonjsGlobal$1) || // eslint-disable-next-line no-new-func -- fallback
   function () {
     return this;
   }() || Function('return this')();
 
-  // eslint-disable-next-line es/no-object-defineproperty -- safe
+  // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
 
-  var defineProperty$5 = Object.defineProperty;
+  var defineProperty$6 = Object.defineProperty;
 
   var setGlobal$1 = function (key, value) {
     try {
-      defineProperty$5(global_1, key, {
+      defineProperty$6(global_1, key, {
         value: value,
         configurable: true,
         writable: true
@@ -301,29 +311,49 @@
   (module.exports = function (key, value) {
     return sharedStore$1[key] || (sharedStore$1[key] = value !== undefined ? value : {});
   })('versions', []).push({
-    version: '3.19.2',
+    version: '3.22.0',
     mode: 'global',
-    copyright: '© 2021 Denis Pushkarev (zloirock.ru)'
+    copyright: '© 2014-2022 Denis Pushkarev (zloirock.ru)',
+    license: 'https://github.com/zloirock/core-js/blob/v3.22.0/LICENSE',
+    source: 'https://github.com/zloirock/core-js'
   });
   });
 
+  var fails$1 = function (exec) {
+    try {
+      return !!exec();
+    } catch (error) {
+      return true;
+    }
+  };
+
+  var functionBindNative = !fails$1(function () {
+    // eslint-disable-next-line es-x/no-function-prototype-bind -- safe
+    var test = function () {
+      /* empty */
+    }.bind(); // eslint-disable-next-line no-prototype-builtins -- safe
+
+
+    return typeof test != 'function' || test.hasOwnProperty('prototype');
+  });
+
   var FunctionPrototype$2 = Function.prototype;
-  var bind$4 = FunctionPrototype$2.bind;
+  var bind$3 = FunctionPrototype$2.bind;
   var call$2 = FunctionPrototype$2.call;
-  var callBind = bind$4 && bind$4.bind(call$2);
-  var functionUncurryThis = bind$4 ? function (fn) {
-    return fn && callBind(call$2, fn);
+  var uncurryThis = functionBindNative && bind$3.bind(call$2, call$2);
+  var functionUncurryThis = functionBindNative ? function (fn) {
+    return fn && uncurryThis(fn);
   } : function (fn) {
     return fn && function () {
       return call$2.apply(fn, arguments);
     };
   };
 
-  var TypeError$f = global_1.TypeError; // `RequireObjectCoercible` abstract operation
+  var TypeError$h = global_1.TypeError; // `RequireObjectCoercible` abstract operation
   // https://tc39.es/ecma262/#sec-requireobjectcoercible
 
   var requireObjectCoercible$1 = function (it) {
-    if (it == undefined) throw TypeError$f("Can't call method on " + it);
+    if (it == undefined) throw TypeError$h("Can't call method on " + it);
     return it;
   };
 
@@ -336,6 +366,7 @@
 
   var hasOwnProperty$2 = functionUncurryThis({}.hasOwnProperty); // `HasOwnProperty` abstract operation
   // https://tc39.es/ecma262/#sec-hasownproperty
+  // eslint-disable-next-line es-x/no-object-hasown -- safe
 
   var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
     return hasOwnProperty$2(toObject$1(it), key);
@@ -366,8 +397,8 @@
   var engineUserAgent$1 = getBuiltIn$1('navigator', 'userAgent') || '';
 
   var process$5 = global_1.process;
-  var Deno = global_1.Deno;
-  var versions$1 = process$5 && process$5.versions || Deno && Deno.version;
+  var Deno$1 = global_1.Deno;
+  var versions$1 = process$5 && process$5.versions || Deno$1 && Deno$1.version;
   var v8$1 = versions$1 && versions$1.v8;
   var match$9, version$1;
 
@@ -391,18 +422,10 @@
 
   var engineV8Version$1 = version$1;
 
-  var fails$1 = function (exec) {
-    try {
-      return !!exec();
-    } catch (error) {
-      return true;
-    }
-  };
-
-  /* eslint-disable es/no-symbol -- required for testing */
+  /* eslint-disable es-x/no-symbol -- required for testing */
 
 
-   // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+   // eslint-disable-next-line es-x/no-object-getownpropertysymbols -- required for testing
 
 
   var nativeSymbol$1 = !!Object.getOwnPropertySymbols && !fails$1(function () {
@@ -413,7 +436,7 @@
     !Symbol.sham && engineV8Version$1 && engineV8Version$1 < 41;
   });
 
-  /* eslint-disable es/no-symbol -- required for testing */
+  /* eslint-disable es-x/no-symbol -- required for testing */
 
 
   var useSymbolAsUid$1 = nativeSymbol$1 && !Symbol.sham && typeof Symbol.iterator == 'symbol';
@@ -448,7 +471,7 @@
 
 
   var descriptors$1 = !fails$1(function () {
-    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+    // eslint-disable-next-line es-x/no-object-defineproperty -- required for testing
     return Object.defineProperty({}, 1, {
       get: function () {
         return 7;
@@ -468,11 +491,11 @@
     return EXISTS$2 ? document$4.createElement(it) : {};
   };
 
-  // Thank's IE8 for his funny defineProperty
+  // Thanks to IE8 for its funny defineProperty
 
 
   var ie8DomDefine$1 = !descriptors$1 && !fails$1(function () {
-    // eslint-disable-next-line es/no-object-defineproperty -- requied for testing
+    // eslint-disable-next-line es-x/no-object-defineproperty -- required for testing
     return Object.defineProperty(documentCreateElement$1('div'), 'a', {
       get: function () {
         return 7;
@@ -480,16 +503,30 @@
     }).a != 7;
   });
 
+  // V8 ~ Chrome 36-
+  // https://bugs.chromium.org/p/v8/issues/detail?id=3334
+
+
+  var v8PrototypeDefineBug = descriptors$1 && fails$1(function () {
+    // eslint-disable-next-line es-x/no-object-defineproperty -- required for testing
+    return Object.defineProperty(function () {
+      /* empty */
+    }, 'prototype', {
+      value: 42,
+      writable: false
+    }).prototype != 42;
+  });
+
   var String$5 = global_1.String;
-  var TypeError$e = global_1.TypeError; // `Assert: Type(argument) is Object`
+  var TypeError$g = global_1.TypeError; // `Assert: Type(argument) is Object`
 
   var anObject$1 = function (argument) {
     if (isObject$3(argument)) return argument;
-    throw TypeError$e(String$5(argument) + ' is not an object');
+    throw TypeError$g(String$5(argument) + ' is not an object');
   };
 
   var call$1 = Function.prototype.call;
-  var functionCall = call$1.bind ? call$1.bind(call$1) : function () {
+  var functionCall = functionBindNative ? call$1.bind(call$1) : function () {
     return call$1.apply(call$1, arguments);
   };
 
@@ -513,11 +550,11 @@
     }
   };
 
-  var TypeError$d = global_1.TypeError; // `Assert: IsCallable(argument) is true`
+  var TypeError$f = global_1.TypeError; // `Assert: IsCallable(argument) is true`
 
   var aCallable = function (argument) {
     if (isCallable(argument)) return argument;
-    throw TypeError$d(tryToString(argument) + ' is not a function');
+    throw TypeError$f(tryToString(argument) + ' is not a function');
   };
 
   // `GetMethod` abstract operation
@@ -529,7 +566,7 @@
     return func == null ? undefined : aCallable(func);
   };
 
-  var TypeError$c = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
+  var TypeError$e = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
   // https://tc39.es/ecma262/#sec-ordinarytoprimitive
 
   var ordinaryToPrimitive = function (input, pref) {
@@ -537,10 +574,10 @@
     if (pref === 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
     if (isCallable(fn = input.valueOf) && !isObject$3(val = functionCall(fn, input))) return val;
     if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
-    throw TypeError$c("Can't convert object to primitive value");
+    throw TypeError$e("Can't convert object to primitive value");
   };
 
-  var TypeError$b = global_1.TypeError;
+  var TypeError$d = global_1.TypeError;
   var TO_PRIMITIVE = wellKnownSymbol$1('toPrimitive'); // `ToPrimitive` abstract operation
   // https://tc39.es/ecma262/#sec-toprimitive
 
@@ -553,7 +590,7 @@
       if (pref === undefined) pref = 'default';
       result = functionCall(exoticToPrim, input, pref);
       if (!isObject$3(result) || isSymbol(result)) return result;
-      throw TypeError$b("Can't convert object to primitive value");
+      throw TypeError$d("Can't convert object to primitive value");
     }
 
     if (pref === undefined) pref = 'number';
@@ -569,12 +606,36 @@
     return isSymbol(key) ? key : key + '';
   };
 
-  var TypeError$a = global_1.TypeError; // eslint-disable-next-line es/no-object-defineproperty -- safe
+  var TypeError$c = global_1.TypeError; // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
-  var $defineProperty$1 = Object.defineProperty; // `Object.defineProperty` method
+  var $defineProperty$1 = Object.defineProperty; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
+
+  var $getOwnPropertyDescriptor$2 = Object.getOwnPropertyDescriptor;
+  var ENUMERABLE = 'enumerable';
+  var CONFIGURABLE$1 = 'configurable';
+  var WRITABLE = 'writable'; // `Object.defineProperty` method
   // https://tc39.es/ecma262/#sec-object.defineproperty
 
-  var f$a = descriptors$1 ? $defineProperty$1 : function defineProperty(O, P, Attributes) {
+  var f$b = descriptors$1 ? v8PrototypeDefineBug ? function defineProperty(O, P, Attributes) {
+    anObject$1(O);
+    P = toPropertyKey(P);
+    anObject$1(Attributes);
+
+    if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
+      var current = $getOwnPropertyDescriptor$2(O, P);
+
+      if (current && current[WRITABLE]) {
+        O[P] = Attributes.value;
+        Attributes = {
+          configurable: CONFIGURABLE$1 in Attributes ? Attributes[CONFIGURABLE$1] : current[CONFIGURABLE$1],
+          enumerable: ENUMERABLE in Attributes ? Attributes[ENUMERABLE] : current[ENUMERABLE],
+          writable: false
+        };
+      }
+    }
+
+    return $defineProperty$1(O, P, Attributes);
+  } : $defineProperty$1 : function defineProperty(O, P, Attributes) {
     anObject$1(O);
     P = toPropertyKey(P);
     anObject$1(Attributes);
@@ -583,13 +644,13 @@
     } catch (error) {
       /* empty */
     }
-    if ('get' in Attributes || 'set' in Attributes) throw TypeError$a('Accessors not supported');
+    if ('get' in Attributes || 'set' in Attributes) throw TypeError$c('Accessors not supported');
     if ('value' in Attributes) O[P] = Attributes.value;
     return O;
   };
 
   var objectDefineProperty$1 = {
-  	f: f$a
+  	f: f$b
   };
 
   var createPropertyDescriptor$1 = function (bitmap, value) {
@@ -630,7 +691,7 @@
   var hiddenKeys$3 = {};
 
   var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
-  var TypeError$9 = global_1.TypeError;
+  var TypeError$b = global_1.TypeError;
   var WeakMap$2 = global_1.WeakMap;
   var set$2, get$1, has$2;
 
@@ -643,7 +704,7 @@
       var state;
 
       if (!isObject$3(it) || (state = get$1(it)).type !== TYPE) {
-        throw TypeError$9('Incompatible receiver, ' + TYPE + ' required');
+        throw TypeError$b('Incompatible receiver, ' + TYPE + ' required');
       }
 
       return state;
@@ -657,7 +718,7 @@
     var wmset$1 = functionUncurryThis(store$2.set);
 
     set$2 = function (it, metadata) {
-      if (wmhas$1(store$2, it)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      if (wmhas$1(store$2, it)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
       metadata.facade = it;
       wmset$1(store$2, it, metadata);
       return metadata;
@@ -675,7 +736,7 @@
     hiddenKeys$3[STATE$1] = true;
 
     set$2 = function (it, metadata) {
-      if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$9(OBJECT_ALREADY_INITIALIZED$1);
+      if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
       metadata.facade = it;
       createNonEnumerableProperty$1(it, STATE$1, metadata);
       return metadata;
@@ -698,7 +759,7 @@
     getterFor: getterFor$1
   };
 
-  var FunctionPrototype$1 = Function.prototype; // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+  var FunctionPrototype$1 = Function.prototype; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
   var getDescriptor = descriptors$1 && Object.getOwnPropertyDescriptor;
   var EXISTS$1 = hasOwnProperty_1(FunctionPrototype$1, 'name'); // additional protection from minified / mangled / dropped function names
@@ -850,11 +911,11 @@
   var DOMTokenListPrototype = classList && classList.constructor && classList.constructor.prototype;
   var domTokenListPrototype = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
 
-  var bind$3 = functionUncurryThis(functionUncurryThis.bind); // optional / simple context binding
+  var bind$2 = functionUncurryThis(functionUncurryThis.bind); // optional / simple context binding
 
   var functionBindContext$1 = function (fn, that) {
     aCallable(fn);
-    return that === undefined ? fn : bind$3 ? bind$3(fn, that) : function
+    return that === undefined ? fn : functionBindNative ? bind$2(fn, that) : function
       /* ...args */
     () {
       return fn.apply(that, arguments);
@@ -899,7 +960,7 @@
 
   // `IsArray` abstract operation
   // https://tc39.es/ecma262/#sec-isarray
-  // eslint-disable-next-line es/no-array-isarray -- safe
+  // eslint-disable-next-line es-x/no-array-isarray -- safe
 
 
   var isArray$3 = Array.isArray || function isArray(argument) {
@@ -916,7 +977,7 @@
   var exec$1 = functionUncurryThis(constructorRegExp.exec);
   var INCORRECT_TO_STRING = !constructorRegExp.exec(noop$2);
 
-  var isConstructorModern = function (argument) {
+  var isConstructorModern = function isConstructor(argument) {
     if (!isCallable(argument)) return false;
 
     try {
@@ -927,7 +988,7 @@
     }
   };
 
-  var isConstructorLegacy = function (argument) {
+  var isConstructorLegacy = function isConstructor(argument) {
     if (!isCallable(argument)) return false;
 
     switch (classof$1(argument)) {
@@ -935,13 +996,20 @@
       case 'GeneratorFunction':
       case 'AsyncGeneratorFunction':
         return false;
-      // we can't check .prototype since constructors produced by .bind haven't it
     }
 
-    return INCORRECT_TO_STRING || !!exec$1(constructorRegExp, inspectSource$1(argument));
-  }; // `IsConstructor` abstract operation
-  // https://tc39.es/ecma262/#sec-isconstructor
+    try {
+      // we can't check .prototype since constructors produced by .bind haven't it
+      // `Function#toString` throws on some built-it function in some legacy engines
+      // (for example, `DOMQuad` and similar in FF41-)
+      return INCORRECT_TO_STRING || !!exec$1(constructorRegExp, inspectSource$1(argument));
+    } catch (error) {
+      return true;
+    }
+  };
 
+  isConstructorLegacy.sham = true; // `IsConstructor` abstract operation
+  // https://tc39.es/ecma262/#sec-isconstructor
 
   var isConstructor = !construct || fails$1(function () {
     var called;
@@ -1065,9 +1133,9 @@
   var arrayMethodIsStrict$1 = function (METHOD_NAME, argument) {
     var method = [][METHOD_NAME];
     return !!method && fails$1(function () {
-      // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
+      // eslint-disable-next-line no-useless-call -- required for testing
       method.call(null, argument || function () {
-        throw 1;
+        return 1;
       }, 1);
     });
   };
@@ -1082,7 +1150,7 @@
   var arrayForEach$1 = !STRICT_METHOD$3 ? function forEach(callbackfn
   /* , thisArg */
   ) {
-    return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined); // eslint-disable-next-line es/no-array-prototype-foreach -- safe
+    return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined); // eslint-disable-next-line es-x/no-array-prototype-foreach -- safe
   } : [].forEach;
 
   var handlePrototype$1 = function (CollectionPrototype) {
@@ -1827,7 +1895,7 @@
   }
   });
 
-  var $propertyIsEnumerable$2 = {}.propertyIsEnumerable; // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+  var $propertyIsEnumerable$2 = {}.propertyIsEnumerable; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
   var getOwnPropertyDescriptor$5 = Object.getOwnPropertyDescriptor; // Nashorn ~ JDK8 bug
 
@@ -1836,13 +1904,13 @@
   }, 1); // `Object.prototype.propertyIsEnumerable` method implementation
   // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
 
-  var f$9 = NASHORN_BUG$1 ? function propertyIsEnumerable(V) {
+  var f$a = NASHORN_BUG$1 ? function propertyIsEnumerable(V) {
     var descriptor = getOwnPropertyDescriptor$5(this, V);
     return !!descriptor && descriptor.enumerable;
   } : $propertyIsEnumerable$2;
 
   var objectPropertyIsEnumerable$1 = {
-  	f: f$9
+  	f: f$a
   };
 
   // toObject with fallback for non-array-like ES3 strings
@@ -1854,13 +1922,13 @@
     return indexedObject$1(requireObjectCoercible$1(it));
   };
 
-  // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+  // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
 
   var $getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor; // `Object.getOwnPropertyDescriptor` method
   // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
 
-  var f$8 = descriptors$1 ? $getOwnPropertyDescriptor$1 : function getOwnPropertyDescriptor(O, P) {
+  var f$9 = descriptors$1 ? $getOwnPropertyDescriptor$1 : function getOwnPropertyDescriptor(O, P) {
     O = toIndexedObject$1(O);
     P = toPropertyKey(P);
     if (ie8DomDefine$1) try {
@@ -1872,7 +1940,7 @@
   };
 
   var objectGetOwnPropertyDescriptor$1 = {
-  	f: f$8
+  	f: f$9
   };
 
   var max$4 = Math.max;
@@ -1943,21 +2011,21 @@
 
   var hiddenKeys$2 = enumBugKeys$1.concat('length', 'prototype'); // `Object.getOwnPropertyNames` method
   // https://tc39.es/ecma262/#sec-object.getownpropertynames
-  // eslint-disable-next-line es/no-object-getownpropertynames -- safe
+  // eslint-disable-next-line es-x/no-object-getownpropertynames -- safe
 
-  var f$7 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  var f$8 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
     return objectKeysInternal$1(O, hiddenKeys$2);
   };
 
   var objectGetOwnPropertyNames$1 = {
-  	f: f$7
+  	f: f$8
   };
 
-  // eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
-  var f$6 = Object.getOwnPropertySymbols;
+  // eslint-disable-next-line es-x/no-object-getownpropertysymbols -- safe
+  var f$7 = Object.getOwnPropertySymbols;
 
   var objectGetOwnPropertySymbols$1 = {
-  	f: f$6
+  	f: f$7
   };
 
   var concat$1 = functionUncurryThis([].concat); // all object keys, includes non-enumerable and symbols
@@ -1968,14 +2036,17 @@
     return getOwnPropertySymbols ? concat$1(keys, getOwnPropertySymbols(it)) : keys;
   };
 
-  var copyConstructorProperties$1 = function (target, source) {
+  var copyConstructorProperties$1 = function (target, source, exceptions) {
     var keys = ownKeys$1(source);
     var defineProperty = objectDefineProperty$1.f;
     var getOwnPropertyDescriptor = objectGetOwnPropertyDescriptor$1.f;
 
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
-      if (!hasOwnProperty_1(target, key)) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+
+      if (!hasOwnProperty_1(target, key) && !(exceptions && hasOwnProperty_1(exceptions, key))) {
+        defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+      }
     }
   };
 
@@ -2183,12 +2254,12 @@
     if (it != undefined) return getMethod(it, ITERATOR$a) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
   };
 
-  var TypeError$8 = global_1.TypeError;
+  var TypeError$a = global_1.TypeError;
 
   var getIterator = function (argument, usingIterator) {
     var iteratorMethod = arguments.length < 2 ? getIteratorMethod$1(argument) : usingIterator;
     if (aCallable(iteratorMethod)) return anObject$1(functionCall(iteratorMethod, argument));
-    throw TypeError$8(tryToString(argument) + ' is not iterable');
+    throw TypeError$a(tryToString(argument) + ' is not iterable');
   };
 
   var Array$2 = global_1.Array; // `Array.from` method implementation
@@ -2248,7 +2319,7 @@
 
     iteratorWithReturn$1[ITERATOR$9] = function () {
       return this;
-    }; // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing
+    }; // eslint-disable-next-line es-x/no-array-from, no-throw-literal -- required for testing
 
 
     Array.from(iteratorWithReturn$1, function () {
@@ -2283,8 +2354,8 @@
     return ITERATION_SUPPORT;
   };
 
-  var INCORRECT_ITERATION$1 = !checkCorrectnessOfIteration$1(function (iterable) {
-    // eslint-disable-next-line es/no-array-from -- required for testing
+  var INCORRECT_ITERATION = !checkCorrectnessOfIteration$1(function (iterable) {
+    // eslint-disable-next-line es-x/no-array-from -- required for testing
     Array.from(iterable);
   }); // `Array.from` method
   // https://tc39.es/ecma262/#sec-array.from
@@ -2292,7 +2363,7 @@
   _export$1({
     target: 'Array',
     stat: true,
-    forced: INCORRECT_ITERATION$1
+    forced: INCORRECT_ITERATION
   }, {
     from: arrayFrom
   });
@@ -2331,7 +2402,7 @@
 
   // `Object.keys` method
   // https://tc39.es/ecma262/#sec-object.keys
-  // eslint-disable-next-line es/no-object-keys -- safe
+  // eslint-disable-next-line es-x/no-object-keys -- safe
 
 
   var objectKeys$1 = Object.keys || function keys(O) {
@@ -2340,10 +2411,10 @@
 
   // `Object.defineProperties` method
   // https://tc39.es/ecma262/#sec-object.defineproperties
-  // eslint-disable-next-line es/no-object-defineproperties -- safe
+  // eslint-disable-next-line es-x/no-object-defineproperties -- safe
 
 
-  var objectDefineProperties$1 = descriptors$1 ? Object.defineProperties : function defineProperties(O, Properties) {
+  var f$6 = descriptors$1 && !v8PrototypeDefineBug ? Object.defineProperties : function defineProperties(O, Properties) {
     anObject$1(O);
     var props = toIndexedObject$1(Properties);
     var keys = objectKeys$1(Properties);
@@ -2354,6 +2425,10 @@
     while (length > index) objectDefineProperty$1.f(O, key = keys[index++], props[key]);
 
     return O;
+  };
+
+  var objectDefineProperties$1 = {
+  	f: f$6
   };
 
   var html$1 = getBuiltIn$1('document', 'documentElement');
@@ -2440,6 +2515,7 @@
 
   hiddenKeys$3[IE_PROTO$3] = true; // `Object.create` method
   // https://tc39.es/ecma262/#sec-object.create
+  // eslint-disable-next-line es-x/no-object-create -- safe
 
   var objectCreate$1 = Object.create || function create(O, Properties) {
     var result;
@@ -2452,7 +2528,7 @@
       result[IE_PROTO$3] = O;
     } else result = NullProtoObject$1();
 
-    return Properties === undefined ? result : objectDefineProperties$1(result, Properties);
+    return Properties === undefined ? result : objectDefineProperties$1.f(result, Properties);
   };
 
   var correctPrototypeGetter$1 = !fails$1(function () {
@@ -2460,7 +2536,7 @@
       /* empty */
     }
 
-    F.prototype.constructor = null; // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
+    F.prototype.constructor = null; // eslint-disable-next-line es-x/no-object-getprototypeof -- required for testing
 
     return Object.getPrototypeOf(new F()) !== F.prototype;
   });
@@ -2487,7 +2563,7 @@
   // https://tc39.es/ecma262/#sec-%iteratorprototype%-object
 
   var IteratorPrototype$5, PrototypeOfArrayIteratorPrototype$1, arrayIterator$1;
-  /* eslint-disable es/no-array-prototype-keys -- safe */
+  /* eslint-disable es-x/no-array-prototype-keys -- safe */
 
   if ([].keys) {
     arrayIterator$1 = [].keys(); // Safari 8 has buggy iterators w/o `next`
@@ -2517,7 +2593,7 @@
     BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
   };
 
-  var defineProperty$4 = objectDefineProperty$1.f;
+  var defineProperty$5 = objectDefineProperty$1.f;
 
 
 
@@ -2525,9 +2601,11 @@
 
   var TO_STRING_TAG$5 = wellKnownSymbol$1('toStringTag');
 
-  var setToStringTag$1 = function (it, TAG, STATIC) {
-    if (it && !hasOwnProperty_1(it = STATIC ? it : it.prototype, TO_STRING_TAG$5)) {
-      defineProperty$4(it, TO_STRING_TAG$5, {
+  var setToStringTag$1 = function (target, TAG, STATIC) {
+    if (target && !STATIC) target = target.prototype;
+
+    if (target && !hasOwnProperty_1(target, TO_STRING_TAG$5)) {
+      defineProperty$5(target, TO_STRING_TAG$5, {
         configurable: true,
         value: TAG
       });
@@ -2548,10 +2626,10 @@
     return this;
   };
 
-  var createIteratorConstructor$1 = function (IteratorConstructor, NAME, next) {
+  var createIteratorConstructor$1 = function (IteratorConstructor, NAME, next, ENUMERABLE_NEXT) {
     var TO_STRING_TAG = NAME + ' Iterator';
     IteratorConstructor.prototype = objectCreate$1(IteratorPrototype$4, {
-      next: createPropertyDescriptor$1(1, next)
+      next: createPropertyDescriptor$1(+!ENUMERABLE_NEXT, next)
     });
     setToStringTag$1(IteratorConstructor, TO_STRING_TAG, false);
     iterators$1[TO_STRING_TAG] = returnThis$4;
@@ -2559,11 +2637,11 @@
   };
 
   var String$2 = global_1.String;
-  var TypeError$7 = global_1.TypeError;
+  var TypeError$9 = global_1.TypeError;
 
   var aPossiblePrototype$1 = function (argument) {
     if (typeof argument == 'object' || isCallable(argument)) return argument;
-    throw TypeError$7("Can't set " + String$2(argument) + ' as a prototype');
+    throw TypeError$9("Can't set " + String$2(argument) + ' as a prototype');
   };
 
   /* eslint-disable no-proto -- safe */
@@ -2574,7 +2652,7 @@
    // `Object.setPrototypeOf` method
   // https://tc39.es/ecma262/#sec-object.setprototypeof
   // Works with __proto__ only. Old v8 can't work with null proto objects.
-  // eslint-disable-next-line es/no-object-setprototypeof -- safe
+  // eslint-disable-next-line es-x/no-object-setprototypeof -- safe
 
 
   var objectSetPrototypeOf$1 = Object.setPrototypeOf || ('__proto__' in {} ? function () {
@@ -2583,7 +2661,7 @@
     var setter;
 
     try {
-      // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+      // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
       setter = functionUncurryThis(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__').set);
       setter(test, []);
       CORRECT_SETTER = test instanceof Array;
@@ -2718,7 +2796,7 @@
 
   var STRING_ITERATOR$1 = 'String Iterator';
   var setInternalState$5 = internalState$1.set;
-  var getInternalState$5 = internalState$1.getterFor(STRING_ITERATOR$1); // `String.prototype[@@iterator]` method
+  var getInternalState$4 = internalState$1.getterFor(STRING_ITERATOR$1); // `String.prototype[@@iterator]` method
   // https://tc39.es/ecma262/#sec-string.prototype-@@iterator
 
   defineIterator$1(String, 'String', function (iterated) {
@@ -2729,7 +2807,7 @@
     }); // `%StringIteratorPrototype%.next` method
     // https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
   }, function next() {
-    var state = getInternalState$5(this);
+    var state = getInternalState$4(this);
     var string = state.string;
     var index = state.index;
     var point;
@@ -2761,9 +2839,17 @@
     ArrayPrototype$2[UNSCOPABLES$1][key] = true;
   };
 
+  var defineProperty$4 = objectDefineProperty$1.f;
+
+
+
+
+
+
+
   var ARRAY_ITERATOR$1 = 'Array Iterator';
   var setInternalState$4 = internalState$1.set;
-  var getInternalState$4 = internalState$1.getterFor(ARRAY_ITERATOR$1); // `Array.prototype.entries` method
+  var getInternalState$3 = internalState$1.getterFor(ARRAY_ITERATOR$1); // `Array.prototype.entries` method
   // https://tc39.es/ecma262/#sec-array.prototype.entries
   // `Array.prototype.keys` method
   // https://tc39.es/ecma262/#sec-array.prototype.keys
@@ -2786,7 +2872,7 @@
     }); // `%ArrayIteratorPrototype%.next` method
     // https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
   }, function () {
-    var state = getInternalState$4(this);
+    var state = getInternalState$3(this);
     var target = state.target;
     var kind = state.kind;
     var index = state.index++;
@@ -2815,11 +2901,19 @@
   // https://tc39.es/ecma262/#sec-createunmappedargumentsobject
   // https://tc39.es/ecma262/#sec-createmappedargumentsobject
 
-  iterators$1.Arguments = iterators$1.Array; // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+  var values = iterators$1.Arguments = iterators$1.Array; // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 
   addToUnscopables$1('keys');
   addToUnscopables$1('values');
-  addToUnscopables$1('entries');
+  addToUnscopables$1('entries'); // V8 ~ Chrome 45- bug
+
+  if (descriptors$1 && values.name !== 'values') try {
+    defineProperty$4(values, 'name', {
+      value: 'values'
+    });
+  } catch (error) {
+    /* empty */
+  }
 
   var ITERATOR$6 = wellKnownSymbol$1('iterator');
   var TO_STRING_TAG$4 = wellKnownSymbol$1('toStringTag');
@@ -2878,7 +2972,7 @@
   var IS_CONCAT_SPREADABLE$1 = wellKnownSymbol$1('isConcatSpreadable');
   var MAX_SAFE_INTEGER$3 = 0x1FFFFFFFFFFFFF;
   var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded';
-  var TypeError$6 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
+  var TypeError$8 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
   // deoptimization and serious performance degradation
   // https://github.com/zloirock/core-js/issues/679
 
@@ -2895,14 +2989,14 @@
     return spreadable !== undefined ? !!spreadable : isArray$3(O);
   };
 
-  var FORCED$3 = !IS_CONCAT_SPREADABLE_SUPPORT$1 || !SPECIES_SUPPORT$1; // `Array.prototype.concat` method
+  var FORCED$2 = !IS_CONCAT_SPREADABLE_SUPPORT$1 || !SPECIES_SUPPORT$1; // `Array.prototype.concat` method
   // https://tc39.es/ecma262/#sec-array.prototype.concat
   // with adding support of @@isConcatSpreadable and @@species
 
   _export$1({
     target: 'Array',
     proto: true,
-    forced: FORCED$3
+    forced: FORCED$2
   }, {
     // eslint-disable-next-line no-unused-vars -- required for `.length`
     concat: function concat(arg) {
@@ -2916,11 +3010,11 @@
 
         if (isConcatSpreadable$1(E)) {
           len = lengthOfArrayLike(E);
-          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
 
           for (k = 0; k < len; k++, n++) if (k in E) createProperty$1(A, n, E[k]);
         } else {
-          if (n >= MAX_SAFE_INTEGER$3) throw TypeError$6(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+          if (n >= MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
           createProperty$1(A, n++, E);
         }
       }
@@ -3008,7 +3102,7 @@
 
 
 
-  var getInternalState$3 = internalState$1.get;
+  var getInternalState$2 = internalState$1.get;
 
 
 
@@ -3038,7 +3132,7 @@
   if (PATCH$1) {
     patchedExec$1 = function exec(string) {
       var re = this;
-      var state = getInternalState$3(re);
+      var state = getInternalState$2(re);
       var str = toString_1(string);
       var raw = state.raw;
       var result, reCopy, lastIndex, match, i, object, group;
@@ -3134,10 +3228,9 @@
 
   var FunctionPrototype = Function.prototype;
   var apply = FunctionPrototype.apply;
-  var bind$2 = FunctionPrototype.bind;
-  var call = FunctionPrototype.call; // eslint-disable-next-line es/no-reflect -- safe
+  var call = FunctionPrototype.call; // eslint-disable-next-line es-x/no-reflect -- safe
 
-  var functionApply = typeof Reflect == 'object' && Reflect.apply || (bind$2 ? call.bind(apply) : function () {
+  var functionApply = typeof Reflect == 'object' && Reflect.apply || (functionBindNative ? call.bind(apply) : function () {
     return call.apply(apply, arguments);
   });
 
@@ -3221,19 +3314,19 @@
     if (SHAM) createNonEnumerableProperty$1(RegExpPrototype$2[SYMBOL], 'sham', true);
   };
 
-  var MATCH$2 = wellKnownSymbol$1('match'); // `IsRegExp` abstract operation
+  var MATCH$3 = wellKnownSymbol$1('match'); // `IsRegExp` abstract operation
   // https://tc39.es/ecma262/#sec-isregexp
 
   var isRegexp$1 = function (it) {
     var isRegExp;
-    return isObject$3(it) && ((isRegExp = it[MATCH$2]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
+    return isObject$3(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
   };
 
-  var TypeError$5 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
+  var TypeError$7 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
 
   var aConstructor = function (argument) {
     if (isConstructor(argument)) return argument;
-    throw TypeError$5(tryToString(argument) + ' is not a constructor');
+    throw TypeError$7(tryToString(argument) + ' is not a constructor');
   };
 
   var SPECIES$7 = wellKnownSymbol$1('species'); // `SpeciesConstructor` abstract operation
@@ -3268,7 +3361,7 @@
     return result;
   };
 
-  var TypeError$4 = global_1.TypeError; // `RegExpExec` abstract operation
+  var TypeError$6 = global_1.TypeError; // `RegExpExec` abstract operation
   // https://tc39.es/ecma262/#sec-regexpexec
 
   var regexpExecAbstract$1 = function (R, S) {
@@ -3281,7 +3374,7 @@
     }
 
     if (classofRaw$1(R) === 'RegExp') return functionCall(regexpExec$1, R, S);
-    throw TypeError$4('RegExp#exec called on incompatible receiver');
+    throw TypeError$6('RegExp#exec called on incompatible receiver');
   };
 
   var UNSUPPORTED_Y$4 = regexpStickyHelpers$1.UNSUPPORTED_Y;
@@ -3411,7 +3504,7 @@
     }];
   }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC$1, UNSUPPORTED_Y$4);
 
-  var nativePromiseConstructor = global_1.Promise;
+  var engineIsNode$1 = classofRaw$1(global_1.process) == 'process';
 
   var redefineAll$1 = function (target, src, options) {
     for (var key in src) redefine$1(target, key, src[key], options);
@@ -3435,80 +3528,21 @@
     }
   };
 
-  var TypeError$3 = global_1.TypeError;
+  var TypeError$5 = global_1.TypeError;
 
   var anInstance$1 = function (it, Prototype) {
     if (objectIsPrototypeOf(Prototype, it)) return it;
-    throw TypeError$3('Incorrect invocation');
+    throw TypeError$5('Incorrect invocation');
   };
 
-  var TypeError$2 = global_1.TypeError;
+  var TypeError$4 = global_1.TypeError;
 
-  var Result$1 = function (stopped, result) {
-    this.stopped = stopped;
-    this.result = result;
-  };
-
-  var ResultPrototype = Result$1.prototype;
-
-  var iterate$1 = function (iterable, unboundFunction, options) {
-    var that = options && options.that;
-    var AS_ENTRIES = !!(options && options.AS_ENTRIES);
-    var IS_ITERATOR = !!(options && options.IS_ITERATOR);
-    var INTERRUPTED = !!(options && options.INTERRUPTED);
-    var fn = functionBindContext$1(unboundFunction, that);
-    var iterator, iterFn, index, length, result, next, step;
-
-    var stop = function (condition) {
-      if (iterator) iteratorClose$1(iterator, 'normal', condition);
-      return new Result$1(true, condition);
-    };
-
-    var callFn = function (value) {
-      if (AS_ENTRIES) {
-        anObject$1(value);
-        return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
-      }
-
-      return INTERRUPTED ? fn(value, stop) : fn(value);
-    };
-
-    if (IS_ITERATOR) {
-      iterator = iterable;
-    } else {
-      iterFn = getIteratorMethod$1(iterable);
-      if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
-
-      if (isArrayIteratorMethod$1(iterFn)) {
-        for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
-          result = callFn(iterable[index]);
-          if (result && objectIsPrototypeOf(ResultPrototype, result)) return result;
-        }
-
-        return new Result$1(false);
-      }
-
-      iterator = getIterator(iterable, iterFn);
-    }
-
-    next = iterator.next;
-
-    while (!(step = functionCall(next, iterator)).done) {
-      try {
-        result = callFn(step.value);
-      } catch (error) {
-        iteratorClose$1(iterator, 'throw', error);
-      }
-
-      if (typeof result == 'object' && result && objectIsPrototypeOf(ResultPrototype, result)) return result;
-    }
-
-    return new Result$1(false);
+  var validateArgumentsLength = function (passed, required) {
+    if (passed < required) throw TypeError$4('Not enough arguments');
+    return passed;
   };
 
   var engineIsIos = /(?:ipad|iphone|ipod).*applewebkit/i.test(engineUserAgent$1);
-
-  var engineIsNode$1 = classofRaw$1(global_1.process) == 'process';
 
   var set$1 = global_1.setImmediate;
   var clear = global_1.clearImmediate;
@@ -3518,7 +3552,7 @@
   var MessageChannel = global_1.MessageChannel;
   var String$1 = global_1.String;
   var counter = 0;
-  var queue$1 = {};
+  var queue$2 = {};
   var ONREADYSTATECHANGE = 'onreadystatechange';
   var location$1, defer, channel, port;
 
@@ -3530,9 +3564,9 @@
   }
 
   var run$1 = function (id) {
-    if (hasOwnProperty_1(queue$1, id)) {
-      var fn = queue$1[id];
-      delete queue$1[id];
+    if (hasOwnProperty_1(queue$2, id)) {
+      var fn = queue$2[id];
+      delete queue$2[id];
       fn();
     }
   };
@@ -3554,11 +3588,13 @@
 
 
   if (!set$1 || !clear) {
-    set$1 = function setImmediate(fn) {
+    set$1 = function setImmediate(handler) {
+      validateArgumentsLength(arguments.length, 1);
+      var fn = isCallable(handler) ? handler : Function$1(handler);
       var args = arraySlice(arguments, 1);
 
-      queue$1[++counter] = function () {
-        functionApply(isCallable(fn) ? fn : Function$1(fn), undefined, args);
+      queue$2[++counter] = function () {
+        functionApply(fn, undefined, args);
       };
 
       defer(counter);
@@ -3566,7 +3602,7 @@
     };
 
     clear = function clearImmediate(id) {
-      delete queue$1[id];
+      delete queue$2[id];
     }; // Node.js 0.8-
 
 
@@ -3686,7 +3722,7 @@
       }; // for other environments - macrotask based on:
       // - setImmediate
       // - MessageChannel
-      // - window.postMessag
+      // - window.postMessage
       // - onreadystatechange
       // - setTimeout
 
@@ -3715,36 +3751,6 @@
     last = task;
   };
 
-  var PromiseCapability = function (C) {
-    var resolve, reject;
-    this.promise = new C(function ($$resolve, $$reject) {
-      if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-      resolve = $$resolve;
-      reject = $$reject;
-    });
-    this.resolve = aCallable(resolve);
-    this.reject = aCallable(reject);
-  }; // `NewPromiseCapability` abstract operation
-  // https://tc39.es/ecma262/#sec-newpromisecapability
-
-
-  var f$5 = function (C) {
-    return new PromiseCapability(C);
-  };
-
-  var newPromiseCapability$1 = {
-  	f: f$5
-  };
-
-  var promiseResolve = function (C, x) {
-    anObject$1(C);
-    if (isObject$3(x) && x.constructor === C) return x;
-    var promiseCapability = newPromiseCapability$1.f(C);
-    var resolve = promiseCapability.resolve;
-    resolve(x);
-    return promiseCapability.promise;
-  };
-
   var hostReportErrors = function (a, b) {
     var console = global_1.console;
 
@@ -3767,7 +3773,99 @@
     }
   };
 
-  var engineIsBrowser = typeof window == 'object';
+  var Queue = function () {
+    this.head = null;
+    this.tail = null;
+  };
+
+  Queue.prototype = {
+    add: function (item) {
+      var entry = {
+        item: item,
+        next: null
+      };
+      if (this.head) this.tail.next = entry;else this.head = entry;
+      this.tail = entry;
+    },
+    get: function () {
+      var entry = this.head;
+
+      if (entry) {
+        this.head = entry.next;
+        if (this.tail === entry) this.tail = null;
+        return entry.item;
+      }
+    }
+  };
+  var queue$1 = Queue;
+
+  var promiseNativeConstructor = global_1.Promise;
+
+  var engineIsBrowser = typeof window == 'object' && typeof Deno != 'object';
+
+  promiseNativeConstructor && promiseNativeConstructor.prototype;
+  var SPECIES$5 = wellKnownSymbol$1('species');
+  var SUBCLASSING = false;
+  var NATIVE_PROMISE_REJECTION_EVENT$1 = isCallable(global_1.PromiseRejectionEvent);
+  var FORCED_PROMISE_CONSTRUCTOR$5 = isForced_1$1('Promise', function () {
+    var PROMISE_CONSTRUCTOR_SOURCE = inspectSource$1(promiseNativeConstructor);
+    var GLOBAL_CORE_JS_PROMISE = PROMISE_CONSTRUCTOR_SOURCE !== String(promiseNativeConstructor); // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+    // We can't detect it synchronously, so just check versions
+
+    if (!GLOBAL_CORE_JS_PROMISE && engineV8Version$1 === 66) return true; // We need Promise#{ catch, finally } in the pure version for preventing prototype pollution
+    // deoptimization and performance degradation
+    // https://github.com/zloirock/core-js/issues/679
+
+    if (engineV8Version$1 >= 51 && /native code/.test(PROMISE_CONSTRUCTOR_SOURCE)) return false; // Detect correctness of subclassing with @@species support
+
+    var promise = new promiseNativeConstructor(function (resolve) {
+      resolve(1);
+    });
+
+    var FakePromise = function (exec) {
+      exec(function () {
+        /* empty */
+      }, function () {
+        /* empty */
+      });
+    };
+
+    var constructor = promise.constructor = {};
+    constructor[SPECIES$5] = FakePromise;
+    SUBCLASSING = promise.then(function () {
+      /* empty */
+    }) instanceof FakePromise;
+    if (!SUBCLASSING) return true; // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+
+    return !GLOBAL_CORE_JS_PROMISE && engineIsBrowser && !NATIVE_PROMISE_REJECTION_EVENT$1;
+  });
+  var promiseConstructorDetection = {
+    CONSTRUCTOR: FORCED_PROMISE_CONSTRUCTOR$5,
+    REJECTION_EVENT: NATIVE_PROMISE_REJECTION_EVENT$1,
+    SUBCLASSING: SUBCLASSING
+  };
+
+  var PromiseCapability = function (C) {
+    var resolve, reject;
+    this.promise = new C(function ($$resolve, $$reject) {
+      if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+      resolve = $$resolve;
+      reject = $$reject;
+    });
+    this.resolve = aCallable(resolve);
+    this.reject = aCallable(reject);
+  }; // `NewPromiseCapability` abstract operation
+  // https://tc39.es/ecma262/#sec-newpromisecapability
+
+
+  var f$5 = function (C) {
+    return new PromiseCapability(C);
+  };
+
+  var newPromiseCapability$1 = {
+  	f: f$5
+  };
 
   var task = task$1.set;
 
@@ -3787,27 +3885,21 @@
 
 
 
-
-
-
-
-
-
-  var SPECIES$5 = wellKnownSymbol$1('species');
   var PROMISE = 'Promise';
-  var getInternalState$2 = internalState$1.get;
-  var setInternalState$3 = internalState$1.set;
+  var FORCED_PROMISE_CONSTRUCTOR$4 = promiseConstructorDetection.CONSTRUCTOR;
+  var NATIVE_PROMISE_REJECTION_EVENT = promiseConstructorDetection.REJECTION_EVENT;
+  var NATIVE_PROMISE_SUBCLASSING = promiseConstructorDetection.SUBCLASSING;
   var getInternalPromiseState = internalState$1.getterFor(PROMISE);
-  var NativePromisePrototype = nativePromiseConstructor && nativePromiseConstructor.prototype;
-  var PromiseConstructor = nativePromiseConstructor;
-  var PromisePrototype = NativePromisePrototype;
-  var TypeError$1 = global_1.TypeError;
+  var setInternalState$3 = internalState$1.set;
+  var NativePromisePrototype$1 = promiseNativeConstructor && promiseNativeConstructor.prototype;
+  var PromiseConstructor = promiseNativeConstructor;
+  var PromisePrototype = NativePromisePrototype$1;
+  var TypeError$3 = global_1.TypeError;
   var document$2 = global_1.document;
   var process$2 = global_1.process;
   var newPromiseCapability = newPromiseCapability$1.f;
   var newGenericPromiseCapability = newPromiseCapability;
   var DISPATCH_EVENT = !!(document$2 && document$2.createEvent && global_1.dispatchEvent);
-  var NATIVE_REJECTION_EVENT = isCallable(global_1.PromiseRejectionEvent);
   var UNHANDLED_REJECTION = 'unhandledrejection';
   var REJECTION_HANDLED = 'rejectionhandled';
   var PENDING = 0;
@@ -3815,99 +3907,62 @@
   var REJECTED = 2;
   var HANDLED = 1;
   var UNHANDLED = 2;
-  var SUBCLASSING = false;
-  var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
-  var FORCED$2 = isForced_1$1(PROMISE, function () {
-    var PROMISE_CONSTRUCTOR_SOURCE = inspectSource$1(PromiseConstructor);
-    var GLOBAL_CORE_JS_PROMISE = PROMISE_CONSTRUCTOR_SOURCE !== String(PromiseConstructor); // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-    // We can't detect it synchronously, so just check versions
-
-    if (!GLOBAL_CORE_JS_PROMISE && engineV8Version$1 === 66) return true; // We need Promise#finally in the pure version for preventing prototype pollution
-    // deoptimization and performance degradation
-    // https://github.com/zloirock/core-js/issues/679
-
-    if (engineV8Version$1 >= 51 && /native code/.test(PROMISE_CONSTRUCTOR_SOURCE)) return false; // Detect correctness of subclassing with @@species support
-
-    var promise = new PromiseConstructor(function (resolve) {
-      resolve(1);
-    });
-
-    var FakePromise = function (exec) {
-      exec(function () {
-        /* empty */
-      }, function () {
-        /* empty */
-      });
-    };
-
-    var constructor = promise.constructor = {};
-    constructor[SPECIES$5] = FakePromise;
-    SUBCLASSING = promise.then(function () {
-      /* empty */
-    }) instanceof FakePromise;
-    if (!SUBCLASSING) return true; // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-
-    return !GLOBAL_CORE_JS_PROMISE && engineIsBrowser && !NATIVE_REJECTION_EVENT;
-  });
-  var INCORRECT_ITERATION = FORCED$2 || !checkCorrectnessOfIteration$1(function (iterable) {
-    PromiseConstructor.all(iterable)['catch'](function () {
-      /* empty */
-    });
-  }); // helpers
+  var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen; // helpers
 
   var isThenable = function (it) {
     var then;
     return isObject$3(it) && isCallable(then = it.then) ? then : false;
   };
 
+  var callReaction = function (reaction, state) {
+    var value = state.value;
+    var ok = state.state == FULFILLED;
+    var handler = ok ? reaction.ok : reaction.fail;
+    var resolve = reaction.resolve;
+    var reject = reaction.reject;
+    var domain = reaction.domain;
+    var result, then, exited;
+
+    try {
+      if (handler) {
+        if (!ok) {
+          if (state.rejection === UNHANDLED) onHandleUnhandled(state);
+          state.rejection = HANDLED;
+        }
+
+        if (handler === true) result = value;else {
+          if (domain) domain.enter();
+          result = handler(value); // can throw
+
+          if (domain) {
+            domain.exit();
+            exited = true;
+          }
+        }
+
+        if (result === reaction.promise) {
+          reject(TypeError$3('Promise-chain cycle'));
+        } else if (then = isThenable(result)) {
+          functionCall(then, result, resolve, reject);
+        } else resolve(result);
+      } else reject(value);
+    } catch (error) {
+      if (domain && !exited) domain.exit();
+      reject(error);
+    }
+  };
+
   var notify = function (state, isReject) {
     if (state.notified) return;
     state.notified = true;
-    var chain = state.reactions;
     microtask(function () {
-      var value = state.value;
-      var ok = state.state == FULFILLED;
-      var index = 0; // variable length - can't use forEach
+      var reactions = state.reactions;
+      var reaction;
 
-      while (chain.length > index) {
-        var reaction = chain[index++];
-        var handler = ok ? reaction.ok : reaction.fail;
-        var resolve = reaction.resolve;
-        var reject = reaction.reject;
-        var domain = reaction.domain;
-        var result, then, exited;
-
-        try {
-          if (handler) {
-            if (!ok) {
-              if (state.rejection === UNHANDLED) onHandleUnhandled(state);
-              state.rejection = HANDLED;
-            }
-
-            if (handler === true) result = value;else {
-              if (domain) domain.enter();
-              result = handler(value); // can throw
-
-              if (domain) {
-                domain.exit();
-                exited = true;
-              }
-            }
-
-            if (result === reaction.promise) {
-              reject(TypeError$1('Promise-chain cycle'));
-            } else if (then = isThenable(result)) {
-              functionCall(then, result, resolve, reject);
-            } else resolve(result);
-          } else reject(value);
-        } catch (error) {
-          if (domain && !exited) domain.exit();
-          reject(error);
-        }
+      while (reaction = reactions.get()) {
+        callReaction(reaction, state);
       }
 
-      state.reactions = [];
       state.notified = false;
       if (isReject && !state.rejection) onUnhandled(state);
     });
@@ -3927,7 +3982,7 @@
       reason: reason
     };
 
-    if (!NATIVE_REJECTION_EVENT && (handler = global_1['on' + name])) handler(event);else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
+    if (!NATIVE_PROMISE_REJECTION_EVENT && (handler = global_1['on' + name])) handler(event);else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
   };
 
   var onUnhandled = function (state) {
@@ -3985,7 +4040,7 @@
     if (unwrap) state = unwrap;
 
     try {
-      if (state.facade === value) throw TypeError$1("Promise can't be resolved itself");
+      if (state.facade === value) throw TypeError$3("Promise can't be resolved itself");
       var then = isThenable(value);
 
       if (then) {
@@ -4013,13 +4068,13 @@
   }; // constructor polyfill
 
 
-  if (FORCED$2) {
+  if (FORCED_PROMISE_CONSTRUCTOR$4) {
     // 25.4.3.1 Promise(executor)
     PromiseConstructor = function Promise(executor) {
       anInstance$1(this, PromisePrototype);
       aCallable(executor);
       functionCall(Internal, this);
-      var state = getInternalState$2(this);
+      var state = getInternalPromiseState(this);
 
       try {
         executor(bind$1(internalResolve, state), bind$1(internalReject, state));
@@ -4036,7 +4091,7 @@
         done: false,
         notified: false,
         parent: false,
-        reactions: [],
+        reactions: new queue$1(),
         rejection: false,
         state: PENDING,
         value: undefined
@@ -4046,28 +4101,24 @@
     Internal.prototype = redefineAll$1(PromisePrototype, {
       // `Promise.prototype.then` method
       // https://tc39.es/ecma262/#sec-promise.prototype.then
+      // eslint-disable-next-line unicorn/no-thenable -- safe
       then: function then(onFulfilled, onRejected) {
         var state = getInternalPromiseState(this);
-        var reactions = state.reactions;
         var reaction = newPromiseCapability(speciesConstructor$1(this, PromiseConstructor));
+        state.parent = true;
         reaction.ok = isCallable(onFulfilled) ? onFulfilled : true;
         reaction.fail = isCallable(onRejected) && onRejected;
         reaction.domain = engineIsNode$1 ? process$2.domain : undefined;
-        state.parent = true;
-        reactions[reactions.length] = reaction;
-        if (state.state != PENDING) notify(state, false);
+        if (state.state == PENDING) state.reactions.add(reaction);else microtask(function () {
+          callReaction(reaction, state);
+        });
         return reaction.promise;
-      },
-      // `Promise.prototype.catch` method
-      // https://tc39.es/ecma262/#sec-promise.prototype.catch
-      'catch': function (onRejected) {
-        return this.then(undefined, onRejected);
       }
     });
 
     OwnPromiseCapability = function () {
       var promise = new Internal();
-      var state = getInternalState$2(promise);
+      var state = getInternalPromiseState(promise);
       this.promise = promise;
       this.resolve = bind$1(internalResolve, state);
       this.reject = bind$1(internalReject, state);
@@ -4077,35 +4128,31 @@
       return C === PromiseConstructor || C === PromiseWrapper ? new OwnPromiseCapability(C) : newGenericPromiseCapability(C);
     };
 
-    if (isCallable(nativePromiseConstructor) && NativePromisePrototype !== Object.prototype) {
-      nativeThen = NativePromisePrototype.then;
+    if (isCallable(promiseNativeConstructor) && NativePromisePrototype$1 !== Object.prototype) {
+      nativeThen = NativePromisePrototype$1.then;
 
-      if (!SUBCLASSING) {
+      if (!NATIVE_PROMISE_SUBCLASSING) {
         // make `Promise#then` return a polyfilled `Promise` for native promise-based APIs
-        redefine$1(NativePromisePrototype, 'then', function then(onFulfilled, onRejected) {
+        redefine$1(NativePromisePrototype$1, 'then', function then(onFulfilled, onRejected) {
           var that = this;
           return new PromiseConstructor(function (resolve, reject) {
             functionCall(nativeThen, that, resolve, reject);
           }).then(onFulfilled, onRejected); // https://github.com/zloirock/core-js/issues/640
         }, {
           unsafe: true
-        }); // makes sure that native promise-based APIs `Promise#catch` properly works with patched `Promise#then`
-
-        redefine$1(NativePromisePrototype, 'catch', PromisePrototype['catch'], {
-          unsafe: true
         });
       } // make `.constructor === Promise` work for native promise-based APIs
 
 
       try {
-        delete NativePromisePrototype.constructor;
+        delete NativePromisePrototype$1.constructor;
       } catch (error) {
         /* empty */
       } // make `instanceof Promise` work for native promise-based APIs
 
 
       if (objectSetPrototypeOf$1) {
-        objectSetPrototypeOf$1(NativePromisePrototype, PromisePrototype);
+        objectSetPrototypeOf$1(NativePromisePrototype$1, PromisePrototype);
       }
     }
   }
@@ -4113,48 +4160,97 @@
   _export$1({
     global: true,
     wrap: true,
-    forced: FORCED$2
+    forced: FORCED_PROMISE_CONSTRUCTOR$4
   }, {
     Promise: PromiseConstructor
   });
   setToStringTag$1(PromiseConstructor, PROMISE, false);
   setSpecies$1(PROMISE);
-  PromiseWrapper = getBuiltIn$1(PROMISE); // statics
+
+  var TypeError$2 = global_1.TypeError;
+
+  var Result$1 = function (stopped, result) {
+    this.stopped = stopped;
+    this.result = result;
+  };
+
+  var ResultPrototype = Result$1.prototype;
+
+  var iterate$1 = function (iterable, unboundFunction, options) {
+    var that = options && options.that;
+    var AS_ENTRIES = !!(options && options.AS_ENTRIES);
+    var IS_ITERATOR = !!(options && options.IS_ITERATOR);
+    var INTERRUPTED = !!(options && options.INTERRUPTED);
+    var fn = functionBindContext$1(unboundFunction, that);
+    var iterator, iterFn, index, length, result, next, step;
+
+    var stop = function (condition) {
+      if (iterator) iteratorClose$1(iterator, 'normal', condition);
+      return new Result$1(true, condition);
+    };
+
+    var callFn = function (value) {
+      if (AS_ENTRIES) {
+        anObject$1(value);
+        return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
+      }
+
+      return INTERRUPTED ? fn(value, stop) : fn(value);
+    };
+
+    if (IS_ITERATOR) {
+      iterator = iterable;
+    } else {
+      iterFn = getIteratorMethod$1(iterable);
+      if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
+
+      if (isArrayIteratorMethod$1(iterFn)) {
+        for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
+          result = callFn(iterable[index]);
+          if (result && objectIsPrototypeOf(ResultPrototype, result)) return result;
+        }
+
+        return new Result$1(false);
+      }
+
+      iterator = getIterator(iterable, iterFn);
+    }
+
+    next = iterator.next;
+
+    while (!(step = functionCall(next, iterator)).done) {
+      try {
+        result = callFn(step.value);
+      } catch (error) {
+        iteratorClose$1(iterator, 'throw', error);
+      }
+
+      if (typeof result == 'object' && result && objectIsPrototypeOf(ResultPrototype, result)) return result;
+    }
+
+    return new Result$1(false);
+  };
+
+  var FORCED_PROMISE_CONSTRUCTOR$3 = promiseConstructorDetection.CONSTRUCTOR;
+
+  var promiseStaticsIncorrectIteration = FORCED_PROMISE_CONSTRUCTOR$3 || !checkCorrectnessOfIteration$1(function (iterable) {
+    promiseNativeConstructor.all(iterable).then(undefined, function () {
+      /* empty */
+    });
+  });
+
+  // `Promise.all` method
+  // https://tc39.es/ecma262/#sec-promise.all
+
 
   _export$1({
-    target: PROMISE,
+    target: 'Promise',
     stat: true,
-    forced: FORCED$2
+    forced: promiseStaticsIncorrectIteration
   }, {
-    // `Promise.reject` method
-    // https://tc39.es/ecma262/#sec-promise.reject
-    reject: function reject(r) {
-      var capability = newPromiseCapability(this);
-      functionCall(capability.reject, undefined, r);
-      return capability.promise;
-    }
-  });
-  _export$1({
-    target: PROMISE,
-    stat: true,
-    forced: FORCED$2
-  }, {
-    // `Promise.resolve` method
-    // https://tc39.es/ecma262/#sec-promise.resolve
-    resolve: function resolve(x) {
-      return promiseResolve(this, x);
-    }
-  });
-  _export$1({
-    target: PROMISE,
-    stat: true,
-    forced: INCORRECT_ITERATION
-  }, {
-    // `Promise.all` method
-    // https://tc39.es/ecma262/#sec-promise.all
     all: function all(iterable) {
       var C = this;
-      var capability = newPromiseCapability(C);
+      var capability = newPromiseCapability$1.f(C);
       var resolve = capability.resolve;
       var reject = capability.reject;
       var result = perform(function () {
@@ -4177,12 +4273,55 @@
       });
       if (result.error) reject(result.value);
       return capability.promise;
-    },
-    // `Promise.race` method
-    // https://tc39.es/ecma262/#sec-promise.race
+    }
+  });
+
+  var FORCED_PROMISE_CONSTRUCTOR$2 = promiseConstructorDetection.CONSTRUCTOR;
+
+
+
+
+
+
+
+
+
+  var NativePromisePrototype = promiseNativeConstructor && promiseNativeConstructor.prototype; // `Promise.prototype.catch` method
+  // https://tc39.es/ecma262/#sec-promise.prototype.catch
+
+  _export$1({
+    target: 'Promise',
+    proto: true,
+    forced: FORCED_PROMISE_CONSTRUCTOR$2,
+    real: true
+  }, {
+    'catch': function (onRejected) {
+      return this.then(undefined, onRejected);
+    }
+  }); // makes sure that native promise-based APIs `Promise#catch` properly works with patched `Promise#then`
+
+  if (isCallable(promiseNativeConstructor)) {
+    var method$1 = getBuiltIn$1('Promise').prototype['catch'];
+
+    if (NativePromisePrototype['catch'] !== method$1) {
+      redefine$1(NativePromisePrototype, 'catch', method$1, {
+        unsafe: true
+      });
+    }
+  }
+
+  // `Promise.race` method
+  // https://tc39.es/ecma262/#sec-promise.race
+
+
+  _export$1({
+    target: 'Promise',
+    stat: true,
+    forced: promiseStaticsIncorrectIteration
+  }, {
     race: function race(iterable) {
       var C = this;
-      var capability = newPromiseCapability(C);
+      var capability = newPromiseCapability$1.f(C);
       var reject = capability.reject;
       var result = perform(function () {
         var $promiseResolve = aCallable(C.resolve);
@@ -4192,6 +4331,48 @@
       });
       if (result.error) reject(result.value);
       return capability.promise;
+    }
+  });
+
+  var FORCED_PROMISE_CONSTRUCTOR$1 = promiseConstructorDetection.CONSTRUCTOR; // `Promise.reject` method
+  // https://tc39.es/ecma262/#sec-promise.reject
+
+
+  _export$1({
+    target: 'Promise',
+    stat: true,
+    forced: FORCED_PROMISE_CONSTRUCTOR$1
+  }, {
+    reject: function reject(r) {
+      var capability = newPromiseCapability$1.f(this);
+      functionCall(capability.reject, undefined, r);
+      return capability.promise;
+    }
+  });
+
+  var promiseResolve = function (C, x) {
+    anObject$1(C);
+    if (isObject$3(x) && x.constructor === C) return x;
+    var promiseCapability = newPromiseCapability$1.f(C);
+    var resolve = promiseCapability.resolve;
+    resolve(x);
+    return promiseCapability.promise;
+  };
+
+  var FORCED_PROMISE_CONSTRUCTOR = promiseConstructorDetection.CONSTRUCTOR;
+
+
+
+  getBuiltIn$1('Promise');
+  // https://tc39.es/ecma262/#sec-promise.resolve
+
+  _export$1({
+    target: 'Promise',
+    stat: true,
+    forced: FORCED_PROMISE_CONSTRUCTOR
+  }, {
+    resolve: function resolve(x) {
+      return promiseResolve(this, x);
     }
   });
 
@@ -4216,6 +4397,14 @@
   }
   function safe_not_equal(a, b) {
       return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+  }
+  let src_url_equal_anchor;
+  function src_url_equal(element_src, url) {
+      if (!src_url_equal_anchor) {
+          src_url_equal_anchor = document.createElement('a');
+      }
+      src_url_equal_anchor.href = url;
+      return element_src === src_url_equal_anchor.href;
   }
   function is_empty(obj) {
       return Object.keys(obj).length === 0;
@@ -4378,7 +4567,12 @@
       input.value = value == null ? '' : value;
   }
   function set_style(node, key, value, important) {
-      node.style.setProperty(key, value, important ? 'important' : '');
+      if (value === null) {
+          node.style.removeProperty(key);
+      }
+      else {
+          node.style.setProperty(key, value, important ? 'important' : '');
+      }
   }
   // unfortunately this can't be a constant as that wouldn't be tree-shakeable
   // so we cache the result instead
@@ -4527,22 +4721,40 @@
   function add_flush_callback(fn) {
       flush_callbacks.push(fn);
   }
-  let flushing = false;
+  // flush() calls callbacks in this order:
+  // 1. All beforeUpdate callbacks, in order: parents before children
+  // 2. All bind:this callbacks, in reverse order: children before parents.
+  // 3. All afterUpdate callbacks, in order: parents before children. EXCEPT
+  //    for afterUpdates called during the initial onMount, which are called in
+  //    reverse order: children before parents.
+  // Since callbacks might update component values, which could trigger another
+  // call to flush(), the following steps guard against this:
+  // 1. During beforeUpdate, any updated components will be added to the
+  //    dirty_components array and will cause a reentrant call to flush(). Because
+  //    the flush index is kept outside the function, the reentrant call will pick
+  //    up where the earlier call left off and go through all dirty components. The
+  //    current_component value is saved and restored so that the reentrant call will
+  //    not interfere with the "parent" flush() call.
+  // 2. bind:this callbacks cannot trigger new flush() calls.
+  // 3. During afterUpdate, any updated components will NOT have their afterUpdate
+  //    callback called a second time; the seen_callbacks set, outside the flush()
+  //    function, guarantees this behavior.
   const seen_callbacks = new Set();
+  let flushidx = 0; // Do *not* move this inside the flush() function
   function flush() {
-      if (flushing)
-          return;
-      flushing = true;
+      const saved_component = current_component;
       do {
           // first, call beforeUpdate functions
           // and update components
-          for (let i = 0; i < dirty_components.length; i += 1) {
-              const component = dirty_components[i];
+          while (flushidx < dirty_components.length) {
+              const component = dirty_components[flushidx];
+              flushidx++;
               set_current_component(component);
               update(component.$$);
           }
           set_current_component(null);
           dirty_components.length = 0;
+          flushidx = 0;
           while (binding_callbacks.length)
               binding_callbacks.pop()();
           // then, once components are updated, call
@@ -4562,8 +4774,8 @@
           flush_callbacks.pop()();
       }
       update_scheduled = false;
-      flushing = false;
       seen_callbacks.clear();
+      set_current_component(saved_component);
   }
   function update($$) {
       if ($$.fragment !== null) {
@@ -5337,10 +5549,10 @@
   /**
    * @name isSameDay
    * @category Day Helpers
-   * @summary Are the given dates in the same day?
+   * @summary Are the given dates in the same day (and year and month)?
    *
    * @description
-   * Are the given dates in the same day?
+   * Are the given dates in the same day (and year and month)?
    *
    * ### v2.0.0 breaking changes:
    *
@@ -5348,13 +5560,23 @@
    *
    * @param {Date|Number} dateLeft - the first date to check
    * @param {Date|Number} dateRight - the second date to check
-   * @returns {Boolean} the dates are in the same day
+   * @returns {Boolean} the dates are in the same day (and year and month)
    * @throws {TypeError} 2 arguments required
    *
    * @example
    * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
    * var result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
    * //=> true
+   * 
+   * @example
+   * // Are 4 September and 4 October in the same day?
+   * var result = isSameDay(new Date(2014, 8, 4), new Date(2014, 9, 4))
+   * //=> false
+   * 
+   * @example
+   * // Are 4 September, 2014 and 4 September, 2015 in the same day?
+   * var result = isSameDay(new Date(2014, 8, 4), new Date(2015, 8, 4))
+   * //=> false
    */
 
   function isSameDay(dirtyDateLeft, dirtyDateRight) {
@@ -6565,101 +6787,6 @@
     return addMilliseconds(dirtyDate, -amount);
   }
 
-  function addLeadingZeros(number, targetLength) {
-    var sign = number < 0 ? '-' : '';
-    var output = Math.abs(number).toString();
-
-    while (output.length < targetLength) {
-      output = '0' + output;
-    }
-
-    return sign + output;
-  }
-
-  /*
-   * |     | Unit                           |     | Unit                           |
-   * |-----|--------------------------------|-----|--------------------------------|
-   * |  a  | AM, PM                         |  A* |                                |
-   * |  d  | Day of month                   |  D  |                                |
-   * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
-   * |  m  | Minute                         |  M  | Month                          |
-   * |  s  | Second                         |  S  | Fraction of second             |
-   * |  y  | Year (abs)                     |  Y  |                                |
-   *
-   * Letters marked by * are not implemented but reserved by Unicode standard.
-   */
-
-  var formatters$2 = {
-    // Year
-    y: function (date, token) {
-      // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_tokens
-      // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
-      // |----------|-------|----|-------|-------|-------|
-      // | AD 1     |     1 | 01 |   001 |  0001 | 00001 |
-      // | AD 12    |    12 | 12 |   012 |  0012 | 00012 |
-      // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
-      // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
-      // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
-      var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
-
-      var year = signedYear > 0 ? signedYear : 1 - signedYear;
-      return addLeadingZeros(token === 'yy' ? year % 100 : year, token.length);
-    },
-    // Month
-    M: function (date, token) {
-      var month = date.getUTCMonth();
-      return token === 'M' ? String(month + 1) : addLeadingZeros(month + 1, 2);
-    },
-    // Day of the month
-    d: function (date, token) {
-      return addLeadingZeros(date.getUTCDate(), token.length);
-    },
-    // AM or PM
-    a: function (date, token) {
-      var dayPeriodEnumValue = date.getUTCHours() / 12 >= 1 ? 'pm' : 'am';
-
-      switch (token) {
-        case 'a':
-        case 'aa':
-          return dayPeriodEnumValue.toUpperCase();
-
-        case 'aaa':
-          return dayPeriodEnumValue;
-
-        case 'aaaaa':
-          return dayPeriodEnumValue[0];
-
-        case 'aaaa':
-        default:
-          return dayPeriodEnumValue === 'am' ? 'a.m.' : 'p.m.';
-      }
-    },
-    // Hour [1-12]
-    h: function (date, token) {
-      return addLeadingZeros(date.getUTCHours() % 12 || 12, token.length);
-    },
-    // Hour [0-23]
-    H: function (date, token) {
-      return addLeadingZeros(date.getUTCHours(), token.length);
-    },
-    // Minute
-    m: function (date, token) {
-      return addLeadingZeros(date.getUTCMinutes(), token.length);
-    },
-    // Second
-    s: function (date, token) {
-      return addLeadingZeros(date.getUTCSeconds(), token.length);
-    },
-    // Fraction of second
-    S: function (date, token) {
-      var numberOfDigits = token.length;
-      var milliseconds = date.getUTCMilliseconds();
-      var fractionalSeconds = Math.floor(milliseconds * Math.pow(10, numberOfDigits - 3));
-      return addLeadingZeros(fractionalSeconds, token.length);
-    }
-  };
-  var formatters$3 = formatters$2;
-
   var MILLISECONDS_IN_DAY = 86400000; // This function will be a part of public API when UTC function will be implemented.
   // See issue: https://github.com/date-fns/date-fns/issues/376
 
@@ -6821,6 +6948,101 @@
 
     return Math.round(diff / MILLISECONDS_IN_WEEK$1) + 1;
   }
+
+  function addLeadingZeros(number, targetLength) {
+    var sign = number < 0 ? '-' : '';
+    var output = Math.abs(number).toString();
+
+    while (output.length < targetLength) {
+      output = '0' + output;
+    }
+
+    return sign + output;
+  }
+
+  /*
+   * |     | Unit                           |     | Unit                           |
+   * |-----|--------------------------------|-----|--------------------------------|
+   * |  a  | AM, PM                         |  A* |                                |
+   * |  d  | Day of month                   |  D  |                                |
+   * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
+   * |  m  | Minute                         |  M  | Month                          |
+   * |  s  | Second                         |  S  | Fraction of second             |
+   * |  y  | Year (abs)                     |  Y  |                                |
+   *
+   * Letters marked by * are not implemented but reserved by Unicode standard.
+   */
+
+  var formatters$2 = {
+    // Year
+    y: function (date, token) {
+      // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_tokens
+      // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
+      // |----------|-------|----|-------|-------|-------|
+      // | AD 1     |     1 | 01 |   001 |  0001 | 00001 |
+      // | AD 12    |    12 | 12 |   012 |  0012 | 00012 |
+      // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
+      // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
+      // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
+      var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
+
+      var year = signedYear > 0 ? signedYear : 1 - signedYear;
+      return addLeadingZeros(token === 'yy' ? year % 100 : year, token.length);
+    },
+    // Month
+    M: function (date, token) {
+      var month = date.getUTCMonth();
+      return token === 'M' ? String(month + 1) : addLeadingZeros(month + 1, 2);
+    },
+    // Day of the month
+    d: function (date, token) {
+      return addLeadingZeros(date.getUTCDate(), token.length);
+    },
+    // AM or PM
+    a: function (date, token) {
+      var dayPeriodEnumValue = date.getUTCHours() / 12 >= 1 ? 'pm' : 'am';
+
+      switch (token) {
+        case 'a':
+        case 'aa':
+          return dayPeriodEnumValue.toUpperCase();
+
+        case 'aaa':
+          return dayPeriodEnumValue;
+
+        case 'aaaaa':
+          return dayPeriodEnumValue[0];
+
+        case 'aaaa':
+        default:
+          return dayPeriodEnumValue === 'am' ? 'a.m.' : 'p.m.';
+      }
+    },
+    // Hour [1-12]
+    h: function (date, token) {
+      return addLeadingZeros(date.getUTCHours() % 12 || 12, token.length);
+    },
+    // Hour [0-23]
+    H: function (date, token) {
+      return addLeadingZeros(date.getUTCHours(), token.length);
+    },
+    // Minute
+    m: function (date, token) {
+      return addLeadingZeros(date.getUTCMinutes(), token.length);
+    },
+    // Second
+    s: function (date, token) {
+      return addLeadingZeros(date.getUTCSeconds(), token.length);
+    },
+    // Fraction of second
+    S: function (date, token) {
+      var numberOfDigits = token.length;
+      var milliseconds = date.getUTCMilliseconds();
+      var fractionalSeconds = Math.floor(milliseconds * Math.pow(10, numberOfDigits - 3));
+      return addLeadingZeros(fractionalSeconds, token.length);
+    }
+  };
+  var formatters$3 = formatters$2;
 
   var dayPeriodEnum = {
     am: 'am',
@@ -7648,7 +7870,7 @@
     }
   };
 
-  function formatTimezoneShort(offset, delimiter) {
+  function formatTimezoneShort(offset, dirtyDelimiter) {
     var sign = offset > 0 ? '-' : '+';
     var absOffset = Math.abs(offset);
     var hours = Math.floor(absOffset / 60);
@@ -7658,6 +7880,7 @@
       return sign + String(hours);
     }
 
+    var delimiter = dirtyDelimiter || '';
     return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
   }
 
@@ -8063,7 +8286,7 @@
    * 8. `YY` and `YYYY` tokens represent week-numbering years but they are often confused with years.
    *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://git.io/fxCyr
    *
-   * 9. `D` and `DD` tokens represent days of the year but they are ofthen confused with days of the month.
+   * 9. `D` and `DD` tokens represent days of the year but they are often confused with days of the month.
    *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://git.io/fxCyr
    *
    * ### v2.0.0 breaking changes:
@@ -9744,7 +9967,7 @@
         date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
         return date;
       },
-      incompatibleTokens: ['b', 'B', 'H', 'K', 'k', 't', 'T']
+      incompatibleTokens: ['b', 'B', 'H', 'k', 't', 'T']
     },
     // AM, PM, midnight
     b: {
@@ -9786,7 +10009,7 @@
         date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
         return date;
       },
-      incompatibleTokens: ['a', 'B', 'H', 'K', 'k', 't', 'T']
+      incompatibleTokens: ['a', 'B', 'H', 'k', 't', 'T']
     },
     // in the morning, in the afternoon, in the evening, at night
     B: {
@@ -9922,7 +10145,7 @@
 
         return date;
       },
-      incompatibleTokens: ['a', 'b', 'h', 'H', 'k', 't', 'T']
+      incompatibleTokens: ['h', 'H', 'k', 't', 'T']
     },
     // Hour [1-24]
     k: {
@@ -10280,7 +10503,7 @@
    * |                                 |     | tt      | ...                               | 2     |
    * | Fraction of second              |  30 | S       | 0, 1, ..., 9                      |       |
    * |                                 |     | SS      | 00, 01, ..., 99                   |       |
-   * |                                 |     | SSS     | 000, 0001, ..., 999               |       |
+   * |                                 |     | SSS     | 000, 001, ..., 999                |       |
    * |                                 |     | SSSS    | ...                               | 2     |
    * | Milliseconds timestamp          |  20 | T       | 512969520900                      |       |
    * |                                 |     | TT      | ...                               | 2     |
@@ -10805,7 +11028,7 @@
   var min$3 = Math.min;
   var concat = functionUncurryThis([].concat);
   var push$2 = functionUncurryThis([].push);
-  var stringIndexOf = functionUncurryThis(''.indexOf);
+  var stringIndexOf$1 = functionUncurryThis(''.indexOf);
   var stringSlice = functionUncurryThis(''.slice);
 
   var maybeToString = function (it) {
@@ -10857,7 +11080,7 @@
       var rx = anObject$1(this);
       var S = toString_1(string);
 
-      if (typeof replaceValue == 'string' && stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf(replaceValue, '$<') === -1) {
+      if (typeof replaceValue == 'string' && stringIndexOf$1(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf$1(replaceValue, '$<') === -1) {
         var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
         if (res.done) return res.value;
       }
@@ -12449,12 +12672,12 @@
     return Helpers;
   }();
 
-  function get_each_context$5(ctx, list, i) {
+  function get_each_context$7(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[24] = list[i];
-    child_ctx[26] = i;
+    child_ctx[25] = list[i];
+    child_ctx[27] = i;
     return child_ctx;
-  } // (225:0) {#if controls}
+  } // (226:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -12472,7 +12695,7 @@
         if (detaching) detach(h2);
       }
     };
-  } // (229:1) {#if controls}
+  } // (230:1) {#if controls}
 
 
   function create_if_block_6$2(ctx) {
@@ -12560,7 +12783,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (243:3) {#if !loading && weekTotal > 0}
+  } // (244:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -12571,7 +12794,7 @@
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
+      each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
     }
 
     return {
@@ -12600,12 +12823,12 @@
           var _i3;
 
           for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-            var child_ctx = get_each_context$5(ctx, each_value, _i3);
+            var child_ctx = get_each_context$7(ctx, each_value, _i3);
 
             if (each_blocks[_i3]) {
               each_blocks[_i3].p(child_ctx, dirty);
             } else {
-              each_blocks[_i3] = create_each_block$5(child_ctx);
+              each_blocks[_i3] = create_each_block$7(child_ctx);
 
               each_blocks[_i3].c();
 
@@ -12625,7 +12848,7 @@
         if (detaching) detach(each_1_anchor);
       }
     };
-  } // (246:6) {#if point && point.stats}
+  } // (247:6) {#if point && point.stats}
 
 
   function create_if_block_4$2(ctx) {
@@ -12636,7 +12859,7 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, 'primary') + "";
+    ctx[25].date, 'primary') + "";
     var t1;
     var t2;
     var span1;
@@ -12644,11 +12867,11 @@
     /*formatDateForScale*/
     ctx[11](
     /*point*/
-    ctx[24].date, 'secondary') + "";
+    ctx[25].date, 'secondary') + "";
     var t3;
     var if_block =
     /*point*/
-    ctx[24].stats.total > 0 && create_if_block_5$2(ctx);
+    ctx[25].stats.total > 0 && create_if_block_5$2(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -12676,7 +12899,7 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[24].stats.total > 0) {
+        ctx[25].stats.total > 0) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12695,14 +12918,14 @@
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, 'primary') + "")) set_data(t1, t1_value);
+        ctx[25].date, 'primary') + "")) set_data(t1, t1_value);
         if (dirty &
         /*points*/
         8 && t3_value !== (t3_value =
         /*formatDateForScale*/
         ctx[11](
         /*point*/
-        ctx[24].date, 'secondary') + "")) set_data(t3, t3_value);
+        ctx[25].date, 'secondary') + "")) set_data(t3, t3_value);
       },
       d: function d(detaching) {
         if (if_block) if_block.d(detaching);
@@ -12710,14 +12933,14 @@
         if (detaching) detach(div);
       }
     };
-  } // (247:7) {#if point.stats.total > 0}
+  } // (248:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$2(ctx) {
     var span;
     var t0_value =
     /*point*/
-    ctx[24].stats.total + "";
+    ctx[25].stats.total + "";
     var t0;
     var t1;
     var t2_value = dist_4$1('timemanager', 'hrs.') + "";
@@ -12737,7 +12960,7 @@
         attr(div, "class", "column-inner");
         attr(div, "style", div_style_value = "height: ".concat(
         /*point*/
-        ctx[24].stats.total /
+        ctx[25].stats.total /
         /*highest*/
         ctx[6] * 100, "%"));
       },
@@ -12754,13 +12977,13 @@
         /*points*/
         8 && t0_value !== (t0_value =
         /*point*/
-        ctx[24].stats.total + "")) set_data(t0, t0_value);
+        ctx[25].stats.total + "")) set_data(t0, t0_value);
 
         if (dirty &
         /*points, highest*/
         72 && div_style_value !== (div_style_value = "height: ".concat(
         /*point*/
-        ctx[24].stats.total /
+        ctx[25].stats.total /
         /*highest*/
         ctx[6] * 100, "%"))) {
           attr(div, "style", div_style_value);
@@ -12772,17 +12995,17 @@
         if (detaching) detach(div);
       }
     };
-  } // (244:4) {#each points as point, index}
+  } // (245:4) {#each points as point, index}
 
 
-  function create_each_block$5(ctx) {
+  function create_each_block$7(ctx) {
     var div;
     var t;
     var if_block =
     /*point*/
-    ctx[24] &&
+    ctx[25] &&
     /*point*/
-    ctx[24].stats && create_if_block_4$2(ctx);
+    ctx[25].stats && create_if_block_4$2(ctx);
     return {
       c: function c() {
         div = element("div");
@@ -12798,9 +13021,9 @@
       p: function p(ctx, dirty) {
         if (
         /*point*/
-        ctx[24] &&
+        ctx[25] &&
         /*point*/
-        ctx[24].stats) {
+        ctx[25].stats) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -12818,7 +13041,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (259:3) {#if controls && !loading && weekTotal === 0}
+  } // (260:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$3(ctx) {
@@ -12837,10 +13060,10 @@
         if (detaching) detach(p);
       }
     };
-  } // (263:2) {#if controls}
+  } // (264:2) {#if controls}
 
 
-  function create_if_block$e(ctx) {
+  function create_if_block$g(ctx) {
     var nav;
     var button0;
     var t1;
@@ -12881,7 +13104,7 @@
     var button1;
     var mounted;
     var dispose;
-    var if_block = show_if && create_if_block_1$4(ctx);
+    var if_block = show_if && create_if_block_1$6(ctx);
     return {
       c: function c() {
         nav = element("nav");
@@ -12936,9 +13159,9 @@
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
           /*click_handler*/
-          ctx[16])), listen(button1, "click", prevent_default(
+          ctx[17])), listen(button1, "click", prevent_default(
           /*click_handler_2*/
-          ctx[18]))];
+          ctx[19]))];
           mounted = true;
         }
       },
@@ -12978,7 +13201,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block_1$4(ctx);
+            if_block = create_if_block_1$6(ctx);
             if_block.c();
             if_block.m(span2, t12);
           }
@@ -12994,10 +13217,10 @@
         run_all(dispose);
       }
     };
-  } // (275:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (276:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
-  function create_if_block_1$4(ctx) {
+  function create_if_block_1$6(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13013,7 +13236,7 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_1*/
-          ctx[17]));
+          ctx[18]));
           mounted = true;
         }
       },
@@ -13026,7 +13249,7 @@
     };
   }
 
-  function create_fragment$o(ctx) {
+  function create_fragment$q(ctx) {
     var t0;
     var div2;
     var t1;
@@ -13056,7 +13279,7 @@
     ctx[5] === 0 && create_if_block_2$3();
     var if_block4 =
     /*controls*/
-    ctx[0] && create_if_block$e(ctx);
+    ctx[0] && create_if_block$g(ctx);
     return {
       c: function c() {
         if (if_block0) if_block0.c();
@@ -13177,7 +13400,7 @@
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
-            if_block4 = create_if_block$e(ctx);
+            if_block4 = create_if_block$g(ctx);
             if_block4.c();
             if_block4.m(div1, null);
           }
@@ -13210,7 +13433,7 @@
 
   var dateFormat$1 = "yyyy-MM-dd";
 
-  function instance$n($$self, $$props, $$invalidate) {
+  function instance$p($$self, $$props, $$invalidate) {
     var loading;
     var scale;
     var points;
@@ -13224,6 +13447,8 @@
     var requestToken = $$props.requestToken;
     var _$$props$controls = $$props.controls,
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
+    var _$$props$includeShare = $$props.includeShared,
+        includeShared = _$$props$includeShare === void 0 ? false : _$$props$includeShare;
 
     var simpleRounding = function simpleRounding(number) {
       return Math.round(number * 100) / 100;
@@ -13360,7 +13585,7 @@
               case 0:
                 start = format$1(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
                 end = format$1(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
-                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale); // Parse current URL for filters
+                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
 
                 urlParts = document.location.href.split("?");
 
@@ -13491,20 +13716,21 @@
       if ('statsApiUrl' in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
       if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
       if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
-      if ('start' in $$props) $$invalidate(14, start = $$props.start);
-      if ('end' in $$props) $$invalidate(15, end = $$props.end);
+      if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
+      if ('start' in $$props) $$invalidate(15, start = $$props.start);
+      if ('end' in $$props) $$invalidate(16, end = $$props.end);
     };
 
     $$self.$$.update = function () {
       if ($$self.$$.dirty &
       /*start*/
-      16384) {
+      32768) {
         $$invalidate(1, startCursor = isDate$1(parse$2(start, dateFormat$1, new Date())) ? parse$2(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
       }
 
       if ($$self.$$.dirty &
       /*end*/
-      32768) {
+      65536) {
         endCursor = isDate$1(parse$2(end, dateFormat$1, new Date())) ? parse$2(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
       }
     };
@@ -13523,7 +13749,7 @@
 
     $$invalidate(7, currentWeek = null);
 
-    return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, start, end, click_handler, click_handler_1, click_handler_2];
+    return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
   }
 
   var Statistics = /*#__PURE__*/function (_SvelteComponent) {
@@ -13537,20 +13763,21 @@
       _classCallCheck$1(this, Statistics);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
         statsApiUrl: 12,
         requestToken: 13,
         controls: 0,
-        start: 14,
-        end: 15
+        includeShared: 14,
+        start: 15,
+        end: 16
       });
       return _this;
     }
 
-    return Statistics;
+    return _createClass$1(Statistics);
   }(SvelteComponent);
 
-  function create_fragment$n(ctx) {
+  function create_fragment$p(ctx) {
     var div0;
     var t;
     var div1;
@@ -13629,7 +13856,7 @@
     };
   }
 
-  function instance$m($$self, $$props, $$invalidate) {
+  function instance$o($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -13655,16 +13882,16 @@
       _classCallCheck$1(this, Overlay);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
         loading: 0
       });
       return _this;
     }
 
-    return Overlay;
+    return _createClass$1(Overlay);
   }(SvelteComponent);
 
-  function create_if_block$d(ctx) {
+  function create_if_block$f(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -13700,7 +13927,7 @@
     };
   }
 
-  function create_fragment$m(ctx) {
+  function create_fragment$o(ctx) {
     var div1;
     var h3;
     var t0;
@@ -13732,7 +13959,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[2] && create_if_block$d(ctx);
+    ctx[2] && create_if_block$f(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -13886,7 +14113,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$d(ctx);
+            if_block = create_if_block$f(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -13914,7 +14141,7 @@
     };
   }
 
-  function instance$l($$self, $$props, $$invalidate) {
+  function instance$n($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -13967,7 +14194,7 @@
       _classCallCheck$1(this, ClientEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -13980,10 +14207,10 @@
       return _this;
     }
 
-    return ClientEditor;
+    return _createClass$1(ClientEditor);
   }(SvelteComponent);
 
-  function create_if_block$c(ctx) {
+  function create_if_block$e(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -13992,7 +14219,7 @@
         /*loading*/
         ctx[5],
         $$slots: {
-          default: [create_default_slot$6]
+          default: [create_default_slot$7]
         },
         $$scope: {
           ctx: ctx
@@ -14042,7 +14269,7 @@
   } // (56:1) <Overlay {loading}>
 
 
-  function create_default_slot$6(ctx) {
+  function create_default_slot$7(ctx) {
     var clienteditor;
     var current;
     clienteditor = new ClientEditor({
@@ -14127,7 +14354,7 @@
     };
   }
 
-  function create_fragment$l(ctx) {
+  function create_fragment$n(ctx) {
     var a;
     var span;
     var t0;
@@ -14138,7 +14365,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[6] && create_if_block$c(ctx);
+    ctx[6] && create_if_block$e(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14190,7 +14417,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$c(ctx);
+            if_block = create_if_block$e(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14223,7 +14450,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$m($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -14341,7 +14568,7 @@
       _classCallCheck$1(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -14353,10 +14580,10 @@
       return _this;
     }
 
-    return ClientEditorDialog;
+    return _createClass$1(ClientEditorDialog);
   }(SvelteComponent);
 
-  function create_if_block$b(ctx) {
+  function create_if_block$d(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -14392,7 +14619,7 @@
     };
   }
 
-  function create_fragment$k(ctx) {
+  function create_fragment$m(ctx) {
     var div1;
     var h3;
     var t0;
@@ -14427,7 +14654,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[3] && create_if_block$b(ctx);
+    ctx[3] && create_if_block$d(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -14578,7 +14805,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$b(ctx);
+            if_block = create_if_block$d(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -14606,7 +14833,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -14655,7 +14882,7 @@
       _classCallCheck$1(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -14669,10 +14896,10 @@
       return _this;
     }
 
-    return ProjectEditor;
+    return _createClass$1(ProjectEditor);
   }(SvelteComponent);
 
-  function create_if_block$a(ctx) {
+  function create_if_block$c(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -14681,7 +14908,7 @@
         /*loading*/
         ctx[7],
         $$slots: {
-          default: [create_default_slot$5]
+          default: [create_default_slot$6]
         },
         $$scope: {
           ctx: ctx
@@ -14731,7 +14958,7 @@
   } // (54:1) <Overlay {loading}>
 
 
-  function create_default_slot$5(ctx) {
+  function create_default_slot$6(ctx) {
     var projecteditor;
     var current;
     projecteditor = new ProjectEditor({
@@ -14832,7 +15059,7 @@
     };
   }
 
-  function create_fragment$j(ctx) {
+  function create_fragment$l(ctx) {
     var a;
     var span;
     var t0;
@@ -14843,7 +15070,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[8] && create_if_block$a(ctx);
+    ctx[8] && create_if_block$c(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -14895,7 +15122,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$a(ctx);
+            if_block = create_if_block$c(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14928,7 +15155,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15044,7 +15271,7 @@
       _classCallCheck$1(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -15058,10 +15285,10 @@
       return _this;
     }
 
-    return ProjectEditorDialog;
+    return _createClass$1(ProjectEditorDialog);
   }(SvelteComponent);
 
-  function create_if_block$9(ctx) {
+  function create_if_block$b(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15097,7 +15324,7 @@
     };
   }
 
-  function create_fragment$i(ctx) {
+  function create_fragment$k(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15141,7 +15368,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[4] && create_if_block$9(ctx);
+    ctx[4] && create_if_block$b(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -15316,7 +15543,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$9(ctx);
+            if_block = create_if_block$b(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -15344,7 +15571,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -15395,7 +15622,7 @@
       _classCallCheck$1(this, TaskEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -15410,10 +15637,10 @@
       return _this;
     }
 
-    return TaskEditor;
+    return _createClass$1(TaskEditor);
   }(SvelteComponent);
 
-  function create_if_block$8(ctx) {
+  function create_if_block$a(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -15422,7 +15649,7 @@
         /*loading*/
         ctx[8],
         $$slots: {
-          default: [create_default_slot$4]
+          default: [create_default_slot$5]
         },
         $$scope: {
           ctx: ctx
@@ -15472,7 +15699,7 @@
   } // (55:1) <Overlay {loading}>
 
 
-  function create_default_slot$4(ctx) {
+  function create_default_slot$5(ctx) {
     var taskeditor;
     var current;
     taskeditor = new TaskEditor({
@@ -15581,7 +15808,7 @@
     };
   }
 
-  function create_fragment$h(ctx) {
+  function create_fragment$j(ctx) {
     var a;
     var span;
     var t0;
@@ -15592,7 +15819,7 @@
     var dispose;
     var if_block =
     /*show*/
-    ctx[9] && create_if_block$8(ctx);
+    ctx[9] && create_if_block$a(ctx);
     return {
       c: function c() {
         a = element("a");
@@ -15644,7 +15871,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$8(ctx);
+            if_block = create_if_block$a(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15677,7 +15904,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15795,7 +16022,7 @@
       _classCallCheck$1(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -15810,10 +16037,10 @@
       return _this;
     }
 
-    return TaskEditorDialog;
+    return _createClass$1(TaskEditorDialog);
   }(SvelteComponent);
 
-  function create_if_block$7(ctx) {
+  function create_if_block$9(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -15849,7 +16076,7 @@
     };
   }
 
-  function create_fragment$g(ctx) {
+  function create_fragment$i(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15924,7 +16151,7 @@
     var dispose;
     var if_block = !
     /*isServer*/
-    ctx[5] && create_if_block$7(ctx);
+    ctx[5] && create_if_block$9(ctx);
     return {
       c: function c() {
         div1 = element("div");
@@ -16197,7 +16424,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$7(ctx);
+            if_block = create_if_block$9(ctx);
             if_block.c();
             if_block.m(div0, null);
           }
@@ -16225,7 +16452,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -16294,7 +16521,7 @@
       _classCallCheck$1(this, TimeEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -16311,7 +16538,7 @@
       return _this;
     }
 
-    return TimeEditor;
+    return _createClass$1(TimeEditor);
   }(SvelteComponent);
 
   function create_else_block$2(ctx) {
@@ -16359,7 +16586,7 @@
   } // (53:0) {#if !timeUuid}
 
 
-  function create_if_block_1$3(ctx) {
+  function create_if_block_1$5(ctx) {
     var a;
     var span;
     var t;
@@ -16403,7 +16630,7 @@
   } // (62:0) {#if show}
 
 
-  function create_if_block$6(ctx) {
+  function create_if_block$8(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
@@ -16412,7 +16639,7 @@
         /*loading*/
         ctx[11],
         $$slots: {
-          default: [create_default_slot$3]
+          default: [create_default_slot$4]
         },
         $$scope: {
           ctx: ctx
@@ -16462,7 +16689,7 @@
   } // (63:1) <Overlay {loading}>
 
 
-  function create_default_slot$3(ctx) {
+  function create_default_slot$4(ctx) {
     var timeeditor;
     var current;
     timeeditor = new TimeEditor({
@@ -16587,7 +16814,7 @@
     };
   }
 
-  function create_fragment$f(ctx) {
+  function create_fragment$h(ctx) {
     var t;
     var if_block1_anchor;
     var current;
@@ -16595,7 +16822,7 @@
     function select_block_type(ctx, dirty) {
       if (!
       /*timeUuid*/
-      ctx[1]) return create_if_block_1$3;
+      ctx[1]) return create_if_block_1$5;
       return create_else_block$2;
     }
 
@@ -16603,7 +16830,7 @@
     var if_block0 = current_block_type(ctx);
     var if_block1 =
     /*show*/
-    ctx[12] && create_if_block$6(ctx);
+    ctx[12] && create_if_block$8(ctx);
     return {
       c: function c() {
         if_block0.c();
@@ -16646,7 +16873,7 @@
               transition_in(if_block1, 1);
             }
           } else {
-            if_block1 = create_if_block$6(ctx);
+            if_block1 = create_if_block$8(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
             if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -16677,7 +16904,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -16803,7 +17030,7 @@
       _classCallCheck$1(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$e, create_fragment$f, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -16820,16 +17047,16 @@
       return _this;
     }
 
-    return TimeEditorDialog;
+    return _createClass$1(TimeEditorDialog);
   }(SvelteComponent);
 
-  function create_if_block$5(ctx) {
+  function create_if_block$7(ctx) {
     var overlay;
     var current;
     overlay = new Overlay({
       props: {
         $$slots: {
-          default: [create_default_slot$2]
+          default: [create_default_slot$3]
         },
         $$scope: {
           ctx: ctx
@@ -16874,7 +17101,7 @@
   } // (38:1) <Overlay>
 
 
-  function create_default_slot$2(ctx) {
+  function create_default_slot$3(ctx) {
     var div1;
     var t0;
     var t1;
@@ -16935,7 +17162,7 @@
     };
   }
 
-  function create_fragment$e(ctx) {
+  function create_fragment$g(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -16947,7 +17174,7 @@
     var current;
     var if_block =
     /*confirmation*/
-    ctx[6] && create_if_block$5(ctx);
+    ctx[6] && create_if_block$7(ctx);
     return {
       c: function c() {
         if (if_block) if_block.c();
@@ -17011,7 +17238,7 @@
               transition_in(if_block, 1);
             }
           } else {
-            if_block = create_if_block$5(ctx);
+            if_block = create_if_block$7(ctx);
             if_block.c();
             transition_in(if_block, 1);
             if_block.m(t0.parentNode, t0);
@@ -17074,7 +17301,7 @@
     };
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -17133,7 +17360,7 @@
       _classCallCheck$1(this, DeleteButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$d, create_fragment$e, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -17143,356 +17370,7 @@
       return _this;
     }
 
-    return DeleteButton;
-  }(SvelteComponent);
-
-  function create_if_block$4(ctx) {
-    var overlay;
-    var current;
-    overlay = new Overlay({
-      props: {
-        $$slots: {
-          default: [create_default_slot$1]
-        },
-        $$scope: {
-          ctx: ctx
-        }
-      }
-    });
-    return {
-      c: function c() {
-        create_component(overlay.$$.fragment);
-      },
-      m: function m(target, anchor) {
-        mount_component(overlay, target, anchor);
-        current = true;
-      },
-      p: function p(ctx, dirty) {
-        var overlay_changes = {};
-
-        if (dirty &
-        /*$$scope*/
-        128) {
-          overlay_changes.$$scope = {
-            dirty: dirty,
-            ctx: ctx
-          };
-        }
-
-        overlay.$set(overlay_changes);
-      },
-      i: function i(local) {
-        if (current) return;
-        transition_in(overlay.$$.fragment, local);
-        current = true;
-      },
-      o: function o(local) {
-        transition_out(overlay.$$.fragment, local);
-        current = false;
-      },
-      d: function d(detaching) {
-        destroy_component(overlay, detaching);
-      }
-    };
-  } // (56:1) <Overlay>
-
-
-  function create_default_slot$1(ctx) {
-    var div1;
-    var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
-    var t0;
-    var t1;
-    var div0;
-    var button0;
-    var t3;
-    var button1;
-    var mounted;
-    var dispose;
-    return {
-      c: function c() {
-        div1 = element("div");
-        t0 = text(t0_value);
-        t1 = space$1();
-        div0 = element("div");
-        button0 = element("button");
-        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
-        t3 = space$1();
-        button1 = element("button");
-        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
-        attr(button0, "class", "button primary");
-        attr(button1, "class", "button");
-        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
-        attr(div1, "class", "inner tm_new-item");
-      },
-      m: function m(target, anchor) {
-        insert(target, div1, anchor);
-        append(div1, t0);
-        append(div1, t1);
-        append(div1, div0);
-        append(div0, button0);
-        append(div0, t3);
-        append(div0, button1);
-
-        if (!mounted) {
-          dispose = [listen(button0, "click", prevent_default(
-          /*doDelete*/
-          ctx[5])), listen(button1, "click", prevent_default(
-          /*cancelDelete*/
-          ctx[6]))];
-          mounted = true;
-        }
-      },
-      p: noop$1,
-      d: function d(detaching) {
-        if (detaching) detach(div1);
-        mounted = false;
-        run_all(dispose);
-      }
-    };
-  }
-
-  function create_fragment$d(ctx) {
-    var t0;
-    var form;
-    var input0;
-    var t1;
-    var input1;
-    var t2;
-    var button;
-    var current;
-    var mounted;
-    var dispose;
-    var if_block =
-    /*confirmation*/
-    ctx[3] && create_if_block$4(ctx);
-    return {
-      c: function c() {
-        if (if_block) if_block.c();
-        t0 = space$1();
-        form = element("form");
-        input0 = element("input");
-        t1 = space$1();
-        input1 = element("input");
-        t2 = space$1();
-        button = element("button");
-        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
-        attr(input0, "type", "hidden");
-        attr(input0, "name", "uuid");
-        input0.value =
-        /*deleteTimeEntryUuid*/
-        ctx[1];
-        attr(input1, "type", "hidden");
-        attr(input1, "name", "requesttoken");
-        input1.value =
-        /*requestToken*/
-        ctx[2];
-        attr(button, "type", "submit");
-        attr(button, "name", "action");
-        button.value = "delete";
-        attr(button, "class", "btn");
-        attr(form, "action",
-        /*deleteTimeEntryAction*/
-        ctx[0]);
-        attr(form, "method", "post");
-        attr(form, "class", "tm_inline-hover-form");
-      },
-      m: function m(target, anchor) {
-        if (if_block) if_block.m(target, anchor);
-        insert(target, t0, anchor);
-        insert(target, form, anchor);
-        append(form, input0);
-        append(form, t1);
-        append(form, input1);
-        append(form, t2);
-        append(form, button);
-        current = true;
-
-        if (!mounted) {
-          dispose = listen(form, "submit",
-          /*submit*/
-          ctx[4]);
-          mounted = true;
-        }
-      },
-      p: function p(ctx, _ref) {
-        var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-
-        if (
-        /*confirmation*/
-        ctx[3]) {
-          if (if_block) {
-            if_block.p(ctx, dirty);
-
-            if (dirty &
-            /*confirmation*/
-            8) {
-              transition_in(if_block, 1);
-            }
-          } else {
-            if_block = create_if_block$4(ctx);
-            if_block.c();
-            transition_in(if_block, 1);
-            if_block.m(t0.parentNode, t0);
-          }
-        } else if (if_block) {
-          group_outros();
-          transition_out(if_block, 1, 1, function () {
-            if_block = null;
-          });
-          check_outros();
-        }
-
-        if (!current || dirty &
-        /*deleteTimeEntryUuid*/
-        2) {
-          input0.value =
-          /*deleteTimeEntryUuid*/
-          ctx[1];
-        }
-
-        if (!current || dirty &
-        /*requestToken*/
-        4) {
-          input1.value =
-          /*requestToken*/
-          ctx[2];
-        }
-
-        if (!current || dirty &
-        /*deleteTimeEntryAction*/
-        1) {
-          attr(form, "action",
-          /*deleteTimeEntryAction*/
-          ctx[0]);
-        }
-      },
-      i: function i(local) {
-        if (current) return;
-        transition_in(if_block);
-        current = true;
-      },
-      o: function o(local) {
-        transition_out(if_block);
-        current = false;
-      },
-      d: function d(detaching) {
-        if (if_block) if_block.d(detaching);
-        if (detaching) detach(t0);
-        if (detaching) detach(form);
-        mounted = false;
-        dispose();
-      }
-    };
-  }
-
-  function instance$c($$self, $$props, $$invalidate) {
-    var confirmation;
-    var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
-    var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
-    var requestToken = $$props.requestToken;
-    onMount(function () {
-      Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
-    });
-
-    var submit = function submit(e) {
-      e.preventDefault();
-      $$invalidate(3, confirmation = true);
-    };
-
-    var doDelete = /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _element, response;
-
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                $$invalidate(3, confirmation = false);
-                _context.prev = 1;
-                _element = document.querySelector("#content.app-timemanager [data-remove-on-delete='".concat(deleteTimeEntryUuid, "']"));
-
-                if (_element) {
-                  _element.classList.add("warning");
-                }
-
-                _context.next = 6;
-                return window.fetch(deleteTimeEntryAction, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    uuid: deleteTimeEntryUuid
-                  }),
-                  headers: {
-                    requesttoken: requestToken,
-                    "content-type": "application/json"
-                  }
-                });
-
-              case 6:
-                response = _context.sent;
-
-                if (response && response.ok) {
-                  _element.remove();
-
-                  document.querySelector(".app-timemanager [data-current-link]").click();
-                }
-
-                _context.next = 13;
-                break;
-
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](1);
-                console.error(_context.t0);
-
-              case 13:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[1, 10]]);
-      }));
-
-      return function doDelete() {
-        return _ref3.apply(this, arguments);
-      };
-    }();
-
-    var cancelDelete = function cancelDelete() {
-      $$invalidate(3, confirmation = false);
-    };
-
-    $$self.$$set = function ($$props) {
-      if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
-      if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
-      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
-    };
-
-    $$invalidate(3, confirmation = false);
-
-    return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
-  }
-
-  var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
-    _inherits(DeleteTimeEntryButton, _SvelteComponent);
-
-    var _super = _createSuper(DeleteTimeEntryButton);
-
-    function DeleteTimeEntryButton(options) {
-      var _this;
-
-      _classCallCheck$1(this, DeleteTimeEntryButton);
-
-      _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$c, create_fragment$d, safe_not_equal, {
-        deleteTimeEntryAction: 0,
-        deleteTimeEntryUuid: 1,
-        requestToken: 2
-      });
-      return _this;
-    }
-
-    return DeleteTimeEntryButton;
+    return _createClass$1(DeleteButton);
   }(SvelteComponent);
 
   var $filter$1 = arrayIteration$1.filter;
@@ -17515,31 +17393,68 @@
     }
   });
 
-  var $find = arrayIteration$1.find;
+  var $includes = arrayIncludes$1.includes;
 
+   // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
 
-
-  var FIND = 'find';
-  var SKIPS_HOLES = true; // Shouldn't skip holes
-
-  if (FIND in []) Array(1)[FIND](function () {
-    SKIPS_HOLES = false;
-  }); // `Array.prototype.find` method
-  // https://tc39.es/ecma262/#sec-array.prototype.find
 
   _export$1({
     target: 'Array',
-    proto: true,
-    forced: SKIPS_HOLES
+    proto: true
   }, {
-    find: function find(callbackfn
-    /* , that = undefined */
+    includes: function includes(el
+    /* , fromIndex = 0 */
     ) {
-      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
     }
   }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
 
-  addToUnscopables$1(FIND);
+  addToUnscopables$1('includes');
+
+  var TypeError$1 = global_1.TypeError;
+
+  var notARegexp = function (it) {
+    if (isRegexp$1(it)) {
+      throw TypeError$1("The method doesn't accept regular expressions");
+    }
+
+    return it;
+  };
+
+  var MATCH$2 = wellKnownSymbol$1('match');
+
+  var correctIsRegexpLogic = function (METHOD_NAME) {
+    var regexp = /./;
+
+    try {
+      '/./'[METHOD_NAME](regexp);
+    } catch (error1) {
+      try {
+        regexp[MATCH$2] = false;
+        return '/./'[METHOD_NAME](regexp);
+      } catch (error2) {
+        /* empty */
+      }
+    }
+
+    return false;
+  };
+
+  var stringIndexOf = functionUncurryThis(''.indexOf); // `String.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-string.prototype.includes
+
+  _export$1({
+    target: 'String',
+    proto: true,
+    forced: !correctIsRegexpLogic('includes')
+  }, {
+    includes: function includes(searchString
+    /* , position = 0 */
+    ) {
+      return !!~stringIndexOf(toString_1(requireObjectCoercible$1(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
 
   function isOutOfViewport (parent, container) {
     const parentBounding = parent.getBoundingClientRect();
@@ -17553,13 +17468,13 @@
     return out;
   }
 
-  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/Item.svelte generated by Svelte v3.47.0 */
 
   function add_css$5(target) {
     append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
   }
 
-  function create_fragment$c(ctx) {
+  function create_fragment$f(ctx) {
     let div;
     let raw_value =
     /*getOptionLabel*/
@@ -17612,7 +17527,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -17688,7 +17603,7 @@
   class Item$1 extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
+      init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -17701,13 +17616,13 @@
 
   }
 
-  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/List.svelte generated by Svelte v3.47.0 */
 
   function add_css$4(target) {
     append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
   }
 
-  function get_each_context$4(ctx, list, i) {
+  function get_each_context$6(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[41] = list[i];
     child_ctx[42] = i;
@@ -17724,7 +17639,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
+      each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
     }
 
     const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -17774,13 +17689,13 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$4(ctx, each_value, i);
+            const child_ctx = get_each_context$6(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
               transition_in(each_blocks[i], 1);
             } else {
-              each_blocks[i] = create_each_block$4(child_ctx);
+              each_blocks[i] = create_each_block$6(child_ctx);
               each_blocks[i].c();
               transition_in(each_blocks[i], 1);
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -17838,7 +17753,7 @@
   } // (286:4) {#if isVirtualList}
 
 
-  function create_if_block$3(ctx) {
+  function create_if_block$6(ctx) {
     let switch_instance;
     let switch_instance_anchor;
     let current;
@@ -17856,7 +17771,7 @@
           /*itemHeight*/
           ctx[8],
           $$slots: {
-            default: [create_default_slot, ({
+            default: [create_default_slot$2, ({
               item,
               i
             }) => ({
@@ -18235,7 +18150,7 @@
   } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
 
 
-  function create_if_block_1$2(ctx) {
+  function create_if_block_1$4(ctx) {
     let div;
     let t_value =
     /*getGroupHeaderLabel*/
@@ -18276,12 +18191,12 @@
   } // (310:8) {#each items as item, i}
 
 
-  function create_each_block$4(ctx) {
+  function create_each_block$6(ctx) {
     let current_block_type_index;
     let if_block;
     let if_block_anchor;
     let current;
-    const if_block_creators = [create_if_block_1$2, create_else_block_1];
+    const if_block_creators = [create_if_block_1$4, create_else_block_1];
     const if_blocks = [];
 
     function select_block_type_1(ctx, dirty) {
@@ -18353,7 +18268,7 @@
   } // (287:8) <svelte:component             this={VirtualList}             {items}             {itemHeight}             let:item             let:i>
 
 
-  function create_default_slot(ctx) {
+  function create_default_slot$2(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -18555,14 +18470,14 @@
     };
   }
 
-  function create_fragment$b(ctx) {
+  function create_fragment$e(ctx) {
     let div;
     let current_block_type_index;
     let if_block;
     let current;
     let mounted;
     let dispose;
-    const if_block_creators = [create_if_block$3, create_else_block$1];
+    const if_block_creators = [create_if_block$6, create_else_block$1];
     const if_blocks = [];
 
     function select_block_type(ctx, dirty) {
@@ -18687,7 +18602,7 @@
     return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -18982,7 +18897,7 @@
   class List extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
+      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
         container: 0,
         VirtualList: 3,
         Item: 4,
@@ -19009,13 +18924,13 @@
 
   }
 
-  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/Selection.svelte generated by Svelte v3.47.0 */
 
   function add_css$3(target) {
     append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
   }
 
-  function create_fragment$a(ctx) {
+  function create_fragment$d(ctx) {
     let div;
     let raw_value =
     /*getSelectionLabel*/
@@ -19053,7 +18968,7 @@
     };
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -19072,7 +18987,7 @@
   class Selection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$9, create_fragment$a, safe_not_equal, {
+      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       }, add_css$3);
@@ -19080,13 +18995,13 @@
 
   }
 
-  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/MultiSelection.svelte generated by Svelte v3.47.0 */
 
   function add_css$2(target) {
     append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
   }
 
-  function get_each_context$3(ctx, list, i) {
+  function get_each_context$5(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[9] = list[i];
     child_ctx[11] = i;
@@ -19094,7 +19009,7 @@
   } // (87:8) {#if !isDisabled && !multiFullItemClearable}
 
 
-  function create_if_block$2(ctx) {
+  function create_if_block$5(ctx) {
     let div;
     let mounted;
     let dispose;
@@ -19138,7 +19053,7 @@
   } // (77:0) {#each value as item, i}
 
 
-  function create_each_block$3(ctx) {
+  function create_each_block$5(ctx) {
     let div1;
     let div0;
     let raw_value =
@@ -19155,7 +19070,7 @@
     /*isDisabled*/
     ctx[2] && !
     /*multiFullItemClearable*/
-    ctx[3] && create_if_block$2(ctx);
+    ctx[3] && create_if_block$5(ctx);
 
     function click_handler_1(...args) {
       return (
@@ -19215,7 +19130,7 @@
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
-            if_block = create_if_block$2(ctx);
+            if_block = create_if_block$5(ctx);
             if_block.c();
             if_block.m(div1, t1);
           }
@@ -19247,7 +19162,7 @@
     };
   }
 
-  function create_fragment$9(ctx) {
+  function create_fragment$c(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -19255,7 +19170,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+      each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
     }
 
     return {
@@ -19285,12 +19200,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$3(ctx, each_value, i);
+            const child_ctx = get_each_context$5(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$3(child_ctx);
+              each_blocks[i] = create_each_block$5(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -19315,7 +19230,7 @@
     };
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       value = []
@@ -19358,7 +19273,7 @@
   class MultiSelection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$8, create_fragment$9, safe_not_equal, {
+      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
         value: 0,
         activeValue: 1,
         isDisabled: 2,
@@ -19369,13 +19284,13 @@
 
   }
 
-  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/VirtualList.svelte generated by Svelte v3.47.0 */
 
   function add_css$1(target) {
     append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
   }
 
-  function get_each_context$2(ctx, list, i) {
+  function get_each_context$4(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[23] = list[i];
     return child_ctx;
@@ -19425,7 +19340,7 @@
   } // (152:8) {#each visible as row (row.index)}
 
 
-  function create_each_block$2(key_1, ctx) {
+  function create_each_block$4(key_1, ctx) {
     let svelte_virtual_list_row;
     let t;
     let current;
@@ -19496,7 +19411,7 @@
     };
   }
 
-  function create_fragment$8(ctx) {
+  function create_fragment$b(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -19514,9 +19429,9 @@
     ctx[23].index;
 
     for (let i = 0; i < each_value.length; i += 1) {
-      let child_ctx = get_each_context$2(ctx, each_value, i);
+      let child_ctx = get_each_context$4(ctx, each_value, i);
       let key = get_key(child_ctx);
-      each_1_lookup.set(key, each_blocks[i] = create_each_block$2(key, child_ctx));
+      each_1_lookup.set(key, each_blocks[i] = create_each_block$4(key, child_ctx));
     }
 
     return {
@@ -19579,7 +19494,7 @@
           /*visible*/
           ctx[5];
           group_outros();
-          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$2, null, get_each_context$2);
+          each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$4, null, get_each_context$4);
           check_outros();
         }
 
@@ -19647,7 +19562,7 @@
     };
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -19827,7 +19742,7 @@
   class VirtualList extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$7, create_fragment$8, safe_not_equal, {
+      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -19839,9 +19754,9 @@
 
   }
 
-  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.47.0 */
 
-  function create_fragment$7(ctx) {
+  function create_fragment$a(ctx) {
     let svg;
     let path;
     return {
@@ -19877,7 +19792,7 @@
   class ClearIcon extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, null, create_fragment$7, safe_not_equal, {});
+      init$2(this, options, null, create_fragment$a, safe_not_equal, {});
     }
 
   }
@@ -19900,17 +19815,17 @@
     };
   }
 
-  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.44.2 */
+  /* node_modules/svelte-select/src/Select.svelte generated by Svelte v3.47.0 */
 
   function add_css(target) {
     append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
   }
 
-  function get_each_context$1(ctx, list, i) {
+  function get_each_context$3(ctx, list, i) {
     const child_ctx = ctx.slice();
     child_ctx[103] = list[i];
     return child_ctx;
-  } // (874:8) {#if isFocused}
+  } // (876:8) {#if isFocused}
 
 
   function create_if_block_10(ctx) {
@@ -19962,7 +19877,7 @@
       }
 
     };
-  } // (882:4) {#if Icon}
+  } // (884:4) {#if Icon}
 
 
   function create_if_block_9(ctx) {
@@ -20056,7 +19971,7 @@
       }
 
     };
-  } // (886:4) {#if showMultiSelect}
+  } // (888:4) {#if showMultiSelect}
 
 
   function create_if_block_8(ctx) {
@@ -20190,7 +20105,7 @@
       }
 
     };
-  } // (908:4) {#if !isMulti && showSelectedItem}
+  } // (910:4) {#if !isMulti && showSelectedItem}
 
 
   function create_if_block_7(ctx) {
@@ -20301,7 +20216,7 @@
       }
 
     };
-  } // (917:4) {#if showClearIcon}
+  } // (919:4) {#if showClearIcon}
 
 
   function create_if_block_6$1(ctx) {
@@ -20390,7 +20305,7 @@
       }
 
     };
-  } // (926:4) {#if !showClearIcon && (showIndicator || (showChevron && !value) || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
+  } // (928:4) {#if !showClearIcon && (showIndicator || (showChevron && !value) || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
 
 
   function create_if_block_4$1(ctx) {
@@ -20438,7 +20353,7 @@
       }
 
     };
-  } // (930:12) {:else}
+  } // (932:12) {:else}
 
 
   function create_else_block(ctx) {
@@ -20469,7 +20384,7 @@
       }
 
     };
-  } // (928:12) {#if indicatorSvg}
+  } // (930:12) {#if indicatorSvg}
 
 
   function create_if_block_5$1(ctx) {
@@ -20503,7 +20418,7 @@
       }
 
     };
-  } // (948:4) {#if isWaiting}
+  } // (950:4) {#if isWaiting}
 
 
   function create_if_block_3$1(ctx) {
@@ -20524,7 +20439,7 @@
       }
 
     };
-  } // (964:4) {#if listOpen}
+  } // (966:4) {#if listOpen}
 
 
   function create_if_block_2$1(ctx) {
@@ -20663,10 +20578,10 @@
       }
 
     };
-  } // (974:4) {#if !isMulti || (isMulti && !showMultiSelect)}
+  } // (976:4) {#if !isMulti || (isMulti && !showMultiSelect)}
 
 
-  function create_if_block_1$1(ctx) {
+  function create_if_block_1$3(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20718,10 +20633,10 @@
       }
 
     };
-  } // (981:4) {#if isMulti && showMultiSelect}
+  } // (983:4) {#if isMulti && showMultiSelect}
 
 
-  function create_if_block$1(ctx) {
+  function create_if_block$4(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -20729,7 +20644,7 @@
     let each_blocks = [];
 
     for (let i = 0; i < each_value.length; i += 1) {
-      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+      each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     }
 
     return {
@@ -20759,12 +20674,12 @@
           let i;
 
           for (i = 0; i < each_value.length; i += 1) {
-            const child_ctx = get_each_context$1(ctx, each_value, i);
+            const child_ctx = get_each_context$3(ctx, each_value, i);
 
             if (each_blocks[i]) {
               each_blocks[i].p(child_ctx, dirty);
             } else {
-              each_blocks[i] = create_each_block$1(child_ctx);
+              each_blocks[i] = create_each_block$3(child_ctx);
               each_blocks[i].c();
               each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
             }
@@ -20784,10 +20699,10 @@
       }
 
     };
-  } // (982:8) {#each value as item}
+  } // (984:8) {#each value as item}
 
 
-  function create_each_block$1(ctx) {
+  function create_each_block$3(ctx) {
     let input_1;
     let input_1_name_value;
     let input_1_value_value;
@@ -20841,7 +20756,7 @@
     };
   }
 
-  function create_fragment$6(ctx) {
+  function create_fragment$9(ctx) {
     let div;
     let span;
     let t0;
@@ -20935,12 +20850,12 @@
     /*isMulti*/
     ctx[7] && !
     /*showMultiSelect*/
-    ctx[35]) && create_if_block_1$1(ctx);
+    ctx[35]) && create_if_block_1$3(ctx);
     let if_block9 =
     /*isMulti*/
     ctx[7] &&
     /*showMultiSelect*/
-    ctx[35] && create_if_block$1(ctx);
+    ctx[35] && create_if_block$4(ctx);
     return {
       c() {
         div = element("div");
@@ -21287,7 +21202,7 @@
           if (if_block8) {
             if_block8.p(ctx, dirty);
           } else {
-            if_block8 = create_if_block_1$1(ctx);
+            if_block8 = create_if_block_1$3(ctx);
             if_block8.c();
             if_block8.m(div, t9);
           }
@@ -21304,7 +21219,7 @@
           if (if_block9) {
             if_block9.p(ctx, dirty);
           } else {
-            if_block9 = create_if_block$1(ctx);
+            if_block9 = create_if_block$4(ctx);
             if_block9.c();
             if_block9.m(div, null);
           }
@@ -21416,7 +21331,7 @@
     });
   }
 
-  function instance$6($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     let filteredItems;
     let showSelectedItem;
     let showClearIcon;
@@ -21934,7 +21849,11 @@
     function handleWindowEvent(event) {
       if (!container) return;
       const eventTarget = event.path && event.path.length > 0 ? event.path[0] : event.target;
-      if (container.contains(eventTarget)) return;
+
+      if (container.contains(eventTarget) || container.contains(event.relatedTarget)) {
+        return;
+      }
+
       $$invalidate(1, isFocused = false);
       $$invalidate(5, listOpen = false);
       $$invalidate(30, activeValue = undefined);
@@ -22324,7 +22243,7 @@
   class Select extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$6, create_fragment$6, safe_not_equal, {
+      init$2(this, options, instance$9, create_fragment$9, safe_not_equal, {
         id: 46,
         container: 0,
         input: 6,
@@ -22396,6 +22315,1740 @@
     }
 
   }
+
+  var dist$1 = createCommonjsModule$1(function (module, exports) {
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.getRootUrl = exports.generateFilePath = exports.imagePath = exports.generateUrl = exports.generateOcsUrl = exports.generateRemoteUrl = exports.linkTo = void 0;
+
+   /// <reference types="@nextcloud/typings" />
+
+  /**
+   * Get an url with webroot to a file in an app
+   *
+   * @param {string} app the id of the app the file belongs to
+   * @param {string} file the file path relative to the app folder
+   * @return {string} URL with webroot to a file
+   */
+
+
+  const linkTo = (app, file) => generateFilePath(app, '', file);
+  /**
+   * Creates a relative url for remote use
+   *
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  exports.linkTo = linkTo;
+
+  const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
+  /**
+   * @brief Creates an absolute url for remote use
+   * @param {string} service id
+   * @return {string} the url
+   */
+
+
+  const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
+  /**
+   * Get the base path for the given OCS API service
+   *
+   * @param {string} url OCS API service url
+   * @param {object} params parameters to be replaced into the service url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
+   * @return {string} Absolute path for the OCS URL
+   */
+
+
+  exports.generateRemoteUrl = generateRemoteUrl;
+
+  const generateOcsUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      ocsVersion: 2
+    }, options || {});
+    const version = allOptions.ocsVersion === 1 ? 1 : 2;
+    return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
+  };
+
+  exports.generateOcsUrl = generateOcsUrl;
+  /**
+   * Generate a url path, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the address
+   * @param {UrlOptions} options options for the parameter replacement
+   * @return {string} Path part for the given URL
+   */
+
+  const _generateUrlPath = (url, params, options) => {
+    const allOptions = Object.assign({
+      escape: true
+    }, options || {});
+
+    const _build = function (text, vars) {
+      vars = vars || {};
+      return text.replace(/{([^{}]*)}/g, function (a, b) {
+        var r = vars[b];
+
+        if (allOptions.escape) {
+          return typeof r === 'string' || typeof r === 'number' ? encodeURIComponent(r.toString()) : encodeURIComponent(a);
+        } else {
+          return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
+        }
+      });
+    };
+
+    if (url.charAt(0) !== '/') {
+      url = '/' + url;
+    }
+
+    return _build(url, params || {});
+  };
+  /**
+   * Generate the url with webroot for the given relative url, which can contain parameters
+   *
+   * Parameters will be URL encoded automatically
+   *
+   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
+   * @param {object} params parameters to be replaced into the url
+   * @param {UrlOptions} options options for the parameter replacement
+   * @param {boolean} options.noRewrite True if you want to force index.php being added
+   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
+   * @return {string} URL with webroot for the given relative URL
+   */
+
+
+  const generateUrl = (url, params, options) => {
+    const allOptions = Object.assign({
+      noRewrite: false
+    }, options || {});
+
+    if (OC.config.modRewriteWorking === true && !allOptions.noRewrite) {
+      return getRootUrl() + _generateUrlPath(url, params, options);
+    }
+
+    return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
+  };
+  /**
+   * Get the path with webroot to an image file
+   * if no extension is given for the image, it will automatically decide
+   * between .png and .svg based on what the browser supports
+   *
+   * @param {string} app the app id to which the image belongs
+   * @param {string} file the name of the image file
+   * @return {string}
+   */
+
+
+  exports.generateUrl = generateUrl;
+
+  const imagePath = (app, file) => {
+    if (file.indexOf('.') === -1) {
+      //if no extension is given, use svg
+      return generateFilePath(app, 'img', file + '.svg');
+    }
+
+    return generateFilePath(app, 'img', file);
+  };
+  /**
+   * Get the url with webroot for a file in an app
+   *
+   * @param {string} app the id of the app
+   * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
+   * @param {string} file the filename
+   * @return {string} URL with webroot for a file in an app
+   */
+
+
+  exports.imagePath = imagePath;
+
+  const generateFilePath = (app, type, file) => {
+    const isCore = OC.coreApps.indexOf(app) !== -1;
+    let link = getRootUrl();
+
+    if (file.substring(file.length - 3) === 'php' && !isCore) {
+      link += '/index.php/apps/' + app;
+
+      if (file !== 'index.php') {
+        link += '/';
+
+        if (type) {
+          link += encodeURI(type + '/');
+        }
+
+        link += file;
+      }
+    } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
+      link = OC.appswebroots[app];
+
+      if (type) {
+        link += '/' + type + '/';
+      }
+
+      if (link.substring(link.length - 1) !== '/') {
+        link += '/';
+      }
+
+      link += file;
+    } else {
+      if ((app === 'settings' || app === 'core' || app === 'search') && type === 'ajax') {
+        link += '/index.php/';
+      } else {
+        link += '/';
+      }
+
+      if (!isCore) {
+        link += 'apps/';
+      }
+
+      if (app !== '') {
+        app += '/';
+        link += app;
+      }
+
+      if (type) {
+        link += type + '/';
+      }
+
+      link += file;
+    }
+
+    return link;
+  };
+  /**
+   * Return the web root path where this Nextcloud instance
+   * is accessible, with a leading slash.
+   * For example "/nextcloud".
+   *
+   * @return {string} web root path
+   */
+
+
+  exports.generateFilePath = generateFilePath;
+
+  const getRootUrl = () => OC.webroot;
+
+  exports.getRootUrl = getRootUrl;
+  });
+
+  unwrapExports(dist$1);
+  dist$1.getRootUrl;
+  dist$1.generateFilePath;
+  dist$1.imagePath;
+  var dist_4 = dist$1.generateUrl;
+  var dist_5 = dist$1.generateOcsUrl;
+  dist$1.generateRemoteUrl;
+  dist$1.linkTo;
+
+  function get_each_context$2(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[16] = list[i];
+    return child_ctx;
+  } // (78:0) {#if dialogVisible}
+
+
+  function create_if_block$3(ctx) {
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot$1]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
+    return {
+      c: function c() {
+        create_component(overlay.$$.fragment);
+      },
+      m: function m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+      p: function p(ctx, dirty) {
+        var overlay_changes = {};
+
+        if (dirty &
+        /*$$scope, sharees, deleteShareAction, requestToken, clientUuid, loading, selectedSharee*/
+        524638) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (94:4) {#if !sharees || !sharees.length}
+
+
+  function create_if_block_1$2(ctx) {
+    var p;
+    var em;
+    return {
+      c: function c() {
+        p = element("p");
+        em = element("em");
+        em.textContent = "".concat(dist_4$1("timemanager", "You haven't shared this client with anyone"));
+      },
+      m: function m(target, anchor) {
+        insert(target, p, anchor);
+        append(p, em);
+      },
+      p: noop$1,
+      d: function d(detaching) {
+        if (detaching) detach(p);
+      }
+    };
+  } // (100:5) {#each sharees as sharee}
+
+
+  function create_each_block$2(ctx) {
+    var li;
+    var figure;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t0;
+    var figcaption;
+    var t1_value = (
+    /*sharee*/
+    ctx[16].recipient_display_name ||
+    /*sharee*/
+    ctx[16].recipient_user_id) + "";
+    var t1;
+    var t2;
+    var form_1;
+    var input0;
+    var t3;
+    var input1;
+    var input1_value_value;
+    var t4;
+    var input2;
+    var t5;
+    var button;
+    var t7;
+    return {
+      c: function c() {
+        li = element("li");
+        figure = element("figure");
+        img = element("img");
+        t0 = space$1();
+        figcaption = element("figcaption");
+        t1 = text(t1_value);
+        t2 = space$1();
+        form_1 = element("form");
+        input0 = element("input");
+        t3 = space$1();
+        input1 = element("input");
+        t4 = space$1();
+        input2 = element("input");
+        t5 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1("timemanager", "Delete"));
+        t7 = space$1();
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "client_uuid");
+        input0.value =
+        /*clientUuid*/
+        ctx[3];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "uuid");
+        input1.value = input1_value_value =
+        /*sharee*/
+        ctx[16].uuid;
+        attr(input2, "type", "hidden");
+        attr(input2, "name", "requesttoken");
+        input2.value =
+        /*requestToken*/
+        ctx[4];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "delete";
+        attr(button, "class", "btn small");
+        attr(form_1, "action",
+        /*deleteShareAction*/
+        ctx[1]);
+        attr(form_1, "method", "post");
+      },
+      m: function m(target, anchor) {
+        insert(target, li, anchor);
+        append(li, figure);
+        append(figure, img);
+        append(figure, t0);
+        append(figure, figcaption);
+        append(figcaption, t1);
+        append(li, t2);
+        append(li, form_1);
+        append(form_1, input0);
+        append(form_1, t3);
+        append(form_1, input1);
+        append(form_1, t4);
+        append(form_1, input2);
+        append(form_1, t5);
+        append(form_1, button);
+        append(li, t7);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharees*/
+        4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[16].recipient_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        4 && t1_value !== (t1_value = (
+        /*sharee*/
+        ctx[16].recipient_display_name ||
+        /*sharee*/
+        ctx[16].recipient_user_id) + "")) set_data(t1, t1_value);
+
+        if (dirty &
+        /*clientUuid*/
+        8) {
+          input0.value =
+          /*clientUuid*/
+          ctx[3];
+        }
+
+        if (dirty &
+        /*sharees*/
+        4 && input1_value_value !== (input1_value_value =
+        /*sharee*/
+        ctx[16].uuid)) {
+          input1.value = input1_value_value;
+        }
+
+        if (dirty &
+        /*requestToken*/
+        16) {
+          input2.value =
+          /*requestToken*/
+          ctx[4];
+        }
+
+        if (dirty &
+        /*deleteShareAction*/
+        2) {
+          attr(form_1, "action",
+          /*deleteShareAction*/
+          ctx[1]);
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(li);
+      }
+    };
+  } // (79:1) <Overlay>
+
+
+  function create_default_slot$1(ctx) {
+    var div2;
+    var label;
+    var t0_value = dist_4$1("timemanager", "Share with") + "";
+    var t0;
+    var t1;
+    var select;
+    var t2;
+    var div0;
+    var h4;
+    var t4;
+    var t5;
+    var ul;
+    var t6;
+    var aside;
+    var p0;
+    var t8;
+    var p1;
+    var t10;
+    var p2;
+    var t12;
+    var div1;
+    var button0;
+    var t14;
+    var button1;
+    var current;
+    var mounted;
+    var dispose;
+    select = new Select({
+      props: {
+        noOptionsMessage:
+        /*loading*/
+        ctx[8] ? dist_4$1("timemanager", "Loading...") : dist_4$1("timemanager", "No options"),
+        placeholder: dist_4$1("timemanager", "Search..."),
+        inputAttributes: {
+          id: "sharee-select"
+        },
+        loadOptions:
+        /*search*/
+        ctx[10],
+        value:
+        /*selectedSharee*/
+        ctx[6]
+      }
+    });
+    select.$on("select",
+    /*handleSelectSharee*/
+    ctx[12]);
+    var if_block = (!
+    /*sharees*/
+    ctx[2] || !
+    /*sharees*/
+    ctx[2].length) && create_if_block_1$2();
+    var each_value =
+    /*sharees*/
+    ctx[2];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    }
+
+    return {
+      c: function c() {
+        div2 = element("div");
+        label = element("label");
+        t0 = text(t0_value);
+        t1 = space$1();
+        create_component(select.$$.fragment);
+        t2 = space$1();
+        div0 = element("div");
+        h4 = element("h4");
+        h4.textContent = "".concat(dist_4$1("timemanager", "Existing shares"));
+        t4 = space$1();
+        if (if_block) if_block.c();
+        t5 = space$1();
+        ul = element("ul");
+
+        for (var _i = 0; _i < each_blocks.length; _i += 1) {
+          each_blocks[_i].c();
+        }
+
+        t6 = space$1();
+        aside = element("aside");
+        p0 = element("p");
+        p0.textContent = "".concat(dist_4$1("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
+        t8 = space$1();
+        p1 = element("p");
+        p1.textContent = "".concat(dist_4$1("timemanager", "Users you share with can create time entries."));
+        t10 = space$1();
+        p2 = element("p");
+        p2.textContent = "".concat(dist_4$1("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
+        t12 = space$1();
+        div1 = element("div");
+        button0 = element("button");
+        button0.textContent = "".concat(dist_4$1("timemanager", "Add"));
+        t14 = space$1();
+        button1 = element("button");
+        button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+        attr(label, "for", "sharee-select");
+        attr(label, "class", "sharees");
+        attr(h4, "class", "tm_label");
+        attr(div0, "class", "sharee-list");
+        attr(button0, "class", "button primary");
+        attr(button1, "class", "button");
+        attr(div1, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div2, "class", "inner tm_new-item sharing-dialog");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, label);
+        append(label, t0);
+        append(label, t1);
+        mount_component(select, label, null);
+        append(div2, t2);
+        append(div2, div0);
+        append(div0, h4);
+        append(div0, t4);
+        if (if_block) if_block.m(div0, null);
+        append(div0, t5);
+        append(div0, ul);
+
+        for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+          each_blocks[_i2].m(ul, null);
+        }
+
+        append(div0, t6);
+        append(div0, aside);
+        append(aside, p0);
+        append(aside, t8);
+        append(aside, p1);
+        append(aside, t10);
+        append(aside, p2);
+        append(div2, t12);
+        append(div2, div1);
+        append(div1, button0);
+        append(div1, t14);
+        append(div1, button1);
+        current = true;
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*addShare*/
+          ctx[9])), listen(button1, "click", prevent_default(
+          /*closeDialog*/
+          ctx[11]))];
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        var select_changes = {};
+        if (dirty &
+        /*loading*/
+        256) select_changes.noOptionsMessage =
+        /*loading*/
+        ctx[8] ? dist_4$1("timemanager", "Loading...") : dist_4$1("timemanager", "No options");
+        if (dirty &
+        /*selectedSharee*/
+        64) select_changes.value =
+        /*selectedSharee*/
+        ctx[6];
+        select.$set(select_changes);
+
+        if (!
+        /*sharees*/
+        ctx[2] || !
+        /*sharees*/
+        ctx[2].length) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block = create_if_block_1$2();
+            if_block.c();
+            if_block.m(div0, t5);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+
+        if (dirty &
+        /*deleteShareAction, translate, requestToken, sharees, clientUuid, generateUrl*/
+        30) {
+          each_value =
+          /*sharees*/
+          ctx[2];
+
+          var _i3;
+
+          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+            var child_ctx = get_each_context$2(ctx, each_value, _i3);
+
+            if (each_blocks[_i3]) {
+              each_blocks[_i3].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i3] = create_each_block$2(child_ctx);
+
+              each_blocks[_i3].c();
+
+              each_blocks[_i3].m(ul, null);
+            }
+          }
+
+          for (; _i3 < each_blocks.length; _i3 += 1) {
+            each_blocks[_i3].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(select.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(select.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (detaching) detach(div2);
+        destroy_component(select);
+        if (if_block) if_block.d();
+        destroy_each(each_blocks, detaching);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+
+  function create_fragment$8(ctx) {
+    var t0;
+    var form_1;
+    var input0;
+    var t1;
+    var input1;
+    var input1_value_value;
+    var t2;
+    var input2;
+    var t3;
+    var button;
+    var current;
+    var if_block =
+    /*dialogVisible*/
+    ctx[7] && create_if_block$3(ctx);
+    return {
+      c: function c() {
+        if (if_block) if_block.c();
+        t0 = space$1();
+        form_1 = element("form");
+        input0 = element("input");
+        t1 = space$1();
+        input1 = element("input");
+        t2 = space$1();
+        input2 = element("input");
+        t3 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1("timemanager", "Share client"));
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "client_uuid");
+        input0.value =
+        /*clientUuid*/
+        ctx[3];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "user_id");
+        input1.value = input1_value_value =
+        /*selectedSharee*/
+        ctx[6] ?
+        /*selectedSharee*/
+        ctx[6].value.shareWith : "";
+        attr(input2, "type", "hidden");
+        attr(input2, "name", "requesttoken");
+        input2.value =
+        /*requestToken*/
+        ctx[4];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "share";
+        attr(button, "class", "btn");
+        attr(form_1, "action",
+        /*shareAction*/
+        ctx[0]);
+        attr(form_1, "method", "post");
+      },
+      m: function m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, form_1, anchor);
+        append(form_1, input0);
+        append(form_1, t1);
+        append(form_1, input1);
+        append(form_1, t2);
+        append(form_1, input2);
+        append(form_1, t3);
+        append(form_1, button);
+        /*form_1_binding*/
+
+        ctx[14](form_1);
+        current = true;
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*dialogVisible*/
+        ctx[7]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*dialogVisible*/
+            128) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$3(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+
+        if (!current || dirty &
+        /*clientUuid*/
+        8) {
+          input0.value =
+          /*clientUuid*/
+          ctx[3];
+        }
+
+        if (!current || dirty &
+        /*selectedSharee*/
+        64 && input1_value_value !== (input1_value_value =
+        /*selectedSharee*/
+        ctx[6] ?
+        /*selectedSharee*/
+        ctx[6].value.shareWith : "")) {
+          input1.value = input1_value_value;
+        }
+
+        if (!current || dirty &
+        /*requestToken*/
+        16) {
+          input2.value =
+          /*requestToken*/
+          ctx[4];
+        }
+
+        if (!current || dirty &
+        /*shareAction*/
+        1) {
+          attr(form_1, "action",
+          /*shareAction*/
+          ctx[0]);
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(form_1);
+        /*form_1_binding*/
+
+        ctx[14](null);
+      }
+    };
+  }
+
+  function instance$8($$self, $$props, $$invalidate) {
+    var dialogVisible;
+    var loading;
+    var shareAction = $$props.shareAction;
+    var deleteShareAction = $$props.deleteShareAction;
+    var sharees = $$props.sharees;
+    var clientUuid = $$props.clientUuid;
+    var requestToken = $$props.requestToken;
+    var userId = $$props.userId;
+    var form;
+    var selectedSharee;
+    onMount(function () {
+      Helpers.hideFallbacks("ShareDialog.svelte");
+
+      if (form) {
+        form.addEventListener("submit", submit);
+        return function () {
+          form.removeEventListener("submit", submit);
+        };
+      }
+    });
+
+    var submit = function submit(e) {
+      e.preventDefault();
+      $$invalidate(7, dialogVisible = true);
+    };
+
+    var addShare = function addShare() {
+      form.submit();
+    };
+
+    var search = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
+        var response, _yield$response$json$, users, exact, existing;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(typeof query === "undefined")) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                $$invalidate(8, loading = true);
+                _context.next = 5;
+                return fetch(dist_5("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 5:
+                response = _context.sent;
+                $$invalidate(8, loading = false);
+
+                if (!response.ok) {
+                  _context.next = 15;
+                  break;
+                }
+
+                _context.next = 10;
+                return response.json();
+
+              case 10:
+                _yield$response$json$ = _context.sent.ocs.data;
+                users = _yield$response$json$.users;
+                exact = _yield$response$json$.exact;
+                existing = sharees.map(function (share) {
+                  return share.recipient_user_id;
+                });
+                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)).filter(function (user) {
+                  return !existing.includes(user.value.shareWith) && user.value.shareWith !== userId;
+                }));
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function search(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var closeDialog = function closeDialog() {
+      $$invalidate(7, dialogVisible = false);
+    };
+
+    var handleSelectSharee = function handleSelectSharee(event) {
+      $$invalidate(6, selectedSharee = event.detail);
+    };
+
+    function form_1_binding($$value) {
+      binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+        form = $$value;
+        $$invalidate(5, form);
+      });
+    }
+
+    $$self.$$set = function ($$props) {
+      if ('shareAction' in $$props) $$invalidate(0, shareAction = $$props.shareAction);
+      if ('deleteShareAction' in $$props) $$invalidate(1, deleteShareAction = $$props.deleteShareAction);
+      if ('sharees' in $$props) $$invalidate(2, sharees = $$props.sharees);
+      if ('clientUuid' in $$props) $$invalidate(3, clientUuid = $$props.clientUuid);
+      if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
+      if ('userId' in $$props) $$invalidate(13, userId = $$props.userId);
+    };
+
+    $$invalidate(7, dialogVisible = false);
+
+    $$invalidate(8, loading = false);
+
+    return [shareAction, deleteShareAction, sharees, clientUuid, requestToken, form, selectedSharee, dialogVisible, loading, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
+  }
+
+  var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ShareDialog, _SvelteComponent);
+
+    var _super = _createSuper(ShareDialog);
+
+    function ShareDialog(options) {
+      var _this;
+
+      _classCallCheck$1(this, ShareDialog);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+        shareAction: 0,
+        deleteShareAction: 1,
+        sharees: 2,
+        clientUuid: 3,
+        requestToken: 4,
+        userId: 13
+      });
+      return _this;
+    }
+
+    return _createClass$1(ShareDialog);
+  }(SvelteComponent);
+
+  function get_each_context$1(ctx, list, i) {
+    var child_ctx = ctx.slice();
+    child_ctx[2] = list[i];
+    child_ctx[4] = i;
+    return child_ctx;
+  } // (15:0) {#if sharees && sharees.length}
+
+
+  function create_if_block_1$1(ctx) {
+    var span;
+    var t1;
+    var ul;
+    var each_value =
+    /*sharees*/
+    ctx[0];
+    var each_blocks = [];
+
+    for (var i = 0; i < each_value.length; i += 1) {
+      each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    }
+
+    return {
+      c: function c() {
+        span = element("span");
+        span.textContent = "".concat(dist_4$1("timemanager", "Shared with"));
+        t1 = space$1();
+        ul = element("ul");
+
+        for (var _i = 0; _i < each_blocks.length; _i += 1) {
+          each_blocks[_i].c();
+        }
+
+        attr(span, "class", "tm_label");
+        attr(ul, "class", "existing-sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, span, anchor);
+        insert(target, t1, anchor);
+        insert(target, ul, anchor);
+
+        for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+          each_blocks[_i2].m(ul, null);
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharees, generateUrl*/
+        1) {
+          each_value =
+          /*sharees*/
+          ctx[0];
+
+          var _i3;
+
+          for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+            var child_ctx = get_each_context$1(ctx, each_value, _i3);
+
+            if (each_blocks[_i3]) {
+              each_blocks[_i3].p(child_ctx, dirty);
+            } else {
+              each_blocks[_i3] = create_each_block$1(child_ctx);
+
+              each_blocks[_i3].c();
+
+              each_blocks[_i3].m(ul, null);
+            }
+          }
+
+          for (; _i3 < each_blocks.length; _i3 += 1) {
+            each_blocks[_i3].d(1);
+          }
+
+          each_blocks.length = each_value.length;
+        }
+      },
+      d: function d(detaching) {
+        if (detaching) detach(span);
+        if (detaching) detach(t1);
+        if (detaching) detach(ul);
+        destroy_each(each_blocks, detaching);
+      }
+    };
+  } // (18:2) {#each sharees as sharee, index}
+
+
+  function create_each_block$1(ctx) {
+    var li;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t0;
+    var t1_value = (
+    /*sharee*/
+    ctx[2].recipient_display_name ||
+    /*sharee*/
+    ctx[2].recipient_user_id) + "";
+    var t1;
+    var t2;
+    return {
+      c: function c() {
+        li = element("li");
+        img = element("img");
+        t0 = space$1();
+        t1 = text(t1_value);
+        t2 = space$1();
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+      },
+      m: function m(target, anchor) {
+        insert(target, li, anchor);
+        append(li, img);
+        append(li, t0);
+        append(li, t1);
+        append(li, t2);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharees*/
+        1 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        1 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharee*/
+        ctx[2].recipient_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*sharees*/
+        1 && t1_value !== (t1_value = (
+        /*sharee*/
+        ctx[2].recipient_display_name ||
+        /*sharee*/
+        ctx[2].recipient_user_id) + "")) set_data(t1, t1_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(li);
+      }
+    };
+  } // (34:0) {#if sharedBy}
+
+
+  function create_if_block$2(ctx) {
+    var span;
+    var t1;
+    var ul;
+    var li;
+    var img;
+    var img_src_value;
+    var img_srcset_value;
+    var t2;
+    var t3_value = (
+    /*sharedBy*/
+    ctx[1].author_display_name ||
+    /*sharedBy*/
+    ctx[1].author_user_id) + "";
+    var t3;
+    return {
+      c: function c() {
+        span = element("span");
+        span.textContent = "".concat(dist_4$1("timemanager", "Shared with you by"));
+        t1 = space$1();
+        ul = element("ul");
+        li = element("li");
+        img = element("img");
+        t2 = space$1();
+        t3 = text(t3_value);
+        attr(span, "class", "tm_label");
+        if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
+        attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/128")), " 4x"));
+        attr(img, "alt", "");
+        attr(ul, "class", "existing-sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, span, anchor);
+        insert(target, t1, anchor);
+        insert(target, ul, anchor);
+        append(ul, li);
+        append(li, img);
+        append(li, t2);
+        append(li, t3);
+      },
+      p: function p(ctx, dirty) {
+        if (dirty &
+        /*sharedBy*/
+        2 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")))) {
+          attr(img, "src", img_src_value);
+        }
+
+        if (dirty &
+        /*sharedBy*/
+        2 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat(
+        /*sharedBy*/
+        ctx[1].author_user_id, "/128")), " 4x"))) {
+          attr(img, "srcset", img_srcset_value);
+        }
+
+        if (dirty &
+        /*sharedBy*/
+        2 && t3_value !== (t3_value = (
+        /*sharedBy*/
+        ctx[1].author_display_name ||
+        /*sharedBy*/
+        ctx[1].author_user_id) + "")) set_data(t3, t3_value);
+      },
+      d: function d(detaching) {
+        if (detaching) detach(span);
+        if (detaching) detach(t1);
+        if (detaching) detach(ul);
+      }
+    };
+  }
+
+  function create_fragment$7(ctx) {
+    var t;
+    var if_block1_anchor;
+    var if_block0 =
+    /*sharees*/
+    ctx[0] &&
+    /*sharees*/
+    ctx[0].length && create_if_block_1$1(ctx);
+    var if_block1 =
+    /*sharedBy*/
+    ctx[1] && create_if_block$2(ctx);
+    return {
+      c: function c() {
+        if (if_block0) if_block0.c();
+        t = space$1();
+        if (if_block1) if_block1.c();
+        if_block1_anchor = empty();
+      },
+      m: function m(target, anchor) {
+        if (if_block0) if_block0.m(target, anchor);
+        insert(target, t, anchor);
+        if (if_block1) if_block1.m(target, anchor);
+        insert(target, if_block1_anchor, anchor);
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*sharees*/
+        ctx[0] &&
+        /*sharees*/
+        ctx[0].length) {
+          if (if_block0) {
+            if_block0.p(ctx, dirty);
+          } else {
+            if_block0 = create_if_block_1$1(ctx);
+            if_block0.c();
+            if_block0.m(t.parentNode, t);
+          }
+        } else if (if_block0) {
+          if_block0.d(1);
+          if_block0 = null;
+        }
+
+        if (
+        /*sharedBy*/
+        ctx[1]) {
+          if (if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if_block1 = create_if_block$2(ctx);
+            if_block1.c();
+            if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+          }
+        } else if (if_block1) {
+          if_block1.d(1);
+          if_block1 = null;
+        }
+      },
+      i: noop$1,
+      o: noop$1,
+      d: function d(detaching) {
+        if (if_block0) if_block0.d(detaching);
+        if (detaching) detach(t);
+        if (if_block1) if_block1.d(detaching);
+        if (detaching) detach(if_block1_anchor);
+      }
+    };
+  }
+
+  function instance$7($$self, $$props, $$invalidate) {
+    var sharees = $$props.sharees;
+    var sharedBy = $$props.sharedBy;
+    onMount(function () {
+      Helpers.hideFallbacks("ShareDialog.svelte");
+    });
+
+    $$self.$$set = function ($$props) {
+      if ('sharees' in $$props) $$invalidate(0, sharees = $$props.sharees);
+      if ('sharedBy' in $$props) $$invalidate(1, sharedBy = $$props.sharedBy);
+    };
+
+    return [sharees, sharedBy];
+  }
+
+  var ShareStatus = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(ShareStatus, _SvelteComponent);
+
+    var _super = _createSuper(ShareStatus);
+
+    function ShareStatus(options) {
+      var _this;
+
+      _classCallCheck$1(this, ShareStatus);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        sharees: 0,
+        sharedBy: 1
+      });
+      return _this;
+    }
+
+    return _createClass$1(ShareStatus);
+  }(SvelteComponent);
+
+  function create_if_block$1(ctx) {
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
+    return {
+      c: function c() {
+        create_component(overlay.$$.fragment);
+      },
+      m: function m(target, anchor) {
+        mount_component(overlay, target, anchor);
+        current = true;
+      },
+      p: function p(ctx, dirty) {
+        var overlay_changes = {};
+
+        if (dirty &
+        /*$$scope*/
+        128) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (56:1) <Overlay>
+
+
+  function create_default_slot(ctx) {
+    var div1;
+    var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
+    var t0;
+    var t1;
+    var div0;
+    var button0;
+    var t3;
+    var button1;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div1 = element("div");
+        t0 = text(t0_value);
+        t1 = space$1();
+        div0 = element("div");
+        button0 = element("button");
+        button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+        t3 = space$1();
+        button1 = element("button");
+        button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+        attr(button0, "class", "button primary");
+        attr(button1, "class", "button");
+        attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+        attr(div1, "class", "inner tm_new-item");
+      },
+      m: function m(target, anchor) {
+        insert(target, div1, anchor);
+        append(div1, t0);
+        append(div1, t1);
+        append(div1, div0);
+        append(div0, button0);
+        append(div0, t3);
+        append(div0, button1);
+
+        if (!mounted) {
+          dispose = [listen(button0, "click", prevent_default(
+          /*doDelete*/
+          ctx[5])), listen(button1, "click", prevent_default(
+          /*cancelDelete*/
+          ctx[6]))];
+          mounted = true;
+        }
+      },
+      p: noop$1,
+      d: function d(detaching) {
+        if (detaching) detach(div1);
+        mounted = false;
+        run_all(dispose);
+      }
+    };
+  }
+
+  function create_fragment$6(ctx) {
+    var t0;
+    var form;
+    var input0;
+    var t1;
+    var input1;
+    var t2;
+    var button;
+    var current;
+    var mounted;
+    var dispose;
+    var if_block =
+    /*confirmation*/
+    ctx[3] && create_if_block$1(ctx);
+    return {
+      c: function c() {
+        if (if_block) if_block.c();
+        t0 = space$1();
+        form = element("form");
+        input0 = element("input");
+        t1 = space$1();
+        input1 = element("input");
+        t2 = space$1();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+        attr(input0, "type", "hidden");
+        attr(input0, "name", "uuid");
+        input0.value =
+        /*deleteTimeEntryUuid*/
+        ctx[1];
+        attr(input1, "type", "hidden");
+        attr(input1, "name", "requesttoken");
+        input1.value =
+        /*requestToken*/
+        ctx[2];
+        attr(button, "type", "submit");
+        attr(button, "name", "action");
+        button.value = "delete";
+        attr(button, "class", "btn");
+        attr(form, "action",
+        /*deleteTimeEntryAction*/
+        ctx[0]);
+        attr(form, "method", "post");
+        attr(form, "class", "tm_inline-hover-form");
+      },
+      m: function m(target, anchor) {
+        if (if_block) if_block.m(target, anchor);
+        insert(target, t0, anchor);
+        insert(target, form, anchor);
+        append(form, input0);
+        append(form, t1);
+        append(form, input1);
+        append(form, t2);
+        append(form, button);
+        current = true;
+
+        if (!mounted) {
+          dispose = listen(form, "submit",
+          /*submit*/
+          ctx[4]);
+          mounted = true;
+        }
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        if (
+        /*confirmation*/
+        ctx[3]) {
+          if (if_block) {
+            if_block.p(ctx, dirty);
+
+            if (dirty &
+            /*confirmation*/
+            8) {
+              transition_in(if_block, 1);
+            }
+          } else {
+            if_block = create_if_block$1(ctx);
+            if_block.c();
+            transition_in(if_block, 1);
+            if_block.m(t0.parentNode, t0);
+          }
+        } else if (if_block) {
+          group_outros();
+          transition_out(if_block, 1, 1, function () {
+            if_block = null;
+          });
+          check_outros();
+        }
+
+        if (!current || dirty &
+        /*deleteTimeEntryUuid*/
+        2) {
+          input0.value =
+          /*deleteTimeEntryUuid*/
+          ctx[1];
+        }
+
+        if (!current || dirty &
+        /*requestToken*/
+        4) {
+          input1.value =
+          /*requestToken*/
+          ctx[2];
+        }
+
+        if (!current || dirty &
+        /*deleteTimeEntryAction*/
+        1) {
+          attr(form, "action",
+          /*deleteTimeEntryAction*/
+          ctx[0]);
+        }
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(if_block);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(if_block);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (if_block) if_block.d(detaching);
+        if (detaching) detach(t0);
+        if (detaching) detach(form);
+        mounted = false;
+        dispose();
+      }
+    };
+  }
+
+  function instance$6($$self, $$props, $$invalidate) {
+    var confirmation;
+    var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
+    var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
+    var requestToken = $$props.requestToken;
+    onMount(function () {
+      Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
+    });
+
+    var submit = function submit(e) {
+      e.preventDefault();
+      $$invalidate(3, confirmation = true);
+    };
+
+    var doDelete = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _element, response;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                $$invalidate(3, confirmation = false);
+                _context.prev = 1;
+                _element = document.querySelector("#content.app-timemanager [data-remove-on-delete='".concat(deleteTimeEntryUuid, "']"));
+
+                if (_element) {
+                  _element.classList.add("warning");
+                }
+
+                _context.next = 6;
+                return window.fetch(deleteTimeEntryAction, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    uuid: deleteTimeEntryUuid
+                  }),
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+
+              case 6:
+                response = _context.sent;
+
+                if (response && response.ok) {
+                  _element.remove();
+
+                  document.querySelector(".app-timemanager [data-current-link]").click();
+                }
+
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](1);
+                console.error(_context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[1, 10]]);
+      }));
+
+      return function doDelete() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    var cancelDelete = function cancelDelete() {
+      $$invalidate(3, confirmation = false);
+    };
+
+    $$self.$$set = function ($$props) {
+      if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
+      if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
+      if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
+    };
+
+    $$invalidate(3, confirmation = false);
+
+    return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
+  }
+
+  var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(DeleteTimeEntryButton, _SvelteComponent);
+
+    var _super = _createSuper(DeleteTimeEntryButton);
+
+    function DeleteTimeEntryButton(options) {
+      var _this;
+
+      _classCallCheck$1(this, DeleteTimeEntryButton);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        deleteTimeEntryAction: 0,
+        deleteTimeEntryUuid: 1,
+        requestToken: 2
+      });
+      return _this;
+    }
+
+    return _createClass$1(DeleteTimeEntryButton);
+  }(SvelteComponent);
+
+  var $find = arrayIteration$1.find;
+
+
+
+  var FIND = 'find';
+  var SKIPS_HOLES = true; // Shouldn't skip holes
+
+  if (FIND in []) Array(1)[FIND](function () {
+    SKIPS_HOLES = false;
+  }); // `Array.prototype.find` method
+  // https://tc39.es/ecma262/#sec-array.prototype.find
+
+  _export$1({
+    target: 'Array',
+    proto: true,
+    forced: SKIPS_HOLES
+  }, {
+    find: function find(callbackfn
+    /* , that = undefined */
+    ) {
+      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+
+  addToUnscopables$1(FIND);
 
   function create_fragment$5(ctx) {
     var form;
@@ -22987,7 +24640,7 @@
       return _this;
     }
 
-    return QuickAdd;
+    return _createClass$1(QuickAdd);
   }(SvelteComponent);
 
   function create_fragment$4(ctx) {
@@ -23202,7 +24855,7 @@
       return _this;
     }
 
-    return Checkmark;
+    return _createClass$1(Checkmark);
   }(SvelteComponent);
 
   function create_fragment$3(ctx) {
@@ -23685,7 +25338,7 @@
       return _this;
     }
 
-    return Filters;
+    return _createClass$1(Filters);
   }(SvelteComponent);
 
   function create_fragment$2(ctx) {
@@ -24061,7 +25714,7 @@
       return _this;
     }
 
-    return Timerange;
+    return _createClass$1(Timerange);
   }(SvelteComponent);
 
   function create_fragment$1(ctx) {
@@ -24146,7 +25799,7 @@
       return _this;
     }
 
-    return PrintButton;
+    return _createClass$1(PrintButton);
   }(SvelteComponent);
 
   var $propertyIsEnumerable$1 = objectPropertyIsEnumerable$1.f;
@@ -32022,7 +33675,7 @@
       return _this;
     }
 
-    return Import;
+    return _createClass$1(Import);
   }(SvelteComponent);
 
   /* global HTMLCollection: true */
@@ -33035,239 +34688,7 @@
   }
   });
 
-  var dist$1 = createCommonjsModule$1(function (module, exports) {
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.getRootUrl = exports.generateFilePath = exports.imagePath = exports.generateUrl = exports.generateOcsUrl = exports.generateRemoteUrl = exports.linkTo = void 0;
-
-   /// <reference types="@nextcloud/typings" />
-
-  /**
-   * Get an url with webroot to a file in an app
-   *
-   * @param {string} app the id of the app the file belongs to
-   * @param {string} file the file path relative to the app folder
-   * @return {string} URL with webroot to a file
-   */
-
-
-  const linkTo = (app, file) => generateFilePath(app, '', file);
-  /**
-   * Creates a relative url for remote use
-   *
-   * @param {string} service id
-   * @return {string} the url
-   */
-
-
-  exports.linkTo = linkTo;
-
-  const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
-  /**
-   * @brief Creates an absolute url for remote use
-   * @param {string} service id
-   * @return {string} the url
-   */
-
-
-  const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
-  /**
-   * Get the base path for the given OCS API service
-   *
-   * @param {string} url OCS API service url
-   * @param {object} params parameters to be replaced into the service url
-   * @param {UrlOptions} options options for the parameter replacement
-   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
-   * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
-   * @return {string} Absolute path for the OCS URL
-   */
-
-
-  exports.generateRemoteUrl = generateRemoteUrl;
-
-  const generateOcsUrl = (url, params, options) => {
-    const allOptions = Object.assign({
-      ocsVersion: 2
-    }, options || {});
-    const version = allOptions.ocsVersion === 1 ? 1 : 2;
-    return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
-  };
-
-  exports.generateOcsUrl = generateOcsUrl;
-  /**
-   * Generate a url path, which can contain parameters
-   *
-   * Parameters will be URL encoded automatically
-   *
-   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
-   * @param {object} params parameters to be replaced into the address
-   * @param {UrlOptions} options options for the parameter replacement
-   * @return {string} Path part for the given URL
-   */
-
-  const _generateUrlPath = (url, params, options) => {
-    const allOptions = Object.assign({
-      escape: true
-    }, options || {});
-
-    const _build = function (text, vars) {
-      vars = vars || {};
-      return text.replace(/{([^{}]*)}/g, function (a, b) {
-        var r = vars[b];
-
-        if (allOptions.escape) {
-          return typeof r === 'string' || typeof r === 'number' ? encodeURIComponent(r.toString()) : encodeURIComponent(a);
-        } else {
-          return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
-        }
-      });
-    };
-
-    if (url.charAt(0) !== '/') {
-      url = '/' + url;
-    }
-
-    return _build(url, params || {});
-  };
-  /**
-   * Generate the url with webroot for the given relative url, which can contain parameters
-   *
-   * Parameters will be URL encoded automatically
-   *
-   * @param {string} url address (can contain placeholders e.g. /call/{token} would replace {token} with the value of params.token
-   * @param {object} params parameters to be replaced into the url
-   * @param {UrlOptions} options options for the parameter replacement
-   * @param {boolean} options.noRewrite True if you want to force index.php being added
-   * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
-   * @return {string} URL with webroot for the given relative URL
-   */
-
-
-  const generateUrl = (url, params, options) => {
-    const allOptions = Object.assign({
-      noRewrite: false
-    }, options || {});
-
-    if (OC.config.modRewriteWorking === true && !allOptions.noRewrite) {
-      return getRootUrl() + _generateUrlPath(url, params, options);
-    }
-
-    return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
-  };
-  /**
-   * Get the path with webroot to an image file
-   * if no extension is given for the image, it will automatically decide
-   * between .png and .svg based on what the browser supports
-   *
-   * @param {string} app the app id to which the image belongs
-   * @param {string} file the name of the image file
-   * @return {string}
-   */
-
-
-  exports.generateUrl = generateUrl;
-
-  const imagePath = (app, file) => {
-    if (file.indexOf('.') === -1) {
-      //if no extension is given, use svg
-      return generateFilePath(app, 'img', file + '.svg');
-    }
-
-    return generateFilePath(app, 'img', file);
-  };
-  /**
-   * Get the url with webroot for a file in an app
-   *
-   * @param {string} app the id of the app
-   * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
-   * @param {string} file the filename
-   * @return {string} URL with webroot for a file in an app
-   */
-
-
-  exports.imagePath = imagePath;
-
-  const generateFilePath = (app, type, file) => {
-    const isCore = OC.coreApps.indexOf(app) !== -1;
-    let link = getRootUrl();
-
-    if (file.substring(file.length - 3) === 'php' && !isCore) {
-      link += '/index.php/apps/' + app;
-
-      if (file !== 'index.php') {
-        link += '/';
-
-        if (type) {
-          link += encodeURI(type + '/');
-        }
-
-        link += file;
-      }
-    } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
-      link = OC.appswebroots[app];
-
-      if (type) {
-        link += '/' + type + '/';
-      }
-
-      if (link.substring(link.length - 1) !== '/') {
-        link += '/';
-      }
-
-      link += file;
-    } else {
-      if ((app === 'settings' || app === 'core' || app === 'search') && type === 'ajax') {
-        link += '/index.php/';
-      } else {
-        link += '/';
-      }
-
-      if (!isCore) {
-        link += 'apps/';
-      }
-
-      if (app !== '') {
-        app += '/';
-        link += app;
-      }
-
-      if (type) {
-        link += type + '/';
-      }
-
-      link += file;
-    }
-
-    return link;
-  };
-  /**
-   * Return the web root path where this Nextcloud instance
-   * is accessible, with a leading slash.
-   * For example "/nextcloud".
-   *
-   * @return {string} web root path
-   */
-
-
-  exports.generateFilePath = generateFilePath;
-
-  const getRootUrl = () => OC.webroot;
-
-  exports.getRootUrl = getRootUrl;
-  });
-
-  unwrapExports(dist$1);
-  dist$1.getRootUrl;
-  dist$1.generateFilePath;
-  dist$1.imagePath;
-  var dist_4 = dist$1.generateUrl;
-  dist$1.generateOcsUrl;
-  dist$1.generateRemoteUrl;
-  dist$1.linkTo;
-
-  var PagePjax = function PagePjax(reload) {
+  var PagePjax = /*#__PURE__*/_createClass$1(function PagePjax(reload) {
     _classCallCheck$1(this, PagePjax);
 
     /**
@@ -33282,6 +34703,7 @@
     document.addEventListener("pjax:send", function () {
       document.body.classList.add("loading");
       document.body.classList.remove("loading-error");
+      document.body.classList.remove("tm_ready");
     });
     document.addEventListener("pjax:success", function () {
       setTimeout(function () {
@@ -33298,11 +34720,11 @@
       document.body.classList.remove("loading");
       document.body.classList.add("loading-error");
     });
-  };
+  });
 
   // `Array.prototype.forEach` method
   // https://tc39.es/ecma262/#sec-array.prototype.foreach
-  // eslint-disable-next-line es/no-array-prototype-foreach -- safe
+  // eslint-disable-next-line es-x/no-array-prototype-foreach -- safe
 
 
   _export$1({
@@ -36958,6 +38380,20 @@
         requestToken: token
       })
     }));
+    components.push(safelyCreateComponent({
+      component: ShareDialog,
+      selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
+    }));
+    components.push(safelyCreateComponent({
+      component: ShareStatus,
+      selector: "#content.app-timemanager [data-svelte='ShareStatus.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
+    }));
     var deleteTimeEntryButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='DeleteTimeEntryButton.svelte']");
 
     if (deleteTimeEntryButtons && deleteTimeEntryButtons.length > 0) {
@@ -37031,6 +38467,8 @@
     // 		},
     // 	})
     // );
+
+    document.body.classList.add("tm_ready");
   };
 
   init();

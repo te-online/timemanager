@@ -17,7 +17,7 @@ class TaskMapper extends ObjectMapper {
 	}
 
 	public function deleteWithChildrenByProjectId($uuid, $commit) {
-		$tasks = $this->getObjectsByAttributeValue("project_uuid", $uuid);
+		$tasks = $this->getActiveObjectsByAttributeValue("project_uuid", $uuid);
 		foreach ($tasks as $task) {
 			$task->setChanged(date("Y-m-d H:i:s"));
 			$task->setCommit($commit);
@@ -32,7 +32,7 @@ class TaskMapper extends ObjectMapper {
 	}
 
 	public function getHours($uuid) {
-		$times = $this->timeMapper->getObjectsByAttributeValue("task_uuid", $uuid);
+		$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $uuid, "created", true);
 		$sum = 0;
 		if (count($times) > 0) {
 			foreach ($times as $time) {

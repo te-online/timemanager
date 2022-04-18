@@ -2,6 +2,7 @@
 
 namespace OCA\TimeManager\Controller;
 
+use OC\Remote\Api\NotFoundException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -10,6 +11,8 @@ use OCA\TimeManager\Db\ProjectMapper;
 use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
+use OCA\TimeManager\Db\Share;
+use OCA\TimeManager\Db\ShareMapper;
 use OCA\TimeManager\Db\storageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
@@ -18,6 +21,7 @@ use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\IRequest;
 use OCP\IConfig;
+use OCP\IUserManager;
 
 class PageController extends Controller {
 	/** @var ClientMapper mapper for client entity */
@@ -30,12 +34,16 @@ class PageController extends Controller {
 	protected $timeMapper;
 	/** @var ClientMapper mapper for client entity */
 	protected $commitMapper;
+	/** @var ShareMapper mapper for share entity */
+	protected $shareMapper;
 	/** @var StorageHelper helper for working on the stored data */
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
 	/** @var IConfig */
 	private $config;
+	/** @var IUserManager */
+	private $userManager;
 
 	/**
 	 * constructor of the controller
@@ -55,7 +63,9 @@ class PageController extends Controller {
 		TaskMapper $taskMapper,
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
+		ShareMapper $shareMapper,
 		IConfig $config,
+		IUserManager $userManager,
 		$userId
 	) {
 		parent::__construct($appName, $request);
@@ -64,14 +74,17 @@ class PageController extends Controller {
 		$this->taskMapper = $taskMapper;
 		$this->timeMapper = $timeMapper;
 		$this->commitMapper = $commitMapper;
+		$this->shareMapper = $shareMapper;
 		$this->userId = $userId;
 		$this->config = $config;
+		$this->userManager = $userManager;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
 			$this->taskMapper,
 			$this->timeMapper,
 			$this->commitMapper,
+			$this->shareMapper,
 			$this->config,
 			(string) $userId
 		);
@@ -84,9 +97,9 @@ class PageController extends Controller {
 	function index() {
 		// Find the latest time entries
 		$times = $this->timeMapper->getActiveObjects("start", "DESC");
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
 		$entries = [];
 		$tasks = [];
 
@@ -101,9 +114,18 @@ class PageController extends Controller {
 				}
 				// Find details for parents of time entry
 				$tasks[] = $time->getTaskUuid();
-				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid());
-				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid());
-				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid());
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				if (!$task) {
+					continue;
+				}
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				if (!$project) {
+					continue;
+				}
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				if (!$client) {
+					continue;
+				}
 				// Compile a template object
 				$entries[] = (object) [
 					"time" => $time,
@@ -175,25 +197,35 @@ class PageController extends Controller {
 			$end = $end_of_month->format("Y-m-d");
 		}
 
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
+		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
+		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
+		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
 
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true);
 
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
 
 		// Group times by client
 		$times_grouped_by_client = [];
 		$hours_total = 0;
 		$all_time_entries = [];
 		if ($times && is_array($times) && count($times) > 0) {
+			$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 			foreach ($times as $time) {
 				// Find details for parents of time entry
-				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid());
-				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid());
-				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid());
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				if (!$task) {
+					continue;
+				}
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				if (!$project) {
+					continue;
+				}
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				if (!$client) {
+					continue;
+				}
 				// Compile a template object
 				if (!isset($times_grouped_by_client[$client->getUuid()])) {
 					$times_grouped_by_client[$client->getUuid()] = (object) [
@@ -222,6 +254,7 @@ class PageController extends Controller {
 						"client" => $client->getName(),
 						"project" => $project->getName(),
 						"task" => $task->getName(),
+						"author" => $time->author_display_name,
 					];
 				}
 			}
@@ -275,6 +308,7 @@ class PageController extends Controller {
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
 				],
+				"includeShared" => true,
 			];
 
 			return new TemplateResponse("timemanager", "reports", [
@@ -302,7 +336,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function clients() {
-		$clients = $this->clientMapper->findActiveForCurrentUser("name");
+		$clients = $this->clientMapper->findActiveForCurrentUser("name", true);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
@@ -321,6 +355,19 @@ class PageController extends Controller {
 				$clients[$index]->project_count = $this->clientMapper->countProjects($client->getUuid());
 				// Sum up client times
 				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
+				// Get sharees, if user has shared this client
+				$clients[$index]->sharees = array_map(function ($share) {
+					$share_array = $share->toArray($this->userManager);
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client->getUuid()));
+				// Get share author, if client is shared with current user
+				$sharedByList = $this->shareMapper->findSharerForClient($client->getUuid());
+				$sharedBy = null;
+				if (count($sharedByList) > 0) {
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+				}
+				$clients[$index]->sharedBy = $sharedBy;
 			}
 		}
 
@@ -410,13 +457,49 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 */
+	function addClientShare($client_uuid, $user_id) {
+		$client = $this->clientMapper->getActiveObjectById($client_uuid);
+		// User must be author if we can get the client
+		if ($client) {
+			$today = date("Y-m-d H:i:s");
+			$share = new Share();
+			$share->setUuid(UUID::v4());
+			$share->setCreated($today);
+			$share->setChanged($today);
+			$share->setObjectUuid($client_uuid);
+			$share->setEntityType("client");
+			$share->setRecipientUserId($user_id);
+			$share->setAuthorUserId($this->userId);
+			$this->shareMapper->insert($share);
+		}
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 */
+	function deleteClientShare($uuid, $client_uuid) {
+		$shares = $this->shareMapper->findByUuid($uuid);
+		if (count($shares) > 0) {
+			$this->shareMapper->delete($shares[0]);
+		}
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+	}
+
+	/**
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function projects($client = null) {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		if ($client) {
-			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name");
+			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client, "created", true);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name", "created", true);
 			// Sum up client times
 			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
@@ -441,6 +524,18 @@ class PageController extends Controller {
 
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
+
+		$sharees = array_map(function ($share) {
+			$share_array = $share->toArray($this->userManager);
+
+			return $share_array;
+		}, $this->shareMapper->findShareesForClient($client_uuid));
+
+		$sharedByList = $this->shareMapper->findSharerForClient($client_uuid);
+		$sharedBy = null;
+		if (count($sharedByList) > 0) {
+			$sharedBy = $sharedByList[0]->toArray($this->userManager);
+		}
 
 		$form_props = [
 			"action" => $urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
@@ -468,6 +563,12 @@ class PageController extends Controller {
 				"Do you want to delete the client %s and all associated projects, tasks and time entries?",
 				[$client_name]
 			),
+			"shareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
+			"deleteShareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
+			"sharees" => $sharees,
+			"sharedBy" => $sharedBy,
+			"canEdit" => $sharedBy === null,
+			"userId" => $this->userId,
 			"isServer" => true,
 		];
 
@@ -480,8 +581,11 @@ class PageController extends Controller {
 			"templates" => [
 				"ProjectEditor.svelte" => PHP_Svelte::render_template("ProjectEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareDialog.svelte" => PHP_Svelte::render_template("ShareDialog.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "projects",
+			"canEdit" => $sharedBy === null,
 		]);
 	}
 
@@ -556,13 +660,16 @@ class PageController extends Controller {
 	function tasks($project) {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
+		$sharedBy = null;
+		$sharees = [];
 		if ($project) {
-			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $project);
-			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $project);
+			$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $project, "created", true);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $project, "created", true);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
 				"uuid",
 				$project_data[0]->getClientUuid(),
-				"name"
+				"name",
+				true
 			);
 			// Sum up project times
 			if (count($project_data) === 1) {
@@ -571,6 +678,17 @@ class PageController extends Controller {
 			// Sum up client times
 			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
+
+				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
+				if (count($sharedByList) > 0) {
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+				}
+
+				$sharees = array_map(function ($share) {
+					$share_array = $share->toArray($this->userManager);
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
 			$tasks = $this->taskMapper->findActiveForCurrentUser();
@@ -616,6 +734,9 @@ class PageController extends Controller {
 			"editProjectData" => [
 				"name" => $project_name,
 			],
+			"sharedBy" => $sharedBy,
+			"sharees" => $sharees,
+			"canEdit" => $sharedBy === null,
 			"isServer" => true,
 		];
 
@@ -630,8 +751,10 @@ class PageController extends Controller {
 			"templates" => [
 				"TaskEditor.svelte" => PHP_Svelte::render_template("TaskEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "tasks",
+			"canEdit" => $sharedBy === null,
 		]);
 	}
 
@@ -707,14 +830,22 @@ class PageController extends Controller {
 		$clients = $this->clientMapper->findActiveForCurrentUser();
 		$projects = $this->projectMapper->findActiveForCurrentUser();
 		$tasks = $this->taskMapper->findActiveForCurrentUser();
+		$sharedBy = null;
+		$sharees = [];
 		if ($task) {
-			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start");
-			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task);
-			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue("uuid", $task_data[0]->getProjectUuid());
+			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start", true);
+			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task, "created", true);
+			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue(
+				"uuid",
+				$task_data[0]->getProjectUuid(),
+				"created",
+				true
+			);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue(
 				"uuid",
 				$project_data[0]->getClientUuid(),
-				"name"
+				"name",
+				true
 			);
 			// Sum up task times
 			if (count($task_data) === 1) {
@@ -727,10 +858,23 @@ class PageController extends Controller {
 			// Sum up client times
 			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
+
+				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
+				if (count($sharedByList) > 0) {
+					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+				}
+
+				$sharees = array_map(function ($share) {
+					$share_array = $share->toArray($this->userManager);
+
+					return $share_array;
+				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
-			$times = $this->timeMapper->findActiveForCurrentUser();
+			$times = $this->timeMapper->findActiveForCurrentUser("created", true);
 		}
+
+		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
@@ -750,7 +894,7 @@ class PageController extends Controller {
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
-			"taskName" => $task_data && count($task_data) > 0 ? $task_data[0]->getName() : "",
+			"taskName" => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "",
 			"initialDate" => date("Y-m-d"),
 			"taskEditorButtonCaption" => $l->t("Edit task"),
 			"taskEditorCaption" => $l->t("Edit task"),
@@ -766,14 +910,17 @@ class PageController extends Controller {
 			"timeEditorButtonCaption" => $l->t("Add time entry"),
 			"timeEditorCaption" => $l->t("New time entry"),
 			"editTimeEntryAction" => $urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
+			"sharedBy" => $sharedBy,
+			"sharees" => $sharees,
+			"canEdit" => $sharedBy === null,
 			"isServer" => true,
 		];
 
 		return new TemplateResponse("timemanager", "times", [
 			"times" => $times,
-			"task" => $task_data && count($task_data) > 0 ? $task_data[0] : null,
-			"project" => $project_data && count($project_data) > 0 ? $project_data[0] : null,
-			"client" => $client_data && count($client_data) > 0 ? $client_data[0] : null,
+			"task" => isset($task_data) && count($task_data) > 0 ? $task_data[0] : null,
+			"project" => isset($project_data) && count($project_data) > 0 ? $project_data[0] : null,
+			"client" => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			"tasks" => $tasks,
 			"projects" => $projects,
 			"clients" => $clients,
@@ -782,8 +929,10 @@ class PageController extends Controller {
 			"templates" => [
 				"TimeEditor.svelte" => PHP_Svelte::render_template("TimeEditor.svelte", $form_props),
 				"DeleteButton.svelte" => PHP_Svelte::render_template("DeleteButton.svelte", $form_props),
+				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "times",
+			"canEdit" => $sharedBy === null,
 		]);
 	}
 
@@ -822,31 +971,36 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function deleteTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Delete object
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setStatus("deleted");
-		$this->timeMapper->update($time);
+	function deleteTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Delete object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setStatus("deleted");
+			$this->timeMapper->update($time);
 
-		// Delete children
-		$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
+			// Delete children
+			$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
 	function editTime($uuid, $duration, $date, $note) {
-		$commit = UUID::v4();
-		$time = $this->timeMapper->getActiveObjectById($uuid);
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
 		if ($time) {
+			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
 			// Convert 1,25 to 1.25
 			$duration = str_replace(",", ".", $duration);
@@ -872,56 +1026,69 @@ class PageController extends Controller {
 				$end = $time->getEndFormatted("Y-m-d H:i:s");
 			}
 
-			$this->storageHelper->addOrUpdateObject(
-				[
-					"uuid" => $uuid,
-					"start" => $start, // given date
-					"end" => $end, // date + duration
-					"note" => $note,
-					"commit" => $time->getCommit(),
-					"desiredCommit" => $commit,
-				],
-				"times"
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setStart($start); // given date
+			$time->setEnd($end); // date + duration
+			$time->setNote($note); // date + duration
+			$this->timeMapper->update($time);
+
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->task_uuid);
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	function payTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Adjust payment status object
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setPaymentStatus("paid");
-		$this->timeMapper->update($time);
+	function payTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status object
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setPaymentStatus("paid");
+			$this->timeMapper->update($time);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	function unpayTime($uuid, $task) {
-		$commit = UUID::v4();
-		$this->storageHelper->insertCommit($commit);
-		// Get client
-		$time = $this->timeMapper->getObjectById($uuid);
-		// Adjust payment status
-		$time->setChanged(date("Y-m-d H:i:s"));
-		$time->setCommit($commit);
-		$time->setPaymentStatus("");
-		$this->timeMapper->update($time);
+	function unpayTime($uuid) {
+		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
+		if ($time) {
+			$commit = UUID::v4();
+			$this->storageHelper->insertCommit($commit);
+			// Adjust payment status
+			$time->setChanged(date("Y-m-d H:i:s"));
+			$time->setCommit($commit);
+			$time->setPaymentStatus("");
+			$this->timeMapper->update($time);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+			$urlGenerator = \OC::$server->getURLGenerator();
+			return new RedirectResponse(
+				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+			);
+		}
+
+		return new NotFoundException("Time entry could not be found");
 	}
 
 	/**

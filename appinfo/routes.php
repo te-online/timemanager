@@ -8,6 +8,8 @@ return [
 		["name" => "page#addClient", "url" => "/clients", "verb" => "POST"],
 		["name" => "page#editClient", "url" => "/clients", "verb" => "PATCH"],
 		["name" => "page#deleteClient", "url" => "/clients/delete", "verb" => "POST"],
+		["name" => "page#addClientShare", "url" => "/clients/share", "verb" => "POST"],
+		["name" => "page#deleteClientShare", "url" => "/clients/share/delete", "verb" => "POST"],
 		["name" => "page#projects", "url" => "/projects", "verb" => "GET"],
 		["name" => "page#addProject", "url" => "/projects", "verb" => "POST"],
 		["name" => "page#editProject", "url" => "/projects", "verb" => "PATCH"],

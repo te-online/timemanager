@@ -132,7 +132,20 @@
 		"Preview": "Vorschau",
 		"Collapse all": "Alle einklappen",
 		"Expand all": "Alle ausklappen",
-		"Import now": "Importieren"
+		"Import now": "Importieren",
+		"shared with you by:": "geteilt von:",
+		"Shared with": "Geteilt mit",
+		"Shared with you by": "Geteilt von",
+		"Share with": "Teilen mit",
+		"Search...": "Suche...",
+		"Existing shares": "Schon geteilt mit",
+		"You haven't shared this client with anyone": "Sie haben diesen Kunden mit niemandem geteilt",
+		"You automatically grant read-only access to associated projects and tasks by sharing.": "Sie geben beim Teilen automatisch Lesezugriff auf untergeordnete Projkete und Aufgaben.",
+		"Users you share with can create time entries.": "Benutzer, mit denen Sie teilen, können Zeiteinträge erstellen.",
+		"You can see all time entries, while others can only see and edit their own time entries.": "Sie können alle Zeiteinträge sehen, während andere nur ihre eigenen Zeiteinträge sehen und ändern können.",
+		"Share client": "Kunde teilen",
+		"Loading...": "Lädt...",
+		"Deleted user": "Gelöschter Benutzer"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

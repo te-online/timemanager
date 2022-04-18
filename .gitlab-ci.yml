@@ -1,25 +1,44 @@
-image: nextcloud
+image: docker/compose:latest
+
+before_script:
+  - apk add jq
+  - cd tests
+  - echo "$ENV" > .env
+  - echo "$CYPRESS_ENV_JSON" > cypress.env.json
+
+services:
+  - docker:dind
 
 stages:
   - test
 
-sync_api_test:
-  variables:
-    MYSQL_DATABASE: "nextcloud"
-    MYSQL_USER: "nextcloud"
-    MYSQL_PASSWORD: "ci-password"
-    MYSQL_HOST: "mysql.local"
-    NEXTCLOUD_ADMIN_USER: "ci-admin"
-    NEXTCLOUD_ADMIN_PASSWORD: "ci-admin-password"
-    MARIADB_ROOT_PASSWORD: "ci-root-password"
-    NEXTCLOUD_UPDATE: 1
-    PHP_MEMORY_LIMIT: "512M"
-  services:
-    - name: mariadb:10.5
-      command: ["--transaction-isolation=READ-COMMITTED", "--binlog-format=ROW"]
-      alias: mysql.local
+app_tests:
+  except:
+    - merge_requests
   script:
-    - echo "PHP_MEMORY_LIMIT=512M" >> /etc/enviroment
-    - service apache2 start
-    - sleep 10
-    - curl http://localhost
+    # Start containers
+    - docker-compose up -d
+    # Fix permissions of custom apps folder
+    - docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'
+    # Disable first run wizard app when nextcloud is up
+    - sleep 30
+    - docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'
+    # Get the IP of the web container
+    - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
+    # Run tests in cypress container
+    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.0-chrome88-ff89 sh -c "cd tests && npm ci && npm test -- --config baseUrl=http://$SERVER_IP"
+    # Echo log file for debug purposes
+    - docker exec $(docker ps -qf "name=app") sh -c 'cat data/nextcloud.log' > nextcloud.log
+    - cat nextcloud.log | jq .message
+  artifacts:
+    expire_in: 1 week
+    when: always
+    paths:
+      - tests/cypress/screenshots
+      - tests/nextcloud.log
+    reports:
+      junit:
+        - tests/results/TEST-*.xml
+  after_script:
+    - cd tests
+    - docker-compose down -v

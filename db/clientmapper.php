@@ -13,12 +13,8 @@ use OCP\IDBConnection;
 class ClientMapper extends ObjectMapper {
 	protected $projectMapper;
 
-	public function __construct(
-		IDBConnection $db,
-		CommitMapper $commitMapper,
-		ProjectMapper $projectMapper
-	) {
-		parent::__construct($db, $commitMapper, 'timemanager_client');
+	public function __construct(IDBConnection $db, CommitMapper $commitMapper, ProjectMapper $projectMapper) {
+		parent::__construct($db, $commitMapper, "timemanager_client");
 		$this->projectMapper = $projectMapper;
 	}
 
@@ -33,15 +29,15 @@ class ClientMapper extends ObjectMapper {
 	 * @return Client[] list if matching items
 	 */
 	public function countProjects($uuid) {
-		$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $uuid);
+		$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $uuid, "created", true);
 		return count($projects);
 	}
 
 	public function getHours($uuid) {
-		$projects = $this->projectMapper->getObjectsByAttributeValue('client_uuid', $uuid);
+		$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $uuid, "created", true);
 		$sum = 0;
-		if(count($projects) > 0) {
-			foreach($projects as $project) {
+		if (count($projects) > 0) {
+			foreach ($projects as $project) {
 				$sum += $this->projectMapper->getHours($project->getUuid());
 			}
 		}

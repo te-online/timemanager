@@ -1,12 +1,9 @@
 {
-	"globals": {
+  "globals": {
     "$": true,
     "t": true,
     "OC": true,
-    "OCA": true,
-    "describe": true,
-    "it": true,
-    "expect": true
+    "OCA": true
   },
   "extends": [
     "standard",
