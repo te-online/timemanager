@@ -54,7 +54,7 @@ services:
   app:
     <<: *restart_policy
     <<: *logging_config
-    image: nextcloud:stable-fpm-alpine
+    image: nextcloud:23-fpm-alpine
     ports:
       - 9000:9000
     links:
