@@ -111,6 +111,14 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		);
 	});
 
+	it("shows an error message if CSV cannot be parsed", () => {
+		throw new Error("Add test here");
+	});
+
+	it("can import CSV file with comma delimiter", () => {
+		throw new Error("Add test here");
+	});
+
 	it("can create clients", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
