@@ -49,6 +49,16 @@ Test cases might depend on running in a specific order. This means you might nee
 
 ## Changelog
 
+### 0.3.1 Beta, 6. May 2022
+
+- Tools/Import:
+  - Add comma as a delimiter
+  - Improve test coverage
+  - Improve error handling, especially if file does not contain entities
+  - Show messages in a dialog
+- Run tests for Nextcloud 24 and bump compatibility to Nextcloud 24
+- Update JS dependencies
+
 ### 0.3.0 Beta, 18. April 2022
 
 - Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks (issues #65 and possibly #1)

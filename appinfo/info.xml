@@ -10,20 +10,21 @@
 * 📈 make use of simple, but useful **statistics** and **reports**.
 
 #### Latest changes 🎉
-**0.3.0 Beta, 18. April 2022**
-- Add basic **client sharing feature** with support for sharing clients and all associated projects and tasks (issues #65 and possibly #1)
-  - Allows users you shared the client with to create and edit time entries in tasks you created
-  - Only you can see everyone's time entries (also in reports), everyone else only sees their entries
-  - The sharing feature is currently **not supported** in the Android app and/or REST API
-- Maintenance: Update JS dependencies
-- Bugfix: Some variables weren't checked properly before accessing them, causing warnings to be logged (issue #72)
+**0.3.1 Beta, 6. May 2022**
+- Tools/Import:
+  - Add comma as a delimiter
+  - Improve test coverage
+  - Improve error handling, especially if file does not contain entities
+  - Show messages in a dialog
+- Run tests for Nextcloud 24 and bump compatibility to Nextcloud 24
+- Update JS dependencies
 
 _Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
 
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>
