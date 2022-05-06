@@ -135,6 +135,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get("a").contains("Tools").click();
 
 		// Select file
+		cy.get('select[name="delimiter"]').select(";");
 		cy.get('input[type="file"]').selectFile("cypress/fixtures/unreadable.csv");
 		cy.contains("button", "Generate preview from file").click();
 
@@ -165,8 +166,8 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get("a").contains("Tools").click();
 
 		// Select file
+		cy.get('select[name="delimiter"]').select(";");
 		cy.get('input[type="file"]').selectFile("cypress/fixtures/test-data-semicolon.csv");
-		cy.get('select[name="delimiter]').select(";");
 		cy.contains("button", "Generate preview from file").click();
 
 		// Check counts in preview
