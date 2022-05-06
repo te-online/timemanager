@@ -12,7 +12,7 @@ services:
 stages:
   - test
 
-app_tests:
+.app_tests: &app_tests
   except:
     - merge_requests
   script:
@@ -42,3 +42,11 @@ app_tests:
   after_script:
     - cd tests
     - docker-compose down -v
+
+app_test_nc_23:
+  <<: *app_tests
+
+app_test_nc_24:
+  <<: *app_tests
+  before_script:
+    - sed -i "s#nextcloud:23-fpm-alpine#$nextcloud:24-fpm-alpine#g" tests/docker-compose.yml
