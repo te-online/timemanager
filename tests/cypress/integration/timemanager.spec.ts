@@ -35,7 +35,6 @@ const waitForPjax = () => {
 };
 
 describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
-	// eslint-disable-next-line no-undef
 	beforeEach(() => {
 		// Log in
 		cy.visit("/");
