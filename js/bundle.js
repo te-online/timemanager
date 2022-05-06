@@ -32401,21 +32401,21 @@
 
   function get_each_context(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[22] = list[i];
+    child_ctx[24] = list[i];
     return child_ctx;
   }
 
   function get_each_context_1(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[25] = list[i];
+    child_ctx[27] = list[i];
     return child_ctx;
   }
 
   function get_each_context_2(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[28] = list[i];
+    child_ctx[30] = list[i];
     return child_ctx;
-  } // (213:0) {#if parseError}
+  } // (229:0) {#if parseError}
 
 
   function create_if_block_6(ctx) {
@@ -32444,9 +32444,9 @@
 
         if (dirty[0] &
         /*parseError*/
-        256 | dirty[1] &
+        512 | dirty[1] &
         /*$$scope*/
-        1) {
+        4) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -32468,7 +32468,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (214:1) <Overlay>
+  } // (230:1) <Overlay>
 
 
   function create_default_slot_2(ctx) {
@@ -32496,7 +32496,7 @@
         t3 = space$1();
         t4 = text(
         /*parseError*/
-        ctx[8]);
+        ctx[9]);
         t5 = space$1();
         div1 = element("div");
         button = element("button");
@@ -32521,16 +32521,16 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler*/
-          ctx[15]));
+          ctx[17]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*parseError*/
-        256) set_data(t4,
+        512) set_data(t4,
         /*parseError*/
-        ctx[8]);
+        ctx[9]);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
@@ -32538,7 +32538,7 @@
         dispose();
       }
     };
-  } // (231:0) {#if importError}
+  } // (247:0) {#if importError}
 
 
   function create_if_block_5(ctx) {
@@ -32567,9 +32567,9 @@
 
         if (dirty[0] &
         /*importError*/
-        32 | dirty[1] &
+        64 | dirty[1] &
         /*$$scope*/
-        1) {
+        4) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -32591,7 +32591,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (232:1) <Overlay>
+  } // (248:1) <Overlay>
 
 
   function create_default_slot_1(ctx) {
@@ -32619,7 +32619,7 @@
         t3 = space$1();
         t4 = text(
         /*importError*/
-        ctx[5]);
+        ctx[6]);
         t5 = space$1();
         div1 = element("div");
         button = element("button");
@@ -32644,16 +32644,16 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_1*/
-          ctx[16]));
+          ctx[18]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*importError*/
-        32) set_data(t4,
+        64) set_data(t4,
         /*importError*/
-        ctx[5]);
+        ctx[6]);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
@@ -32661,7 +32661,7 @@
         dispose();
       }
     };
-  } // (249:0) {#if successMessage}
+  } // (265:0) {#if successMessage}
 
 
   function create_if_block_4(ctx) {
@@ -32690,9 +32690,9 @@
 
         if (dirty[0] &
         /*successMessage*/
-        64 | dirty[1] &
+        128 | dirty[1] &
         /*$$scope*/
-        1) {
+        4) {
           overlay_changes.$$scope = {
             dirty: dirty,
             ctx: ctx
@@ -32714,7 +32714,7 @@
         destroy_component(overlay, detaching);
       }
     };
-  } // (250:1) <Overlay>
+  } // (266:1) <Overlay>
 
 
   function create_default_slot(ctx) {
@@ -32742,7 +32742,7 @@
         t3 = space$1();
         t4 = text(
         /*successMessage*/
-        ctx[6]);
+        ctx[7]);
         t5 = space$1();
         div1 = element("div");
         button = element("button");
@@ -32767,16 +32767,16 @@
         if (!mounted) {
           dispose = listen(button, "click", prevent_default(
           /*click_handler_2*/
-          ctx[17]));
+          ctx[19]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*successMessage*/
-        64) set_data(t4,
+        128) set_data(t4,
         /*successMessage*/
-        ctx[6]);
+        ctx[7]);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
@@ -32784,7 +32784,7 @@
         dispose();
       }
     };
-  } // (267:0) {#if importPreviewData.length}
+  } // (283:0) {#if importPreviewData.length}
 
 
   function create_if_block_3(ctx) {
@@ -32802,19 +32802,19 @@
     var dd0;
     var t7_value =
     /*preparedClients*/
-    ctx[1].length + "";
+    ctx[2].length + "";
     var t7;
     var dt1;
     var dd1;
     var t9_value =
     /*preparedProjects*/
-    ctx[2].length + "";
+    ctx[3].length + "";
     var t9;
     var dt2;
     var dd2;
     var t11_value =
     /*preparedTasks*/
-    ctx[3].length + "";
+    ctx[4].length + "";
     var t11;
     var mounted;
     var dispose;
@@ -32874,28 +32874,28 @@
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
           /*click_handler_3*/
-          ctx[18])), listen(button1, "click", prevent_default(
+          ctx[20])), listen(button1, "click", prevent_default(
           /*click_handler_4*/
-          ctx[19]))];
+          ctx[21]))];
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*preparedClients*/
-        2 && t7_value !== (t7_value =
+        4 && t7_value !== (t7_value =
         /*preparedClients*/
-        ctx[1].length + "")) set_data(t7, t7_value);
+        ctx[2].length + "")) set_data(t7, t7_value);
         if (dirty[0] &
         /*preparedProjects*/
-        4 && t9_value !== (t9_value =
+        8 && t9_value !== (t9_value =
         /*preparedProjects*/
-        ctx[2].length + "")) set_data(t9, t9_value);
+        ctx[3].length + "")) set_data(t9, t9_value);
         if (dirty[0] &
         /*preparedTasks*/
-        8 && t11_value !== (t11_value =
+        16 && t11_value !== (t11_value =
         /*preparedTasks*/
-        ctx[3].length + "")) set_data(t11, t11_value);
+        ctx[4].length + "")) set_data(t11, t11_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div0);
@@ -32905,7 +32905,7 @@
         run_all(dispose);
       }
     };
-  } // (302:2) {#if client.projects}
+  } // (318:2) {#if client.projects}
 
 
   function create_if_block_1(ctx) {
@@ -32914,7 +32914,7 @@
     var t1;
     var each_value_1 =
     /*client*/
-    ctx[22].projects;
+    ctx[24].projects;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_1.length; i += 1) {
@@ -32934,7 +32934,7 @@
 
         details.open =
         /*allOpen*/
-        ctx[9];
+        ctx[10];
       },
       m: function m(target, anchor) {
         insert(target, details, anchor);
@@ -32948,10 +32948,10 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*allOpen, importPreviewData*/
-        640) {
+        1280) {
           each_value_1 =
           /*client*/
-          ctx[22].projects;
+          ctx[24].projects;
 
           var _i3;
 
@@ -32978,10 +32978,10 @@
 
         if (dirty[0] &
         /*allOpen*/
-        512) {
+        1024) {
           details.open =
           /*allOpen*/
-          ctx[9];
+          ctx[10];
         }
       },
       d: function d(detaching) {
@@ -32989,7 +32989,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (315:6) {#if project.tasks}
+  } // (331:6) {#if project.tasks}
 
 
   function create_if_block_2(ctx) {
@@ -32998,7 +32998,7 @@
     var t1;
     var each_value_2 =
     /*project*/
-    ctx[25].tasks;
+    ctx[27].tasks;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_2.length; i += 1) {
@@ -33018,7 +33018,7 @@
 
         details.open =
         /*allOpen*/
-        ctx[9];
+        ctx[10];
       },
       m: function m(target, anchor) {
         insert(target, details, anchor);
@@ -33032,10 +33032,10 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*importPreviewData*/
-        128) {
+        256) {
           each_value_2 =
           /*project*/
-          ctx[25].tasks;
+          ctx[27].tasks;
 
           var _i6;
 
@@ -33062,10 +33062,10 @@
 
         if (dirty[0] &
         /*allOpen*/
-        512) {
+        1024) {
           details.open =
           /*allOpen*/
-          ctx[9];
+          ctx[10];
         }
       },
       d: function d(detaching) {
@@ -33073,7 +33073,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (318:8) {#each project.tasks as task}
+  } // (334:8) {#each project.tasks as task}
 
 
   function create_each_block_2(ctx) {
@@ -33084,7 +33084,7 @@
     var h3;
     var t2_value =
     /*task*/
-    ctx[28].name + "";
+    ctx[30].name + "";
     var t2;
     var t3;
     var div1;
@@ -33092,7 +33092,7 @@
     var t5;
     var t6_value =
     /*task*/
-    ctx[28].note + "";
+    ctx[30].note + "";
     var t6;
     return {
       c: function c() {
@@ -33129,20 +33129,20 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t2_value !== (t2_value =
+        256 && t2_value !== (t2_value =
         /*task*/
-        ctx[28].name + "")) set_data(t2, t2_value);
+        ctx[30].name + "")) set_data(t2, t2_value);
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t6_value !== (t6_value =
+        256 && t6_value !== (t6_value =
         /*task*/
-        ctx[28].note + "")) set_data(t6, t6_value);
+        ctx[30].note + "")) set_data(t6, t6_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
       }
     };
-  } // (305:4) {#each client.projects as project}
+  } // (321:4) {#each client.projects as project}
 
 
   function create_each_block_1(ctx) {
@@ -33153,7 +33153,7 @@
     var h3;
     var t2_value =
     /*project*/
-    ctx[25].name + "";
+    ctx[27].name + "";
     var t2;
     var t3;
     var div1;
@@ -33161,12 +33161,12 @@
     var t5;
     var t6_value =
     /*project*/
-    ctx[25].note + "";
+    ctx[27].note + "";
     var t6;
     var t7;
     var if_block =
     /*project*/
-    ctx[25].tasks && create_if_block_2(ctx);
+    ctx[27].tasks && create_if_block_2(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -33206,18 +33206,18 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t2_value !== (t2_value =
+        256 && t2_value !== (t2_value =
         /*project*/
-        ctx[25].name + "")) set_data(t2, t2_value);
+        ctx[27].name + "")) set_data(t2, t2_value);
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t6_value !== (t6_value =
+        256 && t6_value !== (t6_value =
         /*project*/
-        ctx[25].note + "")) set_data(t6, t6_value);
+        ctx[27].note + "")) set_data(t6, t6_value);
 
         if (
         /*project*/
-        ctx[25].tasks) {
+        ctx[27].tasks) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -33235,7 +33235,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (292:0) {#each importPreviewData as client}
+  } // (308:0) {#each importPreviewData as client}
 
 
   function create_each_block(ctx) {
@@ -33246,7 +33246,7 @@
     var h3;
     var t2_value =
     /*client*/
-    ctx[22].name + "";
+    ctx[24].name + "";
     var t2;
     var t3;
     var div1;
@@ -33254,12 +33254,12 @@
     var t5;
     var t6_value =
     /*client*/
-    ctx[22].note + "";
+    ctx[24].note + "";
     var t6;
     var t7;
     var if_block =
     /*client*/
-    ctx[22].projects && create_if_block_1(ctx);
+    ctx[24].projects && create_if_block_1(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -33299,18 +33299,18 @@
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t2_value !== (t2_value =
+        256 && t2_value !== (t2_value =
         /*client*/
-        ctx[22].name + "")) set_data(t2, t2_value);
+        ctx[24].name + "")) set_data(t2, t2_value);
         if (dirty[0] &
         /*importPreviewData*/
-        128 && t6_value !== (t6_value =
+        256 && t6_value !== (t6_value =
         /*client*/
-        ctx[22].note + "")) set_data(t6, t6_value);
+        ctx[24].note + "")) set_data(t6, t6_value);
 
         if (
         /*client*/
-        ctx[22].projects) {
+        ctx[24].projects) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -33328,7 +33328,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (339:0) {#if importPreviewData.length}
+  } // (355:0) {#if importPreviewData.length}
 
 
   function create_if_block(ctx) {
@@ -33346,12 +33346,12 @@
         t = text(t_value);
         button.disabled =
         /*loading*/
-        ctx[4];
+        ctx[5];
         attr(button, "type", "submit");
         attr(button, "class", "button primary");
         attr(form, "class", form_class_value =
         /*loading*/
-        ctx[4] ? ' icon-loading' : '');
+        ctx[5] ? ' icon-loading' : '');
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
@@ -33361,24 +33361,24 @@
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*doImport*/
-          ctx[11]));
+          ctx[12]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (dirty[0] &
         /*loading*/
-        16) {
+        32) {
           button.disabled =
           /*loading*/
-          ctx[4];
+          ctx[5];
         }
 
         if (dirty[0] &
         /*loading*/
-        16 && form_class_value !== (form_class_value =
+        32 && form_class_value !== (form_class_value =
         /*loading*/
-        ctx[4] ? ' icon-loading' : '')) {
+        ctx[5] ? ' icon-loading' : '')) {
           attr(form, "class", form_class_value);
         }
       },
@@ -33392,40 +33392,48 @@
 
   function create_fragment(ctx) {
     var form;
-    var label;
-    var t0_value = dist_4$1('timemanager', 'Select CSV file') + "";
+    var label0;
+    var t0_value = dist_4$1('timemanager', 'Select delimiter') + "";
     var t0;
     var t1;
-    var br;
-    var t2;
-    var input;
-    var t3;
-    var button;
+    var select;
+    var option0;
+    var option1;
+    var t4;
+    var label1;
+    var t5_value = dist_4$1('timemanager', 'Select CSV file') + "";
     var t5;
     var t6;
+    var br;
     var t7;
+    var input;
     var t8;
-    var t9;
+    var button;
     var t10;
+    var t11;
+    var t12;
+    var t13;
+    var t14;
+    var t15;
     var if_block4_anchor;
     var current;
     var mounted;
     var dispose;
     var if_block0 =
     /*parseError*/
-    ctx[8] && create_if_block_6(ctx);
+    ctx[9] && create_if_block_6(ctx);
     var if_block1 =
     /*importError*/
-    ctx[5] && create_if_block_5(ctx);
+    ctx[6] && create_if_block_5(ctx);
     var if_block2 =
     /*successMessage*/
-    ctx[6] && create_if_block_4(ctx);
+    ctx[7] && create_if_block_4(ctx);
     var if_block3 =
     /*importPreviewData*/
-    ctx[7].length && create_if_block_3(ctx);
+    ctx[8].length && create_if_block_3(ctx);
     var each_value =
     /*importPreviewData*/
-    ctx[7];
+    ctx[8];
     var each_blocks = [];
 
     for (var i = 0; i < each_value.length; i += 1) {
@@ -33434,67 +33442,92 @@
 
     var if_block4 =
     /*importPreviewData*/
-    ctx[7].length && create_if_block(ctx);
+    ctx[8].length && create_if_block(ctx);
     return {
       c: function c() {
         form = element("form");
-        label = element("label");
+        label0 = element("label");
         t0 = text(t0_value);
         t1 = space$1();
+        select = element("select");
+        option0 = element("option");
+        option0.textContent = ",";
+        option1 = element("option");
+        option1.textContent = ";";
+        t4 = space$1();
+        label1 = element("label");
+        t5 = text(t5_value);
+        t6 = space$1();
         br = element("br");
-        t2 = space$1();
+        t7 = space$1();
         input = element("input");
-        t3 = space$1();
+        t8 = space$1();
         button = element("button");
         button.textContent = "".concat(dist_4$1('timemanager', 'Generate preview from file'));
-        t5 = space$1();
+        t10 = space$1();
         if (if_block0) if_block0.c();
-        t6 = space$1();
+        t11 = space$1();
         if (if_block1) if_block1.c();
-        t7 = space$1();
+        t12 = space$1();
         if (if_block2) if_block2.c();
-        t8 = space$1();
+        t13 = space$1();
         if (if_block3) if_block3.c();
-        t9 = space$1();
+        t14 = space$1();
 
         for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
           each_blocks[_i7].c();
         }
 
-        t10 = space$1();
+        t15 = space$1();
         if (if_block4) if_block4.c();
         if_block4_anchor = empty();
+        option0.selected = true;
+        option0.__value = ",";
+        option0.value = option0.__value;
+        option1.__value = ";";
+        option1.value = option1.__value;
+        attr(select, "name", "delimiter");
         attr(input, "type", "file");
         attr(button, "type", "submit");
       },
       m: function m(target, anchor) {
         insert(target, form, anchor);
-        append(form, label);
-        append(label, t0);
-        append(label, t1);
-        append(label, br);
-        append(label, t2);
-        append(label, input);
+        append(form, label0);
+        append(label0, t0);
+        append(label0, t1);
+        append(label0, select);
+        append(select, option0);
+        append(select, option1);
+        /*select_binding*/
+
+        ctx[15](select);
+        append(form, t4);
+        append(form, label1);
+        append(label1, t5);
+        append(label1, t6);
+        append(label1, br);
+        append(label1, t7);
+        append(label1, input);
         /*input_binding*/
 
-        ctx[14](input);
-        append(form, t3);
+        ctx[16](input);
+        append(form, t8);
         append(form, button);
-        insert(target, t5, anchor);
+        insert(target, t10, anchor);
         if (if_block0) if_block0.m(target, anchor);
-        insert(target, t6, anchor);
+        insert(target, t11, anchor);
         if (if_block1) if_block1.m(target, anchor);
-        insert(target, t7, anchor);
+        insert(target, t12, anchor);
         if (if_block2) if_block2.m(target, anchor);
-        insert(target, t8, anchor);
+        insert(target, t13, anchor);
         if (if_block3) if_block3.m(target, anchor);
-        insert(target, t9, anchor);
+        insert(target, t14, anchor);
 
         for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
           each_blocks[_i8].m(target, anchor);
         }
 
-        insert(target, t10, anchor);
+        insert(target, t15, anchor);
         if (if_block4) if_block4.m(target, anchor);
         insert(target, if_block4_anchor, anchor);
         current = true;
@@ -33502,27 +33535,27 @@
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*previewFile*/
-          ctx[10]));
+          ctx[11]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
         if (
         /*parseError*/
-        ctx[8]) {
+        ctx[9]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
 
             if (dirty[0] &
             /*parseError*/
-            256) {
+            512) {
               transition_in(if_block0, 1);
             }
           } else {
             if_block0 = create_if_block_6(ctx);
             if_block0.c();
             transition_in(if_block0, 1);
-            if_block0.m(t6.parentNode, t6);
+            if_block0.m(t11.parentNode, t11);
           }
         } else if (if_block0) {
           group_outros();
@@ -33534,20 +33567,20 @@
 
         if (
         /*importError*/
-        ctx[5]) {
+        ctx[6]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
 
             if (dirty[0] &
             /*importError*/
-            32) {
+            64) {
               transition_in(if_block1, 1);
             }
           } else {
             if_block1 = create_if_block_5(ctx);
             if_block1.c();
             transition_in(if_block1, 1);
-            if_block1.m(t7.parentNode, t7);
+            if_block1.m(t12.parentNode, t12);
           }
         } else if (if_block1) {
           group_outros();
@@ -33559,20 +33592,20 @@
 
         if (
         /*successMessage*/
-        ctx[6]) {
+        ctx[7]) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
 
             if (dirty[0] &
             /*successMessage*/
-            64) {
+            128) {
               transition_in(if_block2, 1);
             }
           } else {
             if_block2 = create_if_block_4(ctx);
             if_block2.c();
             transition_in(if_block2, 1);
-            if_block2.m(t8.parentNode, t8);
+            if_block2.m(t13.parentNode, t13);
           }
         } else if (if_block2) {
           group_outros();
@@ -33584,13 +33617,13 @@
 
         if (
         /*importPreviewData*/
-        ctx[7].length) {
+        ctx[8].length) {
           if (if_block3) {
             if_block3.p(ctx, dirty);
           } else {
             if_block3 = create_if_block_3(ctx);
             if_block3.c();
-            if_block3.m(t9.parentNode, t9);
+            if_block3.m(t14.parentNode, t14);
           }
         } else if (if_block3) {
           if_block3.d(1);
@@ -33599,10 +33632,10 @@
 
         if (dirty[0] &
         /*allOpen, importPreviewData*/
-        640) {
+        1280) {
           each_value =
           /*importPreviewData*/
-          ctx[7];
+          ctx[8];
 
           var _i9;
 
@@ -33616,7 +33649,7 @@
 
               each_blocks[_i9].c();
 
-              each_blocks[_i9].m(t10.parentNode, t10);
+              each_blocks[_i9].m(t15.parentNode, t15);
             }
           }
 
@@ -33629,7 +33662,7 @@
 
         if (
         /*importPreviewData*/
-        ctx[7].length) {
+        ctx[8].length) {
           if (if_block4) {
             if_block4.p(ctx, dirty);
           } else {
@@ -33657,20 +33690,23 @@
       },
       d: function d(detaching) {
         if (detaching) detach(form);
+        /*select_binding*/
+
+        ctx[15](null);
         /*input_binding*/
 
-        ctx[14](null);
-        if (detaching) detach(t5);
-        if (if_block0) if_block0.d(detaching);
-        if (detaching) detach(t6);
-        if (if_block1) if_block1.d(detaching);
-        if (detaching) detach(t7);
-        if (if_block2) if_block2.d(detaching);
-        if (detaching) detach(t8);
-        if (if_block3) if_block3.d(detaching);
-        if (detaching) detach(t9);
-        destroy_each(each_blocks, detaching);
+        ctx[16](null);
         if (detaching) detach(t10);
+        if (if_block0) if_block0.d(detaching);
+        if (detaching) detach(t11);
+        if (if_block1) if_block1.d(detaching);
+        if (detaching) detach(t12);
+        if (if_block2) if_block2.d(detaching);
+        if (detaching) detach(t13);
+        if (if_block3) if_block3.d(detaching);
+        if (detaching) detach(t14);
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(t15);
         if (if_block4) if_block4.d(detaching);
         if (detaching) detach(if_block4_anchor);
         mounted = false;
@@ -33688,7 +33724,8 @@
     var allOpen;
     var syncApiUrl = $$props.syncApiUrl;
     var requestToken = $$props.requestToken;
-    var fileInput; // Collect updated objects in here
+    var fileInput;
+    var delimiterInput; // Collect updated objects in here
 
     var preparedClients = [];
     var preparedProjects = [];
@@ -33731,15 +33768,16 @@
             switch (_context.prev = _context.next) {
               case 0:
                 if (!(fileInput && fileInput.files && fileInput.files.length)) {
-                  _context.next = 29;
+                  _context.next = 33;
                   break;
                 }
 
-                $$invalidate(8, parseError = "");
+                $$invalidate(8, importPreviewData = []);
+                $$invalidate(9, parseError = "");
                 _fileInput$files = _slicedToArray(fileInput.files, 1), file = _fileInput$files[0];
                 fileReader = new FileReader();
                 fileReader.readAsText(file);
-                _context.next = 7;
+                _context.next = 8;
                 return new Promise(function (resolve, reject) {
                   fileReader.onload = function () {
                     resolve(null);
@@ -33750,14 +33788,13 @@
                   };
                 });
 
-              case 7:
+              case 8:
                 contents = [];
-                _context.prev = 8;
-                _context.next = 11;
+                _context.prev = 9;
+                _context.next = 12;
                 return new Promise(function (resolve, reject) {
                   return parse$1(fileReader.result, {
-                    // @TODO: Make delimiter configurable
-                    delimiter: ";",
+                    delimiter: delimiterInput && delimiterInput.value ? delimiterInput.value : ",",
                     // @TODO: Make encoding configurable
                     encoding: "utf-8",
                     columns: true
@@ -33770,36 +33807,45 @@
                   });
                 });
 
-              case 11:
+              case 12:
                 contents = _context.sent;
-                _context.next = 18;
+                _context.next = 19;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](8);
-                $$invalidate(8, parseError = _context.t0);
+              case 15:
+                _context.prev = 15;
+                _context.t0 = _context["catch"](9);
+                $$invalidate(9, parseError = _context.t0);
                 return _context.abrupt("return");
 
-              case 18:
+              case 19:
+                if (!(!contents || !contents.length)) {
+                  _context.next = 22;
+                  break;
+                }
+
+                $$invalidate(9, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                return _context.abrupt("return");
+
+              case 22:
                 // Filter by type and assign uuids
                 clients = filter(contents, "client");
                 projects = filter(contents, "project");
                 tasks = filter(contents, "task");
 
                 if (!(!clients.length && !projects.length && !tasks.length)) {
-                  _context.next = 24;
+                  _context.next = 28;
                   break;
                 }
 
-                $$invalidate(8, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                $$invalidate(9, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
                 return _context.abrupt("return");
 
-              case 24:
+              case 28:
                 // Empty arrays
-                $$invalidate(1, preparedClients = []);
-                $$invalidate(2, preparedProjects = []);
-                $$invalidate(3, preparedTasks = []); // Group entities
+                $$invalidate(2, preparedClients = []);
+                $$invalidate(3, preparedProjects = []);
+                $$invalidate(4, preparedTasks = []); // Group entities
 
                 associated = clients.map(function (client) {
                   client.projects = projects.filter(function (project) {
@@ -33841,14 +33887,14 @@
                   preparedClients.push(client);
                   return client;
                 });
-                $$invalidate(7, importPreviewData = associated);
+                $$invalidate(8, importPreviewData = associated);
 
-              case 29:
+              case 33:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[8, 14]]);
+        }, _callee, null, [[9, 15]]);
       }));
 
       return function previewFile() {
@@ -33865,8 +33911,8 @@
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                $$invalidate(4, loading = true);
-                $$invalidate(5, importError = "");
+                $$invalidate(5, loading = true);
+                $$invalidate(6, importError = "");
                 convertedImportData = {
                   lastCommit: "",
                   data: {
@@ -33918,8 +33964,8 @@
                 response = _context2.sent;
 
                 if (response.ok) {
-                  $$invalidate(7, importPreviewData = []);
-                  $$invalidate(6, successMessage = dist_4$1("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
+                  $$invalidate(8, importPreviewData = []);
+                  $$invalidate(7, successMessage = dist_4$1("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
                     clientsCount: preparedClients.length,
                     projectsCount: preparedProjects.length,
                     tasksCount: preparedTasks.length
@@ -33932,10 +33978,10 @@
               case 10:
                 _context2.prev = 10;
                 _context2.t0 = _context2["catch"](3);
-                $$invalidate(5, importError = _context2.t0);
+                $$invalidate(6, importError = _context2.t0);
 
               case 13:
-                $$invalidate(4, loading = false);
+                $$invalidate(5, loading = false);
 
               case 14:
               case "end":
@@ -33950,6 +33996,13 @@
       };
     }();
 
+    function select_binding($$value) {
+      binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+        delimiterInput = $$value;
+        $$invalidate(1, delimiterInput);
+      });
+    }
+
     function input_binding($$value) {
       binding_callbacks[$$value ? 'unshift' : 'push'](function () {
         fileInput = $$value;
@@ -33958,43 +34011,43 @@
     }
 
     var click_handler = function click_handler() {
-      $$invalidate(8, parseError = '');
+      $$invalidate(9, parseError = '');
     };
 
     var click_handler_1 = function click_handler_1() {
-      $$invalidate(5, importError = '');
+      $$invalidate(6, importError = '');
     };
 
     var click_handler_2 = function click_handler_2() {
-      $$invalidate(6, successMessage = '');
+      $$invalidate(7, successMessage = '');
     };
 
     var click_handler_3 = function click_handler_3() {
-      return $$invalidate(9, allOpen = false);
+      return $$invalidate(10, allOpen = false);
     };
 
     var click_handler_4 = function click_handler_4() {
-      return $$invalidate(9, allOpen = true);
+      return $$invalidate(10, allOpen = true);
     };
 
     $$self.$$set = function ($$props) {
-      if ('syncApiUrl' in $$props) $$invalidate(12, syncApiUrl = $$props.syncApiUrl);
-      if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+      if ('syncApiUrl' in $$props) $$invalidate(13, syncApiUrl = $$props.syncApiUrl);
+      if ('requestToken' in $$props) $$invalidate(14, requestToken = $$props.requestToken);
     };
 
-    $$invalidate(8, parseError = "");
+    $$invalidate(9, parseError = "");
 
-    $$invalidate(5, importError = "");
+    $$invalidate(6, importError = "");
 
-    $$invalidate(6, successMessage = "");
+    $$invalidate(7, successMessage = "");
 
-    $$invalidate(7, importPreviewData = []);
+    $$invalidate(8, importPreviewData = []);
 
-    $$invalidate(4, loading = false);
+    $$invalidate(5, loading = false);
 
-    $$invalidate(9, allOpen = false);
+    $$invalidate(10, allOpen = false);
 
-    return [fileInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, requestToken, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
+    return [fileInput, delimiterInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, requestToken, select_binding, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
   }
 
   var Import = /*#__PURE__*/function (_SvelteComponent) {
@@ -34009,8 +34062,8 @@
 
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-        syncApiUrl: 12,
-        requestToken: 13
+        syncApiUrl: 13,
+        requestToken: 14
       }, null, [-1, -1]);
       return _this;
     }

@@ -8,6 +8,7 @@
 	import Overlay from "./Overlay.svelte";
 
 	let fileInput;
+	let delimiterInput;
 	$: parseError = "";
 	$: importError = "";
 	$: successMessage = "";
@@ -40,6 +41,7 @@
 	// Previews a given file
 	const previewFile = async () => {
 		if (fileInput && fileInput.files && fileInput.files.length) {
+			importPreviewData = [];
 			parseError = "";
 			const [file] = fileInput.files;
 			const fileReader = new FileReader();
@@ -60,8 +62,7 @@
 					parse(
 						fileReader.result,
 						{
-							// @TODO: Make delimiter configurable
-							delimiter: ";",
+							delimiter: delimiterInput && delimiterInput.value ? delimiterInput.value : ",",
 							// @TODO: Make encoding configurable
 							encoding: "utf-8",
 							columns: true
@@ -76,6 +77,14 @@
 				);
 			} catch (error) {
 				parseError = error;
+				return;
+			}
+
+			if (!contents || !contents.length) {
+				parseError = translate(
+					"timemanager",
+					"It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."
+				);
 				return;
 			}
 
@@ -202,6 +211,13 @@
 </script>
 
 <form on:submit|preventDefault={previewFile}>
+	<label>
+		{translate('timemanager', 'Select delimiter')}
+		<select name="delimiter" bind:this={delimiterInput}>
+			<option selected>,</option>
+			<option>;</option>
+		</select>
+	</label>
 	<label>
 		{translate('timemanager', 'Select CSV file')}
 		<br />

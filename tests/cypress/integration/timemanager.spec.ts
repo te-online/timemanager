@@ -91,6 +91,12 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).should("be.visible");
 		cy.contains("button", "Import now").click();
 
+		waitForOcDialog();
+		cy.contains(".oc-dialog", "Import successful").should("be.visible");
+		cy.contains("Done:").should("be.visible");
+		cy.contains("button", "Close").click();
+		waitForOcDialog();
+
 		// Inspect rows of clients after import
 		cy.get("a").contains("Clients").click();
 		cy.get("div.tm_item-row").should("have.length", clients.length);
@@ -138,11 +144,35 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			"be.visible"
 		);
 		cy.contains("button", "Close").click();
+		waitForOcDialog();
 		cy.contains(".oc-dialog", "Error reading CSV file").should("not.be.visible");
 	});
 
-	it("can import CSV file with comma delimiter", () => {
-		throw new Error("Add test here");
+	it("can import CSV file with semicolon delimiter", () => {
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as import test user
+		cy.get('input[name="user"]').type("import-test");
+		cy.get('input[name="password"]').type("import-test-password");
+		cy.get('input[type="submit"]').click();
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+
+		// Navigate to tools page
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Tools").click();
+
+		// Select file
+		cy.get('input[type="file"]').selectFile("cypress/fixtures/test-data-semicolon.csv");
+		cy.get('select[name="delimiter]').select(";");
+		cy.contains("button", "Generate preview from file").click();
+
+		// Check counts in preview
+		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).should("be.visible");
+		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).should("be.visible");
+		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).should("be.visible");
 	});
 
 	it("can create clients", () => {

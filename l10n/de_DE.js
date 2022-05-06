@@ -132,7 +132,7 @@ OC.L10N.register(
 		"Within the CSV file, relationships are determined by %sName%s, so make sure there are no duplicate names within each type of object":
 			"Verknüpfungen innerhalb der CSV-Datei werden über die %sName%s Spalte gemacht; daher sollte es keine Einträge mit gleichem Namen innerhalb eines Objektstyps geben",
 		"UTF-8 is the only supported file encoding": "UTF-8 ist die einzige unterstützte Dateikodierung",
-		"%s;%s is the only supported delimiter": "%s;%s ist das einzige unterstützte Trennzeichen",
+		"%s;%s and %s,%s are the only supported delimiters": "%s;%s und %s,%s sind die einzigen unterstützten Trennzeichen",
 		"Time entries cannot be imported": "Zeiteinträge können nicht importiert werden",
 		"Show overview of expected CSV columns": "Zeige Überblick der erwarteten CSV Spalten",
 		"Column name": "Titel der Spalte",

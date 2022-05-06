@@ -24,7 +24,7 @@ $l = \OC::$server->getL10N("timemanager");
 					<li><?php p($l->t("Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks")); ?></li>
 					<li><?php echo $l->t("Within the CSV file, relationships are determined by %sName%s, so make sure there are no duplicate names within each type of object", ['<code>', '</code>']); ?></li>
 					<li><?php p($l->t("UTF-8 is the only supported file encoding")); ?></li>
-					<li><?php echo $l->t("%s;%s is the only supported delimiter", ['<code>', '</code>']); ?></li>
+					<li><?php echo $l->t("%s;%s and %s,%s are the only supported delimiters", ['<code>', '</code>', '<code>', '</code>']); ?></li>
 					<li><?php p($l->t("Time entries cannot be imported")); ?></li>
 				</ul>
 			</div>
