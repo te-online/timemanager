@@ -146,7 +146,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		);
 		cy.contains("button", "Close").click();
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Error reading CSV file").should("not.be.visible");
+		cy.contains(".oc-dialog", "Error reading CSV file").should("not.exist");
 	});
 
 	it("can import CSV file with semicolon delimiter", () => {
