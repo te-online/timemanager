@@ -112,7 +112,31 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 	});
 
 	it("shows an error message if CSV cannot be parsed", () => {
-		throw new Error("Add test here");
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as import test user
+		cy.get('input[name="user"]').type("import-test");
+		cy.get('input[name="password"]').type("import-test-password");
+		cy.get('input[type="submit"]').click();
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+
+		// Navigate to tools page
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Tools").click();
+
+		// Select file
+		cy.get('input[type="file"]').selectFile("cypress/fixtures/unreadable.csv");
+
+		waitForOcDialog();
+		cy.contains(".oc-dialog", "Error reading CSV file").should("be.visible");
+		cy.contains("It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks.").should(
+			"be.visible"
+		);
+		cy.contains("button", "Close").click();
+		cy.contains(".oc-dialog", "Error reading CSV file").should("not.be.visible");
 	});
 
 	it("can import CSV file with comma delimiter", () => {

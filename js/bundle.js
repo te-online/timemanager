@@ -14219,7 +14219,7 @@
         /*loading*/
         ctx[5],
         $$slots: {
-          default: [create_default_slot$7]
+          default: [create_default_slot$8]
         },
         $$scope: {
           ctx: ctx
@@ -14269,7 +14269,7 @@
   } // (56:1) <Overlay {loading}>
 
 
-  function create_default_slot$7(ctx) {
+  function create_default_slot$8(ctx) {
     var clienteditor;
     var current;
     clienteditor = new ClientEditor({
@@ -14908,7 +14908,7 @@
         /*loading*/
         ctx[7],
         $$slots: {
-          default: [create_default_slot$6]
+          default: [create_default_slot$7]
         },
         $$scope: {
           ctx: ctx
@@ -14958,7 +14958,7 @@
   } // (54:1) <Overlay {loading}>
 
 
-  function create_default_slot$6(ctx) {
+  function create_default_slot$7(ctx) {
     var projecteditor;
     var current;
     projecteditor = new ProjectEditor({
@@ -15649,7 +15649,7 @@
         /*loading*/
         ctx[8],
         $$slots: {
-          default: [create_default_slot$5]
+          default: [create_default_slot$6]
         },
         $$scope: {
           ctx: ctx
@@ -15699,7 +15699,7 @@
   } // (55:1) <Overlay {loading}>
 
 
-  function create_default_slot$5(ctx) {
+  function create_default_slot$6(ctx) {
     var taskeditor;
     var current;
     taskeditor = new TaskEditor({
@@ -16639,7 +16639,7 @@
         /*loading*/
         ctx[11],
         $$slots: {
-          default: [create_default_slot$4]
+          default: [create_default_slot$5]
         },
         $$scope: {
           ctx: ctx
@@ -16689,7 +16689,7 @@
   } // (63:1) <Overlay {loading}>
 
 
-  function create_default_slot$4(ctx) {
+  function create_default_slot$5(ctx) {
     var timeeditor;
     var current;
     timeeditor = new TimeEditor({
@@ -17056,7 +17056,7 @@
     overlay = new Overlay({
       props: {
         $$slots: {
-          default: [create_default_slot$3]
+          default: [create_default_slot$4]
         },
         $$scope: {
           ctx: ctx
@@ -17101,7 +17101,7 @@
   } // (38:1) <Overlay>
 
 
-  function create_default_slot$3(ctx) {
+  function create_default_slot$4(ctx) {
     var div1;
     var t0;
     var t1;
@@ -17771,7 +17771,7 @@
           /*itemHeight*/
           ctx[8],
           $$slots: {
-            default: [create_default_slot$2, ({
+            default: [create_default_slot$3, ({
               item,
               i
             }) => ({
@@ -18268,7 +18268,7 @@
   } // (287:8) <svelte:component             this={VirtualList}             {items}             {itemHeight}             let:item             let:i>
 
 
-  function create_default_slot$2(ctx) {
+  function create_default_slot$3(ctx) {
     let div;
     let switch_instance;
     let current;
@@ -22561,7 +22561,7 @@
     overlay = new Overlay({
       props: {
         $$slots: {
-          default: [create_default_slot$1]
+          default: [create_default_slot$2]
         },
         $$scope: {
           ctx: ctx
@@ -22792,7 +22792,7 @@
   } // (79:1) <Overlay>
 
 
-  function create_default_slot$1(ctx) {
+  function create_default_slot$2(ctx) {
     var div2;
     var label;
     var t0_value = dist_4$1("timemanager", "Share with") + "";
@@ -23681,7 +23681,7 @@
     overlay = new Overlay({
       props: {
         $$slots: {
-          default: [create_default_slot]
+          default: [create_default_slot$1]
         },
         $$scope: {
           ctx: ctx
@@ -23726,7 +23726,7 @@
   } // (56:1) <Overlay>
 
 
-  function create_default_slot(ctx) {
+  function create_default_slot$1(ctx) {
     var div1;
     var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
     var t0;
@@ -32401,129 +32401,390 @@
 
   function get_each_context(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[19] = list[i];
+    child_ctx[22] = list[i];
     return child_ctx;
   }
 
   function get_each_context_1(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[22] = list[i];
+    child_ctx[25] = list[i];
     return child_ctx;
   }
 
   function get_each_context_2(ctx, list, i) {
     var child_ctx = ctx.slice();
-    child_ctx[25] = list[i];
+    child_ctx[28] = list[i];
     return child_ctx;
-  } // (208:0) {#if parseError}
+  } // (213:0) {#if parseError}
 
 
   function create_if_block_6(ctx) {
-    var div;
-    var t0_value = dist_4$1('timemanager', 'CSV parse error:') + "";
-    var t0;
-    var t1;
-    var t2;
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot_2]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
     return {
       c: function c() {
-        div = element("div");
-        t0 = text(t0_value);
-        t1 = space$1();
-        t2 = text(
-        /*parseError*/
-        ctx[8]);
-        attr(div, "class", "error");
+        create_component(overlay.$$.fragment);
       },
       m: function m(target, anchor) {
-        insert(target, div, anchor);
-        append(div, t0);
-        append(div, t1);
-        append(div, t2);
+        mount_component(overlay, target, anchor);
+        current = true;
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        var overlay_changes = {};
+
+        if (dirty[0] &
         /*parseError*/
-        256) set_data(t2,
+        256 | dirty[1] &
+        /*$$scope*/
+        1) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (214:1) <Overlay>
+
+
+  function create_default_slot_2(ctx) {
+    var div2;
+    var h3;
+    var t1;
+    var div0;
+    var t2_value = dist_4$1('timemanager', 'CSV parse error:') + "";
+    var t2;
+    var t3;
+    var t4;
+    var t5;
+    var div1;
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div2 = element("div");
+        h3 = element("h3");
+        h3.textContent = "".concat(dist_4$1('timemanager', 'Error reading CSV file'));
+        t1 = space$1();
+        div0 = element("div");
+        t2 = text(t2_value);
+        t3 = space$1();
+        t4 = text(
+        /*parseError*/
+        ctx[8]);
+        t5 = space$1();
+        div1 = element("div");
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+        attr(div0, "class", "error");
+        attr(button, "class", "button");
+        attr(div1, "class", "oc-dialog-buttonrow onebutton");
+        attr(div2, "class", "inner");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, h3);
+        append(div2, t1);
+        append(div2, div0);
+        append(div0, t2);
+        append(div0, t3);
+        append(div0, t4);
+        append(div2, t5);
+        append(div2, div1);
+        append(div1, button);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(
+          /*click_handler*/
+          ctx[15]));
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty[0] &
+        /*parseError*/
+        256) set_data(t4,
         /*parseError*/
         ctx[8]);
       },
       d: function d(detaching) {
-        if (detaching) detach(div);
+        if (detaching) detach(div2);
+        mounted = false;
+        dispose();
       }
     };
-  } // (212:0) {#if importError}
+  } // (231:0) {#if importError}
 
 
   function create_if_block_5(ctx) {
-    var div;
-    var t0_value = dist_4$1('timemanager', 'Import API error:') + "";
-    var t0;
-    var t1;
-    var t2;
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot_1]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
     return {
       c: function c() {
-        div = element("div");
-        t0 = text(t0_value);
-        t1 = space$1();
-        t2 = text(
-        /*importError*/
-        ctx[5]);
-        attr(div, "class", "error");
+        create_component(overlay.$$.fragment);
       },
       m: function m(target, anchor) {
-        insert(target, div, anchor);
-        append(div, t0);
-        append(div, t1);
-        append(div, t2);
+        mount_component(overlay, target, anchor);
+        current = true;
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        var overlay_changes = {};
+
+        if (dirty[0] &
         /*importError*/
-        32) set_data(t2,
+        32 | dirty[1] &
+        /*$$scope*/
+        1) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (232:1) <Overlay>
+
+
+  function create_default_slot_1(ctx) {
+    var div2;
+    var h3;
+    var t1;
+    var div0;
+    var t2_value = dist_4$1('timemanager', 'Import API error:') + "";
+    var t2;
+    var t3;
+    var t4;
+    var t5;
+    var div1;
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div2 = element("div");
+        h3 = element("h3");
+        h3.textContent = "".concat(dist_4$1('timemanager', 'Error importing entries'));
+        t1 = space$1();
+        div0 = element("div");
+        t2 = text(t2_value);
+        t3 = space$1();
+        t4 = text(
+        /*importError*/
+        ctx[5]);
+        t5 = space$1();
+        div1 = element("div");
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+        attr(div0, "class", "error");
+        attr(button, "class", "button");
+        attr(div1, "class", "oc-dialog-buttonrow onebutton");
+        attr(div2, "class", "inner");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, h3);
+        append(div2, t1);
+        append(div2, div0);
+        append(div0, t2);
+        append(div0, t3);
+        append(div0, t4);
+        append(div2, t5);
+        append(div2, div1);
+        append(div1, button);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(
+          /*click_handler_1*/
+          ctx[16]));
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty[0] &
+        /*importError*/
+        32) set_data(t4,
         /*importError*/
         ctx[5]);
       },
       d: function d(detaching) {
-        if (detaching) detach(div);
+        if (detaching) detach(div2);
+        mounted = false;
+        dispose();
       }
     };
-  } // (216:0) {#if successMessage}
+  } // (249:0) {#if successMessage}
 
 
   function create_if_block_4(ctx) {
-    var div;
-    var t0_value = dist_4$1('timemanager', 'Done:') + "";
-    var t0;
-    var t1;
-    var t2;
+    var overlay;
+    var current;
+    overlay = new Overlay({
+      props: {
+        $$slots: {
+          default: [create_default_slot]
+        },
+        $$scope: {
+          ctx: ctx
+        }
+      }
+    });
     return {
       c: function c() {
-        div = element("div");
-        t0 = text(t0_value);
-        t1 = space$1();
-        t2 = text(
-        /*successMessage*/
-        ctx[6]);
-        attr(div, "class", "success");
+        create_component(overlay.$$.fragment);
       },
       m: function m(target, anchor) {
-        insert(target, div, anchor);
-        append(div, t0);
-        append(div, t1);
-        append(div, t2);
+        mount_component(overlay, target, anchor);
+        current = true;
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        var overlay_changes = {};
+
+        if (dirty[0] &
         /*successMessage*/
-        64) set_data(t2,
+        64 | dirty[1] &
+        /*$$scope*/
+        1) {
+          overlay_changes.$$scope = {
+            dirty: dirty,
+            ctx: ctx
+          };
+        }
+
+        overlay.$set(overlay_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(overlay.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(overlay.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        destroy_component(overlay, detaching);
+      }
+    };
+  } // (250:1) <Overlay>
+
+
+  function create_default_slot(ctx) {
+    var div2;
+    var h3;
+    var t1;
+    var div0;
+    var t2_value = dist_4$1('timemanager', 'Done:') + "";
+    var t2;
+    var t3;
+    var t4;
+    var t5;
+    var div1;
+    var button;
+    var mounted;
+    var dispose;
+    return {
+      c: function c() {
+        div2 = element("div");
+        h3 = element("h3");
+        h3.textContent = "".concat(dist_4$1('timemanager', 'Import successful'));
+        t1 = space$1();
+        div0 = element("div");
+        t2 = text(t2_value);
+        t3 = space$1();
+        t4 = text(
+        /*successMessage*/
+        ctx[6]);
+        t5 = space$1();
+        div1 = element("div");
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+        attr(div0, "class", "error");
+        attr(button, "class", "button");
+        attr(div1, "class", "oc-dialog-buttonrow onebutton");
+        attr(div2, "class", "inner");
+      },
+      m: function m(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, h3);
+        append(div2, t1);
+        append(div2, div0);
+        append(div0, t2);
+        append(div0, t3);
+        append(div0, t4);
+        append(div2, t5);
+        append(div2, div1);
+        append(div1, button);
+
+        if (!mounted) {
+          dispose = listen(button, "click", prevent_default(
+          /*click_handler_2*/
+          ctx[17]));
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
+        if (dirty[0] &
+        /*successMessage*/
+        64) set_data(t4,
         /*successMessage*/
         ctx[6]);
       },
       d: function d(detaching) {
-        if (detaching) detach(div);
+        if (detaching) detach(div2);
+        mounted = false;
+        dispose();
       }
     };
-  } // (220:0) {#if importPreviewData.length}
+  } // (267:0) {#if importPreviewData.length}
 
 
   function create_if_block_3(ctx) {
@@ -32612,25 +32873,25 @@
 
         if (!mounted) {
           dispose = [listen(button0, "click", prevent_default(
-          /*click_handler*/
-          ctx[14])), listen(button1, "click", prevent_default(
-          /*click_handler_1*/
-          ctx[15]))];
+          /*click_handler_3*/
+          ctx[18])), listen(button1, "click", prevent_default(
+          /*click_handler_4*/
+          ctx[19]))];
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        if (dirty[0] &
         /*preparedClients*/
         2 && t7_value !== (t7_value =
         /*preparedClients*/
         ctx[1].length + "")) set_data(t7, t7_value);
-        if (dirty &
+        if (dirty[0] &
         /*preparedProjects*/
         4 && t9_value !== (t9_value =
         /*preparedProjects*/
         ctx[2].length + "")) set_data(t9, t9_value);
-        if (dirty &
+        if (dirty[0] &
         /*preparedTasks*/
         8 && t11_value !== (t11_value =
         /*preparedTasks*/
@@ -32644,7 +32905,7 @@
         run_all(dispose);
       }
     };
-  } // (255:2) {#if client.projects}
+  } // (302:2) {#if client.projects}
 
 
   function create_if_block_1(ctx) {
@@ -32653,7 +32914,7 @@
     var t1;
     var each_value_1 =
     /*client*/
-    ctx[19].projects;
+    ctx[22].projects;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_1.length; i += 1) {
@@ -32685,12 +32946,12 @@
         }
       },
       p: function p(ctx, dirty) {
-        if (dirty &
-        /*allOpen, importPreviewData, translate*/
+        if (dirty[0] &
+        /*allOpen, importPreviewData*/
         640) {
           each_value_1 =
           /*client*/
-          ctx[19].projects;
+          ctx[22].projects;
 
           var _i3;
 
@@ -32715,7 +32976,7 @@
           each_blocks.length = each_value_1.length;
         }
 
-        if (dirty &
+        if (dirty[0] &
         /*allOpen*/
         512) {
           details.open =
@@ -32728,7 +32989,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (268:6) {#if project.tasks}
+  } // (315:6) {#if project.tasks}
 
 
   function create_if_block_2(ctx) {
@@ -32737,7 +32998,7 @@
     var t1;
     var each_value_2 =
     /*project*/
-    ctx[22].tasks;
+    ctx[25].tasks;
     var each_blocks = [];
 
     for (var i = 0; i < each_value_2.length; i += 1) {
@@ -32769,12 +33030,12 @@
         }
       },
       p: function p(ctx, dirty) {
-        if (dirty &
-        /*importPreviewData, translate*/
+        if (dirty[0] &
+        /*importPreviewData*/
         128) {
           each_value_2 =
           /*project*/
-          ctx[22].tasks;
+          ctx[25].tasks;
 
           var _i6;
 
@@ -32799,7 +33060,7 @@
           each_blocks.length = each_value_2.length;
         }
 
-        if (dirty &
+        if (dirty[0] &
         /*allOpen*/
         512) {
           details.open =
@@ -32812,7 +33073,7 @@
         destroy_each(each_blocks, detaching);
       }
     };
-  } // (271:8) {#each project.tasks as task}
+  } // (318:8) {#each project.tasks as task}
 
 
   function create_each_block_2(ctx) {
@@ -32823,7 +33084,7 @@
     var h3;
     var t2_value =
     /*task*/
-    ctx[25].name + "";
+    ctx[28].name + "";
     var t2;
     var t3;
     var div1;
@@ -32831,7 +33092,7 @@
     var t5;
     var t6_value =
     /*task*/
-    ctx[25].note + "";
+    ctx[28].note + "";
     var t6;
     return {
       c: function c() {
@@ -32866,22 +33127,22 @@
         append(div1, t6);
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t2_value !== (t2_value =
         /*task*/
-        ctx[25].name + "")) set_data(t2, t2_value);
-        if (dirty &
+        ctx[28].name + "")) set_data(t2, t2_value);
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t6_value !== (t6_value =
         /*task*/
-        ctx[25].note + "")) set_data(t6, t6_value);
+        ctx[28].note + "")) set_data(t6, t6_value);
       },
       d: function d(detaching) {
         if (detaching) detach(div2);
       }
     };
-  } // (258:4) {#each client.projects as project}
+  } // (305:4) {#each client.projects as project}
 
 
   function create_each_block_1(ctx) {
@@ -32892,7 +33153,7 @@
     var h3;
     var t2_value =
     /*project*/
-    ctx[22].name + "";
+    ctx[25].name + "";
     var t2;
     var t3;
     var div1;
@@ -32900,12 +33161,12 @@
     var t5;
     var t6_value =
     /*project*/
-    ctx[22].note + "";
+    ctx[25].note + "";
     var t6;
     var t7;
     var if_block =
     /*project*/
-    ctx[22].tasks && create_if_block_2(ctx);
+    ctx[25].tasks && create_if_block_2(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -32943,20 +33204,20 @@
         if (if_block) if_block.m(div2, null);
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t2_value !== (t2_value =
         /*project*/
-        ctx[22].name + "")) set_data(t2, t2_value);
-        if (dirty &
+        ctx[25].name + "")) set_data(t2, t2_value);
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t6_value !== (t6_value =
         /*project*/
-        ctx[22].note + "")) set_data(t6, t6_value);
+        ctx[25].note + "")) set_data(t6, t6_value);
 
         if (
         /*project*/
-        ctx[22].tasks) {
+        ctx[25].tasks) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -32974,7 +33235,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (245:0) {#each importPreviewData as client}
+  } // (292:0) {#each importPreviewData as client}
 
 
   function create_each_block(ctx) {
@@ -32985,7 +33246,7 @@
     var h3;
     var t2_value =
     /*client*/
-    ctx[19].name + "";
+    ctx[22].name + "";
     var t2;
     var t3;
     var div1;
@@ -32993,12 +33254,12 @@
     var t5;
     var t6_value =
     /*client*/
-    ctx[19].note + "";
+    ctx[22].note + "";
     var t6;
     var t7;
     var if_block =
     /*client*/
-    ctx[19].projects && create_if_block_1(ctx);
+    ctx[22].projects && create_if_block_1(ctx);
     return {
       c: function c() {
         div2 = element("div");
@@ -33036,20 +33297,20 @@
         if (if_block) if_block.m(div2, null);
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t2_value !== (t2_value =
         /*client*/
-        ctx[19].name + "")) set_data(t2, t2_value);
-        if (dirty &
+        ctx[22].name + "")) set_data(t2, t2_value);
+        if (dirty[0] &
         /*importPreviewData*/
         128 && t6_value !== (t6_value =
         /*client*/
-        ctx[19].note + "")) set_data(t6, t6_value);
+        ctx[22].note + "")) set_data(t6, t6_value);
 
         if (
         /*client*/
-        ctx[19].projects) {
+        ctx[22].projects) {
           if (if_block) {
             if_block.p(ctx, dirty);
           } else {
@@ -33067,7 +33328,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (292:0) {#if importPreviewData.length}
+  } // (339:0) {#if importPreviewData.length}
 
 
   function create_if_block(ctx) {
@@ -33100,12 +33361,12 @@
         if (!mounted) {
           dispose = listen(form, "submit", prevent_default(
           /*doImport*/
-          ctx[10]));
+          ctx[11]));
           mounted = true;
         }
       },
       p: function p(ctx, dirty) {
-        if (dirty &
+        if (dirty[0] &
         /*loading*/
         16) {
           button.disabled =
@@ -33113,7 +33374,7 @@
           ctx[4];
         }
 
-        if (dirty &
+        if (dirty[0] &
         /*loading*/
         16 && form_class_value !== (form_class_value =
         /*loading*/
@@ -33130,6 +33391,7 @@
   }
 
   function create_fragment(ctx) {
+    var form;
     var label;
     var t0_value = dist_4$1('timemanager', 'Select CSV file') + "";
     var t0;
@@ -33138,12 +33400,17 @@
     var t2;
     var input;
     var t3;
-    var t4;
+    var button;
     var t5;
     var t6;
     var t7;
     var t8;
+    var t9;
+    var t10;
     var if_block4_anchor;
+    var current;
+    var mounted;
+    var dispose;
     var if_block0 =
     /*parseError*/
     ctx[8] && create_if_block_6(ctx);
@@ -33170,6 +33437,7 @@
     ctx[7].length && create_if_block(ctx);
     return {
       c: function c() {
+        form = element("form");
         label = element("label");
         t0 = text(t0_value);
         t1 = space$1();
@@ -33177,26 +33445,31 @@
         t2 = space$1();
         input = element("input");
         t3 = space$1();
-        if (if_block0) if_block0.c();
-        t4 = space$1();
-        if (if_block1) if_block1.c();
+        button = element("button");
+        button.textContent = "".concat(dist_4$1('timemanager', 'Generate preview from file'));
         t5 = space$1();
-        if (if_block2) if_block2.c();
+        if (if_block0) if_block0.c();
         t6 = space$1();
-        if (if_block3) if_block3.c();
+        if (if_block1) if_block1.c();
         t7 = space$1();
+        if (if_block2) if_block2.c();
+        t8 = space$1();
+        if (if_block3) if_block3.c();
+        t9 = space$1();
 
         for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
           each_blocks[_i7].c();
         }
 
-        t8 = space$1();
+        t10 = space$1();
         if (if_block4) if_block4.c();
         if_block4_anchor = empty();
         attr(input, "type", "file");
+        attr(button, "type", "submit");
       },
       m: function m(target, anchor) {
-        insert(target, label, anchor);
+        insert(target, form, anchor);
+        append(form, label);
         append(label, t0);
         append(label, t1);
         append(label, br);
@@ -33204,42 +33477,59 @@
         append(label, input);
         /*input_binding*/
 
-        ctx[13](input);
-        insert(target, t3, anchor);
-        if (if_block0) if_block0.m(target, anchor);
-        insert(target, t4, anchor);
-        if (if_block1) if_block1.m(target, anchor);
+        ctx[14](input);
+        append(form, t3);
+        append(form, button);
         insert(target, t5, anchor);
-        if (if_block2) if_block2.m(target, anchor);
+        if (if_block0) if_block0.m(target, anchor);
         insert(target, t6, anchor);
-        if (if_block3) if_block3.m(target, anchor);
+        if (if_block1) if_block1.m(target, anchor);
         insert(target, t7, anchor);
+        if (if_block2) if_block2.m(target, anchor);
+        insert(target, t8, anchor);
+        if (if_block3) if_block3.m(target, anchor);
+        insert(target, t9, anchor);
 
         for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
           each_blocks[_i8].m(target, anchor);
         }
 
-        insert(target, t8, anchor);
+        insert(target, t10, anchor);
         if (if_block4) if_block4.m(target, anchor);
         insert(target, if_block4_anchor, anchor);
-      },
-      p: function p(ctx, _ref) {
-        var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
+        current = true;
 
+        if (!mounted) {
+          dispose = listen(form, "submit", prevent_default(
+          /*previewFile*/
+          ctx[10]));
+          mounted = true;
+        }
+      },
+      p: function p(ctx, dirty) {
         if (
         /*parseError*/
         ctx[8]) {
           if (if_block0) {
             if_block0.p(ctx, dirty);
+
+            if (dirty[0] &
+            /*parseError*/
+            256) {
+              transition_in(if_block0, 1);
+            }
           } else {
             if_block0 = create_if_block_6(ctx);
             if_block0.c();
-            if_block0.m(t4.parentNode, t4);
+            transition_in(if_block0, 1);
+            if_block0.m(t6.parentNode, t6);
           }
         } else if (if_block0) {
-          if_block0.d(1);
-          if_block0 = null;
+          group_outros();
+          transition_out(if_block0, 1, 1, function () {
+            if_block0 = null;
+          });
+          check_outros();
         }
 
         if (
@@ -33247,14 +33537,24 @@
         ctx[5]) {
           if (if_block1) {
             if_block1.p(ctx, dirty);
+
+            if (dirty[0] &
+            /*importError*/
+            32) {
+              transition_in(if_block1, 1);
+            }
           } else {
             if_block1 = create_if_block_5(ctx);
             if_block1.c();
-            if_block1.m(t5.parentNode, t5);
+            transition_in(if_block1, 1);
+            if_block1.m(t7.parentNode, t7);
           }
         } else if (if_block1) {
-          if_block1.d(1);
-          if_block1 = null;
+          group_outros();
+          transition_out(if_block1, 1, 1, function () {
+            if_block1 = null;
+          });
+          check_outros();
         }
 
         if (
@@ -33262,14 +33562,24 @@
         ctx[6]) {
           if (if_block2) {
             if_block2.p(ctx, dirty);
+
+            if (dirty[0] &
+            /*successMessage*/
+            64) {
+              transition_in(if_block2, 1);
+            }
           } else {
             if_block2 = create_if_block_4(ctx);
             if_block2.c();
-            if_block2.m(t6.parentNode, t6);
+            transition_in(if_block2, 1);
+            if_block2.m(t8.parentNode, t8);
           }
         } else if (if_block2) {
-          if_block2.d(1);
-          if_block2 = null;
+          group_outros();
+          transition_out(if_block2, 1, 1, function () {
+            if_block2 = null;
+          });
+          check_outros();
         }
 
         if (
@@ -33280,15 +33590,15 @@
           } else {
             if_block3 = create_if_block_3(ctx);
             if_block3.c();
-            if_block3.m(t7.parentNode, t7);
+            if_block3.m(t9.parentNode, t9);
           }
         } else if (if_block3) {
           if_block3.d(1);
           if_block3 = null;
         }
 
-        if (dirty &
-        /*allOpen, importPreviewData, translate*/
+        if (dirty[0] &
+        /*allOpen, importPreviewData*/
         640) {
           each_value =
           /*importPreviewData*/
@@ -33306,7 +33616,7 @@
 
               each_blocks[_i9].c();
 
-              each_blocks[_i9].m(t8.parentNode, t8);
+              each_blocks[_i9].m(t10.parentNode, t10);
             }
           }
 
@@ -33332,26 +33642,39 @@
           if_block4 = null;
         }
       },
-      i: noop$1,
-      o: noop$1,
+      i: function i(local) {
+        if (current) return;
+        transition_in(if_block0);
+        transition_in(if_block1);
+        transition_in(if_block2);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(if_block0);
+        transition_out(if_block1);
+        transition_out(if_block2);
+        current = false;
+      },
       d: function d(detaching) {
-        if (detaching) detach(label);
+        if (detaching) detach(form);
         /*input_binding*/
 
-        ctx[13](null);
-        if (detaching) detach(t3);
-        if (if_block0) if_block0.d(detaching);
-        if (detaching) detach(t4);
-        if (if_block1) if_block1.d(detaching);
+        ctx[14](null);
         if (detaching) detach(t5);
-        if (if_block2) if_block2.d(detaching);
+        if (if_block0) if_block0.d(detaching);
         if (detaching) detach(t6);
-        if (if_block3) if_block3.d(detaching);
+        if (if_block1) if_block1.d(detaching);
         if (detaching) detach(t7);
-        destroy_each(each_blocks, detaching);
+        if (if_block2) if_block2.d(detaching);
         if (detaching) detach(t8);
+        if (if_block3) if_block3.d(detaching);
+        if (detaching) detach(t9);
+        destroy_each(each_blocks, detaching);
+        if (detaching) detach(t10);
         if (if_block4) if_block4.d(detaching);
         if (detaching) detach(if_block4_anchor);
+        mounted = false;
+        dispose();
       }
     };
   }
@@ -33400,20 +33723,20 @@
 
 
     var previewFile = /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-        var _e$target$files, file, fileReader, contents, clients, projects, tasks, associated;
+      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _fileInput$files, file, fileReader, contents, clients, projects, tasks, associated;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(e && e.target && e.target.files && e.target.files.length)) {
-                  _context.next = 25;
+                if (!(fileInput && fileInput.files && fileInput.files.length)) {
+                  _context.next = 29;
                   break;
                 }
 
                 $$invalidate(8, parseError = "");
-                _e$target$files = _slicedToArray(e.target.files, 1), file = _e$target$files[0];
+                _fileInput$files = _slicedToArray(fileInput.files, 1), file = _fileInput$files[0];
                 fileReader = new FileReader();
                 fileReader.readAsText(file);
                 _context.next = 7;
@@ -33449,20 +33772,31 @@
 
               case 11:
                 contents = _context.sent;
-                _context.next = 17;
+                _context.next = 18;
                 break;
 
               case 14:
                 _context.prev = 14;
                 _context.t0 = _context["catch"](8);
                 $$invalidate(8, parseError = _context.t0);
+                return _context.abrupt("return");
 
-              case 17:
+              case 18:
                 // Filter by type and assign uuids
                 clients = filter(contents, "client");
                 projects = filter(contents, "project");
-                tasks = filter(contents, "task"); // Empty arrays
+                tasks = filter(contents, "task");
 
+                if (!(!clients.length && !projects.length && !tasks.length)) {
+                  _context.next = 24;
+                  break;
+                }
+
+                $$invalidate(8, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                return _context.abrupt("return");
+
+              case 24:
+                // Empty arrays
                 $$invalidate(1, preparedClients = []);
                 $$invalidate(2, preparedProjects = []);
                 $$invalidate(3, preparedTasks = []); // Group entities
@@ -33509,7 +33843,7 @@
                 });
                 $$invalidate(7, importPreviewData = associated);
 
-              case 25:
+              case 29:
               case "end":
                 return _context.stop();
             }
@@ -33517,21 +33851,15 @@
         }, _callee, null, [[8, 14]]);
       }));
 
-      return function previewFile(_x) {
-        return _ref3.apply(this, arguments);
+      return function previewFile() {
+        return _ref.apply(this, arguments);
       };
     }(); // @TODO: LOW: List unassociated elements (not in import & not in store)
+    // Post data to JSON API
 
-
-    onMount(function () {
-      fileInput.addEventListener("change", previewFile);
-      return function () {
-        fileInput.removeEventListener("change", previewFile);
-      };
-    }); // Post data to JSON API
 
     var doImport = /*#__PURE__*/function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
         var convertedImportData, response;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -33618,7 +33946,7 @@
       }));
 
       return function doImport() {
-        return _ref4.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       };
     }();
 
@@ -33630,16 +33958,28 @@
     }
 
     var click_handler = function click_handler() {
-      return $$invalidate(9, allOpen = false);
+      $$invalidate(8, parseError = '');
     };
 
     var click_handler_1 = function click_handler_1() {
+      $$invalidate(5, importError = '');
+    };
+
+    var click_handler_2 = function click_handler_2() {
+      $$invalidate(6, successMessage = '');
+    };
+
+    var click_handler_3 = function click_handler_3() {
+      return $$invalidate(9, allOpen = false);
+    };
+
+    var click_handler_4 = function click_handler_4() {
       return $$invalidate(9, allOpen = true);
     };
 
     $$self.$$set = function ($$props) {
-      if ('syncApiUrl' in $$props) $$invalidate(11, syncApiUrl = $$props.syncApiUrl);
-      if ('requestToken' in $$props) $$invalidate(12, requestToken = $$props.requestToken);
+      if ('syncApiUrl' in $$props) $$invalidate(12, syncApiUrl = $$props.syncApiUrl);
+      if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
     };
 
     $$invalidate(8, parseError = "");
@@ -33654,7 +33994,7 @@
 
     $$invalidate(9, allOpen = false);
 
-    return [fileInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, doImport, syncApiUrl, requestToken, input_binding, click_handler, click_handler_1];
+    return [fileInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, requestToken, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
   }
 
   var Import = /*#__PURE__*/function (_SvelteComponent) {
@@ -33669,9 +34009,9 @@
 
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-        syncApiUrl: 11,
-        requestToken: 12
-      });
+        syncApiUrl: 12,
+        requestToken: 13
+      }, null, [-1, -1]);
       return _this;
     }
 

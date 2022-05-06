@@ -2,10 +2,10 @@
 	export let syncApiUrl;
 	export let requestToken;
 
-	import { onMount } from "svelte";
 	import { parse } from "csv-parse/dist/esm";
 	import { v4 as uuidv4 } from "uuid/dist/esm-browser";
 	import { translate } from "@nextcloud/l10n";
+	import Overlay from "./Overlay.svelte";
 
 	let fileInput;
 	$: parseError = "";
@@ -38,10 +38,10 @@
 			.map(record => ({ ...record, uuid: uuidv4() }));
 
 	// Previews a given file
-	const previewFile = async e => {
-		if (e && e.target && e.target.files && e.target.files.length) {
+	const previewFile = async () => {
+		if (fileInput && fileInput.files && fileInput.files.length) {
 			parseError = "";
-			const [file] = e.target.files;
+			const [file] = fileInput.files;
 			const fileReader = new FileReader();
 			fileReader.readAsText(file);
 
@@ -76,12 +76,22 @@
 				);
 			} catch (error) {
 				parseError = error;
+				return;
 			}
 
 			// Filter by type and assign uuids
 			const clients = filter(contents, "client");
 			const projects = filter(contents, "project");
 			const tasks = filter(contents, "task");
+
+			if (!clients.length && !projects.length && !tasks.length) {
+				parseError = translate(
+					"timemanager",
+					"It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."
+				);
+				return;
+			}
+
 			// Empty arrays
 			preparedClients = [];
 			preparedProjects = [];
@@ -125,14 +135,6 @@
 			// @TODO: LOW: List unassociated elements (not in import & not in store)
 		}
 	};
-
-	onMount(() => {
-		fileInput.addEventListener("change", previewFile);
-
-		return () => {
-			fileInput.removeEventListener("change", previewFile);
-		};
-	});
 
 	// Post data to JSON API
 	const doImport = async () => {
@@ -199,22 +201,67 @@
 	};
 </script>
 
-<label>
-	{translate('timemanager', 'Select CSV file')}
-	<br />
-	<input type="file" bind:this={fileInput} />
-</label>
+<form on:submit|preventDefault={previewFile}>
+	<label>
+		{translate('timemanager', 'Select CSV file')}
+		<br />
+		<input type="file" bind:this={fileInput} />
+	</label>
+	<button type="submit">{translate('timemanager', 'Generate preview from file')}</button>
+</form>
 
 {#if parseError}
-	<div class="error">{translate('timemanager', 'CSV parse error:')} {parseError}</div>
+	<Overlay>
+		<div class="inner">
+			<h3>{translate('timemanager', 'Error reading CSV file')}</h3>
+			<div class="error">{translate('timemanager', 'CSV parse error:')} {parseError}</div>
+			<div class="oc-dialog-buttonrow onebutton">
+				<button
+					class="button"
+					on:click|preventDefault={() => {
+						parseError = '';
+					}}>
+					{translate('timemanager', 'Close')}
+				</button>
+			</div>
+		</div>
+	</Overlay>
 {/if}
 
 {#if importError}
-	<div class="error">{translate('timemanager', 'Import API error:')} {importError}</div>
+	<Overlay>
+		<div class="inner">
+			<h3>{translate('timemanager', 'Error importing entries')}</h3>
+			<div class="error">{translate('timemanager', 'Import API error:')} {importError}</div>
+			<div class="oc-dialog-buttonrow onebutton">
+				<button
+					class="button"
+					on:click|preventDefault={() => {
+						importError = '';
+					}}>
+					{translate('timemanager', 'Close')}
+				</button>
+			</div>
+		</div>
+	</Overlay>
 {/if}
 
 {#if successMessage}
-	<div class="success">{translate('timemanager', 'Done:')} {successMessage}</div>
+	<Overlay>
+		<div class="inner">
+			<h3>{translate('timemanager', 'Import successful')}</h3>
+			<div class="error">{translate('timemanager', 'Done:')} {successMessage}</div>
+			<div class="oc-dialog-buttonrow onebutton">
+				<button
+					class="button"
+					on:click|preventDefault={() => {
+						successMessage = '';
+					}}>
+					{translate('timemanager', 'Close')}
+				</button>
+			</div>
+		</div>
+	</Overlay>
 {/if}
 
 {#if importPreviewData.length}

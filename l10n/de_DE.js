@@ -168,6 +168,12 @@ OC.L10N.register(
 		"Share client": "Kunde teilen",
 		"Loading...": "Lädt...",
 		"Deleted user": "Gelöschter Benutzer",
+		"Error reading CSV file": "Fehler beim Lesen der CSV-Datei",
+		"It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks.":
+			"Sieht so aus, als ob dies keine CSV-Datei ist oder die Datei keine Kunden, Projekte oder Aufgaben enthält.",
+		"Error importing entries": "Fehler beim Importieren der Einträge",
+		"Import successful": "Import erfolgreich",
+		Close: "Schließen",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
