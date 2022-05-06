@@ -83,6 +83,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		// Select file
 		cy.get('input[type="file"]').selectFile("cypress/fixtures/test-data.csv");
+		cy.contains("button", "Generate preview from file").click();
 
 		// Check counts in preview
 		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).should("be.visible");
@@ -129,6 +130,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		// Select file
 		cy.get('input[type="file"]').selectFile("cypress/fixtures/unreadable.csv");
+		cy.contains("button", "Generate preview from file").click();
 
 		waitForOcDialog();
 		cy.contains(".oc-dialog", "Error reading CSV file").should("be.visible");
