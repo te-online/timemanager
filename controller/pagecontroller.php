@@ -496,7 +496,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function projects($client = null) {
-		$clients = $this->clientMapper->findActiveForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser("created", true);
 		if ($client) {
 			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client, "created", true);
 			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name", "created", true);
@@ -658,8 +658,8 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function tasks($project) {
-		$clients = $this->clientMapper->findActiveForCurrentUser();
-		$projects = $this->projectMapper->findActiveForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser("created", true);
+		$projects = $this->projectMapper->findActiveForCurrentUser("created", true);
 		$sharedBy = null;
 		$sharees = [];
 		if ($project) {
@@ -827,9 +827,9 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function times($task) {
-		$clients = $this->clientMapper->findActiveForCurrentUser();
-		$projects = $this->projectMapper->findActiveForCurrentUser();
-		$tasks = $this->taskMapper->findActiveForCurrentUser();
+		$clients = $this->clientMapper->findActiveForCurrentUser("created", true);
+		$projects = $this->projectMapper->findActiveForCurrentUser("created", true);
+		$tasks = $this->taskMapper->findActiveForCurrentUser("created", true);
 		$sharedBy = null;
 		$sharees = [];
 		if ($task) {
