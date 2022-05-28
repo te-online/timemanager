@@ -950,6 +950,36 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Edit task").should("not.exist");
 	});
 
+	it("can list clients, projects, tasks shared with me", () => {
+		const sharedClient = clients[2];
+		const testuser = testusers[1];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as sharee test user
+		cy.get('input[name="user"]').type(testuser);
+		cy.get('input[name="password"]').type(`${testuser}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Projects").click();
+		cy.contains(".list-title", "Projects");
+		cy.contains("div.tm_item-row", sharedClient.Name);
+
+		cy.get("a").contains("Tasks").click();
+		cy.contains(".list-title", "Tasks");
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name);
+
+		cy.get("a").contains("Time entries").click();
+		cy.contains(".list-title", "Time entries");
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name);
+	});
+
 	it("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
 		cy.get("div#settings div#expand").click({ timeout: 4000 });
