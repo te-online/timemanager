@@ -9,7 +9,7 @@ $l = \OC::$server->getL10N('timemanager');
 
 <div id="app-content">
 	<div class="container">
-		<?php if($_['client'] && $_['project'] && $_['task']) { ?>
+		<?php if ($_['client'] && $_['project'] && $_['task']) { ?>
 			<div class="section">
 				<div class="tm_object-details">
 					<h2>
@@ -54,16 +54,16 @@ $l = \OC::$server->getL10N('timemanager');
 		<div class="section">
 			<div class="tm_item-list">
 				<h2 class="list-title"><?php p($l->t('Time entries')); ?></h2>
-				<?php if($_['task']) { ?>
+				<?php if ($_['task']) { ?>
 					<span data-svelte="TimeEditorDialog.svelte"></span>
 					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
-				<?php if(!$_['task']) { ?>
+				<?php if (!$_['task']) { ?>
 					<p><?php p($l->t('Select a task to show time entries for')); ?></p>
 					<form action="" method="get">
-						<?php if(count($_['tasks']) > 0) { ?>
+						<?php if (count($_['tasks']) > 0) { ?>
 							<select name="task">
-								<?php foreach(array_reverse($_['tasks']) as $task) {
+								<?php foreach ($_['tasks'] as $task) {
 									// Look up project for task
 									$project = array_reduce($_['projects'], function ($carry, $oneProject) use(&$task) {
 										if ($oneProject->getUuid() === $task->getProjectUuid()) {
@@ -87,7 +87,7 @@ $l = \OC::$server->getL10N('timemanager');
 							<p><?php p($l->t('No tasks created yet. Go ahead and create one.')); ?></p>
 						<?php } ?>
 					</form>
-					<p><strong><?php p($l->t('Select a task first to show the times for this task.')); ?></strong></p>
+					<p><em><?php p($l->t('Select a task first to show the times for this task.')); ?></em></p>
 				<?php } else { ?>
 					<?php if(count($_['times']) > 0) {
 						foreach($_['times'] as $time) { ?>
@@ -197,6 +197,11 @@ $l = \OC::$server->getL10N('timemanager');
 					</div>
 				<?php } ?>
 			</div>
+			<?php if (!$_['task']) { ?>
+				<div class="tm_item-list">
+					<?php print_unescaped($this->inc('partials/latest')); ?>
+				</div>
+			<?php } ?>
 		</div>
 	</div>
 </div>

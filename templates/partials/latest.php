@@ -5,7 +5,7 @@
 
 <h2><?php p($l->t('Latest time entries')); ?></h2>
 
-<?php foreach($_['latest_entries'] as $entry) { ?>
+<?php foreach($_['latestEntries'] as $entry) { ?>
 	<div class="tm_item-row with-link">
 		<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $entry->task->getUuid(); ?>">
 			<h3><?php p($entry->client->getName()); ?> › <?php p($entry->project->getName()); ?> › <?php p($entry->task->getName()); ?></h3>
@@ -18,6 +18,6 @@
 	</div>
 <?php } ?>
 
-<?php if(count($_['latest_entries']) < 1) { ?>
+<?php if(count($_['latestEntries']) < 1) { ?>
 	<p><?php p($l->t('No activity, yet. Check back later.')); ?></p>
 <?php } ?>

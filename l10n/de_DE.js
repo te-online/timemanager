@@ -174,6 +174,8 @@ OC.L10N.register(
 		"Error importing entries": "Fehler beim Importieren der Einträge",
 		"Import successful": "Import erfolgreich",
 		Close: "Schließen",
+		"All projects": "Alle Projekte",
+		"All tasks": "Alle Aufgaben",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
