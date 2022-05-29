@@ -13281,7 +13281,7 @@
     };
   }
 
-  function create_fragment$q(ctx) {
+  function create_fragment$r(ctx) {
     var t0;
     var div2;
     var t1;
@@ -13465,7 +13465,7 @@
 
   var dateFormat$1 = "yyyy-MM-dd";
 
-  function instance$p($$self, $$props, $$invalidate) {
+  function instance$q($$self, $$props, $$invalidate) {
     var loading;
     var scale;
     var points;
@@ -13795,7 +13795,7 @@
       _classCallCheck$1(this, Statistics);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$q, create_fragment$r, safe_not_equal, {
         statsApiUrl: 12,
         requestToken: 13,
         controls: 0,
@@ -13809,7 +13809,7 @@
     return _createClass$1(Statistics);
   }(SvelteComponent);
 
-  function create_fragment$p(ctx) {
+  function create_fragment$q(ctx) {
     var div0;
     var t;
     var div1;
@@ -13888,7 +13888,7 @@
     };
   }
 
-  function instance$o($$self, $$props, $$invalidate) {
+  function instance$p($$self, $$props, $$invalidate) {
     var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -13914,7 +13914,7 @@
       _classCallCheck$1(this, Overlay);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
         loading: 0
       });
       return _this;
@@ -13959,7 +13959,7 @@
     };
   }
 
-  function create_fragment$o(ctx) {
+  function create_fragment$p(ctx) {
     var div1;
     var h3;
     var t0;
@@ -14173,7 +14173,7 @@
     };
   }
 
-  function instance$n($$self, $$props, $$invalidate) {
+  function instance$o($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var isServer = $$props.isServer;
@@ -14226,7 +14226,7 @@
       _classCallCheck$1(this, ClientEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
         action: 0,
         requestToken: 1,
         isServer: 2,
@@ -14386,7 +14386,7 @@
     };
   }
 
-  function create_fragment$n(ctx) {
+  function create_fragment$o(ctx) {
     var a;
     var span;
     var t0;
@@ -14482,7 +14482,7 @@
     };
   }
 
-  function instance$m($$self, $$props, $$invalidate) {
+  function instance$n($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -14600,7 +14600,7 @@
       _classCallCheck$1(this, ClientEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
         action: 0,
         editAction: 8,
         requestToken: 1,
@@ -14651,7 +14651,7 @@
     };
   }
 
-  function create_fragment$m(ctx) {
+  function create_fragment$n(ctx) {
     var div1;
     var h3;
     var t0;
@@ -14865,7 +14865,7 @@
     };
   }
 
-  function instance$l($$self, $$props, $$invalidate) {
+  function instance$m($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -14914,7 +14914,7 @@
       _classCallCheck$1(this, ProjectEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -15091,7 +15091,7 @@
     };
   }
 
-  function create_fragment$l(ctx) {
+  function create_fragment$m(ctx) {
     var a;
     var span;
     var t0;
@@ -15187,7 +15187,7 @@
     };
   }
 
-  function instance$k($$self, $$props, $$invalidate) {
+  function instance$l($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -15303,7 +15303,7 @@
       _classCallCheck$1(this, ProjectEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
         action: 0,
         editAction: 10,
         requestToken: 1,
@@ -15356,7 +15356,7 @@
     };
   }
 
-  function create_fragment$k(ctx) {
+  function create_fragment$l(ctx) {
     var div1;
     var h3;
     var t0;
@@ -15603,7 +15603,7 @@
     };
   }
 
-  function instance$j($$self, $$props, $$invalidate) {
+  function instance$k($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -15654,7 +15654,7 @@
       _classCallCheck$1(this, TaskEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -15840,7 +15840,7 @@
     };
   }
 
-  function create_fragment$j(ctx) {
+  function create_fragment$k(ctx) {
     var a;
     var span;
     var t0;
@@ -15936,7 +15936,7 @@
     };
   }
 
-  function instance$i($$self, $$props, $$invalidate) {
+  function instance$j($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -16054,7 +16054,7 @@
       _classCallCheck$1(this, TaskEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
         action: 0,
         editAction: 11,
         requestToken: 1,
@@ -16108,7 +16108,7 @@
     };
   }
 
-  function create_fragment$i(ctx) {
+  function create_fragment$j(ctx) {
     var div1;
     var h3;
     var t0;
@@ -16484,7 +16484,7 @@
     };
   }
 
-  function instance$h($$self, $$props, $$invalidate) {
+  function instance$i($$self, $$props, $$invalidate) {
     var action = $$props.action;
     var requestToken = $$props.requestToken;
     var clientName = $$props.clientName;
@@ -16553,7 +16553,7 @@
       _classCallCheck$1(this, TimeEditor);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
         action: 0,
         requestToken: 1,
         clientName: 2,
@@ -16846,7 +16846,7 @@
     };
   }
 
-  function create_fragment$h(ctx) {
+  function create_fragment$i(ctx) {
     var t;
     var if_block1_anchor;
     var current;
@@ -16936,7 +16936,7 @@
     };
   }
 
-  function instance$g($$self, $$props, $$invalidate) {
+  function instance$h($$self, $$props, $$invalidate) {
     var show;
     var loading;
     var action = $$props.action;
@@ -17062,7 +17062,7 @@
       _classCallCheck$1(this, TimeEditorDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
         action: 0,
         editTimeEntryAction: 14,
         timeUuid: 1,
@@ -17194,7 +17194,7 @@
     };
   }
 
-  function create_fragment$g(ctx) {
+  function create_fragment$h(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -17333,7 +17333,7 @@
     };
   }
 
-  function instance$f($$self, $$props, $$invalidate) {
+  function instance$g($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteAction = $$props.deleteAction;
     var deleteUuid = $$props.deleteUuid;
@@ -17392,7 +17392,7 @@
       _classCallCheck$1(this, DeleteButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$f, create_fragment$g, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$g, create_fragment$h, safe_not_equal, {
         deleteAction: 0,
         deleteUuid: 1,
         deleteButtonCaption: 2,
@@ -17513,7 +17513,7 @@
     append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
   }
 
-  function create_fragment$f(ctx) {
+  function create_fragment$g(ctx) {
     let div;
     let raw_value =
     /*getOptionLabel*/
@@ -17566,7 +17566,7 @@
     };
   }
 
-  function instance$e($$self, $$props, $$invalidate) {
+  function instance$f($$self, $$props, $$invalidate) {
     let {
       isActive = false
     } = $$props;
@@ -17642,7 +17642,7 @@
   class Item$1 extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
+      init$2(this, options, instance$f, create_fragment$g, safe_not_equal, {
         isActive: 4,
         isFirst: 5,
         isHover: 6,
@@ -18509,7 +18509,7 @@
     };
   }
 
-  function create_fragment$e(ctx) {
+  function create_fragment$f(ctx) {
     let div;
     let current_block_type_index;
     let if_block;
@@ -18641,7 +18641,7 @@
     return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
   }
 
-  function instance$d($$self, $$props, $$invalidate) {
+  function instance$e($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       container = undefined
@@ -18936,7 +18936,7 @@
   class List extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
+      init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
         container: 0,
         VirtualList: 3,
         Item: 4,
@@ -18969,7 +18969,7 @@
     append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
   }
 
-  function create_fragment$d(ctx) {
+  function create_fragment$e(ctx) {
     let div;
     let raw_value =
     /*getSelectionLabel*/
@@ -19007,7 +19007,7 @@
     };
   }
 
-  function instance$c($$self, $$props, $$invalidate) {
+  function instance$d($$self, $$props, $$invalidate) {
     let {
       getSelectionLabel = undefined
     } = $$props;
@@ -19026,7 +19026,7 @@
   class Selection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
+      init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
         getSelectionLabel: 0,
         item: 1
       }, add_css$3);
@@ -19201,7 +19201,7 @@
     };
   }
 
-  function create_fragment$c(ctx) {
+  function create_fragment$d(ctx) {
     let each_1_anchor;
     let each_value =
     /*value*/
@@ -19269,7 +19269,7 @@
     };
   }
 
-  function instance$b($$self, $$props, $$invalidate) {
+  function instance$c($$self, $$props, $$invalidate) {
     const dispatch = createEventDispatcher();
     let {
       value = []
@@ -19312,7 +19312,7 @@
   class MultiSelection extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
+      init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
         value: 0,
         activeValue: 1,
         isDisabled: 2,
@@ -19450,7 +19450,7 @@
     };
   }
 
-  function create_fragment$b(ctx) {
+  function create_fragment$c(ctx) {
     let svelte_virtual_list_viewport;
     let svelte_virtual_list_contents;
     let each_blocks = [];
@@ -19601,7 +19601,7 @@
     };
   }
 
-  function instance$a($$self, $$props, $$invalidate) {
+  function instance$b($$self, $$props, $$invalidate) {
     let {
       $$slots: slots = {},
       $$scope
@@ -19781,7 +19781,7 @@
   class VirtualList extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$a, create_fragment$b, safe_not_equal, {
+      init$2(this, options, instance$b, create_fragment$c, safe_not_equal, {
         items: 11,
         height: 0,
         itemHeight: 12,
@@ -19795,7 +19795,7 @@
 
   /* node_modules/svelte-select/src/ClearIcon.svelte generated by Svelte v3.48.0 */
 
-  function create_fragment$a(ctx) {
+  function create_fragment$b(ctx) {
     let svg;
     let path;
     return {
@@ -19831,7 +19831,7 @@
   class ClearIcon extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, null, create_fragment$a, safe_not_equal, {});
+      init$2(this, options, null, create_fragment$b, safe_not_equal, {});
     }
 
   }
@@ -20795,7 +20795,7 @@
     };
   }
 
-  function create_fragment$9(ctx) {
+  function create_fragment$a(ctx) {
     let div;
     let span;
     let t0;
@@ -21370,7 +21370,7 @@
     });
   }
 
-  function instance$9($$self, $$props, $$invalidate) {
+  function instance$a($$self, $$props, $$invalidate) {
     let filteredItems;
     let showSelectedItem;
     let showClearIcon;
@@ -22282,7 +22282,7 @@
   class Select extends SvelteComponent {
     constructor(options) {
       super();
-      init$2(this, options, instance$9, create_fragment$9, safe_not_equal, {
+      init$2(this, options, instance$a, create_fragment$a, safe_not_equal, {
         id: 46,
         container: 0,
         input: 6,
@@ -23061,7 +23061,7 @@
     };
   }
 
-  function create_fragment$8(ctx) {
+  function create_fragment$9(ctx) {
     var t0;
     var form_1;
     var input0;
@@ -23214,7 +23214,7 @@
     };
   }
 
-  function instance$8($$self, $$props, $$invalidate) {
+  function instance$9($$self, $$props, $$invalidate) {
     var dialogVisible;
     var loading;
     var shareAction = $$props.shareAction;
@@ -23348,7 +23348,7 @@
       _classCallCheck$1(this, ShareDialog);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$9, create_fragment$9, safe_not_equal, {
         shareAction: 0,
         deleteShareAction: 1,
         sharees: 2,
@@ -23607,7 +23607,7 @@
     };
   }
 
-  function create_fragment$7(ctx) {
+  function create_fragment$8(ctx) {
     var t;
     var if_block1_anchor;
     var if_block0 =
@@ -23678,7 +23678,7 @@
     };
   }
 
-  function instance$7($$self, $$props, $$invalidate) {
+  function instance$8($$self, $$props, $$invalidate) {
     var sharees = $$props.sharees;
     var sharedBy = $$props.sharedBy;
     onMount(function () {
@@ -23704,7 +23704,7 @@
       _classCallCheck$1(this, ShareStatus);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
         sharees: 0,
         sharedBy: 1
       });
@@ -23819,7 +23819,7 @@
     };
   }
 
-  function create_fragment$6(ctx) {
+  function create_fragment$7(ctx) {
     var t0;
     var form;
     var input0;
@@ -23954,7 +23954,7 @@
     };
   }
 
-  function instance$6($$self, $$props, $$invalidate) {
+  function instance$7($$self, $$props, $$invalidate) {
     var confirmation;
     var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
     var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
@@ -24052,7 +24052,7 @@
       _classCallCheck$1(this, DeleteTimeEntryButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
         deleteTimeEntryAction: 0,
         deleteTimeEntryUuid: 1,
         requestToken: 2
@@ -24089,7 +24089,7 @@
 
   addToUnscopables$1(FIND);
 
-  function create_fragment$5(ctx) {
+  function create_fragment$6(ctx) {
     var form;
     var label0;
     var t0_value = dist_4$1('timemanager', 'Note') + "";
@@ -24492,7 +24492,7 @@
     return item.project.label;
   };
 
-  function instance$5($$self, $$props, $$invalidate) {
+  function instance$6($$self, $$props, $$invalidate) {
     var loading;
     var taskError;
     var action = $$props.action;
@@ -24668,7 +24668,7 @@
       _classCallCheck$1(this, QuickAdd);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
         action: 12,
         requestToken: 13,
         clients: 0,
@@ -24682,7 +24682,7 @@
     return _createClass$1(QuickAdd);
   }(SvelteComponent);
 
-  function create_fragment$4(ctx) {
+  function create_fragment$5(ctx) {
     var span0;
     var input;
     var input_id_value;
@@ -24793,7 +24793,7 @@
     };
   }
 
-  function instance$4($$self, $$props, $$invalidate) {
+  function instance$5($$self, $$props, $$invalidate) {
     var loading;
     var uuid = $$props.uuid;
     var initialState = $$props.initialState;
@@ -24885,7 +24885,7 @@
       _classCallCheck$1(this, Checkmark);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
         uuid: 0,
         initialState: 1,
         action: 5,
@@ -24897,7 +24897,7 @@
     return _createClass$1(Checkmark);
   }(SvelteComponent);
 
-  function create_fragment$3(ctx) {
+  function create_fragment$4(ctx) {
     var form;
     var label0;
     var t0_value = dist_4$1('timemanager', 'Clients') + "";
@@ -25178,7 +25178,7 @@
     };
   }
 
-  function instance$3($$self, $$props, $$invalidate) {
+  function instance$4($$self, $$props, $$invalidate) {
     var loading;
     var availableProjects;
     var availableTasks;
@@ -25369,7 +25369,7 @@
       _classCallCheck$1(this, Filters);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
         clients: 0,
         projects: 15,
         tasks: 16
@@ -25380,7 +25380,7 @@
     return _createClass$1(Filters);
   }(SvelteComponent);
 
-  function create_fragment$2(ctx) {
+  function create_fragment$3(ctx) {
     var form;
     var label0;
     var t0_value = dist_4$1('timemanager', 'From') + "";
@@ -25561,7 +25561,7 @@
 
   var dateFormat = "yyyy-MM-dd";
 
-  function instance$2($$self, $$props, $$invalidate) {
+  function instance$3($$self, $$props, $$invalidate) {
     var loading;
     var start;
     var end;
@@ -25746,7 +25746,7 @@
       _classCallCheck$1(this, Timerange);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
         startOfMonth: 6,
         endOfMonth: 7
       });
@@ -25756,7 +25756,7 @@
     return _createClass$1(Timerange);
   }(SvelteComponent);
 
-  function create_fragment$1(ctx) {
+  function create_fragment$2(ctx) {
     var button;
     var mounted;
     var dispose;
@@ -25788,7 +25788,7 @@
     };
   }
 
-  function instance$1($$self) {
+  function instance$2($$self) {
     onMount(function () {
       var openDetailsBeforePrint = function openDetailsBeforePrint() {
         var details = document.querySelectorAll("details");
@@ -25834,7 +25834,7 @@
       _classCallCheck$1(this, PrintButton);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {});
+      init$2(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {});
       return _this;
     }
 
@@ -33429,7 +33429,7 @@
     };
   }
 
-  function create_fragment(ctx) {
+  function create_fragment$1(ctx) {
     var form;
     var label0;
     var t0_value = dist_4$1('timemanager', 'Select delimiter') + "";
@@ -33754,7 +33754,7 @@
     };
   }
 
-  function instance($$self, $$props, $$invalidate) {
+  function instance$1($$self, $$props, $$invalidate) {
     var parseError;
     var importError;
     var successMessage;
@@ -34100,7 +34100,7 @@
       _classCallCheck$1(this, Import);
 
       _this = _super.call(this);
-      init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+      init$2(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
         syncApiUrl: 13,
         requestToken: 14
       }, null, [-1, -1]);
@@ -34108,6 +34108,156 @@
     }
 
     return _createClass$1(Import);
+  }(SvelteComponent);
+
+  function create_fragment(ctx) {
+    var label;
+    var t0_value = dist_4$1('timemanager', 'Show entries for user') + "";
+    var t0;
+    var t1;
+    var select;
+    var current;
+    select = new Select({
+      props: {
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select user...'),
+        inputAttributes: {
+          id: 'sharee-select'
+        },
+        items:
+        /*shareesForTimeEntries*/
+        ctx[0],
+        value:
+        /*selectedSharee*/
+        ctx[1]
+      }
+    });
+    select.$on("select",
+    /*handleSelectSharee*/
+    ctx[2]);
+    select.$on("clear",
+    /*handleClearSharee*/
+    ctx[3]);
+    return {
+      c: function c() {
+        label = element("label");
+        t0 = text(t0_value);
+        t1 = space$1();
+        create_component(select.$$.fragment);
+        attr(label, "for", "sharee-select");
+        attr(label, "class", "sharees");
+      },
+      m: function m(target, anchor) {
+        insert(target, label, anchor);
+        append(label, t0);
+        append(label, t1);
+        mount_component(select, label, null);
+        current = true;
+      },
+      p: function p(ctx, _ref) {
+        var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+
+        var select_changes = {};
+        if (dirty &
+        /*shareesForTimeEntries*/
+        1) select_changes.items =
+        /*shareesForTimeEntries*/
+        ctx[0];
+        if (dirty &
+        /*selectedSharee*/
+        2) select_changes.value =
+        /*selectedSharee*/
+        ctx[1];
+        select.$set(select_changes);
+      },
+      i: function i(local) {
+        if (current) return;
+        transition_in(select.$$.fragment, local);
+        current = true;
+      },
+      o: function o(local) {
+        transition_out(select.$$.fragment, local);
+        current = false;
+      },
+      d: function d(detaching) {
+        if (detaching) detach(label);
+        destroy_component(select);
+      }
+    };
+  }
+
+  function instance($$self, $$props, $$invalidate) {
+    var shareesForTimeEntries = $$props.shareesForTimeEntries;
+    var selectedSharee;
+
+    var handleSelectSharee = function handleSelectSharee(event) {
+      console.log({
+        selectedSharee: selectedSharee,
+        event: event
+      });
+
+      if (selectedSharee === event.detail.value || selectedSharee.value === event.detail.value) {
+        return;
+      }
+
+      $$invalidate(1, selectedSharee = event.detail);
+      document.location.href = "".concat(dist_4("apps/timemanager"), "?latestUserFilter=").concat(selectedSharee.value);
+    };
+
+    var handleClearSharee = function handleClearSharee() {
+      document.location.href = dist_4("apps/timemanager");
+    };
+
+    onMount(function () {
+      // Parse current URL
+      var urlParts = document.location.href.split("?");
+
+      if (urlParts.length > 1) {
+        var queryString = urlParts[1];
+        var queryStringParts = queryString.split("&");
+
+        queryStringParts.map(function (part) {
+          // Split query params
+          var partParts = part.split("=");
+
+          var _partParts = _slicedToArray(partParts, 2),
+              name = _partParts[0],
+              value = _partParts[1]; // Apply filters from query params
+
+
+          if (name === "latestUserFilter" && value) {
+            $$invalidate(1, selectedSharee = value);
+          }
+        });
+      }
+    });
+
+    $$self.$$set = function ($$props) {
+      if ('shareesForTimeEntries' in $$props) $$invalidate(0, shareesForTimeEntries = $$props.shareesForTimeEntries);
+    };
+
+    return [shareesForTimeEntries, selectedSharee, handleSelectSharee, handleClearSharee];
+  }
+
+  var UserFilter = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(UserFilter, _SvelteComponent);
+
+    var _super = _createSuper(UserFilter);
+
+    function UserFilter(options) {
+      var _this;
+
+      _classCallCheck$1(this, UserFilter);
+
+      _this = _super.call(this);
+      init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+        shareesForTimeEntries: 0
+      });
+      return _this;
+    }
+
+    return _createClass$1(UserFilter);
   }(SvelteComponent);
 
   /* global HTMLCollection: true */
@@ -38887,6 +39037,13 @@
     components.push(safelyCreateComponent({
       component: Import,
       selector: "#content.app-timemanager [data-svelte='Import.svelte']",
+      props: _objectSpread2(_objectSpread2({}, store), {}, {
+        requestToken: token
+      })
+    }));
+    components.push(safelyCreateComponent({
+      component: UserFilter,
+      selector: "#content.app-timemanager [data-svelte='UserFilter.svelte']",
       props: _objectSpread2(_objectSpread2({}, store), {}, {
         requestToken: token
       })

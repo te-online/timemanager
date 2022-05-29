@@ -13,6 +13,7 @@ import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
+import UserFilter from "./views/UserFilter.svelte";
 // import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
@@ -226,6 +227,17 @@ const init = () => {
 		safelyCreateComponent({
 			component: Import,
 			selector: "#content.app-timemanager [data-svelte='Import.svelte']",
+			props: {
+				...store,
+				requestToken: token,
+			},
+		})
+	);
+
+	components.push(
+		safelyCreateComponent({
+			component: UserFilter,
+			selector: "#content.app-timemanager [data-svelte='UserFilter.svelte']",
 			props: {
 				...store,
 				requestToken: token,

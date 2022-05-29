@@ -94,9 +94,9 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function index() {
+	function index(string $latestUserFilter = "") {
 		// Find the latest time entries
-		$times = $this->timeMapper->getActiveObjects("start", "DESC");
+		$times = $this->timeMapper->findActiveForCurrentUser("start", true, "DESC");
 		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
@@ -104,7 +104,25 @@ class PageController extends Controller {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
 
-		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries($times, 100);
+		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
+		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries(
+			$times,
+			5,
+			$latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : []
+		);
+
+		$sharedTimeEntries = array_filter($latestEntries, function ($entry) {
+			return !$entry->time->current_user_is_author;
+		});
+		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
+		$shareesForTimeEntries = [];
+		if (count($sharedTimeEntries) > 0) {
+			foreach ($sharedTimeEntries as $sharedTimeEntry) {
+				if (!in_array($sharedTimeEntry->time->getUserId(), $shareesForTimeEntries)) {
+					$shareesForTimeEntries[] = $sharedTimeEntry->time->getUserId();
+				}
+			}
+		}
 
 		return new TemplateResponse("timemanager", "index", [
 			"page" => "index",
@@ -112,6 +130,7 @@ class PageController extends Controller {
 				"Statistics.svelte" => PHP_Svelte::render_template("Statistics.svelte", []),
 			],
 			"latestEntries" => $latestEntries,
+			"hasSharedTimeEntries" => $hasSharedTimeEntries,
 			"store" => json_encode([
 				"clients" => array_map(function ($oneClient) {
 					$oneClient = $oneClient->toArray();
@@ -140,6 +159,7 @@ class PageController extends Controller {
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
+				"shareesForTimeEntries" => $shareesForTimeEntries,
 			]),
 		]);
 	}
@@ -897,11 +917,11 @@ class PageController extends Controller {
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
 			}
 		} else {
-			$times = $this->timeMapper->getActiveObjects("start", "DESC");
+			$times = $this->timeMapper->findActiveForCurrentUser("start", true, "DESC");
 		}
 
 		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
-		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries($times);
+		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries($times, 100);
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
