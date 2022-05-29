@@ -9,7 +9,7 @@ style('timemanager', 'timemanager');
 <div id="app-content">
 	<div class="container">
 		<div class="section">
-			<section class="section">
+			<section class="section quick-add-section">
 				<span data-svelte="QuickAdd.svelte"></span>
 				<span data-store="<?php p($_['store']); ?>"></span>
 			</section>

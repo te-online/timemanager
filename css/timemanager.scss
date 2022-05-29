@@ -408,6 +408,11 @@ label {
 		}
 	}
 
+	.quick-add-section {
+		// Avoid layout-shift when this component mounts
+		min-height: 132px;
+	}
+
 	.quick-add {
 		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
 	}
