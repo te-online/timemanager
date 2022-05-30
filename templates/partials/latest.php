@@ -7,6 +7,7 @@
 
 <?php if ($_['hasSharedTimeEntries']) { ?>
 	<span data-svelte="UserFilter.svelte"></span>
+	<a href="" class="timemanager-pjax-link hidden-visually hidden-filter-link"><?php p($l->t("Apply user filter")); ?></a>
 <?php } ?>
 
 <?php foreach($_['latestEntries'] as $entry) { ?>

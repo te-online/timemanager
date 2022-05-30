@@ -111,18 +111,10 @@ class PageController extends Controller {
 			$latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : []
 		);
 
-		$sharedTimeEntries = array_filter($latestEntries, function ($entry) {
+		$sharedTimeEntries = array_filter($times, function ($entry) {
 			return !$entry->time->current_user_is_author;
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
-		$shareesForTimeEntries = [];
-		if (count($sharedTimeEntries) > 0) {
-			foreach ($sharedTimeEntries as $sharedTimeEntry) {
-				if (!in_array($sharedTimeEntry->time->getUserId(), $shareesForTimeEntries)) {
-					$shareesForTimeEntries[] = $sharedTimeEntry->time->getUserId();
-				}
-			}
-		}
 
 		return new TemplateResponse("timemanager", "index", [
 			"page" => "index",
@@ -159,7 +151,6 @@ class PageController extends Controller {
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
-				"shareesForTimeEntries" => $shareesForTimeEntries,
 			]),
 		]);
 	}
@@ -872,7 +863,7 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function times($task) {
+	function times($task, string $latestUserFilter = "") {
 		$clients = $this->clientMapper->findActiveForCurrentUser("created", true);
 		$projects = $this->projectMapper->findActiveForCurrentUser("created", true);
 		$tasks = $this->taskMapper->findActiveForCurrentUser("created", true);
@@ -921,7 +912,15 @@ class PageController extends Controller {
 		}
 
 		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
-		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries($times, 100);
+		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries(
+			$times,
+			100,
+			$latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : []
+		);
+		$sharedTimeEntries = array_filter($times, function ($entry) {
+			return !$entry->time->current_user_is_author;
+		});
+		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
@@ -981,6 +980,7 @@ class PageController extends Controller {
 			"page" => "times",
 			"canEdit" => $sharedBy === null,
 			"latestEntries" => $latestEntries,
+			"hasSharedTimeEntries" => $hasSharedTimeEntries,
 		]);
 	}
 

@@ -262,6 +262,63 @@
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
+  function _createForOfIteratorHelper(o, allowArrayLike) {
+    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+
+    if (!it) {
+      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (it) o = it;
+        var i = 0;
+
+        var F = function () {};
+
+        return {
+          s: F,
+          n: function () {
+            if (i >= o.length) return {
+              done: true
+            };
+            return {
+              done: false,
+              value: o[i++]
+            };
+          },
+          e: function (e) {
+            throw e;
+          },
+          f: F
+        };
+      }
+
+      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+
+    var normalCompletion = true,
+        didErr = false,
+        err;
+    return {
+      s: function () {
+        it = it.call(o);
+      },
+      n: function () {
+        var step = it.next();
+        normalCompletion = step.done;
+        return step;
+      },
+      e: function (e) {
+        didErr = true;
+        err = e;
+      },
+      f: function () {
+        try {
+          if (!normalCompletion && it.return != null) it.return();
+        } finally {
+          if (didErr) throw err;
+        }
+      }
+    };
+  }
+
   var commonjsGlobal$1 = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
   function unwrapExports (x) {
@@ -34111,25 +34168,28 @@
   }(SvelteComponent);
 
   function create_fragment(ctx) {
+    var div;
     var label;
-    var t0_value = dist_4$1('timemanager', 'Show entries for user') + "";
+    var t0_value = dist_4$1('timemanager', 'Show only entries created by') + "";
     var t0;
     var t1;
     var select;
     var current;
     select = new Select({
       props: {
-        noOptionsMessage: dist_4$1('timemanager', 'No options'),
-        placeholder: dist_4$1('timemanager', 'Select user...'),
+        noOptionsMessage:
+        /*loading*/
+        ctx[1] ? dist_4$1('timemanager', 'Loading...') : dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Search...'),
         inputAttributes: {
-          id: 'sharee-select'
+          id: 'sharee-filter-select'
         },
-        items:
-        /*shareesForTimeEntries*/
-        ctx[0],
+        loadOptions:
+        /*search*/
+        ctx[4],
         value:
         /*selectedSharee*/
-        ctx[1]
+        ctx[0]
       }
     });
     select.$on("select",
@@ -34140,15 +34200,18 @@
     ctx[3]);
     return {
       c: function c() {
+        div = element("div");
         label = element("label");
         t0 = text(t0_value);
         t1 = space$1();
         create_component(select.$$.fragment);
-        attr(label, "for", "sharee-select");
+        attr(label, "for", "sharee-filter-select");
         attr(label, "class", "sharees");
+        attr(div, "class", "sharee-filter");
       },
       m: function m(target, anchor) {
-        insert(target, label, anchor);
+        insert(target, div, anchor);
+        append(div, label);
         append(label, t0);
         append(label, t1);
         mount_component(select, label, null);
@@ -34160,15 +34223,15 @@
 
         var select_changes = {};
         if (dirty &
-        /*shareesForTimeEntries*/
-        1) select_changes.items =
-        /*shareesForTimeEntries*/
-        ctx[0];
+        /*loading*/
+        2) select_changes.noOptionsMessage =
+        /*loading*/
+        ctx[1] ? dist_4$1('timemanager', 'Loading...') : dist_4$1('timemanager', 'No options');
         if (dirty &
         /*selectedSharee*/
-        2) select_changes.value =
+        1) select_changes.value =
         /*selectedSharee*/
-        ctx[1];
+        ctx[0];
         select.$set(select_changes);
       },
       i: function i(local) {
@@ -34181,63 +34244,187 @@
         current = false;
       },
       d: function d(detaching) {
-        if (detaching) detach(label);
+        if (detaching) detach(div);
         destroy_component(select);
       }
     };
   }
 
   function instance($$self, $$props, $$invalidate) {
-    var shareesForTimeEntries = $$props.shareesForTimeEntries;
+    var loading;
+    var requestToken = $$props.requestToken;
     var selectedSharee;
 
     var handleSelectSharee = function handleSelectSharee(event) {
-      console.log({
-        selectedSharee: selectedSharee,
-        event: event
-      });
-
-      if (selectedSharee === event.detail.value || selectedSharee.value === event.detail.value) {
+      if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
         return;
       }
 
-      $$invalidate(1, selectedSharee = event.detail);
-      document.location.href = "".concat(dist_4("apps/timemanager"), "?latestUserFilter=").concat(selectedSharee.value);
+      $$invalidate(0, selectedSharee = event.detail); // Prepare a link with get attributes
+
+      var filterLinkElement = Helpers.getLinkEl(); // Base off current url
+
+      var newUrl = document.location.href; // Add filter attributes to url
+
+      newUrl = Helpers.getUpdatedFilterUrl("latestUserFilter", selectedSharee ? selectedSharee.value.shareWith : "", newUrl); // Attach url to hidden pjax link
+
+      filterLinkElement.href = newUrl; // Navigate
+
+      filterLinkElement.click();
     };
 
     var handleClearSharee = function handleClearSharee() {
-      document.location.href = dist_4("apps/timemanager");
+      handleSelectSharee({
+        detail: {
+          value: {
+            shareWith: ""
+          },
+          label: ""
+        }
+      });
     };
 
-    onMount(function () {
-      // Parse current URL
-      var urlParts = document.location.href.split("?");
+    var search = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(query) {
+        var response, _yield$response$json$, users, exact;
 
-      if (urlParts.length > 1) {
-        var queryString = urlParts[1];
-        var queryStringParts = queryString.split("&");
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(typeof query === "undefined")) {
+                  _context.next = 2;
+                  break;
+                }
 
-        queryStringParts.map(function (part) {
-          // Split query params
-          var partParts = part.split("=");
+                return _context.abrupt("return");
 
-          var _partParts = _slicedToArray(partParts, 2),
-              name = _partParts[0],
-              value = _partParts[1]; // Apply filters from query params
+              case 2:
+                $$invalidate(1, loading = true);
+                _context.next = 5;
+                return fetch(dist_5("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
 
+              case 5:
+                response = _context.sent;
+                $$invalidate(1, loading = false);
 
-          if (name === "latestUserFilter" && value) {
-            $$invalidate(1, selectedSharee = value);
+                if (!response.ok) {
+                  _context.next = 14;
+                  break;
+                }
+
+                _context.next = 10;
+                return response.json();
+
+              case 10:
+                _yield$response$json$ = _context.sent.ocs.data;
+                users = _yield$response$json$.users;
+                exact = _yield$response$json$.exact;
+                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)));
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
           }
-        });
-      }
-    });
+        }, _callee);
+      }));
+
+      return function search(_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+
+    onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var urlParts, queryString, queryStringParts, _iterator, _step, part, partParts, _partParts, name, value, result;
+
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              // Parse current URL
+              urlParts = document.location.href.split("?");
+
+              if (!(urlParts.length > 1)) {
+                _context2.next = 27;
+                break;
+              }
+
+              queryString = urlParts[1];
+              queryStringParts = queryString.split("&");
+
+              _iterator = _createForOfIteratorHelper(queryStringParts);
+              _context2.prev = 6;
+
+              _iterator.s();
+
+            case 8:
+              if ((_step = _iterator.n()).done) {
+                _context2.next = 19;
+                break;
+              }
+
+              part = _step.value;
+              // Split query params
+              partParts = part.split("=");
+              _partParts = _slicedToArray(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
+
+              if (!(name === "latestUserFilter" && value)) {
+                _context2.next = 17;
+                break;
+              }
+
+              _context2.next = 15;
+              return search(value);
+
+            case 15:
+              result = _context2.sent;
+
+              if (result && result.length) {
+                $$invalidate(0, selectedSharee = result[0]);
+              }
+
+            case 17:
+              _context2.next = 8;
+              break;
+
+            case 19:
+              _context2.next = 24;
+              break;
+
+            case 21:
+              _context2.prev = 21;
+              _context2.t0 = _context2["catch"](6);
+
+              _iterator.e(_context2.t0);
+
+            case 24:
+              _context2.prev = 24;
+
+              _iterator.f();
+
+              return _context2.finish(24);
+
+            case 27:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, null, [[6, 21, 24, 27]]);
+    })));
 
     $$self.$$set = function ($$props) {
-      if ('shareesForTimeEntries' in $$props) $$invalidate(0, shareesForTimeEntries = $$props.shareesForTimeEntries);
+      if ('requestToken' in $$props) $$invalidate(5, requestToken = $$props.requestToken);
     };
 
-    return [shareesForTimeEntries, selectedSharee, handleSelectSharee, handleClearSharee];
+    $$invalidate(1, loading = false);
+
+    return [selectedSharee, loading, handleSelectSharee, handleClearSharee, search, requestToken];
   }
 
   var UserFilter = /*#__PURE__*/function (_SvelteComponent) {
@@ -34252,7 +34439,7 @@
 
       _this = _super.call(this);
       init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
-        shareesForTimeEntries: 0
+        requestToken: 5
       });
       return _this;
     }

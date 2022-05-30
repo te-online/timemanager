@@ -706,6 +706,16 @@ label {
 	}
 }
 
+.sharee-filter {
+	padding: 0 0 12px;
+	display: flex;
+
+	label {
+		font-size: 12px;
+		width: 300px;
+	}
+}
+
 @keyframes fallback {
 	0% {
 		height: 0;
