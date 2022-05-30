@@ -834,8 +834,8 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 
 		cy.visit("/apps/timemanager");
-		// Latest time entries is not supposed to contain sharee's entries
-		cy.contains(".tm_item-row", "[Sharee entry]:").should("not.exist");
+		// Latest time entries _is_ supposed to contain sharee's entries
+		cy.contains(".tm_item-row", "[Sharee entry]:");
 
 		cy.get("a").contains("Clients").click();
 		cy.contains(".list-title", "Clients");
@@ -1158,7 +1158,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		cy.visit("/apps/timemanager");
 		// Latest entries contains latest time entry (first one has latest date)
-		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`).should("not.exist");
+		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`);
 	});
 
 	it("can access time entries for previously shared client (as a sharer)", () => {
