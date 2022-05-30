@@ -166,7 +166,8 @@ class PageController extends Controller {
 		string $status = null,
 		string $start = "",
 		string $end = "",
-		string $format = "none"
+		string $format = "none",
+		string $latestUserFilter = ""
 	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
@@ -187,6 +188,8 @@ class PageController extends Controller {
 
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
 
+		$includedAuthors = $latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : [];
+
 		// Group times by client
 		$times_grouped_by_client = [];
 		$hours_total = 0;
@@ -205,6 +208,10 @@ class PageController extends Controller {
 				}
 				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
 				if (!$client) {
+					continue;
+				}
+				// Filter for author
+				if ($includedAuthors && is_array($includedAuthors) && !in_array($time->getUserId(), $includedAuthors)) {
 					continue;
 				}
 				// Compile a template object
@@ -308,6 +315,7 @@ class PageController extends Controller {
 				],
 				"store" => json_encode($store),
 				"page" => "reports",
+				"hasSharedTimeEntries" => true,
 			]);
 		}
 	}
