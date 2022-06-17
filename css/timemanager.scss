@@ -410,7 +410,7 @@ label {
 
 	.quick-add-section {
 		// Avoid layout-shift when this component mounts
-		min-height: 132px;
+		min-height: 156px;
 	}
 
 	.quick-add {
@@ -423,7 +423,7 @@ label {
 
 	.reports-timerange {
 		margin-top: 12px;
-		grid-template-columns: repeat(2, 130px) repeat(2, 150px);
+		grid-template-columns: 200px repeat(2, 130px) repeat(2, 150px);
 	}
 
 	.checkbox-action label {
@@ -615,6 +615,27 @@ label {
 				height: 300px;
 			}
 		}
+
+		.sharee-filter-label {
+			position: relative;
+			margin-right: 10px;
+
+			&:after {
+				content: "";
+				height: 65%;
+				width: 1px;
+				background: var(--color-border-dark);
+				display: block;
+				position: absolute;
+				right: -10px;
+				bottom: 0;
+			}
+		}
+	}
+
+	.reports-section {
+		// Avoid layout-shift when this component mounts
+		min-height: 308px;
 	}
 
 	.tools {
@@ -625,6 +646,31 @@ label {
 
 		form {
 			padding: 36px 0 48px;
+		}
+	}
+
+	.latest-headline {
+		margin-bottom: 24px;
+	}
+
+	.filter-button {
+		background-position: 12px center;
+		padding: 6px 12px 6px 34px;
+		margin-left: 8px;
+		margin-bottom: -8px;
+		margin-top: -4px;
+	}
+
+	.sharee-filter {
+		padding: 4px 12px 12px;
+		margin-bottom: 12px;
+		margin-top: -6px;
+		background: var(--color-primary-light);
+		display: flex;
+
+		label {
+			font-size: 12px;
+			width: 300px;
 		}
 	}
 }
@@ -704,20 +750,6 @@ label {
 			height: 16px;
 		}
 	}
-}
-
-.sharee-filter {
-	padding: 0 0 12px;
-	display: flex;
-
-	label {
-		font-size: 12px;
-		width: 300px;
-	}
-}
-
-.reports-sharee-filter-wrapper {
-	margin-top: 12px;
 }
 
 @keyframes fallback {

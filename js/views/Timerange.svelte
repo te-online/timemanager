@@ -1,4 +1,5 @@
 <script>
+	export let requestToken;
 	export let startOfMonth;
 	export let endOfMonth;
 
@@ -16,6 +17,8 @@
 	import endOfYear from "date-fns/endOfYear";
 	import sub from "date-fns/sub";
 	import { getFirstDay, translate } from "@nextcloud/l10n";
+	import { isFilterVisible } from "../lib/stores";
+	import UserFilterSelect from "./UserFilterSelect.svelte";
 
 	const dateFormat = "yyyy-MM-dd";
 	$: loading = false;
@@ -106,10 +109,14 @@
 				}
 			});
 		}
+
+		isFilterVisible.set(true);
 	});
 </script>
 
 <form class={`reports-timerange${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={applyRange}>
+	<UserFilterSelect {requestToken} />
+
 	<label for="start" class="start">
 		{translate('timemanager', 'From')}
 		<input id="start" type="date" pattern="Y-m-d" bind:value={start} />

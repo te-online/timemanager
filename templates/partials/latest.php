@@ -3,7 +3,12 @@
 	$l = \OC::$server->getL10N('timemanager');
 ?>
 
-<h2><?php p($l->t('Latest time entries')); ?></h2>
+<h2 class="latest-headline">
+	<?php p($l->t('Latest time entries')); ?>
+	<?php if ($_['hasSharedTimeEntries']) { ?>
+		<span data-svelte="UserFilterButton.svelte"></span>
+	<?php } ?>
+</h2>
 
 <?php if ($_['hasSharedTimeEntries']) { ?>
 	<span data-svelte="UserFilter.svelte"></span>

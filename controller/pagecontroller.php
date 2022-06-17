@@ -94,7 +94,7 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function index(string $latestUserFilter = "") {
+	function index(string $userFilter = "") {
 		// Find the latest time entries
 		$times = $this->timeMapper->findActiveForCurrentUser("start", true, "DESC");
 		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
@@ -108,7 +108,7 @@ class PageController extends Controller {
 		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries(
 			$times,
 			5,
-			$latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : []
+			$userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : []
 		);
 
 		$sharedTimeEntries = array_filter($times, function ($entry) {
@@ -167,7 +167,7 @@ class PageController extends Controller {
 		string $start = "",
 		string $end = "",
 		string $format = "none",
-		string $latestUserFilter = ""
+		string $userFilter = ""
 	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
@@ -188,7 +188,7 @@ class PageController extends Controller {
 
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
 
-		$includedAuthors = $latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : [];
+		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
 
 		// Group times by client
 		$times_grouped_by_client = [];
@@ -315,7 +315,6 @@ class PageController extends Controller {
 				],
 				"store" => json_encode($store),
 				"page" => "reports",
-				"hasSharedTimeEntries" => true,
 			]);
 		}
 	}
@@ -871,7 +870,7 @@ class PageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function times($task, string $latestUserFilter = "") {
+	function times($task, string $userFilter = "") {
 		$clients = $this->clientMapper->findActiveForCurrentUser("created", true);
 		$projects = $this->projectMapper->findActiveForCurrentUser("created", true);
 		$tasks = $this->taskMapper->findActiveForCurrentUser("created", true);
@@ -923,7 +922,7 @@ class PageController extends Controller {
 		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries(
 			$times,
 			100,
-			$latestUserFilter && strlen($latestUserFilter) > 0 ? explode(",", $latestUserFilter) : []
+			$userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : []
 		);
 		$sharedTimeEntries = array_filter($times, function ($entry) {
 			return !$entry->time->current_user_is_author;

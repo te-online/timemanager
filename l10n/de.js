@@ -173,7 +173,8 @@ OC.L10N.register(
 		Close: "Schließen",
 		"All projects": "Alle Projekte",
 		"All tasks": "Alle Aufgaben",
-		"Show only entries created by": "Zeige nur Einträge von:",
+		"Created by": "Einträge von",
+		Filter: "Filter",
 	},
 	"nplurals=2; plural=(n != 1);"
 );
