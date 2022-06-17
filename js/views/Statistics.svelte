@@ -163,6 +163,9 @@
 				if (name === "clients" && value && value.length) {
 					statUrl += `&clients=${value}`;
 				}
+				if (name === "userFilter" && value && value.length) {
+					statUrl += `&userFilter=${value}`;
+				}
 			});
 		}
 

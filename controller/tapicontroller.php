@@ -234,17 +234,26 @@ class TApiController extends ApiController {
 		string $projects = null,
 		string $tasks = null,
 		string $status = null,
-		$shared = false
+		$shared = false,
+		string $userFilter = ""
 	) {
 		// Get possible task ids to filters for
 		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared);
 
+		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
+
 		// Get all time entries for time period
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared);
-		$times = array_filter($times, function ($time) {
+		$times = array_filter($times, function ($time) use ($includedAuthors) {
 			// Find details for parents of time entry. If it doesn't exist, we should filter out time entry
 			$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+
 			if (!$task) {
+				return false;
+			}
+
+			// Filter for author
+			if ($includedAuthors && is_array($includedAuthors) && !in_array($time->getUserId(), $includedAuthors)) {
 				return false;
 			}
 

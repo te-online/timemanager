@@ -12769,7 +12769,7 @@
     child_ctx[25] = list[i];
     child_ctx[27] = i;
     return child_ctx;
-  } // (226:0) {#if controls}
+  } // (229:0) {#if controls}
 
 
   function create_if_block_7$1(ctx) {
@@ -12787,7 +12787,7 @@
         if (detaching) detach(h2);
       }
     };
-  } // (230:1) {#if controls}
+  } // (233:1) {#if controls}
 
 
   function create_if_block_6$2(ctx) {
@@ -12875,7 +12875,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (244:3) {#if !loading && weekTotal > 0}
+  } // (247:3) {#if !loading && weekTotal > 0}
 
 
   function create_if_block_3$2(ctx) {
@@ -12940,7 +12940,7 @@
         if (detaching) detach(each_1_anchor);
       }
     };
-  } // (247:6) {#if point && point.stats}
+  } // (250:6) {#if point && point.stats}
 
 
   function create_if_block_4$2(ctx) {
@@ -13025,7 +13025,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (248:7) {#if point.stats.total > 0}
+  } // (251:7) {#if point.stats.total > 0}
 
 
   function create_if_block_5$2(ctx) {
@@ -13087,7 +13087,7 @@
         if (detaching) detach(div);
       }
     };
-  } // (245:4) {#each points as point, index}
+  } // (248:4) {#each points as point, index}
 
 
   function create_each_block$7(ctx) {
@@ -13133,7 +13133,7 @@
         if (if_block) if_block.d();
       }
     };
-  } // (260:3) {#if controls && !loading && weekTotal === 0}
+  } // (263:3) {#if controls && !loading && weekTotal === 0}
 
 
   function create_if_block_2$3(ctx) {
@@ -13152,7 +13152,7 @@
         if (detaching) detach(p);
       }
     };
-  } // (264:2) {#if controls}
+  } // (267:2) {#if controls}
 
 
   function create_if_block$h(ctx) {
@@ -13309,7 +13309,7 @@
         run_all(dispose);
       }
     };
-  } // (276:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+  } // (279:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
   function create_if_block_1$6(ctx) {
@@ -13708,6 +13708,10 @@
 
                     if (name === "clients" && value && value.length) {
                       statUrl += "&clients=".concat(value);
+                    }
+
+                    if (name === "userFilter" && value && value.length) {
+                      statUrl += "&userFilter=".concat(value);
                     }
                   });
                 }
