@@ -11,6 +11,16 @@
 	import TimeEditor from "./TimeEditor.svelte";
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
+	import { createPopperActions } from "svelte-popperjs";
+	const [popperRef, popperContent] = createPopperActions({
+		placement: "bottom",
+		strategy: "fixed"
+	});
+	const extraOpts = {
+		modifiers: [{ name: "offset", options: { offset: [0, 8] } }]
+	};
+
+	let showTooltip = false;
 
 	$: show = false;
 	$: loading = false;
@@ -89,14 +99,36 @@
 			placeholder={translate('timemanager', 'Describe what you did...')}
 			bind:this={noteInput} />
 	</label>
-	<label>
+	<label for="quick-add-time">
 		{@html translate('timemanager', 'Duration (in hrs.) & Date')}
 		<span class="double">
-			<input type="number" name="duration" step="0.01" placeholder="" class="duration-input" bind:value={duration} />
+			<input
+				id="quick-add-time"
+				type="number"
+				name="duration"
+				step="0.01"
+				placeholder=""
+				class="duration-input"
+				bind:value={duration} />
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
 	</label>
-	<label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
+	<label class="task-selector-trigger">
+		{translate('timemanager', 'Client, project or task')}
+		<!-- on:blur={() => (showTooltip = false)} -->
+		<input
+			use:popperRef
+			on:focus={() => (showTooltip = true)}
+			type="text"
+			placeholder={translate('timemanager', 'Select...')} />
+	</label>
+	{#if showTooltip}
+		<div class="task-selector-popover" use:popperContent={extraOpts}>
+			Here goes the task selector
+			<div class="popover-arrow" data-popper-arrow />
+		</div>
+	{/if}
+	<!-- <label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
 		{translate('timemanager', 'Client')}
 		<Select
 			noOptionsMessage={translate('timemanager', 'No options')}
@@ -104,8 +136,8 @@
 			items={clients}
 			bind:value={client}
 			on:select={clientSelected} />
-	</label>
-	<label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
+	</label> -->
+	<!-- <label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
 		<span class="task-caption">
 			{@html translate('timemanager', 'Project & Task for')}
 			<strong>{client && client.label}</strong>
@@ -119,7 +151,7 @@
 			noOptionsMessage={translate('timemanager', 'No projects/tasks or no client selected.')}
 			placeholder={translate('timemanager', 'Select...')}
 			bind:value={task} />
-	</label>
+	</label> -->
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
 		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Add')}</button>

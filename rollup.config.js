@@ -3,12 +3,14 @@ import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import babel from "rollup-plugin-babel";
 import analyze from "rollup-plugin-analyzer";
+import injectProcessEnv from "rollup-plugin-inject-process-env";
 
 export default {
 	input: "js/main.js",
 	output: {
 		file: "js/bundle.js",
 		format: "iife",
+		external: ["@popperjs/core"],
 	},
 	plugins: [
 		svelte({
@@ -18,6 +20,9 @@ export default {
 		babel({ extensions: [".js", ".svelte"] }),
 		resolve(),
 		commonjs(),
+		injectProcessEnv({
+			NODE_ENV: "production",
+		}),
 		analyze({ summaryOnly: true }),
 	],
 };

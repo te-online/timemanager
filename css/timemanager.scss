@@ -352,50 +352,10 @@ label {
 			width: 140px;
 		}
 
-		.note {
+		.note, 
+		.task-selector-trigger {
 			input {
 				width: 100%;
-			}
-		}
-
-		.client,
-		.task {
-			.selectContainer {
-				width: 100%;
-			}
-		}
-
-		.task {
-			display: flex;
-		}
-
-		.task-caption {
-			position: relative;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			transition: color 0.3s ease;
-			display: inline-block;
-			max-width: 70vw;
-
-			.change {
-				padding: 0;
-				min-height: initial;
-				height: 28px;
-				position: absolute;
-				top: 0;
-				left: 0;
-				opacity: 0;
-				transition: opacity 0.3s ease;
-				width: 100%;
-				text-transform: underline;
-			}
-
-			&:hover {
-				color: transparent;
-				.change {
-					opacity: 1;
-				}
 			}
 		}
 
@@ -750,6 +710,15 @@ label {
 			height: 16px;
 		}
 	}
+}
+
+.task-selector-popover {
+	box-shadow: var(--color-primary-light) 0px 1px 4px 1px;
+	width: 320px;
+	min-height: 100px;
+	border: 1px solid var(--color-border);
+	border-radius: 2px;
+	padding: 6px 12px;
 }
 
 @keyframes fallback {
