@@ -41990,7 +41990,6 @@
         }
 
         try {
-          console.log("de", component);
           component.$destroy();
         } catch (error) {
           console.error(error);
