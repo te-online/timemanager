@@ -52,7 +52,7 @@ Test cases might depend on running in a specific order. This means you might nee
 ### 0.3.2 Beta, 29. June 2022
 
 - Add overview of all projects, tasks, and latest time entries when you select the respective menu entries without selecting a client first
-- Dashboard: Add ability to see time entries by other people in clients shared by you and enable to filter them by person
+- Dashboard: Add ability to see latest time entries by other people in clients that you shared and enable to filter them by person
 - Reports: Add ability to filter reports by person who created the time entries
 - Bugfix: The list of clients, projects, and tasks that appears when you select the respective menu items didn't show items shared with you
 - Attempt to avoid more layout-shifts on Dashboard when JS has mounted components
