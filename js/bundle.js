@@ -4503,6 +4503,16 @@
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function subscribe$1(store, ...callbacks) {
+        if (store == null) {
+            return noop$1;
+        }
+        const unsub = store.subscribe(...callbacks);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+    function component_subscribe(component, store, callback) {
+        component.$$.on_destroy.push(subscribe$1(store, callback));
+    }
     function create_slot(definition, ctx, $$scope, fn) {
         if (definition) {
             const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
@@ -4785,9 +4795,6 @@
     }
     function onMount(fn) {
         get_current_component().$$.on_mount.push(fn);
-    }
-    function onDestroy(fn) {
-        get_current_component().$$.on_destroy.push(fn);
     }
     function createEventDispatcher() {
         const component = get_current_component();
@@ -13170,7 +13177,7 @@
     } // (267:2) {#if controls}
 
 
-    function create_if_block$i(ctx) {
+    function create_if_block$j(ctx) {
       var nav;
       var button0;
       var t1;
@@ -13386,7 +13393,7 @@
       ctx[5] === 0 && create_if_block_2$3();
       var if_block4 =
       /*controls*/
-      ctx[0] && create_if_block$i(ctx);
+      ctx[0] && create_if_block$j(ctx);
       return {
         c: function c() {
           if (if_block0) if_block0.c();
@@ -13507,7 +13514,7 @@
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
-              if_block4 = create_if_block$i(ctx);
+              if_block4 = create_if_block$j(ctx);
               if_block4.c();
               if_block4.m(div1, null);
             }
@@ -14002,7 +14009,7 @@
       return _createClass$1(Overlay);
     }(SvelteComponent);
 
-    function create_if_block$h(ctx) {
+    function create_if_block$i(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -14070,7 +14077,7 @@
       var dispose;
       var if_block = !
       /*isServer*/
-      ctx[2] && create_if_block$h(ctx);
+      ctx[2] && create_if_block$i(ctx);
       return {
         c: function c() {
           div1 = element("div");
@@ -14224,7 +14231,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$h(ctx);
+              if_block = create_if_block$i(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -14321,7 +14328,7 @@
       return _createClass$1(ClientEditor);
     }(SvelteComponent);
 
-    function create_if_block$g(ctx) {
+    function create_if_block$h(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -14476,7 +14483,7 @@
       var dispose;
       var if_block =
       /*show*/
-      ctx[6] && create_if_block$g(ctx);
+      ctx[6] && create_if_block$h(ctx);
       return {
         c: function c() {
           a = element("a");
@@ -14528,7 +14535,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$g(ctx);
+              if_block = create_if_block$h(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -14694,7 +14701,7 @@
       return _createClass$1(ClientEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$f(ctx) {
+    function create_if_block$g(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -14765,7 +14772,7 @@
       var dispose;
       var if_block = !
       /*isServer*/
-      ctx[3] && create_if_block$f(ctx);
+      ctx[3] && create_if_block$g(ctx);
       return {
         c: function c() {
           div1 = element("div");
@@ -14916,7 +14923,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$f(ctx);
+              if_block = create_if_block$g(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -15010,7 +15017,7 @@
       return _createClass$1(ProjectEditor);
     }(SvelteComponent);
 
-    function create_if_block$e(ctx) {
+    function create_if_block$f(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -15181,7 +15188,7 @@
       var dispose;
       var if_block =
       /*show*/
-      ctx[8] && create_if_block$e(ctx);
+      ctx[8] && create_if_block$f(ctx);
       return {
         c: function c() {
           a = element("a");
@@ -15233,7 +15240,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$e(ctx);
+              if_block = create_if_block$f(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15399,7 +15406,7 @@
       return _createClass$1(ProjectEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$d(ctx) {
+    function create_if_block$e(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -15479,7 +15486,7 @@
       var dispose;
       var if_block = !
       /*isServer*/
-      ctx[4] && create_if_block$d(ctx);
+      ctx[4] && create_if_block$e(ctx);
       return {
         c: function c() {
           div1 = element("div");
@@ -15654,7 +15661,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$d(ctx);
+              if_block = create_if_block$e(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -15751,7 +15758,7 @@
       return _createClass$1(TaskEditor);
     }(SvelteComponent);
 
-    function create_if_block$c(ctx) {
+    function create_if_block$d(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -15930,7 +15937,7 @@
       var dispose;
       var if_block =
       /*show*/
-      ctx[9] && create_if_block$c(ctx);
+      ctx[9] && create_if_block$d(ctx);
       return {
         c: function c() {
           a = element("a");
@@ -15982,7 +15989,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$c(ctx);
+              if_block = create_if_block$d(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -16151,7 +16158,7 @@
       return _createClass$1(TaskEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$b(ctx) {
+    function create_if_block$c(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -16262,7 +16269,7 @@
       var dispose;
       var if_block = !
       /*isServer*/
-      ctx[5] && create_if_block$b(ctx);
+      ctx[5] && create_if_block$c(ctx);
       return {
         c: function c() {
           div1 = element("div");
@@ -16535,7 +16542,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$b(ctx);
+              if_block = create_if_block$c(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -16741,7 +16748,7 @@
     } // (62:0) {#if show}
 
 
-    function create_if_block$a(ctx) {
+    function create_if_block$b(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -16941,7 +16948,7 @@
       var if_block0 = current_block_type(ctx);
       var if_block1 =
       /*show*/
-      ctx[12] && create_if_block$a(ctx);
+      ctx[12] && create_if_block$b(ctx);
       return {
         c: function c() {
           if_block0.c();
@@ -16984,7 +16991,7 @@
                 transition_in(if_block1, 1);
               }
             } else {
-              if_block1 = create_if_block$a(ctx);
+              if_block1 = create_if_block$b(ctx);
               if_block1.c();
               transition_in(if_block1, 1);
               if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -17161,7 +17168,7 @@
       return _createClass$1(TimeEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$9(ctx) {
+    function create_if_block$a(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -17285,7 +17292,7 @@
       var current;
       var if_block =
       /*confirmation*/
-      ctx[6] && create_if_block$9(ctx);
+      ctx[6] && create_if_block$a(ctx);
       return {
         c: function c() {
           if (if_block) if_block.c();
@@ -17349,7 +17356,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$9(ctx);
+              if_block = create_if_block$a(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -17867,7 +17874,7 @@
     } // (286:4) {#if isVirtualList}
 
 
-    function create_if_block$8(ctx) {
+    function create_if_block$9(ctx) {
       let switch_instance;
       let switch_instance_anchor;
       let current;
@@ -18591,7 +18598,7 @@
       let current;
       let mounted;
       let dispose;
-      const if_block_creators = [create_if_block$8, create_else_block$1];
+      const if_block_creators = [create_if_block$9, create_else_block$1];
       const if_blocks = [];
 
       function select_block_type(ctx, dirty) {
@@ -19119,7 +19126,7 @@
     } // (87:8) {#if !isDisabled && !multiFullItemClearable}
 
 
-    function create_if_block$7(ctx) {
+    function create_if_block$8(ctx) {
       let div;
       let mounted;
       let dispose;
@@ -19180,7 +19187,7 @@
       /*isDisabled*/
       ctx[2] && !
       /*multiFullItemClearable*/
-      ctx[3] && create_if_block$7(ctx);
+      ctx[3] && create_if_block$8(ctx);
 
       function click_handler_1(...args) {
         return (
@@ -19240,7 +19247,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$7(ctx);
+              if_block = create_if_block$8(ctx);
               if_block.c();
               if_block.m(div1, t1);
             }
@@ -20740,7 +20747,7 @@
     } // (983:4) {#if isMulti && showMultiSelect}
 
 
-    function create_if_block$6(ctx) {
+    function create_if_block$7(ctx) {
       let each_1_anchor;
       let each_value =
       /*value*/
@@ -20959,7 +20966,7 @@
       /*isMulti*/
       ctx[7] &&
       /*showMultiSelect*/
-      ctx[35] && create_if_block$6(ctx);
+      ctx[35] && create_if_block$7(ctx);
       return {
         c() {
           div = element("div");
@@ -21323,7 +21330,7 @@
             if (if_block9) {
               if_block9.p(ctx, dirty);
             } else {
-              if_block9 = create_if_block$6(ctx);
+              if_block9 = create_if_block$7(ctx);
               if_block9.c();
               if_block9.m(div, null);
             }
@@ -22659,7 +22666,7 @@
     } // (78:0) {#if dialogVisible}
 
 
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -23140,7 +23147,7 @@
       var current;
       var if_block =
       /*dialogVisible*/
-      ctx[7] && create_if_block$5(ctx);
+      ctx[7] && create_if_block$6(ctx);
       return {
         c: function c() {
           if (if_block) if_block.c();
@@ -23212,7 +23219,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$5(ctx);
+              if_block = create_if_block$6(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -23587,7 +23594,7 @@
     } // (34:0) {#if sharedBy}
 
 
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
       var span;
       var t1;
       var ul;
@@ -23682,7 +23689,7 @@
       ctx[0].length && create_if_block_1$1(ctx);
       var if_block1 =
       /*sharedBy*/
-      ctx[1] && create_if_block$4(ctx);
+      ctx[1] && create_if_block$5(ctx);
       return {
         c: function c() {
           if (if_block0) if_block0.c();
@@ -23723,7 +23730,7 @@
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
-              if_block1 = create_if_block$4(ctx);
+              if_block1 = create_if_block$5(ctx);
               if_block1.c();
               if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
             }
@@ -23779,7 +23786,7 @@
       return _createClass$1(ShareStatus);
     }(SvelteComponent);
 
-    function create_if_block$3(ctx) {
+    function create_if_block$4(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -23897,7 +23904,7 @@
       var dispose;
       var if_block =
       /*confirmation*/
-      ctx[3] && create_if_block$3(ctx);
+      ctx[3] && create_if_block$4(ctx);
       return {
         c: function c() {
           if (if_block) if_block.c();
@@ -23963,7 +23970,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$3(ctx);
+              if_block = create_if_block$4(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -26198,7 +26205,7 @@
       }];
     }
 
-    function create_if_block$2(ctx) {
+    function create_if_block$3(ctx) {
       var div1;
       var mounted;
       var dispose;
@@ -26261,7 +26268,7 @@
       var dispose;
       var if_block =
       /*showTooltip*/
-      ctx[0] && create_if_block$2(ctx);
+      ctx[0] && create_if_block$3(ctx);
       return {
         c: function c() {
           form = element("form");
@@ -26410,7 +26417,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$2(ctx);
+              if_block = create_if_block$3(ctx);
               if_block.c();
               if_block.m(form, t9);
             }
@@ -26599,7 +26606,7 @@
       return [showTooltip, duration, date, note, noteInput, loading, popperRef, popperContent, extraOpts, save, action, requestToken, clients, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler];
     }
 
-    var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
+    var QuickAdd$1 = /*#__PURE__*/function (_SvelteComponent) {
       _inherits(QuickAdd, _SvelteComponent);
 
       var _super = _createSuper(QuickAdd);
@@ -26625,6 +26632,599 @@
     }(SvelteComponent);
 
     function create_fragment$7(ctx) {
+      var form;
+      var label0;
+      var t0_value = dist_4$1('timemanager', 'Note') + "";
+      var t0;
+      var t1;
+      var input0;
+      var t2;
+      var label1;
+      var html_tag;
+      var raw0_value = dist_4$1('timemanager', 'Duration (in hrs.) & Date') + "";
+      var t3;
+      var span0;
+      var input1;
+      var t4;
+      var input2;
+      var t5;
+      var label2;
+      var t6_value = dist_4$1('timemanager', 'Client') + "";
+      var t6;
+      var t7;
+      var select0;
+      var updating_value;
+      var label2_class_value;
+      var t8;
+      var label3;
+      var span1;
+      var html_tag_1;
+      var raw1_value = dist_4$1('timemanager', 'Project & Task for') + "";
+      var t9;
+      var strong;
+      var t10_value = (
+      /*client*/
+      ctx[4] &&
+      /*client*/
+      ctx[4].label) + "";
+      var t10;
+      var t11;
+      var a;
+      var t13;
+      var select1;
+      var updating_value_1;
+      var label3_class_value;
+      var t14;
+      var span2;
+      var button;
+      var t15_value = dist_4$1('timemanager', 'Add') + "";
+      var t15;
+      var form_class_value;
+      var current;
+      var mounted;
+      var dispose;
+
+      function select0_value_binding(value) {
+        /*select0_value_binding*/
+        ctx[21](value);
+      }
+
+      var select0_props = {
+        noOptionsMessage: dist_4$1('timemanager', 'No options'),
+        placeholder: dist_4$1('timemanager', 'Select...'),
+        items:
+        /*clients*/
+        ctx[0]
+      };
+
+      if (
+      /*client*/
+      ctx[4] !== void 0) {
+        select0_props.value =
+        /*client*/
+        ctx[4];
+      }
+
+      select0 = new Select({
+        props: select0_props
+      });
+      binding_callbacks.push(function () {
+        return bind(select0, 'value', select0_value_binding);
+      });
+      select0.$on("select",
+      /*clientSelected*/
+      ctx[11]);
+
+      function select1_value_binding(value) {
+        /*select1_value_binding*/
+        ctx[24](value);
+      }
+
+      var select1_props = {
+        items:
+        /*tasksWithProject*/
+        ctx[9] &&
+        /*tasksWithProject*/
+        ctx[9].filter(
+        /*func*/
+        ctx[23]),
+        groupBy: func_1,
+        noOptionsMessage: dist_4$1('timemanager', 'No projects/tasks or no client selected.'),
+        placeholder: dist_4$1('timemanager', 'Select...')
+      };
+
+      if (
+      /*task*/
+      ctx[5] !== void 0) {
+        select1_props.value =
+        /*task*/
+        ctx[5];
+      }
+
+      select1 = new Select({
+        props: select1_props
+      });
+      binding_callbacks.push(function () {
+        return bind(select1, 'value', select1_value_binding);
+      });
+      return {
+        c: function c() {
+          form = element("form");
+          label0 = element("label");
+          t0 = text(t0_value);
+          t1 = space$1();
+          input0 = element("input");
+          t2 = space$1();
+          label1 = element("label");
+          html_tag = new HtmlTag(false);
+          t3 = space$1();
+          span0 = element("span");
+          input1 = element("input");
+          t4 = space$1();
+          input2 = element("input");
+          t5 = space$1();
+          label2 = element("label");
+          t6 = text(t6_value);
+          t7 = space$1();
+          create_component(select0.$$.fragment);
+          t8 = space$1();
+          label3 = element("label");
+          span1 = element("span");
+          html_tag_1 = new HtmlTag(false);
+          t9 = space$1();
+          strong = element("strong");
+          t10 = text(t10_value);
+          t11 = space$1();
+          a = element("a");
+          a.textContent = "".concat(dist_4$1('timemanager', 'Change client'));
+          t13 = space$1();
+          create_component(select1.$$.fragment);
+          t14 = space$1();
+          span2 = element("span");
+          button = element("button");
+          t15 = text(t15_value);
+          attr(input0, "type", "text");
+          attr(input0, "name", "note");
+          attr(input0, "class", "note");
+          attr(input0, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
+          attr(label0, "class", "note");
+          html_tag.a = t3;
+          attr(input1, "type", "number");
+          attr(input1, "name", "duration");
+          attr(input1, "step", "0.01");
+          attr(input1, "placeholder", "");
+          attr(input1, "class", "duration-input");
+          attr(input2, "type", "date");
+          attr(input2, "name", "date");
+          attr(input2, "class", "date-input");
+          attr(span0, "class", "double");
+          attr(label2, "class", label2_class_value = "client".concat(
+          /*taskError*/
+          ctx[8] ? ' error' : '').concat(
+          /*client*/
+          ctx[4] ? ' hidden-visually' : ''));
+          html_tag_1.a = t9;
+          attr(a, "href", "#/");
+          attr(a, "class", "change");
+          attr(span1, "class", "task-caption");
+          attr(label3, "class", label3_class_value = "task".concat(
+          /*taskError*/
+          ctx[8] ? ' error' : '').concat(!
+          /*client*/
+          ctx[4] ? ' hidden-visually' : ''));
+          button.disabled =
+          /*loading*/
+          ctx[7];
+          attr(button, "type", "submit");
+          attr(button, "class", "button primary");
+          attr(span2, "class", "actions");
+          attr(form, "class", form_class_value = "quick-add".concat(
+          /*loading*/
+          ctx[7] ? ' icon-loading' : ''));
+        },
+        m: function m(target, anchor) {
+          insert(target, form, anchor);
+          append(form, label0);
+          append(label0, t0);
+          append(label0, t1);
+          append(label0, input0);
+          set_input_value(input0,
+          /*note*/
+          ctx[3]);
+          /*input0_binding*/
+
+          ctx[18](input0);
+          append(form, t2);
+          append(form, label1);
+          html_tag.m(raw0_value, label1);
+          append(label1, t3);
+          append(label1, span0);
+          append(span0, input1);
+          set_input_value(input1,
+          /*duration*/
+          ctx[1]);
+          append(span0, t4);
+          append(span0, input2);
+          set_input_value(input2,
+          /*date*/
+          ctx[2]);
+          append(form, t5);
+          append(form, label2);
+          append(label2, t6);
+          append(label2, t7);
+          mount_component(select0, label2, null);
+          append(form, t8);
+          append(form, label3);
+          append(label3, span1);
+          html_tag_1.m(raw1_value, span1);
+          append(span1, t9);
+          append(span1, strong);
+          append(strong, t10);
+          append(span1, t11);
+          append(span1, a);
+          append(label3, t13);
+          mount_component(select1, label3, null);
+          append(form, t14);
+          append(form, span2);
+          append(span2, button);
+          append(button, t15);
+          current = true;
+
+          if (!mounted) {
+            dispose = [listen(input0, "input",
+            /*input0_input_handler*/
+            ctx[17]), listen(input1, "input",
+            /*input1_input_handler*/
+            ctx[19]), listen(input2, "input",
+            /*input2_input_handler*/
+            ctx[20]), listen(a, "click", prevent_default(
+            /*click_handler*/
+            ctx[22])), listen(form, "submit", prevent_default(
+            /*save*/
+            ctx[10]))];
+            mounted = true;
+          }
+        },
+        p: function p(ctx, _ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+              dirty = _ref2[0];
+
+          if (dirty &
+          /*note*/
+          8 && input0.value !==
+          /*note*/
+          ctx[3]) {
+            set_input_value(input0,
+            /*note*/
+            ctx[3]);
+          }
+
+          if (dirty &
+          /*duration*/
+          2 && to_number(input1.value) !==
+          /*duration*/
+          ctx[1]) {
+            set_input_value(input1,
+            /*duration*/
+            ctx[1]);
+          }
+
+          if (dirty &
+          /*date*/
+          4) {
+            set_input_value(input2,
+            /*date*/
+            ctx[2]);
+          }
+
+          var select0_changes = {};
+          if (dirty &
+          /*clients*/
+          1) select0_changes.items =
+          /*clients*/
+          ctx[0];
+
+          if (!updating_value && dirty &
+          /*client*/
+          16) {
+            updating_value = true;
+            select0_changes.value =
+            /*client*/
+            ctx[4];
+            add_flush_callback(function () {
+              return updating_value = false;
+            });
+          }
+
+          select0.$set(select0_changes);
+
+          if (!current || dirty &
+          /*taskError, client*/
+          272 && label2_class_value !== (label2_class_value = "client".concat(
+          /*taskError*/
+          ctx[8] ? ' error' : '').concat(
+          /*client*/
+          ctx[4] ? ' hidden-visually' : ''))) {
+            attr(label2, "class", label2_class_value);
+          }
+
+          if ((!current || dirty &
+          /*client*/
+          16) && t10_value !== (t10_value = (
+          /*client*/
+          ctx[4] &&
+          /*client*/
+          ctx[4].label) + "")) set_data(t10, t10_value);
+          var select1_changes = {};
+          if (dirty &
+          /*client*/
+          16) select1_changes.items =
+          /*tasksWithProject*/
+          ctx[9] &&
+          /*tasksWithProject*/
+          ctx[9].filter(
+          /*func*/
+          ctx[23]);
+
+          if (!updating_value_1 && dirty &
+          /*task*/
+          32) {
+            updating_value_1 = true;
+            select1_changes.value =
+            /*task*/
+            ctx[5];
+            add_flush_callback(function () {
+              return updating_value_1 = false;
+            });
+          }
+
+          select1.$set(select1_changes);
+
+          if (!current || dirty &
+          /*taskError, client*/
+          272 && label3_class_value !== (label3_class_value = "task".concat(
+          /*taskError*/
+          ctx[8] ? ' error' : '').concat(!
+          /*client*/
+          ctx[4] ? ' hidden-visually' : ''))) {
+            attr(label3, "class", label3_class_value);
+          }
+
+          if (!current || dirty &
+          /*loading*/
+          128) {
+            button.disabled =
+            /*loading*/
+            ctx[7];
+          }
+
+          if (!current || dirty &
+          /*loading*/
+          128 && form_class_value !== (form_class_value = "quick-add".concat(
+          /*loading*/
+          ctx[7] ? ' icon-loading' : ''))) {
+            attr(form, "class", form_class_value);
+          }
+        },
+        i: function i(local) {
+          if (current) return;
+          transition_in(select0.$$.fragment, local);
+          transition_in(select1.$$.fragment, local);
+          current = true;
+        },
+        o: function o(local) {
+          transition_out(select0.$$.fragment, local);
+          transition_out(select1.$$.fragment, local);
+          current = false;
+        },
+        d: function d(detaching) {
+          if (detaching) detach(form);
+          /*input0_binding*/
+
+          ctx[18](null);
+          destroy_component(select0);
+          destroy_component(select1);
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    var func_1 = function func_1(item) {
+      return item.project.label;
+    };
+
+    function instance$7($$self, $$props, $$invalidate) {
+      var loading;
+      var taskError;
+      var action = $$props.action;
+      var requestToken = $$props.requestToken;
+      var clients = $$props.clients;
+      var projects = $$props.projects;
+      var tasks = $$props.tasks;
+      var initialDate = $$props.initialDate;
+      var duration = 1;
+      var date = initialDate;
+      var note;
+      var client;
+      var task;
+      var noteInput;
+      var tasksWithProject = tasks && tasks.length ? tasks.map(function (aTask) {
+        aTask.project = projects.find(function (aProject) {
+          return aProject.value === aTask.projectUuid;
+        });
+        return aTask;
+      }) : [];
+      onMount(function () {
+        document.addEventListener("DOMContentLoaded", function () {
+          if (noteInput) {
+            noteInput.focus();
+          }
+        });
+
+        if (noteInput) {
+          noteInput.focus();
+        }
+      });
+
+      var save = /*#__PURE__*/function () {
+        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+          var entry, response;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  $$invalidate(7, loading = true);
+                  $$invalidate(8, taskError = false);
+
+                  if (task) {
+                    _context.next = 6;
+                    break;
+                  }
+
+                  $$invalidate(7, loading = false);
+                  $$invalidate(8, taskError = true);
+                  return _context.abrupt("return");
+
+                case 6:
+                  _context.prev = 6;
+                  entry = {
+                    duration: duration,
+                    date: date,
+                    note: note,
+                    task: task.value
+                  };
+                  _context.next = 10;
+                  return fetch(action, {
+                    method: "POST",
+                    body: JSON.stringify(entry),
+                    headers: {
+                      requesttoken: requestToken,
+                      "content-type": "application/json"
+                    }
+                  });
+
+                case 10:
+                  response = _context.sent;
+
+                  if (response && response.ok) {
+                    document.querySelector(".app-timemanager [data-current-link]").click();
+                  }
+
+                  _context.next = 17;
+                  break;
+
+                case 14:
+                  _context.prev = 14;
+                  _context.t0 = _context["catch"](6);
+                  console.error(_context.t0);
+
+                case 17:
+                  $$invalidate(7, loading = false);
+
+                case 18:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[6, 14]]);
+        }));
+
+        return function save() {
+          return _ref3.apply(this, arguments);
+        };
+      }();
+
+      var clientSelected = function clientSelected() {
+        var input = document.querySelector(".task input");
+
+        if (input) {
+          input.focus();
+        }
+      };
+
+      function input0_input_handler() {
+        note = this.value;
+        $$invalidate(3, note);
+      }
+
+      function input0_binding($$value) {
+        binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+          noteInput = $$value;
+          $$invalidate(6, noteInput);
+        });
+      }
+
+      function input1_input_handler() {
+        duration = to_number(this.value);
+        $$invalidate(1, duration);
+      }
+
+      function input2_input_handler() {
+        date = this.value;
+        $$invalidate(2, date);
+      }
+
+      function select0_value_binding(value) {
+        client = value;
+        $$invalidate(4, client);
+      }
+
+      var click_handler = function click_handler() {
+        return $$invalidate(4, client = null);
+      };
+
+      var func = function func(oneTask) {
+        return client && oneTask.project.clientUuid === client.value;
+      };
+
+      function select1_value_binding(value) {
+        task = value;
+        $$invalidate(5, task);
+      }
+
+      $$self.$$set = function ($$props) {
+        if ('action' in $$props) $$invalidate(12, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+        if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(14, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(15, tasks = $$props.tasks);
+        if ('initialDate' in $$props) $$invalidate(16, initialDate = $$props.initialDate);
+      };
+
+      $$invalidate(7, loading = false);
+
+      $$invalidate(8, taskError = false);
+
+      return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_value_binding, click_handler, func, select1_value_binding];
+    }
+
+    var QuickAddLegacy = /*#__PURE__*/function (_SvelteComponent) {
+      _inherits(QuickAddLegacy, _SvelteComponent);
+
+      var _super = _createSuper(QuickAddLegacy);
+
+      function QuickAddLegacy(options) {
+        var _this;
+
+        _classCallCheck$1(this, QuickAddLegacy);
+
+        _this = _super.call(this);
+        init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+          action: 12,
+          requestToken: 13,
+          clients: 0,
+          projects: 14,
+          tasks: 15,
+          initialDate: 16
+        });
+        return _this;
+      }
+
+      return _createClass$1(QuickAddLegacy);
+    }(SvelteComponent);
+
+    function create_fragment$6(ctx) {
       var span0;
       var input;
       var input_id_value;
@@ -26735,7 +27335,7 @@
       };
     }
 
-    function instance$7($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
       var loading;
       var uuid = $$props.uuid;
       var initialState = $$props.initialState;
@@ -26827,7 +27427,7 @@
         _classCallCheck$1(this, Checkmark);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
           uuid: 0,
           initialState: 1,
           action: 5,
@@ -26839,7 +27439,7 @@
       return _createClass$1(Checkmark);
     }(SvelteComponent);
 
-    function create_fragment$6(ctx) {
+    function create_fragment$5(ctx) {
       var form;
       var label0;
       var t0_value = dist_4$1('timemanager', 'Clients') + "";
@@ -27120,7 +27720,7 @@
       };
     }
 
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$5($$self, $$props, $$invalidate) {
       var loading;
       var availableProjects;
       var availableTasks;
@@ -27311,7 +27911,7 @@
         _classCallCheck$1(this, Filters);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
           clients: 0,
           projects: 15,
           tasks: 16
@@ -27370,9 +27970,9 @@
         return { set, update, subscribe };
     }
 
-    var isFilterVisible = writable(false);
+    var isFilterSet = writable(false);
 
-    function create_if_block$1(ctx) {
+    function create_if_block$2(ctx) {
       var label;
       var t0_value = dist_4$1('timemanager', 'Created by') + "";
       var t0;
@@ -27448,12 +28048,12 @@
       };
     }
 
-    function create_fragment$5(ctx) {
+    function create_fragment$4(ctx) {
       var if_block_anchor;
       var current;
       var if_block =
       /*isVisible*/
-      ctx[0] && create_if_block$1(ctx);
+      ctx[0] && create_if_block$2(ctx);
       return {
         c: function c() {
           if (if_block) if_block.c();
@@ -27480,7 +28080,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$1(ctx);
+              if_block = create_if_block$2(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -27509,7 +28109,7 @@
       };
     }
 
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
       var loading;
       var requestToken = $$props.requestToken;
       var _$$props$isVisible = $$props.isVisible,
@@ -27543,6 +28143,7 @@
             label: ""
           }
         });
+        isFilterSet.set(false);
       };
 
       var search = /*#__PURE__*/function () {
@@ -27648,7 +28249,7 @@
 
                 if (result && result.length) {
                   $$invalidate(1, selectedSharee = result[0]);
-                  isFilterVisible.set(true);
+                  isFilterSet.set(true);
                 }
 
               case 17:
@@ -27701,7 +28302,7 @@
         _classCallCheck$1(this, UserFilterSelect);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           requestToken: 6,
           isVisible: 0
         });
@@ -27711,7 +28312,7 @@
       return _createClass$1(UserFilterSelect);
     }(SvelteComponent);
 
-    function create_fragment$4(ctx) {
+    function create_fragment$3(ctx) {
       var form;
       var userfilterselect;
       var t0;
@@ -27916,7 +28517,7 @@
 
     var dateFormat = "yyyy-MM-dd";
 
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$3($$self, $$props, $$invalidate) {
       var loading;
       var start;
       var end;
@@ -28055,8 +28656,6 @@
             }
           });
         }
-
-        isFilterVisible.set(true);
       });
 
       function input0_input_handler() {
@@ -28105,7 +28704,7 @@
         _classCallCheck$1(this, Timerange);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {
           requestToken: 0,
           startOfMonth: 7,
           endOfMonth: 8
@@ -28116,7 +28715,7 @@
       return _createClass$1(Timerange);
     }(SvelteComponent);
 
-    function create_fragment$3(ctx) {
+    function create_fragment$2(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -28148,7 +28747,7 @@
       };
     }
 
-    function instance$3($$self) {
+    function instance$2($$self) {
       onMount(function () {
         var openDetailsBeforePrint = function openDetailsBeforePrint() {
           var details = document.querySelectorAll("details");
@@ -28194,7 +28793,7 @@
         _classCallCheck$1(this, PrintButton);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$3, create_fragment$3, safe_not_equal, {});
+        init$2(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {});
         return _this;
       }
 
@@ -35730,7 +36329,7 @@
     } // (355:0) {#if importPreviewData.length}
 
 
-    function create_if_block(ctx) {
+    function create_if_block$1(ctx) {
       var form;
       var button;
       var t_value = dist_4$1('timemanager', 'Import now') + "";
@@ -35789,7 +36388,7 @@
       };
     }
 
-    function create_fragment$2(ctx) {
+    function create_fragment$1(ctx) {
       var form;
       var label0;
       var t0_value = dist_4$1('timemanager', 'Select delimiter') + "";
@@ -35841,7 +36440,7 @@
 
       var if_block4 =
       /*importPreviewData*/
-      ctx[8].length && create_if_block(ctx);
+      ctx[8].length && create_if_block$1(ctx);
       return {
         c: function c() {
           form = element("form");
@@ -36065,7 +36664,7 @@
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
-              if_block4 = create_if_block(ctx);
+              if_block4 = create_if_block$1(ctx);
               if_block4.c();
               if_block4.m(if_block4_anchor.parentNode, if_block4_anchor);
             }
@@ -36114,7 +36713,7 @@
       };
     }
 
-    function instance$2($$self, $$props, $$invalidate) {
+    function instance$1($$self, $$props, $$invalidate) {
       var parseError;
       var importError;
       var successMessage;
@@ -36460,7 +37059,7 @@
         _classCallCheck$1(this, Import);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$2, create_fragment$2, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
           syncApiUrl: 13,
           requestToken: 14
         }, null, [-1, -1]);
@@ -36470,15 +37069,16 @@
       return _createClass$1(Import);
     }(SvelteComponent);
 
-    function create_fragment$1(ctx) {
+    function create_if_block(ctx) {
       var div;
       var userfilterselect;
-      var div_class_value;
       var current;
+      var mounted;
+      var dispose;
       userfilterselect = new UserFilterSelect({
         props: {
           isVisible:
-          /*isVisible*/
+          /*showTooltip*/
           ctx[1],
           requestToken:
           /*requestToken*/
@@ -36489,24 +37089,27 @@
         c: function c() {
           div = element("div");
           create_component(userfilterselect.$$.fragment);
-          attr(div, "class", div_class_value =
-          /*isVisible*/
-          ctx[1] ? 'sharee-filter' : '');
+          attr(div, "class", "popover");
         },
         m: function m(target, anchor) {
           insert(target, div, anchor);
           mount_component(userfilterselect, div, null);
           current = true;
-        },
-        p: function p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-              dirty = _ref2[0];
 
+          if (!mounted) {
+            dispose = action_destroyer(/*popperContent*/
+            ctx[4].call(null, div,
+            /*extraOpts*/
+            ctx[5]));
+            mounted = true;
+          }
+        },
+        p: function p(ctx, dirty) {
           var userfilterselect_changes = {};
           if (dirty &
-          /*isVisible*/
+          /*showTooltip*/
           2) userfilterselect_changes.isVisible =
-          /*isVisible*/
+          /*showTooltip*/
           ctx[1];
           if (dirty &
           /*requestToken*/
@@ -36514,14 +37117,6 @@
           /*requestToken*/
           ctx[0];
           userfilterselect.$set(userfilterselect_changes);
-
-          if (!current || dirty &
-          /*isVisible*/
-          2 && div_class_value !== (div_class_value =
-          /*isVisible*/
-          ctx[1] ? 'sharee-filter' : '')) {
-            attr(div, "class", div_class_value);
-          }
         },
         i: function i(local) {
           if (current) return;
@@ -36535,90 +37130,188 @@
         d: function d(detaching) {
           if (detaching) detach(div);
           destroy_component(userfilterselect);
-        }
-      };
-    }
-
-    function instance$1($$self, $$props, $$invalidate) {
-      var isVisible;
-      var requestToken = $$props.requestToken;
-      var unsubscribe = isFilterVisible.subscribe(function (value) {
-        $$invalidate(1, isVisible = value);
-      });
-      onDestroy(unsubscribe);
-
-      $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
-      };
-
-      $$invalidate(1, isVisible = false);
-
-      return [requestToken, isVisible];
-    }
-
-    var UserFilter = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits(UserFilter, _SvelteComponent);
-
-      var _super = _createSuper(UserFilter);
-
-      function UserFilter(options) {
-        var _this;
-
-        _classCallCheck$1(this, UserFilter);
-
-        _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$1, create_fragment$1, safe_not_equal, {
-          requestToken: 0
-        });
-        return _this;
-      }
-
-      return _createClass$1(UserFilter);
-    }(SvelteComponent);
-
-    function create_fragment(ctx) {
-      var button;
-      var mounted;
-      var dispose;
-      return {
-        c: function c() {
-          button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Filter'));
-          attr(button, "class", "filter-button icon-filter");
-        },
-        m: function m(target, anchor) {
-          insert(target, button, anchor);
-
-          if (!mounted) {
-            dispose = listen(button, "click",
-            /*click_handler*/
-            ctx[0]);
-            mounted = true;
-          }
-        },
-        p: noop$1,
-        i: noop$1,
-        o: noop$1,
-        d: function d(detaching) {
-          if (detaching) detach(button);
           mounted = false;
           dispose();
         }
       };
     }
 
-    function instance($$self) {
+    function create_fragment(ctx) {
+      var button;
+      var t0_value = dist_4$1('timemanager', 'Filter by person') + "";
+      var t0;
+      var button_class_value;
+      var t1;
+      var if_block_anchor;
+      var current;
+      var mounted;
+      var dispose;
+      var if_block =
+      /*showTooltip*/
+      ctx[1] && create_if_block(ctx);
+      return {
+        c: function c() {
+          button = element("button");
+          t0 = text(t0_value);
+          t1 = space$1();
+          if (if_block) if_block.c();
+          if_block_anchor = empty();
+          attr(button, "class", button_class_value = "filter-button icon-filter ".concat(
+          /*$isFilterSet*/
+          ctx[2] ? 'active' : ''));
+        },
+        m: function m(target, anchor) {
+          insert(target, button, anchor);
+          append(button, t0);
+          insert(target, t1, anchor);
+          if (if_block) if_block.m(target, anchor);
+          insert(target, if_block_anchor, anchor);
+          current = true;
+
+          if (!mounted) {
+            dispose = [action_destroyer(/*popperRef*/
+            ctx[3].call(null, button)), listen(button, "click",
+            /*click_handler*/
+            ctx[6])];
+            mounted = true;
+          }
+        },
+        p: function p(ctx, _ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+              dirty = _ref2[0];
+
+          if (!current || dirty &
+          /*$isFilterSet*/
+          4 && button_class_value !== (button_class_value = "filter-button icon-filter ".concat(
+          /*$isFilterSet*/
+          ctx[2] ? 'active' : ''))) {
+            attr(button, "class", button_class_value);
+          }
+
+          if (
+          /*showTooltip*/
+          ctx[1]) {
+            if (if_block) {
+              if_block.p(ctx, dirty);
+
+              if (dirty &
+              /*showTooltip*/
+              2) {
+                transition_in(if_block, 1);
+              }
+            } else {
+              if_block = create_if_block(ctx);
+              if_block.c();
+              transition_in(if_block, 1);
+              if_block.m(if_block_anchor.parentNode, if_block_anchor);
+            }
+          } else if (if_block) {
+            group_outros();
+            transition_out(if_block, 1, 1, function () {
+              if_block = null;
+            });
+            check_outros();
+          }
+        },
+        i: function i(local) {
+          if (current) return;
+          transition_in(if_block);
+          current = true;
+        },
+        o: function o(local) {
+          transition_out(if_block);
+          current = false;
+        },
+        d: function d(detaching) {
+          if (detaching) detach(button);
+          if (detaching) detach(t1);
+          if (if_block) if_block.d(detaching);
+          if (detaching) detach(if_block_anchor);
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+      var $isFilterSet;
+      component_subscribe($$self, isFilterSet, function ($$value) {
+        return $$invalidate(2, $isFilterSet = $$value);
+      });
+      var requestToken = $$props.requestToken;
+
+      var _createPopperActions = createPopperActions({
+        placement: "bottom",
+        strategy: "fixed"
+      }),
+          _createPopperActions2 = _slicedToArray(_createPopperActions, 2),
+          popperRef = _createPopperActions2[0],
+          popperContent = _createPopperActions2[1];
+
+      var extraOpts = {
+        modifiers: [{
+          name: "offset",
+          options: {
+            offset: [0, 8]
+          }
+        }]
+      };
+      var showTooltip = false;
       onMount(function () {
-        isFilterVisible.set(false);
+        var hideTooltip = function hideTooltip(e) {
+          if (e.key === "Escape") {
+            $$invalidate(1, showTooltip = false);
+          }
+        };
+
+        document.addEventListener("keyup", hideTooltip); // Parse current URL
+
+        var urlParts = document.location.href.split("?");
+
+        if (urlParts.length > 1) {
+          var queryString = urlParts[1];
+          var queryStringParts = queryString.split("&");
+
+          var _iterator = _createForOfIteratorHelper(queryStringParts),
+              _step;
+
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var part = _step.value;
+              // Split query params
+              var partParts = part.split("=");
+
+              var _partParts = _slicedToArray(partParts, 2),
+                  name = _partParts[0],
+                  value = _partParts[1]; // Apply filters from query params
+
+
+              if (name === "userFilter" && value) {
+                isFilterSet.set(true);
+              }
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+        }
+
+        return function () {
+          document.removeEventListener("keyup", hideTooltip);
+          isFilterSet.set(false);
+        };
       });
 
       var click_handler = function click_handler() {
-        isFilterVisible.update(function (isVisible) {
-          return !isVisible;
-        });
+        $$invalidate(1, showTooltip = !showTooltip);
       };
 
-      return [click_handler];
+      $$self.$$set = function ($$props) {
+        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
+      };
+
+      return [requestToken, showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
     }
 
     var UserFilterButton = /*#__PURE__*/function (_SvelteComponent) {
@@ -36632,7 +37325,9 @@
         _classCallCheck$1(this, UserFilterButton);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {});
+        init$2(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
+          requestToken: 0
+        });
         return _this;
       }
 
@@ -41257,6 +41952,12 @@
 
     var token = auth.getRequestToken();
     var components = [];
+    var QuickAdd = QuickAddLegacy;
+
+    if (process.env.FEATURE_QUICK_ADD_NEXT) {
+      QuickAdd = QuickAdd$1;
+    }
+
     $(document).ready(function () {
       if ($('input[name="duration"]').length > 0) {
         $('input[name="duration"]')[0].focus();
@@ -41279,6 +41980,21 @@
     };
 
     var init = function init() {
+      // Destroy all previous components
+      while (components.length) {
+        var component = components.pop();
+
+        if (!component) {
+          continue;
+        }
+
+        try {
+          component.$destroy();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       var store = {};
       var storeElement = document.querySelector("#content.app-timemanager [data-store]");
 
@@ -41426,13 +42142,6 @@
         props: _objectSpread2(_objectSpread2({}, store), {}, {
           requestToken: token
         })
-      }));
-      components.push(safelyCreateComponent({
-        component: UserFilter,
-        selector: "#content.app-timemanager [data-svelte='UserFilter.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
       })); // components.push(
       // 	new Settings({
       // 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
@@ -41447,6 +42156,6 @@
     };
 
     init();
-    components.push(new PagePjax(init));
+    new PagePjax(init);
 
 })();
