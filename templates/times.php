@@ -59,6 +59,11 @@ $l = \OC::$server->getL10N('timemanager');
 					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
 				<?php if (!$_['task']) { ?>
+					<div class="tm_item-list space-bottom">
+						<?php print_unescaped($this->inc('partials/latest')); ?>
+					</div>
+				<?php } ?>
+				<?php if (!$_['task']) { ?>
 					<p><?php p($l->t('Select a task to show time entries for')); ?></p>
 					<form action="" method="get">
 						<?php if (count($_['tasks']) > 0) { ?>
@@ -197,11 +202,6 @@ $l = \OC::$server->getL10N('timemanager');
 					</div>
 				<?php } ?>
 			</div>
-			<?php if (!$_['task']) { ?>
-				<div class="tm_item-list">
-					<?php print_unescaped($this->inc('partials/latest')); ?>
-				</div>
-			<?php } ?>
 		</div>
 	</div>
 </div>

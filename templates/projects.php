@@ -63,6 +63,25 @@ $l = \OC::$server->getL10N('timemanager');
 			</div>
 		<?php } ?>
 		<div class="section">
+			<?php if (!$_['client']) { ?>
+				<div class="tm_item-list space-bottom">
+					<h2 class="list-title"><?php p($l->t('All projects')); ?></h2>
+					<?php if (count($_['projects']) > 0) {
+						foreach ($_['projects'] as $project) { 
+							?>
+							<div class="tm_item-row with-link">
+								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
+									<h3><em><?php p($project->client->getName()); ?></em> › <?php p($project->getName()); ?></h3>
+									<div class="tm_item-excerpt">
+										<span><?php p($l->t('%s tasks', [$project->task_count])); ?></span>&nbsp;&middot;&nbsp;
+										<span><?php p($project->hours); ?> <?php p($l->t('hrs.')); ?></span>
+										<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $project])); ?>
+									</div>
+								</a>
+							</div>
+					<?php } } ?>
+				</div>
+			<?php } ?>
 			<div class="tm_item-list">
 				<h2 class="list-title"><?php p($l->t('Projects')); ?></h2>
 				<?php if($_['client'] && $_['canEdit']) { ?>
@@ -109,25 +128,6 @@ $l = \OC::$server->getL10N('timemanager');
 					</div>
 				<?php } ?>
 			</div>
-			<?php if (!$_['client']) { ?>
-				<div class="tm_item-list">
-					<h2 class="list-title"><?php p($l->t('All projects')); ?></h2>
-					<?php if (count($_['projects']) > 0) {
-						foreach ($_['projects'] as $project) { 
-							?>
-							<div class="tm_item-row with-link">
-								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
-									<h3><em><?php p($project->client->getName()); ?></em> › <?php p($project->getName()); ?></h3>
-									<div class="tm_item-excerpt">
-										<span><?php p($l->t('%s tasks', [$project->task_count])); ?></span>&nbsp;&middot;&nbsp;
-										<span><?php p($project->hours); ?> <?php p($l->t('hrs.')); ?></span>
-										<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $project])); ?>
-									</div>
-								</a>
-							</div>
-					<?php } } ?>
-				</div>
-			<?php } ?>
 		</div>
 	</div>
 </div>
