@@ -1158,7 +1158,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		cy.visit("/apps/timemanager");
 		// Latest entries contains latest time entry (first one has latest date)
-		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`);
+		cy.contains(".tm_item-row", `[Sharee entry]: ${sharedTimeEntries[0].note}`).should("not.exist");
 	});
 
 	it("can access time entries for previously shared client (as a sharer)", () => {
