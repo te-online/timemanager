@@ -37264,7 +37264,8 @@
           }
         };
 
-        document.addEventListener("keyup", hideTooltip); // Parse current URL
+        document.addEventListener("keyup", hideTooltip);
+        isFilterSet.set(false); // Parse current URL
 
         var urlParts = document.location.href.split("?");
 
@@ -41989,6 +41990,7 @@
         }
 
         try {
+          console.log("de", component);
           component.$destroy();
         } catch (error) {
           console.error(error);

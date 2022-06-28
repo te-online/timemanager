@@ -25,6 +25,8 @@
 		};
 		document.addEventListener("keyup", hideTooltip);
 
+		isFilterSet.set(false);
+
 		// Parse current URL
 		const urlParts = document.location.href.split("?");
 		if (urlParts.length > 1) {
