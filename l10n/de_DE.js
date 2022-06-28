@@ -177,7 +177,7 @@ OC.L10N.register(
 		"All projects": "Alle Projekte",
 		"All tasks": "Alle Aufgaben",
 		"Created by": "Einträge von",
-		Filter: "Filter",
+		"Filter by person": "Filtern nach Person",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

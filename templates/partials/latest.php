@@ -11,7 +11,7 @@
 </h2>
 
 <?php if ($_['hasSharedTimeEntries']) { ?>
-	<span data-svelte="UserFilter.svelte"></span>
+	<span data-svelte="UserFilterButton.svelte"></span>
 	<a href="" class="timemanager-pjax-link hidden-visually hidden-filter-link"><?php p($l->t("Apply user filter")); ?></a>
 <?php } ?>
 

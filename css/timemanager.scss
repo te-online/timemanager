@@ -263,6 +263,8 @@ body.loading-error #content.app-timemanager:before {
 
 label {
 	display: block;
+	font-size: 12px;
+	font-weight: normal;
 
 	&.space-top {
 		margin-top: 15px;
@@ -352,7 +354,7 @@ label {
 			width: 140px;
 		}
 
-		.note, 
+		.note,
 		.task-selector-trigger {
 			input {
 				width: 100%;
@@ -619,18 +621,21 @@ label {
 		margin-left: 8px;
 		margin-bottom: -8px;
 		margin-top: -4px;
-	}
+		position: relative;
 
-	.sharee-filter {
-		padding: 4px 12px 12px;
-		margin-bottom: 12px;
-		margin-top: -6px;
-		background: var(--color-primary-light);
-		display: flex;
+		&.active {
+			padding-right: 36px;
 
-		label {
-			font-size: 12px;
-			width: 300px;
+			&:after {
+				content: "";
+				position: absolute;
+				right: 12px;
+				top: 12px;
+				width: 8px;
+				height: 8px;
+				border-radius: 100%;
+				background: var(--color-primary);
+			}
 		}
 	}
 }
@@ -712,13 +717,13 @@ label {
 	}
 }
 
-.task-selector-popover {
+.popover {
+	background: var(--background);
 	box-shadow: var(--color-primary-light) 0px 1px 4px 1px;
 	width: 320px;
-	min-height: 100px;
 	border: 1px solid var(--color-border);
 	border-radius: 2px;
-	padding: 6px 12px;
+	padding: 0 12px 12px;
 }
 
 @keyframes fallback {

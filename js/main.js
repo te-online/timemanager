@@ -14,7 +14,6 @@ import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
-import UserFilter from "./views/UserFilter.svelte";
 import UserFilterButton from "./views/UserFilterButton.svelte";
 // import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
@@ -259,17 +258,6 @@ const init = () => {
 		safelyCreateComponent({
 			component: UserFilterButton,
 			selector: "#content.app-timemanager [data-svelte='UserFilterButton.svelte']",
-			props: {
-				...store,
-				requestToken: token,
-			},
-		})
-	);
-
-	components.push(
-		safelyCreateComponent({
-			component: UserFilter,
-			selector: "#content.app-timemanager [data-svelte='UserFilter.svelte']",
 			props: {
 				...store,
 				requestToken: token,

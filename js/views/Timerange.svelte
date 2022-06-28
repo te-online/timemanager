@@ -17,7 +17,6 @@
 	import endOfYear from "date-fns/endOfYear";
 	import sub from "date-fns/sub";
 	import { getFirstDay, translate } from "@nextcloud/l10n";
-	import { isFilterVisible } from "../lib/stores";
 	import UserFilterSelect from "./UserFilterSelect.svelte";
 
 	const dateFormat = "yyyy-MM-dd";
@@ -109,8 +108,6 @@
 				}
 			});
 		}
-
-		isFilterVisible.set(true);
 	});
 </script>
 

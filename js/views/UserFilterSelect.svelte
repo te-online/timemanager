@@ -7,7 +7,7 @@
 	import { generateOcsUrl, generateUrl } from "@nextcloud/router";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
-	import { isFilterVisible } from "../lib/stores";
+	import { isFilterSet } from "../lib/stores";
 
 	let selectedSharee;
 	$: loading = false;
@@ -31,6 +31,7 @@
 
 	const handleClearSharee = () => {
 		handleSelectSharee({ detail: { value: { shareWith: "" }, label: "" } });
+		isFilterSet.set(false);
 	};
 
 	const search = async query => {
@@ -75,7 +76,7 @@
 					const result = await search(value);
 					if (result && result.length) {
 						selectedSharee = result[0];
-						isFilterVisible.set(true);
+						isFilterSet.set(true);
 					}
 				}
 			}
