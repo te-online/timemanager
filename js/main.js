@@ -43,6 +43,20 @@ const safelyCreateComponent = ({ component: Component, selector, props = {} }) =
 };
 
 const init = () => {
+	// Destroy all previous components
+	while (components.length) {
+		const component = components.pop();
+		if (!component) {
+			continue;
+		}
+
+		try {
+			component.$destroy();
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	let store = {};
 	const storeElement = document.querySelector("#content.app-timemanager [data-store]");
 	if (storeElement) {
@@ -277,4 +291,4 @@ const init = () => {
 };
 
 init();
-components.push(new PagePjax(init));
+new PagePjax(init);
