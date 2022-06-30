@@ -36,44 +36,7 @@ $l = \OC::$server->getL10N('timemanager');
 								<span>
 									<?php p($l->t('since %s', [$client->getCreatedYear()])); ?>
 								</span>
-								<?php if(isset($client->sharees) && count($client->sharees) > 0) { ?>
-									&nbsp;&middot;&nbsp;
-									<span>
-										<?php p($l->t('shared with:')); ?>
-										<ul class="existing-sharees compact">
-											<?php foreach($client->sharees as $sharee) { ?>
-												<li>
-													<img
-														src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_user_id'] . '/16'); ?>"
-														srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_user_id'] . '/16'); ?> 1x, 
-														<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_user_id'] . '/32'); ?> 2x, 
-														<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_user_id'] . '/64'); ?> 4x"
-														alt="" 
-													/>
-													<?php p($sharee['recipient_display_name']); ?>
-												</li>
-											<?php } ?>
-										</ul>
-									</span>
-								<?php } ?>
-								<?php if(isset($client->sharedBy)) { ?>
-									&nbsp;&middot;&nbsp;
-									<span>
-										<?php p($l->t('shared with you by:')); ?>
-										<ul class="existing-sharees compact">
-											<li>
-												<img
-													src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $client->sharedBy['author_user_id'] . '/16'); ?>"
-													srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $client->sharedBy['author_user_id'] . '/16'); ?> 1x, 
-														<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $client->sharedBy['author_user_id'] . '/32'); ?> 2x, 
-														<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $client->sharedBy['author_user_id'] . '/64'); ?> 4x"
-													alt="" 
-												/>
-												<?php p($client->sharedBy['author_display_name']); ?>
-											</li>
-										</ul>
-									</span>
-								<?php } ?>
+								<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $client])); ?>
 							</div>
 						</a>
 					</div>

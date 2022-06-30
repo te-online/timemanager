@@ -412,4 +412,47 @@ class StorageHelper {
 			return $time;
 		}, $times);
 	}
+
+	/**
+	 * Gets a list of recent time entries
+	 * @param array $times
+	 * @param int $max
+	 * @param array $userFilter
+	 * @return array
+	 */
+	function getLatestTimeEntriesFromAllTimeEntries(array $times, int $max = 5, array $userFilter = []): array {
+		$entries = [];
+		if ($times && is_array($times) && count($times) > 0) {
+			if ($userFilter && is_array($userFilter) && count($userFilter) > 0) {
+				$times = array_filter($times, function ($time) use ($userFilter) {
+					return in_array($time->getUserId(), $userFilter);
+				});
+			}
+			$latest = array_slice($times, 0, min([count($times), $max]));
+			foreach ($latest as $time) {
+				// Find details for parents of time entry
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				if (!$task) {
+					continue;
+				}
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				if (!$project) {
+					continue;
+				}
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				if (!$client) {
+					continue;
+				}
+				// Compile a template object
+				$entries[] = (object) [
+					"time" => $time,
+					"task" => $task,
+					"project" => $project,
+					"client" => $client,
+				];
+			}
+		}
+
+		return $entries;
+	}
 }

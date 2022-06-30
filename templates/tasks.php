@@ -50,18 +50,36 @@ $l = \OC::$server->getL10N('timemanager');
 			</div>
 		<?php } ?>
 		<div class="section">
+			<?php if (!$_['project']) { ?>
+				<div class="tm_item-list space-bottom">
+					<h2 class="list-title"><?php p($l->t('All tasks')); ?></h2>
+					<?php if (count($_['tasks']) > 0) {
+						foreach ($_['tasks'] as $task) { 
+							?>
+							<div class="tm_item-row with-link">
+								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
+									<h3><em><?php p($task->client->getName()); ?></em> › <em><?php p($task->project->getName()); ?></em> › <?php p($task->getName()); ?></h3>
+									<div class="tm_item-excerpt">
+										<span><?php p($task->hours); ?> <?php p($l->t('hrs.')); ?></span>
+										<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $task])); ?>
+									</div>
+								</a>
+							</div>
+					<?php } } ?>
+				</div>
+			<?php } ?>
 			<div class="tm_item-list">
 				<h2 class="list-title"><?php p($l->t('Tasks')); ?></h2>
 				<?php if($_['project'] && $_['canEdit']) { ?>
 					<span data-svelte="TaskEditorDialog.svelte"></span>
 				<?php } ?>
 				<span data-store="<?php p($_['store']); ?>"></span>
-				<?php if(!$_['project']) { ?>
+				<?php if (!$_['project']) { ?>
 					<p><?php p($l->t('Select a project to show tasks for')); ?></p>
 					<form action="" method="get">
-						<?php if(count($_['projects']) > 0 ) { ?>
+						<?php if (count($_['projects']) > 0 ) { ?>
 							<select name="project">
-								<?php foreach(array_reverse($_['projects']) as $project) {
+								<?php foreach ($_['projects'] as $project) {
 									// Look up client for project
 									$client = array_reduce($_['clients'], function ($carry, $oneClient) use(&$project) {
 										if ($oneClient->getUuid() === $project->getClientUuid()) {
@@ -78,7 +96,7 @@ $l = \OC::$server->getL10N('timemanager');
 							<p><?php p($l->t('No projects created yet. Go ahead and create one.')); ?></p>
 						<?php } ?>
 					</form>
-					<p><strong><?php p($l->t('Select a project first to show the tasks for this project.')); ?></strong></p>
+					<p><em><?php p($l->t('Select a project first to show the tasks for this project.')); ?></em></p>
 				<?php } else { ?>
 					<?php if(count($_['tasks']) > 0) {
 						foreach($_['tasks'] as $task) { ?>

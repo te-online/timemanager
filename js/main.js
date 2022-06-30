@@ -7,12 +7,14 @@ import DeleteButton from "./views/DeleteButton.svelte";
 import ShareDialog from "./views/ShareDialog.svelte";
 import ShareStatus from "./views/ShareStatus.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
-import QuickAdd from "./views/QuickAdd.svelte";
+import QuickAddNext from "./views/QuickAdd.svelte";
+import QuickAddLegacy from "./views/QuickAddLegacy.svelte";
 import Checkmark from "./views/Checkmark.svelte";
 import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
+import UserFilterButton from "./views/UserFilterButton.svelte";
 // import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
@@ -20,6 +22,11 @@ import { translate } from "@nextcloud/l10n";
 import auth from "@nextcloud/auth";
 const token = auth.getRequestToken();
 const components = [];
+
+let QuickAdd = QuickAddLegacy;
+if (process.env.FEATURE_QUICK_ADD_NEXT) {
+	QuickAdd = QuickAddNext;
+}
 
 $(document).ready(function () {
 	if ($('input[name="duration"]').length > 0) {
@@ -35,6 +42,20 @@ const safelyCreateComponent = ({ component: Component, selector, props = {} }) =
 };
 
 const init = () => {
+	// Destroy all previous components
+	while (components.length) {
+		const component = components.pop();
+		if (!component) {
+			continue;
+		}
+
+		try {
+			component.$destroy();
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	let store = {};
 	const storeElement = document.querySelector("#content.app-timemanager [data-store]");
 	if (storeElement) {
@@ -233,6 +254,17 @@ const init = () => {
 		})
 	);
 
+	components.push(
+		safelyCreateComponent({
+			component: UserFilterButton,
+			selector: "#content.app-timemanager [data-svelte='UserFilterButton.svelte']",
+			props: {
+				...store,
+				requestToken: token,
+			},
+		})
+	);
+
 	// components.push(
 	// 	new Settings({
 	// 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
@@ -247,4 +279,4 @@ const init = () => {
 };
 
 init();
-components.push(new PagePjax(init));
+new PagePjax(init);

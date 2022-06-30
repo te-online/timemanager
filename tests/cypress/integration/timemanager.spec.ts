@@ -834,8 +834,8 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 
 		cy.visit("/apps/timemanager");
-		// Latest time entries is not supposed to contain sharee's entries
-		cy.contains(".tm_item-row", "[Sharee entry]:").should("not.exist");
+		// Latest time entries _is_ supposed to contain sharee's entries
+		cy.contains(".tm_item-row", "[Sharee entry]:");
 
 		cy.get("a").contains("Clients").click();
 		cy.contains(".list-title", "Clients");
@@ -948,6 +948,55 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains(".list-title", "Time entries");
 
 		cy.contains("button", "Edit task").should("not.exist");
+	});
+
+	it("can list clients, projects, tasks shared with me", () => {
+		const sharedClient = clients[2];
+		const testuser = testusers[1];
+		// Log out admin user
+		cy.get("div#settings div#expand").click({ timeout: 4000 });
+		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		cy.reload(true);
+
+		// Log in as sharee test user
+		cy.get('input[name="user"]').type(testuser);
+		cy.get('input[name="password"]').type(`${testuser}-password`);
+		cy.get('input[type="submit"]').click();
+		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+
+		cy.visit("/apps/timemanager");
+		cy.get("a").contains("Projects").click();
+		cy.contains(".list-title", "Projects");
+		cy.contains("div.tm_item-row", sharedClient.Name);
+
+		cy.get("a").contains("Tasks").click();
+		cy.contains(".list-title", "Tasks");
+		const firstProject = projects.filter((project) => project.Client === sharedClient.Name)[0];
+		cy.contains("div.tm_item-row", firstProject.Name);
+
+		cy.get("a").contains("Time entries").click();
+		cy.contains(".list-title", "Time entries");
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		cy.contains("div.tm_item-row", firstTask.Name);
+	});
+
+	it("can filter latest time entries by author", () => {
+		const testuser = testusers[1];
+
+		cy.visit("/apps/timemanager");
+
+		// Check that not all rows are by the author
+		cy.get(".tm_item-row").should("have.length", 5);
+		cy.get(".tm_item-row").filter(`:contains(${testuser})`).should("have.length", 1);
+
+		// Set filter by sharee
+		cy.contains("button", "Filter by person").click();
+		cy.contains("label", "Created by").within(() => cy.get("input").eq(0).type(testuser).blur());
+		cy.get("label.sharee-filter-label .item.first").click();
+
+		// Check if all rows are by the author
+		cy.get(".tm_item-row").should("have.length", 3);
+		cy.get(".tm_item-row").filter(`:contains(${testuser})`).should("have.length", 3);
 	});
 
 	it("can get API response with created, updated, deleted items", () => {
