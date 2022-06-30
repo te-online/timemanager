@@ -980,6 +980,25 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("div.tm_item-row", firstTask.Name);
 	});
 
+	it("can filter latest time entries by author", () => {
+		const testuser = testusers[1];
+
+		cy.visit("/apps/timemanager");
+
+		// Check that not all rows are by the author
+		cy.get(".tm_item-row").should("have.length", 5);
+		cy.get(".tm_item-row").filter(`:contains(${testuser})`).should("have.length", 1);
+
+		// Set filter by sharee
+		cy.contains("button", "Filter by person").click();
+		cy.contains("label", "Created by").within(() => cy.get("input").eq(0).type(testuser).blur());
+		cy.get("label.sharee-filter-label .item.first").click();
+
+		// Check if all rows are by the author
+		cy.get(".tm_item-row").should("have.length", 3);
+		cy.get(".tm_item-row").filter(`:contains(${testuser})`).should("have.length", 3);
+	});
+
 	it("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
 		cy.get("div#settings div#expand").click({ timeout: 4000 });
