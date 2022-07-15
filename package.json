@@ -44,7 +44,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^7.1.0",
-    "svelte": "^3.48.0"
+    "svelte": "^3.49.0"
   },
   "dependencies": {
     "@nextcloud/l10n": "^1.4.1",
