@@ -400,7 +400,8 @@ label {
 			padding-left: 34px;
 		}
 
-		.search-results {
+		.search-results,
+		.last-used {
 			li {
 				padding: 6px 3px;
 			}
@@ -430,6 +431,28 @@ label {
 			.no-result {
 				padding: 12px 6px;
 				color: var(--color-text-lighter);
+			}
+
+			.last-used-wrapper {
+				padding: 2px 3px;
+
+				li {
+					display: flex;
+					padding: 0;
+
+					.label {
+						flex: 30%;
+						font-size: 12px;
+					}
+
+					.value {
+						flex: 70%;
+					}
+
+					.muted {
+						color: var(--color-text-lighter);
+					}
+				}
 			}
 		}
 	}

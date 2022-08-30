@@ -35,6 +35,7 @@
 	let buttonInput;
 	let searchInput;
 	let tooltipContainer;
+	let searchValue;
 	// const searchResults = [
 	// 	{
 	// 		client: {
@@ -52,6 +53,10 @@
 	// 		},
 	// 	},
 	// ];
+	const lastUsed = [
+		{ client: { name: "Zoo" }, project: { name: "Tigers" }, task: { name: "Feeding" } },
+		{ client: { name: "Zoo" }, project: { name: "Tigers" }, task: { name: "Feeding" } },
+	];
 	const searchResults = [];
 
 	const tasksWithProject =
@@ -175,12 +180,40 @@
 				<span class="hidden-visually">{translate("timemanager", "Search for client, project or task")}</span>
 				<input
 					bind:this={searchInput}
+					bind:value={searchValue}
 					class="search-input icon-search button-w-icon"
 					type="text"
 					placeholder={translate("timemanager", "Type to search for client, project or task")}
 					autofocus
 				/>
 			</label>
+			<div class="last-used">
+				{#if lastUsed?.length}
+					<ul class="result">
+						{#each lastUsed as entry, index}
+							<li>
+								{#if index === 0}<span class="client">{translate("timemanager", "Last used")}</span>{/if}
+								<a class="task last-used-wrapper" href="#">
+									<ul>
+										<li>
+											<span class="label muted">{translate("timemanager", "Client")}</span>
+											<span class="value muted">{entry.client.name}</span>
+										</li>
+										<li>
+											<span class="label muted">{translate("timemanager", "Project")}</span>
+											<span class="value muted">{entry.project.name}</span>
+										</li>
+										<li>
+											<span class="label">{translate("timemanager", "Task")}</span>
+											<span class="value">{entry.task.name}</span>
+										</li>
+									</ul>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</div>
 			<div class="search-results">
 				{#if searchResults?.length}
 					{#each searchResults as result}
@@ -202,7 +235,7 @@
 							</li>
 						</ul>
 					{/each}
-				{:else}
+				{:else if searchValue?.length}
 					<p class="no-result">{translate("timemanager", "Nothing found")}</p>
 				{/if}
 			</div>

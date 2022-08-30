@@ -13551,7 +13551,7 @@
     } // (247:3) {#if !loading && weekTotal > 0}
 
 
-    function create_if_block_3$2(ctx) {
+    function create_if_block_3$3(ctx) {
       var each_1_anchor;
       var each_value =
       /*points*/
@@ -13616,7 +13616,7 @@
     } // (250:6) {#if point && point.stats}
 
 
-    function create_if_block_4$2(ctx) {
+    function create_if_block_4$3(ctx) {
       var t0;
       var div;
       var span0;
@@ -13770,7 +13770,7 @@
       /*point*/
       ctx[25] &&
       /*point*/
-      ctx[25].stats && create_if_block_4$2(ctx);
+      ctx[25].stats && create_if_block_4$3(ctx);
       return {
         c: function c() {
           div = element("div");
@@ -13792,7 +13792,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_4$2(ctx);
+              if_block = create_if_block_4$3(ctx);
               if_block.c();
               if_block.m(div, t);
             }
@@ -13809,7 +13809,7 @@
     } // (263:3) {#if controls && !loading && weekTotal === 0}
 
 
-    function create_if_block_2$3(ctx) {
+    function create_if_block_2$4(ctx) {
       var p;
       return {
         c: function c() {
@@ -14034,14 +14034,14 @@
       /*loading*/
       ctx[2] &&
       /*weekTotal*/
-      ctx[5] > 0 && create_if_block_3$2(ctx);
+      ctx[5] > 0 && create_if_block_3$3(ctx);
       var if_block3 =
       /*controls*/
       ctx[0] && !
       /*loading*/
       ctx[2] &&
       /*weekTotal*/
-      ctx[5] === 0 && create_if_block_2$3();
+      ctx[5] === 0 && create_if_block_2$4();
       var if_block4 =
       /*controls*/
       ctx[0] && create_if_block$j(ctx);
@@ -14123,7 +14123,7 @@
             if (if_block2) {
               if_block2.p(ctx, dirty);
             } else {
-              if_block2 = create_if_block_3$2(ctx);
+              if_block2 = create_if_block_3$3(ctx);
               if_block2.c();
               if_block2.m(div0, t2);
             }
@@ -14142,7 +14142,7 @@
             if (if_block3) {
               if_block3.p(ctx, dirty);
             } else {
-              if_block3 = create_if_block_2$3();
+              if_block3 = create_if_block_2$4();
               if_block3.c();
               if_block3.m(div0, null);
             }
@@ -17310,7 +17310,7 @@
       return _createClass$1(TimeEditor);
     }(SvelteComponent);
 
-    function create_else_block$3(ctx) {
+    function create_else_block$2(ctx) {
       var div;
       var button;
       var t;
@@ -17592,7 +17592,7 @@
         if (!
         /*timeUuid*/
         ctx[1]) return create_if_block_1$6;
-        return create_else_block$3;
+        return create_else_block$2;
       }
 
       var current_block_type = select_block_type(ctx);
@@ -18402,7 +18402,7 @@
     } // (309:4) {:else}
 
 
-    function create_else_block$2(ctx) {
+    function create_else_block$1(ctx) {
       let each_1_anchor;
       let current;
       let each_value =
@@ -18653,7 +18653,7 @@
       let if_block_anchor;
       let if_block = !
       /*hideEmptyState*/
-      ctx[11] && create_if_block_2$2(ctx);
+      ctx[11] && create_if_block_2$3(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -18672,7 +18672,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_2$2(ctx);
+              if_block = create_if_block_2$3(ctx);
               if_block.c();
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
             }
@@ -18691,7 +18691,7 @@
     } // (332:12) {#if !hideEmptyState}
 
 
-    function create_if_block_2$2(ctx) {
+    function create_if_block_2$3(ctx) {
       let div;
       let t;
       return {
@@ -19249,7 +19249,7 @@
       let current;
       let mounted;
       let dispose;
-      const if_block_creators = [create_if_block$9, create_else_block$2];
+      const if_block_creators = [create_if_block$9, create_else_block$1];
       const if_blocks = [];
 
       function select_block_type(ctx, dirty) {
@@ -21070,14 +21070,14 @@
     } // (928:4) {#if !showClearIcon && (showIndicator || (showChevron && !value) || (!isSearchable && !isDisabled && !isWaiting && ((showSelectedItem && !isClearable) || !showSelectedItem)))}
 
 
-    function create_if_block_4$1(ctx) {
+    function create_if_block_4$2(ctx) {
       let div;
 
       function select_block_type(ctx, dirty) {
         if (
         /*indicatorSvg*/
         ctx[22]) return create_if_block_5$1;
-        return create_else_block$1;
+        return create_else_block;
       }
 
       let current_block_type = select_block_type(ctx);
@@ -21118,7 +21118,7 @@
     } // (932:12) {:else}
 
 
-    function create_else_block$1(ctx) {
+    function create_else_block(ctx) {
       let svg;
       let path;
       return {
@@ -21183,7 +21183,7 @@
     } // (950:4) {#if isWaiting}
 
 
-    function create_if_block_3$1(ctx) {
+    function create_if_block_3$2(ctx) {
       let div;
       return {
         c() {
@@ -21204,7 +21204,7 @@
     } // (966:4) {#if listOpen}
 
 
-    function create_if_block_2$1(ctx) {
+    function create_if_block_2$2(ctx) {
       let switch_instance;
       let updating_hoverItemIndex;
       let switch_instance_anchor;
@@ -21599,13 +21599,13 @@
       /*isClearable*/
       ctx[15] || !
       /*showSelectedItem*/
-      ctx[29])) && create_if_block_4$1(ctx);
+      ctx[29])) && create_if_block_4$2(ctx);
       let if_block6 =
       /*isWaiting*/
-      ctx[4] && create_if_block_3$1();
+      ctx[4] && create_if_block_3$2();
       let if_block7 =
       /*listOpen*/
-      ctx[5] && create_if_block_2$1(ctx);
+      ctx[5] && create_if_block_2$2(ctx);
       let if_block8 = (!
       /*isMulti*/
       ctx[7] ||
@@ -21907,7 +21907,7 @@
             if (if_block5) {
               if_block5.p(ctx, dirty);
             } else {
-              if_block5 = create_if_block_4$1(ctx);
+              if_block5 = create_if_block_4$2(ctx);
               if_block5.c();
               if_block5.m(div, t6);
             }
@@ -21920,7 +21920,7 @@
           /*isWaiting*/
           ctx[4]) {
             if (if_block6) ; else {
-              if_block6 = create_if_block_3$1();
+              if_block6 = create_if_block_3$2();
               if_block6.c();
               if_block6.m(div, t7);
             }
@@ -21941,7 +21941,7 @@
                 transition_in(if_block7, 1);
               }
             } else {
-              if_block7 = create_if_block_2$1(ctx);
+              if_block7 = create_if_block_2$2(ctx);
               if_block7.c();
               transition_in(if_block7, 1);
               if_block7.m(div, t8);
@@ -26869,25 +26869,34 @@
 
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[33] = list[i];
+      child_ctx[36] = list[i];
       return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[36] = list[i];
+      child_ctx[39] = list[i];
       return child_ctx;
     }
 
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[13] = list[i];
+      child_ctx[15] = list[i];
       return child_ctx;
-    } // (165:1) {#if showTooltip}
+    }
+
+    function get_each_context_3(ctx, list, i) {
+      var child_ctx = ctx.slice();
+      child_ctx[44] = list[i];
+      child_ctx[46] = i;
+      return child_ctx;
+    } // (170:1) {#if showTooltip}
 
 
     function create_if_block$3(ctx) {
-      var div2;
+      var _ctx$;
+
+      var div3;
       var label;
       var span;
       var t1;
@@ -26895,28 +26904,35 @@
       var t2;
       var div0;
       var t3;
-      var button;
-      var t4_value = dist_10("timemanager", "Add task") + "";
-      var t4;
-      var t5;
       var div1;
+      var t4;
+      var button;
+      var t5_value = dist_10("timemanager", "Add task") + "";
+      var t5;
+      var t6;
+      var div2;
       var mounted;
       var dispose;
+      var if_block0 =
+      /*lastUsed*/
+      ((_ctx$ = ctx[12]) === null || _ctx$ === void 0 ? void 0 : _ctx$.length) && create_if_block_3$1(ctx);
 
       function select_block_type(ctx, dirty) {
-        var _ctx$;
+        var _ctx$2, _ctx$3;
 
         if (
         /*searchResults*/
-        (_ctx$ = ctx[11]) !== null && _ctx$ !== void 0 && _ctx$.length) return create_if_block_1$1;
-        return create_else_block;
+        (_ctx$2 = ctx[13]) !== null && _ctx$2 !== void 0 && _ctx$2.length) return create_if_block_1$1;
+        if (
+        /*searchValue*/
+        (_ctx$3 = ctx[7]) !== null && _ctx$3 !== void 0 && _ctx$3.length) return create_if_block_2$1;
       }
 
       var current_block_type = select_block_type(ctx);
-      var if_block = current_block_type(ctx);
+      var if_block1 = current_block_type && current_block_type(ctx);
       return {
         c: function c() {
-          div2 = element("div");
+          div3 = element("div");
           label = element("label");
           span = element("span");
           span.textContent = "".concat(dist_10("timemanager", "Search for client, project or task"));
@@ -26924,80 +26940,319 @@
           input = element("input");
           t2 = space$1();
           div0 = element("div");
-          if_block.c();
+          if (if_block0) if_block0.c();
           t3 = space$1();
-          button = element("button");
-          t4 = text(t4_value);
-          t5 = space$1();
           div1 = element("div");
+          if (if_block1) if_block1.c();
+          t4 = space$1();
+          button = element("button");
+          t5 = text(t5_value);
+          t6 = space$1();
+          div2 = element("div");
           attr(span, "class", "hidden-visually");
           attr(input, "class", "search-input icon-search button-w-icon");
           attr(input, "type", "text");
           attr(input, "placeholder", dist_10("timemanager", "Type to search for client, project or task"));
           input.autofocus = true;
           attr(label, "class", "search");
-          attr(div0, "class", "search-results");
+          attr(div0, "class", "last-used");
+          attr(div1, "class", "search-results");
           button.disabled =
           /*loading*/
-          ctx[7];
+          ctx[8];
           attr(button, "type", "button");
           attr(button, "class", "icon-add button-w-icon button secondary task-add-button");
-          attr(div1, "class", "popover-arrow");
-          attr(div1, "data-popper-arrow", "");
-          attr(div2, "class", "task-selector-popover popover");
+          attr(div2, "class", "popover-arrow");
+          attr(div2, "data-popper-arrow", "");
+          attr(div3, "class", "task-selector-popover popover");
         },
         m: function m(target, anchor) {
-          insert(target, div2, anchor);
-          append(div2, label);
+          insert(target, div3, anchor);
+          append(div3, label);
           append(label, span);
           append(label, t1);
           append(label, input);
           /*input_binding*/
 
-          ctx[25](input);
-          append(div2, t2);
-          append(div2, div0);
-          if_block.m(div0, null);
-          append(div2, t3);
-          append(div2, button);
-          append(button, t4);
-          append(div2, t5);
-          append(div2, div1);
+          ctx[27](input);
+          set_input_value(input,
+          /*searchValue*/
+          ctx[7]);
+          append(div3, t2);
+          append(div3, div0);
+          if (if_block0) if_block0.m(div0, null);
+          append(div3, t3);
+          append(div3, div1);
+          if (if_block1) if_block1.m(div1, null);
+          append(div3, t4);
+          append(div3, button);
+          append(button, t5);
+          append(div3, t6);
+          append(div3, div2);
           input.focus();
 
           if (!mounted) {
-            dispose = [action_destroyer(/*popperContent*/
-            ctx[9].call(null, div2,
+            dispose = [listen(input, "input",
+            /*input_input_handler*/
+            ctx[28]), action_destroyer(/*popperContent*/
+            ctx[10].call(null, div3,
             /*extraOpts*/
-            ctx[10])), listen(div2, "click", click_handler)];
+            ctx[11])), listen(div3, "click", click_handler)];
             mounted = true;
           }
         },
         p: function p(ctx, dirty) {
-          if_block.p(ctx, dirty);
+          var _ctx$4;
+
+          if (dirty[0] &
+          /*searchValue*/
+          128 && input.value !==
+          /*searchValue*/
+          ctx[7]) {
+            set_input_value(input,
+            /*searchValue*/
+            ctx[7]);
+          }
+
+          if (
+          /*lastUsed*/
+          (_ctx$4 = ctx[12]) !== null && _ctx$4 !== void 0 && _ctx$4.length) if_block0.p(ctx, dirty);
+
+          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
+            if_block1.p(ctx, dirty);
+          } else {
+            if (if_block1) if_block1.d(1);
+            if_block1 = current_block_type && current_block_type(ctx);
+
+            if (if_block1) {
+              if_block1.c();
+              if_block1.m(div1, null);
+            }
+          }
 
           if (dirty[0] &
           /*loading*/
-          128) {
+          256) {
             button.disabled =
             /*loading*/
-            ctx[7];
+            ctx[8];
           }
         },
         d: function d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) detach(div3);
           /*input_binding*/
 
-          ctx[25](null);
-          if_block.d();
+          ctx[27](null);
+          if (if_block0) if_block0.d();
+
+          if (if_block1) {
+            if_block1.d();
+          }
+
           mounted = false;
           run_all(dispose);
         }
       };
-    } // (205:4) {:else}
+    } // (191:4) {#if lastUsed?.length}
 
 
-    function create_else_block(ctx) {
+    function create_if_block_3$1(ctx) {
+      var ul;
+      var each_value_3 =
+      /*lastUsed*/
+      ctx[12];
+      var each_blocks = [];
+
+      for (var i = 0; i < each_value_3.length; i += 1) {
+        each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+      }
+
+      return {
+        c: function c() {
+          ul = element("ul");
+
+          for (var _i = 0; _i < each_blocks.length; _i += 1) {
+            each_blocks[_i].c();
+          }
+
+          attr(ul, "class", "result");
+        },
+        m: function m(target, anchor) {
+          insert(target, ul, anchor);
+
+          for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+            each_blocks[_i2].m(ul, null);
+          }
+        },
+        p: function p(ctx, dirty) {
+          if (dirty[0] &
+          /*lastUsed*/
+          4096) {
+            each_value_3 =
+            /*lastUsed*/
+            ctx[12];
+
+            var _i3;
+
+            for (_i3 = 0; _i3 < each_value_3.length; _i3 += 1) {
+              var child_ctx = get_each_context_3(ctx, each_value_3, _i3);
+
+              if (each_blocks[_i3]) {
+                each_blocks[_i3].p(child_ctx, dirty);
+              } else {
+                each_blocks[_i3] = create_each_block_3(child_ctx);
+
+                each_blocks[_i3].c();
+
+                each_blocks[_i3].m(ul, null);
+              }
+            }
+
+            for (; _i3 < each_blocks.length; _i3 += 1) {
+              each_blocks[_i3].d(1);
+            }
+
+            each_blocks.length = each_value_3.length;
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(ul);
+          destroy_each(each_blocks, detaching);
+        }
+      };
+    } // (195:8) {#if index === 0}
+
+
+    function create_if_block_4$1(ctx) {
+      var span;
+      return {
+        c: function c() {
+          span = element("span");
+          span.textContent = "".concat(dist_10("timemanager", "Last used"));
+          attr(span, "class", "client");
+        },
+        m: function m(target, anchor) {
+          insert(target, span, anchor);
+        },
+        p: noop$1,
+        d: function d(detaching) {
+          if (detaching) detach(span);
+        }
+      };
+    } // (193:6) {#each lastUsed as entry, index}
+
+
+    function create_each_block_3(ctx) {
+      var li3;
+      var t0;
+      var a;
+      var ul;
+      var li0;
+      var span0;
+      var t2;
+      var span1;
+      var t3_value =
+      /*entry*/
+      ctx[44].client.name + "";
+      var t3;
+      var t4;
+      var li1;
+      var span2;
+      var t6;
+      var span3;
+      var t7_value =
+      /*entry*/
+      ctx[44].project.name + "";
+      var t7;
+      var t8;
+      var li2;
+      var span4;
+      var t10;
+      var span5;
+      var t11_value =
+      /*entry*/
+      ctx[44].task.name + "";
+      var t11;
+      var t12;
+      var if_block =
+      /*index*/
+      ctx[46] === 0 && create_if_block_4$1();
+      return {
+        c: function c() {
+          li3 = element("li");
+          if (if_block) if_block.c();
+          t0 = space$1();
+          a = element("a");
+          ul = element("ul");
+          li0 = element("li");
+          span0 = element("span");
+          span0.textContent = "".concat(dist_10("timemanager", "Client"));
+          t2 = space$1();
+          span1 = element("span");
+          t3 = text(t3_value);
+          t4 = space$1();
+          li1 = element("li");
+          span2 = element("span");
+          span2.textContent = "".concat(dist_10("timemanager", "Project"));
+          t6 = space$1();
+          span3 = element("span");
+          t7 = text(t7_value);
+          t8 = space$1();
+          li2 = element("li");
+          span4 = element("span");
+          span4.textContent = "".concat(dist_10("timemanager", "Task"));
+          t10 = space$1();
+          span5 = element("span");
+          t11 = text(t11_value);
+          t12 = space$1();
+          attr(span0, "class", "label muted");
+          attr(span1, "class", "value muted");
+          attr(span2, "class", "label muted");
+          attr(span3, "class", "value muted");
+          attr(span4, "class", "label");
+          attr(span5, "class", "value");
+          attr(a, "class", "task last-used-wrapper");
+          attr(a, "href", "#");
+        },
+        m: function m(target, anchor) {
+          insert(target, li3, anchor);
+          if (if_block) if_block.m(li3, null);
+          append(li3, t0);
+          append(li3, a);
+          append(a, ul);
+          append(ul, li0);
+          append(li0, span0);
+          append(li0, t2);
+          append(li0, span1);
+          append(span1, t3);
+          append(ul, t4);
+          append(ul, li1);
+          append(li1, span2);
+          append(li1, t6);
+          append(li1, span3);
+          append(span3, t7);
+          append(ul, t8);
+          append(ul, li2);
+          append(li2, span4);
+          append(li2, t10);
+          append(li2, span5);
+          append(span5, t11);
+          append(li3, t12);
+        },
+        p: function p(ctx, dirty) {
+          if (
+          /*index*/
+          ctx[46] === 0) if_block.p(ctx, dirty);
+        },
+        d: function d(detaching) {
+          if (detaching) detach(li3);
+          if (if_block) if_block.d();
+        }
+      };
+    } // (238:34) 
+
+
+    function create_if_block_2$1(ctx) {
       var p;
       return {
         c: function c() {
@@ -27013,14 +27268,14 @@
           if (detaching) detach(p);
         }
       };
-    } // (185:4) {#if searchResults?.length}
+    } // (218:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value =
       /*searchResults*/
-      ctx[11];
+      ctx[13];
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
@@ -27029,15 +27284,15 @@
 
       return {
         c: function c() {
-          for (var _i = 0; _i < each_blocks.length; _i += 1) {
-            each_blocks[_i].c();
+          for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
+            each_blocks[_i4].c();
           }
 
           each_1_anchor = empty();
         },
         m: function m(target, anchor) {
-          for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
-            each_blocks[_i2].m(target, anchor);
+          for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
+            each_blocks[_i5].m(target, anchor);
           }
 
           insert(target, each_1_anchor, anchor);
@@ -27045,29 +27300,29 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          2048) {
+          8192) {
             each_value =
             /*searchResults*/
-            ctx[11];
+            ctx[13];
 
-            var _i3;
+            var _i6;
 
-            for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-              var child_ctx = get_each_context$1(ctx, each_value, _i3);
+            for (_i6 = 0; _i6 < each_value.length; _i6 += 1) {
+              var child_ctx = get_each_context$1(ctx, each_value, _i6);
 
-              if (each_blocks[_i3]) {
-                each_blocks[_i3].p(child_ctx, dirty);
+              if (each_blocks[_i6]) {
+                each_blocks[_i6].p(child_ctx, dirty);
               } else {
-                each_blocks[_i3] = create_each_block$1(child_ctx);
+                each_blocks[_i6] = create_each_block$1(child_ctx);
 
-                each_blocks[_i3].c();
+                each_blocks[_i6].c();
 
-                each_blocks[_i3].m(each_1_anchor.parentNode, each_1_anchor);
+                each_blocks[_i6].m(each_1_anchor.parentNode, each_1_anchor);
               }
             }
 
-            for (; _i3 < each_blocks.length; _i3 += 1) {
-              each_blocks[_i3].d(1);
+            for (; _i6 < each_blocks.length; _i6 += 1) {
+              each_blocks[_i6].d(1);
             }
 
             each_blocks.length = each_value.length;
@@ -27078,7 +27333,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (195:12) {#each project.tasks as task}
+    } // (228:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -27086,7 +27341,7 @@
       var a;
       var t_value =
       /*task*/
-      ctx[13].name + "";
+      ctx[15].name + "";
       var t;
       return {
         c: function c() {
@@ -27106,7 +27361,7 @@
           if (detaching) detach(li);
         }
       };
-    } // (191:9) {#each result.client.projects as project}
+    } // (224:9) {#each result.client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -27114,14 +27369,14 @@
       var span;
       var t0_value =
       /*project*/
-      ctx[36].name + "";
+      ctx[39].name + "";
       var t0;
       var t1;
       var ul;
       var t2;
       var each_value_2 =
       /*project*/
-      ctx[36].tasks;
+      ctx[39].tasks;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_2.length; i += 1) {
@@ -27136,8 +27391,8 @@
           t1 = space$1();
           ul = element("ul");
 
-          for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
-            each_blocks[_i4].c();
+          for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
+            each_blocks[_i7].c();
           }
 
           t2 = space$1();
@@ -27150,8 +27405,8 @@
           append(li, t1);
           append(li, ul);
 
-          for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
-            each_blocks[_i5].m(ul, null);
+          for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
+            each_blocks[_i8].m(ul, null);
           }
 
           append(li, t2);
@@ -27159,29 +27414,29 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          2048) {
+          8192) {
             each_value_2 =
             /*project*/
-            ctx[36].tasks;
+            ctx[39].tasks;
 
-            var _i6;
+            var _i9;
 
-            for (_i6 = 0; _i6 < each_value_2.length; _i6 += 1) {
-              var child_ctx = get_each_context_2$1(ctx, each_value_2, _i6);
+            for (_i9 = 0; _i9 < each_value_2.length; _i9 += 1) {
+              var child_ctx = get_each_context_2$1(ctx, each_value_2, _i9);
 
-              if (each_blocks[_i6]) {
-                each_blocks[_i6].p(child_ctx, dirty);
+              if (each_blocks[_i9]) {
+                each_blocks[_i9].p(child_ctx, dirty);
               } else {
-                each_blocks[_i6] = create_each_block_2$1(child_ctx);
+                each_blocks[_i9] = create_each_block_2$1(child_ctx);
 
-                each_blocks[_i6].c();
+                each_blocks[_i9].c();
 
-                each_blocks[_i6].m(ul, null);
+                each_blocks[_i9].m(ul, null);
               }
             }
 
-            for (; _i6 < each_blocks.length; _i6 += 1) {
-              each_blocks[_i6].d(1);
+            for (; _i9 < each_blocks.length; _i9 += 1) {
+              each_blocks[_i9].d(1);
             }
 
             each_blocks.length = each_value_2.length;
@@ -27192,7 +27447,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (186:5) {#each searchResults as result}
+    } // (219:5) {#each searchResults as result}
 
 
     function create_each_block$1(ctx) {
@@ -27201,14 +27456,14 @@
       var span;
       var t0_value =
       /*result*/
-      ctx[33].client.name + "";
+      ctx[36].client.name + "";
       var t0;
       var t1;
       var ul0;
       var t2;
       var each_value_1 =
       /*result*/
-      ctx[33].client.projects;
+      ctx[36].client.projects;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_1.length; i += 1) {
@@ -27224,8 +27479,8 @@
           t1 = space$1();
           ul0 = element("ul");
 
-          for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
-            each_blocks[_i7].c();
+          for (var _i10 = 0; _i10 < each_blocks.length; _i10 += 1) {
+            each_blocks[_i10].c();
           }
 
           t2 = space$1();
@@ -27240,8 +27495,8 @@
           append(li, t1);
           append(li, ul0);
 
-          for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
-            each_blocks[_i8].m(ul0, null);
+          for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
+            each_blocks[_i11].m(ul0, null);
           }
 
           append(ul1, t2);
@@ -27249,29 +27504,29 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          2048) {
+          8192) {
             each_value_1 =
             /*result*/
-            ctx[33].client.projects;
+            ctx[36].client.projects;
 
-            var _i9;
+            var _i12;
 
-            for (_i9 = 0; _i9 < each_value_1.length; _i9 += 1) {
-              var child_ctx = get_each_context_1$1(ctx, each_value_1, _i9);
+            for (_i12 = 0; _i12 < each_value_1.length; _i12 += 1) {
+              var child_ctx = get_each_context_1$1(ctx, each_value_1, _i12);
 
-              if (each_blocks[_i9]) {
-                each_blocks[_i9].p(child_ctx, dirty);
+              if (each_blocks[_i12]) {
+                each_blocks[_i12].p(child_ctx, dirty);
               } else {
-                each_blocks[_i9] = create_each_block_1$1(child_ctx);
+                each_blocks[_i12] = create_each_block_1$1(child_ctx);
 
-                each_blocks[_i9].c();
+                each_blocks[_i12].c();
 
-                each_blocks[_i9].m(ul0, null);
+                each_blocks[_i12].m(ul0, null);
               }
             }
 
-            for (; _i9 < each_blocks.length; _i9 += 1) {
-              each_blocks[_i9].d(1);
+            for (; _i12 < each_blocks.length; _i12 += 1) {
+              each_blocks[_i12].d(1);
             }
 
             each_blocks.length = each_value_1.length;
@@ -27369,13 +27624,13 @@
           attr(label2, "class", "task-selector-trigger");
           button.disabled =
           /*loading*/
-          ctx[7];
+          ctx[8];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(span1, "class", "actions");
           attr(form, "class", form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[7] ? " icon-loading" : ""));
+          ctx[8] ? " icon-loading" : ""));
         },
         m: function m(target, anchor) {
           insert(target, form, anchor);
@@ -27388,7 +27643,7 @@
           ctx[3]);
           /*input0_binding*/
 
-          ctx[20](input0);
+          ctx[22](input0);
           append(form, t2);
           append(form, label1);
           html_tag.m(raw_value, label1);
@@ -27410,7 +27665,7 @@
           append(label2, input3);
           /*input3_binding*/
 
-          ctx[24](input3);
+          ctx[26](input3);
           append(form, t8);
           if (if_block) if_block.m(form, null);
           append(form, t9);
@@ -27421,16 +27676,16 @@
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler*/
-            ctx[19]), listen(input1, "input",
+            ctx[21]), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[21]), listen(input2, "input",
+            ctx[23]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[22]), action_destroyer(/*popperRef*/
-            ctx[8].call(null, input3)), listen(input3, "focus",
+            ctx[24]), action_destroyer(/*popperRef*/
+            ctx[9].call(null, input3)), listen(input3, "focus",
             /*focus_handler*/
-            ctx[23]), listen(form, "submit", prevent_default(
+            ctx[25]), listen(form, "submit", prevent_default(
             /*save*/
-            ctx[12]))];
+            ctx[14]))];
             mounted = true;
           }
         },
@@ -27488,17 +27743,17 @@
 
           if (dirty[0] &
           /*loading*/
-          128) {
+          256) {
             button.disabled =
             /*loading*/
-            ctx[7];
+            ctx[8];
           }
 
           if (dirty[0] &
           /*loading*/
-          128 && form_class_value !== (form_class_value = "quick-add".concat(
+          256 && form_class_value !== (form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[7] ? " icon-loading" : ""))) {
+          ctx[8] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -27508,10 +27763,10 @@
           if (detaching) detach(form);
           /*input0_binding*/
 
-          ctx[20](null);
+          ctx[22](null);
           /*input3_binding*/
 
-          ctx[24](null);
+          ctx[26](null);
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -27556,6 +27811,7 @@
       var noteInput;
       var buttonInput;
       var searchInput;
+      var searchValue; // const searchResults = [
       // 	{
       // 		client: {
       // 			name: "Zoo",
@@ -27573,6 +27829,27 @@
       // 	},
       // ];
 
+      var lastUsed = [{
+        client: {
+          name: "Zoo"
+        },
+        project: {
+          name: "Tigers"
+        },
+        task: {
+          name: "Feeding"
+        }
+      }, {
+        client: {
+          name: "Zoo"
+        },
+        project: {
+          name: "Tigers"
+        },
+        task: {
+          name: "Feeding"
+        }
+      }];
       var searchResults = [];
       tasks && tasks.length ? tasks.map(function (aTask) {
         aTask.project = projects.find(function (aProject) {
@@ -27609,9 +27886,9 @@
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(7, loading = true);
+                  $$invalidate(8, loading = true);
 
-                  $$invalidate(7, loading = false);
+                  $$invalidate(8, loading = false);
                   return _context.abrupt("return");
 
                 case 6:
@@ -27648,7 +27925,7 @@
                   console.error(_context.t0);
 
                 case 17:
-                  $$invalidate(7, loading = false);
+                  $$invalidate(8, loading = false);
 
                 case 18:
                 case "end":
@@ -27709,17 +27986,22 @@
         });
       }
 
+      function input_input_handler() {
+        searchValue = this.value;
+        $$invalidate(7, searchValue);
+      }
+
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(14, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(15, requestToken = $$props.requestToken);
-        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(18, initialDate = $$props.initialDate);
+        if ('action' in $$props) $$invalidate(16, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(17, requestToken = $$props.requestToken);
+        if ('projects' in $$props) $$invalidate(18, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(19, tasks = $$props.tasks);
+        if ('initialDate' in $$props) $$invalidate(20, initialDate = $$props.initialDate);
       };
 
-      $$invalidate(7, loading = false);
+      $$invalidate(8, loading = false);
 
-      return [showTooltip, duration, date, note, noteInput, buttonInput, searchInput, loading, popperRef, popperContent, extraOpts, searchResults, save, task, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler, input3_binding, input_binding];
+      return [showTooltip, duration, date, note, noteInput, buttonInput, searchInput, searchValue, loading, popperRef, popperContent, extraOpts, lastUsed, searchResults, save, task, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler, input3_binding, input_binding, input_input_handler];
     }
 
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -27734,11 +28016,11 @@
 
         _this = _super.call(this);
         init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
-          action: 14,
-          requestToken: 15,
-          projects: 16,
-          tasks: 17,
-          initialDate: 18
+          action: 16,
+          requestToken: 17,
+          projects: 18,
+          tasks: 19,
+          initialDate: 20
         }, null, [-1, -1]);
         return _this;
       }
