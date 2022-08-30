@@ -7,8 +7,8 @@ import DeleteButton from "./views/DeleteButton.svelte";
 import ShareDialog from "./views/ShareDialog.svelte";
 import ShareStatus from "./views/ShareStatus.svelte";
 import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
-import QuickAddNext from "./views/QuickAdd.svelte";
-import QuickAddLegacy from "./views/QuickAddLegacy.svelte";
+import QuickAdd from "./views/QuickAdd.svelte";
+// import QuickAddLegacy from "./views/QuickAddLegacy.svelte";
 import Checkmark from "./views/Checkmark.svelte";
 import Filters from "./views/Filters.svelte";
 import Timerange from "./views/Timerange.svelte";
@@ -23,10 +23,10 @@ import auth from "@nextcloud/auth";
 const token = auth.getRequestToken();
 const components = [];
 
-let QuickAdd = QuickAddLegacy;
-if (process.env.FEATURE_QUICK_ADD_NEXT) {
-	QuickAdd = QuickAddNext;
-}
+// let QuickAdd = QuickAddLegacy;
+// if (process.env.FEATURE_QUICK_ADD_NEXT) {
+// 	QuickAdd = QuickAddNext;
+// }
 
 $(document).ready(function () {
 	if ($('input[name="duration"]').length > 0) {

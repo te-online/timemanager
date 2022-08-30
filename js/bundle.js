@@ -30,7 +30,7 @@
       for (var i = 1; i < arguments.length; i++) {
         var source = null != arguments[i] ? arguments[i] : {};
         i % 2 ? ownKeys$2(Object(source), !0).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
+          _defineProperty$x(target, key, source[key]);
         }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$2(Object(source)).forEach(function (key) {
           Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
         });
@@ -100,7 +100,7 @@
       return Constructor;
     }
 
-    function _defineProperty(obj, key, value) {
+    function _defineProperty$x(obj, key, value) {
       if (key in obj) {
         Object.defineProperty(obj, key, {
           value: value,
@@ -356,11 +356,11 @@
     // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
 
-    var defineProperty$6 = Object.defineProperty;
+    var defineProperty$7 = Object.defineProperty;
 
     var setGlobal$1 = function (key, value) {
       try {
-        defineProperty$6(global_1, key, {
+        defineProperty$7(global_1, key, {
           value: value,
           configurable: true,
           writable: true
@@ -2694,7 +2694,7 @@
       BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
     };
 
-    var defineProperty$5 = objectDefineProperty$1.f;
+    var defineProperty$6 = objectDefineProperty$1.f;
 
 
 
@@ -2706,7 +2706,7 @@
       if (target && !STATIC) target = target.prototype;
 
       if (target && !hasOwnProperty_1(target, TO_STRING_TAG$5)) {
-        defineProperty$5(target, TO_STRING_TAG$5, {
+        defineProperty$6(target, TO_STRING_TAG$5, {
           configurable: true,
           value: TAG
         });
@@ -2940,7 +2940,7 @@
       ArrayPrototype$2[UNSCOPABLES$1][key] = true;
     };
 
-    var defineProperty$4 = objectDefineProperty$1.f;
+    var defineProperty$5 = objectDefineProperty$1.f;
 
 
 
@@ -3009,7 +3009,7 @@
     addToUnscopables$1('entries'); // V8 ~ Chrome 45- bug
 
     if (descriptors$1 && values.name !== 'values') try {
-      defineProperty$4(values, 'name', {
+      defineProperty$5(values, 'name', {
         value: 'values'
       });
     } catch (error) {
@@ -4937,6 +4937,9 @@
             });
             block.o(local);
         }
+        else if (callback) {
+            callback();
+        }
     }
     function outro_and_destroy_block(block, lookup) {
         transition_out(block, 1, 1, () => {
@@ -5255,7 +5258,7 @@
       } else {
         if ((typeof argument === 'string' || argStr === '[object String]') && typeof console !== 'undefined') {
           // eslint-disable-next-line no-console
-          console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://git.io/fjule"); // eslint-disable-next-line no-console
+          console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments"); // eslint-disable-next-line no-console
 
           console.warn(new Error().stack);
         }
@@ -5271,10 +5274,6 @@
      *
      * @description
      * Add the specified number of days to the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of days to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
@@ -5312,10 +5311,6 @@
      *
      * @description
      * Add the specified number of months to the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of months to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
@@ -5380,10 +5375,6 @@
      * @description
      * Add the specified number of milliseconds to the given date.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of milliseconds to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
      * @returns {Date} the new date with the milliseconds added
@@ -5402,6 +5393,11 @@
       return new Date(timestamp + amount);
     }
 
+    var defaultOptions = {};
+    function getDefaultOptions() {
+      return defaultOptions;
+    }
+
     /**
      * @name startOfWeek
      * @category Week Helpers
@@ -5410,10 +5406,6 @@
      * @description
      * Return the start of a week for the given date.
      * The result will be in the local timezone.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the original date
      * @param {Object} [options] - an object with options.
@@ -5434,13 +5426,12 @@
      * //=> Mon Sep 01 2014 00:00:00
      */
 
-    function startOfWeek(dirtyDate, dirtyOptions) {
+    function startOfWeek(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
+
       requiredArgs(1, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var weekStartsOn = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
@@ -5480,10 +5471,6 @@
      * Return the start of a day for the given date.
      * The result will be in the local timezone.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the original date
      * @returns {Date} the start of a day
      * @throws {TypeError} 1 argument required
@@ -5510,10 +5497,6 @@
      * @description
      * Get the number of calendar days between the given dates. This means that the times are removed
      * from the dates and then the difference in days is calculated.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
@@ -5557,10 +5540,6 @@
      * @description
      * Add the specified number of week to the given date.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of weeks to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
      * @returns {Date} the new date with the weeks added
@@ -5587,10 +5566,6 @@
      * @description
      * Add the specified number of years to the given date.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of years to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
      * @returns {Date} the new date with the years added
@@ -5616,10 +5591,6 @@
      * @description
      * Compare the two dates and return 1 if the first date is after the second,
      * -1 if the first date is before the second or 0 if dates are equal.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the first date to compare
      * @param {Date|Number} dateRight - the second date to compare
@@ -5661,16 +5632,43 @@
     }
 
     /**
+     * Milliseconds in 1 minute
+     *
+     * @name millisecondsInMinute
+     * @constant
+     * @type {number}
+     * @default
+     */
+
+    var millisecondsInMinute = 60000;
+    /**
+     * Milliseconds in 1 hour
+     *
+     * @name millisecondsInHour
+     * @constant
+     * @type {number}
+     * @default
+     */
+
+    var millisecondsInHour = 3600000;
+    /**
+     * Milliseconds in 1 second
+     *
+     * @name millisecondsInSecond
+     * @constant
+     * @type {number}
+     * @default
+     */
+
+    var millisecondsInSecond = 1000;
+
+    /**
      * @name isSameDay
      * @category Day Helpers
      * @summary Are the given dates in the same day (and year and month)?
      *
      * @description
      * Are the given dates in the same day (and year and month)?
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the first date to check
      * @param {Date|Number} dateRight - the second date to check
@@ -5679,17 +5677,17 @@
      *
      * @example
      * // Are 4 September 06:00:00 and 4 September 18:00:00 in the same day?
-     * var result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
+     * const result = isSameDay(new Date(2014, 8, 4, 6, 0), new Date(2014, 8, 4, 18, 0))
      * //=> true
-     * 
+     *
      * @example
      * // Are 4 September and 4 October in the same day?
-     * var result = isSameDay(new Date(2014, 8, 4), new Date(2014, 9, 4))
+     * const result = isSameDay(new Date(2014, 8, 4), new Date(2014, 9, 4))
      * //=> false
-     * 
+     *
      * @example
      * // Are 4 September, 2014 and 4 September, 2015 in the same day?
-     * var result = isSameDay(new Date(2014, 8, 4), new Date(2015, 8, 4))
+     * const result = isSameDay(new Date(2014, 8, 4), new Date(2015, 8, 4))
      * //=> false
      */
 
@@ -5707,10 +5705,6 @@
      *
      * @description
      * Returns true if the given value is an instance of Date. The function works for dates transferred across iframes.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {*} value - the value to check
      * @returns {boolean} true if the given value is a date
@@ -5754,32 +5748,6 @@
      *
      * Time value of Date: http://es5.github.io/#x15.9.1.1
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * - Now `isValid` doesn't throw an exception
-     *   if the first argument is not an instance of Date.
-     *   Instead, argument is converted beforehand using `toDate`.
-     *
-     *   Examples:
-     *
-     *   | `isValid` argument        | Before v2.0.0 | v2.0.0 onward |
-     *   |---------------------------|---------------|---------------|
-     *   | `new Date()`              | `true`        | `true`        |
-     *   | `new Date('2016-01-01')`  | `true`        | `true`        |
-     *   | `new Date('')`            | `false`       | `false`       |
-     *   | `new Date(1488370835081)` | `true`        | `true`        |
-     *   | `new Date(NaN)`           | `false`       | `false`       |
-     *   | `'2016-01-01'`            | `TypeError`   | `false`       |
-     *   | `''`                      | `TypeError`   | `false`       |
-     *   | `1488370835081`           | `TypeError`   | `true`        |
-     *   | `NaN`                     | `TypeError`   | `false`       |
-     *
-     *   We introduce this change to make *date-fns* consistent with ECMAScript behavior
-     *   that try to coerce arguments to the expected type
-     *   (which is also the case with other *date-fns* functions).
-     *
      * @param {*} date - the date to check
      * @returns {Boolean} the date is valid
      * @throws {TypeError} 1 argument required
@@ -5819,10 +5787,6 @@
      * @description
      * Get the number of calendar months between the given dates.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
      * @returns {Number} the number of calendar months
@@ -5830,7 +5794,7 @@
      *
      * @example
      * // How many calendar months are between 31 January 2014 and 1 September 2014?
-     * var result = differenceInCalendarMonths(
+     * const result = differenceInCalendarMonths(
      *   new Date(2014, 8, 1),
      *   new Date(2014, 0, 31)
      * )
@@ -5853,10 +5817,6 @@
      *
      * @description
      * Get the number of calendar years between the given dates.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
@@ -5910,10 +5870,6 @@
      * To ignore DST and only measure exact 24-hour periods, use this instead:
      * `Math.floor(differenceInHours(dateLeft, dateRight)/24)|0`.
      *
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
@@ -5987,10 +5943,6 @@
      * Return the end of a day for the given date.
      * The result will be in the local timezone.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the original date
      * @returns {Date} the end of a day
      * @throws {TypeError} 1 argument required
@@ -6016,10 +5968,6 @@
      * @description
      * Return the end of a month for the given date.
      * The result will be in the local timezone.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the original date
      * @returns {Date} the end of a month
@@ -6048,17 +5996,13 @@
      * @description
      * Is the given date the last day of a month?
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the date to check
      * @returns {Boolean} the date is the last day of a month
      * @throws {TypeError} 1 argument required
      *
      * @example
      * // Is 28 February 2014 the last day of a month?
-     * var result = isLastDayOfMonth(new Date(2014, 1, 28))
+     * const result = isLastDayOfMonth(new Date(2014, 1, 28))
      * //=> true
      */
 
@@ -6075,10 +6019,6 @@
      *
      * @description
      * Get the number of full months between the given dates using trunc as a default rounding method.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
@@ -6141,10 +6081,6 @@
      * `Math.floor(differenceInHours(dateLeft, dateRight)/(7*24))|0`.
      *
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
      * @param {Object} [options] - an object with options.
@@ -6184,10 +6120,6 @@
      * @description
      * Get the number of full years between the given dates.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} dateLeft - the later date
      * @param {Date|Number} dateRight - the earlier date
      * @returns {Number} the number of full years
@@ -6226,10 +6158,6 @@
      * Return the start of a month for the given date.
      * The result will be in the local timezone.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the original date
      * @returns {Date} the start of a month
      * @throws {TypeError} 1 argument required
@@ -6249,6 +6177,34 @@
     }
 
     /**
+     * @name endOfYear
+     * @category Year Helpers
+     * @summary Return the end of a year for the given date.
+     *
+     * @description
+     * Return the end of a year for the given date.
+     * The result will be in the local timezone.
+     *
+     * @param {Date|Number} date - the original date
+     * @returns {Date} the end of a year
+     * @throws {TypeError} 1 argument required
+     *
+     * @example
+     * // The end of a year for 2 September 2014 11:55:00:
+     * const result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
+     * //=> Wed Dec 31 2014 23:59:59.999
+     */
+
+    function endOfYear(dirtyDate) {
+      requiredArgs(1, arguments);
+      var date = toDate(dirtyDate);
+      var year = date.getFullYear();
+      date.setFullYear(year + 1, 0, 0);
+      date.setHours(23, 59, 59, 999);
+      return date;
+    }
+
+    /**
      * @name startOfYear
      * @category Year Helpers
      * @summary Return the start of a year for the given date.
@@ -6256,10 +6212,6 @@
      * @description
      * Return the start of a year for the given date.
      * The result will be in the local timezone.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the original date
      * @returns {Date} the start of a year
@@ -6281,38 +6233,6 @@
     }
 
     /**
-     * @name endOfYear
-     * @category Year Helpers
-     * @summary Return the end of a year for the given date.
-     *
-     * @description
-     * Return the end of a year for the given date.
-     * The result will be in the local timezone.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * @param {Date|Number} date - the original date
-     * @returns {Date} the end of a year
-     * @throws {TypeError} 1 argument required
-     *
-     * @example
-     * // The end of a year for 2 September 2014 11:55:00:
-     * var result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
-     * //=> Wed Dec 31 2014 23:59:59.999
-     */
-
-    function endOfYear(dirtyDate) {
-      requiredArgs(1, arguments);
-      var date = toDate(dirtyDate);
-      var year = date.getFullYear();
-      date.setFullYear(year + 1, 0, 0);
-      date.setHours(23, 59, 59, 999);
-      return date;
-    }
-
-    /**
      * @name endOfWeek
      * @category Week Helpers
      * @summary Return the end of a week for the given date.
@@ -6320,10 +6240,6 @@
      * @description
      * Return the end of a week for the given date.
      * The result will be in the local timezone.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the original date
      * @param {Object} [options] - an object with options.
@@ -6344,13 +6260,12 @@
      * //=> Sun Sep 07 2014 23:59:59.999
      */
 
-    function endOfWeek(dirtyDate, dirtyOptions) {
+    function endOfWeek(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
+
       requiredArgs(1, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var weekStartsOn = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
@@ -6364,514 +6279,6 @@
       return date;
     }
 
-    var formatDistanceLocale$3 = {
-      lessThanXSeconds: {
-        one: 'less than a second',
-        other: 'less than {{count}} seconds'
-      },
-      xSeconds: {
-        one: '1 second',
-        other: '{{count}} seconds'
-      },
-      halfAMinute: 'half a minute',
-      lessThanXMinutes: {
-        one: 'less than a minute',
-        other: 'less than {{count}} minutes'
-      },
-      xMinutes: {
-        one: '1 minute',
-        other: '{{count}} minutes'
-      },
-      aboutXHours: {
-        one: 'about 1 hour',
-        other: 'about {{count}} hours'
-      },
-      xHours: {
-        one: '1 hour',
-        other: '{{count}} hours'
-      },
-      xDays: {
-        one: '1 day',
-        other: '{{count}} days'
-      },
-      aboutXWeeks: {
-        one: 'about 1 week',
-        other: 'about {{count}} weeks'
-      },
-      xWeeks: {
-        one: '1 week',
-        other: '{{count}} weeks'
-      },
-      aboutXMonths: {
-        one: 'about 1 month',
-        other: 'about {{count}} months'
-      },
-      xMonths: {
-        one: '1 month',
-        other: '{{count}} months'
-      },
-      aboutXYears: {
-        one: 'about 1 year',
-        other: 'about {{count}} years'
-      },
-      xYears: {
-        one: '1 year',
-        other: '{{count}} years'
-      },
-      overXYears: {
-        one: 'over 1 year',
-        other: 'over {{count}} years'
-      },
-      almostXYears: {
-        one: 'almost 1 year',
-        other: 'almost {{count}} years'
-      }
-    };
-
-    var formatDistance$5 = function (token, count, options) {
-      var result;
-      var tokenValue = formatDistanceLocale$3[token];
-
-      if (typeof tokenValue === 'string') {
-        result = tokenValue;
-      } else if (count === 1) {
-        result = tokenValue.one;
-      } else {
-        result = tokenValue.other.replace('{{count}}', count.toString());
-      }
-
-      if (options !== null && options !== void 0 && options.addSuffix) {
-        if (options.comparison && options.comparison > 0) {
-          return 'in ' + result;
-        } else {
-          return result + ' ago';
-        }
-      }
-
-      return result;
-    };
-
-    var formatDistance$6 = formatDistance$5;
-
-    function buildFormatLongFn(args) {
-      return function () {
-        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // TODO: Remove String()
-
-        var width = options.width ? String(options.width) : args.defaultWidth;
-        var format = args.formats[width] || args.formats[args.defaultWidth];
-        return format;
-      };
-    }
-
-    var dateFormats$3 = {
-      full: 'EEEE, MMMM do, y',
-      long: 'MMMM do, y',
-      medium: 'MMM d, y',
-      short: 'MM/dd/yyyy'
-    };
-    var timeFormats$3 = {
-      full: 'h:mm:ss a zzzz',
-      long: 'h:mm:ss a z',
-      medium: 'h:mm:ss a',
-      short: 'h:mm a'
-    };
-    var dateTimeFormats$3 = {
-      full: "{{date}} 'at' {{time}}",
-      long: "{{date}} 'at' {{time}}",
-      medium: '{{date}}, {{time}}',
-      short: '{{date}}, {{time}}'
-    };
-    var formatLong$6 = {
-      date: buildFormatLongFn({
-        formats: dateFormats$3,
-        defaultWidth: 'full'
-      }),
-      time: buildFormatLongFn({
-        formats: timeFormats$3,
-        defaultWidth: 'full'
-      }),
-      dateTime: buildFormatLongFn({
-        formats: dateTimeFormats$3,
-        defaultWidth: 'full'
-      })
-    };
-    var formatLong$7 = formatLong$6;
-
-    var formatRelativeLocale$3 = {
-      lastWeek: "'last' eeee 'at' p",
-      yesterday: "'yesterday at' p",
-      today: "'today at' p",
-      tomorrow: "'tomorrow at' p",
-      nextWeek: "eeee 'at' p",
-      other: 'P'
-    };
-
-    var formatRelative$5 = function (token, _date, _baseDate, _options) {
-      return formatRelativeLocale$3[token];
-    };
-
-    var formatRelative$6 = formatRelative$5;
-
-    function buildLocalizeFn(args) {
-      return function (dirtyIndex, dirtyOptions) {
-        var options = dirtyOptions || {};
-        var context = options.context ? String(options.context) : 'standalone';
-        var valuesArray;
-
-        if (context === 'formatting' && args.formattingValues) {
-          var defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
-          var width = options.width ? String(options.width) : defaultWidth;
-          valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
-        } else {
-          var _defaultWidth = args.defaultWidth;
-
-          var _width = options.width ? String(options.width) : args.defaultWidth;
-
-          valuesArray = args.values[_width] || args.values[_defaultWidth];
-        }
-
-        var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challenge you to try to remove it!
-
-        return valuesArray[index];
-      };
-    }
-
-    var eraValues$3 = {
-      narrow: ['B', 'A'],
-      abbreviated: ['BC', 'AD'],
-      wide: ['Before Christ', 'Anno Domini']
-    };
-    var quarterValues$3 = {
-      narrow: ['1', '2', '3', '4'],
-      abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-      wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
-    }; // Note: in English, the names of days of the week and months are capitalized.
-    // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-    // Generally, formatted dates should look like they are in the middle of a sentence,
-    // e.g. in Spanish language the weekdays and months should be in the lowercase.
-
-    var monthValues$3 = {
-      narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
-      abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      wide: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    };
-    var dayValues$3 = {
-      narrow: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-      short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-      abbreviated: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      wide: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    };
-    var dayPeriodValues$3 = {
-      narrow: {
-        am: 'a',
-        pm: 'p',
-        midnight: 'mi',
-        noon: 'n',
-        morning: 'morning',
-        afternoon: 'afternoon',
-        evening: 'evening',
-        night: 'night'
-      },
-      abbreviated: {
-        am: 'AM',
-        pm: 'PM',
-        midnight: 'midnight',
-        noon: 'noon',
-        morning: 'morning',
-        afternoon: 'afternoon',
-        evening: 'evening',
-        night: 'night'
-      },
-      wide: {
-        am: 'a.m.',
-        pm: 'p.m.',
-        midnight: 'midnight',
-        noon: 'noon',
-        morning: 'morning',
-        afternoon: 'afternoon',
-        evening: 'evening',
-        night: 'night'
-      }
-    };
-    var formattingDayPeriodValues$2 = {
-      narrow: {
-        am: 'a',
-        pm: 'p',
-        midnight: 'mi',
-        noon: 'n',
-        morning: 'in the morning',
-        afternoon: 'in the afternoon',
-        evening: 'in the evening',
-        night: 'at night'
-      },
-      abbreviated: {
-        am: 'AM',
-        pm: 'PM',
-        midnight: 'midnight',
-        noon: 'noon',
-        morning: 'in the morning',
-        afternoon: 'in the afternoon',
-        evening: 'in the evening',
-        night: 'at night'
-      },
-      wide: {
-        am: 'a.m.',
-        pm: 'p.m.',
-        midnight: 'midnight',
-        noon: 'noon',
-        morning: 'in the morning',
-        afternoon: 'in the afternoon',
-        evening: 'in the evening',
-        night: 'at night'
-      }
-    };
-
-    var ordinalNumber$3 = function (dirtyNumber, _options) {
-      var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
-      // if they are different for different grammatical genders,
-      // use `options.unit`.
-      //
-      // `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
-      // 'day', 'hour', 'minute', 'second'.
-
-      var rem100 = number % 100;
-
-      if (rem100 > 20 || rem100 < 10) {
-        switch (rem100 % 10) {
-          case 1:
-            return number + 'st';
-
-          case 2:
-            return number + 'nd';
-
-          case 3:
-            return number + 'rd';
-        }
-      }
-
-      return number + 'th';
-    };
-
-    var localize$6 = {
-      ordinalNumber: ordinalNumber$3,
-      era: buildLocalizeFn({
-        values: eraValues$3,
-        defaultWidth: 'wide'
-      }),
-      quarter: buildLocalizeFn({
-        values: quarterValues$3,
-        defaultWidth: 'wide',
-        argumentCallback: function (quarter) {
-          return quarter - 1;
-        }
-      }),
-      month: buildLocalizeFn({
-        values: monthValues$3,
-        defaultWidth: 'wide'
-      }),
-      day: buildLocalizeFn({
-        values: dayValues$3,
-        defaultWidth: 'wide'
-      }),
-      dayPeriod: buildLocalizeFn({
-        values: dayPeriodValues$3,
-        defaultWidth: 'wide',
-        formattingValues: formattingDayPeriodValues$2,
-        defaultFormattingWidth: 'wide'
-      })
-    };
-    var localize$7 = localize$6;
-
-    function buildMatchFn(args) {
-      return function (string) {
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var width = options.width;
-        var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
-        var matchResult = string.match(matchPattern);
-
-        if (!matchResult) {
-          return null;
-        }
-
-        var matchedString = matchResult[0];
-        var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
-        var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function (pattern) {
-          return pattern.test(matchedString);
-        }) : findKey(parsePatterns, function (pattern) {
-          return pattern.test(matchedString);
-        });
-        var value;
-        value = args.valueCallback ? args.valueCallback(key) : key;
-        value = options.valueCallback ? options.valueCallback(value) : value;
-        var rest = string.slice(matchedString.length);
-        return {
-          value: value,
-          rest: rest
-        };
-      };
-    }
-
-    function findKey(object, predicate) {
-      for (var key in object) {
-        if (object.hasOwnProperty(key) && predicate(object[key])) {
-          return key;
-        }
-      }
-
-      return undefined;
-    }
-
-    function findIndex(array, predicate) {
-      for (var key = 0; key < array.length; key++) {
-        if (predicate(array[key])) {
-          return key;
-        }
-      }
-
-      return undefined;
-    }
-
-    function buildMatchPatternFn(args) {
-      return function (string) {
-        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var matchResult = string.match(args.matchPattern);
-        if (!matchResult) return null;
-        var matchedString = matchResult[0];
-        var parseResult = string.match(args.parsePattern);
-        if (!parseResult) return null;
-        var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-        value = options.valueCallback ? options.valueCallback(value) : value;
-        var rest = string.slice(matchedString.length);
-        return {
-          value: value,
-          rest: rest
-        };
-      };
-    }
-
-    var matchOrdinalNumberPattern$3 = /^(\d+)(th|st|nd|rd)?/i;
-    var parseOrdinalNumberPattern$3 = /\d+/i;
-    var matchEraPatterns$3 = {
-      narrow: /^(b|a)/i,
-      abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
-      wide: /^(before christ|before common era|anno domini|common era)/i
-    };
-    var parseEraPatterns$3 = {
-      any: [/^b/i, /^(a|c)/i]
-    };
-    var matchQuarterPatterns$3 = {
-      narrow: /^[1234]/i,
-      abbreviated: /^q[1234]/i,
-      wide: /^[1234](th|st|nd|rd)? quarter/i
-    };
-    var parseQuarterPatterns$3 = {
-      any: [/1/i, /2/i, /3/i, /4/i]
-    };
-    var matchMonthPatterns$3 = {
-      narrow: /^[jfmasond]/i,
-      abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
-      wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
-    };
-    var parseMonthPatterns$3 = {
-      narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
-      any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^may/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
-    };
-    var matchDayPatterns$3 = {
-      narrow: /^[smtwf]/i,
-      short: /^(su|mo|tu|we|th|fr|sa)/i,
-      abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
-      wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
-    };
-    var parseDayPatterns$3 = {
-      narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
-      any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
-    };
-    var matchDayPeriodPatterns$3 = {
-      narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
-      any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
-    };
-    var parseDayPeriodPatterns$3 = {
-      any: {
-        am: /^a/i,
-        pm: /^p/i,
-        midnight: /^mi/i,
-        noon: /^no/i,
-        morning: /morning/i,
-        afternoon: /afternoon/i,
-        evening: /evening/i,
-        night: /night/i
-      }
-    };
-    var match$7 = {
-      ordinalNumber: buildMatchPatternFn({
-        matchPattern: matchOrdinalNumberPattern$3,
-        parsePattern: parseOrdinalNumberPattern$3,
-        valueCallback: function (value) {
-          return parseInt(value, 10);
-        }
-      }),
-      era: buildMatchFn({
-        matchPatterns: matchEraPatterns$3,
-        defaultMatchWidth: 'wide',
-        parsePatterns: parseEraPatterns$3,
-        defaultParseWidth: 'any'
-      }),
-      quarter: buildMatchFn({
-        matchPatterns: matchQuarterPatterns$3,
-        defaultMatchWidth: 'wide',
-        parsePatterns: parseQuarterPatterns$3,
-        defaultParseWidth: 'any',
-        valueCallback: function (index) {
-          return index + 1;
-        }
-      }),
-      month: buildMatchFn({
-        matchPatterns: matchMonthPatterns$3,
-        defaultMatchWidth: 'wide',
-        parsePatterns: parseMonthPatterns$3,
-        defaultParseWidth: 'any'
-      }),
-      day: buildMatchFn({
-        matchPatterns: matchDayPatterns$3,
-        defaultMatchWidth: 'wide',
-        parsePatterns: parseDayPatterns$3,
-        defaultParseWidth: 'any'
-      }),
-      dayPeriod: buildMatchFn({
-        matchPatterns: matchDayPeriodPatterns$3,
-        defaultMatchWidth: 'any',
-        parsePatterns: parseDayPeriodPatterns$3,
-        defaultParseWidth: 'any'
-      })
-    };
-    var match$8 = match$7;
-
-    /**
-     * @type {Locale}
-     * @category Locales
-     * @summary English locale (United States).
-     * @language English
-     * @iso-639-2 eng
-     * @author Sasha Koss [@kossnocorp]{@link https://github.com/kossnocorp}
-     * @author Lesha Koss [@leshakoss]{@link https://github.com/leshakoss}
-     */
-
-    var locale$3 = {
-      code: 'en-US',
-      formatDistance: formatDistance$6,
-      formatLong: formatLong$7,
-      formatRelative: formatRelative$6,
-      localize: localize$7,
-      match: match$8,
-      options: {
-        weekStartsOn: 0
-        /* Sunday */
-        ,
-        firstWeekContainsDate: 1
-      }
-    };
-    var defaultLocale = locale$3;
-
     /**
      * @name subMilliseconds
      * @category Millisecond Helpers
@@ -6879,10 +6286,6 @@
      *
      * @description
      * Subtract the specified number of milliseconds from the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of milliseconds to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
@@ -6901,9 +6304,7 @@
       return addMilliseconds(dirtyDate, -amount);
     }
 
-    var MILLISECONDS_IN_DAY = 86400000; // This function will be a part of public API when UTC function will be implemented.
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
+    var MILLISECONDS_IN_DAY = 86400000;
     function getUTCDayOfYear(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -6915,8 +6316,6 @@
       return Math.floor(difference / MILLISECONDS_IN_DAY) + 1;
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
     function startOfUTCISOWeek(dirtyDate) {
       requiredArgs(1, arguments);
       var weekStartsOn = 1;
@@ -6927,8 +6326,6 @@
       date.setUTCHours(0, 0, 0, 0);
       return date;
     }
-
-    // See issue: https://github.com/date-fns/date-fns/issues/376
 
     function getUTCISOWeekYear(dirtyDate) {
       requiredArgs(1, arguments);
@@ -6952,8 +6349,6 @@
       }
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
     function startOfUTCISOWeekYear(dirtyDate) {
       requiredArgs(1, arguments);
       var year = getUTCISOWeekYear(dirtyDate);
@@ -6964,9 +6359,7 @@
       return date;
     }
 
-    var MILLISECONDS_IN_WEEK$2 = 604800000; // This function will be a part of public API when UTC function will be implemented.
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
+    var MILLISECONDS_IN_WEEK$2 = 604800000;
     function getUTCISOWeek(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -6977,15 +6370,12 @@
       return Math.round(diff / MILLISECONDS_IN_WEEK$2) + 1;
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    function startOfUTCWeek(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
 
-    function startOfUTCWeek(dirtyDate, dirtyOptions) {
       requiredArgs(1, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var weekStartsOn = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
@@ -6999,17 +6389,14 @@
       return date;
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    function getUTCWeekYear(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
 
-    function getUTCWeekYear(dirtyDate, dirtyOptions) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
       var year = date.getUTCFullYear();
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var firstWeekContainsDate = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
@@ -7018,11 +6405,11 @@
       var firstWeekOfNextYear = new Date(0);
       firstWeekOfNextYear.setUTCFullYear(year + 1, 0, firstWeekContainsDate);
       firstWeekOfNextYear.setUTCHours(0, 0, 0, 0);
-      var startOfNextYear = startOfUTCWeek(firstWeekOfNextYear, dirtyOptions);
+      var startOfNextYear = startOfUTCWeek(firstWeekOfNextYear, options);
       var firstWeekOfThisYear = new Date(0);
       firstWeekOfThisYear.setUTCFullYear(year, 0, firstWeekContainsDate);
       firstWeekOfThisYear.setUTCHours(0, 0, 0, 0);
-      var startOfThisYear = startOfUTCWeek(firstWeekOfThisYear, dirtyOptions);
+      var startOfThisYear = startOfUTCWeek(firstWeekOfThisYear, options);
 
       if (date.getTime() >= startOfNextYear.getTime()) {
         return year + 1;
@@ -7033,26 +6420,21 @@
       }
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    function startOfUTCWeekYear(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
 
-    function startOfUTCWeekYear(dirtyDate, dirtyOptions) {
       requiredArgs(1, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate);
-      var year = getUTCWeekYear(dirtyDate, dirtyOptions);
+      var defaultOptions = getDefaultOptions();
+      var firstWeekContainsDate = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
+      var year = getUTCWeekYear(dirtyDate, options);
       var firstWeek = new Date(0);
       firstWeek.setUTCFullYear(year, 0, firstWeekContainsDate);
       firstWeek.setUTCHours(0, 0, 0, 0);
-      var date = startOfUTCWeek(firstWeek, dirtyOptions);
+      var date = startOfUTCWeek(firstWeek, options);
       return date;
     }
 
-    var MILLISECONDS_IN_WEEK$1 = 604800000; // This function will be a part of public API when UTC function will be implemented.
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
+    var MILLISECONDS_IN_WEEK$1 = 604800000;
     function getUTCWeek(dirtyDate, options) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -8018,7 +7400,7 @@
 
     var formatters$1 = formatters;
 
-    function dateLongFormatter(pattern, formatLong) {
+    var dateLongFormatter = function (pattern, formatLong) {
       switch (pattern) {
         case 'P':
           return formatLong.date({
@@ -8041,9 +7423,9 @@
             width: 'full'
           });
       }
-    }
+    };
 
-    function timeLongFormatter(pattern, formatLong) {
+    var timeLongFormatter = function (pattern, formatLong) {
       switch (pattern) {
         case 'p':
           return formatLong.time({
@@ -8066,9 +7448,9 @@
             width: 'full'
           });
       }
-    }
+    };
 
-    function dateTimeLongFormatter(pattern, formatLong) {
+    var dateTimeLongFormatter = function (pattern, formatLong) {
       var matchResult = pattern.match(/(P+)(p+)?/) || [];
       var datePattern = matchResult[1];
       var timePattern = matchResult[2];
@@ -8107,7 +7489,7 @@
       }
 
       return dateTimeFormat.replace('{{date}}', dateLongFormatter(datePattern, formatLong)).replace('{{time}}', timeLongFormatter(timePattern, formatLong));
-    }
+    };
 
     var longFormatters = {
       p: timeLongFormatter,
@@ -8125,15 +7507,522 @@
     }
     function throwProtectedError(token, format, input) {
       if (token === 'YYYY') {
-        throw new RangeError("Use `yyyy` instead of `YYYY` (in `".concat(format, "`) for formatting years to the input `").concat(input, "`; see: https://git.io/fxCyr"));
+        throw new RangeError("Use `yyyy` instead of `YYYY` (in `".concat(format, "`) for formatting years to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
       } else if (token === 'YY') {
-        throw new RangeError("Use `yy` instead of `YY` (in `".concat(format, "`) for formatting years to the input `").concat(input, "`; see: https://git.io/fxCyr"));
+        throw new RangeError("Use `yy` instead of `YY` (in `".concat(format, "`) for formatting years to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
       } else if (token === 'D') {
-        throw new RangeError("Use `d` instead of `D` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://git.io/fxCyr"));
+        throw new RangeError("Use `d` instead of `D` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
       } else if (token === 'DD') {
-        throw new RangeError("Use `dd` instead of `DD` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://git.io/fxCyr"));
+        throw new RangeError("Use `dd` instead of `DD` (in `".concat(format, "`) for formatting days of the month to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
       }
     }
+
+    var formatDistanceLocale$3 = {
+      lessThanXSeconds: {
+        one: 'less than a second',
+        other: 'less than {{count}} seconds'
+      },
+      xSeconds: {
+        one: '1 second',
+        other: '{{count}} seconds'
+      },
+      halfAMinute: 'half a minute',
+      lessThanXMinutes: {
+        one: 'less than a minute',
+        other: 'less than {{count}} minutes'
+      },
+      xMinutes: {
+        one: '1 minute',
+        other: '{{count}} minutes'
+      },
+      aboutXHours: {
+        one: 'about 1 hour',
+        other: 'about {{count}} hours'
+      },
+      xHours: {
+        one: '1 hour',
+        other: '{{count}} hours'
+      },
+      xDays: {
+        one: '1 day',
+        other: '{{count}} days'
+      },
+      aboutXWeeks: {
+        one: 'about 1 week',
+        other: 'about {{count}} weeks'
+      },
+      xWeeks: {
+        one: '1 week',
+        other: '{{count}} weeks'
+      },
+      aboutXMonths: {
+        one: 'about 1 month',
+        other: 'about {{count}} months'
+      },
+      xMonths: {
+        one: '1 month',
+        other: '{{count}} months'
+      },
+      aboutXYears: {
+        one: 'about 1 year',
+        other: 'about {{count}} years'
+      },
+      xYears: {
+        one: '1 year',
+        other: '{{count}} years'
+      },
+      overXYears: {
+        one: 'over 1 year',
+        other: 'over {{count}} years'
+      },
+      almostXYears: {
+        one: 'almost 1 year',
+        other: 'almost {{count}} years'
+      }
+    };
+
+    var formatDistance$6 = function (token, count, options) {
+      var result;
+      var tokenValue = formatDistanceLocale$3[token];
+
+      if (typeof tokenValue === 'string') {
+        result = tokenValue;
+      } else if (count === 1) {
+        result = tokenValue.one;
+      } else {
+        result = tokenValue.other.replace('{{count}}', count.toString());
+      }
+
+      if (options !== null && options !== void 0 && options.addSuffix) {
+        if (options.comparison && options.comparison > 0) {
+          return 'in ' + result;
+        } else {
+          return result + ' ago';
+        }
+      }
+
+      return result;
+    };
+
+    var formatDistance$7 = formatDistance$6;
+
+    function buildFormatLongFn(args) {
+      return function () {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {}; // TODO: Remove String()
+
+        var width = options.width ? String(options.width) : args.defaultWidth;
+        var format = args.formats[width] || args.formats[args.defaultWidth];
+        return format;
+      };
+    }
+
+    var dateFormats$3 = {
+      full: 'EEEE, MMMM do, y',
+      long: 'MMMM do, y',
+      medium: 'MMM d, y',
+      short: 'MM/dd/yyyy'
+    };
+    var timeFormats$3 = {
+      full: 'h:mm:ss a zzzz',
+      long: 'h:mm:ss a z',
+      medium: 'h:mm:ss a',
+      short: 'h:mm a'
+    };
+    var dateTimeFormats$3 = {
+      full: "{{date}} 'at' {{time}}",
+      long: "{{date}} 'at' {{time}}",
+      medium: '{{date}}, {{time}}',
+      short: '{{date}}, {{time}}'
+    };
+    var formatLong$6 = {
+      date: buildFormatLongFn({
+        formats: dateFormats$3,
+        defaultWidth: 'full'
+      }),
+      time: buildFormatLongFn({
+        formats: timeFormats$3,
+        defaultWidth: 'full'
+      }),
+      dateTime: buildFormatLongFn({
+        formats: dateTimeFormats$3,
+        defaultWidth: 'full'
+      })
+    };
+    var formatLong$7 = formatLong$6;
+
+    var formatRelativeLocale$3 = {
+      lastWeek: "'last' eeee 'at' p",
+      yesterday: "'yesterday at' p",
+      today: "'today at' p",
+      tomorrow: "'tomorrow at' p",
+      nextWeek: "eeee 'at' p",
+      other: 'P'
+    };
+
+    var formatRelative$6 = function (token, _date, _baseDate, _options) {
+      return formatRelativeLocale$3[token];
+    };
+
+    var formatRelative$7 = formatRelative$6;
+
+    function buildLocalizeFn(args) {
+      return function (dirtyIndex, options) {
+        var context = options !== null && options !== void 0 && options.context ? String(options.context) : 'standalone';
+        var valuesArray;
+
+        if (context === 'formatting' && args.formattingValues) {
+          var defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
+          var width = options !== null && options !== void 0 && options.width ? String(options.width) : defaultWidth;
+          valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
+        } else {
+          var _defaultWidth = args.defaultWidth;
+
+          var _width = options !== null && options !== void 0 && options.width ? String(options.width) : args.defaultWidth;
+
+          valuesArray = args.values[_width] || args.values[_defaultWidth];
+        }
+
+        var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challenge you to try to remove it!
+
+        return valuesArray[index];
+      };
+    }
+
+    var eraValues$3 = {
+      narrow: ['B', 'A'],
+      abbreviated: ['BC', 'AD'],
+      wide: ['Before Christ', 'Anno Domini']
+    };
+    var quarterValues$3 = {
+      narrow: ['1', '2', '3', '4'],
+      abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
+      wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
+    }; // Note: in English, the names of days of the week and months are capitalized.
+    // If you are making a new locale based on this one, check if the same is true for the language you're working on.
+    // Generally, formatted dates should look like they are in the middle of a sentence,
+    // e.g. in Spanish language the weekdays and months should be in the lowercase.
+
+    var monthValues$3 = {
+      narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+      abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      wide: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    };
+    var dayValues$3 = {
+      narrow: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+      abbreviated: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      wide: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    };
+    var dayPeriodValues$3 = {
+      narrow: {
+        am: 'a',
+        pm: 'p',
+        midnight: 'mi',
+        noon: 'n',
+        morning: 'morning',
+        afternoon: 'afternoon',
+        evening: 'evening',
+        night: 'night'
+      },
+      abbreviated: {
+        am: 'AM',
+        pm: 'PM',
+        midnight: 'midnight',
+        noon: 'noon',
+        morning: 'morning',
+        afternoon: 'afternoon',
+        evening: 'evening',
+        night: 'night'
+      },
+      wide: {
+        am: 'a.m.',
+        pm: 'p.m.',
+        midnight: 'midnight',
+        noon: 'noon',
+        morning: 'morning',
+        afternoon: 'afternoon',
+        evening: 'evening',
+        night: 'night'
+      }
+    };
+    var formattingDayPeriodValues$2 = {
+      narrow: {
+        am: 'a',
+        pm: 'p',
+        midnight: 'mi',
+        noon: 'n',
+        morning: 'in the morning',
+        afternoon: 'in the afternoon',
+        evening: 'in the evening',
+        night: 'at night'
+      },
+      abbreviated: {
+        am: 'AM',
+        pm: 'PM',
+        midnight: 'midnight',
+        noon: 'noon',
+        morning: 'in the morning',
+        afternoon: 'in the afternoon',
+        evening: 'in the evening',
+        night: 'at night'
+      },
+      wide: {
+        am: 'a.m.',
+        pm: 'p.m.',
+        midnight: 'midnight',
+        noon: 'noon',
+        morning: 'in the morning',
+        afternoon: 'in the afternoon',
+        evening: 'in the evening',
+        night: 'at night'
+      }
+    };
+
+    var ordinalNumber$3 = function (dirtyNumber, _options) {
+      var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
+      // if they are different for different grammatical genders,
+      // use `options.unit`.
+      //
+      // `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+      // 'day', 'hour', 'minute', 'second'.
+
+      var rem100 = number % 100;
+
+      if (rem100 > 20 || rem100 < 10) {
+        switch (rem100 % 10) {
+          case 1:
+            return number + 'st';
+
+          case 2:
+            return number + 'nd';
+
+          case 3:
+            return number + 'rd';
+        }
+      }
+
+      return number + 'th';
+    };
+
+    var localize$6 = {
+      ordinalNumber: ordinalNumber$3,
+      era: buildLocalizeFn({
+        values: eraValues$3,
+        defaultWidth: 'wide'
+      }),
+      quarter: buildLocalizeFn({
+        values: quarterValues$3,
+        defaultWidth: 'wide',
+        argumentCallback: function (quarter) {
+          return quarter - 1;
+        }
+      }),
+      month: buildLocalizeFn({
+        values: monthValues$3,
+        defaultWidth: 'wide'
+      }),
+      day: buildLocalizeFn({
+        values: dayValues$3,
+        defaultWidth: 'wide'
+      }),
+      dayPeriod: buildLocalizeFn({
+        values: dayPeriodValues$3,
+        defaultWidth: 'wide',
+        formattingValues: formattingDayPeriodValues$2,
+        defaultFormattingWidth: 'wide'
+      })
+    };
+    var localize$7 = localize$6;
+
+    function buildMatchFn(args) {
+      return function (string) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var width = options.width;
+        var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
+        var matchResult = string.match(matchPattern);
+
+        if (!matchResult) {
+          return null;
+        }
+
+        var matchedString = matchResult[0];
+        var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+        var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function (pattern) {
+          return pattern.test(matchedString);
+        }) : findKey(parsePatterns, function (pattern) {
+          return pattern.test(matchedString);
+        });
+        var value;
+        value = args.valueCallback ? args.valueCallback(key) : key;
+        value = options.valueCallback ? options.valueCallback(value) : value;
+        var rest = string.slice(matchedString.length);
+        return {
+          value: value,
+          rest: rest
+        };
+      };
+    }
+
+    function findKey(object, predicate) {
+      for (var key in object) {
+        if (object.hasOwnProperty(key) && predicate(object[key])) {
+          return key;
+        }
+      }
+
+      return undefined;
+    }
+
+    function findIndex(array, predicate) {
+      for (var key = 0; key < array.length; key++) {
+        if (predicate(array[key])) {
+          return key;
+        }
+      }
+
+      return undefined;
+    }
+
+    function buildMatchPatternFn(args) {
+      return function (string) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var matchResult = string.match(args.matchPattern);
+        if (!matchResult) return null;
+        var matchedString = matchResult[0];
+        var parseResult = string.match(args.parsePattern);
+        if (!parseResult) return null;
+        var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+        value = options.valueCallback ? options.valueCallback(value) : value;
+        var rest = string.slice(matchedString.length);
+        return {
+          value: value,
+          rest: rest
+        };
+      };
+    }
+
+    var matchOrdinalNumberPattern$3 = /^(\d+)(th|st|nd|rd)?/i;
+    var parseOrdinalNumberPattern$3 = /\d+/i;
+    var matchEraPatterns$3 = {
+      narrow: /^(b|a)/i,
+      abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
+      wide: /^(before christ|before common era|anno domini|common era)/i
+    };
+    var parseEraPatterns$3 = {
+      any: [/^b/i, /^(a|c)/i]
+    };
+    var matchQuarterPatterns$3 = {
+      narrow: /^[1234]/i,
+      abbreviated: /^q[1234]/i,
+      wide: /^[1234](th|st|nd|rd)? quarter/i
+    };
+    var parseQuarterPatterns$3 = {
+      any: [/1/i, /2/i, /3/i, /4/i]
+    };
+    var matchMonthPatterns$3 = {
+      narrow: /^[jfmasond]/i,
+      abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
+      wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
+    };
+    var parseMonthPatterns$3 = {
+      narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
+      any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^may/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
+    };
+    var matchDayPatterns$3 = {
+      narrow: /^[smtwf]/i,
+      short: /^(su|mo|tu|we|th|fr|sa)/i,
+      abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
+      wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
+    };
+    var parseDayPatterns$3 = {
+      narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
+      any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
+    };
+    var matchDayPeriodPatterns$3 = {
+      narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
+      any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
+    };
+    var parseDayPeriodPatterns$3 = {
+      any: {
+        am: /^a/i,
+        pm: /^p/i,
+        midnight: /^mi/i,
+        noon: /^no/i,
+        morning: /morning/i,
+        afternoon: /afternoon/i,
+        evening: /evening/i,
+        night: /night/i
+      }
+    };
+    var match$7 = {
+      ordinalNumber: buildMatchPatternFn({
+        matchPattern: matchOrdinalNumberPattern$3,
+        parsePattern: parseOrdinalNumberPattern$3,
+        valueCallback: function (value) {
+          return parseInt(value, 10);
+        }
+      }),
+      era: buildMatchFn({
+        matchPatterns: matchEraPatterns$3,
+        defaultMatchWidth: 'wide',
+        parsePatterns: parseEraPatterns$3,
+        defaultParseWidth: 'any'
+      }),
+      quarter: buildMatchFn({
+        matchPatterns: matchQuarterPatterns$3,
+        defaultMatchWidth: 'wide',
+        parsePatterns: parseQuarterPatterns$3,
+        defaultParseWidth: 'any',
+        valueCallback: function (index) {
+          return index + 1;
+        }
+      }),
+      month: buildMatchFn({
+        matchPatterns: matchMonthPatterns$3,
+        defaultMatchWidth: 'wide',
+        parsePatterns: parseMonthPatterns$3,
+        defaultParseWidth: 'any'
+      }),
+      day: buildMatchFn({
+        matchPatterns: matchDayPatterns$3,
+        defaultMatchWidth: 'wide',
+        parsePatterns: parseDayPatterns$3,
+        defaultParseWidth: 'any'
+      }),
+      dayPeriod: buildMatchFn({
+        matchPatterns: matchDayPeriodPatterns$3,
+        defaultMatchWidth: 'any',
+        parsePatterns: parseDayPeriodPatterns$3,
+        defaultParseWidth: 'any'
+      })
+    };
+    var match$8 = match$7;
+
+    /**
+     * @type {Locale}
+     * @category Locales
+     * @summary English locale (United States).
+     * @language English
+     * @iso-639-2 eng
+     * @author Sasha Koss [@kossnocorp]{@link https://github.com/kossnocorp}
+     * @author Lesha Koss [@leshakoss]{@link https://github.com/leshakoss}
+     */
+
+    var locale$3 = {
+      code: 'en-US',
+      formatDistance: formatDistance$7,
+      formatLong: formatLong$7,
+      formatRelative: formatRelative$7,
+      localize: localize$7,
+      match: match$8,
+      options: {
+        weekStartsOn: 0
+        /* Sunday */
+        ,
+        firstWeekContainsDate: 1
+      }
+    };
+    var defaultLocale = locale$3;
 
     // - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
     //   (one of the certain letters followed by `o`)
@@ -8162,7 +8051,7 @@
      * Return the formatted date string in the given format. The result may vary by locale.
      *
      * > ⚠️ Please note that the `format` tokens differ from Moment.js and other libraries.
-     * > See: https://git.io/fxCyr
+     * > See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * The characters wrapped between two single quotes characters (') are escaped.
      * Two single quotes in a row, whether inside or outside a quoted sequence, represent a 'real' single quote.
@@ -8398,30 +8287,10 @@
      *    - `p`: long localized time
      *
      * 8. `YY` and `YYYY` tokens represent week-numbering years but they are often confused with years.
-     *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://git.io/fxCyr
+     *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * 9. `D` and `DD` tokens represent days of the year but they are often confused with days of the month.
-     *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://git.io/fxCyr
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * - The second argument is now required for the sake of explicitness.
-     *
-     *   ```javascript
-     *   // Before v2.0.0
-     *   format(new Date(2016, 0, 1))
-     *
-     *   // v2.0.0 onward
-     *   format(new Date(2016, 0, 1), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
-     *   ```
-     *
-     * - New format string API for `format` function
-     *   which is based on [Unicode Technical Standard #35](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table).
-     *   See [this post](https://blog.date-fns.org/post/unicode-tokens-in-date-fns-v2-sreatyki91jg) for more details.
-     *
-     * - Characters are now escaped using single quote symbols (`'`) instead of square brackets.
+     *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * @param {Date|Number} date - the original date
      * @param {String} format - the string of tokens
@@ -8430,9 +8299,9 @@
      * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
      * @param {Number} [options.firstWeekContainsDate=1] - the day of January, which is
      * @param {Boolean} [options.useAdditionalWeekYearTokens=false] - if true, allows usage of the week-numbering year tokens `YY` and `YYYY`;
-     *   see: https://git.io/fxCyr
+     *   see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @param {Boolean} [options.useAdditionalDayOfYearTokens=false] - if true, allows usage of the day of year tokens `D` and `DD`;
-     *   see: https://git.io/fxCyr
+     *   see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @returns {String} the formatted date string
      * @throws {TypeError} 2 arguments required
      * @throws {RangeError} `date` must not be Invalid Date
@@ -8440,47 +8309,45 @@
      * @throws {RangeError} `options.locale` must contain `formatLong` property
      * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
      * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
-     * @throws {RangeError} use `yyyy` instead of `YYYY` for formatting years using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `yy` instead of `YY` for formatting years using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `d` instead of `D` for formatting days of the month using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `dd` instead of `DD` for formatting days of the month using [format provided] to the input [input provided]; see: https://git.io/fxCyr
+     * @throws {RangeError} use `yyyy` instead of `YYYY` for formatting years using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `yy` instead of `YY` for formatting years using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `d` instead of `D` for formatting days of the month using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `dd` instead of `DD` for formatting days of the month using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @throws {RangeError} format string contains an unescaped latin alphabet character
      *
      * @example
      * // Represent 11 February 2014 in middle-endian format:
-     * var result = format(new Date(2014, 1, 11), 'MM/dd/yyyy')
+     * const result = format(new Date(2014, 1, 11), 'MM/dd/yyyy')
      * //=> '02/11/2014'
      *
      * @example
      * // Represent 2 July 2014 in Esperanto:
      * import { eoLocale } from 'date-fns/locale/eo'
-     * var result = format(new Date(2014, 6, 2), "do 'de' MMMM yyyy", {
+     * const result = format(new Date(2014, 6, 2), "do 'de' MMMM yyyy", {
      *   locale: eoLocale
      * })
      * //=> '2-a de julio 2014'
      *
      * @example
      * // Escape string by single quote characters:
-     * var result = format(new Date(2014, 6, 2, 15), "h 'o''clock'")
+     * const result = format(new Date(2014, 6, 2, 15), "h 'o''clock'")
      * //=> "3 o'clock"
      */
 
-    function format$2(dirtyDate, dirtyFormatStr, dirtyOptions) {
+    function format$2(dirtyDate, dirtyFormatStr, options) {
+      var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
+
       requiredArgs(2, arguments);
       var formatStr = String(dirtyFormatStr);
-      var options = dirtyOptions || {};
-      var locale = options.locale || defaultLocale;
-      var localeFirstWeekContainsDate = locale.options && locale.options.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : defaultLocale;
+      var firstWeekContainsDate = toInteger$1((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
 
-      var localeWeekStartsOn = locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+      var weekStartsOn = toInteger$1((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
@@ -8516,7 +8383,7 @@
 
         if (firstCharacter === 'p' || firstCharacter === 'P') {
           var longFormatter = longFormatters$1[firstCharacter];
-          return longFormatter(substring, locale.formatLong, formatterOptions);
+          return longFormatter(substring, locale.formatLong);
         }
 
         return substring;
@@ -8535,12 +8402,12 @@
         var formatter = formatters$1[firstCharacter];
 
         if (formatter) {
-          if (!options.useAdditionalWeekYearTokens && isProtectedWeekYearToken(substring)) {
-            throwProtectedError(substring, dirtyFormatStr, dirtyDate);
+          if (!(options !== null && options !== void 0 && options.useAdditionalWeekYearTokens) && isProtectedWeekYearToken(substring)) {
+            throwProtectedError(substring, dirtyFormatStr, String(dirtyDate));
           }
 
-          if (!options.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(substring)) {
-            throwProtectedError(substring, dirtyFormatStr, dirtyDate);
+          if (!(options !== null && options !== void 0 && options.useAdditionalDayOfYearTokens) && isProtectedDayOfYearToken(substring)) {
+            throwProtectedError(substring, dirtyFormatStr, String(dirtyDate));
           }
 
           return formatter(utcDate, substring, locale.localize, formatterOptions);
@@ -8556,19 +8423,23 @@
     }
 
     function cleanEscapedString$1(input) {
-      return input.match(escapedStringRegExp$1)[1].replace(doubleQuoteRegExp$1, "'");
+      var matched = input.match(escapedStringRegExp$1);
+
+      if (!matched) {
+        return input;
+      }
+
+      return matched[1].replace(doubleQuoteRegExp$1, "'");
     }
 
-    function assign(target, dirtyObject) {
+    function assign(target, object) {
       if (target == null) {
         throw new TypeError('assign requires that input parameter not be null or undefined');
       }
 
-      dirtyObject = dirtyObject || {};
-
-      for (var property in dirtyObject) {
-        if (Object.prototype.hasOwnProperty.call(dirtyObject, property)) {
-          target[property] = dirtyObject[property];
+      for (var property in object) {
+        if (Object.prototype.hasOwnProperty.call(object, property)) {
+          target[property] = object[property];
         }
       }
 
@@ -8588,10 +8459,6 @@
      * the first week of the week-numbering year)
      *
      * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the given date
      * @param {Object} [options] - an object with options.
@@ -8620,14 +8487,13 @@
      */
 
     function getWeekYear(dirtyDate, options) {
-      var _options$locale, _options$locale$optio;
+      var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
 
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
       var year = date.getFullYear();
-      var localeFirstWeekContainsDate = options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = (options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+      var defaultOptions = getDefaultOptions();
+      var firstWeekContainsDate = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
@@ -8665,10 +8531,6 @@
      *
      * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @param {Date|Number} date - the original date
      * @param {Object} [options] - an object with options.
      * @param {Locale} [options.locale=defaultLocale] - the locale object. See [Locale]{@link https://date-fns.org/docs/Locale}
@@ -8695,18 +8557,17 @@
      * //=> Mon Jan 03 2005 00:00:00
      */
 
-    function startOfWeekYear(dirtyDate, dirtyOptions) {
+    function startOfWeekYear(dirtyDate, options) {
+      var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
+
       requiredArgs(1, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate);
-      var year = getWeekYear(dirtyDate, dirtyOptions);
+      var defaultOptions = getDefaultOptions();
+      var firstWeekContainsDate = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
+      var year = getWeekYear(dirtyDate, options);
       var firstWeek = new Date(0);
       firstWeek.setFullYear(year, 0, firstWeekContainsDate);
       firstWeek.setHours(0, 0, 0, 0);
-      var date = startOfWeek(firstWeek, dirtyOptions);
+      var date = startOfWeek(firstWeek, options);
       return date;
     }
 
@@ -8724,10 +8585,6 @@
      * the first week of the week-numbering year)
      *
      * Week numbering: https://en.wikipedia.org/wiki/Week#Week_numbering
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the given date
      * @param {Object} [options] - an object with options.
@@ -8764,195 +8621,183 @@
       return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
     }
 
-    /**
-     * @name subDays
-     * @category Day Helpers
-     * @summary Subtract the specified number of days from the given date.
-     *
-     * @description
-     * Subtract the specified number of days from the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * @param {Date|Number} date - the date to be changed
-     * @param {Number} amount - the amount of days to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
-     * @returns {Date} the new date with the days subtracted
-     * @throws {TypeError} 2 arguments required
-     *
-     * @example
-     * // Subtract 10 days from 1 September 2014:
-     * const result = subDays(new Date(2014, 8, 1), 10)
-     * //=> Fri Aug 22 2014 00:00:00
-     */
-
-    function subDays(dirtyDate, dirtyAmount) {
-      requiredArgs(2, arguments);
-      var amount = toInteger$1(dirtyAmount);
-      return addDays(dirtyDate, -amount);
-    }
-
-    /**
-     * @name subMonths
-     * @category Month Helpers
-     * @summary Subtract the specified number of months from the given date.
-     *
-     * @description
-     * Subtract the specified number of months from the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * @param {Date|Number} date - the date to be changed
-     * @param {Number} amount - the amount of months to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
-     * @returns {Date} the new date with the months subtracted
-     * @throws {TypeError} 2 arguments required
-     *
-     * @example
-     * // Subtract 5 months from 1 February 2015:
-     * const result = subMonths(new Date(2015, 1, 1), 5)
-     * //=> Mon Sep 01 2014 00:00:00
-     */
-
-    function subMonths(dirtyDate, dirtyAmount) {
-      requiredArgs(2, arguments);
-      var amount = toInteger$1(dirtyAmount);
-      return addMonths(dirtyDate, -amount);
-    }
-
-    /**
-     * @name sub
-     * @category Common Helpers
-     * @summary Subtract the specified years, months, weeks, days, hours, minutes and seconds from the given date.
-     *
-     * @description
-     * Subtract the specified years, months, weeks, days, hours, minutes and seconds from the given date.
-     *
-     * @param {Date|Number} date - the date to be changed
-     * @param {Duration} duration - the object with years, months, weeks, days, hours, minutes and seconds to be subtracted
-     *
-     * | Key     | Description                        |
-     * |---------|------------------------------------|
-     * | years   | Amount of years to be subtracted   |
-     * | months  | Amount of months to be subtracted  |
-     * | weeks   | Amount of weeks to be subtracted   |
-     * | days    | Amount of days to be subtracted    |
-     * | hours   | Amount of hours to be subtracted   |
-     * | minutes | Amount of minutes to be subtracted |
-     * | seconds | Amount of seconds to be subtracted |
-     *
-     * All values default to 0
-     *
-     * @returns {Date} the new date with the seconds subtracted
-     * @throws {TypeError} 2 arguments required
-     *
-     * @example
-     * // Subtract the following duration from 15 June 2017 15:29:20
-     * const result = sub(new Date(2017, 5, 15, 15, 29, 20), {
-     *   years: 2,
-     *   months: 9,
-     *   weeks: 1,
-     *   days: 7,
-     *   hours: 5,
-     *   minutes: 9,
-     *   seconds: 30
-     * })
-     * //=> Mon Sep 1 2014 10:19:50
-     */
-
-    function sub(date, duration) {
-      requiredArgs(2, arguments);
-      if (!duration || typeof duration !== 'object') return new Date(NaN);
-      var years = duration.years ? toInteger$1(duration.years) : 0;
-      var months = duration.months ? toInteger$1(duration.months) : 0;
-      var weeks = duration.weeks ? toInteger$1(duration.weeks) : 0;
-      var days = duration.days ? toInteger$1(duration.days) : 0;
-      var hours = duration.hours ? toInteger$1(duration.hours) : 0;
-      var minutes = duration.minutes ? toInteger$1(duration.minutes) : 0;
-      var seconds = duration.seconds ? toInteger$1(duration.seconds) : 0; // Subtract years and months
-
-      var dateWithoutMonths = subMonths(date, months + years * 12); // Subtract weeks and days
-
-      var dateWithoutDays = subDays(dateWithoutMonths, days + weeks * 7); // Subtract hours, minutes and seconds
-
-      var minutestoSub = minutes + hours * 60;
-      var secondstoSub = seconds + minutestoSub * 60;
-      var mstoSub = secondstoSub * 1000;
-      var finalDate = new Date(dateWithoutDays.getTime() - mstoSub);
-      return finalDate;
-    }
-
-    // See issue: https://github.com/date-fns/date-fns/issues/376
-
-    function setUTCDay(dirtyDate, dirtyDay, dirtyOptions) {
-      requiredArgs(2, arguments);
-      var options = dirtyOptions || {};
-      var locale = options.locale;
-      var localeWeekStartsOn = locale && locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
-
-      if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
-        throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+    function _defineProperty$w(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
       }
 
-      var date = toDate(dirtyDate);
-      var day = toInteger$1(dirtyDay);
-      var currentDay = date.getUTCDay();
-      var remainder = day % 7;
-      var dayIndex = (remainder + 7) % 7;
-      var diff = (dayIndex < weekStartsOn ? 7 : 0) + day - currentDay;
-      date.setUTCDate(date.getUTCDate() + diff);
-      return date;
+      return obj;
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    var TIMEZONE_UNIT_PRIORITY = 10;
+    class Setter {
+      constructor() {
+        _defineProperty$w(this, "priority", void 0);
 
-    function setUTCISODay(dirtyDate, dirtyDay) {
-      requiredArgs(2, arguments);
-      var day = toInteger$1(dirtyDay);
-
-      if (day % 7 === 0) {
-        day = day - 7;
+        _defineProperty$w(this, "subPriority", 0);
       }
 
-      var weekStartsOn = 1;
-      var date = toDate(dirtyDate);
-      var currentDay = date.getUTCDay();
-      var remainder = day % 7;
-      var dayIndex = (remainder + 7) % 7;
-      var diff = (dayIndex < weekStartsOn ? 7 : 0) + day - currentDay;
-      date.setUTCDate(date.getUTCDate() + diff);
-      return date;
+      validate(_utcDate, _options) {
+        return true;
+      }
+
+    }
+    class ValueSetter extends Setter {
+      constructor(value, validateValue, setValue, priority, subPriority) {
+        super();
+        this.value = value;
+        this.validateValue = validateValue;
+        this.setValue = setValue;
+        this.priority = priority;
+
+        if (subPriority) {
+          this.subPriority = subPriority;
+        }
+      }
+
+      validate(utcDate, options) {
+        return this.validateValue(utcDate, this.value, options);
+      }
+
+      set(utcDate, flags, options) {
+        return this.setValue(utcDate, flags, this.value, options);
+      }
+
+    }
+    class DateToSystemTimezoneSetter extends Setter {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$w(this, "priority", TIMEZONE_UNIT_PRIORITY);
+
+        _defineProperty$w(this, "subPriority", -1);
+      }
+
+      set(date, flags) {
+        if (flags.timestampIsSet) {
+          return date;
+        }
+
+        var convertedDate = new Date(0);
+        convertedDate.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+        convertedDate.setHours(date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+        return convertedDate;
+      }
+
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    function _defineProperty$v(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
 
-    function setUTCISOWeek(dirtyDate, dirtyISOWeek) {
-      requiredArgs(2, arguments);
-      var date = toDate(dirtyDate);
-      var isoWeek = toInteger$1(dirtyISOWeek);
-      var diff = getUTCISOWeek(date) - isoWeek;
-      date.setUTCDate(date.getUTCDate() - diff * 7);
-      return date;
+      return obj;
+    }
+    class Parser$1 {
+      constructor() {
+        _defineProperty$v(this, "incompatibleTokens", void 0);
+
+        _defineProperty$v(this, "priority", void 0);
+
+        _defineProperty$v(this, "subPriority", void 0);
+      }
+
+      run(dateString, token, match, options) {
+        var result = this.parse(dateString, token, match, options);
+
+        if (!result) {
+          return null;
+        }
+
+        return {
+          setter: new ValueSetter(result.value, this.validate, this.set, this.priority, this.subPriority),
+          rest: result.rest
+        };
+      }
+
+      validate(_utcDate, _value, _options) {
+        return true;
+      }
+
     }
 
-    // See issue: https://github.com/date-fns/date-fns/issues/376
+    function _defineProperty$u(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
 
-    function setUTCWeek(dirtyDate, dirtyWeek, options) {
-      requiredArgs(2, arguments);
-      var date = toDate(dirtyDate);
-      var week = toInteger$1(dirtyWeek);
-      var diff = getUTCWeek(date, options) - week;
-      date.setUTCDate(date.getUTCDate() - diff * 7);
-      return date;
+      return obj;
+    }
+    class EraParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$u(this, "priority", 140);
+
+        _defineProperty$u(this, "incompatibleTokens", ['R', 'u', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          // AD, BC
+          case 'G':
+          case 'GG':
+          case 'GGG':
+            return match.era(dateString, {
+              width: 'abbreviated'
+            }) || match.era(dateString, {
+              width: 'narrow'
+            });
+          // A, B
+
+          case 'GGGGG':
+            return match.era(dateString, {
+              width: 'narrow'
+            });
+          // Anno Domini, Before Christ
+
+          case 'GGGG':
+          default:
+            return match.era(dateString, {
+              width: 'wide'
+            }) || match.era(dateString, {
+              width: 'abbreviated'
+            }) || match.era(dateString, {
+              width: 'narrow'
+            });
+        }
+      }
+
+      set(date, flags, value) {
+        flags.era = value;
+        date.setUTCFullYear(value, 0, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
     }
 
-    var MILLISECONDS_IN_HOUR = 3600000;
-    var MILLISECONDS_IN_MINUTE = 60000;
-    var MILLISECONDS_IN_SECOND = 1000;
     var numericPatterns = {
       month: /^(1[0-2]|0?\d)/,
       // 0 to 12
@@ -9000,22 +8845,30 @@
       extendedOptionalSeconds: /^([+-])(\d{2}):(\d{2})(:(\d{2}))?|Z/
     };
 
-    function parseNumericPattern(pattern, string, valueCallback) {
-      var matchResult = string.match(pattern);
+    function mapValue(parseFnResult, mapFn) {
+      if (!parseFnResult) {
+        return parseFnResult;
+      }
+
+      return {
+        value: mapFn(parseFnResult.value),
+        rest: parseFnResult.rest
+      };
+    }
+    function parseNumericPattern(pattern, dateString) {
+      var matchResult = dateString.match(pattern);
 
       if (!matchResult) {
         return null;
       }
 
-      var value = parseInt(matchResult[0], 10);
       return {
-        value: valueCallback ? valueCallback(value) : value,
-        rest: string.slice(matchResult[0].length)
+        value: parseInt(matchResult[0], 10),
+        rest: dateString.slice(matchResult[0].length)
       };
     }
-
-    function parseTimezonePattern(pattern, string) {
-      var matchResult = string.match(pattern);
+    function parseTimezonePattern(pattern, dateString) {
+      var matchResult = dateString.match(pattern);
 
       if (!matchResult) {
         return null;
@@ -9025,7 +8878,7 @@
       if (matchResult[0] === 'Z') {
         return {
           value: 0,
-          rest: string.slice(1)
+          rest: dateString.slice(1)
         };
       }
 
@@ -9034,55 +8887,51 @@
       var minutes = matchResult[3] ? parseInt(matchResult[3], 10) : 0;
       var seconds = matchResult[5] ? parseInt(matchResult[5], 10) : 0;
       return {
-        value: sign * (hours * MILLISECONDS_IN_HOUR + minutes * MILLISECONDS_IN_MINUTE + seconds * MILLISECONDS_IN_SECOND),
-        rest: string.slice(matchResult[0].length)
+        value: sign * (hours * millisecondsInHour + minutes * millisecondsInMinute + seconds * millisecondsInSecond),
+        rest: dateString.slice(matchResult[0].length)
       };
     }
-
-    function parseAnyDigitsSigned(string, valueCallback) {
-      return parseNumericPattern(numericPatterns.anyDigitsSigned, string, valueCallback);
+    function parseAnyDigitsSigned(dateString) {
+      return parseNumericPattern(numericPatterns.anyDigitsSigned, dateString);
     }
-
-    function parseNDigits(n, string, valueCallback) {
+    function parseNDigits(n, dateString) {
       switch (n) {
         case 1:
-          return parseNumericPattern(numericPatterns.singleDigit, string, valueCallback);
+          return parseNumericPattern(numericPatterns.singleDigit, dateString);
 
         case 2:
-          return parseNumericPattern(numericPatterns.twoDigits, string, valueCallback);
+          return parseNumericPattern(numericPatterns.twoDigits, dateString);
 
         case 3:
-          return parseNumericPattern(numericPatterns.threeDigits, string, valueCallback);
+          return parseNumericPattern(numericPatterns.threeDigits, dateString);
 
         case 4:
-          return parseNumericPattern(numericPatterns.fourDigits, string, valueCallback);
+          return parseNumericPattern(numericPatterns.fourDigits, dateString);
 
         default:
-          return parseNumericPattern(new RegExp('^\\d{1,' + n + '}'), string, valueCallback);
+          return parseNumericPattern(new RegExp('^\\d{1,' + n + '}'), dateString);
       }
     }
-
-    function parseNDigitsSigned(n, string, valueCallback) {
+    function parseNDigitsSigned(n, dateString) {
       switch (n) {
         case 1:
-          return parseNumericPattern(numericPatterns.singleDigitSigned, string, valueCallback);
+          return parseNumericPattern(numericPatterns.singleDigitSigned, dateString);
 
         case 2:
-          return parseNumericPattern(numericPatterns.twoDigitsSigned, string, valueCallback);
+          return parseNumericPattern(numericPatterns.twoDigitsSigned, dateString);
 
         case 3:
-          return parseNumericPattern(numericPatterns.threeDigitsSigned, string, valueCallback);
+          return parseNumericPattern(numericPatterns.threeDigitsSigned, dateString);
 
         case 4:
-          return parseNumericPattern(numericPatterns.fourDigitsSigned, string, valueCallback);
+          return parseNumericPattern(numericPatterns.fourDigitsSigned, dateString);
 
         default:
-          return parseNumericPattern(new RegExp('^-?\\d{1,' + n + '}'), string, valueCallback);
+          return parseNumericPattern(new RegExp('^-?\\d{1,' + n + '}'), dateString);
       }
     }
-
-    function dayPeriodEnumToHours(enumValue) {
-      switch (enumValue) {
+    function dayPeriodEnumToHours(dayPeriod) {
+      switch (dayPeriod) {
         case 'morning':
           return 4;
 
@@ -9101,7 +8950,6 @@
           return 0;
       }
     }
-
     function normalizeTwoDigitYear(twoDigitYear, currentYear) {
       var isCommonEra = currentYear > 0; // Absolute number of the current year:
       // 1 -> 1 AC
@@ -9122,13 +8970,1975 @@
 
       return isCommonEra ? result : 1 - result;
     }
-
-    var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var DAYS_IN_MONTH_LEAP_YEAR = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // User for validation
-
     function isLeapYearIndex(year) {
       return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
     }
+
+    function _defineProperty$t(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
+    // |----------|-------|----|-------|-------|-------|
+    // | AD 1     |     1 | 01 |   001 |  0001 | 00001 |
+    // | AD 12    |    12 | 12 |   012 |  0012 | 00012 |
+    // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
+    // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
+    // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
+
+    class YearParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$t(this, "priority", 130);
+
+        _defineProperty$t(this, "incompatibleTokens", ['Y', 'R', 'u', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        var valueCallback = function (year) {
+          return {
+            year: year,
+            isTwoDigitYear: token === 'yy'
+          };
+        };
+
+        switch (token) {
+          case 'y':
+            return mapValue(parseNDigits(4, dateString), valueCallback);
+
+          case 'yo':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'year'
+            }), valueCallback);
+
+          default:
+            return mapValue(parseNDigits(token.length, dateString), valueCallback);
+        }
+      }
+
+      validate(_date, value) {
+        return value.isTwoDigitYear || value.year > 0;
+      }
+
+      set(date, flags, value) {
+        var currentYear = date.getUTCFullYear();
+
+        if (value.isTwoDigitYear) {
+          var normalizedTwoDigitYear = normalizeTwoDigitYear(value.year, currentYear);
+          date.setUTCFullYear(normalizedTwoDigitYear, 0, 1);
+          date.setUTCHours(0, 0, 0, 0);
+          return date;
+        }
+
+        var year = !('era' in flags) || flags.era === 1 ? value.year : 1 - value.year;
+        date.setUTCFullYear(year, 0, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$s(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class LocalWeekYearParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$s(this, "priority", 130);
+
+        _defineProperty$s(this, "incompatibleTokens", ['y', 'R', 'u', 'Q', 'q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        var valueCallback = function (year) {
+          return {
+            year: year,
+            isTwoDigitYear: token === 'YY'
+          };
+        };
+
+        switch (token) {
+          case 'Y':
+            return mapValue(parseNDigits(4, dateString), valueCallback);
+
+          case 'Yo':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'year'
+            }), valueCallback);
+
+          default:
+            return mapValue(parseNDigits(token.length, dateString), valueCallback);
+        }
+      }
+
+      validate(_date, value) {
+        return value.isTwoDigitYear || value.year > 0;
+      }
+
+      set(date, flags, value, options) {
+        var currentYear = getUTCWeekYear(date, options);
+
+        if (value.isTwoDigitYear) {
+          var normalizedTwoDigitYear = normalizeTwoDigitYear(value.year, currentYear);
+          date.setUTCFullYear(normalizedTwoDigitYear, 0, options.firstWeekContainsDate);
+          date.setUTCHours(0, 0, 0, 0);
+          return startOfUTCWeek(date, options);
+        }
+
+        var year = !('era' in flags) || flags.era === 1 ? value.year : 1 - value.year;
+        date.setUTCFullYear(year, 0, options.firstWeekContainsDate);
+        date.setUTCHours(0, 0, 0, 0);
+        return startOfUTCWeek(date, options);
+      }
+
+    }
+
+    function _defineProperty$r(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class ISOWeekYearParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$r(this, "priority", 130);
+
+        _defineProperty$r(this, "incompatibleTokens", ['G', 'y', 'Y', 'u', 'Q', 'q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token) {
+        if (token === 'R') {
+          return parseNDigitsSigned(4, dateString);
+        }
+
+        return parseNDigitsSigned(token.length, dateString);
+      }
+
+      set(_date, _flags, value) {
+        var firstWeekOfYear = new Date(0);
+        firstWeekOfYear.setUTCFullYear(value, 0, 4);
+        firstWeekOfYear.setUTCHours(0, 0, 0, 0);
+        return startOfUTCISOWeek(firstWeekOfYear);
+      }
+
+    }
+
+    function _defineProperty$q(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class ExtendedYearParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$q(this, "priority", 130);
+
+        _defineProperty$q(this, "incompatibleTokens", ['G', 'y', 'Y', 'R', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token) {
+        if (token === 'u') {
+          return parseNDigitsSigned(4, dateString);
+        }
+
+        return parseNDigitsSigned(token.length, dateString);
+      }
+
+      set(date, _flags, value) {
+        date.setUTCFullYear(value, 0, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$p(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class QuarterParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$p(this, "priority", 120);
+
+        _defineProperty$p(this, "incompatibleTokens", ['Y', 'R', 'q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          // 1, 2, 3, 4
+          case 'Q':
+          case 'QQ':
+            // 01, 02, 03, 04
+            return parseNDigits(token.length, dateString);
+          // 1st, 2nd, 3rd, 4th
+
+          case 'Qo':
+            return match.ordinalNumber(dateString, {
+              unit: 'quarter'
+            });
+          // Q1, Q2, Q3, Q4
+
+          case 'QQQ':
+            return match.quarter(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.quarter(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
+          case 'QQQQQ':
+            return match.quarter(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // 1st quarter, 2nd quarter, ...
+
+          case 'QQQQ':
+          default:
+            return match.quarter(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.quarter(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.quarter(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 4;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMonth((value - 1) * 3, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$o(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class StandAloneQuarterParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$o(this, "priority", 120);
+
+        _defineProperty$o(this, "incompatibleTokens", ['Y', 'R', 'Q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          // 1, 2, 3, 4
+          case 'q':
+          case 'qq':
+            // 01, 02, 03, 04
+            return parseNDigits(token.length, dateString);
+          // 1st, 2nd, 3rd, 4th
+
+          case 'qo':
+            return match.ordinalNumber(dateString, {
+              unit: 'quarter'
+            });
+          // Q1, Q2, Q3, Q4
+
+          case 'qqq':
+            return match.quarter(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.quarter(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
+          case 'qqqqq':
+            return match.quarter(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // 1st quarter, 2nd quarter, ...
+
+          case 'qqqq':
+          default:
+            return match.quarter(dateString, {
+              width: 'wide',
+              context: 'standalone'
+            }) || match.quarter(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.quarter(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 4;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMonth((value - 1) * 3, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$n(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class MonthParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$n(this, "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'L', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+
+        _defineProperty$n(this, "priority", 110);
+      }
+
+      parse(dateString, token, match) {
+        var valueCallback = function (value) {
+          return value - 1;
+        };
+
+        switch (token) {
+          // 1, 2, ..., 12
+          case 'M':
+            return mapValue(parseNumericPattern(numericPatterns.month, dateString), valueCallback);
+          // 01, 02, ..., 12
+
+          case 'MM':
+            return mapValue(parseNDigits(2, dateString), valueCallback);
+          // 1st, 2nd, ..., 12th
+
+          case 'Mo':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'month'
+            }), valueCallback);
+          // Jan, Feb, ..., Dec
+
+          case 'MMM':
+            return match.month(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.month(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // J, F, ..., D
+
+          case 'MMMMM':
+            return match.month(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // January, February, ..., December
+
+          case 'MMMM':
+          default:
+            return match.month(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.month(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.month(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 11;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMonth(value, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$m(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class StandAloneMonthParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$m(this, "priority", 110);
+
+        _defineProperty$m(this, "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        var valueCallback = function (value) {
+          return value - 1;
+        };
+
+        switch (token) {
+          // 1, 2, ..., 12
+          case 'L':
+            return mapValue(parseNumericPattern(numericPatterns.month, dateString), valueCallback);
+          // 01, 02, ..., 12
+
+          case 'LL':
+            return mapValue(parseNDigits(2, dateString), valueCallback);
+          // 1st, 2nd, ..., 12th
+
+          case 'Lo':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'month'
+            }), valueCallback);
+          // Jan, Feb, ..., Dec
+
+          case 'LLL':
+            return match.month(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.month(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // J, F, ..., D
+
+          case 'LLLLL':
+            return match.month(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // January, February, ..., December
+
+          case 'LLLL':
+          default:
+            return match.month(dateString, {
+              width: 'wide',
+              context: 'standalone'
+            }) || match.month(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.month(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 11;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMonth(value, 1);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function setUTCWeek(dirtyDate, dirtyWeek, options) {
+      requiredArgs(2, arguments);
+      var date = toDate(dirtyDate);
+      var week = toInteger$1(dirtyWeek);
+      var diff = getUTCWeek(date, options) - week;
+      date.setUTCDate(date.getUTCDate() - diff * 7);
+      return date;
+    }
+
+    function _defineProperty$l(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class LocalWeekParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$l(this, "priority", 100);
+
+        _defineProperty$l(this, "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'w':
+            return parseNumericPattern(numericPatterns.week, dateString);
+
+          case 'wo':
+            return match.ordinalNumber(dateString, {
+              unit: 'week'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 53;
+      }
+
+      set(date, _flags, value, options) {
+        return startOfUTCWeek(setUTCWeek(date, value, options), options);
+      }
+
+    }
+
+    function setUTCISOWeek(dirtyDate, dirtyISOWeek) {
+      requiredArgs(2, arguments);
+      var date = toDate(dirtyDate);
+      var isoWeek = toInteger$1(dirtyISOWeek);
+      var diff = getUTCISOWeek(date) - isoWeek;
+      date.setUTCDate(date.getUTCDate() - diff * 7);
+      return date;
+    }
+
+    function _defineProperty$k(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class ISOWeekParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$k(this, "priority", 100);
+
+        _defineProperty$k(this, "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'I':
+            return parseNumericPattern(numericPatterns.week, dateString);
+
+          case 'Io':
+            return match.ordinalNumber(dateString, {
+              unit: 'week'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 53;
+      }
+
+      set(date, _flags, value) {
+        return startOfUTCISOWeek(setUTCISOWeek(date, value));
+      }
+
+    }
+
+    function _defineProperty$j(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var DAYS_IN_MONTH_LEAP_YEAR = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // Day of the month
+
+    class DateParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$j(this, "priority", 90);
+
+        _defineProperty$j(this, "subPriority", 1);
+
+        _defineProperty$j(this, "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'd':
+            return parseNumericPattern(numericPatterns.date, dateString);
+
+          case 'do':
+            return match.ordinalNumber(dateString, {
+              unit: 'date'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(date, value) {
+        var year = date.getUTCFullYear();
+        var isLeapYear = isLeapYearIndex(year);
+        var month = date.getUTCMonth();
+
+        if (isLeapYear) {
+          return value >= 1 && value <= DAYS_IN_MONTH_LEAP_YEAR[month];
+        } else {
+          return value >= 1 && value <= DAYS_IN_MONTH[month];
+        }
+      }
+
+      set(date, _flags, value) {
+        date.setUTCDate(value);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$i(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class DayOfYearParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$i(this, "priority", 90);
+
+        _defineProperty$i(this, "subpriority", 1);
+
+        _defineProperty$i(this, "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'L', 'w', 'I', 'd', 'E', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'D':
+          case 'DD':
+            return parseNumericPattern(numericPatterns.dayOfYear, dateString);
+
+          case 'Do':
+            return match.ordinalNumber(dateString, {
+              unit: 'date'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(date, value) {
+        var year = date.getUTCFullYear();
+        var isLeapYear = isLeapYearIndex(year);
+
+        if (isLeapYear) {
+          return value >= 1 && value <= 366;
+        } else {
+          return value >= 1 && value <= 365;
+        }
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMonth(0, value);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function setUTCDay(dirtyDate, dirtyDay, options) {
+      var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
+
+      requiredArgs(2, arguments);
+      var defaultOptions = getDefaultOptions();
+      var weekStartsOn = toInteger$1((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+
+      if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
+        throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
+      }
+
+      var date = toDate(dirtyDate);
+      var day = toInteger$1(dirtyDay);
+      var currentDay = date.getUTCDay();
+      var remainder = day % 7;
+      var dayIndex = (remainder + 7) % 7;
+      var diff = (dayIndex < weekStartsOn ? 7 : 0) + day - currentDay;
+      date.setUTCDate(date.getUTCDate() + diff);
+      return date;
+    }
+
+    function _defineProperty$h(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class DayParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$h(this, "priority", 90);
+
+        _defineProperty$h(this, "incompatibleTokens", ['D', 'i', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          // Tue
+          case 'E':
+          case 'EE':
+          case 'EEE':
+            return match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // T
+
+          case 'EEEEE':
+            return match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // Tu
+
+          case 'EEEEEE':
+            return match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // Tuesday
+
+          case 'EEEE':
+          default:
+            return match.day(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 6;
+      }
+
+      set(date, _flags, value, options) {
+        date = setUTCDay(date, value, options);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$g(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class LocalDayParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$g(this, "priority", 90);
+
+        _defineProperty$g(this, "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match, options) {
+        var valueCallback = function (value) {
+          var wholeWeekDays = Math.floor((value - 1) / 7) * 7;
+          return (value + options.weekStartsOn + 6) % 7 + wholeWeekDays;
+        };
+
+        switch (token) {
+          // 3
+          case 'e':
+          case 'ee':
+            // 03
+            return mapValue(parseNDigits(token.length, dateString), valueCallback);
+          // 3rd
+
+          case 'eo':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'day'
+            }), valueCallback);
+          // Tue
+
+          case 'eee':
+            return match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // T
+
+          case 'eeeee':
+            return match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // Tu
+
+          case 'eeeeee':
+            return match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+          // Tuesday
+
+          case 'eeee':
+          default:
+            return match.day(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 6;
+      }
+
+      set(date, _flags, value, options) {
+        date = setUTCDay(date, value, options);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$f(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class StandAloneLocalDayParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$f(this, "priority", 90);
+
+        _defineProperty$f(this, "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'e', 't', 'T']);
+      }
+
+      parse(dateString, token, match, options) {
+        var valueCallback = function (value) {
+          var wholeWeekDays = Math.floor((value - 1) / 7) * 7;
+          return (value + options.weekStartsOn + 6) % 7 + wholeWeekDays;
+        };
+
+        switch (token) {
+          // 3
+          case 'c':
+          case 'cc':
+            // 03
+            return mapValue(parseNDigits(token.length, dateString), valueCallback);
+          // 3rd
+
+          case 'co':
+            return mapValue(match.ordinalNumber(dateString, {
+              unit: 'day'
+            }), valueCallback);
+          // Tue
+
+          case 'ccc':
+            return match.day(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // T
+
+          case 'ccccc':
+            return match.day(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // Tu
+
+          case 'cccccc':
+            return match.day(dateString, {
+              width: 'short',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+          // Tuesday
+
+          case 'cccc':
+          default:
+            return match.day(dateString, {
+              width: 'wide',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'abbreviated',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'standalone'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'standalone'
+            });
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 6;
+      }
+
+      set(date, _flags, value, options) {
+        date = setUTCDay(date, value, options);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function setUTCISODay(dirtyDate, dirtyDay) {
+      requiredArgs(2, arguments);
+      var day = toInteger$1(dirtyDay);
+
+      if (day % 7 === 0) {
+        day = day - 7;
+      }
+
+      var weekStartsOn = 1;
+      var date = toDate(dirtyDate);
+      var currentDay = date.getUTCDay();
+      var remainder = day % 7;
+      var dayIndex = (remainder + 7) % 7;
+      var diff = (dayIndex < weekStartsOn ? 7 : 0) + day - currentDay;
+      date.setUTCDate(date.getUTCDate() + diff);
+      return date;
+    }
+
+    function _defineProperty$e(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class ISODayParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$e(this, "priority", 90);
+
+        _defineProperty$e(this, "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'E', 'e', 'c', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        var valueCallback = function (value) {
+          if (value === 0) {
+            return 7;
+          }
+
+          return value;
+        };
+
+        switch (token) {
+          // 2
+          case 'i':
+          case 'ii':
+            // 02
+            return parseNDigits(token.length, dateString);
+          // 2nd
+
+          case 'io':
+            return match.ordinalNumber(dateString, {
+              unit: 'day'
+            });
+          // Tue
+
+          case 'iii':
+            return mapValue(match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            }), valueCallback);
+          // T
+
+          case 'iiiii':
+            return mapValue(match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            }), valueCallback);
+          // Tu
+
+          case 'iiiiii':
+            return mapValue(match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            }), valueCallback);
+          // Tuesday
+
+          case 'iiii':
+          default:
+            return mapValue(match.day(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'short',
+              context: 'formatting'
+            }) || match.day(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            }), valueCallback);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 7;
+      }
+
+      set(date, _flags, value) {
+        date = setUTCISODay(date, value);
+        date.setUTCHours(0, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$d(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class AMPMParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$d(this, "priority", 80);
+
+        _defineProperty$d(this, "incompatibleTokens", ['b', 'B', 'H', 'k', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'a':
+          case 'aa':
+          case 'aaa':
+            return match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'aaaaa':
+            return match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'aaaa':
+          default:
+            return match.dayPeriod(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      set(date, _flags, value) {
+        date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$c(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class AMPMMidnightParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$c(this, "priority", 80);
+
+        _defineProperty$c(this, "incompatibleTokens", ['a', 'B', 'H', 'k', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'b':
+          case 'bb':
+          case 'bbb':
+            return match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'bbbbb':
+            return match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'bbbb':
+          default:
+            return match.dayPeriod(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      set(date, _flags, value) {
+        date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$b(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class DayPeriodParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$b(this, "priority", 80);
+
+        _defineProperty$b(this, "incompatibleTokens", ['a', 'b', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'B':
+          case 'BB':
+          case 'BBB':
+            return match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'BBBBB':
+            return match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+
+          case 'BBBB':
+          default:
+            return match.dayPeriod(dateString, {
+              width: 'wide',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'abbreviated',
+              context: 'formatting'
+            }) || match.dayPeriod(dateString, {
+              width: 'narrow',
+              context: 'formatting'
+            });
+        }
+      }
+
+      set(date, _flags, value) {
+        date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$a(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class Hour1to12Parser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$a(this, "priority", 70);
+
+        _defineProperty$a(this, "incompatibleTokens", ['H', 'K', 'k', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'h':
+            return parseNumericPattern(numericPatterns.hour12h, dateString);
+
+          case 'ho':
+            return match.ordinalNumber(dateString, {
+              unit: 'hour'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 12;
+      }
+
+      set(date, _flags, value) {
+        var isPM = date.getUTCHours() >= 12;
+
+        if (isPM && value < 12) {
+          date.setUTCHours(value + 12, 0, 0, 0);
+        } else if (!isPM && value === 12) {
+          date.setUTCHours(0, 0, 0, 0);
+        } else {
+          date.setUTCHours(value, 0, 0, 0);
+        }
+
+        return date;
+      }
+
+    }
+
+    function _defineProperty$9(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class Hour0to23Parser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$9(this, "priority", 70);
+
+        _defineProperty$9(this, "incompatibleTokens", ['a', 'b', 'h', 'K', 'k', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'H':
+            return parseNumericPattern(numericPatterns.hour23h, dateString);
+
+          case 'Ho':
+            return match.ordinalNumber(dateString, {
+              unit: 'hour'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 23;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCHours(value, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$8(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class Hour0To11Parser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$8(this, "priority", 70);
+
+        _defineProperty$8(this, "incompatibleTokens", ['h', 'H', 'k', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'K':
+            return parseNumericPattern(numericPatterns.hour11h, dateString);
+
+          case 'Ko':
+            return match.ordinalNumber(dateString, {
+              unit: 'hour'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 11;
+      }
+
+      set(date, _flags, value) {
+        var isPM = date.getUTCHours() >= 12;
+
+        if (isPM && value < 12) {
+          date.setUTCHours(value + 12, 0, 0, 0);
+        } else {
+          date.setUTCHours(value, 0, 0, 0);
+        }
+
+        return date;
+      }
+
+    }
+
+    function _defineProperty$7(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class Hour1To24Parser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$7(this, "priority", 70);
+
+        _defineProperty$7(this, "incompatibleTokens", ['a', 'b', 'h', 'H', 'K', 't', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'k':
+            return parseNumericPattern(numericPatterns.hour24h, dateString);
+
+          case 'ko':
+            return match.ordinalNumber(dateString, {
+              unit: 'hour'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 1 && value <= 24;
+      }
+
+      set(date, _flags, value) {
+        var hours = value <= 24 ? value % 24 : value;
+        date.setUTCHours(hours, 0, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$6(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class MinuteParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$6(this, "priority", 60);
+
+        _defineProperty$6(this, "incompatibleTokens", ['t', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 'm':
+            return parseNumericPattern(numericPatterns.minute, dateString);
+
+          case 'mo':
+            return match.ordinalNumber(dateString, {
+              unit: 'minute'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 59;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMinutes(value, 0, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$5(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class SecondParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$5(this, "priority", 50);
+
+        _defineProperty$5(this, "incompatibleTokens", ['t', 'T']);
+      }
+
+      parse(dateString, token, match) {
+        switch (token) {
+          case 's':
+            return parseNumericPattern(numericPatterns.second, dateString);
+
+          case 'so':
+            return match.ordinalNumber(dateString, {
+              unit: 'second'
+            });
+
+          default:
+            return parseNDigits(token.length, dateString);
+        }
+      }
+
+      validate(_date, value) {
+        return value >= 0 && value <= 59;
+      }
+
+      set(date, _flags, value) {
+        date.setUTCSeconds(value, 0);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$4(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class FractionOfSecondParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$4(this, "priority", 30);
+
+        _defineProperty$4(this, "incompatibleTokens", ['t', 'T']);
+      }
+
+      parse(dateString, token) {
+        var valueCallback = function (value) {
+          return Math.floor(value * Math.pow(10, -token.length + 3));
+        };
+
+        return mapValue(parseNDigits(token.length, dateString), valueCallback);
+      }
+
+      set(date, _flags, value) {
+        date.setUTCMilliseconds(value);
+        return date;
+      }
+
+    }
+
+    function _defineProperty$3(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class ISOTimezoneWithZParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$3(this, "priority", 10);
+
+        _defineProperty$3(this, "incompatibleTokens", ['t', 'T', 'x']);
+      }
+
+      parse(dateString, token) {
+        switch (token) {
+          case 'X':
+            return parseTimezonePattern(timezonePatterns.basicOptionalMinutes, dateString);
+
+          case 'XX':
+            return parseTimezonePattern(timezonePatterns.basic, dateString);
+
+          case 'XXXX':
+            return parseTimezonePattern(timezonePatterns.basicOptionalSeconds, dateString);
+
+          case 'XXXXX':
+            return parseTimezonePattern(timezonePatterns.extendedOptionalSeconds, dateString);
+
+          case 'XXX':
+          default:
+            return parseTimezonePattern(timezonePatterns.extended, dateString);
+        }
+      }
+
+      set(date, flags, value) {
+        if (flags.timestampIsSet) {
+          return date;
+        }
+
+        return new Date(date.getTime() - value);
+      }
+
+    }
+
+    function _defineProperty$2(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+
+    class ISOTimezoneParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$2(this, "priority", 10);
+
+        _defineProperty$2(this, "incompatibleTokens", ['t', 'T', 'X']);
+      }
+
+      parse(dateString, token) {
+        switch (token) {
+          case 'x':
+            return parseTimezonePattern(timezonePatterns.basicOptionalMinutes, dateString);
+
+          case 'xx':
+            return parseTimezonePattern(timezonePatterns.basic, dateString);
+
+          case 'xxxx':
+            return parseTimezonePattern(timezonePatterns.basicOptionalSeconds, dateString);
+
+          case 'xxxxx':
+            return parseTimezonePattern(timezonePatterns.extendedOptionalSeconds, dateString);
+
+          case 'xxx':
+          default:
+            return parseTimezonePattern(timezonePatterns.extended, dateString);
+        }
+      }
+
+      set(date, flags, value) {
+        if (flags.timestampIsSet) {
+          return date;
+        }
+
+        return new Date(date.getTime() - value);
+      }
+
+    }
+
+    function _defineProperty$1(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class TimestampSecondsParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty$1(this, "priority", 40);
+
+        _defineProperty$1(this, "incompatibleTokens", '*');
+      }
+
+      parse(dateString) {
+        return parseAnyDigitsSigned(dateString);
+      }
+
+      set(_date, _flags, value) {
+        return [new Date(value * 1000), {
+          timestampIsSet: true
+        }];
+      }
+
+    }
+
+    function _defineProperty(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+
+      return obj;
+    }
+    class TimestampMillisecondsParser extends Parser$1 {
+      constructor() {
+        super(...arguments);
+
+        _defineProperty(this, "priority", 20);
+
+        _defineProperty(this, "incompatibleTokens", '*');
+      }
+
+      parse(dateString) {
+        return parseAnyDigitsSigned(dateString);
+      }
+
+      set(_date, _flags, value) {
+        return [new Date(value), {
+          timestampIsSet: true
+        }];
+      }
+
+    }
+
     /*
      * |     | Unit                           |     | Unit                           |
      * |-----|--------------------------------|-----|--------------------------------|
@@ -9173,1281 +10983,40 @@
      *   for week-numbering date specific to the locale.
      */
 
-
     var parsers = {
-      // Era
-      G: {
-        priority: 140,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            // AD, BC
-            case 'G':
-            case 'GG':
-            case 'GGG':
-              return match.era(string, {
-                width: 'abbreviated'
-              }) || match.era(string, {
-                width: 'narrow'
-              });
-            // A, B
-
-            case 'GGGGG':
-              return match.era(string, {
-                width: 'narrow'
-              });
-            // Anno Domini, Before Christ
-
-            case 'GGGG':
-            default:
-              return match.era(string, {
-                width: 'wide'
-              }) || match.era(string, {
-                width: 'abbreviated'
-              }) || match.era(string, {
-                width: 'narrow'
-              });
-          }
-        },
-        set: function (date, flags, value, _options) {
-          flags.era = value;
-          date.setUTCFullYear(value, 0, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['R', 'u', 't', 'T']
-      },
-      // Year
-      y: {
-        // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_Patterns
-        // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
-        // |----------|-------|----|-------|-------|-------|
-        // | AD 1     |     1 | 01 |   001 |  0001 | 00001 |
-        // | AD 12    |    12 | 12 |   012 |  0012 | 00012 |
-        // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
-        // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
-        // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
-        priority: 130,
-        parse: function (string, token, match, _options) {
-          var valueCallback = function (year) {
-            return {
-              year: year,
-              isTwoDigitYear: token === 'yy'
-            };
-          };
-
-          switch (token) {
-            case 'y':
-              return parseNDigits(4, string, valueCallback);
-
-            case 'yo':
-              return match.ordinalNumber(string, {
-                unit: 'year',
-                valueCallback: valueCallback
-              });
-
-            default:
-              return parseNDigits(token.length, string, valueCallback);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value.isTwoDigitYear || value.year > 0;
-        },
-        set: function (date, flags, value, _options) {
-          var currentYear = date.getUTCFullYear();
-
-          if (value.isTwoDigitYear) {
-            var normalizedTwoDigitYear = normalizeTwoDigitYear(value.year, currentYear);
-            date.setUTCFullYear(normalizedTwoDigitYear, 0, 1);
-            date.setUTCHours(0, 0, 0, 0);
-            return date;
-          }
-
-          var year = !('era' in flags) || flags.era === 1 ? value.year : 1 - value.year;
-          date.setUTCFullYear(year, 0, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'u', 'w', 'I', 'i', 'e', 'c', 't', 'T']
-      },
-      // Local week-numbering year
-      Y: {
-        priority: 130,
-        parse: function (string, token, match, _options) {
-          var valueCallback = function (year) {
-            return {
-              year: year,
-              isTwoDigitYear: token === 'YY'
-            };
-          };
-
-          switch (token) {
-            case 'Y':
-              return parseNDigits(4, string, valueCallback);
-
-            case 'Yo':
-              return match.ordinalNumber(string, {
-                unit: 'year',
-                valueCallback: valueCallback
-              });
-
-            default:
-              return parseNDigits(token.length, string, valueCallback);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value.isTwoDigitYear || value.year > 0;
-        },
-        set: function (date, flags, value, options) {
-          var currentYear = getUTCWeekYear(date, options);
-
-          if (value.isTwoDigitYear) {
-            var normalizedTwoDigitYear = normalizeTwoDigitYear(value.year, currentYear);
-            date.setUTCFullYear(normalizedTwoDigitYear, 0, options.firstWeekContainsDate);
-            date.setUTCHours(0, 0, 0, 0);
-            return startOfUTCWeek(date, options);
-          }
-
-          var year = !('era' in flags) || flags.era === 1 ? value.year : 1 - value.year;
-          date.setUTCFullYear(year, 0, options.firstWeekContainsDate);
-          date.setUTCHours(0, 0, 0, 0);
-          return startOfUTCWeek(date, options);
-        },
-        incompatibleTokens: ['y', 'R', 'u', 'Q', 'q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']
-      },
-      // ISO week-numbering year
-      R: {
-        priority: 130,
-        parse: function (string, token, _match, _options) {
-          if (token === 'R') {
-            return parseNDigitsSigned(4, string);
-          }
-
-          return parseNDigitsSigned(token.length, string);
-        },
-        set: function (_date, _flags, value, _options) {
-          var firstWeekOfYear = new Date(0);
-          firstWeekOfYear.setUTCFullYear(value, 0, 4);
-          firstWeekOfYear.setUTCHours(0, 0, 0, 0);
-          return startOfUTCISOWeek(firstWeekOfYear);
-        },
-        incompatibleTokens: ['G', 'y', 'Y', 'u', 'Q', 'q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']
-      },
-      // Extended year
-      u: {
-        priority: 130,
-        parse: function (string, token, _match, _options) {
-          if (token === 'u') {
-            return parseNDigitsSigned(4, string);
-          }
-
-          return parseNDigitsSigned(token.length, string);
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCFullYear(value, 0, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['G', 'y', 'Y', 'R', 'w', 'I', 'i', 'e', 'c', 't', 'T']
-      },
-      // Quarter
-      Q: {
-        priority: 120,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            // 1, 2, 3, 4
-            case 'Q':
-            case 'QQ':
-              // 01, 02, 03, 04
-              return parseNDigits(token.length, string);
-            // 1st, 2nd, 3rd, 4th
-
-            case 'Qo':
-              return match.ordinalNumber(string, {
-                unit: 'quarter'
-              });
-            // Q1, Q2, Q3, Q4
-
-            case 'QQQ':
-              return match.quarter(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.quarter(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // 1, 2, 3, 4 (narrow quarter; could be not numerical)
-
-            case 'QQQQQ':
-              return match.quarter(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // 1st quarter, 2nd quarter, ...
-
-            case 'QQQQ':
-            default:
-              return match.quarter(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.quarter(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.quarter(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 4;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMonth((value - 1) * 3, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Stand-alone quarter
-      q: {
-        priority: 120,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            // 1, 2, 3, 4
-            case 'q':
-            case 'qq':
-              // 01, 02, 03, 04
-              return parseNDigits(token.length, string);
-            // 1st, 2nd, 3rd, 4th
-
-            case 'qo':
-              return match.ordinalNumber(string, {
-                unit: 'quarter'
-              });
-            // Q1, Q2, Q3, Q4
-
-            case 'qqq':
-              return match.quarter(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.quarter(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // 1, 2, 3, 4 (narrow quarter; could be not numerical)
-
-            case 'qqqqq':
-              return match.quarter(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // 1st quarter, 2nd quarter, ...
-
-            case 'qqqq':
-            default:
-              return match.quarter(string, {
-                width: 'wide',
-                context: 'standalone'
-              }) || match.quarter(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.quarter(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 4;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMonth((value - 1) * 3, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'Q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Month
-      M: {
-        priority: 110,
-        parse: function (string, token, match, _options) {
-          var valueCallback = function (value) {
-            return value - 1;
-          };
-
-          switch (token) {
-            // 1, 2, ..., 12
-            case 'M':
-              return parseNumericPattern(numericPatterns.month, string, valueCallback);
-            // 01, 02, ..., 12
-
-            case 'MM':
-              return parseNDigits(2, string, valueCallback);
-            // 1st, 2nd, ..., 12th
-
-            case 'Mo':
-              return match.ordinalNumber(string, {
-                unit: 'month',
-                valueCallback: valueCallback
-              });
-            // Jan, Feb, ..., Dec
-
-            case 'MMM':
-              return match.month(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.month(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // J, F, ..., D
-
-            case 'MMMMM':
-              return match.month(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // January, February, ..., December
-
-            case 'MMMM':
-            default:
-              return match.month(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.month(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.month(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 11;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMonth(value, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'q', 'Q', 'L', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Stand-alone month
-      L: {
-        priority: 110,
-        parse: function (string, token, match, _options) {
-          var valueCallback = function (value) {
-            return value - 1;
-          };
-
-          switch (token) {
-            // 1, 2, ..., 12
-            case 'L':
-              return parseNumericPattern(numericPatterns.month, string, valueCallback);
-            // 01, 02, ..., 12
-
-            case 'LL':
-              return parseNDigits(2, string, valueCallback);
-            // 1st, 2nd, ..., 12th
-
-            case 'Lo':
-              return match.ordinalNumber(string, {
-                unit: 'month',
-                valueCallback: valueCallback
-              });
-            // Jan, Feb, ..., Dec
-
-            case 'LLL':
-              return match.month(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.month(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // J, F, ..., D
-
-            case 'LLLLL':
-              return match.month(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // January, February, ..., December
-
-            case 'LLLL':
-            default:
-              return match.month(string, {
-                width: 'wide',
-                context: 'standalone'
-              }) || match.month(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.month(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 11;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMonth(value, 1);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'q', 'Q', 'M', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Local week of year
-      w: {
-        priority: 100,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'w':
-              return parseNumericPattern(numericPatterns.week, string);
-
-            case 'wo':
-              return match.ordinalNumber(string, {
-                unit: 'week'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 53;
-        },
-        set: function (date, _flags, value, options) {
-          return startOfUTCWeek(setUTCWeek(date, value, options), options);
-        },
-        incompatibleTokens: ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']
-      },
-      // ISO week of year
-      I: {
-        priority: 100,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'I':
-              return parseNumericPattern(numericPatterns.week, string);
-
-            case 'Io':
-              return match.ordinalNumber(string, {
-                unit: 'week'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 53;
-        },
-        set: function (date, _flags, value, options) {
-          return startOfUTCISOWeek(setUTCISOWeek(date, value, options), options);
-        },
-        incompatibleTokens: ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']
-      },
-      // Day of the month
-      d: {
-        priority: 90,
-        subPriority: 1,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'd':
-              return parseNumericPattern(numericPatterns.date, string);
-
-            case 'do':
-              return match.ordinalNumber(string, {
-                unit: 'date'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (date, value, _options) {
-          var year = date.getUTCFullYear();
-          var isLeapYear = isLeapYearIndex(year);
-          var month = date.getUTCMonth();
-
-          if (isLeapYear) {
-            return value >= 1 && value <= DAYS_IN_MONTH_LEAP_YEAR[month];
-          } else {
-            return value >= 1 && value <= DAYS_IN_MONTH[month];
-          }
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCDate(value);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'q', 'Q', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Day of year
-      D: {
-        priority: 90,
-        subPriority: 1,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'D':
-            case 'DD':
-              return parseNumericPattern(numericPatterns.dayOfYear, string);
-
-            case 'Do':
-              return match.ordinalNumber(string, {
-                unit: 'date'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (date, value, _options) {
-          var year = date.getUTCFullYear();
-          var isLeapYear = isLeapYearIndex(year);
-
-          if (isLeapYear) {
-            return value >= 1 && value <= 366;
-          } else {
-            return value >= 1 && value <= 365;
-          }
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMonth(0, value);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['Y', 'R', 'q', 'Q', 'M', 'L', 'w', 'I', 'd', 'E', 'i', 'e', 'c', 't', 'T']
-      },
-      // Day of week
-      E: {
-        priority: 90,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            // Tue
-            case 'E':
-            case 'EE':
-            case 'EEE':
-              return match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // T
-
-            case 'EEEEE':
-              return match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // Tu
-
-            case 'EEEEEE':
-              return match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // Tuesday
-
-            case 'EEEE':
-            default:
-              return match.day(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 6;
-        },
-        set: function (date, _flags, value, options) {
-          date = setUTCDay(date, value, options);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['D', 'i', 'e', 'c', 't', 'T']
-      },
-      // Local day of week
-      e: {
-        priority: 90,
-        parse: function (string, token, match, options) {
-          var valueCallback = function (value) {
-            var wholeWeekDays = Math.floor((value - 1) / 7) * 7;
-            return (value + options.weekStartsOn + 6) % 7 + wholeWeekDays;
-          };
-
-          switch (token) {
-            // 3
-            case 'e':
-            case 'ee':
-              // 03
-              return parseNDigits(token.length, string, valueCallback);
-            // 3rd
-
-            case 'eo':
-              return match.ordinalNumber(string, {
-                unit: 'day',
-                valueCallback: valueCallback
-              });
-            // Tue
-
-            case 'eee':
-              return match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // T
-
-            case 'eeeee':
-              return match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // Tu
-
-            case 'eeeeee':
-              return match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-            // Tuesday
-
-            case 'eeee':
-            default:
-              return match.day(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 6;
-        },
-        set: function (date, _flags, value, options) {
-          date = setUTCDay(date, value, options);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'c', 't', 'T']
-      },
-      // Stand-alone local day of week
-      c: {
-        priority: 90,
-        parse: function (string, token, match, options) {
-          var valueCallback = function (value) {
-            var wholeWeekDays = Math.floor((value - 1) / 7) * 7;
-            return (value + options.weekStartsOn + 6) % 7 + wholeWeekDays;
-          };
-
-          switch (token) {
-            // 3
-            case 'c':
-            case 'cc':
-              // 03
-              return parseNDigits(token.length, string, valueCallback);
-            // 3rd
-
-            case 'co':
-              return match.ordinalNumber(string, {
-                unit: 'day',
-                valueCallback: valueCallback
-              });
-            // Tue
-
-            case 'ccc':
-              return match.day(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // T
-
-            case 'ccccc':
-              return match.day(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // Tu
-
-            case 'cccccc':
-              return match.day(string, {
-                width: 'short',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-            // Tuesday
-
-            case 'cccc':
-            default:
-              return match.day(string, {
-                width: 'wide',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'abbreviated',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'short',
-                context: 'standalone'
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'standalone'
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 6;
-        },
-        set: function (date, _flags, value, options) {
-          date = setUTCDay(date, value, options);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'e', 't', 'T']
-      },
-      // ISO day of week
-      i: {
-        priority: 90,
-        parse: function (string, token, match, _options) {
-          var valueCallback = function (value) {
-            if (value === 0) {
-              return 7;
-            }
-
-            return value;
-          };
-
-          switch (token) {
-            // 2
-            case 'i':
-            case 'ii':
-              // 02
-              return parseNDigits(token.length, string);
-            // 2nd
-
-            case 'io':
-              return match.ordinalNumber(string, {
-                unit: 'day'
-              });
-            // Tue
-
-            case 'iii':
-              return match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting',
-                valueCallback: valueCallback
-              });
-            // T
-
-            case 'iiiii':
-              return match.day(string, {
-                width: 'narrow',
-                context: 'formatting',
-                valueCallback: valueCallback
-              });
-            // Tu
-
-            case 'iiiiii':
-              return match.day(string, {
-                width: 'short',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting',
-                valueCallback: valueCallback
-              });
-            // Tuesday
-
-            case 'iiii':
-            default:
-              return match.day(string, {
-                width: 'wide',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'abbreviated',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'short',
-                context: 'formatting',
-                valueCallback: valueCallback
-              }) || match.day(string, {
-                width: 'narrow',
-                context: 'formatting',
-                valueCallback: valueCallback
-              });
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 7;
-        },
-        set: function (date, _flags, value, options) {
-          date = setUTCISODay(date, value, options);
-          date.setUTCHours(0, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'E', 'e', 'c', 't', 'T']
-      },
-      // AM or PM
-      a: {
-        priority: 80,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'a':
-            case 'aa':
-            case 'aaa':
-              return match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'aaaaa':
-              return match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'aaaa':
-            default:
-              return match.dayPeriod(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['b', 'B', 'H', 'k', 't', 'T']
-      },
-      // AM, PM, midnight
-      b: {
-        priority: 80,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'b':
-            case 'bb':
-            case 'bbb':
-              return match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'bbbbb':
-              return match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'bbbb':
-            default:
-              return match.dayPeriod(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['a', 'B', 'H', 'k', 't', 'T']
-      },
-      // in the morning, in the afternoon, in the evening, at night
-      B: {
-        priority: 80,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'B':
-            case 'BB':
-            case 'BBB':
-              return match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'BBBBB':
-              return match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-
-            case 'BBBB':
-            default:
-              return match.dayPeriod(string, {
-                width: 'wide',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'abbreviated',
-                context: 'formatting'
-              }) || match.dayPeriod(string, {
-                width: 'narrow',
-                context: 'formatting'
-              });
-          }
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCHours(dayPeriodEnumToHours(value), 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['a', 'b', 't', 'T']
-      },
-      // Hour [1-12]
-      h: {
-        priority: 70,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'h':
-              return parseNumericPattern(numericPatterns.hour12h, string);
-
-            case 'ho':
-              return match.ordinalNumber(string, {
-                unit: 'hour'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 12;
-        },
-        set: function (date, _flags, value, _options) {
-          var isPM = date.getUTCHours() >= 12;
-
-          if (isPM && value < 12) {
-            date.setUTCHours(value + 12, 0, 0, 0);
-          } else if (!isPM && value === 12) {
-            date.setUTCHours(0, 0, 0, 0);
-          } else {
-            date.setUTCHours(value, 0, 0, 0);
-          }
-
-          return date;
-        },
-        incompatibleTokens: ['H', 'K', 'k', 't', 'T']
-      },
-      // Hour [0-23]
-      H: {
-        priority: 70,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'H':
-              return parseNumericPattern(numericPatterns.hour23h, string);
-
-            case 'Ho':
-              return match.ordinalNumber(string, {
-                unit: 'hour'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 23;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCHours(value, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['a', 'b', 'h', 'K', 'k', 't', 'T']
-      },
-      // Hour [0-11]
-      K: {
-        priority: 70,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'K':
-              return parseNumericPattern(numericPatterns.hour11h, string);
-
-            case 'Ko':
-              return match.ordinalNumber(string, {
-                unit: 'hour'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 11;
-        },
-        set: function (date, _flags, value, _options) {
-          var isPM = date.getUTCHours() >= 12;
-
-          if (isPM && value < 12) {
-            date.setUTCHours(value + 12, 0, 0, 0);
-          } else {
-            date.setUTCHours(value, 0, 0, 0);
-          }
-
-          return date;
-        },
-        incompatibleTokens: ['h', 'H', 'k', 't', 'T']
-      },
-      // Hour [1-24]
-      k: {
-        priority: 70,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'k':
-              return parseNumericPattern(numericPatterns.hour24h, string);
-
-            case 'ko':
-              return match.ordinalNumber(string, {
-                unit: 'hour'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 1 && value <= 24;
-        },
-        set: function (date, _flags, value, _options) {
-          var hours = value <= 24 ? value % 24 : value;
-          date.setUTCHours(hours, 0, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['a', 'b', 'h', 'H', 'K', 't', 'T']
-      },
-      // Minute
-      m: {
-        priority: 60,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 'm':
-              return parseNumericPattern(numericPatterns.minute, string);
-
-            case 'mo':
-              return match.ordinalNumber(string, {
-                unit: 'minute'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 59;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMinutes(value, 0, 0);
-          return date;
-        },
-        incompatibleTokens: ['t', 'T']
-      },
-      // Second
-      s: {
-        priority: 50,
-        parse: function (string, token, match, _options) {
-          switch (token) {
-            case 's':
-              return parseNumericPattern(numericPatterns.second, string);
-
-            case 'so':
-              return match.ordinalNumber(string, {
-                unit: 'second'
-              });
-
-            default:
-              return parseNDigits(token.length, string);
-          }
-        },
-        validate: function (_date, value, _options) {
-          return value >= 0 && value <= 59;
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCSeconds(value, 0);
-          return date;
-        },
-        incompatibleTokens: ['t', 'T']
-      },
-      // Fraction of second
-      S: {
-        priority: 30,
-        parse: function (string, token, _match, _options) {
-          var valueCallback = function (value) {
-            return Math.floor(value * Math.pow(10, -token.length + 3));
-          };
-
-          return parseNDigits(token.length, string, valueCallback);
-        },
-        set: function (date, _flags, value, _options) {
-          date.setUTCMilliseconds(value);
-          return date;
-        },
-        incompatibleTokens: ['t', 'T']
-      },
-      // Timezone (ISO-8601. +00:00 is `'Z'`)
-      X: {
-        priority: 10,
-        parse: function (string, token, _match, _options) {
-          switch (token) {
-            case 'X':
-              return parseTimezonePattern(timezonePatterns.basicOptionalMinutes, string);
-
-            case 'XX':
-              return parseTimezonePattern(timezonePatterns.basic, string);
-
-            case 'XXXX':
-              return parseTimezonePattern(timezonePatterns.basicOptionalSeconds, string);
-
-            case 'XXXXX':
-              return parseTimezonePattern(timezonePatterns.extendedOptionalSeconds, string);
-
-            case 'XXX':
-            default:
-              return parseTimezonePattern(timezonePatterns.extended, string);
-          }
-        },
-        set: function (date, flags, value, _options) {
-          if (flags.timestampIsSet) {
-            return date;
-          }
-
-          return new Date(date.getTime() - value);
-        },
-        incompatibleTokens: ['t', 'T', 'x']
-      },
-      // Timezone (ISO-8601)
-      x: {
-        priority: 10,
-        parse: function (string, token, _match, _options) {
-          switch (token) {
-            case 'x':
-              return parseTimezonePattern(timezonePatterns.basicOptionalMinutes, string);
-
-            case 'xx':
-              return parseTimezonePattern(timezonePatterns.basic, string);
-
-            case 'xxxx':
-              return parseTimezonePattern(timezonePatterns.basicOptionalSeconds, string);
-
-            case 'xxxxx':
-              return parseTimezonePattern(timezonePatterns.extendedOptionalSeconds, string);
-
-            case 'xxx':
-            default:
-              return parseTimezonePattern(timezonePatterns.extended, string);
-          }
-        },
-        set: function (date, flags, value, _options) {
-          if (flags.timestampIsSet) {
-            return date;
-          }
-
-          return new Date(date.getTime() - value);
-        },
-        incompatibleTokens: ['t', 'T', 'X']
-      },
-      // Seconds timestamp
-      t: {
-        priority: 40,
-        parse: function (string, _token, _match, _options) {
-          return parseAnyDigitsSigned(string);
-        },
-        set: function (_date, _flags, value, _options) {
-          return [new Date(value * 1000), {
-            timestampIsSet: true
-          }];
-        },
-        incompatibleTokens: '*'
-      },
-      // Milliseconds timestamp
-      T: {
-        priority: 20,
-        parse: function (string, _token, _match, _options) {
-          return parseAnyDigitsSigned(string);
-        },
-        set: function (_date, _flags, value, _options) {
-          return [new Date(value), {
-            timestampIsSet: true
-          }];
-        },
-        incompatibleTokens: '*'
-      }
+      G: new EraParser(),
+      y: new YearParser(),
+      Y: new LocalWeekYearParser(),
+      R: new ISOWeekYearParser(),
+      u: new ExtendedYearParser(),
+      Q: new QuarterParser(),
+      q: new StandAloneQuarterParser(),
+      M: new MonthParser(),
+      L: new StandAloneMonthParser(),
+      w: new LocalWeekParser(),
+      I: new ISOWeekParser(),
+      d: new DateParser(),
+      D: new DayOfYearParser(),
+      E: new DayParser(),
+      e: new LocalDayParser(),
+      c: new StandAloneLocalDayParser(),
+      i: new ISODayParser(),
+      a: new AMPMParser(),
+      b: new AMPMMidnightParser(),
+      B: new DayPeriodParser(),
+      h: new Hour1to12Parser(),
+      H: new Hour0to23Parser(),
+      K: new Hour0To11Parser(),
+      k: new Hour1To24Parser(),
+      m: new MinuteParser(),
+      s: new SecondParser(),
+      S: new FractionOfSecondParser(),
+      X: new ISOTimezoneWithZParser(),
+      x: new ISOTimezoneParser(),
+      t: new TimestampSecondsParser(),
+      T: new TimestampMillisecondsParser()
     };
-    var parsers$1 = parsers;
 
-    var TIMEZONE_UNIT_PRIORITY = 10; // This RegExp consists of three parts separated by `|`:
     // - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
     //   (one of the certain letters followed by `o`)
     // - (\w)\1* matches any sequences of the same letter
@@ -10476,7 +11045,7 @@
      * Return the date parsed from string using the given format string.
      *
      * > ⚠️ Please note that the `format` tokens differ from Moment.js and other libraries.
-     * > See: https://git.io/fxCyr
+     * > See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * The characters in the format string wrapped between two single quotes characters (') are escaped.
      * Two single quotes in a row, whether inside or outside a quoted sequence, represent a 'real' single quote.
@@ -10699,10 +11268,10 @@
      *    - `p`: long localized time
      *
      * 6. `YY` and `YYYY` tokens represent week-numbering years but they are often confused with years.
-     *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://git.io/fxCyr
+     *    You should enable `options.useAdditionalWeekYearTokens` to use them. See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * 7. `D` and `DD` tokens represent days of the year but they are ofthen confused with days of the month.
-     *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://git.io/fxCyr
+     *    You should enable `options.useAdditionalDayOfYearTokens` to use them. See: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      *
      * 8. `P+` tokens do not have a defined priority since they are merely aliases to other tokens based
      *    on the given locale.
@@ -10733,23 +11302,6 @@
      * Invalid Date is a Date, whose time value is NaN.
      * Time value of Date: http://es5.github.io/#x15.9.1.1
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
-     * - Old `parse` was renamed to `toDate`.
-     *   Now `parse` is a new function which parses a string using a provided format.
-     *
-     *   ```javascript
-     *   // Before v2.0.0
-     *   parse('2016-01-01')
-     *
-     *   // v2.0.0 onward (toDate no longer accepts a string)
-     *   toDate(1392098430000) // Unix to timestamp
-     *   toDate(new Date(2014, 1, 11, 11, 30, 30)) // Cloning the date
-     *   parse('2016-01-01', 'yyyy-MM-dd', new Date())
-     *   ```
-     *
      * @param {String} dateString - the string to parse
      * @param {String} formatString - the string of tokens
      * @param {Date|Number} referenceDate - defines values missing from the parsed dateString
@@ -10758,18 +11310,18 @@
      * @param {0|1|2|3|4|5|6} [options.weekStartsOn=0] - the index of the first day of the week (0 - Sunday)
      * @param {1|2|3|4|5|6|7} [options.firstWeekContainsDate=1] - the day of January, which is always in the first week of the year
      * @param {Boolean} [options.useAdditionalWeekYearTokens=false] - if true, allows usage of the week-numbering year tokens `YY` and `YYYY`;
-     *   see: https://git.io/fxCyr
+     *   see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @param {Boolean} [options.useAdditionalDayOfYearTokens=false] - if true, allows usage of the day of year tokens `D` and `DD`;
-     *   see: https://git.io/fxCyr
+     *   see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @returns {Date} the parsed date
      * @throws {TypeError} 3 arguments required
      * @throws {RangeError} `options.weekStartsOn` must be between 0 and 6
      * @throws {RangeError} `options.firstWeekContainsDate` must be between 1 and 7
      * @throws {RangeError} `options.locale` must contain `match` property
-     * @throws {RangeError} use `yyyy` instead of `YYYY` for formatting years using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `yy` instead of `YY` for formatting years using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `d` instead of `D` for formatting days of the month using [format provided] to the input [input provided]; see: https://git.io/fxCyr
-     * @throws {RangeError} use `dd` instead of `DD` for formatting days of the month using [format provided] to the input [input provided]; see: https://git.io/fxCyr
+     * @throws {RangeError} use `yyyy` instead of `YYYY` for formatting years using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `yy` instead of `YY` for formatting years using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `d` instead of `D` for formatting days of the month using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+     * @throws {RangeError} use `dd` instead of `DD` for formatting days of the month using [format provided] to the input [input provided]; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
      * @throws {RangeError} format string contains an unescaped latin alphabet character
      *
      * @example
@@ -10786,28 +11338,26 @@
      * //=> Sun Feb 28 2010 00:00:00
      */
 
-    function parse$2(dirtyDateString, dirtyFormatString, dirtyReferenceDate, dirtyOptions) {
+    function parse$2(dirtyDateString, dirtyFormatString, dirtyReferenceDate, options) {
+      var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
+
       requiredArgs(3, arguments);
       var dateString = String(dirtyDateString);
       var formatString = String(dirtyFormatString);
-      var options = dirtyOptions || {};
-      var locale = options.locale || defaultLocale;
+      var defaultOptions = getDefaultOptions();
+      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : defaultLocale;
 
       if (!locale.match) {
         throw new RangeError('locale must contain match property');
       }
 
-      var localeFirstWeekContainsDate = locale.options && locale.options.firstWeekContainsDate;
-      var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : toInteger$1(localeFirstWeekContainsDate);
-      var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : toInteger$1(options.firstWeekContainsDate); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
+      var firstWeekContainsDate = toInteger$1((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
 
-      var localeWeekStartsOn = locale.options && locale.options.weekStartsOn;
-      var defaultWeekStartsOn = localeWeekStartsOn == null ? 0 : toInteger$1(localeWeekStartsOn);
-      var weekStartsOn = options.weekStartsOn == null ? defaultWeekStartsOn : toInteger$1(options.weekStartsOn); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
+      var weekStartsOn = toInteger$1((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
@@ -10827,79 +11377,60 @@
         locale: locale
       }; // If timezone isn't specified, it will be set to the system timezone
 
-      var setters = [{
-        priority: TIMEZONE_UNIT_PRIORITY,
-        subPriority: -1,
-        set: dateToSystemTimezone,
-        index: 0
-      }];
-      var i;
+      var setters = [new DateToSystemTimezoneSetter()];
       var tokens = formatString.match(longFormattingTokensRegExp).map(function (substring) {
         var firstCharacter = substring[0];
 
-        if (firstCharacter === 'p' || firstCharacter === 'P') {
+        if (firstCharacter in longFormatters$1) {
           var longFormatter = longFormatters$1[firstCharacter];
-          return longFormatter(substring, locale.formatLong, subFnOptions);
+          return longFormatter(substring, locale.formatLong);
         }
 
         return substring;
       }).join('').match(formattingTokensRegExp);
       var usedTokens = [];
 
-      for (i = 0; i < tokens.length; i++) {
-        var token = tokens[i];
-
-        if (!options.useAdditionalWeekYearTokens && isProtectedWeekYearToken(token)) {
-          throwProtectedError(token, formatString, dirtyDateString);
+      var _loop = function (_token) {
+        if (!(options !== null && options !== void 0 && options.useAdditionalWeekYearTokens) && isProtectedWeekYearToken(_token)) {
+          throwProtectedError(_token, formatString, dirtyDateString);
         }
 
-        if (!options.useAdditionalDayOfYearTokens && isProtectedDayOfYearToken(token)) {
-          throwProtectedError(token, formatString, dirtyDateString);
+        if (!(options !== null && options !== void 0 && options.useAdditionalDayOfYearTokens) && isProtectedDayOfYearToken(_token)) {
+          throwProtectedError(_token, formatString, dirtyDateString);
         }
 
-        var firstCharacter = token[0];
-        var parser = parsers$1[firstCharacter];
+        var firstCharacter = _token[0];
+        var parser = parsers[firstCharacter];
 
         if (parser) {
           var incompatibleTokens = parser.incompatibleTokens;
 
           if (Array.isArray(incompatibleTokens)) {
-            var incompatibleToken = void 0;
-
-            for (var _i = 0; _i < usedTokens.length; _i++) {
-              var usedToken = usedTokens[_i].token;
-
-              if (incompatibleTokens.indexOf(usedToken) !== -1 || usedToken === firstCharacter) {
-                incompatibleToken = usedTokens[_i];
-                break;
-              }
-            }
+            var incompatibleToken = usedTokens.find(function (usedToken) {
+              return incompatibleTokens.includes(usedToken.token) || usedToken.token === firstCharacter;
+            });
 
             if (incompatibleToken) {
-              throw new RangeError("The format string mustn't contain `".concat(incompatibleToken.fullToken, "` and `").concat(token, "` at the same time"));
+              throw new RangeError("The format string mustn't contain `".concat(incompatibleToken.fullToken, "` and `").concat(_token, "` at the same time"));
             }
-          } else if (parser.incompatibleTokens === '*' && usedTokens.length) {
-            throw new RangeError("The format string mustn't contain `".concat(token, "` and any other token at the same time"));
+          } else if (parser.incompatibleTokens === '*' && usedTokens.length > 0) {
+            throw new RangeError("The format string mustn't contain `".concat(_token, "` and any other token at the same time"));
           }
 
           usedTokens.push({
             token: firstCharacter,
-            fullToken: token
+            fullToken: _token
           });
-          var parseResult = parser.parse(dateString, token, locale.match, subFnOptions);
+          var parseResult = parser.run(dateString, _token, locale.match, subFnOptions);
 
           if (!parseResult) {
-            return new Date(NaN);
+            token = _token;
+            return {
+              v: new Date(NaN)
+            };
           }
 
-          setters.push({
-            priority: parser.priority,
-            subPriority: parser.subPriority || 0,
-            set: parser.set,
-            validate: parser.validate,
-            value: parseResult.value,
-            index: setters.length
-          });
+          setters.push(parseResult.setter);
           dateString = parseResult.rest;
         } else {
           if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
@@ -10907,19 +11438,30 @@
           } // Replace two single quote characters with one single quote character
 
 
-          if (token === "''") {
-            token = "'";
+          if (_token === "''") {
+            _token = "'";
           } else if (firstCharacter === "'") {
-            token = cleanEscapedString(token);
+            _token = cleanEscapedString(_token);
           } // Cut token from string, or, if string doesn't match the token, return Invalid Date
 
 
-          if (dateString.indexOf(token) === 0) {
-            dateString = dateString.slice(token.length);
+          if (dateString.indexOf(_token) === 0) {
+            dateString = dateString.slice(_token.length);
           } else {
-            return new Date(NaN);
+            token = _token;
+            return {
+              v: new Date(NaN)
+            };
           }
         }
+
+        token = _token;
+      };
+
+      for (var token of tokens) {
+        var _ret = _loop(token);
+
+        if (typeof _ret === "object") return _ret.v;
       } // Check if the remaining input contains something other than whitespace
 
 
@@ -10944,26 +11486,22 @@
       });
       var date = toDate(dirtyReferenceDate);
 
-      if (isNaN(date)) {
+      if (isNaN(date.getTime())) {
         return new Date(NaN);
       } // Convert the date in system timezone to the same date in UTC+00:00 timezone.
-      // This ensures that when UTC functions will be implemented, locales will be compatible with them.
-      // See an issue about UTC functions: https://github.com/date-fns/date-fns/issues/37
 
 
       var utcDate = subMilliseconds(date, getTimezoneOffsetInMilliseconds(date));
       var flags = {};
 
-      for (i = 0; i < uniquePrioritySetters.length; i++) {
-        var setter = uniquePrioritySetters[i];
-
-        if (setter.validate && !setter.validate(utcDate, setter.value, subFnOptions)) {
+      for (var setter of uniquePrioritySetters) {
+        if (!setter.validate(utcDate, subFnOptions)) {
           return new Date(NaN);
         }
 
-        var result = setter.set(utcDate, flags, setter.value, subFnOptions); // Result is tuple (date, flags)
+        var result = setter.set(utcDate, flags, subFnOptions); // Result is tuple (date, flags)
 
-        if (result[0]) {
+        if (Array.isArray(result)) {
           utcDate = result[0];
           assign(flags, result[1]); // Result is date
         } else {
@@ -10974,19 +11512,33 @@
       return utcDate;
     }
 
-    function dateToSystemTimezone(date, flags) {
-      if (flags.timestampIsSet) {
-        return date;
-      }
-
-      var convertedDate = new Date(0);
-      convertedDate.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-      convertedDate.setHours(date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
-      return convertedDate;
-    }
-
     function cleanEscapedString(input) {
       return input.match(escapedStringRegExp)[1].replace(doubleQuoteRegExp, "'");
+    }
+
+    /**
+     * @name subDays
+     * @category Day Helpers
+     * @summary Subtract the specified number of days from the given date.
+     *
+     * @description
+     * Subtract the specified number of days from the given date.
+     *
+     * @param {Date|Number} date - the date to be changed
+     * @param {Number} amount - the amount of days to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+     * @returns {Date} the new date with the days subtracted
+     * @throws {TypeError} 2 arguments required
+     *
+     * @example
+     * // Subtract 10 days from 1 September 2014:
+     * const result = subDays(new Date(2014, 8, 1), 10)
+     * //=> Fri Aug 22 2014 00:00:00
+     */
+
+    function subDays(dirtyDate, dirtyAmount) {
+      requiredArgs(2, arguments);
+      var amount = toInteger$1(dirtyAmount);
+      return addDays(dirtyDate, -amount);
     }
 
     /**
@@ -11001,15 +11553,11 @@
      * > ⚠️ Please note that this function is not present in the FP submodule as
      * > it uses `Date.now()` internally hence impure and can't be safely curried.
      *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
-     *
      * @returns {Date} the start of today
      *
      * @example
      * // If today is 6 October 2014:
-     * var result = startOfToday()
+     * const result = startOfToday()
      * //=> Mon Oct 6 2014 00:00:00
      */
 
@@ -11028,10 +11576,6 @@
      *
      * > ⚠️ Please note that this function is not present in the FP submodule as
      * > it uses `new Date()` internally hence impure and can't be safely curried.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @returns {Date} the start of yesterday
      *
@@ -11052,16 +11596,99 @@
     }
 
     /**
+     * @name subMonths
+     * @category Month Helpers
+     * @summary Subtract the specified number of months from the given date.
+     *
+     * @description
+     * Subtract the specified number of months from the given date.
+     *
+     * @param {Date|Number} date - the date to be changed
+     * @param {Number} amount - the amount of months to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+     * @returns {Date} the new date with the months subtracted
+     * @throws {TypeError} 2 arguments required
+     *
+     * @example
+     * // Subtract 5 months from 1 February 2015:
+     * const result = subMonths(new Date(2015, 1, 1), 5)
+     * //=> Mon Sep 01 2014 00:00:00
+     */
+
+    function subMonths(dirtyDate, dirtyAmount) {
+      requiredArgs(2, arguments);
+      var amount = toInteger$1(dirtyAmount);
+      return addMonths(dirtyDate, -amount);
+    }
+
+    /**
+     * @name sub
+     * @category Common Helpers
+     * @summary Subtract the specified years, months, weeks, days, hours, minutes and seconds from the given date.
+     *
+     * @description
+     * Subtract the specified years, months, weeks, days, hours, minutes and seconds from the given date.
+     *
+     * @param {Date|Number} date - the date to be changed
+     * @param {Duration} duration - the object with years, months, weeks, days, hours, minutes and seconds to be subtracted
+     *
+     * | Key     | Description                        |
+     * |---------|------------------------------------|
+     * | years   | Amount of years to be subtracted   |
+     * | months  | Amount of months to be subtracted  |
+     * | weeks   | Amount of weeks to be subtracted   |
+     * | days    | Amount of days to be subtracted    |
+     * | hours   | Amount of hours to be subtracted   |
+     * | minutes | Amount of minutes to be subtracted |
+     * | seconds | Amount of seconds to be subtracted |
+     *
+     * All values default to 0
+     *
+     * @returns {Date} the new date with the seconds subtracted
+     * @throws {TypeError} 2 arguments required
+     *
+     * @example
+     * // Subtract the following duration from 15 June 2017 15:29:20
+     * const result = sub(new Date(2017, 5, 15, 15, 29, 20), {
+     *   years: 2,
+     *   months: 9,
+     *   weeks: 1,
+     *   days: 7,
+     *   hours: 5,
+     *   minutes: 9,
+     *   seconds: 30
+     * })
+     * //=> Mon Sep 1 2014 10:19:50
+     */
+
+    function sub(date, duration) {
+      requiredArgs(2, arguments);
+      if (!duration || typeof duration !== 'object') return new Date(NaN);
+      var years = duration.years ? toInteger$1(duration.years) : 0;
+      var months = duration.months ? toInteger$1(duration.months) : 0;
+      var weeks = duration.weeks ? toInteger$1(duration.weeks) : 0;
+      var days = duration.days ? toInteger$1(duration.days) : 0;
+      var hours = duration.hours ? toInteger$1(duration.hours) : 0;
+      var minutes = duration.minutes ? toInteger$1(duration.minutes) : 0;
+      var seconds = duration.seconds ? toInteger$1(duration.seconds) : 0; // Subtract years and months
+
+      var dateWithoutMonths = subMonths(date, months + years * 12); // Subtract weeks and days
+
+      var dateWithoutDays = subDays(dateWithoutMonths, days + weeks * 7); // Subtract hours, minutes and seconds
+
+      var minutestoSub = minutes + hours * 60;
+      var secondstoSub = seconds + minutestoSub * 60;
+      var mstoSub = secondstoSub * 1000;
+      var finalDate = new Date(dateWithoutDays.getTime() - mstoSub);
+      return finalDate;
+    }
+
+    /**
      * @name subWeeks
      * @category Week Helpers
      * @summary Subtract the specified number of weeks from the given date.
      *
      * @description
      * Subtract the specified number of weeks from the given date.
-     *
-     * ### v2.0.0 breaking changes:
-     *
-     * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
      *
      * @param {Date|Number} date - the date to be changed
      * @param {Number} amount - the amount of weeks to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
@@ -11079,6 +11706,20 @@
       var amount = toInteger$1(dirtyAmount);
       return addWeeks(dirtyDate, -amount);
     }
+
+    var defineProperty$4 = objectDefineProperty$1.f; // `Object.defineProperty` method
+    // https://tc39.es/ecma262/#sec-object.defineproperty
+    // eslint-disable-next-line es-x/no-object-defineproperty -- safe
+
+
+    _export$1({
+      target: 'Object',
+      stat: true,
+      forced: Object.defineProperty !== defineProperty$4,
+      sham: !descriptors$1
+    }, {
+      defineProperty: defineProperty$4
+    });
 
     var floor$1 = Math.floor;
     var charAt$2 = functionUncurryThis(''.charAt);
@@ -11258,34 +11899,32 @@
 
 
 
-
-
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.getLocale = getLocale;
     exports.getCanonicalLocale = getCanonicalLocale;
+    exports.getDayNames = getDayNames;
+    exports.getDayNamesMin = getDayNamesMin;
+    exports.getDayNamesShort = getDayNamesShort;
+    exports.getFirstDay = getFirstDay;
     exports.getLanguage = getLanguage;
+    exports.getLocale = getLocale;
+    exports.getMonthNames = getMonthNames;
+    exports.getMonthNamesShort = getMonthNamesShort;
     exports.translate = translate;
     exports.translatePlural = translatePlural;
-    exports.getFirstDay = getFirstDay;
-    exports.getDayNames = getDayNames;
-    exports.getDayNamesShort = getDayNamesShort;
-    exports.getDayNamesMin = getDayNamesMin;
-    exports.getMonthNames = getMonthNames;
-    exports.getMonthNamesShort = getMonthNamesShort; /// <reference types="@nextcloud/typings" />
+
+
+
+     /// <reference types="@nextcloud/typings" />
 
     /**
      * Returns the user's locale
      */
 
-    function getLocale() {
-      if (typeof OC === 'undefined') {
-        console.warn('No OC found');
-        return 'en';
-      }
 
-      return OC.getLocale();
+    function getLocale() {
+      return document.documentElement.dataset.locale || 'en';
     }
 
     function getCanonicalLocale() {
@@ -11297,12 +11936,7 @@
 
 
     function getLanguage() {
-      if (typeof OC === 'undefined') {
-        console.warn('No OC found');
-        return 'en';
-      }
-
-      return OC.getLanguage();
+      return document.documentElement.lang || 'en';
     }
     /**
      * Translate a string
@@ -11438,17 +12072,17 @@
     });
 
     unwrapExports(dist$2);
-    var dist_1 = dist$2.getLocale;
     dist$2.getCanonicalLocale;
-    dist$2.getLanguage;
-    var dist_4$1 = dist$2.translate;
-    dist$2.translatePlural;
-    var dist_6 = dist$2.getFirstDay;
     dist$2.getDayNames;
-    dist$2.getDayNamesShort;
     dist$2.getDayNamesMin;
+    dist$2.getDayNamesShort;
+    var dist_5$1 = dist$2.getFirstDay;
+    dist$2.getLanguage;
+    var dist_7 = dist$2.getLocale;
     dist$2.getMonthNames;
     dist$2.getMonthNamesShort;
+    var dist_10 = dist$2.translate;
+    dist$2.translatePlural;
 
     var un$Join = functionUncurryThis([].join);
     var ES3_STRINGS$1 = indexedObject$1 != Object;
@@ -11637,7 +12271,7 @@
       }
     };
 
-    var formatDistance$3 = function (token, count, options) {
+    var formatDistance$4 = function (token, count, options) {
       var result;
       var tokenValue = options !== null && options !== void 0 && options.addSuffix ? formatDistanceLocale$2[token].withPreposition : formatDistanceLocale$2[token].standalone;
 
@@ -11660,7 +12294,7 @@
       return result;
     };
 
-    var formatDistance$4 = formatDistance$3;
+    var formatDistance$5 = formatDistance$4;
 
     var dateFormats$2 = {
       full: 'EEEE, do MMMM y',
@@ -11709,11 +12343,11 @@
       other: 'P'
     };
 
-    var formatRelative$3 = function (token, _date, _baseDate, _options) {
+    var formatRelative$4 = function (token, _date, _baseDate, _options) {
       return formatRelativeLocale$2[token];
     };
 
-    var formatRelative$4 = formatRelative$3;
+    var formatRelative$5 = formatRelative$4;
 
     var eraValues$2 = {
       narrow: ['v.Chr.', 'n.Chr.'],
@@ -11962,9 +12596,9 @@
 
     var locale$2 = {
       code: 'de',
-      formatDistance: formatDistance$4,
+      formatDistance: formatDistance$5,
       formatLong: formatLong$5,
-      formatRelative: formatRelative$4,
+      formatRelative: formatRelative$5,
       localize: localize$5,
       match: match$6,
       options: {
@@ -12040,7 +12674,7 @@
       }
     };
 
-    var formatDistance$1 = function (token, count, options) {
+    var formatDistance$2 = function (token, count, options) {
       var result;
       var form = formatDistanceLocale$1[token];
 
@@ -12063,7 +12697,7 @@
       return result;
     };
 
-    var formatDistance$2 = formatDistance$1;
+    var formatDistance$3 = formatDistance$2;
 
     var dateFormats$1 = {
       full: 'EEEE d MMMM y',
@@ -12108,11 +12742,11 @@
       other: 'P'
     };
 
-    var formatRelative$1 = function (token, _date, _baseDate, _options) {
+    var formatRelative$2 = function (token, _date, _baseDate, _options) {
       return formatRelativeLocale$1[token];
     };
 
-    var formatRelative$2 = formatRelative$1;
+    var formatRelative$3 = formatRelative$2;
 
     var eraValues$1 = {
       narrow: ['av. J.-C', 'ap. J.-C'],
@@ -12321,9 +12955,9 @@
 
     var locale$1 = {
       code: 'fr',
-      formatDistance: formatDistance$2,
+      formatDistance: formatDistance$3,
       formatLong: formatLong$3,
-      formatRelative: formatRelative$2,
+      formatRelative: formatRelative$3,
       localize: localize$3,
       match: match$4,
       options: {
@@ -12398,20 +13032,21 @@
         other: 'quase {{count}} anos'
       }
     };
-    function formatDistance(token, count, options) {
-      options = options || {};
-      var result;
 
-      if (typeof formatDistanceLocale[token] === 'string') {
-        result = formatDistanceLocale[token];
+    var formatDistance = function (token, count, options) {
+      var result;
+      var tokenValue = formatDistanceLocale[token];
+
+      if (typeof tokenValue === 'string') {
+        result = tokenValue;
       } else if (count === 1) {
-        result = formatDistanceLocale[token].one;
+        result = tokenValue.one;
       } else {
-        result = formatDistanceLocale[token].other.replace('{{count}}', count);
+        result = tokenValue.other.replace('{{count}}', String(count));
       }
 
-      if (options.addSuffix) {
-        if (options.comparison > 0) {
+      if (options !== null && options !== void 0 && options.addSuffix) {
+        if (options.comparison && options.comparison > 0) {
           return 'daqui a ' + result;
         } else {
           return 'há ' + result;
@@ -12419,7 +13054,9 @@
       }
 
       return result;
-    }
+    };
+
+    var formatDistance$1 = formatDistance;
 
     var dateFormats = {
       full: "EEEE, d 'de' MMMM 'de' y",
@@ -12456,21 +13093,29 @@
     var formatLong$1 = formatLong;
 
     var formatRelativeLocale = {
-      lastWeek: "'na última' eeee 'às' p",
+      lastWeek: function (date) {
+        var weekday = date.getUTCDay();
+        var last = weekday === 0 || weekday === 6 ? 'último' : 'última';
+        return "'" + last + "' eeee 'às' p";
+      },
       yesterday: "'ontem às' p",
       today: "'hoje às' p",
       tomorrow: "'amanhã às' p",
       nextWeek: "eeee 'às' p",
       other: 'P'
     };
-    function formatRelative(token, _date, _baseDate, _options) {
-      return formatRelativeLocale[token];
-    }
 
-    function ordinalNumber(dirtyNumber) {
-      var number = Number(dirtyNumber);
-      return number + 'º';
-    }
+    var formatRelative = function (token, date, _baseDate, _options) {
+      var format = formatRelativeLocale[token];
+
+      if (typeof format === 'function') {
+        return format(date);
+      }
+
+      return format;
+    };
+
+    var formatRelative$1 = formatRelative;
 
     var eraValues = {
       narrow: ['aC', 'dC'],
@@ -12557,6 +13202,12 @@
         night: 'da madrugada'
       }
     };
+
+    var ordinalNumber = function (dirtyNumber, _options) {
+      var number = Number(dirtyNumber);
+      return number + 'º';
+    };
+
     var localize = {
       ordinalNumber: ordinalNumber,
       era: buildLocalizeFn({
@@ -12567,7 +13218,7 @@
         values: quarterValues,
         defaultWidth: 'wide',
         argumentCallback: function (quarter) {
-          return Number(quarter) - 1;
+          return quarter - 1;
         }
       }),
       month: buildLocalizeFn({
@@ -12697,9 +13348,9 @@
 
     var locale = {
       code: 'pt',
-      formatDistance: formatDistance,
+      formatDistance: formatDistance$1,
       formatLong: formatLong$1,
-      formatRelative: formatRelative,
+      formatRelative: formatRelative$1,
       localize: localize$1,
       match: match$2,
       options: {
@@ -12751,7 +13402,7 @@
               var partParts = part.split("=");
 
               if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-                queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty({}, partParts[0], partParts[1]));
+                queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty$x({}, partParts[0], partParts[1]));
               }
             });
             queryStringVariables[field] = value;
@@ -12770,14 +13421,14 @@
       }, {
         key: "getDateLocaleOptions",
         value: function getDateLocaleOptions() {
-          var shortLocale = dist_1().split("_")[0];
+          var shortLocale = dist_7().split("_")[0];
           var locales = {
             de: de,
             fr: fr,
             pt: pt
           };
           return {
-            weekStartsOn: dist_6(),
+            weekStartsOn: dist_5$1(),
             locale: locales[shortLocale]
           };
         }
@@ -12786,7 +13437,7 @@
       return Helpers;
     }();
 
-    function get_each_context$7(ctx, list, i) {
+    function get_each_context$8(ctx, list, i) {
       var child_ctx = ctx.slice();
       child_ctx[25] = list[i];
       child_ctx[27] = i;
@@ -12799,7 +13450,7 @@
       return {
         c: function c() {
           h2 = element("h2");
-          h2.textContent = "".concat(dist_4$1('timemanager', 'Statistics'));
+          h2.textContent = "".concat(dist_10('timemanager', 'Statistics'));
         },
         m: function m(target, anchor) {
           insert(target, h2, anchor);
@@ -12824,7 +13475,7 @@
       ctx[4]) + "";
       var t2;
       var t3;
-      var t4_value = dist_4$1('timemanager', 'hrs.') + "";
+      var t4_value = dist_10('timemanager', 'hrs.') + "";
       var t4;
       var t5;
       var figure1;
@@ -12837,14 +13488,14 @@
       ctx[5]) + "";
       var t8;
       var t9;
-      var t10_value = dist_4$1('timemanager', 'hrs.') + "";
+      var t10_value = dist_10('timemanager', 'hrs.') + "";
       var t10;
       return {
         c: function c() {
           div = element("div");
           figure0 = element("figure");
           figcaption0 = element("figcaption");
-          figcaption0.textContent = "".concat(dist_4$1('timemanager', 'Today'));
+          figcaption0.textContent = "".concat(dist_10('timemanager', 'Today'));
           t1 = space$1();
           t2 = text(t2_value);
           t3 = space$1();
@@ -12852,7 +13503,7 @@
           t5 = space$1();
           figure1 = element("figure");
           figcaption1 = element("figcaption");
-          figcaption1.textContent = "".concat(dist_4$1('timemanager', 'Week'));
+          figcaption1.textContent = "".concat(dist_10('timemanager', 'Week'));
           t7 = space$1();
           t8 = text(t8_value);
           t9 = space$1();
@@ -12908,7 +13559,7 @@
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
+        each_blocks[i] = create_each_block$8(get_each_context$8(ctx, each_value, i));
       }
 
       return {
@@ -12937,12 +13588,12 @@
             var _i3;
 
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-              var child_ctx = get_each_context$7(ctx, each_value, _i3);
+              var child_ctx = get_each_context$8(ctx, each_value, _i3);
 
               if (each_blocks[_i3]) {
                 each_blocks[_i3].p(child_ctx, dirty);
               } else {
-                each_blocks[_i3] = create_each_block$7(child_ctx);
+                each_blocks[_i3] = create_each_block$8(child_ctx);
 
                 each_blocks[_i3].c();
 
@@ -13057,7 +13708,7 @@
       ctx[25].stats.total + "";
       var t0;
       var t1;
-      var t2_value = dist_4$1('timemanager', 'hrs.') + "";
+      var t2_value = dist_10('timemanager', 'hrs.') + "";
       var t2;
       var t3;
       var div;
@@ -13112,7 +13763,7 @@
     } // (248:4) {#each points as point, index}
 
 
-    function create_each_block$7(ctx) {
+    function create_each_block$8(ctx) {
       var div;
       var t;
       var if_block =
@@ -13163,7 +13814,7 @@
       return {
         c: function c() {
           p = element("p");
-          p.textContent = "".concat(dist_4$1('timemanager', 'When you add entries for this week graphs will appear here.'));
+          p.textContent = "".concat(dist_10('timemanager', 'When you add entries for this week graphs will appear here.'));
           attr(p, "class", "empty");
         },
         m: function m(target, anchor) {
@@ -13182,7 +13833,7 @@
       var button0;
       var t1;
       var span1;
-      var t2_value = dist_4$1('timemanager', 'Week') + "";
+      var t2_value = dist_10('timemanager', 'Week') + "";
       var t2;
       var t3;
       var t4;
@@ -13218,12 +13869,12 @@
       var button1;
       var mounted;
       var dispose;
-      var if_block = show_if && create_if_block_1$6(ctx);
+      var if_block = show_if && create_if_block_1$7(ctx);
       return {
         c: function c() {
           nav = element("nav");
           button0 = element("button");
-          button0.textContent = "".concat(dist_4$1('timemanager', 'Previous week'));
+          button0.textContent = "".concat(dist_10('timemanager', 'Previous week'));
           t1 = space$1();
           span1 = element("span");
           t2 = text(t2_value);
@@ -13243,7 +13894,7 @@
           if (if_block) if_block.c();
           t12 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_4$1('timemanager', 'Next week'));
+          button1.textContent = "".concat(dist_10('timemanager', 'Next week'));
           attr(button0, "class", "previous");
           attr(span0, "class", "dates");
           attr(button1, "class", "next");
@@ -13315,7 +13966,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_1$6(ctx);
+              if_block = create_if_block_1$7(ctx);
               if_block.c();
               if_block.m(span2, t12);
             }
@@ -13334,14 +13985,14 @@
     } // (279:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
-    function create_if_block_1$6(ctx) {
+    function create_if_block_1$7(ctx) {
       var button;
       var mounted;
       var dispose;
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Current week'));
+          button.textContent = "".concat(dist_10('timemanager', 'Current week'));
           attr(button, "class", "current");
         },
         m: function m(target, anchor) {
@@ -13363,7 +14014,7 @@
       };
     }
 
-    function create_fragment$t(ctx) {
+    function create_fragment$s(ctx) {
       var t0;
       var div2;
       var t1;
@@ -13547,7 +14198,7 @@
 
     var dateFormat$1 = "yyyy-MM-dd";
 
-    function instance$s($$self, $$props, $$invalidate) {
+    function instance$r($$self, $$props, $$invalidate) {
       var loading;
       var scale;
       var points;
@@ -13795,7 +14446,7 @@
           }
 
           if (scale === "week") {
-            return "".concat(dist_4$1("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
+            return "".concat(dist_10("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
           }
 
           return format$2(date, "iii", localeOptions);
@@ -13881,7 +14532,7 @@
         _classCallCheck$1(this, Statistics);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$s, create_fragment$t, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$r, create_fragment$s, safe_not_equal, {
           statsApiUrl: 12,
           requestToken: 13,
           controls: 0,
@@ -13895,7 +14546,7 @@
       return _createClass$1(Statistics);
     }(SvelteComponent);
 
-    function create_fragment$s(ctx) {
+    function create_fragment$r(ctx) {
       var div0;
       var t;
       var div1;
@@ -13974,7 +14625,7 @@
       };
     }
 
-    function instance$r($$self, $$props, $$invalidate) {
+    function instance$q($$self, $$props, $$invalidate) {
       var _$$props$$$slots = $$props.$$slots,
           slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
           $$scope = $$props.$$scope;
@@ -14000,7 +14651,7 @@
         _classCallCheck$1(this, Overlay);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$r, create_fragment$s, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$q, create_fragment$r, safe_not_equal, {
           loading: 0
         });
         return _this;
@@ -14016,7 +14667,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -14045,14 +14696,14 @@
       };
     }
 
-    function create_fragment$r(ctx) {
+    function create_fragment$q(ctx) {
       var div1;
       var h3;
       var t0;
       var t1;
       var form;
       var label0;
-      var t2_value = dist_4$1('timemanager', 'Client name') + "";
+      var t2_value = dist_10('timemanager', 'Client name') + "";
       var t2;
       var t3;
       var br0;
@@ -14060,7 +14711,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = dist_4$1('timemanager', 'Note') + "";
+      var t6_value = dist_10('timemanager', 'Note') + "";
       var t6;
       var t7;
       var br1;
@@ -14115,7 +14766,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", dist_4$1('timemanager', 'Example Corp.'));
+          attr(input0, "placeholder", dist_10('timemanager', 'Example Corp.'));
           input0.required = true;
           attr(label0, "class", "space-top");
           set_style(textarea, "width", "100%");
@@ -14259,7 +14910,7 @@
       };
     }
 
-    function instance$q($$self, $$props, $$invalidate) {
+    function instance$p($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var isServer = $$props.isServer;
@@ -14312,7 +14963,7 @@
         _classCallCheck$1(this, ClientEditor);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$q, create_fragment$r, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
           action: 0,
           requestToken: 1,
           isServer: 2,
@@ -14472,7 +15123,7 @@
       };
     }
 
-    function create_fragment$q(ctx) {
+    function create_fragment$p(ctx) {
       var a;
       var span;
       var t0;
@@ -14568,7 +15219,7 @@
       };
     }
 
-    function instance$p($$self, $$props, $$invalidate) {
+    function instance$o($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -14686,7 +15337,7 @@
         _classCallCheck$1(this, ClientEditorDialog);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$p, create_fragment$q, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
           action: 0,
           editAction: 8,
           requestToken: 1,
@@ -14708,7 +15359,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -14737,14 +15388,14 @@
       };
     }
 
-    function create_fragment$p(ctx) {
+    function create_fragment$o(ctx) {
       var div1;
       var h3;
       var t0;
       var t1;
       var form;
       var label0;
-      var t2_value = dist_4$1('timemanager', 'Project name') + "";
+      var t2_value = dist_10('timemanager', 'Project name') + "";
       var t2;
       var t3;
       var br0;
@@ -14752,7 +15403,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = dist_4$1('timemanager', 'For client') + "";
+      var t6_value = dist_10('timemanager', 'For client') + "";
       var t6;
       var t7;
       var br1;
@@ -14815,7 +15466,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", dist_4$1('timemanager', 'A project name'));
+          attr(input0, "placeholder", dist_10('timemanager', 'A project name'));
           input0.required = true;
           attr(label0, "class", "space-top");
           attr(label1, "class", "space-top");
@@ -14951,7 +15602,7 @@
       };
     }
 
-    function instance$o($$self, $$props, $$invalidate) {
+    function instance$n($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -15000,7 +15651,7 @@
         _classCallCheck$1(this, ProjectEditor);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$o, create_fragment$p, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -15177,7 +15828,7 @@
       };
     }
 
-    function create_fragment$o(ctx) {
+    function create_fragment$n(ctx) {
       var a;
       var span;
       var t0;
@@ -15273,7 +15924,7 @@
       };
     }
 
-    function instance$n($$self, $$props, $$invalidate) {
+    function instance$m($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -15389,7 +16040,7 @@
         _classCallCheck$1(this, ProjectEditorDialog);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
           action: 0,
           editAction: 10,
           requestToken: 1,
@@ -15413,7 +16064,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -15442,14 +16093,14 @@
       };
     }
 
-    function create_fragment$n(ctx) {
+    function create_fragment$m(ctx) {
       var div1;
       var h3;
       var t0;
       var t1;
       var form;
       var label0;
-      var t2_value = dist_4$1('timemanager', 'Task name') + "";
+      var t2_value = dist_10('timemanager', 'Task name') + "";
       var t2;
       var t3;
       var br0;
@@ -15457,7 +16108,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = dist_4$1('timemanager', 'For project') + "";
+      var t6_value = dist_10('timemanager', 'For project') + "";
       var t6;
       var t7;
       var br1;
@@ -15466,7 +16117,7 @@
       var t9;
       var t10;
       var label2;
-      var t11_value = dist_4$1('timemanager', 'For client') + "";
+      var t11_value = dist_10('timemanager', 'For client') + "";
       var t11;
       var t12;
       var br2;
@@ -15539,7 +16190,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", dist_4$1('timemanager', 'A task name'));
+          attr(input0, "placeholder", dist_10('timemanager', 'A task name'));
           input0.required = true;
           attr(label0, "class", "space-top");
           attr(label1, "class", "space-top");
@@ -15689,7 +16340,7 @@
       };
     }
 
-    function instance$m($$self, $$props, $$invalidate) {
+    function instance$l($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -15740,7 +16391,7 @@
         _classCallCheck$1(this, TaskEditor);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -15926,7 +16577,7 @@
       };
     }
 
-    function create_fragment$m(ctx) {
+    function create_fragment$l(ctx) {
       var a;
       var span;
       var t0;
@@ -16022,7 +16673,7 @@
       };
     }
 
-    function instance$l($$self, $$props, $$invalidate) {
+    function instance$k($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -16140,7 +16791,7 @@
         _classCallCheck$1(this, TaskEditorDialog);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
           action: 0,
           editAction: 11,
           requestToken: 1,
@@ -16165,7 +16816,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -16194,14 +16845,14 @@
       };
     }
 
-    function create_fragment$l(ctx) {
+    function create_fragment$k(ctx) {
       var div1;
       var h3;
       var t0;
       var t1;
       var form;
       var label0;
-      var t2_value = dist_4$1('timemanager', 'Duration (in hrs.)') + "";
+      var t2_value = dist_10('timemanager', 'Duration (in hrs.)') + "";
       var t2;
       var t3;
       var br0;
@@ -16211,7 +16862,7 @@
       var br1;
       var t6;
       var label1;
-      var t7_value = dist_4$1('timemanager', 'Date') + "";
+      var t7_value = dist_10('timemanager', 'Date') + "";
       var t7;
       var t8;
       var br2;
@@ -16221,7 +16872,7 @@
       var br3;
       var t11;
       var label2;
-      var t12_value = dist_4$1('timemanager', 'Note') + "";
+      var t12_value = dist_10('timemanager', 'Note') + "";
       var t12;
       var t13;
       var br4;
@@ -16231,7 +16882,7 @@
       var br5;
       var t16;
       var label3;
-      var t17_value = dist_4$1('timemanager', 'For task') + "";
+      var t17_value = dist_10('timemanager', 'For task') + "";
       var t17;
       var t18;
       var br6;
@@ -16240,7 +16891,7 @@
       var t20;
       var t21;
       var label4;
-      var t22_value = dist_4$1('timemanager', 'For project') + "";
+      var t22_value = dist_10('timemanager', 'For project') + "";
       var t22;
       var t23;
       var br7;
@@ -16249,7 +16900,7 @@
       var t25;
       var t26;
       var label5;
-      var t27_value = dist_4$1('timemanager', 'For client') + "";
+      var t27_value = dist_10('timemanager', 'For client') + "";
       var t27;
       var t28;
       var br8;
@@ -16362,7 +17013,7 @@
           set_style(textarea, "width", "100%");
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
-          attr(textarea, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
+          attr(textarea, "placeholder", dist_10('timemanager', 'Describe what you did...'));
           textarea.value =
           /*note*/
           ctx[11];
@@ -16570,7 +17221,7 @@
       };
     }
 
-    function instance$k($$self, $$props, $$invalidate) {
+    function instance$j($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -16639,7 +17290,7 @@
         _classCallCheck$1(this, TimeEditor);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -16659,7 +17310,7 @@
       return _createClass$1(TimeEditor);
     }(SvelteComponent);
 
-    function create_else_block$2(ctx) {
+    function create_else_block$3(ctx) {
       var div;
       var button;
       var t;
@@ -16704,7 +17355,7 @@
     } // (53:0) {#if !timeUuid}
 
 
-    function create_if_block_1$5(ctx) {
+    function create_if_block_1$6(ctx) {
       var a;
       var span;
       var t;
@@ -16932,7 +17583,7 @@
       };
     }
 
-    function create_fragment$k(ctx) {
+    function create_fragment$j(ctx) {
       var t;
       var if_block1_anchor;
       var current;
@@ -16940,8 +17591,8 @@
       function select_block_type(ctx, dirty) {
         if (!
         /*timeUuid*/
-        ctx[1]) return create_if_block_1$5;
-        return create_else_block$2;
+        ctx[1]) return create_if_block_1$6;
+        return create_else_block$3;
       }
 
       var current_block_type = select_block_type(ctx);
@@ -17022,7 +17673,7 @@
       };
     }
 
-    function instance$j($$self, $$props, $$invalidate) {
+    function instance$i($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -17148,7 +17799,7 @@
         _classCallCheck$1(this, TimeEditorDialog);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
           action: 0,
           editTimeEntryAction: 14,
           timeUuid: 1,
@@ -17238,10 +17889,10 @@
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+          button0.textContent = "".concat(dist_10('timemanager', 'Delete'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button1.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -17280,7 +17931,7 @@
       };
     }
 
-    function create_fragment$j(ctx) {
+    function create_fragment$i(ctx) {
       var t0;
       var form_1;
       var input0;
@@ -17419,7 +18070,7 @@
       };
     }
 
-    function instance$i($$self, $$props, $$invalidate) {
+    function instance$h($$self, $$props, $$invalidate) {
       var confirmation;
       var deleteAction = $$props.deleteAction;
       var deleteUuid = $$props.deleteUuid;
@@ -17478,7 +18129,7 @@
         _classCallCheck$1(this, DeleteButton);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$h, create_fragment$i, safe_not_equal, {
           deleteAction: 0,
           deleteUuid: 1,
           deleteButtonCaption: 2,
@@ -17597,7 +18248,7 @@
       append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
     }
 
-    function create_fragment$i(ctx) {
+    function create_fragment$h(ctx) {
       let div;
       let raw_value =
       /*getOptionLabel*/
@@ -17650,7 +18301,7 @@
       };
     }
 
-    function instance$h($$self, $$props, $$invalidate) {
+    function instance$g($$self, $$props, $$invalidate) {
       let {
         isActive = false
       } = $$props;
@@ -17726,7 +18377,7 @@
     class Item$1 extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$h, create_fragment$i, safe_not_equal, {
+        init$2(this, options, instance$g, create_fragment$h, safe_not_equal, {
           isActive: 4,
           isFirst: 5,
           isHover: 6,
@@ -17743,7 +18394,7 @@
       append_styles(target, "svelte-1uyqfml", ".listContainer.svelte-1uyqfml{box-shadow:var(--listShadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--listBorderRadius, 4px);max-height:var(--listMaxHeight, 250px);overflow-y:auto;background:var(--listBackground, #fff);border:var(--listBorder, none);position:var(--listPosition, absolute);z-index:var(--listZIndex, 2);width:100%;left:var(--listLeft, 0);right:var(--listRight, 0)}.virtualList.svelte-1uyqfml{height:var(--virtualListHeight, 200px)}.listGroupTitle.svelte-1uyqfml{color:var(--groupTitleColor, #8f8f8f);cursor:default;font-size:var(--groupTitleFontSize, 12px);font-weight:var(--groupTitleFontWeight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--groupTitlePadding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--groupTitleTextTransform, uppercase)}.empty.svelte-1uyqfml{text-align:var(--listEmptyTextAlign, center);padding:var(--listEmptyPadding, 20px 0);color:var(--listEmptyColor, #78848f)}");
     }
 
-    function get_each_context$6(ctx, list, i) {
+    function get_each_context$7(ctx, list, i) {
       const child_ctx = ctx.slice();
       child_ctx[41] = list[i];
       child_ctx[42] = i;
@@ -17751,7 +18402,7 @@
     } // (309:4) {:else}
 
 
-    function create_else_block$1(ctx) {
+    function create_else_block$2(ctx) {
       let each_1_anchor;
       let current;
       let each_value =
@@ -17760,7 +18411,7 @@
       let each_blocks = [];
 
       for (let i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
+        each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
       }
 
       const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -17810,13 +18461,13 @@
             let i;
 
             for (i = 0; i < each_value.length; i += 1) {
-              const child_ctx = get_each_context$6(ctx, each_value, i);
+              const child_ctx = get_each_context$7(ctx, each_value, i);
 
               if (each_blocks[i]) {
                 each_blocks[i].p(child_ctx, dirty);
                 transition_in(each_blocks[i], 1);
               } else {
-                each_blocks[i] = create_each_block$6(child_ctx);
+                each_blocks[i] = create_each_block$7(child_ctx);
                 each_blocks[i].c();
                 transition_in(each_blocks[i], 1);
                 each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
@@ -18271,7 +18922,7 @@
     } // (311:12) {#if item.isGroupHeader && !item.isSelectable}
 
 
-    function create_if_block_1$4(ctx) {
+    function create_if_block_1$5(ctx) {
       let div;
       let t_value =
       /*getGroupHeaderLabel*/
@@ -18312,12 +18963,12 @@
     } // (310:8) {#each items as item, i}
 
 
-    function create_each_block$6(ctx) {
+    function create_each_block$7(ctx) {
       let current_block_type_index;
       let if_block;
       let if_block_anchor;
       let current;
-      const if_block_creators = [create_if_block_1$4, create_else_block_1];
+      const if_block_creators = [create_if_block_1$5, create_else_block_1];
       const if_blocks = [];
 
       function select_block_type_1(ctx, dirty) {
@@ -18591,14 +19242,14 @@
       };
     }
 
-    function create_fragment$h(ctx) {
+    function create_fragment$g(ctx) {
       let div;
       let current_block_type_index;
       let if_block;
       let current;
       let mounted;
       let dispose;
-      const if_block_creators = [create_if_block$9, create_else_block$1];
+      const if_block_creators = [create_if_block$9, create_else_block$2];
       const if_blocks = [];
 
       function select_block_type(ctx, dirty) {
@@ -18723,7 +19374,7 @@
       return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
     }
 
-    function instance$g($$self, $$props, $$invalidate) {
+    function instance$f($$self, $$props, $$invalidate) {
       const dispatch = createEventDispatcher();
       let {
         container = undefined
@@ -19018,7 +19669,7 @@
     class List extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$g, create_fragment$h, safe_not_equal, {
+        init$2(this, options, instance$f, create_fragment$g, safe_not_equal, {
           container: 0,
           VirtualList: 3,
           Item: 4,
@@ -19049,7 +19700,7 @@
       append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
     }
 
-    function create_fragment$g(ctx) {
+    function create_fragment$f(ctx) {
       let div;
       let raw_value =
       /*getSelectionLabel*/
@@ -19087,7 +19738,7 @@
       };
     }
 
-    function instance$f($$self, $$props, $$invalidate) {
+    function instance$e($$self, $$props, $$invalidate) {
       let {
         getSelectionLabel = undefined
       } = $$props;
@@ -19106,7 +19757,7 @@
     class Selection extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$f, create_fragment$g, safe_not_equal, {
+        init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
           getSelectionLabel: 0,
           item: 1
         }, add_css$3);
@@ -19118,7 +19769,7 @@
       append_styles(target, "svelte-liu9pa", ".multiSelectItem.svelte-liu9pa.svelte-liu9pa{background:var(--multiItemBG, #ebedef);margin:var(--multiItemMargin, 5px 5px 0 0);border-radius:var(--multiItemBorderRadius, 16px);height:var(--multiItemHeight, 32px);line-height:var(--multiItemHeight, 32px);display:flex;cursor:default;padding:var(--multiItemPadding, 0 10px 0 15px);max-width:100%}.multiSelectItem_label.svelte-liu9pa.svelte-liu9pa{margin:var(--multiLabelMargin, 0 5px 0 0);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multiSelectItem.svelte-liu9pa.svelte-liu9pa:hover,.multiSelectItem.active.svelte-liu9pa.svelte-liu9pa{background-color:var(--multiItemActiveBG, #006fff);color:var(--multiItemActiveColor, #fff)}.multiSelectItem.disabled.svelte-liu9pa.svelte-liu9pa:hover{background:var(--multiItemDisabledHoverBg, #ebedef);color:var(--multiItemDisabledHoverColor, #c1c6cc)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa{border-radius:var(--multiClearRadius, 50%);background:var(--multiClearBG, #52616f);min-width:var(--multiClearWidth, 16px);max-width:var(--multiClearWidth, 16px);height:var(--multiClearHeight, 16px);position:relative;top:var(--multiClearTop, 8px);text-align:var(--multiClearTextAlign, center);padding:var(--multiClearPadding, 1px)}.multiSelectItem_clear.svelte-liu9pa.svelte-liu9pa:hover,.active.svelte-liu9pa .multiSelectItem_clear.svelte-liu9pa{background:var(--multiClearHoverBG, #fff)}.multiSelectItem_clear.svelte-liu9pa:hover svg.svelte-liu9pa,.active.svelte-liu9pa .multiSelectItem_clear svg.svelte-liu9pa{fill:var(--multiClearHoverFill, #006fff)}.multiSelectItem_clear.svelte-liu9pa svg.svelte-liu9pa{fill:var(--multiClearFill, #ebedef);vertical-align:top}");
     }
 
-    function get_each_context$5(ctx, list, i) {
+    function get_each_context$6(ctx, list, i) {
       const child_ctx = ctx.slice();
       child_ctx[9] = list[i];
       child_ctx[11] = i;
@@ -19170,7 +19821,7 @@
     } // (77:0) {#each value as item, i}
 
 
-    function create_each_block$5(ctx) {
+    function create_each_block$6(ctx) {
       let div1;
       let div0;
       let raw_value =
@@ -19279,7 +19930,7 @@
       };
     }
 
-    function create_fragment$f(ctx) {
+    function create_fragment$e(ctx) {
       let each_1_anchor;
       let each_value =
       /*value*/
@@ -19287,7 +19938,7 @@
       let each_blocks = [];
 
       for (let i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$5(get_each_context$5(ctx, each_value, i));
+        each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
       }
 
       return {
@@ -19317,12 +19968,12 @@
             let i;
 
             for (i = 0; i < each_value.length; i += 1) {
-              const child_ctx = get_each_context$5(ctx, each_value, i);
+              const child_ctx = get_each_context$6(ctx, each_value, i);
 
               if (each_blocks[i]) {
                 each_blocks[i].p(child_ctx, dirty);
               } else {
-                each_blocks[i] = create_each_block$5(child_ctx);
+                each_blocks[i] = create_each_block$6(child_ctx);
                 each_blocks[i].c();
                 each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
               }
@@ -19347,7 +19998,7 @@
       };
     }
 
-    function instance$e($$self, $$props, $$invalidate) {
+    function instance$d($$self, $$props, $$invalidate) {
       const dispatch = createEventDispatcher();
       let {
         value = []
@@ -19390,7 +20041,7 @@
     class MultiSelection extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
+        init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
           value: 0,
           activeValue: 1,
           isDisabled: 2,
@@ -19405,7 +20056,7 @@
       append_styles(target, "svelte-g2cagw", "svelte-virtual-list-viewport.svelte-g2cagw{position:relative;overflow-y:auto;-webkit-overflow-scrolling:touch;display:block}svelte-virtual-list-contents.svelte-g2cagw,svelte-virtual-list-row.svelte-g2cagw{display:block}svelte-virtual-list-row.svelte-g2cagw{overflow:hidden}");
     }
 
-    function get_each_context$4(ctx, list, i) {
+    function get_each_context$5(ctx, list, i) {
       const child_ctx = ctx.slice();
       child_ctx[23] = list[i];
       return child_ctx;
@@ -19455,7 +20106,7 @@
     } // (152:8) {#each visible as row (row.index)}
 
 
-    function create_each_block$4(key_1, ctx) {
+    function create_each_block$5(key_1, ctx) {
       let svelte_virtual_list_row;
       let t;
       let current;
@@ -19526,7 +20177,7 @@
       };
     }
 
-    function create_fragment$e(ctx) {
+    function create_fragment$d(ctx) {
       let svelte_virtual_list_viewport;
       let svelte_virtual_list_contents;
       let each_blocks = [];
@@ -19544,9 +20195,9 @@
       ctx[23].index;
 
       for (let i = 0; i < each_value.length; i += 1) {
-        let child_ctx = get_each_context$4(ctx, each_value, i);
+        let child_ctx = get_each_context$5(ctx, each_value, i);
         let key = get_key(child_ctx);
-        each_1_lookup.set(key, each_blocks[i] = create_each_block$4(key, child_ctx));
+        each_1_lookup.set(key, each_blocks[i] = create_each_block$5(key, child_ctx));
       }
 
       return {
@@ -19609,7 +20260,7 @@
             /*visible*/
             ctx[5];
             group_outros();
-            each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$4, null, get_each_context$4);
+            each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$5, null, get_each_context$5);
             check_outros();
           }
 
@@ -19677,7 +20328,7 @@
       };
     }
 
-    function instance$d($$self, $$props, $$invalidate) {
+    function instance$c($$self, $$props, $$invalidate) {
       let {
         $$slots: slots = {},
         $$scope
@@ -19857,7 +20508,7 @@
     class VirtualList extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
+        init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
           items: 11,
           height: 0,
           itemHeight: 12,
@@ -19869,7 +20520,7 @@
 
     }
 
-    function create_fragment$d(ctx) {
+    function create_fragment$c(ctx) {
       let svg;
       let path;
       return {
@@ -19905,7 +20556,7 @@
     class ClearIcon extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, null, create_fragment$d, safe_not_equal, {});
+        init$2(this, options, null, create_fragment$c, safe_not_equal, {});
       }
 
     }
@@ -19932,7 +20583,7 @@
       append_styles(target, "svelte-17l1npl", ".selectContainer.svelte-17l1npl.svelte-17l1npl{--internalPadding:0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--borderRadius, 3px);box-sizing:border-box;height:var(--height, 42px);position:relative;display:flex;align-items:center;padding:var(--padding, var(--internalPadding));background:var(--background, #fff);margin:var(--margin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl{cursor:default;border:none;color:var(--inputColor, #3f4f5f);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--inputPadding, var(--padding, var(--internalPadding)));width:100%;background:transparent;font-size:var(--inputFontSize, 14px);letter-spacing:var(--inputLetterSpacing, -0.08px);position:absolute;left:var(--inputLeft, 0);margin:var(--inputMargin, 0)}.selectContainer.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--placeholderColor, #78848f);opacity:var(--placeholderOpacity, 1)}.selectContainer.svelte-17l1npl input.svelte-17l1npl:focus{outline:none}.selectContainer.svelte-17l1npl.svelte-17l1npl:hover{border-color:var(--borderHoverColor, #b2b8bf)}.selectContainer.focused.svelte-17l1npl.svelte-17l1npl{border-color:var(--borderFocusColor, #006fe8)}.selectContainer.disabled.svelte-17l1npl.svelte-17l1npl{background:var(--disabledBackground, #ebedef);border-color:var(--disabledBorderColor, #ebedef);color:var(--disabledColor, #c1c6cc)}.selectContainer.disabled.svelte-17l1npl input.svelte-17l1npl::placeholder{color:var(--disabledPlaceholderColor, #c1c6cc);opacity:var(--disabledPlaceholderOpacity, 1)}.selectedItem.svelte-17l1npl.svelte-17l1npl{line-height:var(--height, 42px);height:var(--height, 42px);overflow-x:hidden;padding:var(--selectedItemPadding, 0 20px 0 0)}.selectedItem.svelte-17l1npl.svelte-17l1npl:focus{outline:none}.clearSelect.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--clearSelectRight, 10px);top:var(--clearSelectTop, 11px);bottom:var(--clearSelectBottom, 11px);width:var(--clearSelectWidth, 20px);color:var(--clearSelectColor, #c5cacf);flex:none !important}.clearSelect.svelte-17l1npl.svelte-17l1npl:hover{color:var(--clearSelectHoverColor, #2c3e50)}.selectContainer.focused.svelte-17l1npl .clearSelect.svelte-17l1npl{color:var(--clearSelectFocusColor, #3f4f5f)}.indicator.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--indicatorRight, 10px);top:var(--indicatorTop, 11px);width:var(--indicatorWidth, 20px);height:var(--indicatorHeight, 20px);color:var(--indicatorColor, #c5cacf)}.indicator.svelte-17l1npl svg.svelte-17l1npl{display:inline-block;fill:var(--indicatorFill, currentcolor);line-height:1;stroke:var(--indicatorStroke, currentcolor);stroke-width:0}.spinner.svelte-17l1npl.svelte-17l1npl{position:absolute;right:var(--spinnerRight, 10px);top:var(--spinnerLeft, 11px);width:var(--spinnerWidth, 20px);height:var(--spinnerHeight, 20px);color:var(--spinnerColor, #51ce6c);animation:svelte-17l1npl-rotate 0.75s linear infinite}.spinner_icon.svelte-17l1npl.svelte-17l1npl{display:block;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;-webkit-transform:none}.spinner_path.svelte-17l1npl.svelte-17l1npl{stroke-dasharray:90;stroke-linecap:round}.multiSelect.svelte-17l1npl.svelte-17l1npl{display:flex;padding:var(--multiSelectPadding, 0 35px 0 16px);height:auto;flex-wrap:wrap;align-items:stretch}.multiSelect.svelte-17l1npl>.svelte-17l1npl{flex:1 1 50px}.selectContainer.multiSelect.svelte-17l1npl input.svelte-17l1npl{padding:var(--multiSelectInputPadding, 0);position:relative;margin:var(--multiSelectInputMargin, 0)}.hasError.svelte-17l1npl.svelte-17l1npl{border:var(--errorBorder, 1px solid #ff2d55);background:var(--errorBackground, #fff)}.a11yText.svelte-17l1npl.svelte-17l1npl{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}@keyframes svelte-17l1npl-rotate{100%{transform:rotate(360deg)}}");
     }
 
-    function get_each_context$3(ctx, list, i) {
+    function get_each_context$4(ctx, list, i) {
       const child_ctx = ctx.slice();
       child_ctx[103] = list[i];
       return child_ctx;
@@ -20426,7 +21077,7 @@
         if (
         /*indicatorSvg*/
         ctx[22]) return create_if_block_5$1;
-        return create_else_block;
+        return create_else_block$1;
       }
 
       let current_block_type = select_block_type(ctx);
@@ -20467,7 +21118,7 @@
     } // (932:12) {:else}
 
 
-    function create_else_block(ctx) {
+    function create_else_block$1(ctx) {
       let svg;
       let path;
       return {
@@ -20692,7 +21343,7 @@
     } // (976:4) {#if !isMulti || (isMulti && !showMultiSelect)}
 
 
-    function create_if_block_1$3(ctx) {
+    function create_if_block_1$4(ctx) {
       let input_1;
       let input_1_name_value;
       let input_1_value_value;
@@ -20755,7 +21406,7 @@
       let each_blocks = [];
 
       for (let i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+        each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
       }
 
       return {
@@ -20785,12 +21436,12 @@
             let i;
 
             for (i = 0; i < each_value.length; i += 1) {
-              const child_ctx = get_each_context$3(ctx, each_value, i);
+              const child_ctx = get_each_context$4(ctx, each_value, i);
 
               if (each_blocks[i]) {
                 each_blocks[i].p(child_ctx, dirty);
               } else {
-                each_blocks[i] = create_each_block$3(child_ctx);
+                each_blocks[i] = create_each_block$4(child_ctx);
                 each_blocks[i].c();
                 each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
               }
@@ -20813,7 +21464,7 @@
     } // (984:8) {#each value as item}
 
 
-    function create_each_block$3(ctx) {
+    function create_each_block$4(ctx) {
       let input_1;
       let input_1_name_value;
       let input_1_value_value;
@@ -20867,7 +21518,7 @@
       };
     }
 
-    function create_fragment$c(ctx) {
+    function create_fragment$b(ctx) {
       let div;
       let span;
       let t0;
@@ -20961,7 +21612,7 @@
       /*isMulti*/
       ctx[7] && !
       /*showMultiSelect*/
-      ctx[35]) && create_if_block_1$3(ctx);
+      ctx[35]) && create_if_block_1$4(ctx);
       let if_block9 =
       /*isMulti*/
       ctx[7] &&
@@ -21313,7 +21964,7 @@
             if (if_block8) {
               if_block8.p(ctx, dirty);
             } else {
-              if_block8 = create_if_block_1$3(ctx);
+              if_block8 = create_if_block_1$4(ctx);
               if_block8.c();
               if_block8.m(div, t9);
             }
@@ -21442,7 +22093,7 @@
       });
     }
 
-    function instance$c($$self, $$props, $$invalidate) {
+    function instance$b($$self, $$props, $$invalidate) {
       let filteredItems;
       let showSelectedItem;
       let showClearIcon;
@@ -22354,7 +23005,7 @@
     class Select extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$c, create_fragment$c, safe_not_equal, {
+        init$2(this, options, instance$b, create_fragment$b, safe_not_equal, {
           id: 46,
           container: 0,
           input: 6,
@@ -22659,7 +23310,7 @@
     dist$1.generateRemoteUrl;
     dist$1.linkTo;
 
-    function get_each_context$2(ctx, list, i) {
+    function get_each_context$3(ctx, list, i) {
       var child_ctx = ctx.slice();
       child_ctx[16] = list[i];
       return child_ctx;
@@ -22717,14 +23368,14 @@
     } // (94:4) {#if !sharees || !sharees.length}
 
 
-    function create_if_block_1$2(ctx) {
+    function create_if_block_1$3(ctx) {
       var p;
       var em;
       return {
         c: function c() {
           p = element("p");
           em = element("em");
-          em.textContent = "".concat(dist_4$1("timemanager", "You haven't shared this client with anyone"));
+          em.textContent = "".concat(dist_10("timemanager", "You haven't shared this client with anyone"));
         },
         m: function m(target, anchor) {
           insert(target, p, anchor);
@@ -22738,7 +23389,7 @@
     } // (100:5) {#each sharees as sharee}
 
 
-    function create_each_block$2(ctx) {
+    function create_each_block$3(ctx) {
       var li;
       var figure;
       var img;
@@ -22780,7 +23431,7 @@
           input2 = element("input");
           t5 = space$1();
           button = element("button");
-          button.textContent = "".concat(dist_4$1("timemanager", "Delete"));
+          button.textContent = "".concat(dist_10("timemanager", "Delete"));
           t7 = space$1();
           if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat(
           /*sharee*/
@@ -22906,7 +23557,7 @@
     function create_default_slot$2(ctx) {
       var div2;
       var label;
-      var t0_value = dist_4$1("timemanager", "Share with") + "";
+      var t0_value = dist_10("timemanager", "Share with") + "";
       var t0;
       var t1;
       var select;
@@ -22935,8 +23586,8 @@
         props: {
           noOptionsMessage:
           /*loading*/
-          ctx[8] ? dist_4$1("timemanager", "Loading...") : dist_4$1("timemanager", "No options"),
-          placeholder: dist_4$1("timemanager", "Search..."),
+          ctx[8] ? dist_10("timemanager", "Loading...") : dist_10("timemanager", "No options"),
+          placeholder: dist_10("timemanager", "Search..."),
           inputAttributes: {
             id: "sharee-select"
           },
@@ -22955,14 +23606,14 @@
       /*sharees*/
       ctx[2] || !
       /*sharees*/
-      ctx[2].length) && create_if_block_1$2();
+      ctx[2].length) && create_if_block_1$3();
       var each_value =
       /*sharees*/
       ctx[2];
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+        each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
       }
 
       return {
@@ -22975,7 +23626,7 @@
           t2 = space$1();
           div0 = element("div");
           h4 = element("h4");
-          h4.textContent = "".concat(dist_4$1("timemanager", "Existing shares"));
+          h4.textContent = "".concat(dist_10("timemanager", "Existing shares"));
           t4 = space$1();
           if (if_block) if_block.c();
           t5 = space$1();
@@ -22988,20 +23639,20 @@
           t6 = space$1();
           aside = element("aside");
           p0 = element("p");
-          p0.textContent = "".concat(dist_4$1("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
+          p0.textContent = "".concat(dist_10("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
           t8 = space$1();
           p1 = element("p");
-          p1.textContent = "".concat(dist_4$1("timemanager", "Users you share with can create time entries."));
+          p1.textContent = "".concat(dist_10("timemanager", "Users you share with can create time entries."));
           t10 = space$1();
           p2 = element("p");
-          p2.textContent = "".concat(dist_4$1("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
+          p2.textContent = "".concat(dist_10("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
           t12 = space$1();
           div1 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(dist_4$1("timemanager", "Add"));
+          button0.textContent = "".concat(dist_10("timemanager", "Add"));
           t14 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_4$1("timemanager", "Cancel"));
+          button1.textContent = "".concat(dist_10("timemanager", "Cancel"));
           attr(label, "for", "sharee-select");
           attr(label, "class", "sharees");
           attr(h4, "class", "tm_label");
@@ -23058,7 +23709,7 @@
           /*loading*/
           256) select_changes.noOptionsMessage =
           /*loading*/
-          ctx[8] ? dist_4$1("timemanager", "Loading...") : dist_4$1("timemanager", "No options");
+          ctx[8] ? dist_10("timemanager", "Loading...") : dist_10("timemanager", "No options");
           if (dirty &
           /*selectedSharee*/
           64) select_changes.value =
@@ -23074,7 +23725,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_1$2();
+              if_block = create_if_block_1$3();
               if_block.c();
               if_block.m(div0, t5);
             }
@@ -23093,12 +23744,12 @@
             var _i3;
 
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-              var child_ctx = get_each_context$2(ctx, each_value, _i3);
+              var child_ctx = get_each_context$3(ctx, each_value, _i3);
 
               if (each_blocks[_i3]) {
                 each_blocks[_i3].p(child_ctx, dirty);
               } else {
-                each_blocks[_i3] = create_each_block$2(child_ctx);
+                each_blocks[_i3] = create_each_block$3(child_ctx);
 
                 each_blocks[_i3].c();
 
@@ -23133,7 +23784,7 @@
       };
     }
 
-    function create_fragment$b(ctx) {
+    function create_fragment$a(ctx) {
       var t0;
       var form_1;
       var input0;
@@ -23160,7 +23811,7 @@
           input2 = element("input");
           t3 = space$1();
           button = element("button");
-          button.textContent = "".concat(dist_4$1("timemanager", "Share client"));
+          button.textContent = "".concat(dist_10("timemanager", "Share client"));
           attr(input0, "type", "hidden");
           attr(input0, "name", "client_uuid");
           input0.value =
@@ -23286,7 +23937,7 @@
       };
     }
 
-    function instance$b($$self, $$props, $$invalidate) {
+    function instance$a($$self, $$props, $$invalidate) {
       var dialogVisible;
       var loading;
       var shareAction = $$props.shareAction;
@@ -23420,7 +24071,7 @@
         _classCallCheck$1(this, ShareDialog);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$b, create_fragment$b, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$a, create_fragment$a, safe_not_equal, {
           shareAction: 0,
           deleteShareAction: 1,
           sharees: 2,
@@ -23434,7 +24085,7 @@
       return _createClass$1(ShareDialog);
     }(SvelteComponent);
 
-    function get_each_context$1(ctx, list, i) {
+    function get_each_context$2(ctx, list, i) {
       var child_ctx = ctx.slice();
       child_ctx[2] = list[i];
       child_ctx[4] = i;
@@ -23442,7 +24093,7 @@
     } // (15:0) {#if sharees && sharees.length}
 
 
-    function create_if_block_1$1(ctx) {
+    function create_if_block_1$2(ctx) {
       var span;
       var t1;
       var ul;
@@ -23452,13 +24103,13 @@
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
-        each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+        each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
       }
 
       return {
         c: function c() {
           span = element("span");
-          span.textContent = "".concat(dist_4$1("timemanager", "Shared with"));
+          span.textContent = "".concat(dist_10("timemanager", "Shared with"));
           t1 = space$1();
           ul = element("ul");
 
@@ -23489,12 +24140,12 @@
             var _i3;
 
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
-              var child_ctx = get_each_context$1(ctx, each_value, _i3);
+              var child_ctx = get_each_context$2(ctx, each_value, _i3);
 
               if (each_blocks[_i3]) {
                 each_blocks[_i3].p(child_ctx, dirty);
               } else {
-                each_blocks[_i3] = create_each_block$1(child_ctx);
+                each_blocks[_i3] = create_each_block$2(child_ctx);
 
                 each_blocks[_i3].c();
 
@@ -23519,7 +24170,7 @@
     } // (18:2) {#each sharees as sharee, index}
 
 
-    function create_each_block$1(ctx) {
+    function create_each_block$2(ctx) {
       var li;
       var img;
       var img_src_value;
@@ -23612,7 +24263,7 @@
       return {
         c: function c() {
           span = element("span");
-          span.textContent = "".concat(dist_4$1("timemanager", "Shared with you by"));
+          span.textContent = "".concat(dist_10("timemanager", "Shared with you by"));
           t1 = space$1();
           ul = element("ul");
           li = element("li");
@@ -23679,14 +24330,14 @@
       };
     }
 
-    function create_fragment$a(ctx) {
+    function create_fragment$9(ctx) {
       var t;
       var if_block1_anchor;
       var if_block0 =
       /*sharees*/
       ctx[0] &&
       /*sharees*/
-      ctx[0].length && create_if_block_1$1(ctx);
+      ctx[0].length && create_if_block_1$2(ctx);
       var if_block1 =
       /*sharedBy*/
       ctx[1] && create_if_block$5(ctx);
@@ -23715,7 +24366,7 @@
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
-              if_block0 = create_if_block_1$1(ctx);
+              if_block0 = create_if_block_1$2(ctx);
               if_block0.c();
               if_block0.m(t.parentNode, t);
             }
@@ -23750,7 +24401,7 @@
       };
     }
 
-    function instance$a($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
       var sharees = $$props.sharees;
       var sharedBy = $$props.sharedBy;
       onMount(function () {
@@ -23776,7 +24427,7 @@
         _classCallCheck$1(this, ShareStatus);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$a, create_fragment$a, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$9, create_fragment$9, safe_not_equal, {
           sharees: 0,
           sharedBy: 1
         });
@@ -23839,7 +24490,7 @@
 
     function create_default_slot$1(ctx) {
       var div1;
-      var t0_value = dist_4$1('timemanager', 'Do you want to delete this time entry?') + "";
+      var t0_value = dist_10('timemanager', 'Do you want to delete this time entry?') + "";
       var t0;
       var t1;
       var div0;
@@ -23855,10 +24506,10 @@
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+          button0.textContent = "".concat(dist_10('timemanager', 'Delete'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_4$1('timemanager', 'Cancel'));
+          button1.textContent = "".concat(dist_10('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -23891,7 +24542,7 @@
       };
     }
 
-    function create_fragment$9(ctx) {
+    function create_fragment$8(ctx) {
       var t0;
       var form;
       var input0;
@@ -23915,7 +24566,7 @@
           input1 = element("input");
           t2 = space$1();
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Delete'));
+          button.textContent = "".concat(dist_10('timemanager', 'Delete'));
           attr(input0, "type", "hidden");
           attr(input0, "name", "uuid");
           input0.value =
@@ -24026,7 +24677,7 @@
       };
     }
 
-    function instance$9($$self, $$props, $$invalidate) {
+    function instance$8($$self, $$props, $$invalidate) {
       var confirmation;
       var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
       var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
@@ -24124,7 +24775,7 @@
         _classCallCheck$1(this, DeleteTimeEntryButton);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$9, create_fragment$9, safe_not_equal, {
+        init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
           deleteTimeEntryAction: 0,
           deleteTimeEntryUuid: 1,
           requestToken: 2
@@ -24321,38 +24972,57 @@
     var min$3 = Math.min;
     var round = Math.round;
 
-    function getBoundingClientRect(element, includeScale) {
+    function getUAString() {
+      var uaData = navigator.userAgentData;
+
+      if (uaData != null && uaData.brands) {
+        return uaData.brands.map(function (item) {
+          return item.brand + "/" + item.version;
+        }).join(' ');
+      }
+
+      return navigator.userAgent;
+    }
+
+    function isLayoutViewport() {
+      return !/^((?!chrome|android).)*safari/i.test(getUAString());
+    }
+
+    function getBoundingClientRect(element, includeScale, isFixedStrategy) {
       if (includeScale === void 0) {
         includeScale = false;
       }
 
-      var rect = element.getBoundingClientRect();
+      if (isFixedStrategy === void 0) {
+        isFixedStrategy = false;
+      }
+
+      var clientRect = element.getBoundingClientRect();
       var scaleX = 1;
       var scaleY = 1;
 
-      if (isHTMLElement(element) && includeScale) {
-        var offsetHeight = element.offsetHeight;
-        var offsetWidth = element.offsetWidth; // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
-        // Fallback to 1 in case both values are `0`
-
-        if (offsetWidth > 0) {
-          scaleX = round(rect.width) / offsetWidth || 1;
-        }
-
-        if (offsetHeight > 0) {
-          scaleY = round(rect.height) / offsetHeight || 1;
-        }
+      if (includeScale && isHTMLElement(element)) {
+        scaleX = element.offsetWidth > 0 ? round(clientRect.width) / element.offsetWidth || 1 : 1;
+        scaleY = element.offsetHeight > 0 ? round(clientRect.height) / element.offsetHeight || 1 : 1;
       }
 
+      var _ref = isElement(element) ? getWindow(element) : window,
+          visualViewport = _ref.visualViewport;
+
+      var addVisualOffsets = !isLayoutViewport() && isFixedStrategy;
+      var x = (clientRect.left + (addVisualOffsets && visualViewport ? visualViewport.offsetLeft : 0)) / scaleX;
+      var y = (clientRect.top + (addVisualOffsets && visualViewport ? visualViewport.offsetTop : 0)) / scaleY;
+      var width = clientRect.width / scaleX;
+      var height = clientRect.height / scaleY;
       return {
-        width: rect.width / scaleX,
-        height: rect.height / scaleY,
-        top: rect.top / scaleY,
-        right: rect.right / scaleX,
-        bottom: rect.bottom / scaleY,
-        left: rect.left / scaleX,
-        x: rect.left / scaleX,
-        y: rect.top / scaleY
+        width: width,
+        height: height,
+        top: y,
+        right: x + width,
+        bottom: y + height,
+        left: x,
+        x: x,
+        y: y
       };
     }
 
@@ -24447,8 +25117,8 @@
 
 
     function getContainingBlock(element) {
-      var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
-      var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+      var isFirefox = /firefox/i.test(getUAString());
+      var isIE = /Trident/i.test(getUAString());
 
       if (isIE && isHTMLElement(element)) {
         // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
@@ -24888,31 +25558,21 @@
       return getBoundingClientRect(getDocumentElement(element)).left + getWindowScroll(element).scrollLeft;
     }
 
-    function getViewportRect(element) {
+    function getViewportRect(element, strategy) {
       var win = getWindow(element);
       var html = getDocumentElement(element);
       var visualViewport = win.visualViewport;
       var width = html.clientWidth;
       var height = html.clientHeight;
       var x = 0;
-      var y = 0; // NB: This isn't supported on iOS <= 12. If the keyboard is open, the popper
-      // can be obscured underneath it.
-      // Also, `html.clientHeight` adds the bottom bar height in Safari iOS, even
-      // if it isn't open, so if this isn't available, the popper will be detected
-      // to overflow the bottom of the screen too early.
+      var y = 0;
 
       if (visualViewport) {
         width = visualViewport.width;
-        height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
-        // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
-        // errors due to floating point numbers, so we need to check precision.
-        // Safari returns a number <= 0, usually < -1 when pinch-zoomed
-        // Feature detection fails in mobile emulation mode in Chrome.
-        // Math.abs(win.innerWidth / visualViewport.scale - visualViewport.width) <
-        // 0.001
-        // Fallback here: "Not Safari" userAgent
+        height = visualViewport.height;
+        var layoutViewport = isLayoutViewport();
 
-        if (!/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+        if (layoutViewport || !layoutViewport && strategy === 'fixed') {
           x = visualViewport.offsetLeft;
           y = visualViewport.offsetTop;
         }
@@ -25006,8 +25666,8 @@
       });
     }
 
-    function getInnerBoundingClientRect(element) {
-      var rect = getBoundingClientRect(element);
+    function getInnerBoundingClientRect(element, strategy) {
+      var rect = getBoundingClientRect(element, false, strategy === 'fixed');
       rect.top = rect.top + element.clientTop;
       rect.left = rect.left + element.clientLeft;
       rect.bottom = rect.top + element.clientHeight;
@@ -25019,8 +25679,8 @@
       return rect;
     }
 
-    function getClientRectFromMixedType(element, clippingParent) {
-      return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+    function getClientRectFromMixedType(element, clippingParent, strategy) {
+      return clippingParent === viewport ? rectToClientRect(getViewportRect(element, strategy)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent, strategy) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
     } // A "clipping parent" is an overflowable container with the characteristic of
     // clipping (or hiding) overflowing elements with a position different from
     // `initial`
@@ -25043,18 +25703,18 @@
     // clipping parents
 
 
-    function getClippingRect(element, boundary, rootBoundary) {
+    function getClippingRect(element, boundary, rootBoundary, strategy) {
       var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
       var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
       var firstClippingParent = clippingParents[0];
       var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
-        var rect = getClientRectFromMixedType(element, clippingParent);
+        var rect = getClientRectFromMixedType(element, clippingParent, strategy);
         accRect.top = max$1(rect.top, accRect.top);
         accRect.right = min$3(rect.right, accRect.right);
         accRect.bottom = min$3(rect.bottom, accRect.bottom);
         accRect.left = max$1(rect.left, accRect.left);
         return accRect;
-      }, getClientRectFromMixedType(element, firstClippingParent));
+      }, getClientRectFromMixedType(element, firstClippingParent, strategy));
       clippingRect.width = clippingRect.right - clippingRect.left;
       clippingRect.height = clippingRect.bottom - clippingRect.top;
       clippingRect.x = clippingRect.left;
@@ -25135,6 +25795,8 @@
       var _options = options,
           _options$placement = _options.placement,
           placement = _options$placement === void 0 ? state.placement : _options$placement,
+          _options$strategy = _options.strategy,
+          strategy = _options$strategy === void 0 ? state.strategy : _options$strategy,
           _options$boundary = _options.boundary,
           boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
           _options$rootBoundary = _options.rootBoundary,
@@ -25149,7 +25811,7 @@
       var altContext = elementContext === popper ? reference : popper;
       var popperRect = state.rects.popper;
       var element = state.elements[altBoundary ? altContext : elementContext];
-      var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
+      var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary, strategy);
       var referenceClientRect = getBoundingClientRect(state.elements.reference);
       var popperOffsets = computeOffsets({
         reference: referenceClientRect,
@@ -25667,7 +26329,7 @@
       var isOffsetParentAnElement = isHTMLElement(offsetParent);
       var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
       var documentElement = getDocumentElement(offsetParent);
-      var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled);
+      var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled, isFixed);
       var scroll = {
         scrollLeft: 0,
         scrollTop: 0
@@ -26205,47 +26867,434 @@
       }];
     }
 
+    function get_each_context$1(ctx, list, i) {
+      var child_ctx = ctx.slice();
+      child_ctx[33] = list[i];
+      return child_ctx;
+    }
+
+    function get_each_context_1$1(ctx, list, i) {
+      var child_ctx = ctx.slice();
+      child_ctx[36] = list[i];
+      return child_ctx;
+    }
+
+    function get_each_context_2$1(ctx, list, i) {
+      var child_ctx = ctx.slice();
+      child_ctx[13] = list[i];
+      return child_ctx;
+    } // (165:1) {#if showTooltip}
+
+
     function create_if_block$3(ctx) {
+      var div2;
+      var label;
+      var span;
+      var t1;
+      var input;
+      var t2;
+      var div0;
+      var t3;
+      var button;
+      var t4_value = dist_10("timemanager", "Add task") + "";
+      var t4;
+      var t5;
       var div1;
       var mounted;
       var dispose;
+
+      function select_block_type(ctx, dirty) {
+        var _ctx$;
+
+        if (
+        /*searchResults*/
+        (_ctx$ = ctx[11]) !== null && _ctx$ !== void 0 && _ctx$.length) return create_if_block_1$1;
+        return create_else_block;
+      }
+
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
       return {
         c: function c() {
+          div2 = element("div");
+          label = element("label");
+          span = element("span");
+          span.textContent = "".concat(dist_10("timemanager", "Search for client, project or task"));
+          t1 = space$1();
+          input = element("input");
+          t2 = space$1();
+          div0 = element("div");
+          if_block.c();
+          t3 = space$1();
+          button = element("button");
+          t4 = text(t4_value);
+          t5 = space$1();
           div1 = element("div");
-          div1.innerHTML = "Here goes the task selector\n\t\t\t<div class=\"popover-arrow\" data-popper-arrow=\"\"></div>";
-          attr(div1, "class", "task-selector-popover");
+          attr(span, "class", "hidden-visually");
+          attr(input, "class", "search-input icon-search button-w-icon");
+          attr(input, "type", "text");
+          attr(input, "placeholder", dist_10("timemanager", "Type to search for client, project or task"));
+          input.autofocus = true;
+          attr(label, "class", "search");
+          attr(div0, "class", "search-results");
+          button.disabled =
+          /*loading*/
+          ctx[7];
+          attr(button, "type", "button");
+          attr(button, "class", "icon-add button-w-icon button secondary task-add-button");
+          attr(div1, "class", "popover-arrow");
+          attr(div1, "data-popper-arrow", "");
+          attr(div2, "class", "task-selector-popover popover");
         },
         m: function m(target, anchor) {
-          insert(target, div1, anchor);
+          insert(target, div2, anchor);
+          append(div2, label);
+          append(label, span);
+          append(label, t1);
+          append(label, input);
+          /*input_binding*/
+
+          ctx[25](input);
+          append(div2, t2);
+          append(div2, div0);
+          if_block.m(div0, null);
+          append(div2, t3);
+          append(div2, button);
+          append(button, t4);
+          append(div2, t5);
+          append(div2, div1);
+          input.focus();
 
           if (!mounted) {
-            dispose = action_destroyer(/*popperContent*/
-            ctx[7].call(null, div1,
+            dispose = [action_destroyer(/*popperContent*/
+            ctx[9].call(null, div2,
             /*extraOpts*/
-            ctx[8]));
+            ctx[10])), listen(div2, "click", click_handler)];
             mounted = true;
           }
         },
+        p: function p(ctx, dirty) {
+          if_block.p(ctx, dirty);
+
+          if (dirty[0] &
+          /*loading*/
+          128) {
+            button.disabled =
+            /*loading*/
+            ctx[7];
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(div2);
+          /*input_binding*/
+
+          ctx[25](null);
+          if_block.d();
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    } // (205:4) {:else}
+
+
+    function create_else_block(ctx) {
+      var p;
+      return {
+        c: function c() {
+          p = element("p");
+          p.textContent = "".concat(dist_10("timemanager", "Nothing found"));
+          attr(p, "class", "no-result");
+        },
+        m: function m(target, anchor) {
+          insert(target, p, anchor);
+        },
         p: noop$1,
         d: function d(detaching) {
-          if (detaching) detach(div1);
-          mounted = false;
-          dispose();
+          if (detaching) detach(p);
+        }
+      };
+    } // (185:4) {#if searchResults?.length}
+
+
+    function create_if_block_1$1(ctx) {
+      var each_1_anchor;
+      var each_value =
+      /*searchResults*/
+      ctx[11];
+      var each_blocks = [];
+
+      for (var i = 0; i < each_value.length; i += 1) {
+        each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+      }
+
+      return {
+        c: function c() {
+          for (var _i = 0; _i < each_blocks.length; _i += 1) {
+            each_blocks[_i].c();
+          }
+
+          each_1_anchor = empty();
+        },
+        m: function m(target, anchor) {
+          for (var _i2 = 0; _i2 < each_blocks.length; _i2 += 1) {
+            each_blocks[_i2].m(target, anchor);
+          }
+
+          insert(target, each_1_anchor, anchor);
+        },
+        p: function p(ctx, dirty) {
+          if (dirty[0] &
+          /*searchResults*/
+          2048) {
+            each_value =
+            /*searchResults*/
+            ctx[11];
+
+            var _i3;
+
+            for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
+              var child_ctx = get_each_context$1(ctx, each_value, _i3);
+
+              if (each_blocks[_i3]) {
+                each_blocks[_i3].p(child_ctx, dirty);
+              } else {
+                each_blocks[_i3] = create_each_block$1(child_ctx);
+
+                each_blocks[_i3].c();
+
+                each_blocks[_i3].m(each_1_anchor.parentNode, each_1_anchor);
+              }
+            }
+
+            for (; _i3 < each_blocks.length; _i3 += 1) {
+              each_blocks[_i3].d(1);
+            }
+
+            each_blocks.length = each_value.length;
+          }
+        },
+        d: function d(detaching) {
+          destroy_each(each_blocks, detaching);
+          if (detaching) detach(each_1_anchor);
+        }
+      };
+    } // (195:12) {#each project.tasks as task}
+
+
+    function create_each_block_2$1(ctx) {
+      var li;
+      var a;
+      var t_value =
+      /*task*/
+      ctx[13].name + "";
+      var t;
+      return {
+        c: function c() {
+          li = element("li");
+          a = element("a");
+          t = text(t_value);
+          attr(a, "href", "#");
+          attr(a, "class", "task");
+        },
+        m: function m(target, anchor) {
+          insert(target, li, anchor);
+          append(li, a);
+          append(a, t);
+        },
+        p: noop$1,
+        d: function d(detaching) {
+          if (detaching) detach(li);
+        }
+      };
+    } // (191:9) {#each result.client.projects as project}
+
+
+    function create_each_block_1$1(ctx) {
+      var li;
+      var span;
+      var t0_value =
+      /*project*/
+      ctx[36].name + "";
+      var t0;
+      var t1;
+      var ul;
+      var t2;
+      var each_value_2 =
+      /*project*/
+      ctx[36].tasks;
+      var each_blocks = [];
+
+      for (var i = 0; i < each_value_2.length; i += 1) {
+        each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
+      }
+
+      return {
+        c: function c() {
+          li = element("li");
+          span = element("span");
+          t0 = text(t0_value);
+          t1 = space$1();
+          ul = element("ul");
+
+          for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
+            each_blocks[_i4].c();
+          }
+
+          t2 = space$1();
+          attr(span, "class", "project");
+        },
+        m: function m(target, anchor) {
+          insert(target, li, anchor);
+          append(li, span);
+          append(span, t0);
+          append(li, t1);
+          append(li, ul);
+
+          for (var _i5 = 0; _i5 < each_blocks.length; _i5 += 1) {
+            each_blocks[_i5].m(ul, null);
+          }
+
+          append(li, t2);
+        },
+        p: function p(ctx, dirty) {
+          if (dirty[0] &
+          /*searchResults*/
+          2048) {
+            each_value_2 =
+            /*project*/
+            ctx[36].tasks;
+
+            var _i6;
+
+            for (_i6 = 0; _i6 < each_value_2.length; _i6 += 1) {
+              var child_ctx = get_each_context_2$1(ctx, each_value_2, _i6);
+
+              if (each_blocks[_i6]) {
+                each_blocks[_i6].p(child_ctx, dirty);
+              } else {
+                each_blocks[_i6] = create_each_block_2$1(child_ctx);
+
+                each_blocks[_i6].c();
+
+                each_blocks[_i6].m(ul, null);
+              }
+            }
+
+            for (; _i6 < each_blocks.length; _i6 += 1) {
+              each_blocks[_i6].d(1);
+            }
+
+            each_blocks.length = each_value_2.length;
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(li);
+          destroy_each(each_blocks, detaching);
+        }
+      };
+    } // (186:5) {#each searchResults as result}
+
+
+    function create_each_block$1(ctx) {
+      var ul1;
+      var li;
+      var span;
+      var t0_value =
+      /*result*/
+      ctx[33].client.name + "";
+      var t0;
+      var t1;
+      var ul0;
+      var t2;
+      var each_value_1 =
+      /*result*/
+      ctx[33].client.projects;
+      var each_blocks = [];
+
+      for (var i = 0; i < each_value_1.length; i += 1) {
+        each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+      }
+
+      return {
+        c: function c() {
+          ul1 = element("ul");
+          li = element("li");
+          span = element("span");
+          t0 = text(t0_value);
+          t1 = space$1();
+          ul0 = element("ul");
+
+          for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
+            each_blocks[_i7].c();
+          }
+
+          t2 = space$1();
+          attr(span, "class", "client");
+          attr(ul1, "class", "result");
+        },
+        m: function m(target, anchor) {
+          insert(target, ul1, anchor);
+          append(ul1, li);
+          append(li, span);
+          append(span, t0);
+          append(li, t1);
+          append(li, ul0);
+
+          for (var _i8 = 0; _i8 < each_blocks.length; _i8 += 1) {
+            each_blocks[_i8].m(ul0, null);
+          }
+
+          append(ul1, t2);
+        },
+        p: function p(ctx, dirty) {
+          if (dirty[0] &
+          /*searchResults*/
+          2048) {
+            each_value_1 =
+            /*result*/
+            ctx[33].client.projects;
+
+            var _i9;
+
+            for (_i9 = 0; _i9 < each_value_1.length; _i9 += 1) {
+              var child_ctx = get_each_context_1$1(ctx, each_value_1, _i9);
+
+              if (each_blocks[_i9]) {
+                each_blocks[_i9].p(child_ctx, dirty);
+              } else {
+                each_blocks[_i9] = create_each_block_1$1(child_ctx);
+
+                each_blocks[_i9].c();
+
+                each_blocks[_i9].m(ul0, null);
+              }
+            }
+
+            for (; _i9 < each_blocks.length; _i9 += 1) {
+              each_blocks[_i9].d(1);
+            }
+
+            each_blocks.length = each_value_1.length;
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(ul1);
+          destroy_each(each_blocks, detaching);
         }
       };
     }
 
-    function create_fragment$8(ctx) {
+    function create_fragment$7(ctx) {
       var form;
       var label0;
-      var t0_value = dist_4$1('timemanager', 'Note') + "";
+      var t0_value = dist_10("timemanager", "Note") + "";
       var t0;
       var t1;
       var input0;
       var t2;
       var label1;
       var html_tag;
-      var raw_value = dist_4$1('timemanager', 'Duration (in hrs.) & Date') + "";
+      var raw_value = dist_10("timemanager", "Duration (in hrs.) & Date") + "";
       var t3;
       var span0;
       var input1;
@@ -26253,7 +27302,7 @@
       var input2;
       var t5;
       var label2;
-      var t6_value = dist_4$1('timemanager', 'Client, project or task') + "";
+      var t6_value = dist_10("timemanager", "Client, project or task") + "";
       var t6;
       var t7;
       var input3;
@@ -26261,7 +27310,7 @@
       var t9;
       var span1;
       var button;
-      var t10_value = dist_4$1('timemanager', 'Add') + "";
+      var t10_value = dist_10("timemanager", "Add") + "";
       var t10;
       var form_class_value;
       var mounted;
@@ -26298,7 +27347,7 @@
           attr(input0, "type", "text");
           attr(input0, "name", "note");
           attr(input0, "class", "note");
-          attr(input0, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
+          attr(input0, "placeholder", dist_10("timemanager", "Describe what you did..."));
           attr(label0, "class", "note");
           html_tag.a = t3;
           attr(input1, "id", "quick-add-time");
@@ -26313,17 +27362,20 @@
           attr(span0, "class", "double");
           attr(label1, "for", "quick-add-time");
           attr(input3, "type", "text");
-          attr(input3, "placeholder", dist_4$1('timemanager', 'Select...'));
+          attr(input3, "placeholder", dist_10("timemanager", "Select..."));
+          input3.disabled =
+          /*showTooltip*/
+          ctx[0];
           attr(label2, "class", "task-selector-trigger");
           button.disabled =
           /*loading*/
-          ctx[5];
+          ctx[7];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(span1, "class", "actions");
           attr(form, "class", form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[5] ? ' icon-loading' : ''));
+          ctx[7] ? " icon-loading" : ""));
         },
         m: function m(target, anchor) {
           insert(target, form, anchor);
@@ -26336,7 +27388,7 @@
           ctx[3]);
           /*input0_binding*/
 
-          ctx[17](input0);
+          ctx[20](input0);
           append(form, t2);
           append(form, label1);
           html_tag.m(raw_value, label1);
@@ -26356,6 +27408,9 @@
           append(label2, t6);
           append(label2, t7);
           append(label2, input3);
+          /*input3_binding*/
+
+          ctx[24](input3);
           append(form, t8);
           if (if_block) if_block.m(form, null);
           append(form, t9);
@@ -26366,24 +27421,21 @@
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler*/
-            ctx[16]), listen(input1, "input",
+            ctx[19]), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[18]), listen(input2, "input",
+            ctx[21]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[19]), action_destroyer(/*popperRef*/
-            ctx[6].call(null, input3)), listen(input3, "focus",
+            ctx[22]), action_destroyer(/*popperRef*/
+            ctx[8].call(null, input3)), listen(input3, "focus",
             /*focus_handler*/
-            ctx[20]), listen(form, "submit", prevent_default(
+            ctx[23]), listen(form, "submit", prevent_default(
             /*save*/
-            ctx[9]))];
+            ctx[12]))];
             mounted = true;
           }
         },
-        p: function p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-              dirty = _ref2[0];
-
-          if (dirty &
+        p: function p(ctx, dirty) {
+          if (dirty[0] &
           /*note*/
           8 && input0.value !==
           /*note*/
@@ -26393,7 +27445,7 @@
             ctx[3]);
           }
 
-          if (dirty &
+          if (dirty[0] &
           /*duration*/
           2 && to_number(input1.value) !==
           /*duration*/
@@ -26403,12 +27455,20 @@
             ctx[1]);
           }
 
-          if (dirty &
+          if (dirty[0] &
           /*date*/
           4) {
             set_input_value(input2,
             /*date*/
             ctx[2]);
+          }
+
+          if (dirty[0] &
+          /*showTooltip*/
+          1) {
+            input3.disabled =
+            /*showTooltip*/
+            ctx[0];
           }
 
           if (
@@ -26426,19 +27486,19 @@
             if_block = null;
           }
 
-          if (dirty &
+          if (dirty[0] &
           /*loading*/
-          32) {
+          128) {
             button.disabled =
             /*loading*/
-            ctx[5];
+            ctx[7];
           }
 
-          if (dirty &
+          if (dirty[0] &
           /*loading*/
-          32 && form_class_value !== (form_class_value = "quick-add".concat(
+          128 && form_class_value !== (form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[5] ? ' icon-loading' : ''))) {
+          ctx[7] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -26448,7 +27508,10 @@
           if (detaching) detach(form);
           /*input0_binding*/
 
-          ctx[17](null);
+          ctx[20](null);
+          /*input3_binding*/
+
+          ctx[24](null);
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -26456,11 +27519,15 @@
       };
     }
 
-    function instance$8($$self, $$props, $$invalidate) {
+    var click_handler = function click_handler(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    };
+
+    function instance$7($$self, $$props, $$invalidate) {
       var loading;
       var action = $$props.action;
       var requestToken = $$props.requestToken;
-      var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
       var initialDate = $$props.initialDate;
@@ -26487,12 +27554,37 @@
       var note;
       var task;
       var noteInput;
+      var buttonInput;
+      var searchInput;
+      // 	{
+      // 		client: {
+      // 			name: "Zoo",
+      // 			projects: [{ name: "Tigers", tasks: [{ name: "Feeding" }, { name: "Cleaning" }, { name: "Playing" }] }],
+      // 		},
+      // 	},
+      // 	{
+      // 		client: {
+      // 			name: "Grime, Cronin and Cruickshank",
+      // 			projects: [
+      // 				{ name: "Cobbler Birthday Cake", tasks: [{ name: "Mexico City" }] },
+      // 				{ name: "Cheesecake with caramel", tasks: [{ name: "Sidney" }] },
+      // 			],
+      // 		},
+      // 	},
+      // ];
+
+      var searchResults = [];
       tasks && tasks.length ? tasks.map(function (aTask) {
         aTask.project = projects.find(function (aProject) {
           return aProject.value === aTask.projectUuid;
         });
         return aTask;
       }) : [];
+
+      var hideTooltip = function hideTooltip() {
+        $$invalidate(0, showTooltip = false);
+      };
+
       onMount(function () {
         document.addEventListener("DOMContentLoaded", function () {
           if (noteInput) {
@@ -26503,18 +27595,23 @@
         if (noteInput) {
           noteInput.focus();
         }
+
+        document.addEventListener("click", hideTooltip);
+        return function () {
+          document.removeEventListener("click", hideTooltip);
+        };
       });
 
       var save = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
           var entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(5, loading = true);
+                  $$invalidate(7, loading = true);
 
-                  $$invalidate(5, loading = false);
+                  $$invalidate(7, loading = false);
                   return _context.abrupt("return");
 
                 case 6:
@@ -26551,7 +27648,7 @@
                   console.error(_context.t0);
 
                 case 17:
-                  $$invalidate(5, loading = false);
+                  $$invalidate(7, loading = false);
 
                 case 18:
                 case "end":
@@ -26562,7 +27659,7 @@
         }));
 
         return function save() {
-          return _ref3.apply(this, arguments);
+          return _ref.apply(this, arguments);
         };
       }();
 
@@ -26589,24 +27686,43 @@
       }
 
       var focus_handler = function focus_handler() {
-        return $$invalidate(0, showTooltip = true);
+        var _buttonInput, _searchInput;
+
+        // We want to use this input as a button
+        // and then focus the actual search input
+        (_buttonInput = buttonInput) === null || _buttonInput === void 0 ? void 0 : _buttonInput.blur();
+        (_searchInput = searchInput) === null || _searchInput === void 0 ? void 0 : _searchInput.focus();
+        $$invalidate(0, showTooltip = true);
       };
+
+      function input3_binding($$value) {
+        binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+          buttonInput = $$value;
+          $$invalidate(5, buttonInput);
+        });
+      }
+
+      function input_binding($$value) {
+        binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+          searchInput = $$value;
+          $$invalidate(6, searchInput);
+        });
+      }
 
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(10, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(11, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(12, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(13, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(14, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(15, initialDate = $$props.initialDate);
+        if ('action' in $$props) $$invalidate(14, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(15, requestToken = $$props.requestToken);
+        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
+        if ('initialDate' in $$props) $$invalidate(18, initialDate = $$props.initialDate);
       };
 
-      $$invalidate(5, loading = false);
+      $$invalidate(7, loading = false);
 
-      return [showTooltip, duration, date, note, noteInput, loading, popperRef, popperContent, extraOpts, save, action, requestToken, clients, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler];
+      return [showTooltip, duration, date, note, noteInput, buttonInput, searchInput, loading, popperRef, popperContent, extraOpts, searchResults, save, task, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler, input3_binding, input_binding];
     }
 
-    var QuickAdd$1 = /*#__PURE__*/function (_SvelteComponent) {
+    var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
       _inherits(QuickAdd, _SvelteComponent);
 
       var _super = _createSuper(QuickAdd);
@@ -26617,611 +27733,17 @@
         _classCallCheck$1(this, QuickAdd);
 
         _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$8, create_fragment$8, safe_not_equal, {
-          action: 10,
-          requestToken: 11,
-          clients: 12,
-          projects: 13,
-          tasks: 14,
-          initialDate: 15
-        });
+        init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+          action: 14,
+          requestToken: 15,
+          projects: 16,
+          tasks: 17,
+          initialDate: 18
+        }, null, [-1, -1]);
         return _this;
       }
 
       return _createClass$1(QuickAdd);
-    }(SvelteComponent);
-
-    function create_fragment$7(ctx) {
-      var form;
-      var label0;
-      var t0_value = dist_4$1('timemanager', 'Note') + "";
-      var t0;
-      var t1;
-      var input0;
-      var t2;
-      var label1;
-      var html_tag;
-      var raw0_value = dist_4$1('timemanager', 'Duration (in hrs.) & Date') + "";
-      var t3;
-      var span0;
-      var input1;
-      var t4;
-      var input2;
-      var t5;
-      var label2;
-      var t6_value = dist_4$1('timemanager', 'Client') + "";
-      var t6;
-      var t7;
-      var select0;
-      var updating_value;
-      var label2_class_value;
-      var t8;
-      var label3;
-      var span1;
-      var html_tag_1;
-      var raw1_value = dist_4$1('timemanager', 'Project & Task for') + "";
-      var t9;
-      var strong;
-      var t10_value = (
-      /*client*/
-      ctx[4] &&
-      /*client*/
-      ctx[4].label) + "";
-      var t10;
-      var t11;
-      var a;
-      var t13;
-      var select1;
-      var updating_value_1;
-      var label3_class_value;
-      var t14;
-      var span2;
-      var button;
-      var t15_value = dist_4$1('timemanager', 'Add') + "";
-      var t15;
-      var form_class_value;
-      var current;
-      var mounted;
-      var dispose;
-
-      function select0_value_binding(value) {
-        /*select0_value_binding*/
-        ctx[21](value);
-      }
-
-      var select0_props = {
-        noOptionsMessage: dist_4$1('timemanager', 'No options'),
-        placeholder: dist_4$1('timemanager', 'Select...'),
-        items:
-        /*clients*/
-        ctx[0]
-      };
-
-      if (
-      /*client*/
-      ctx[4] !== void 0) {
-        select0_props.value =
-        /*client*/
-        ctx[4];
-      }
-
-      select0 = new Select({
-        props: select0_props
-      });
-      binding_callbacks.push(function () {
-        return bind(select0, 'value', select0_value_binding);
-      });
-      select0.$on("select",
-      /*clientSelected*/
-      ctx[11]);
-
-      function select1_value_binding(value) {
-        /*select1_value_binding*/
-        ctx[24](value);
-      }
-
-      var select1_props = {
-        items:
-        /*tasksWithProject*/
-        ctx[9] &&
-        /*tasksWithProject*/
-        ctx[9].filter(
-        /*func*/
-        ctx[23]),
-        groupBy: func_1,
-        noOptionsMessage: dist_4$1('timemanager', 'No projects/tasks or no client selected.'),
-        placeholder: dist_4$1('timemanager', 'Select...')
-      };
-
-      if (
-      /*task*/
-      ctx[5] !== void 0) {
-        select1_props.value =
-        /*task*/
-        ctx[5];
-      }
-
-      select1 = new Select({
-        props: select1_props
-      });
-      binding_callbacks.push(function () {
-        return bind(select1, 'value', select1_value_binding);
-      });
-      return {
-        c: function c() {
-          form = element("form");
-          label0 = element("label");
-          t0 = text(t0_value);
-          t1 = space$1();
-          input0 = element("input");
-          t2 = space$1();
-          label1 = element("label");
-          html_tag = new HtmlTag(false);
-          t3 = space$1();
-          span0 = element("span");
-          input1 = element("input");
-          t4 = space$1();
-          input2 = element("input");
-          t5 = space$1();
-          label2 = element("label");
-          t6 = text(t6_value);
-          t7 = space$1();
-          create_component(select0.$$.fragment);
-          t8 = space$1();
-          label3 = element("label");
-          span1 = element("span");
-          html_tag_1 = new HtmlTag(false);
-          t9 = space$1();
-          strong = element("strong");
-          t10 = text(t10_value);
-          t11 = space$1();
-          a = element("a");
-          a.textContent = "".concat(dist_4$1('timemanager', 'Change client'));
-          t13 = space$1();
-          create_component(select1.$$.fragment);
-          t14 = space$1();
-          span2 = element("span");
-          button = element("button");
-          t15 = text(t15_value);
-          attr(input0, "type", "text");
-          attr(input0, "name", "note");
-          attr(input0, "class", "note");
-          attr(input0, "placeholder", dist_4$1('timemanager', 'Describe what you did...'));
-          attr(label0, "class", "note");
-          html_tag.a = t3;
-          attr(input1, "type", "number");
-          attr(input1, "name", "duration");
-          attr(input1, "step", "0.01");
-          attr(input1, "placeholder", "");
-          attr(input1, "class", "duration-input");
-          attr(input2, "type", "date");
-          attr(input2, "name", "date");
-          attr(input2, "class", "date-input");
-          attr(span0, "class", "double");
-          attr(label2, "class", label2_class_value = "client".concat(
-          /*taskError*/
-          ctx[8] ? ' error' : '').concat(
-          /*client*/
-          ctx[4] ? ' hidden-visually' : ''));
-          html_tag_1.a = t9;
-          attr(a, "href", "#/");
-          attr(a, "class", "change");
-          attr(span1, "class", "task-caption");
-          attr(label3, "class", label3_class_value = "task".concat(
-          /*taskError*/
-          ctx[8] ? ' error' : '').concat(!
-          /*client*/
-          ctx[4] ? ' hidden-visually' : ''));
-          button.disabled =
-          /*loading*/
-          ctx[7];
-          attr(button, "type", "submit");
-          attr(button, "class", "button primary");
-          attr(span2, "class", "actions");
-          attr(form, "class", form_class_value = "quick-add".concat(
-          /*loading*/
-          ctx[7] ? ' icon-loading' : ''));
-        },
-        m: function m(target, anchor) {
-          insert(target, form, anchor);
-          append(form, label0);
-          append(label0, t0);
-          append(label0, t1);
-          append(label0, input0);
-          set_input_value(input0,
-          /*note*/
-          ctx[3]);
-          /*input0_binding*/
-
-          ctx[18](input0);
-          append(form, t2);
-          append(form, label1);
-          html_tag.m(raw0_value, label1);
-          append(label1, t3);
-          append(label1, span0);
-          append(span0, input1);
-          set_input_value(input1,
-          /*duration*/
-          ctx[1]);
-          append(span0, t4);
-          append(span0, input2);
-          set_input_value(input2,
-          /*date*/
-          ctx[2]);
-          append(form, t5);
-          append(form, label2);
-          append(label2, t6);
-          append(label2, t7);
-          mount_component(select0, label2, null);
-          append(form, t8);
-          append(form, label3);
-          append(label3, span1);
-          html_tag_1.m(raw1_value, span1);
-          append(span1, t9);
-          append(span1, strong);
-          append(strong, t10);
-          append(span1, t11);
-          append(span1, a);
-          append(label3, t13);
-          mount_component(select1, label3, null);
-          append(form, t14);
-          append(form, span2);
-          append(span2, button);
-          append(button, t15);
-          current = true;
-
-          if (!mounted) {
-            dispose = [listen(input0, "input",
-            /*input0_input_handler*/
-            ctx[17]), listen(input1, "input",
-            /*input1_input_handler*/
-            ctx[19]), listen(input2, "input",
-            /*input2_input_handler*/
-            ctx[20]), listen(a, "click", prevent_default(
-            /*click_handler*/
-            ctx[22])), listen(form, "submit", prevent_default(
-            /*save*/
-            ctx[10]))];
-            mounted = true;
-          }
-        },
-        p: function p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-              dirty = _ref2[0];
-
-          if (dirty &
-          /*note*/
-          8 && input0.value !==
-          /*note*/
-          ctx[3]) {
-            set_input_value(input0,
-            /*note*/
-            ctx[3]);
-          }
-
-          if (dirty &
-          /*duration*/
-          2 && to_number(input1.value) !==
-          /*duration*/
-          ctx[1]) {
-            set_input_value(input1,
-            /*duration*/
-            ctx[1]);
-          }
-
-          if (dirty &
-          /*date*/
-          4) {
-            set_input_value(input2,
-            /*date*/
-            ctx[2]);
-          }
-
-          var select0_changes = {};
-          if (dirty &
-          /*clients*/
-          1) select0_changes.items =
-          /*clients*/
-          ctx[0];
-
-          if (!updating_value && dirty &
-          /*client*/
-          16) {
-            updating_value = true;
-            select0_changes.value =
-            /*client*/
-            ctx[4];
-            add_flush_callback(function () {
-              return updating_value = false;
-            });
-          }
-
-          select0.$set(select0_changes);
-
-          if (!current || dirty &
-          /*taskError, client*/
-          272 && label2_class_value !== (label2_class_value = "client".concat(
-          /*taskError*/
-          ctx[8] ? ' error' : '').concat(
-          /*client*/
-          ctx[4] ? ' hidden-visually' : ''))) {
-            attr(label2, "class", label2_class_value);
-          }
-
-          if ((!current || dirty &
-          /*client*/
-          16) && t10_value !== (t10_value = (
-          /*client*/
-          ctx[4] &&
-          /*client*/
-          ctx[4].label) + "")) set_data(t10, t10_value);
-          var select1_changes = {};
-          if (dirty &
-          /*client*/
-          16) select1_changes.items =
-          /*tasksWithProject*/
-          ctx[9] &&
-          /*tasksWithProject*/
-          ctx[9].filter(
-          /*func*/
-          ctx[23]);
-
-          if (!updating_value_1 && dirty &
-          /*task*/
-          32) {
-            updating_value_1 = true;
-            select1_changes.value =
-            /*task*/
-            ctx[5];
-            add_flush_callback(function () {
-              return updating_value_1 = false;
-            });
-          }
-
-          select1.$set(select1_changes);
-
-          if (!current || dirty &
-          /*taskError, client*/
-          272 && label3_class_value !== (label3_class_value = "task".concat(
-          /*taskError*/
-          ctx[8] ? ' error' : '').concat(!
-          /*client*/
-          ctx[4] ? ' hidden-visually' : ''))) {
-            attr(label3, "class", label3_class_value);
-          }
-
-          if (!current || dirty &
-          /*loading*/
-          128) {
-            button.disabled =
-            /*loading*/
-            ctx[7];
-          }
-
-          if (!current || dirty &
-          /*loading*/
-          128 && form_class_value !== (form_class_value = "quick-add".concat(
-          /*loading*/
-          ctx[7] ? ' icon-loading' : ''))) {
-            attr(form, "class", form_class_value);
-          }
-        },
-        i: function i(local) {
-          if (current) return;
-          transition_in(select0.$$.fragment, local);
-          transition_in(select1.$$.fragment, local);
-          current = true;
-        },
-        o: function o(local) {
-          transition_out(select0.$$.fragment, local);
-          transition_out(select1.$$.fragment, local);
-          current = false;
-        },
-        d: function d(detaching) {
-          if (detaching) detach(form);
-          /*input0_binding*/
-
-          ctx[18](null);
-          destroy_component(select0);
-          destroy_component(select1);
-          mounted = false;
-          run_all(dispose);
-        }
-      };
-    }
-
-    var func_1 = function func_1(item) {
-      return item.project.label;
-    };
-
-    function instance$7($$self, $$props, $$invalidate) {
-      var loading;
-      var taskError;
-      var action = $$props.action;
-      var requestToken = $$props.requestToken;
-      var clients = $$props.clients;
-      var projects = $$props.projects;
-      var tasks = $$props.tasks;
-      var initialDate = $$props.initialDate;
-      var duration = 1;
-      var date = initialDate;
-      var note;
-      var client;
-      var task;
-      var noteInput;
-      var tasksWithProject = tasks && tasks.length ? tasks.map(function (aTask) {
-        aTask.project = projects.find(function (aProject) {
-          return aProject.value === aTask.projectUuid;
-        });
-        return aTask;
-      }) : [];
-      onMount(function () {
-        document.addEventListener("DOMContentLoaded", function () {
-          if (noteInput) {
-            noteInput.focus();
-          }
-        });
-
-        if (noteInput) {
-          noteInput.focus();
-        }
-      });
-
-      var save = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-          var entry, response;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  $$invalidate(7, loading = true);
-                  $$invalidate(8, taskError = false);
-
-                  if (task) {
-                    _context.next = 6;
-                    break;
-                  }
-
-                  $$invalidate(7, loading = false);
-                  $$invalidate(8, taskError = true);
-                  return _context.abrupt("return");
-
-                case 6:
-                  _context.prev = 6;
-                  entry = {
-                    duration: duration,
-                    date: date,
-                    note: note,
-                    task: task.value
-                  };
-                  _context.next = 10;
-                  return fetch(action, {
-                    method: "POST",
-                    body: JSON.stringify(entry),
-                    headers: {
-                      requesttoken: requestToken,
-                      "content-type": "application/json"
-                    }
-                  });
-
-                case 10:
-                  response = _context.sent;
-
-                  if (response && response.ok) {
-                    document.querySelector(".app-timemanager [data-current-link]").click();
-                  }
-
-                  _context.next = 17;
-                  break;
-
-                case 14:
-                  _context.prev = 14;
-                  _context.t0 = _context["catch"](6);
-                  console.error(_context.t0);
-
-                case 17:
-                  $$invalidate(7, loading = false);
-
-                case 18:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, null, [[6, 14]]);
-        }));
-
-        return function save() {
-          return _ref3.apply(this, arguments);
-        };
-      }();
-
-      var clientSelected = function clientSelected() {
-        var input = document.querySelector(".task input");
-
-        if (input) {
-          input.focus();
-        }
-      };
-
-      function input0_input_handler() {
-        note = this.value;
-        $$invalidate(3, note);
-      }
-
-      function input0_binding($$value) {
-        binding_callbacks[$$value ? 'unshift' : 'push'](function () {
-          noteInput = $$value;
-          $$invalidate(6, noteInput);
-        });
-      }
-
-      function input1_input_handler() {
-        duration = to_number(this.value);
-        $$invalidate(1, duration);
-      }
-
-      function input2_input_handler() {
-        date = this.value;
-        $$invalidate(2, date);
-      }
-
-      function select0_value_binding(value) {
-        client = value;
-        $$invalidate(4, client);
-      }
-
-      var click_handler = function click_handler() {
-        return $$invalidate(4, client = null);
-      };
-
-      var func = function func(oneTask) {
-        return client && oneTask.project.clientUuid === client.value;
-      };
-
-      function select1_value_binding(value) {
-        task = value;
-        $$invalidate(5, task);
-      }
-
-      $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(12, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(14, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(15, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(16, initialDate = $$props.initialDate);
-      };
-
-      $$invalidate(7, loading = false);
-
-      $$invalidate(8, taskError = false);
-
-      return [clients, duration, date, note, client, task, noteInput, loading, taskError, tasksWithProject, save, clientSelected, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, select0_value_binding, click_handler, func, select1_value_binding];
-    }
-
-    var QuickAddLegacy = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits(QuickAddLegacy, _SvelteComponent);
-
-      var _super = _createSuper(QuickAddLegacy);
-
-      function QuickAddLegacy(options) {
-        var _this;
-
-        _classCallCheck$1(this, QuickAddLegacy);
-
-        _this = _super.call(this);
-        init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
-          action: 12,
-          requestToken: 13,
-          clients: 0,
-          projects: 14,
-          tasks: 15,
-          initialDate: 16
-        });
-        return _this;
-      }
-
-      return _createClass$1(QuickAddLegacy);
     }(SvelteComponent);
 
     function create_fragment$6(ctx) {
@@ -27442,32 +27964,32 @@
     function create_fragment$5(ctx) {
       var form;
       var label0;
-      var t0_value = dist_4$1('timemanager', 'Clients') + "";
+      var t0_value = dist_10('timemanager', 'Clients') + "";
       var t0;
       var t1;
       var select0;
       var t2;
       var label1;
-      var t3_value = dist_4$1('timemanager', 'Projects') + "";
+      var t3_value = dist_10('timemanager', 'Projects') + "";
       var t3;
       var t4;
       var select1;
       var t5;
       var label2;
-      var t6_value = dist_4$1('timemanager', 'Tasks') + "";
+      var t6_value = dist_10('timemanager', 'Tasks') + "";
       var t6;
       var t7;
       var select2;
       var t8;
       var label3;
-      var t9_value = dist_4$1('timemanager', 'Status') + "";
+      var t9_value = dist_10('timemanager', 'Status') + "";
       var t9;
       var t10;
       var select3;
       var t11;
       var span;
       var button;
-      var t12_value = dist_4$1('timemanager', 'Apply filters') + "";
+      var t12_value = dist_10('timemanager', 'Apply filters') + "";
       var t12;
       var form_class_value;
       var current;
@@ -27475,8 +27997,8 @@
       var dispose;
       select0 = new Select({
         props: {
-          noOptionsMessage: dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Select...'),
+          noOptionsMessage: dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Select...'),
           inputAttributes: {
             id: 'client-select'
           },
@@ -27494,8 +28016,8 @@
       ctx[10]);
       select1 = new Select({
         props: {
-          noOptionsMessage: dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Select...'),
+          noOptionsMessage: dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Select...'),
           inputAttributes: {
             id: 'projects-select'
           },
@@ -27513,8 +28035,8 @@
       ctx[11]);
       select2 = new Select({
         props: {
-          noOptionsMessage: dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Select...'),
+          noOptionsMessage: dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Select...'),
           inputAttributes: {
             id: 'tasks-select'
           },
@@ -27532,8 +28054,8 @@
       ctx[12]);
       select3 = new Select({
         props: {
-          noOptionsMessage: dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Select...'),
+          noOptionsMessage: dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Select...'),
           inputAttributes: {
             id: 'status-select'
           },
@@ -27733,10 +28255,10 @@
       var selectedStatus;
       var availableStatus = [{
         value: "unpaid",
-        label: dist_4$1("timemanager", "Unresolved")
+        label: dist_10("timemanager", "Unresolved")
       }, {
         value: "paid",
-        label: dist_4$1("timemanager", "Resolved")
+        label: dist_10("timemanager", "Resolved")
       }];
 
       var apply = function apply(e) {
@@ -27974,7 +28496,7 @@
 
     function create_if_block$2(ctx) {
       var label;
-      var t0_value = dist_4$1('timemanager', 'Created by') + "";
+      var t0_value = dist_10('timemanager', 'Created by') + "";
       var t0;
       var t1;
       var select;
@@ -27983,8 +28505,8 @@
         props: {
           noOptionsMessage:
           /*loading*/
-          ctx[2] ? dist_4$1('timemanager', 'Loading...') : dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Search...'),
+          ctx[2] ? dist_10('timemanager', 'Loading...') : dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Search...'),
           inputAttributes: {
             id: 'sharee-filter-select'
           },
@@ -28024,7 +28546,7 @@
           /*loading*/
           4) select_changes.noOptionsMessage =
           /*loading*/
-          ctx[2] ? dist_4$1('timemanager', 'Loading...') : dist_4$1('timemanager', 'No options');
+          ctx[2] ? dist_10('timemanager', 'Loading...') : dist_10('timemanager', 'No options');
           if (dirty &
           /*selectedSharee*/
           2) select_changes.value =
@@ -28317,26 +28839,26 @@
       var userfilterselect;
       var t0;
       var label0;
-      var t1_value = dist_4$1('timemanager', 'From') + "";
+      var t1_value = dist_10('timemanager', 'From') + "";
       var t1;
       var t2;
       var input0;
       var t3;
       var label1;
-      var t4_value = dist_4$1('timemanager', 'To') + "";
+      var t4_value = dist_10('timemanager', 'To') + "";
       var t4;
       var t5;
       var input1;
       var t6;
       var label2;
-      var t7_value = dist_4$1('timemanager', 'Presets') + "";
+      var t7_value = dist_10('timemanager', 'Presets') + "";
       var t7;
       var t8;
       var select;
       var t9;
       var span;
       var button;
-      var t10_value = dist_4$1('timemanager', 'Apply range') + "";
+      var t10_value = dist_10('timemanager', 'Apply range') + "";
       var t10;
       var form_class_value;
       var current;
@@ -28351,8 +28873,8 @@
       });
       select = new Select({
         props: {
-          noOptionsMessage: dist_4$1('timemanager', 'No options'),
-          placeholder: dist_4$1('timemanager', 'Select...'),
+          noOptionsMessage: dist_10('timemanager', 'No options'),
+          placeholder: dist_10('timemanager', 'Select...'),
           inputAttributes: {
             id: 'preset-select'
           },
@@ -28525,28 +29047,28 @@
       var startOfMonth$1 = $$props.startOfMonth;
       var endOfMonth$1 = $$props.endOfMonth;
       var presets = [{
-        label: dist_4$1("timemanager", "Today"),
+        label: dist_10("timemanager", "Today"),
         value: "today"
       }, {
-        label: dist_4$1("timemanager", "Yesterday"),
+        label: dist_10("timemanager", "Yesterday"),
         value: "yesterday"
       }, {
-        label: dist_4$1("timemanager", "This Week"),
+        label: dist_10("timemanager", "This Week"),
         value: "week"
       }, {
-        label: dist_4$1("timemanager", "Last week"),
+        label: dist_10("timemanager", "Last week"),
         value: "week-1"
       }, {
-        label: dist_4$1("timemanager", "This month"),
+        label: dist_10("timemanager", "This month"),
         value: "month"
       }, {
-        label: dist_4$1("timemanager", "Last month"),
+        label: dist_10("timemanager", "Last month"),
         value: "month-1"
       }, {
-        label: dist_4$1("timemanager", "This year"),
+        label: dist_10("timemanager", "This year"),
         value: "year"
       }, {
-        label: dist_4$1("timemanager", "Last year"),
+        label: dist_10("timemanager", "Last year"),
         value: "year-1"
       }];
 
@@ -28580,10 +29102,10 @@
 
           case "week":
             $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
-              weekStartsOn: dist_6()
+              weekStartsOn: dist_5$1()
             }), dateFormat));
             $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
-              weekStartsOn: dist_6()
+              weekStartsOn: dist_5$1()
             }), dateFormat));
             break;
 
@@ -28591,12 +29113,12 @@
             $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
-              weekStartsOn: dist_6()
+              weekStartsOn: dist_5$1()
             }), dateFormat));
             $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
-              weekStartsOn: dist_6()
+              weekStartsOn: dist_5$1()
             }), dateFormat));
             break;
 
@@ -28722,7 +29244,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Print report'));
+          button.textContent = "".concat(dist_10('timemanager', 'Print report'));
           attr(button, "type", "button");
           attr(button, "class", "button secondary");
         },
@@ -35474,7 +35996,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = dist_4$1('timemanager', 'CSV parse error:') + "";
+      var t2_value = dist_10('timemanager', 'CSV parse error:') + "";
       var t2;
       var t3;
       var t4;
@@ -35487,7 +36009,7 @@
         c: function c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(dist_4$1('timemanager', 'Error reading CSV file'));
+          h3.textContent = "".concat(dist_10('timemanager', 'Error reading CSV file'));
           t1 = space$1();
           div0 = element("div");
           t2 = text(t2_value);
@@ -35498,7 +36020,7 @@
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+          button.textContent = "".concat(dist_10('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35597,7 +36119,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = dist_4$1('timemanager', 'Import API error:') + "";
+      var t2_value = dist_10('timemanager', 'Import API error:') + "";
       var t2;
       var t3;
       var t4;
@@ -35610,7 +36132,7 @@
         c: function c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(dist_4$1('timemanager', 'Error importing entries'));
+          h3.textContent = "".concat(dist_10('timemanager', 'Error importing entries'));
           t1 = space$1();
           div0 = element("div");
           t2 = text(t2_value);
@@ -35621,7 +36143,7 @@
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+          button.textContent = "".concat(dist_10('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35720,7 +36242,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = dist_4$1('timemanager', 'Done:') + "";
+      var t2_value = dist_10('timemanager', 'Done:') + "";
       var t2;
       var t3;
       var t4;
@@ -35733,7 +36255,7 @@
         c: function c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(dist_4$1('timemanager', 'Import successful'));
+          h3.textContent = "".concat(dist_10('timemanager', 'Import successful'));
           t1 = space$1();
           div0 = element("div");
           t2 = text(t2_value);
@@ -35744,7 +36266,7 @@
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Close'));
+          button.textContent = "".concat(dist_10('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35821,26 +36343,26 @@
           div0 = element("div");
           p = element("p");
           strong = element("strong");
-          strong.textContent = "".concat(dist_4$1('timemanager', 'Preview'));
+          strong.textContent = "".concat(dist_10('timemanager', 'Preview'));
           t1 = space$1();
           button0 = element("button");
-          button0.textContent = "".concat(dist_4$1('timemanager', 'Collapse all'));
+          button0.textContent = "".concat(dist_10('timemanager', 'Collapse all'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_4$1('timemanager', 'Expand all'));
+          button1.textContent = "".concat(dist_10('timemanager', 'Expand all'));
           t5 = space$1();
           div1 = element("div");
           dl = element("dl");
           dt0 = element("dt");
-          dt0.textContent = "".concat(dist_4$1('timemanager', 'Clients'));
+          dt0.textContent = "".concat(dist_10('timemanager', 'Clients'));
           dd0 = element("dd");
           t7 = text(t7_value);
           dt1 = element("dt");
-          dt1.textContent = "".concat(dist_4$1('timemanager', 'Projects'));
+          dt1.textContent = "".concat(dist_10('timemanager', 'Projects'));
           dd1 = element("dd");
           t9 = text(t9_value);
           dt2 = element("dt");
-          dt2.textContent = "".concat(dist_4$1('timemanager', 'Tasks'));
+          dt2.textContent = "".concat(dist_10('timemanager', 'Tasks'));
           dd2 = element("dd");
           t11 = text(t11_value);
           attr(button0, "class", "button");
@@ -35923,7 +36445,7 @@
         c: function c() {
           details = element("details");
           summary = element("summary");
-          summary.textContent = "".concat(dist_4$1('timemanager', 'Projects'));
+          summary.textContent = "".concat(dist_10('timemanager', 'Projects'));
           t1 = space$1();
 
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
@@ -36007,7 +36529,7 @@
         c: function c() {
           details = element("details");
           summary = element("summary");
-          summary.textContent = "".concat(dist_4$1('timemanager', 'Tasks'));
+          summary.textContent = "".concat(dist_10('timemanager', 'Tasks'));
           t1 = space$1();
 
           for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
@@ -36097,14 +36619,14 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(dist_4$1('timemanager', 'Task name'));
+          span0.textContent = "".concat(dist_10('timemanager', 'Task name'));
           t1 = space$1();
           h3 = element("h3");
           t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
+          span1.textContent = "".concat(dist_10('timemanager', 'Note'));
           t5 = space$1();
           t6 = text(t6_value);
           attr(span0, "class", "tm_label");
@@ -36170,14 +36692,14 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(dist_4$1('timemanager', 'Project name'));
+          span0.textContent = "".concat(dist_10('timemanager', 'Project name'));
           t1 = space$1();
           h3 = element("h3");
           t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
+          span1.textContent = "".concat(dist_10('timemanager', 'Note'));
           t5 = space$1();
           t6 = text(t6_value);
           t7 = space$1();
@@ -36263,14 +36785,14 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(dist_4$1('timemanager', 'Client'));
+          span0.textContent = "".concat(dist_10('timemanager', 'Client'));
           t1 = space$1();
           h3 = element("h3");
           t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(dist_4$1('timemanager', 'Note'));
+          span1.textContent = "".concat(dist_10('timemanager', 'Note'));
           t5 = space$1();
           t6 = text(t6_value);
           t7 = space$1();
@@ -36332,7 +36854,7 @@
     function create_if_block$1(ctx) {
       var form;
       var button;
-      var t_value = dist_4$1('timemanager', 'Import now') + "";
+      var t_value = dist_10('timemanager', 'Import now') + "";
       var t;
       var form_class_value;
       var mounted;
@@ -36391,7 +36913,7 @@
     function create_fragment$1(ctx) {
       var form;
       var label0;
-      var t0_value = dist_4$1('timemanager', 'Select delimiter') + "";
+      var t0_value = dist_10('timemanager', 'Select delimiter') + "";
       var t0;
       var t1;
       var select;
@@ -36399,7 +36921,7 @@
       var option1;
       var t4;
       var label1;
-      var t5_value = dist_4$1('timemanager', 'Select CSV file') + "";
+      var t5_value = dist_10('timemanager', 'Select CSV file') + "";
       var t5;
       var t6;
       var br;
@@ -36461,7 +36983,7 @@
           input = element("input");
           t8 = space$1();
           button = element("button");
-          button.textContent = "".concat(dist_4$1('timemanager', 'Generate preview from file'));
+          button.textContent = "".concat(dist_10('timemanager', 'Generate preview from file'));
           t10 = space$1();
           if (if_block0) if_block0.c();
           t11 = space$1();
@@ -36822,7 +37344,7 @@
                     break;
                   }
 
-                  $$invalidate(9, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                  $$invalidate(9, parseError = dist_10("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
                   return _context.abrupt("return");
 
                 case 22:
@@ -36836,7 +37358,7 @@
                     break;
                   }
 
-                  $$invalidate(9, parseError = dist_4$1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                  $$invalidate(9, parseError = dist_10("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
                   return _context.abrupt("return");
 
                 case 28:
@@ -36963,7 +37485,7 @@
 
                   if (response.ok) {
                     $$invalidate(8, importPreviewData = []);
-                    $$invalidate(7, successMessage = dist_4$1("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
+                    $$invalidate(7, successMessage = dist_10("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
                       clientsCount: preparedClients.length,
                       projectsCount: preparedProjects.length,
                       tasksCount: preparedTasks.length
@@ -37138,7 +37660,7 @@
 
     function create_fragment(ctx) {
       var button;
-      var t0_value = dist_4$1('timemanager', 'Filter by person') + "";
+      var t0_value = dist_10('timemanager', 'Filter by person') + "";
       var t0;
       var button_class_value;
       var t1;
@@ -37156,7 +37678,7 @@
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(button, "class", button_class_value = "filter-button icon-filter ".concat(
+          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(
           /*$isFilterSet*/
           ctx[2] ? 'active' : ''));
         },
@@ -37182,7 +37704,7 @@
 
           if (!current || dirty &
           /*$isFilterSet*/
-          4 && button_class_value !== (button_class_value = "filter-button icon-filter ".concat(
+          4 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(
           /*$isFilterSet*/
           ctx[2] ? 'active' : ''))) {
             attr(button, "class", button_class_value);
@@ -41952,12 +42474,10 @@
     var auth = unwrapExports(dist);
 
     var token = auth.getRequestToken();
-    var components = [];
-    var QuickAdd = QuickAddLegacy;
-
-    if (process.env.FEATURE_QUICK_ADD_NEXT) {
-      QuickAdd = QuickAdd$1;
-    }
+    var components = []; // let QuickAdd = QuickAddLegacy;
+    // if (process.env.FEATURE_QUICK_ADD_NEXT) {
+    // 	QuickAdd = QuickAddNext;
+    // }
 
     $(document).ready(function () {
       if ($('input[name="duration"]').length > 0) {
@@ -42095,8 +42615,8 @@
             props: _objectSpread2(_objectSpread2({}, store), {}, {
               timeUuid: button.getAttribute("data-uuid"),
               editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-              timeEditorButtonCaption: dist_4$1("timemanager", "Edit"),
-              timeEditorCaption: dist_4$1("timemanager", "Edit time entry"),
+              timeEditorButtonCaption: dist_10("timemanager", "Edit"),
+              timeEditorCaption: dist_10("timemanager", "Edit time entry"),
               requestToken: token
             })
           }));

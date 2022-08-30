@@ -1,7 +1,7 @@
 <script>
 	export let action;
 	export let requestToken;
-	export let clients;
+	// export let clients;
 	export let projects;
 	export let tasks;
 	export let initialDate;
@@ -14,10 +14,10 @@
 	import { createPopperActions } from "svelte-popperjs";
 	const [popperRef, popperContent] = createPopperActions({
 		placement: "bottom",
-		strategy: "fixed"
+		strategy: "fixed",
 	});
 	const extraOpts = {
-		modifiers: [{ name: "offset", options: { offset: [0, 8] } }]
+		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
 	};
 
 	let showTooltip = false;
@@ -32,14 +32,39 @@
 	let client;
 	let task;
 	let noteInput;
+	let buttonInput;
+	let searchInput;
+	let tooltipContainer;
+	// const searchResults = [
+	// 	{
+	// 		client: {
+	// 			name: "Zoo",
+	// 			projects: [{ name: "Tigers", tasks: [{ name: "Feeding" }, { name: "Cleaning" }, { name: "Playing" }] }],
+	// 		},
+	// 	},
+	// 	{
+	// 		client: {
+	// 			name: "Grime, Cronin and Cruickshank",
+	// 			projects: [
+	// 				{ name: "Cobbler Birthday Cake", tasks: [{ name: "Mexico City" }] },
+	// 				{ name: "Cheesecake with caramel", tasks: [{ name: "Sidney" }] },
+	// 			],
+	// 		},
+	// 	},
+	// ];
+	const searchResults = [];
 
 	const tasksWithProject =
 		tasks && tasks.length
-			? tasks.map(aTask => {
-					aTask.project = projects.find(aProject => aProject.value === aTask.projectUuid);
+			? tasks.map((aTask) => {
+					aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
 					return aTask;
 			  })
 			: [];
+
+	const hideTooltip = () => {
+		showTooltip = false;
+	};
 
 	onMount(() => {
 		document.addEventListener("DOMContentLoaded", () => {
@@ -50,6 +75,11 @@
 		if (noteInput) {
 			noteInput.focus();
 		}
+		document.addEventListener("click", hideTooltip);
+
+		return () => {
+			document.removeEventListener("click", hideTooltip);
+		};
 	});
 
 	const save = async () => {
@@ -67,8 +97,8 @@
 				body: JSON.stringify(entry),
 				headers: {
 					requesttoken: requestToken,
-					"content-type": "application/json"
-				}
+					"content-type": "application/json",
+				},
 			});
 			if (response && response.ok) {
 				show = false;
@@ -88,19 +118,20 @@
 	};
 </script>
 
-<form class={`quick-add${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={save}>
+<form class={`quick-add${loading ? " icon-loading" : ""}`} on:submit|preventDefault={save}>
 	<label class="note">
-		{translate('timemanager', 'Note')}
+		{translate("timemanager", "Note")}
 		<input
 			type="text"
 			name="note"
 			class="note"
 			bind:value={note}
-			placeholder={translate('timemanager', 'Describe what you did...')}
-			bind:this={noteInput} />
+			placeholder={translate("timemanager", "Describe what you did...")}
+			bind:this={noteInput}
+		/>
 	</label>
 	<label for="quick-add-time">
-		{@html translate('timemanager', 'Duration (in hrs.) & Date')}
+		{@html translate("timemanager", "Duration (in hrs.) & Date")}
 		<span class="double">
 			<input
 				id="quick-add-time"
@@ -109,22 +140,75 @@
 				step="0.01"
 				placeholder=""
 				class="duration-input"
-				bind:value={duration} />
+				bind:value={duration}
+			/>
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
 	</label>
 	<label class="task-selector-trigger">
-		{translate('timemanager', 'Client, project or task')}
-		<!-- on:blur={() => (showTooltip = false)} -->
+		{translate("timemanager", "Client, project or task")}
 		<input
 			use:popperRef
-			on:focus={() => (showTooltip = true)}
+			on:focus={() => {
+				// We want to use this input as a button
+				// and then focus the actual search input
+				buttonInput?.blur();
+				searchInput?.focus();
+				showTooltip = true;
+			}}
+			bind:this={buttonInput}
 			type="text"
-			placeholder={translate('timemanager', 'Select...')} />
+			placeholder={translate("timemanager", "Select...")}
+			disabled={showTooltip}
+		/>
 	</label>
 	{#if showTooltip}
-		<div class="task-selector-popover" use:popperContent={extraOpts}>
-			Here goes the task selector
+		<div
+			class="task-selector-popover popover"
+			use:popperContent={extraOpts}
+			on:click={(event) => {
+				event.stopPropagation();
+				event.preventDefault();
+			}}
+		>
+			<label class="search">
+				<span class="hidden-visually">{translate("timemanager", "Search for client, project or task")}</span>
+				<input
+					bind:this={searchInput}
+					class="search-input icon-search button-w-icon"
+					type="text"
+					placeholder={translate("timemanager", "Type to search for client, project or task")}
+					autofocus
+				/>
+			</label>
+			<div class="search-results">
+				{#if searchResults?.length}
+					{#each searchResults as result}
+						<ul class="result">
+							<li>
+								<span class="client">{result.client.name}</span>
+								<ul>
+									{#each result.client.projects as project}
+										<li>
+											<span class="project">{project.name}</span>
+											<ul>
+												{#each project.tasks as task}
+													<li><a href="#" class="task">{task.name}</a></li>
+												{/each}
+											</ul>
+										</li>
+									{/each}
+								</ul>
+							</li>
+						</ul>
+					{/each}
+				{:else}
+					<p class="no-result">{translate("timemanager", "Nothing found")}</p>
+				{/if}
+			</div>
+			<button disabled={loading} type="button" class="icon-add button-w-icon button secondary task-add-button"
+				>{translate("timemanager", "Add task")}</button
+			>
 			<div class="popover-arrow" data-popper-arrow />
 		</div>
 	{/if}
@@ -154,6 +238,6 @@
 	</label> -->
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
-		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Add')}</button>
+		<button disabled={loading} type="submit" class="button primary">{translate("timemanager", "Add")}</button>
 	</span>
 </form>

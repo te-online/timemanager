@@ -53,7 +53,7 @@
 </script>
 
 <button
-	class={`filter-button icon-filter ${$isFilterSet ? 'active' : ''}`}
+	class={`filter-button icon-filter button-w-icon ${$isFilterSet ? 'active' : ''}`}
 	use:popperRef
 	on:click={() => {
 		showTooltip = !showTooltip;
