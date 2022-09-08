@@ -1,17 +1,17 @@
 <script>
 	export let action;
 	export let requestToken;
-	// export let clients;
+	export let clients;
 	export let projects;
 	export let tasks;
 	export let initialDate;
+	export let latestSearchEntries;
 
-	import Select from "svelte-select";
-	import Overlay from "./Overlay.svelte";
-	import TimeEditor from "./TimeEditor.svelte";
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
 	import { createPopperActions } from "svelte-popperjs";
+	import { distance } from "fastest-levenshtein";
+
 	const [popperRef, popperContent] = createPopperActions({
 		placement: "bottom",
 		strategy: "fixed",
@@ -22,50 +22,66 @@
 
 	let showTooltip = false;
 
-	$: show = false;
 	$: loading = false;
 	$: taskError = false;
+	$: selected = null;
 
 	let duration = 1;
 	let date = initialDate;
 	let note;
-	let client;
-	let task;
 	let noteInput;
 	let buttonInput;
 	let searchInput;
-	let tooltipContainer;
 	let searchValue;
-	// const searchResults = [
-	// 	{
-	// 		client: {
-	// 			name: "Zoo",
-	// 			projects: [{ name: "Tigers", tasks: [{ name: "Feeding" }, { name: "Cleaning" }, { name: "Playing" }] }],
-	// 		},
-	// 	},
-	// 	{
-	// 		client: {
-	// 			name: "Grime, Cronin and Cruickshank",
-	// 			projects: [
-	// 				{ name: "Cobbler Birthday Cake", tasks: [{ name: "Mexico City" }] },
-	// 				{ name: "Cheesecake with caramel", tasks: [{ name: "Sidney" }] },
-	// 			],
-	// 		},
-	// 	},
-	// ];
-	const lastUsed = [
-		{ client: { name: "Zoo" }, project: { name: "Tigers" }, task: { name: "Feeding" } },
-		{ client: { name: "Zoo" }, project: { name: "Tigers" }, task: { name: "Feeding" } },
-	];
-	const searchResults = [];
 
-	const tasksWithProject =
-		tasks && tasks.length
-			? tasks.map((aTask) => {
-					aTask.project = projects.find((aProject) => aProject.value === aTask.projectUuid);
-					return aTask;
-			  })
-			: [];
+	const latestEntriesByTask = {};
+	latestSearchEntries.map((entry) => {
+		latestEntriesByTask[entry?.task?.uuid] = entry;
+	});
+	const lastUsed = (Object.values(latestEntriesByTask) ?? []).slice(0, 3);
+	$: searchResults = [];
+
+	const groupedData = clients.map((client) => {
+		const clientProjects = projects
+			.filter((project) => project.clientUuid === client.value)
+			.map((project) => {
+				const projectTasks = tasks.filter((task) => project.value === task.projectUuid);
+				return { ...project, tasks: projectTasks };
+			});
+
+		return {
+			client: { ...client, projects: clientProjects },
+		};
+	});
+
+	const search = (q) => {
+		if (!q) {
+			searchResults = [];
+			return;
+		}
+
+		const acceptableDistance = 4;
+
+		searchResults = [...groupedData]
+			.map((entry) => {
+				const projects = entry?.client?.projects
+					?.map((project) => {
+						const tasks = project?.tasks?.filter((task) => distance(task?.label, q) <= acceptableDistance);
+						return tasks.length || distance(project?.label, q) <= acceptableDistance
+							? { ...project, tasks }
+							: undefined;
+					})
+					.filter((project) => project !== undefined);
+
+				return {
+					client:
+						projects?.length || distance(entry?.client?.label, q) <= acceptableDistance
+							? { ...entry?.client, projects }
+							: undefined,
+				};
+			})
+			.filter((entry) => entry?.client !== undefined);
+	};
 
 	const hideTooltip = () => {
 		showTooltip = false;
@@ -90,13 +106,13 @@
 	const save = async () => {
 		loading = true;
 		taskError = false;
-		if (!task) {
+		if (!selected?.task?.value) {
 			loading = false;
 			taskError = true;
 			return;
 		}
 		try {
-			let entry = { duration, date, note, task: task.value };
+			let entry = { duration, date, note, task: selected.task.value };
 			const response = await fetch(action, {
 				method: "POST",
 				body: JSON.stringify(entry),
@@ -114,16 +130,17 @@
 		}
 		loading = false;
 	};
-
-	const clientSelected = () => {
-		const input = document.querySelector(".task input");
-		if (input) {
-			input.focus();
-		}
-	};
 </script>
 
-<form class={`quick-add${loading ? " icon-loading" : ""}`} on:submit|preventDefault={save}>
+<form
+	class={`quick-add${loading ? " icon-loading" : ""}`}
+	on:submit={(event) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		save();
+	}}
+>
 	<label class="note">
 		{translate("timemanager", "Note")}
 		<input
@@ -150,7 +167,7 @@
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
 	</label>
-	<label class="task-selector-trigger">
+	<label class={`task-selector-trigger${taskError ? " error" : ""}`}>
 		{translate("timemanager", "Client, project or task")}
 		<input
 			use:popperRef
@@ -165,6 +182,7 @@
 			type="text"
 			placeholder={translate("timemanager", "Select...")}
 			disabled={showTooltip}
+			value={selected ? `${selected.client.label} · ${selected.project.label} · ${selected.task.label}` : ""}
 		/>
 	</label>
 	{#if showTooltip}
@@ -181,6 +199,7 @@
 				<input
 					bind:this={searchInput}
 					bind:value={searchValue}
+					on:input={() => search(searchValue)}
 					class="search-input icon-search button-w-icon"
 					type="text"
 					placeholder={translate("timemanager", "Type to search for client, project or task")}
@@ -188,12 +207,27 @@
 				/>
 			</label>
 			<div class="last-used">
-				{#if lastUsed?.length}
+				{#if lastUsed?.length && !searchValue}
 					<ul class="result">
 						{#each lastUsed as entry, index}
 							<li>
 								{#if index === 0}<span class="client">{translate("timemanager", "Last used")}</span>{/if}
-								<a class="task last-used-wrapper" href="#">
+								<a
+									class="task last-used-wrapper"
+									href="?"
+									on:click={(event) => {
+										event.stopPropagation();
+										event.preventDefault();
+
+										selected = {
+											task: { label: entry?.task?.name, value: entry?.task?.uuid },
+											project: { label: entry?.project?.name, value: entry?.project?.uuid },
+											client: { label: entry?.client?.name, value: entry?.client?.uuid },
+										};
+
+										showTooltip = false;
+									}}
+								>
 									<ul>
 										<li>
 											<span class="label muted">{translate("timemanager", "Client")}</span>
@@ -219,14 +253,31 @@
 					{#each searchResults as result}
 						<ul class="result">
 							<li>
-								<span class="client">{result.client.name}</span>
+								<span class="client">{result.client.label}</span>
 								<ul>
 									{#each result.client.projects as project}
 										<li>
-											<span class="project">{project.name}</span>
+											<span class="project">{project.label}</span>
 											<ul>
 												{#each project.tasks as task}
-													<li><a href="#" class="task">{task.name}</a></li>
+													<li>
+														<a
+															href="?"
+															on:click={(event) => {
+																event.stopPropagation();
+																event.preventDefault();
+
+																selected = {
+																	client: { label: result.client.label, value: result.client.value },
+																	project: { label: project.label, value: project.value },
+																	task,
+																};
+
+																showTooltip = false;
+															}}
+															class="task">{task.label}</a
+														>
+													</li>
 												{/each}
 											</ul>
 										</li>
@@ -239,36 +290,12 @@
 					<p class="no-result">{translate("timemanager", "Nothing found")}</p>
 				{/if}
 			</div>
-			<button disabled={loading} type="button" class="icon-add button-w-icon button secondary task-add-button"
+			<!-- <button disabled={loading} type="button" class="icon-add button-w-icon button secondary task-add-button"
 				>{translate("timemanager", "Add task")}</button
-			>
+			> -->
 			<div class="popover-arrow" data-popper-arrow />
 		</div>
 	{/if}
-	<!-- <label class={`client${taskError ? ' error' : ''}${client ? ' hidden-visually' : ''}`}>
-		{translate('timemanager', 'Client')}
-		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			items={clients}
-			bind:value={client}
-			on:select={clientSelected} />
-	</label> -->
-	<!-- <label class={`task${taskError ? ' error' : ''}${!client ? ' hidden-visually' : ''}`}>
-		<span class="task-caption">
-			{@html translate('timemanager', 'Project & Task for')}
-			<strong>{client && client.label}</strong>
-			<a href="#/" class="change" on:click|preventDefault={() => (client = null)}>
-				{translate('timemanager', 'Change client')}
-			</a>
-		</span>
-		<Select
-			items={tasksWithProject && tasksWithProject.filter(oneTask => client && oneTask.project.clientUuid === client.value)}
-			groupBy={item => item.project.label}
-			noOptionsMessage={translate('timemanager', 'No projects/tasks or no client selected.')}
-			placeholder={translate('timemanager', 'Select...')}
-			bind:value={task} />
-	</label> -->
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
 		<button disabled={loading} type="submit" class="button primary">{translate("timemanager", "Add")}</button>

@@ -340,7 +340,7 @@ label {
 			display: flex;
 			flex-flow: column;
 			&.error {
-				.selectContainer {
+				input {
 					border-color: var(--color-error);
 				}
 			}
@@ -414,11 +414,16 @@ label {
 
 			.project {
 				padding-left: 12px;
+				padding-top: 4px;
 				color: var(--color-text-lighter);
+
+				& ~ ul li {
+					padding: 0;
+				}
 			}
 
 			.task {
-				padding-left: 24px;
+				padding: 6px 3px 6px 24px;
 				width: 100%;
 				display: inline-block;
 
@@ -434,7 +439,7 @@ label {
 			}
 
 			.last-used-wrapper {
-				padding: 2px 3px;
+				padding: 3px 8px;
 
 				li {
 					display: flex;
@@ -454,6 +459,11 @@ label {
 					}
 				}
 			}
+		}
+
+		.search-results {
+			max-height: calc(80vh - 250px);
+			overflow-y: auto;
 		}
 	}
 

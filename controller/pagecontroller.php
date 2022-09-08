@@ -110,6 +110,7 @@ class PageController extends Controller {
 			5,
 			$userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : []
 		);
+		$latestSearchEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries($times, 100);
 
 		$sharedTimeEntries = array_filter($times, function ($entry) {
 			return !$entry->current_user_is_author;
@@ -151,6 +152,14 @@ class PageController extends Controller {
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
+				"latestSearchEntries" => array_map(function ($latestSearchEntry) {
+					return [
+						"time" => $latestSearchEntry->time->toArray(),
+						"task" => $latestSearchEntry->task->toArray(),
+						"project" => $latestSearchEntry->project->toArray(),
+						"client" => $latestSearchEntry->client->toArray(),
+					];
+				}, $latestSearchEntries),
 			]),
 		]);
 	}

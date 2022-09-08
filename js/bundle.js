@@ -24786,31 +24786,53 @@
       return _createClass$1(DeleteTimeEntryButton);
     }(SvelteComponent);
 
-    var $find = arrayIteration$1.find;
+    var $propertyIsEnumerable$1 = objectPropertyIsEnumerable$1.f;
 
+    var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable$1);
+    var push$1 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
 
+    var createMethod$4 = function (TO_ENTRIES) {
+      return function (it) {
+        var O = toIndexedObject$1(it);
+        var keys = objectKeys$1(O);
+        var length = keys.length;
+        var i = 0;
+        var result = [];
+        var key;
 
-    var FIND = 'find';
-    var SKIPS_HOLES = true; // Shouldn't skip holes
+        while (length > i) {
+          key = keys[i++];
 
-    if (FIND in []) Array(1)[FIND](function () {
-      SKIPS_HOLES = false;
-    }); // `Array.prototype.find` method
-    // https://tc39.es/ecma262/#sec-array.prototype.find
+          if (!descriptors$1 || propertyIsEnumerable(O, key)) {
+            push$1(result, TO_ENTRIES ? [key, O[key]] : O[key]);
+          }
+        }
+
+        return result;
+      };
+    };
+
+    var objectToArray = {
+      // `Object.entries` method
+      // https://tc39.es/ecma262/#sec-object.entries
+      entries: createMethod$4(true),
+      // `Object.values` method
+      // https://tc39.es/ecma262/#sec-object.values
+      values: createMethod$4(false)
+    };
+
+    var $values = objectToArray.values; // `Object.values` method
+    // https://tc39.es/ecma262/#sec-object.values
+
 
     _export$1({
-      target: 'Array',
-      proto: true,
-      forced: SKIPS_HOLES
+      target: 'Object',
+      stat: true
     }, {
-      find: function find(callbackfn
-      /* , that = undefined */
-      ) {
-        return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      values: function values(O) {
+        return $values(O);
       }
-    }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-
-    addToUnscopables$1(FIND);
+    });
 
     var top = 'top';
     var bottom = 'bottom';
@@ -26867,30 +26889,188 @@
       }];
     }
 
+    const peq = new Uint32Array(0x10000);
+
+    const myers_32 = (a, b) => {
+      const n = a.length;
+      const m = b.length;
+      const lst = 1 << n - 1;
+      let pv = -1;
+      let mv = 0;
+      let sc = n;
+      let i = n;
+
+      while (i--) {
+        peq[a.charCodeAt(i)] |= 1 << i;
+      }
+
+      for (i = 0; i < m; i++) {
+        let eq = peq[b.charCodeAt(i)];
+        const xv = eq | mv;
+        eq |= (eq & pv) + pv ^ pv;
+        mv |= ~(eq | pv);
+        pv &= eq;
+
+        if (mv & lst) {
+          sc++;
+        }
+
+        if (pv & lst) {
+          sc--;
+        }
+
+        mv = mv << 1 | 1;
+        pv = pv << 1 | ~(xv | mv);
+        mv &= xv;
+      }
+
+      i = n;
+
+      while (i--) {
+        peq[a.charCodeAt(i)] = 0;
+      }
+
+      return sc;
+    };
+
+    const myers_x = (b, a) => {
+      const n = a.length;
+      const m = b.length;
+      const mhc = [];
+      const phc = [];
+      const hsize = Math.ceil(n / 32);
+      const vsize = Math.ceil(m / 32);
+
+      for (let i = 0; i < hsize; i++) {
+        phc[i] = -1;
+        mhc[i] = 0;
+      }
+
+      let j = 0;
+
+      for (; j < vsize - 1; j++) {
+        let mv = 0;
+        let pv = -1;
+        const start = j * 32;
+        const vlen = Math.min(32, m) + start;
+
+        for (let k = start; k < vlen; k++) {
+          peq[b.charCodeAt(k)] |= 1 << k;
+        }
+
+        for (let i = 0; i < n; i++) {
+          const eq = peq[a.charCodeAt(i)];
+          const pb = phc[i / 32 | 0] >>> i & 1;
+          const mb = mhc[i / 32 | 0] >>> i & 1;
+          const xv = eq | mv;
+          const xh = ((eq | mb) & pv) + pv ^ pv | eq | mb;
+          let ph = mv | ~(xh | pv);
+          let mh = pv & xh;
+
+          if (ph >>> 31 ^ pb) {
+            phc[i / 32 | 0] ^= 1 << i;
+          }
+
+          if (mh >>> 31 ^ mb) {
+            mhc[i / 32 | 0] ^= 1 << i;
+          }
+
+          ph = ph << 1 | pb;
+          mh = mh << 1 | mb;
+          pv = mh | ~(xv | ph);
+          mv = ph & xv;
+        }
+
+        for (let k = start; k < vlen; k++) {
+          peq[b.charCodeAt(k)] = 0;
+        }
+      }
+
+      let mv = 0;
+      let pv = -1;
+      const start = j * 32;
+      const vlen = Math.min(32, m - start) + start;
+
+      for (let k = start; k < vlen; k++) {
+        peq[b.charCodeAt(k)] |= 1 << k;
+      }
+
+      let score = m;
+
+      for (let i = 0; i < n; i++) {
+        const eq = peq[a.charCodeAt(i)];
+        const pb = phc[i / 32 | 0] >>> i & 1;
+        const mb = mhc[i / 32 | 0] >>> i & 1;
+        const xv = eq | mv;
+        const xh = ((eq | mb) & pv) + pv ^ pv | eq | mb;
+        let ph = mv | ~(xh | pv);
+        let mh = pv & xh;
+        score += ph >>> m - 1 & 1;
+        score -= mh >>> m - 1 & 1;
+
+        if (ph >>> 31 ^ pb) {
+          phc[i / 32 | 0] ^= 1 << i;
+        }
+
+        if (mh >>> 31 ^ mb) {
+          mhc[i / 32 | 0] ^= 1 << i;
+        }
+
+        ph = ph << 1 | pb;
+        mh = mh << 1 | mb;
+        pv = mh | ~(xv | ph);
+        mv = ph & xv;
+      }
+
+      for (let k = start; k < vlen; k++) {
+        peq[b.charCodeAt(k)] = 0;
+      }
+
+      return score;
+    };
+
+    const distance = (a, b) => {
+      if (a.length < b.length) {
+        const tmp = b;
+        b = a;
+        a = tmp;
+      }
+
+      if (b.length === 0) {
+        return a.length;
+      }
+
+      if (a.length <= 32) {
+        return myers_32(a, b);
+      }
+
+      return myers_x(a, b);
+    };
+
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[36] = list[i];
+      child_ctx[40] = list[i];
       return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[39] = list[i];
+      child_ctx[43] = list[i];
       return child_ctx;
     }
 
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[15] = list[i];
+      child_ctx[46] = list[i];
       return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[44] = list[i];
-      child_ctx[46] = i;
+      child_ctx[49] = list[i];
+      child_ctx[51] = i;
       return child_ctx;
-    } // (170:1) {#if showTooltip}
+    } // (188:1) {#if showTooltip}
 
 
     function create_if_block$3(ctx) {
@@ -26906,23 +27086,21 @@
       var t3;
       var div1;
       var t4;
-      var button;
-      var t5_value = dist_10("timemanager", "Add task") + "";
-      var t5;
-      var t6;
       var div2;
       var mounted;
       var dispose;
       var if_block0 =
       /*lastUsed*/
-      ((_ctx$ = ctx[12]) === null || _ctx$ === void 0 ? void 0 : _ctx$.length) && create_if_block_3$1(ctx);
+      ((_ctx$ = ctx[15]) === null || _ctx$ === void 0 ? void 0 : _ctx$.length) && !
+      /*searchValue*/
+      ctx[7] && create_if_block_3$1(ctx);
 
       function select_block_type(ctx, dirty) {
         var _ctx$2, _ctx$3;
 
         if (
         /*searchResults*/
-        (_ctx$2 = ctx[13]) !== null && _ctx$2 !== void 0 && _ctx$2.length) return create_if_block_1$1;
+        (_ctx$2 = ctx[11]) !== null && _ctx$2 !== void 0 && _ctx$2.length) return create_if_block_1$1;
         if (
         /*searchValue*/
         (_ctx$3 = ctx[7]) !== null && _ctx$3 !== void 0 && _ctx$3.length) return create_if_block_2$1;
@@ -26945,9 +27123,6 @@
           div1 = element("div");
           if (if_block1) if_block1.c();
           t4 = space$1();
-          button = element("button");
-          t5 = text(t5_value);
-          t6 = space$1();
           div2 = element("div");
           attr(span, "class", "hidden-visually");
           attr(input, "class", "search-input icon-search button-w-icon");
@@ -26957,11 +27132,6 @@
           attr(label, "class", "search");
           attr(div0, "class", "last-used");
           attr(div1, "class", "search-results");
-          button.disabled =
-          /*loading*/
-          ctx[8];
-          attr(button, "type", "button");
-          attr(button, "class", "icon-add button-w-icon button secondary task-add-button");
           attr(div2, "class", "popover-arrow");
           attr(div2, "data-popper-arrow", "");
           attr(div3, "class", "task-selector-popover popover");
@@ -26974,7 +27144,7 @@
           append(label, input);
           /*input_binding*/
 
-          ctx[27](input);
+          ctx[31](input);
           set_input_value(input,
           /*searchValue*/
           ctx[7]);
@@ -26985,19 +27155,18 @@
           append(div3, div1);
           if (if_block1) if_block1.m(div1, null);
           append(div3, t4);
-          append(div3, button);
-          append(button, t5);
-          append(div3, t6);
           append(div3, div2);
           input.focus();
 
           if (!mounted) {
             dispose = [listen(input, "input",
             /*input_input_handler*/
-            ctx[28]), action_destroyer(/*popperContent*/
-            ctx[10].call(null, div3,
+            ctx[32]), listen(input, "input",
+            /*input_handler*/
+            ctx[33]), action_destroyer(/*popperContent*/
+            ctx[13].call(null, div3,
             /*extraOpts*/
-            ctx[11])), listen(div3, "click", click_handler)];
+            ctx[14])), listen(div3, "click", click_handler_2)];
             mounted = true;
           }
         },
@@ -27016,7 +27185,20 @@
 
           if (
           /*lastUsed*/
-          (_ctx$4 = ctx[12]) !== null && _ctx$4 !== void 0 && _ctx$4.length) if_block0.p(ctx, dirty);
+          (_ctx$4 = ctx[15]) !== null && _ctx$4 !== void 0 && _ctx$4.length && !
+          /*searchValue*/
+          ctx[7]) {
+            if (if_block0) {
+              if_block0.p(ctx, dirty);
+            } else {
+              if_block0 = create_if_block_3$1(ctx);
+              if_block0.c();
+              if_block0.m(div0, null);
+            }
+          } else if (if_block0) {
+            if_block0.d(1);
+            if_block0 = null;
+          }
 
           if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
             if_block1.p(ctx, dirty);
@@ -27029,20 +27211,12 @@
               if_block1.m(div1, null);
             }
           }
-
-          if (dirty[0] &
-          /*loading*/
-          256) {
-            button.disabled =
-            /*loading*/
-            ctx[8];
-          }
         },
         d: function d(detaching) {
           if (detaching) detach(div3);
           /*input_binding*/
 
-          ctx[27](null);
+          ctx[31](null);
           if (if_block0) if_block0.d();
 
           if (if_block1) {
@@ -27053,14 +27227,14 @@
           run_all(dispose);
         }
       };
-    } // (191:4) {#if lastUsed?.length}
+    } // (210:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
       var ul;
       var each_value_3 =
       /*lastUsed*/
-      ctx[12];
+      ctx[15];
       var each_blocks = [];
 
       for (var i = 0; i < each_value_3.length; i += 1) {
@@ -27086,11 +27260,11 @@
         },
         p: function p(ctx, dirty) {
           if (dirty[0] &
-          /*lastUsed*/
-          4096) {
+          /*selected, lastUsed, showTooltip*/
+          33281) {
             each_value_3 =
             /*lastUsed*/
-            ctx[12];
+            ctx[15];
 
             var _i3;
 
@@ -27120,7 +27294,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (195:8) {#if index === 0}
+    } // (214:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -27139,7 +27313,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (193:6) {#each lastUsed as entry, index}
+    } // (212:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -27153,7 +27327,7 @@
       var span1;
       var t3_value =
       /*entry*/
-      ctx[44].client.name + "";
+      ctx[49].client.name + "";
       var t3;
       var t4;
       var li1;
@@ -27162,7 +27336,7 @@
       var span3;
       var t7_value =
       /*entry*/
-      ctx[44].project.name + "";
+      ctx[49].project.name + "";
       var t7;
       var t8;
       var li2;
@@ -27171,12 +27345,30 @@
       var span5;
       var t11_value =
       /*entry*/
-      ctx[44].task.name + "";
+      ctx[49].task.name + "";
       var t11;
       var t12;
+      var mounted;
+      var dispose;
       var if_block =
       /*index*/
-      ctx[46] === 0 && create_if_block_4$1();
+      ctx[51] === 0 && create_if_block_4$1();
+
+      function click_handler() {
+        var _ctx;
+
+        for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return (
+          /*click_handler*/
+          (_ctx = ctx)[34].apply(_ctx, [
+          /*entry*/
+          ctx[49]].concat(args))
+        );
+      }
+
       return {
         c: function c() {
           li3 = element("li");
@@ -27212,7 +27404,7 @@
           attr(span4, "class", "label");
           attr(span5, "class", "value");
           attr(a, "class", "task last-used-wrapper");
-          attr(a, "href", "#");
+          attr(a, "href", "?");
         },
         m: function m(target, anchor) {
           insert(target, li3, anchor);
@@ -27238,18 +27430,26 @@
           append(li2, span5);
           append(span5, t11);
           append(li3, t12);
+
+          if (!mounted) {
+            dispose = listen(a, "click", click_handler);
+            mounted = true;
+          }
         },
-        p: function p(ctx, dirty) {
+        p: function p(new_ctx, dirty) {
+          ctx = new_ctx;
           if (
           /*index*/
-          ctx[46] === 0) if_block.p(ctx, dirty);
+          ctx[51] === 0) if_block.p(ctx, dirty);
         },
         d: function d(detaching) {
           if (detaching) detach(li3);
           if (if_block) if_block.d();
+          mounted = false;
+          dispose();
         }
       };
-    } // (238:34) 
+    } // (289:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -27268,14 +27468,14 @@
           if (detaching) detach(p);
         }
       };
-    } // (218:4) {#if searchResults?.length}
+    } // (252:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value =
       /*searchResults*/
-      ctx[13];
+      ctx[11];
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
@@ -27299,11 +27499,11 @@
         },
         p: function p(ctx, dirty) {
           if (dirty[0] &
-          /*searchResults*/
-          8192) {
+          /*searchResults, selected, showTooltip*/
+          2561) {
             each_value =
             /*searchResults*/
-            ctx[13];
+            ctx[11];
 
             var _i6;
 
@@ -27333,35 +27533,74 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (228:12) {#each project.tasks as task}
+    } // (262:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
       var li;
       var a;
-      var t_value =
+      var t0_value =
       /*task*/
-      ctx[15].name + "";
-      var t;
+      ctx[46].label + "";
+      var t0;
+      var t1;
+      var mounted;
+      var dispose;
+
+      function click_handler_1() {
+        var _ctx2;
+
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return (
+          /*click_handler_1*/
+          (_ctx2 = ctx)[35].apply(_ctx2, [
+          /*result*/
+          ctx[40],
+          /*project*/
+          ctx[43],
+          /*task*/
+          ctx[46]].concat(args))
+        );
+      }
+
       return {
         c: function c() {
           li = element("li");
           a = element("a");
-          t = text(t_value);
-          attr(a, "href", "#");
+          t0 = text(t0_value);
+          t1 = space$1();
+          attr(a, "href", "?");
           attr(a, "class", "task");
         },
         m: function m(target, anchor) {
           insert(target, li, anchor);
           append(li, a);
-          append(a, t);
+          append(a, t0);
+          append(li, t1);
+
+          if (!mounted) {
+            dispose = listen(a, "click", click_handler_1);
+            mounted = true;
+          }
         },
-        p: noop$1,
+        p: function p(new_ctx, dirty) {
+          ctx = new_ctx;
+          if (dirty[0] &
+          /*searchResults*/
+          2048 && t0_value !== (t0_value =
+          /*task*/
+          ctx[46].label + "")) set_data(t0, t0_value);
+        },
         d: function d(detaching) {
           if (detaching) detach(li);
+          mounted = false;
+          dispose();
         }
       };
-    } // (224:9) {#each result.client.projects as project}
+    } // (258:9) {#each result.client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -27369,14 +27608,14 @@
       var span;
       var t0_value =
       /*project*/
-      ctx[39].name + "";
+      ctx[43].label + "";
       var t0;
       var t1;
       var ul;
       var t2;
       var each_value_2 =
       /*project*/
-      ctx[39].tasks;
+      ctx[43].tasks;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_2.length; i += 1) {
@@ -27414,10 +27653,16 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          8192) {
+          2048 && t0_value !== (t0_value =
+          /*project*/
+          ctx[43].label + "")) set_data(t0, t0_value);
+
+          if (dirty[0] &
+          /*selected, searchResults, showTooltip*/
+          2561) {
             each_value_2 =
             /*project*/
-            ctx[39].tasks;
+            ctx[43].tasks;
 
             var _i9;
 
@@ -27447,7 +27692,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (219:5) {#each searchResults as result}
+    } // (253:5) {#each searchResults as result}
 
 
     function create_each_block$1(ctx) {
@@ -27456,14 +27701,14 @@
       var span;
       var t0_value =
       /*result*/
-      ctx[36].client.name + "";
+      ctx[40].client.label + "";
       var t0;
       var t1;
       var ul0;
       var t2;
       var each_value_1 =
       /*result*/
-      ctx[36].client.projects;
+      ctx[40].client.projects;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_1.length; i += 1) {
@@ -27504,10 +27749,16 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          8192) {
+          2048 && t0_value !== (t0_value =
+          /*result*/
+          ctx[40].client.label + "")) set_data(t0, t0_value);
+
+          if (dirty[0] &
+          /*searchResults, selected, showTooltip*/
+          2561) {
             each_value_1 =
             /*result*/
-            ctx[36].client.projects;
+            ctx[40].client.projects;
 
             var _i12;
 
@@ -27561,6 +27812,8 @@
       var t6;
       var t7;
       var input3;
+      var input3_value_value;
+      var label2_class_value;
       var t8;
       var t9;
       var span1;
@@ -27621,7 +27874,18 @@
           input3.disabled =
           /*showTooltip*/
           ctx[0];
-          attr(label2, "class", "task-selector-trigger");
+          input3.value = input3_value_value =
+          /*selected*/
+          ctx[9] ? "".concat(
+          /*selected*/
+          ctx[9].client.label, " \xB7 ").concat(
+          /*selected*/
+          ctx[9].project.label, " \xB7 ").concat(
+          /*selected*/
+          ctx[9].task.label) : "";
+          attr(label2, "class", label2_class_value = "task-selector-trigger".concat(
+          /*taskError*/
+          ctx[10] ? " error" : ""));
           button.disabled =
           /*loading*/
           ctx[8];
@@ -27643,7 +27907,7 @@
           ctx[3]);
           /*input0_binding*/
 
-          ctx[22](input0);
+          ctx[26](input0);
           append(form, t2);
           append(form, label1);
           html_tag.m(raw_value, label1);
@@ -27665,7 +27929,7 @@
           append(label2, input3);
           /*input3_binding*/
 
-          ctx[26](input3);
+          ctx[30](input3);
           append(form, t8);
           if (if_block) if_block.m(form, null);
           append(form, t9);
@@ -27676,16 +27940,16 @@
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler*/
-            ctx[21]), listen(input1, "input",
+            ctx[25]), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[23]), listen(input2, "input",
+            ctx[27]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[24]), action_destroyer(/*popperRef*/
-            ctx[9].call(null, input3)), listen(input3, "focus",
+            ctx[28]), action_destroyer(/*popperRef*/
+            ctx[12].call(null, input3)), listen(input3, "focus",
             /*focus_handler*/
-            ctx[25]), listen(form, "submit", prevent_default(
-            /*save*/
-            ctx[14]))];
+            ctx[29]), listen(form, "submit",
+            /*submit_handler*/
+            ctx[36])];
             mounted = true;
           }
         },
@@ -27726,6 +27990,28 @@
             ctx[0];
           }
 
+          if (dirty[0] &
+          /*selected*/
+          512 && input3_value_value !== (input3_value_value =
+          /*selected*/
+          ctx[9] ? "".concat(
+          /*selected*/
+          ctx[9].client.label, " \xB7 ").concat(
+          /*selected*/
+          ctx[9].project.label, " \xB7 ").concat(
+          /*selected*/
+          ctx[9].task.label) : "") && input3.value !== input3_value_value) {
+            input3.value = input3_value_value;
+          }
+
+          if (dirty[0] &
+          /*taskError*/
+          1024 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat(
+          /*taskError*/
+          ctx[10] ? " error" : ""))) {
+            attr(label2, "class", label2_class_value);
+          }
+
           if (
           /*showTooltip*/
           ctx[0]) {
@@ -27763,10 +28049,10 @@
           if (detaching) detach(form);
           /*input0_binding*/
 
-          ctx[22](null);
+          ctx[26](null);
           /*input3_binding*/
 
-          ctx[26](null);
+          ctx[30](null);
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -27774,18 +28060,25 @@
       };
     }
 
-    var click_handler = function click_handler(event) {
+    var click_handler_2 = function click_handler_2(event) {
       event.stopPropagation();
       event.preventDefault();
     };
 
     function instance$7($$self, $$props, $$invalidate) {
+      var _Object$values;
+
       var loading;
+      var taskError;
+      var selected;
+      var searchResults;
       var action = $$props.action;
       var requestToken = $$props.requestToken;
+      var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
       var initialDate = $$props.initialDate;
+      var latestSearchEntries = $$props.latestSearchEntries;
 
       var _createPopperActions = createPopperActions({
         placement: "bottom",
@@ -27807,56 +28100,66 @@
       var duration = 1;
       var date = initialDate;
       var note;
-      var task;
       var noteInput;
       var buttonInput;
       var searchInput;
-      var searchValue; // const searchResults = [
-      // 	{
-      // 		client: {
-      // 			name: "Zoo",
-      // 			projects: [{ name: "Tigers", tasks: [{ name: "Feeding" }, { name: "Cleaning" }, { name: "Playing" }] }],
-      // 		},
-      // 	},
-      // 	{
-      // 		client: {
-      // 			name: "Grime, Cronin and Cruickshank",
-      // 			projects: [
-      // 				{ name: "Cobbler Birthday Cake", tasks: [{ name: "Mexico City" }] },
-      // 				{ name: "Cheesecake with caramel", tasks: [{ name: "Sidney" }] },
-      // 			],
-      // 		},
-      // 	},
-      // ];
+      var searchValue;
+      var latestEntriesByTask = {};
+      latestSearchEntries.map(function (entry) {
+        var _entry$task;
 
-      var lastUsed = [{
-        client: {
-          name: "Zoo"
-        },
-        project: {
-          name: "Tigers"
-        },
-        task: {
-          name: "Feeding"
-        }
-      }, {
-        client: {
-          name: "Zoo"
-        },
-        project: {
-          name: "Tigers"
-        },
-        task: {
-          name: "Feeding"
-        }
-      }];
-      var searchResults = [];
-      tasks && tasks.length ? tasks.map(function (aTask) {
-        aTask.project = projects.find(function (aProject) {
-          return aProject.value === aTask.projectUuid;
+        latestEntriesByTask[entry === null || entry === void 0 ? void 0 : (_entry$task = entry.task) === null || _entry$task === void 0 ? void 0 : _entry$task.uuid] = entry;
+      });
+      var lastUsed = ((_Object$values = Object.values(latestEntriesByTask)) !== null && _Object$values !== void 0 ? _Object$values : []).slice(0, 3);
+      var groupedData = clients.map(function (client) {
+        var clientProjects = projects.filter(function (project) {
+          return project.clientUuid === client.value;
+        }).map(function (project) {
+          var projectTasks = tasks.filter(function (task) {
+            return project.value === task.projectUuid;
+          });
+          return _objectSpread2(_objectSpread2({}, project), {}, {
+            tasks: projectTasks
+          });
         });
-        return aTask;
-      }) : [];
+        return {
+          client: _objectSpread2(_objectSpread2({}, client), {}, {
+            projects: clientProjects
+          })
+        };
+      });
+
+      var search = function search(q) {
+        if (!q) {
+          $$invalidate(11, searchResults = []);
+          return;
+        }
+
+        var acceptableDistance = 4;
+        $$invalidate(11, searchResults = _toConsumableArray(groupedData).map(function (entry) {
+          var _entry$client, _entry$client$project, _entry$client2;
+
+          var projects = entry === null || entry === void 0 ? void 0 : (_entry$client = entry.client) === null || _entry$client === void 0 ? void 0 : (_entry$client$project = _entry$client.projects) === null || _entry$client$project === void 0 ? void 0 : _entry$client$project.map(function (project) {
+            var _project$tasks;
+
+            var tasks = project === null || project === void 0 ? void 0 : (_project$tasks = project.tasks) === null || _project$tasks === void 0 ? void 0 : _project$tasks.filter(function (task) {
+              return distance(task === null || task === void 0 ? void 0 : task.label, q) <= acceptableDistance;
+            });
+            return tasks.length || distance(project === null || project === void 0 ? void 0 : project.label, q) <= acceptableDistance ? _objectSpread2(_objectSpread2({}, project), {}, {
+              tasks: tasks
+            }) : undefined;
+          }).filter(function (project) {
+            return project !== undefined;
+          });
+          return {
+            client: projects !== null && projects !== void 0 && projects.length || distance(entry === null || entry === void 0 ? void 0 : (_entry$client2 = entry.client) === null || _entry$client2 === void 0 ? void 0 : _entry$client2.label, q) <= acceptableDistance ? _objectSpread2(_objectSpread2({}, entry === null || entry === void 0 ? void 0 : entry.client), {}, {
+              projects: projects
+            }) : undefined
+          };
+        }).filter(function (entry) {
+          return (entry === null || entry === void 0 ? void 0 : entry.client) !== undefined;
+        }));
+      };
 
       var hideTooltip = function hideTooltip() {
         $$invalidate(0, showTooltip = false);
@@ -27881,14 +28184,23 @@
 
       var save = /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+          var _selected, _selected$task;
+
           var entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   $$invalidate(8, loading = true);
+                  $$invalidate(10, taskError = false);
+
+                  if ((_selected = selected) !== null && _selected !== void 0 && (_selected$task = _selected.task) !== null && _selected$task !== void 0 && _selected$task.value) {
+                    _context.next = 6;
+                    break;
+                  }
 
                   $$invalidate(8, loading = false);
+                  $$invalidate(10, taskError = true);
                   return _context.abrupt("return");
 
                 case 6:
@@ -27897,7 +28209,7 @@
                     duration: duration,
                     date: date,
                     note: note,
-                    task: task.value
+                    task: selected.task.value
                   };
                   _context.next = 10;
                   return fetch(action, {
@@ -27913,6 +28225,7 @@
                   response = _context.sent;
 
                   if (response && response.ok) {
+                    show = false;
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
 
@@ -27991,17 +28304,74 @@
         $$invalidate(7, searchValue);
       }
 
+      var input_handler = function input_handler() {
+        return search(searchValue);
+      };
+
+      var click_handler = function click_handler(entry, event) {
+        var _entry$task2, _entry$task3, _entry$project, _entry$project2, _entry$client3, _entry$client4;
+
+        event.stopPropagation();
+        event.preventDefault();
+        $$invalidate(9, selected = {
+          task: {
+            label: entry === null || entry === void 0 ? void 0 : (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
+          },
+          project: {
+            label: entry === null || entry === void 0 ? void 0 : (_entry$project = entry.project) === null || _entry$project === void 0 ? void 0 : _entry$project.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$project2 = entry.project) === null || _entry$project2 === void 0 ? void 0 : _entry$project2.uuid
+          },
+          client: {
+            label: entry === null || entry === void 0 ? void 0 : (_entry$client3 = entry.client) === null || _entry$client3 === void 0 ? void 0 : _entry$client3.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$client4 = entry.client) === null || _entry$client4 === void 0 ? void 0 : _entry$client4.uuid
+          }
+        });
+        $$invalidate(0, showTooltip = false);
+      };
+
+      var click_handler_1 = function click_handler_1(result, project, task, event) {
+        event.stopPropagation();
+        event.preventDefault();
+        $$invalidate(9, selected = {
+          client: {
+            label: result.client.label,
+            value: result.client.value
+          },
+          project: {
+            label: project.label,
+            value: project.value
+          },
+          task: task
+        });
+        $$invalidate(0, showTooltip = false);
+      };
+
+      var submit_handler = function submit_handler(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        save();
+      };
+
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(16, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(17, requestToken = $$props.requestToken);
-        if ('projects' in $$props) $$invalidate(18, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(19, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(20, initialDate = $$props.initialDate);
+        if ('action' in $$props) $$invalidate(18, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(19, requestToken = $$props.requestToken);
+        if ('clients' in $$props) $$invalidate(20, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(21, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(22, tasks = $$props.tasks);
+        if ('initialDate' in $$props) $$invalidate(23, initialDate = $$props.initialDate);
+        if ('latestSearchEntries' in $$props) $$invalidate(24, latestSearchEntries = $$props.latestSearchEntries);
       };
 
       $$invalidate(8, loading = false);
 
-      return [showTooltip, duration, date, note, noteInput, buttonInput, searchInput, searchValue, loading, popperRef, popperContent, extraOpts, lastUsed, searchResults, save, task, action, requestToken, projects, tasks, initialDate, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler, input3_binding, input_binding, input_input_handler];
+      $$invalidate(10, taskError = false);
+
+      $$invalidate(9, selected = null);
+
+      $$invalidate(11, searchResults = []);
+
+      return [showTooltip, duration, date, note, noteInput, buttonInput, searchInput, searchValue, loading, selected, taskError, searchResults, popperRef, popperContent, extraOpts, lastUsed, search, save, action, requestToken, clients, projects, tasks, initialDate, latestSearchEntries, input0_input_handler, input0_binding, input1_input_handler, input2_input_handler, focus_handler, input3_binding, input_binding, input_input_handler, input_handler, click_handler, click_handler_1, submit_handler];
     }
 
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -28016,11 +28386,13 @@
 
         _this = _super.call(this);
         init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
-          action: 16,
-          requestToken: 17,
-          projects: 18,
-          tasks: 19,
-          initialDate: 20
+          action: 18,
+          requestToken: 19,
+          clients: 20,
+          projects: 21,
+          tasks: 22,
+          initialDate: 23,
+          latestSearchEntries: 24
         }, null, [-1, -1]);
         return _this;
       }
@@ -28242,6 +28614,32 @@
 
       return _createClass$1(Checkmark);
     }(SvelteComponent);
+
+    var $find = arrayIteration$1.find;
+
+
+
+    var FIND = 'find';
+    var SKIPS_HOLES = true; // Shouldn't skip holes
+
+    if (FIND in []) Array(1)[FIND](function () {
+      SKIPS_HOLES = false;
+    }); // `Array.prototype.find` method
+    // https://tc39.es/ecma262/#sec-array.prototype.find
+
+    _export$1({
+      target: 'Array',
+      proto: true,
+      forced: SKIPS_HOLES
+    }, {
+      find: function find(callbackfn
+      /* , that = undefined */
+      ) {
+        return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      }
+    }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+
+    addToUnscopables$1(FIND);
 
     function create_fragment$5(ctx) {
       var form;
@@ -29603,41 +30001,6 @@
 
       return _createClass$1(PrintButton);
     }(SvelteComponent);
-
-    var $propertyIsEnumerable$1 = objectPropertyIsEnumerable$1.f;
-
-    var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable$1);
-    var push$1 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
-
-    var createMethod$4 = function (TO_ENTRIES) {
-      return function (it) {
-        var O = toIndexedObject$1(it);
-        var keys = objectKeys$1(O);
-        var length = keys.length;
-        var i = 0;
-        var result = [];
-        var key;
-
-        while (length > i) {
-          key = keys[i++];
-
-          if (!descriptors$1 || propertyIsEnumerable(O, key)) {
-            push$1(result, TO_ENTRIES ? [key, O[key]] : O[key]);
-          }
-        }
-
-        return result;
-      };
-    };
-
-    var objectToArray = {
-      // `Object.entries` method
-      // https://tc39.es/ecma262/#sec-object.entries
-      entries: createMethod$4(true),
-      // `Object.values` method
-      // https://tc39.es/ecma262/#sec-object.values
-      values: createMethod$4(false)
-    };
 
     var $entries = objectToArray.entries; // `Object.entries` method
     // https://tc39.es/ecma262/#sec-object.entries
