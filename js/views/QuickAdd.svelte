@@ -10,7 +10,7 @@
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
 	import { createPopperActions } from "svelte-popperjs";
-	import { distance } from "fastest-levenshtein";
+	import Fuse from "fuse.js";
 
 	const [popperRef, popperContent] = createPopperActions({
 		placement: "bottom",
@@ -49,10 +49,22 @@
 				return { ...project, tasks: projectTasks };
 			});
 
-		return {
-			client: { ...client, projects: clientProjects },
-		};
+		return { ...client, projects: clientProjects };
 	});
+
+	const searchOptions = {
+		keys: ["label"],
+		threshold: 0.4,
+		//  A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
+		includeScore: true,
+	};
+
+	const clientsFuse = new Fuse(clients, searchOptions);
+	const projectsFuse = new Fuse(projects, searchOptions);
+	const tasksFuse = new Fuse(tasks, searchOptions);
+
+	const scoreSort = (a, b) =>
+		parseFloat(a.score) < parseFloat(b.score) ? -1 : parseFloat(a.score) > parseFloat(b.score) ? 1 : 0;
 
 	const search = (q) => {
 		if (!q) {
@@ -60,27 +72,57 @@
 			return;
 		}
 
-		const acceptableDistance = 4;
+		const clientsResults = clientsFuse.search(q);
+		const projectsResults = projectsFuse.search(q);
+		const tasksResults = tasksFuse.search(q);
 
 		searchResults = [...groupedData]
-			.map((entry) => {
-				const projects = entry?.client?.projects
+			.map((client) => {
+				if (!client) {
+					return { client: undefined };
+				}
+
+				const { projects: clientProjects, value: clientId } = client;
+				const clientFound = clientsResults.find((result) => result.item.value === clientId);
+				let clientScore = parseFloat(clientFound?.score ?? 1);
+				let projectsScore = 1;
+				let tasksScore = 1;
+
+				const projects = clientProjects
 					?.map((project) => {
-						const tasks = project?.tasks?.filter((task) => distance(task?.label, q) <= acceptableDistance);
-						return tasks.length || distance(project?.label, q) <= acceptableDistance
-							? { ...project, tasks }
+						const projectFound = projectsResults.find((result) => result.item.value === project?.value);
+						projectsScore = Math.min(projectsScore, parseFloat(projectFound?.score ?? 1));
+						let tasksPerProjectScore = 1;
+
+						const tasks = project?.tasks
+							?.map((task) => {
+								const taskFound = tasksResults.find((result) => result.item.value === task?.value);
+								const score = parseFloat(taskFound?.score ?? 1);
+								tasksScore = Math.min(tasksScore, score);
+								tasksPerProjectScore = Math.min(tasksPerProjectScore, score);
+
+								return clientFound || projectFound || taskFound ? { ...task, score: score } : undefined;
+							})
+							.filter((task) => task !== undefined)
+							.sort(scoreSort);
+
+						return tasks.length || projectFound
+							? { ...project, score: Math.min(parseFloat(projectFound?.score ?? 1), tasksPerProjectScore), tasks }
 							: undefined;
 					})
-					.filter((project) => project !== undefined);
+					.filter((project) => project !== undefined)
+					.sort(scoreSort);
 
-				return {
-					client:
-						projects?.length || distance(entry?.client?.label, q) <= acceptableDistance
-							? { ...entry?.client, projects }
-							: undefined,
-				};
+				return projects?.length || clientFound
+					? {
+							...client,
+							projects,
+							score: Math.min(parseFloat(clientScore), parseFloat(projectsScore), parseFloat(tasksScore)),
+					  }
+					: undefined;
 			})
-			.filter((entry) => entry?.client !== undefined);
+			.filter((client) => client !== undefined)
+			.sort(scoreSort);
 	};
 
 	const hideTooltip = () => {
@@ -250,12 +292,12 @@
 			</div>
 			<div class="search-results">
 				{#if searchResults?.length}
-					{#each searchResults as result}
+					{#each searchResults as client}
 						<ul class="result">
 							<li>
-								<span class="client">{result.client.label}</span>
+								<span class="client">{client.label}</span>
 								<ul>
-									{#each result.client.projects as project}
+									{#each client.projects as project}
 										<li>
 											<span class="project">{project.label}</span>
 											<ul>
@@ -268,7 +310,7 @@
 																event.preventDefault();
 
 																selected = {
-																	client: { label: result.client.label, value: result.client.value },
+																	client: { label: client.label, value: client.value },
 																	project: { label: project.label, value: project.value },
 																	task,
 																};

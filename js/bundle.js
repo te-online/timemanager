@@ -443,10 +443,10 @@
 
     var id$1 = 0;
     var postfix$1 = Math.random();
-    var toString$3 = functionUncurryThis(1.0.toString);
+    var toString$4 = functionUncurryThis(1.0.toString);
 
     var uid$1 = function (key) {
-      return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$3(++id$1 + postfix$1, 36);
+      return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$4(++id$1 + postfix$1, 36);
     };
 
     // `IsCallable` abstract operation
@@ -511,16 +511,16 @@
     var useSymbolAsUid$1 = nativeSymbol$1 && !Symbol.sham && typeof Symbol.iterator == 'symbol';
 
     var WellKnownSymbolsStore$1 = shared$1('wks');
-    var Symbol$2 = global_1.Symbol;
-    var symbolFor = Symbol$2 && Symbol$2['for'];
-    var createWellKnownSymbol$1 = useSymbolAsUid$1 ? Symbol$2 : Symbol$2 && Symbol$2.withoutSetter || uid$1;
+    var Symbol$3 = global_1.Symbol;
+    var symbolFor = Symbol$3 && Symbol$3['for'];
+    var createWellKnownSymbol$1 = useSymbolAsUid$1 ? Symbol$3 : Symbol$3 && Symbol$3.withoutSetter || uid$1;
 
     var wellKnownSymbol$1 = function (name) {
       if (!hasOwnProperty_1(WellKnownSymbolsStore$1, name) || !(nativeSymbol$1 || typeof WellKnownSymbolsStore$1[name] == 'string')) {
         var description = 'Symbol.' + name;
 
-        if (nativeSymbol$1 && hasOwnProperty_1(Symbol$2, name)) {
-          WellKnownSymbolsStore$1[name] = Symbol$2[name];
+        if (nativeSymbol$1 && hasOwnProperty_1(Symbol$3, name)) {
+          WellKnownSymbolsStore$1[name] = Symbol$3[name];
         } else if (useSymbolAsUid$1 && symbolFor) {
           WellKnownSymbolsStore$1[name] = symbolFor(description);
         } else {
@@ -532,9 +532,9 @@
     };
 
     var TO_STRING_TAG$7 = wellKnownSymbol$1('toStringTag');
-    var test$1 = {};
-    test$1[TO_STRING_TAG$7] = 'z';
-    var toStringTagSupport$1 = String(test$1) === '[object z]';
+    var test$2 = {};
+    test$2[TO_STRING_TAG$7] = 'z';
+    var toStringTagSupport$1 = String(test$2) === '[object z]';
 
     // Detect IE8's incomplete defineProperty implementation
 
@@ -548,13 +548,13 @@
       })[1] != 7;
     });
 
-    var isObject$3 = function (it) {
+    var isObject$4 = function (it) {
       return typeof it == 'object' ? it !== null : isCallable(it);
     };
 
     var document$4 = global_1.document; // typeof document.createElement is 'object' in old IE
 
-    var EXISTS$2 = isObject$3(document$4) && isObject$3(document$4.createElement);
+    var EXISTS$2 = isObject$4(document$4) && isObject$4(document$4.createElement);
 
     var documentCreateElement$1 = function (it) {
       return EXISTS$2 ? document$4.createElement(it) : {};
@@ -590,7 +590,7 @@
     var TypeError$g = global_1.TypeError; // `Assert: Type(argument) is Object`
 
     var anObject$1 = function (argument) {
-      if (isObject$3(argument)) return argument;
+      if (isObject$4(argument)) return argument;
       throw TypeError$g(String$5(argument) + ' is not an object');
     };
 
@@ -640,9 +640,9 @@
 
     var ordinaryToPrimitive = function (input, pref) {
       var fn, val;
-      if (pref === 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
-      if (isCallable(fn = input.valueOf) && !isObject$3(val = functionCall(fn, input))) return val;
-      if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$3(val = functionCall(fn, input))) return val;
+      if (pref === 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
+      if (isCallable(fn = input.valueOf) && !isObject$4(val = functionCall(fn, input))) return val;
+      if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
       throw TypeError$e("Can't convert object to primitive value");
     };
 
@@ -651,14 +651,14 @@
     // https://tc39.es/ecma262/#sec-toprimitive
 
     var toPrimitive$1 = function (input, pref) {
-      if (!isObject$3(input) || isSymbol(input)) return input;
+      if (!isObject$4(input) || isSymbol(input)) return input;
       var exoticToPrim = getMethod(input, TO_PRIMITIVE);
       var result;
 
       if (exoticToPrim) {
         if (pref === undefined) pref = 'default';
         result = functionCall(exoticToPrim, input, pref);
-        if (!isObject$3(result) || isSymbol(result)) return result;
+        if (!isObject$4(result) || isSymbol(result)) return result;
         throw TypeError$d("Can't convert object to primitive value");
       }
 
@@ -778,17 +778,17 @@
     var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
     var TypeError$b = global_1.TypeError;
     var WeakMap$2 = global_1.WeakMap;
-    var set$2, get$1, has$2;
+    var set$2, get$2, has$2;
 
     var enforce$1 = function (it) {
-      return has$2(it) ? get$1(it) : set$2(it, {});
+      return has$2(it) ? get$2(it) : set$2(it, {});
     };
 
     var getterFor$1 = function (TYPE) {
       return function (it) {
         var state;
 
-        if (!isObject$3(it) || (state = get$1(it)).type !== TYPE) {
+        if (!isObject$4(it) || (state = get$2(it)).type !== TYPE) {
           throw TypeError$b('Incompatible receiver, ' + TYPE + ' required');
         }
 
@@ -809,7 +809,7 @@
         return metadata;
       };
 
-      get$1 = function (it) {
+      get$2 = function (it) {
         return wmget$1(store$2, it) || {};
       };
 
@@ -827,7 +827,7 @@
         return metadata;
       };
 
-      get$1 = function (it) {
+      get$2 = function (it) {
         return hasOwnProperty_1(it, STATE$1) ? it[STATE$1] : {};
       };
 
@@ -838,7 +838,7 @@
 
     var internalState$1 = {
       set: set$2,
-      get: get$1,
+      get: get$2,
       has: has$2,
       enforce: enforce$1,
       getterFor: getterFor$1
@@ -921,11 +921,11 @@
       return O;
     };
 
-    var toString$2 = functionUncurryThis({}.toString);
+    var toString$3 = functionUncurryThis({}.toString);
     var stringSlice$5 = functionUncurryThis(''.slice);
 
     var classofRaw$1 = function (it) {
-      return stringSlice$5(toString$2(it), 8, -1);
+      return stringSlice$5(toString$3(it), 8, -1);
     };
 
     var TO_STRING_TAG$6 = wellKnownSymbol$1('toStringTag');
@@ -1036,13 +1036,13 @@
     } : Object$2;
 
     var ceil$1 = Math.ceil;
-    var floor$2 = Math.floor; // `ToIntegerOrInfinity` abstract operation
+    var floor$3 = Math.floor; // `ToIntegerOrInfinity` abstract operation
     // https://tc39.es/ecma262/#sec-tointegerorinfinity
 
     var toIntegerOrInfinity = function (argument) {
       var number = +argument; // eslint-disable-next-line no-self-compare -- safe
 
-      return number !== number || number === 0 ? 0 : (number > 0 ? floor$2 : ceil$1)(number);
+      return number !== number || number === 0 ? 0 : (number > 0 ? floor$3 : ceil$1)(number);
     };
 
     var min$7 = Math.min; // `ToLength` abstract operation
@@ -1065,7 +1065,7 @@
     // eslint-disable-next-line es-x/no-array-isarray -- safe
 
 
-    var isArray$3 = Array.isArray || function isArray(argument) {
+    var isArray$4 = Array.isArray || function isArray(argument) {
       return classofRaw$1(argument) == 'Array';
     };
 
@@ -1127,10 +1127,10 @@
     var arraySpeciesConstructor = function (originalArray) {
       var C;
 
-      if (isArray$3(originalArray)) {
+      if (isArray$4(originalArray)) {
         C = originalArray.constructor; // cross-realm fallback
 
-        if (isConstructor(C) && (C === Array$4 || isArray$3(C.prototype))) C = undefined;else if (isObject$3(C)) {
+        if (isConstructor(C) && (C === Array$4 || isArray$4(C.prototype))) C = undefined;else if (isObject$4(C)) {
           C = C[SPECIES$b];
           if (C === null) C = undefined;
         }
@@ -1147,9 +1147,9 @@
       return new (arraySpeciesConstructor(originalArray))(length === 0 ? 0 : length);
     };
 
-    var push$5 = functionUncurryThis([].push); // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
+    var push$6 = functionUncurryThis([].push); // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
 
-    var createMethod$7 = function (TYPE) {
+    var createMethod$8 = function (TYPE) {
       var IS_MAP = TYPE == 1;
       var IS_FILTER = TYPE == 2;
       var IS_SOME = TYPE == 3;
@@ -1187,7 +1187,7 @@
               // findIndex
 
               case 2:
-                push$5(target, value);
+                push$6(target, value);
               // filter
             } else switch (TYPE) {
               case 4:
@@ -1195,7 +1195,7 @@
               // every
 
               case 7:
-                push$5(target, value);
+                push$6(target, value);
               // filterReject
             }
           }
@@ -1208,28 +1208,28 @@
     var arrayIteration$1 = {
       // `Array.prototype.forEach` method
       // https://tc39.es/ecma262/#sec-array.prototype.foreach
-      forEach: createMethod$7(0),
+      forEach: createMethod$8(0),
       // `Array.prototype.map` method
       // https://tc39.es/ecma262/#sec-array.prototype.map
-      map: createMethod$7(1),
+      map: createMethod$8(1),
       // `Array.prototype.filter` method
       // https://tc39.es/ecma262/#sec-array.prototype.filter
-      filter: createMethod$7(2),
+      filter: createMethod$8(2),
       // `Array.prototype.some` method
       // https://tc39.es/ecma262/#sec-array.prototype.some
-      some: createMethod$7(3),
+      some: createMethod$8(3),
       // `Array.prototype.every` method
       // https://tc39.es/ecma262/#sec-array.prototype.every
-      every: createMethod$7(4),
+      every: createMethod$8(4),
       // `Array.prototype.find` method
       // https://tc39.es/ecma262/#sec-array.prototype.find
-      find: createMethod$7(5),
+      find: createMethod$8(5),
       // `Array.prototype.findIndex` method
       // https://tc39.es/ecma262/#sec-array.prototype.findIndex
-      findIndex: createMethod$7(6),
+      findIndex: createMethod$8(6),
       // `Array.prototype.filterReject` method
       // https://github.com/tc39/proposal-array-filtering
-      filterReject: createMethod$7(7)
+      filterReject: createMethod$8(7)
     };
 
     var arrayMethodIsStrict$1 = function (METHOD_NAME, argument) {
@@ -1246,10 +1246,10 @@
 
 
 
-    var STRICT_METHOD$3 = arrayMethodIsStrict$1('forEach'); // `Array.prototype.forEach` method implementation
+    var STRICT_METHOD$4 = arrayMethodIsStrict$1('forEach'); // `Array.prototype.forEach` method implementation
     // https://tc39.es/ecma262/#sec-array.prototype.foreach
 
-    var arrayForEach$1 = !STRICT_METHOD$3 ? function forEach(callbackfn
+    var arrayForEach$1 = !STRICT_METHOD$4 ? function forEach(callbackfn
     /* , thisArg */
     ) {
       return $forEach$1(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined); // eslint-disable-next-line es-x/no-array-prototype-foreach -- safe
@@ -2058,7 +2058,7 @@
     // `Array.prototype.{ indexOf, includes }` methods implementation
 
 
-    var createMethod$6 = function (IS_INCLUDES) {
+    var createMethod$7 = function (IS_INCLUDES) {
       return function ($this, el, fromIndex) {
         var O = toIndexedObject$1($this);
         var length = lengthOfArrayLike(O);
@@ -2080,17 +2080,17 @@
     var arrayIncludes$1 = {
       // `Array.prototype.includes` method
       // https://tc39.es/ecma262/#sec-array.prototype.includes
-      includes: createMethod$6(true),
+      includes: createMethod$7(true),
       // `Array.prototype.indexOf` method
       // https://tc39.es/ecma262/#sec-array.prototype.indexof
-      indexOf: createMethod$6(false)
+      indexOf: createMethod$7(false)
     };
 
     var indexOf$3 = arrayIncludes$1.indexOf;
 
 
 
-    var push$4 = functionUncurryThis([].push);
+    var push$5 = functionUncurryThis([].push);
 
     var objectKeysInternal$1 = function (object, names) {
       var O = toIndexedObject$1(object);
@@ -2098,11 +2098,11 @@
       var result = [];
       var key;
 
-      for (key in O) !hasOwnProperty_1(hiddenKeys$3, key) && hasOwnProperty_1(O, key) && push$4(result, key); // Don't enum bug & hidden keys
+      for (key in O) !hasOwnProperty_1(hiddenKeys$3, key) && hasOwnProperty_1(O, key) && push$5(result, key); // Don't enum bug & hidden keys
 
 
       while (names.length > i) if (hasOwnProperty_1(O, key = names[i++])) {
-        ~indexOf$3(result, key) || push$4(result, key);
+        ~indexOf$3(result, key) || push$5(result, key);
       }
 
       return result;
@@ -2281,12 +2281,12 @@
 
         var Constructor, result, n;
 
-        if (isArray$3(O)) {
+        if (isArray$4(O)) {
           Constructor = O.constructor; // cross-realm fallback
 
-          if (isConstructor(Constructor) && (Constructor === Array$3 || isArray$3(Constructor.prototype))) {
+          if (isConstructor(Constructor) && (Constructor === Array$3 || isArray$4(Constructor.prototype))) {
             Constructor = undefined;
-          } else if (isObject$3(Constructor)) {
+          } else if (isObject$4(Constructor)) {
             Constructor = Constructor[SPECIES$9];
             if (Constructor === null) Constructor = undefined;
           }
@@ -2342,17 +2342,17 @@
 
     var iterators$1 = {};
 
-    var ITERATOR$b = wellKnownSymbol$1('iterator');
+    var ITERATOR$c = wellKnownSymbol$1('iterator');
     var ArrayPrototype$3 = Array.prototype; // check on default Array iterator
 
     var isArrayIteratorMethod$1 = function (it) {
-      return it !== undefined && (iterators$1.Array === it || ArrayPrototype$3[ITERATOR$b] === it);
+      return it !== undefined && (iterators$1.Array === it || ArrayPrototype$3[ITERATOR$c] === it);
     };
 
-    var ITERATOR$a = wellKnownSymbol$1('iterator');
+    var ITERATOR$b = wellKnownSymbol$1('iterator');
 
     var getIteratorMethod$1 = function (it) {
-      if (it != undefined) return getMethod(it, ITERATOR$a) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
+      if (it != undefined) return getMethod(it, ITERATOR$b) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
     };
 
     var TypeError$a = global_1.TypeError;
@@ -2402,7 +2402,7 @@
       return result;
     };
 
-    var ITERATOR$9 = wellKnownSymbol$1('iterator');
+    var ITERATOR$a = wellKnownSymbol$1('iterator');
     var SAFE_CLOSING$1 = false;
 
     try {
@@ -2418,7 +2418,7 @@
         }
       };
 
-      iteratorWithReturn$1[ITERATOR$9] = function () {
+      iteratorWithReturn$1[ITERATOR$a] = function () {
         return this;
       }; // eslint-disable-next-line es-x/no-array-from, no-throw-literal -- required for testing
 
@@ -2437,7 +2437,7 @@
       try {
         var object = {};
 
-        object[ITERATOR$9] = function () {
+        object[ITERATOR$a] = function () {
           return {
             next: function () {
               return {
@@ -2476,11 +2476,11 @@
       return String$3(argument);
     };
 
-    var charAt$6 = functionUncurryThis(''.charAt);
+    var charAt$7 = functionUncurryThis(''.charAt);
     var charCodeAt = functionUncurryThis(''.charCodeAt);
     var stringSlice$4 = functionUncurryThis(''.slice);
 
-    var createMethod$5 = function (CONVERT_TO_STRING) {
+    var createMethod$6 = function (CONVERT_TO_STRING) {
       return function ($this, pos) {
         var S = toString_1(requireObjectCoercible$1($this));
         var position = toIntegerOrInfinity(pos);
@@ -2488,17 +2488,17 @@
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
         first = charCodeAt(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$6(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$7(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
 
     var stringMultibyte$1 = {
       // `String.prototype.codePointAt` method
       // https://tc39.es/ecma262/#sec-string.prototype.codepointat
-      codeAt: createMethod$5(false),
+      codeAt: createMethod$6(false),
       // `String.prototype.at` method
       // https://github.com/mathiasbynens/String.prototype.at
-      charAt: createMethod$5(true)
+      charAt: createMethod$6(true)
     };
 
     // `Object.keys` method
@@ -2659,7 +2659,7 @@
       return object instanceof Object$1 ? ObjectPrototype$1 : null;
     };
 
-    var ITERATOR$8 = wellKnownSymbol$1('iterator');
+    var ITERATOR$9 = wellKnownSymbol$1('iterator');
     var BUGGY_SAFARI_ITERATORS$3 = false; // `%IteratorPrototype%` object
     // https://tc39.es/ecma262/#sec-%iteratorprototype%-object
 
@@ -2678,13 +2678,13 @@
     var NEW_ITERATOR_PROTOTYPE$1 = IteratorPrototype$5 == undefined || fails$1(function () {
       var test = {}; // FF44- legacy iterators case
 
-      return IteratorPrototype$5[ITERATOR$8].call(test) !== test;
+      return IteratorPrototype$5[ITERATOR$9].call(test) !== test;
     });
     if (NEW_ITERATOR_PROTOTYPE$1) IteratorPrototype$5 = {}; // `%IteratorPrototype%[@@iterator]()` method
     // https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
 
-    if (!isCallable(IteratorPrototype$5[ITERATOR$8])) {
-      defineBuiltIn(IteratorPrototype$5, ITERATOR$8, function () {
+    if (!isCallable(IteratorPrototype$5[ITERATOR$9])) {
+      defineBuiltIn(IteratorPrototype$5, ITERATOR$9, function () {
         return this;
       });
     }
@@ -2782,7 +2782,7 @@
     var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
     var IteratorPrototype$3 = iteratorsCore$1.IteratorPrototype;
     var BUGGY_SAFARI_ITERATORS$2 = iteratorsCore$1.BUGGY_SAFARI_ITERATORS;
-    var ITERATOR$7 = wellKnownSymbol$1('iterator');
+    var ITERATOR$8 = wellKnownSymbol$1('iterator');
     var KEYS$1 = 'keys';
     var VALUES$1 = 'values';
     var ENTRIES$1 = 'entries';
@@ -2823,7 +2823,7 @@
       var TO_STRING_TAG = NAME + ' Iterator';
       var INCORRECT_VALUES_NAME = false;
       var IterablePrototype = Iterable.prototype;
-      var nativeIterator = IterablePrototype[ITERATOR$7] || IterablePrototype['@@iterator'] || DEFAULT && IterablePrototype[DEFAULT];
+      var nativeIterator = IterablePrototype[ITERATOR$8] || IterablePrototype['@@iterator'] || DEFAULT && IterablePrototype[DEFAULT];
       var defaultIterator = !BUGGY_SAFARI_ITERATORS$2 && nativeIterator || getIterationMethod(DEFAULT);
       var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
       var CurrentIteratorPrototype, methods, KEY; // fix native
@@ -2835,8 +2835,8 @@
           if (objectGetPrototypeOf$1(CurrentIteratorPrototype) !== IteratorPrototype$3) {
             if (objectSetPrototypeOf$1) {
               objectSetPrototypeOf$1(CurrentIteratorPrototype, IteratorPrototype$3);
-            } else if (!isCallable(CurrentIteratorPrototype[ITERATOR$7])) {
-              defineBuiltIn(CurrentIteratorPrototype, ITERATOR$7, returnThis$3);
+            } else if (!isCallable(CurrentIteratorPrototype[ITERATOR$8])) {
+              defineBuiltIn(CurrentIteratorPrototype, ITERATOR$8, returnThis$3);
             }
           } // Set @@toStringTag to native iterators
 
@@ -2877,8 +2877,8 @@
       } // define iterator
 
 
-      if (IterablePrototype[ITERATOR$7] !== defaultIterator) {
-        defineBuiltIn(IterablePrototype, ITERATOR$7, defaultIterator, {
+      if (IterablePrototype[ITERATOR$8] !== defaultIterator) {
+        defineBuiltIn(IterablePrototype, ITERATOR$8, defaultIterator, {
           name: DEFAULT
         });
       }
@@ -2887,7 +2887,7 @@
       return methods;
     };
 
-    var charAt$5 = stringMultibyte$1.charAt;
+    var charAt$6 = stringMultibyte$1.charAt;
 
 
 
@@ -2916,7 +2916,7 @@
         value: undefined,
         done: true
       };
-      point = charAt$5(string, index);
+      point = charAt$6(string, index);
       state.index += point.length;
       return {
         value: point,
@@ -3016,17 +3016,17 @@
       /* empty */
     }
 
-    var ITERATOR$6 = wellKnownSymbol$1('iterator');
+    var ITERATOR$7 = wellKnownSymbol$1('iterator');
     var TO_STRING_TAG$4 = wellKnownSymbol$1('toStringTag');
     var ArrayValues$1 = es_array_iterator$1.values;
 
     var handlePrototype = function (CollectionPrototype, COLLECTION_NAME) {
       if (CollectionPrototype) {
         // some Chrome versions have non-configurable methods on DOMTokenList
-        if (CollectionPrototype[ITERATOR$6] !== ArrayValues$1) try {
-          createNonEnumerableProperty$1(CollectionPrototype, ITERATOR$6, ArrayValues$1);
+        if (CollectionPrototype[ITERATOR$7] !== ArrayValues$1) try {
+          createNonEnumerableProperty$1(CollectionPrototype, ITERATOR$7, ArrayValues$1);
         } catch (error) {
-          CollectionPrototype[ITERATOR$6] = ArrayValues$1;
+          CollectionPrototype[ITERATOR$7] = ArrayValues$1;
         }
 
         if (!CollectionPrototype[TO_STRING_TAG$4]) {
@@ -3085,12 +3085,12 @@
     var SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport$1('concat');
 
     var isConcatSpreadable$1 = function (O) {
-      if (!isObject$3(O)) return false;
+      if (!isObject$4(O)) return false;
       var spreadable = O[IS_CONCAT_SPREADABLE$1];
-      return spreadable !== undefined ? !!spreadable : isArray$3(O);
+      return spreadable !== undefined ? !!spreadable : isArray$4(O);
     };
 
-    var FORCED$2 = !IS_CONCAT_SPREADABLE_SUPPORT$1 || !SPECIES_SUPPORT$1; // `Array.prototype.concat` method
+    var FORCED$4 = !IS_CONCAT_SPREADABLE_SUPPORT$1 || !SPECIES_SUPPORT$1; // `Array.prototype.concat` method
     // https://tc39.es/ecma262/#sec-array.prototype.concat
     // with adding support of @@isConcatSpreadable and @@species
 
@@ -3098,7 +3098,7 @@
       target: 'Array',
       proto: true,
       arity: 1,
-      forced: FORCED$2
+      forced: FORCED$4
     }, {
       // eslint-disable-next-line no-unused-vars -- required for `.length`
       concat: function concat(arg) {
@@ -3214,9 +3214,9 @@
     var nativeReplace$1 = shared$1('native-string-replace', String.prototype.replace);
     var nativeExec$1 = RegExp.prototype.exec;
     var patchedExec$1 = nativeExec$1;
-    var charAt$4 = functionUncurryThis(''.charAt);
+    var charAt$5 = functionUncurryThis(''.charAt);
     var indexOf$2 = functionUncurryThis(''.indexOf);
-    var replace$1 = functionUncurryThis(''.replace);
+    var replace$2 = functionUncurryThis(''.replace);
     var stringSlice$3 = functionUncurryThis(''.slice);
 
     var UPDATES_LAST_INDEX_WRONG$1 = function () {
@@ -3255,7 +3255,7 @@
         var strCopy = str;
 
         if (sticky) {
-          flags = replace$1(flags, 'y', '');
+          flags = replace$2(flags, 'y', '');
 
           if (indexOf$2(flags, 'g') === -1) {
             flags += 'g';
@@ -3263,7 +3263,7 @@
 
           strCopy = stringSlice$3(str, re.lastIndex); // Support anchored sticky behavior.
 
-          if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$4(str, re.lastIndex - 1) !== '\n')) {
+          if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$5(str, re.lastIndex - 1) !== '\n')) {
             source = '(?: ' + source + ')';
             strCopy = ' ' + strCopy;
             charsAdded++;
@@ -3422,7 +3422,7 @@
 
     var isRegexp$1 = function (it) {
       var isRegExp;
-      return isObject$3(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
+      return isObject$4(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
     };
 
     var TypeError$7 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
@@ -3441,12 +3441,12 @@
       return C === undefined || (S = anObject$1(C)[SPECIES$7]) == undefined ? defaultConstructor : aConstructor(S);
     };
 
-    var charAt$3 = stringMultibyte$1.charAt; // `AdvanceStringIndex` abstract operation
+    var charAt$4 = stringMultibyte$1.charAt; // `AdvanceStringIndex` abstract operation
     // https://tc39.es/ecma262/#sec-advancestringindex
 
 
     var advanceStringIndex$1 = function (S, index, unicode) {
-      return index + (unicode ? charAt$3(S, index).length : 1);
+      return index + (unicode ? charAt$4(S, index).length : 1);
     };
 
     var Array$1 = global_1.Array;
@@ -3485,7 +3485,7 @@
     var min$5 = Math.min;
     var $push = [].push;
     var exec = functionUncurryThis(/./.exec);
-    var push$3 = functionUncurryThis($push);
+    var push$4 = functionUncurryThis($push);
     var stringSlice$2 = functionUncurryThis(''.slice); // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
     // Weex JS has frozen built-in prototypes, so use try / catch wrapper
 
@@ -3530,7 +3530,7 @@
             lastIndex = separatorCopy.lastIndex;
 
             if (lastIndex > lastLastIndex) {
-              push$3(output, stringSlice$2(string, lastLastIndex, match.index));
+              push$4(output, stringSlice$2(string, lastLastIndex, match.index));
               if (match.length > 1 && match.index < string.length) functionApply($push, output, arraySliceSimple(match, 1));
               lastLength = match[0].length;
               lastLastIndex = lastIndex;
@@ -3541,8 +3541,8 @@
           }
 
           if (lastLastIndex === string.length) {
-            if (lastLength || !exec(separatorCopy, '')) push$3(output, '');
-          } else push$3(output, stringSlice$2(string, lastLastIndex));
+            if (lastLength || !exec(separatorCopy, '')) push$4(output, '');
+          } else push$4(output, stringSlice$2(string, lastLastIndex));
 
           return output.length > lim ? arraySliceSimple(output, 0, lim) : output;
         }; // Chakra, V8
@@ -3590,11 +3590,11 @@
           if (z === null || (e = min$5(toLength$1(splitter.lastIndex + (UNSUPPORTED_Y$4 ? q : 0)), S.length)) === p) {
             q = advanceStringIndex$1(S, q, unicodeMatching);
           } else {
-            push$3(A, stringSlice$2(S, p, q));
+            push$4(A, stringSlice$2(S, p, q));
             if (A.length === lim) return A;
 
             for (var i = 1; i <= z.length - 1; i++) {
-              push$3(A, z[i]);
+              push$4(A, z[i]);
               if (A.length === lim) return A;
             }
 
@@ -3602,7 +3602,7 @@
           }
         }
 
-        push$3(A, stringSlice$2(S, p));
+        push$4(A, stringSlice$2(S, p));
         return A;
       }];
     }, !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC$1, UNSUPPORTED_Y$4);
@@ -4008,7 +4008,7 @@
 
     var isThenable = function (it) {
       var then;
-      return isObject$3(it) && isCallable(then = it.then) ? then : false;
+      return isObject$4(it) && isCallable(then = it.then) ? then : false;
     };
 
     var callReaction = function (reaction, state) {
@@ -4446,7 +4446,7 @@
 
     var promiseResolve = function (C, x) {
       anObject$1(C);
-      if (isObject$3(x) && x.constructor === C) return x;
+      if (isObject$4(x) && x.constructor === C) return x;
       var promiseCapability = newPromiseCapability$1.f(C);
       var resolve = promiseCapability.resolve;
       resolve(x);
@@ -8334,7 +8334,7 @@
      * //=> "3 o'clock"
      */
 
-    function format$2(dirtyDate, dirtyFormatStr, options) {
+    function format$3(dirtyDate, dirtyFormatStr, options) {
       var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
 
       requiredArgs(2, arguments);
@@ -11338,7 +11338,7 @@
      * //=> Sun Feb 28 2010 00:00:00
      */
 
-    function parse$2(dirtyDateString, dirtyFormatString, dirtyReferenceDate, options) {
+    function parse$3(dirtyDateString, dirtyFormatString, dirtyReferenceDate, options) {
       var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
 
       requiredArgs(3, arguments);
@@ -11721,9 +11721,9 @@
       defineProperty: defineProperty$4
     });
 
-    var floor$1 = Math.floor;
-    var charAt$2 = functionUncurryThis(''.charAt);
-    var replace = functionUncurryThis(''.replace);
+    var floor$2 = Math.floor;
+    var charAt$3 = functionUncurryThis(''.charAt);
+    var replace$1 = functionUncurryThis(''.replace);
     var stringSlice$1 = functionUncurryThis(''.slice);
     var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
     var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g; // `GetSubstitution` abstract operation
@@ -11739,10 +11739,10 @@
         symbols = SUBSTITUTION_SYMBOLS;
       }
 
-      return replace(replacement, symbols, function (match, ch) {
+      return replace$1(replacement, symbols, function (match, ch) {
         var capture;
 
-        switch (charAt$2(ch, 0)) {
+        switch (charAt$3(ch, 0)) {
           case '$':
             return '$';
 
@@ -11765,9 +11765,9 @@
             if (n === 0) return match;
 
             if (n > m) {
-              var f = floor$1(n / 10);
+              var f = floor$2(n / 10);
               if (f === 0) return match;
-              if (f <= m) return captures[f - 1] === undefined ? charAt$2(ch, 1) : captures[f - 1] + charAt$2(ch, 1);
+              if (f <= m) return captures[f - 1] === undefined ? charAt$3(ch, 1) : captures[f - 1] + charAt$3(ch, 1);
               return match;
             }
 
@@ -11782,7 +11782,7 @@
     var max$2 = Math.max;
     var min$4 = Math.min;
     var concat = functionUncurryThis([].concat);
-    var push$2 = functionUncurryThis([].push);
+    var push$3 = functionUncurryThis([].push);
     var stringIndexOf$1 = functionUncurryThis(''.indexOf);
     var stringSlice = functionUncurryThis(''.slice);
 
@@ -11854,7 +11854,7 @@
         while (true) {
           var result = regexpExecAbstract$1(rx, S);
           if (result === null) break;
-          push$2(results, result);
+          push$3(results, result);
           if (!global) break;
           var matchStr = toString_1(result[0]);
           if (matchStr === '') rx.lastIndex = advanceStringIndex$1(S, toLength$1(rx.lastIndex), fullUnicode);
@@ -11873,13 +11873,13 @@
           // the slice polyfill when slicing native arrays) "doesn't work" in safari 9 and
           // causes a crash (https://pastebin.com/N21QzeQA) when trying to debug it.
 
-          for (var j = 1; j < result.length; j++) push$2(captures, maybeToString(result[j]));
+          for (var j = 1; j < result.length; j++) push$3(captures, maybeToString(result[j]));
 
           var namedCaptures = result.groups;
 
           if (functionalReplace) {
             var replacerArgs = concat([matched], captures, position, S);
-            if (namedCaptures !== undefined) push$2(replacerArgs, namedCaptures);
+            if (namedCaptures !== undefined) push$3(replacerArgs, namedCaptures);
             var replacement = toString_1(functionApply(replaceValue, undefined, replacerArgs));
           } else {
             replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
@@ -12086,13 +12086,13 @@
 
     var un$Join = functionUncurryThis([].join);
     var ES3_STRINGS$1 = indexedObject$1 != Object;
-    var STRICT_METHOD$2 = arrayMethodIsStrict$1('join', ','); // `Array.prototype.join` method
+    var STRICT_METHOD$3 = arrayMethodIsStrict$1('join', ','); // `Array.prototype.join` method
     // https://tc39.es/ecma262/#sec-array.prototype.join
 
     _export$1({
       target: 'Array',
       proto: true,
-      forced: ES3_STRINGS$1 || !STRICT_METHOD$2
+      forced: ES3_STRINGS$1 || !STRICT_METHOD$3
     }, {
       join: function join(separator) {
         return un$Join(toIndexedObject$1(this), separator === undefined ? ',' : separator);
@@ -13840,7 +13840,7 @@
       var t5;
       var span0;
       var t6;
-      var t7_value = format$2(startOfWeek(
+      var t7_value = format$3(startOfWeek(
       /*startCursor*/
       ctx[1],
       /*localeOptions*/
@@ -13849,7 +13849,7 @@
       ctx[9]) + "";
       var t7;
       var t8;
-      var t9_value = format$2(endOfWeek(
+      var t9_value = format$3(endOfWeek(
       /*startCursor*/
       ctx[1],
       /*localeOptions*/
@@ -13938,7 +13938,7 @@
           ctx[7]);
           if (dirty &
           /*startCursor*/
-          2 && t7_value !== (t7_value = format$2(startOfWeek(
+          2 && t7_value !== (t7_value = format$3(startOfWeek(
           /*startCursor*/
           ctx[1],
           /*localeOptions*/
@@ -13947,7 +13947,7 @@
           ctx[9]) + "")) set_data(t7, t7_value);
           if (dirty &
           /*startCursor*/
-          2 && t9_value !== (t9_value = format$2(endOfWeek(
+          2 && t9_value !== (t9_value = format$3(endOfWeek(
           /*startCursor*/
           ctx[1],
           /*localeOptions*/
@@ -14221,9 +14221,9 @@
 
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
-          start = _$$props$start === void 0 ? format$2(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
+          start = _$$props$start === void 0 ? format$3(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
       var _$$props$end = $$props.end,
-          end = _$$props$end === void 0 ? format$2(endOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$end;
+          end = _$$props$end === void 0 ? format$3(endOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$end;
 
       var updateWeek = function updateWeek() {
         $$invalidate(5, weekTotal = 0);
@@ -14306,7 +14306,7 @@
                   // Extract points from grouped array
                   $$invalidate(3, points = points.map(function (point) {
                     // Get total from API response
-                    var total = grouped[format$2(point.date, js_date_format)];
+                    var total = grouped[format$3(point.date, js_date_format)];
                     point.stats = {
                       total: total ? simpleRounding(total) : 0
                     }; // Find highest value
@@ -14348,8 +14348,8 @@
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
-                  start = format$2(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
-                  end = format$2(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
+                  start = format$3(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
+                  end = format$3(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
                   statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
 
                   urlParts = document.location.href.split("?");
@@ -14438,18 +14438,18 @@
       var formatDateForScale = function formatDateForScale(date, type) {
         if (type === "primary") {
           if (scale === "year") {
-            return format$2(date, "yyyy", localeOptions);
+            return format$3(date, "yyyy", localeOptions);
           }
 
           if (scale === "month") {
-            return format$2(date, "LLL", localeOptions);
+            return format$3(date, "LLL", localeOptions);
           }
 
           if (scale === "week") {
-            return "".concat(dist_10("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
+            return "".concat(dist_10("timemanager", "Week"), " ").concat(format$3(date, "w", localeOptions));
           }
 
-          return format$2(date, "iii", localeOptions);
+          return format$3(date, "iii", localeOptions);
         }
 
         if (type === "secondary") {
@@ -14458,14 +14458,14 @@
           }
 
           if (scale === "month") {
-            return format$2(date, "yyyy", localeOptions);
+            return format$3(date, "yyyy", localeOptions);
           }
 
           if (scale === "week") {
-            return "".concat(format$2(startOfWeek(date, localeOptions), "d.M.", localeOptions), " - ").concat(format$2(endOfWeek(date, localeOptions), "d.M.", localeOptions));
+            return "".concat(format$3(startOfWeek(date, localeOptions), "d.M.", localeOptions), " - ").concat(format$3(endOfWeek(date, localeOptions), "d.M.", localeOptions));
           }
 
-          return format$2(date, "d.M.", localeOptions);
+          return format$3(date, "d.M.", localeOptions);
         }
       };
 
@@ -14494,13 +14494,13 @@
         if ($$self.$$.dirty &
         /*start*/
         32768) {
-          $$invalidate(1, startCursor = isDate$1(parse$2(start, dateFormat$1, new Date())) ? parse$2(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
+          $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$1, new Date())) ? parse$3(start, dateFormat$1, new Date()) : startOfWeek(new Date(), localeOptions));
         }
 
         if ($$self.$$.dirty &
         /*end*/
         65536) {
-          endCursor = isDate$1(parse$2(end, dateFormat$1, new Date())) ? parse$2(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
+          endCursor = isDate$1(parse$3(end, dateFormat$1, new Date())) ? parse$3(end, dateFormat$1, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
 
@@ -24789,9 +24789,9 @@
     var $propertyIsEnumerable$1 = objectPropertyIsEnumerable$1.f;
 
     var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable$1);
-    var push$1 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
+    var push$2 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
 
-    var createMethod$4 = function (TO_ENTRIES) {
+    var createMethod$5 = function (TO_ENTRIES) {
       return function (it) {
         var O = toIndexedObject$1(it);
         var keys = objectKeys$1(O);
@@ -24804,7 +24804,7 @@
           key = keys[i++];
 
           if (!descriptors$1 || propertyIsEnumerable(O, key)) {
-            push$1(result, TO_ENTRIES ? [key, O[key]] : O[key]);
+            push$2(result, TO_ENTRIES ? [key, O[key]] : O[key]);
           }
         }
 
@@ -24815,10 +24815,10 @@
     var objectToArray = {
       // `Object.entries` method
       // https://tc39.es/ecma262/#sec-object.entries
-      entries: createMethod$4(true),
+      entries: createMethod$5(true),
       // `Object.values` method
       // https://tc39.es/ecma262/#sec-object.values
-      values: createMethod$4(false)
+      values: createMethod$5(false)
     };
 
     var $values = objectToArray.values; // `Object.values` method
@@ -24833,6 +24833,278 @@
         return $values(O);
       }
     });
+
+    // a string of all valid unicode whitespaces
+    var whitespaces$1 = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+    var replace = functionUncurryThis(''.replace);
+    var whitespace$1 = '[' + whitespaces$1 + ']';
+    var ltrim$1 = RegExp('^' + whitespace$1 + whitespace$1 + '*');
+    var rtrim$1 = RegExp(whitespace$1 + whitespace$1 + '*$'); // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+
+    var createMethod$4 = function (TYPE) {
+      return function ($this) {
+        var string = toString_1(requireObjectCoercible$1($this));
+        if (TYPE & 1) string = replace(string, ltrim$1, '');
+        if (TYPE & 2) string = replace(string, rtrim$1, '');
+        return string;
+      };
+    };
+
+    var stringTrim$1 = {
+      // `String.prototype.{ trimLeft, trimStart }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+      start: createMethod$4(1),
+      // `String.prototype.{ trimRight, trimEnd }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimend
+      end: createMethod$4(2),
+      // `String.prototype.trim` method
+      // https://tc39.es/ecma262/#sec-string.prototype.trim
+      trim: createMethod$4(3)
+    };
+
+    var trim$1 = stringTrim$1.trim;
+
+
+
+    var charAt$2 = functionUncurryThis(''.charAt);
+    var n$ParseFloat = global_1.parseFloat;
+    var Symbol$2 = global_1.Symbol;
+    var ITERATOR$6 = Symbol$2 && Symbol$2.iterator;
+    var FORCED$3 = 1 / n$ParseFloat(whitespaces$1 + '-0') !== -Infinity // MS Edge 18- broken with boxed symbols
+    || ITERATOR$6 && !fails$1(function () {
+      n$ParseFloat(Object(ITERATOR$6));
+    }); // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+
+    var numberParseFloat = FORCED$3 ? function parseFloat(string) {
+      var trimmedString = trim$1(toString_1(string));
+      var result = n$ParseFloat(trimmedString);
+      return result === 0 && charAt$2(trimmedString, 0) == '-' ? -0 : result;
+    } : n$ParseFloat;
+
+    // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+
+
+    _export$1({
+      global: true,
+      forced: parseFloat != numberParseFloat
+    }, {
+      parseFloat: numberParseFloat
+    });
+
+    // `SameValue` abstract operation
+    // https://tc39.es/ecma262/#sec-samevalue
+    // eslint-disable-next-line es-x/no-object-is -- safe
+    var sameValue = Object.is || function is(x, y) {
+      // eslint-disable-next-line no-self-compare -- NaN check
+      return x === y ? x !== 0 || 1 / x === 1 / y : x != x && y != y;
+    };
+
+    // @@search logic
+
+
+    fixRegexpWellKnownSymbolLogic$1('search', function (SEARCH, nativeSearch, maybeCallNative) {
+      return [// `String.prototype.search` method
+      // https://tc39.es/ecma262/#sec-string.prototype.search
+      function search(regexp) {
+        var O = requireObjectCoercible$1(this);
+        var searcher = regexp == undefined ? undefined : getMethod(regexp, SEARCH);
+        return searcher ? functionCall(searcher, regexp, O) : new RegExp(regexp)[SEARCH](toString_1(O));
+      }, // `RegExp.prototype[@@search]` method
+      // https://tc39.es/ecma262/#sec-regexp.prototype-@@search
+      function (string) {
+        var rx = anObject$1(this);
+        var S = toString_1(string);
+        var res = maybeCallNative(nativeSearch, rx, S);
+        if (res.done) return res.value;
+        var previousLastIndex = rx.lastIndex;
+        if (!sameValue(previousLastIndex, 0)) rx.lastIndex = 0;
+        var result = regexpExecAbstract$1(rx, S);
+        if (!sameValue(rx.lastIndex, previousLastIndex)) rx.lastIndex = previousLastIndex;
+        return result === null ? -1 : result.index;
+      }];
+    });
+
+    var floor$1 = Math.floor;
+
+    var mergeSort = function (array, comparefn) {
+      var length = array.length;
+      var middle = floor$1(length / 2);
+      return length < 8 ? insertionSort(array, comparefn) : merge(array, mergeSort(arraySliceSimple(array, 0, middle), comparefn), mergeSort(arraySliceSimple(array, middle), comparefn), comparefn);
+    };
+
+    var insertionSort = function (array, comparefn) {
+      var length = array.length;
+      var i = 1;
+      var element, j;
+
+      while (i < length) {
+        j = i;
+        element = array[i];
+
+        while (j && comparefn(array[j - 1], element) > 0) {
+          array[j] = array[--j];
+        }
+
+        if (j !== i++) array[j] = element;
+      }
+
+      return array;
+    };
+
+    var merge = function (array, left, right, comparefn) {
+      var llength = left.length;
+      var rlength = right.length;
+      var lindex = 0;
+      var rindex = 0;
+
+      while (lindex < llength || rindex < rlength) {
+        array[lindex + rindex] = lindex < llength && rindex < rlength ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++] : lindex < llength ? left[lindex++] : right[rindex++];
+      }
+
+      return array;
+    };
+
+    var arraySort = mergeSort;
+
+    var firefox = engineUserAgent$1.match(/firefox\/(\d+)/i);
+    var engineFfVersion = !!firefox && +firefox[1];
+
+    var engineIsIeOrEdge = /MSIE|Trident/.test(engineUserAgent$1);
+
+    var webkit = engineUserAgent$1.match(/AppleWebKit\/(\d+)\./);
+    var engineWebkitVersion = !!webkit && +webkit[1];
+
+    var test$1 = [];
+    var un$Sort = functionUncurryThis(test$1.sort);
+    var push$1 = functionUncurryThis(test$1.push); // IE8-
+
+    var FAILS_ON_UNDEFINED = fails$1(function () {
+      test$1.sort(undefined);
+    }); // V8 bug
+
+    var FAILS_ON_NULL = fails$1(function () {
+      test$1.sort(null);
+    }); // Old WebKit
+
+    var STRICT_METHOD$2 = arrayMethodIsStrict$1('sort');
+    var STABLE_SORT = !fails$1(function () {
+      // feature detection can be too slow, so check engines versions
+      if (engineV8Version$1) return engineV8Version$1 < 70;
+      if (engineFfVersion && engineFfVersion > 3) return;
+      if (engineIsIeOrEdge) return true;
+      if (engineWebkitVersion) return engineWebkitVersion < 603;
+      var result = '';
+      var code, chr, value, index; // generate an array with more 512 elements (Chakra and old V8 fails only in this case)
+
+      for (code = 65; code < 76; code++) {
+        chr = String.fromCharCode(code);
+
+        switch (code) {
+          case 66:
+          case 69:
+          case 70:
+          case 72:
+            value = 3;
+            break;
+
+          case 68:
+          case 71:
+            value = 4;
+            break;
+
+          default:
+            value = 2;
+        }
+
+        for (index = 0; index < 47; index++) {
+          test$1.push({
+            k: chr + index,
+            v: value
+          });
+        }
+      }
+
+      test$1.sort(function (a, b) {
+        return b.v - a.v;
+      });
+
+      for (index = 0; index < test$1.length; index++) {
+        chr = test$1[index].k.charAt(0);
+        if (result.charAt(result.length - 1) !== chr) result += chr;
+      }
+
+      return result !== 'DGBEFHACIJK';
+    });
+    var FORCED$2 = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD$2 || !STABLE_SORT;
+
+    var getSortCompare = function (comparefn) {
+      return function (x, y) {
+        if (y === undefined) return -1;
+        if (x === undefined) return 1;
+        if (comparefn !== undefined) return +comparefn(x, y) || 0;
+        return toString_1(x) > toString_1(y) ? 1 : -1;
+      };
+    }; // `Array.prototype.sort` method
+    // https://tc39.es/ecma262/#sec-array.prototype.sort
+
+
+    _export$1({
+      target: 'Array',
+      proto: true,
+      forced: FORCED$2
+    }, {
+      sort: function sort(comparefn) {
+        if (comparefn !== undefined) aCallable(comparefn);
+        var array = toObject$1(this);
+        if (STABLE_SORT) return comparefn === undefined ? un$Sort(array) : un$Sort(array, comparefn);
+        var items = [];
+        var arrayLength = lengthOfArrayLike(array);
+        var itemsLength, index;
+
+        for (index = 0; index < arrayLength; index++) {
+          if (index in array) push$1(items, array[index]);
+        }
+
+        arraySort(items, getSortCompare(comparefn));
+        itemsLength = items.length;
+        index = 0;
+
+        while (index < itemsLength) array[index] = items[index++];
+
+        while (index < arrayLength) delete array[index++];
+
+        return array;
+      }
+    });
+
+    var $find = arrayIteration$1.find;
+
+
+
+    var FIND = 'find';
+    var SKIPS_HOLES = true; // Shouldn't skip holes
+
+    if (FIND in []) Array(1)[FIND](function () {
+      SKIPS_HOLES = false;
+    }); // `Array.prototype.find` method
+    // https://tc39.es/ecma262/#sec-array.prototype.find
+
+    _export$1({
+      target: 'Array',
+      proto: true,
+      forced: SKIPS_HOLES
+    }, {
+      find: function find(callbackfn
+      /* , that = undefined */
+      ) {
+        return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      }
+    }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+
+    addToUnscopables$1(FIND);
 
     var top = 'top';
     var bottom = 'bottom';
@@ -26443,7 +26715,7 @@
       };
     }
 
-    function format$1(str) {
+    function format$2(str) {
       for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
       }
@@ -26465,49 +26737,49 @@
           switch (key) {
             case 'name':
               if (typeof modifier.name !== 'string') {
-                console.error(format$1(INVALID_MODIFIER_ERROR, String(modifier.name), '"name"', '"string"', "\"" + String(modifier.name) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, String(modifier.name), '"name"', '"string"', "\"" + String(modifier.name) + "\""));
               }
 
               break;
 
             case 'enabled':
               if (typeof modifier.enabled !== 'boolean') {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"enabled"', '"boolean"', "\"" + String(modifier.enabled) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"enabled"', '"boolean"', "\"" + String(modifier.enabled) + "\""));
               }
 
               break;
 
             case 'phase':
               if (modifierPhases.indexOf(modifier.phase) < 0) {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"phase"', "either " + modifierPhases.join(', '), "\"" + String(modifier.phase) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"phase"', "either " + modifierPhases.join(', '), "\"" + String(modifier.phase) + "\""));
               }
 
               break;
 
             case 'fn':
               if (typeof modifier.fn !== 'function') {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"fn"', '"function"', "\"" + String(modifier.fn) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"fn"', '"function"', "\"" + String(modifier.fn) + "\""));
               }
 
               break;
 
             case 'effect':
               if (modifier.effect != null && typeof modifier.effect !== 'function') {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"effect"', '"function"', "\"" + String(modifier.fn) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"effect"', '"function"', "\"" + String(modifier.fn) + "\""));
               }
 
               break;
 
             case 'requires':
               if (modifier.requires != null && !Array.isArray(modifier.requires)) {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"requires"', '"array"', "\"" + String(modifier.requires) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"requires"', '"array"', "\"" + String(modifier.requires) + "\""));
               }
 
               break;
 
             case 'requiresIfExists':
               if (!Array.isArray(modifier.requiresIfExists)) {
-                console.error(format$1(INVALID_MODIFIER_ERROR, modifier.name, '"requiresIfExists"', '"array"', "\"" + String(modifier.requiresIfExists) + "\""));
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"requiresIfExists"', '"array"', "\"" + String(modifier.requiresIfExists) + "\""));
               }
 
               break;
@@ -26526,7 +26798,7 @@
             if (modifiers.find(function (mod) {
               return mod.name === requirement;
             }) == null) {
-              console.error(format$1(MISSING_DEPENDENCY_ERROR, String(modifier.name), requirement, requirement));
+              console.error(format$2(MISSING_DEPENDENCY_ERROR, String(modifier.name), requirement, requirement));
             }
           });
         });
@@ -26889,188 +27161,1843 @@
       }];
     }
 
-    const peq = new Uint32Array(0x10000);
+    /**
+     * Fuse.js v6.6.2 - Lightweight fuzzy-search (http://fusejs.io)
+     *
+     * Copyright (c) 2022 Kiro Risk (http://kiro.me)
+     * All Rights Reserved. Apache Software License 2.0
+     *
+     * http://www.apache.org/licenses/LICENSE-2.0
+     */
+    function isArray$3(value) {
+      return !Array.isArray ? getTag(value) === '[object Array]' : Array.isArray(value);
+    } // Adapted from: https://github.com/lodash/lodash/blob/master/.internal/baseToString.js
 
-    const myers_32 = (a, b) => {
-      const n = a.length;
-      const m = b.length;
-      const lst = 1 << n - 1;
-      let pv = -1;
-      let mv = 0;
-      let sc = n;
-      let i = n;
 
-      while (i--) {
-        peq[a.charCodeAt(i)] |= 1 << i;
+    const INFINITY = 1 / 0;
+
+    function baseToString(value) {
+      // Exit early for strings to avoid a performance hit in some environments.
+      if (typeof value == 'string') {
+        return value;
       }
 
-      for (i = 0; i < m; i++) {
-        let eq = peq[b.charCodeAt(i)];
-        const xv = eq | mv;
-        eq |= (eq & pv) + pv ^ pv;
-        mv |= ~(eq | pv);
-        pv &= eq;
+      let result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
 
-        if (mv & lst) {
-          sc++;
+    function toString$2(value) {
+      return value == null ? '' : baseToString(value);
+    }
+
+    function isString$1(value) {
+      return typeof value === 'string';
+    }
+
+    function isNumber$1(value) {
+      return typeof value === 'number';
+    } // Adapted from: https://github.com/lodash/lodash/blob/master/isBoolean.js
+
+
+    function isBoolean$1(value) {
+      return value === true || value === false || isObjectLike(value) && getTag(value) == '[object Boolean]';
+    }
+
+    function isObject$3(value) {
+      return typeof value === 'object';
+    } // Checks if `value` is object-like.
+
+
+    function isObjectLike(value) {
+      return isObject$3(value) && value !== null;
+    }
+
+    function isDefined(value) {
+      return value !== undefined && value !== null;
+    }
+
+    function isBlank(value) {
+      return !value.trim().length;
+    } // Gets the `toStringTag` of `value`.
+    // Adapted from: https://github.com/lodash/lodash/blob/master/.internal/getTag.js
+
+
+    function getTag(value) {
+      return value == null ? value === undefined ? '[object Undefined]' : '[object Null]' : Object.prototype.toString.call(value);
+    }
+
+    const EXTENDED_SEARCH_UNAVAILABLE = 'Extended search is not available';
+    const INCORRECT_INDEX_TYPE = "Incorrect 'index' type";
+
+    const LOGICAL_SEARCH_INVALID_QUERY_FOR_KEY = key => `Invalid value for key ${key}`;
+
+    const PATTERN_LENGTH_TOO_LARGE = max => `Pattern length exceeds max of ${max}.`;
+
+    const MISSING_KEY_PROPERTY = name => `Missing ${name} property in key`;
+
+    const INVALID_KEY_WEIGHT_VALUE = key => `Property 'weight' in key '${key}' must be a positive integer`;
+
+    const hasOwn = Object.prototype.hasOwnProperty;
+
+    class KeyStore {
+      constructor(keys) {
+        this._keys = [];
+        this._keyMap = {};
+        let totalWeight = 0;
+        keys.forEach(key => {
+          let obj = createKey(key);
+          totalWeight += obj.weight;
+
+          this._keys.push(obj);
+
+          this._keyMap[obj.id] = obj;
+          totalWeight += obj.weight;
+        }); // Normalize weights so that their sum is equal to 1
+
+        this._keys.forEach(key => {
+          key.weight /= totalWeight;
+        });
+      }
+
+      get(keyId) {
+        return this._keyMap[keyId];
+      }
+
+      keys() {
+        return this._keys;
+      }
+
+      toJSON() {
+        return JSON.stringify(this._keys);
+      }
+
+    }
+
+    function createKey(key) {
+      let path = null;
+      let id = null;
+      let src = null;
+      let weight = 1;
+      let getFn = null;
+
+      if (isString$1(key) || isArray$3(key)) {
+        src = key;
+        path = createKeyPath(key);
+        id = createKeyId(key);
+      } else {
+        if (!hasOwn.call(key, 'name')) {
+          throw new Error(MISSING_KEY_PROPERTY('name'));
         }
 
-        if (pv & lst) {
-          sc--;
+        const name = key.name;
+        src = name;
+
+        if (hasOwn.call(key, 'weight')) {
+          weight = key.weight;
+
+          if (weight <= 0) {
+            throw new Error(INVALID_KEY_WEIGHT_VALUE(name));
+          }
         }
 
-        mv = mv << 1 | 1;
-        pv = pv << 1 | ~(xv | mv);
-        mv &= xv;
+        path = createKeyPath(name);
+        id = createKeyId(name);
+        getFn = key.getFn;
       }
 
-      i = n;
+      return {
+        path,
+        id,
+        weight,
+        src,
+        getFn
+      };
+    }
 
-      while (i--) {
-        peq[a.charCodeAt(i)] = 0;
-      }
+    function createKeyPath(key) {
+      return isArray$3(key) ? key : key.split('.');
+    }
 
-      return sc;
+    function createKeyId(key) {
+      return isArray$3(key) ? key.join('.') : key;
+    }
+
+    function get$1(obj, path) {
+      let list = [];
+      let arr = false;
+
+      const deepGet = (obj, path, index) => {
+        if (!isDefined(obj)) {
+          return;
+        }
+
+        if (!path[index]) {
+          // If there's no path left, we've arrived at the object we care about.
+          list.push(obj);
+        } else {
+          let key = path[index];
+          const value = obj[key];
+
+          if (!isDefined(value)) {
+            return;
+          } // If we're at the last value in the path, and if it's a string/number/bool,
+          // add it to the list
+
+
+          if (index === path.length - 1 && (isString$1(value) || isNumber$1(value) || isBoolean$1(value))) {
+            list.push(toString$2(value));
+          } else if (isArray$3(value)) {
+            arr = true; // Search each item in the array.
+
+            for (let i = 0, len = value.length; i < len; i += 1) {
+              deepGet(value[i], path, index + 1);
+            }
+          } else if (path.length) {
+            // An object. Recurse further.
+            deepGet(value, path, index + 1);
+          }
+        }
+      }; // Backwards compatibility (since path used to be a string)
+
+
+      deepGet(obj, isString$1(path) ? path.split('.') : path, 0);
+      return arr ? list : list[0];
+    }
+
+    const MatchOptions = {
+      // Whether the matches should be included in the result set. When `true`, each record in the result
+      // set will include the indices of the matched characters.
+      // These can consequently be used for highlighting purposes.
+      includeMatches: false,
+      // When `true`, the matching function will continue to the end of a search pattern even if
+      // a perfect match has already been located in the string.
+      findAllMatches: false,
+      // Minimum number of characters that must be matched before a result is considered a match
+      minMatchCharLength: 1
     };
+    const BasicOptions = {
+      // When `true`, the algorithm continues searching to the end of the input even if a perfect
+      // match is found before the end of the same input.
+      isCaseSensitive: false,
+      // When true, the matching function will continue to the end of a search pattern even if
+      includeScore: false,
+      // List of properties that will be searched. This also supports nested properties.
+      keys: [],
+      // Whether to sort the result list, by score
+      shouldSort: true,
+      // Default sort function: sort by ascending score, ascending index
+      sortFn: (a, b) => a.score === b.score ? a.idx < b.idx ? -1 : 1 : a.score < b.score ? -1 : 1
+    };
+    const FuzzyOptions = {
+      // Approximately where in the text is the pattern expected to be found?
+      location: 0,
+      // At what point does the match algorithm give up. A threshold of '0.0' requires a perfect match
+      // (of both letters and location), a threshold of '1.0' would match anything.
+      threshold: 0.6,
+      // Determines how close the match must be to the fuzzy location (specified above).
+      // An exact letter match which is 'distance' characters away from the fuzzy location
+      // would score as a complete mismatch. A distance of '0' requires the match be at
+      // the exact location specified, a threshold of '1000' would require a perfect match
+      // to be within 800 characters of the fuzzy location to be found using a 0.8 threshold.
+      distance: 100
+    };
+    const AdvancedOptions = {
+      // When `true`, it enables the use of unix-like search commands
+      useExtendedSearch: false,
+      // The get function to use when fetching an object's properties.
+      // The default will search nested paths *ie foo.bar.baz*
+      getFn: get$1,
+      // When `true`, search will ignore `location` and `distance`, so it won't matter
+      // where in the string the pattern appears.
+      // More info: https://fusejs.io/concepts/scoring-theory.html#fuzziness-score
+      ignoreLocation: false,
+      // When `true`, the calculation for the relevance score (used for sorting) will
+      // ignore the field-length norm.
+      // More info: https://fusejs.io/concepts/scoring-theory.html#field-length-norm
+      ignoreFieldNorm: false,
+      // The weight to determine how much field length norm effects scoring.
+      fieldNormWeight: 1
+    };
+    var Config = { ...BasicOptions,
+      ...MatchOptions,
+      ...FuzzyOptions,
+      ...AdvancedOptions
+    };
+    const SPACE = /[^ ]+/g; // Field-length norm: the shorter the field, the higher the weight.
+    // Set to 3 decimals to reduce index size.
 
-    const myers_x = (b, a) => {
-      const n = a.length;
-      const m = b.length;
-      const mhc = [];
-      const phc = [];
-      const hsize = Math.ceil(n / 32);
-      const vsize = Math.ceil(m / 32);
+    function norm(weight = 1, mantissa = 3) {
+      const cache = new Map();
+      const m = Math.pow(10, mantissa);
+      return {
+        get(value) {
+          const numTokens = value.match(SPACE).length;
 
-      for (let i = 0; i < hsize; i++) {
-        phc[i] = -1;
-        mhc[i] = 0;
-      }
+          if (cache.has(numTokens)) {
+            return cache.get(numTokens);
+          } // Default function is 1/sqrt(x), weight makes that variable
 
-      let j = 0;
 
-      for (; j < vsize - 1; j++) {
-        let mv = 0;
-        let pv = -1;
-        const start = j * 32;
-        const vlen = Math.min(32, m) + start;
+          const norm = 1 / Math.pow(numTokens, 0.5 * weight); // In place of `toFixed(mantissa)`, for faster computation
 
-        for (let k = start; k < vlen; k++) {
-          peq[b.charCodeAt(k)] |= 1 << k;
+          const n = parseFloat(Math.round(norm * m) / m);
+          cache.set(numTokens, n);
+          return n;
+        },
+
+        clear() {
+          cache.clear();
         }
 
-        for (let i = 0; i < n; i++) {
-          const eq = peq[a.charCodeAt(i)];
-          const pb = phc[i / 32 | 0] >>> i & 1;
-          const mb = mhc[i / 32 | 0] >>> i & 1;
-          const xv = eq | mv;
-          const xh = ((eq | mb) & pv) + pv ^ pv | eq | mb;
-          let ph = mv | ~(xh | pv);
-          let mh = pv & xh;
+      };
+    }
 
-          if (ph >>> 31 ^ pb) {
-            phc[i / 32 | 0] ^= 1 << i;
+    class FuseIndex {
+      constructor({
+        getFn = Config.getFn,
+        fieldNormWeight = Config.fieldNormWeight
+      } = {}) {
+        this.norm = norm(fieldNormWeight, 3);
+        this.getFn = getFn;
+        this.isCreated = false;
+        this.setIndexRecords();
+      }
+
+      setSources(docs = []) {
+        this.docs = docs;
+      }
+
+      setIndexRecords(records = []) {
+        this.records = records;
+      }
+
+      setKeys(keys = []) {
+        this.keys = keys;
+        this._keysMap = {};
+        keys.forEach((key, idx) => {
+          this._keysMap[key.id] = idx;
+        });
+      }
+
+      create() {
+        if (this.isCreated || !this.docs.length) {
+          return;
+        }
+
+        this.isCreated = true; // List is Array<String>
+
+        if (isString$1(this.docs[0])) {
+          this.docs.forEach((doc, docIndex) => {
+            this._addString(doc, docIndex);
+          });
+        } else {
+          // List is Array<Object>
+          this.docs.forEach((doc, docIndex) => {
+            this._addObject(doc, docIndex);
+          });
+        }
+
+        this.norm.clear();
+      } // Adds a doc to the end of the index
+
+
+      add(doc) {
+        const idx = this.size();
+
+        if (isString$1(doc)) {
+          this._addString(doc, idx);
+        } else {
+          this._addObject(doc, idx);
+        }
+      } // Removes the doc at the specified index of the index
+
+
+      removeAt(idx) {
+        this.records.splice(idx, 1); // Change ref index of every subsquent doc
+
+        for (let i = idx, len = this.size(); i < len; i += 1) {
+          this.records[i].i -= 1;
+        }
+      }
+
+      getValueForItemAtKeyId(item, keyId) {
+        return item[this._keysMap[keyId]];
+      }
+
+      size() {
+        return this.records.length;
+      }
+
+      _addString(doc, docIndex) {
+        if (!isDefined(doc) || isBlank(doc)) {
+          return;
+        }
+
+        let record = {
+          v: doc,
+          i: docIndex,
+          n: this.norm.get(doc)
+        };
+        this.records.push(record);
+      }
+
+      _addObject(doc, docIndex) {
+        let record = {
+          i: docIndex,
+          $: {}
+        }; // Iterate over every key (i.e, path), and fetch the value at that key
+
+        this.keys.forEach((key, keyIndex) => {
+          let value = key.getFn ? key.getFn(doc) : this.getFn(doc, key.path);
+
+          if (!isDefined(value)) {
+            return;
           }
 
-          if (mh >>> 31 ^ mb) {
-            mhc[i / 32 | 0] ^= 1 << i;
+          if (isArray$3(value)) {
+            let subRecords = [];
+            const stack = [{
+              nestedArrIndex: -1,
+              value
+            }];
+
+            while (stack.length) {
+              const {
+                nestedArrIndex,
+                value
+              } = stack.pop();
+
+              if (!isDefined(value)) {
+                continue;
+              }
+
+              if (isString$1(value) && !isBlank(value)) {
+                let subRecord = {
+                  v: value,
+                  i: nestedArrIndex,
+                  n: this.norm.get(value)
+                };
+                subRecords.push(subRecord);
+              } else if (isArray$3(value)) {
+                value.forEach((item, k) => {
+                  stack.push({
+                    nestedArrIndex: k,
+                    value: item
+                  });
+                });
+              } else ;
+            }
+
+            record.$[keyIndex] = subRecords;
+          } else if (isString$1(value) && !isBlank(value)) {
+            let subRecord = {
+              v: value,
+              n: this.norm.get(value)
+            };
+            record.$[keyIndex] = subRecord;
+          }
+        });
+        this.records.push(record);
+      }
+
+      toJSON() {
+        return {
+          keys: this.keys,
+          records: this.records
+        };
+      }
+
+    }
+
+    function createIndex(keys, docs, {
+      getFn = Config.getFn,
+      fieldNormWeight = Config.fieldNormWeight
+    } = {}) {
+      const myIndex = new FuseIndex({
+        getFn,
+        fieldNormWeight
+      });
+      myIndex.setKeys(keys.map(createKey));
+      myIndex.setSources(docs);
+      myIndex.create();
+      return myIndex;
+    }
+
+    function parseIndex(data, {
+      getFn = Config.getFn,
+      fieldNormWeight = Config.fieldNormWeight
+    } = {}) {
+      const {
+        keys,
+        records
+      } = data;
+      const myIndex = new FuseIndex({
+        getFn,
+        fieldNormWeight
+      });
+      myIndex.setKeys(keys);
+      myIndex.setIndexRecords(records);
+      return myIndex;
+    }
+
+    function computeScore$1(pattern, {
+      errors = 0,
+      currentLocation = 0,
+      expectedLocation = 0,
+      distance = Config.distance,
+      ignoreLocation = Config.ignoreLocation
+    } = {}) {
+      const accuracy = errors / pattern.length;
+
+      if (ignoreLocation) {
+        return accuracy;
+      }
+
+      const proximity = Math.abs(expectedLocation - currentLocation);
+
+      if (!distance) {
+        // Dodge divide by zero error.
+        return proximity ? 1.0 : accuracy;
+      }
+
+      return accuracy + proximity / distance;
+    }
+
+    function convertMaskToIndices(matchmask = [], minMatchCharLength = Config.minMatchCharLength) {
+      let indices = [];
+      let start = -1;
+      let end = -1;
+      let i = 0;
+
+      for (let len = matchmask.length; i < len; i += 1) {
+        let match = matchmask[i];
+
+        if (match && start === -1) {
+          start = i;
+        } else if (!match && start !== -1) {
+          end = i - 1;
+
+          if (end - start + 1 >= minMatchCharLength) {
+            indices.push([start, end]);
           }
 
-          ph = ph << 1 | pb;
-          mh = mh << 1 | mb;
-          pv = mh | ~(xv | ph);
-          mv = ph & xv;
+          start = -1;
+        }
+      } // (i-1 - start) + 1 => i - start
+
+
+      if (matchmask[i - 1] && i - start >= minMatchCharLength) {
+        indices.push([start, i - 1]);
+      }
+
+      return indices;
+    } // Machine word size
+
+
+    const MAX_BITS = 32;
+
+    function search(text, pattern, patternAlphabet, {
+      location = Config.location,
+      distance = Config.distance,
+      threshold = Config.threshold,
+      findAllMatches = Config.findAllMatches,
+      minMatchCharLength = Config.minMatchCharLength,
+      includeMatches = Config.includeMatches,
+      ignoreLocation = Config.ignoreLocation
+    } = {}) {
+      if (pattern.length > MAX_BITS) {
+        throw new Error(PATTERN_LENGTH_TOO_LARGE(MAX_BITS));
+      }
+
+      const patternLen = pattern.length; // Set starting location at beginning text and initialize the alphabet.
+
+      const textLen = text.length; // Handle the case when location > text.length
+
+      const expectedLocation = Math.max(0, Math.min(location, textLen)); // Highest score beyond which we give up.
+
+      let currentThreshold = threshold; // Is there a nearby exact match? (speedup)
+
+      let bestLocation = expectedLocation; // Performance: only computer matches when the minMatchCharLength > 1
+      // OR if `includeMatches` is true.
+
+      const computeMatches = minMatchCharLength > 1 || includeMatches; // A mask of the matches, used for building the indices
+
+      const matchMask = computeMatches ? Array(textLen) : [];
+      let index; // Get all exact matches, here for speed up
+
+      while ((index = text.indexOf(pattern, bestLocation)) > -1) {
+        let score = computeScore$1(pattern, {
+          currentLocation: index,
+          expectedLocation,
+          distance,
+          ignoreLocation
+        });
+        currentThreshold = Math.min(score, currentThreshold);
+        bestLocation = index + patternLen;
+
+        if (computeMatches) {
+          let i = 0;
+
+          while (i < patternLen) {
+            matchMask[index + i] = 1;
+            i += 1;
+          }
+        }
+      } // Reset the best location
+
+
+      bestLocation = -1;
+      let lastBitArr = [];
+      let finalScore = 1;
+      let binMax = patternLen + textLen;
+      const mask = 1 << patternLen - 1;
+
+      for (let i = 0; i < patternLen; i += 1) {
+        // Scan for the best match; each iteration allows for one more error.
+        // Run a binary search to determine how far from the match location we can stray
+        // at this error level.
+        let binMin = 0;
+        let binMid = binMax;
+
+        while (binMin < binMid) {
+          const score = computeScore$1(pattern, {
+            errors: i,
+            currentLocation: expectedLocation + binMid,
+            expectedLocation,
+            distance,
+            ignoreLocation
+          });
+
+          if (score <= currentThreshold) {
+            binMin = binMid;
+          } else {
+            binMax = binMid;
+          }
+
+          binMid = Math.floor((binMax - binMin) / 2 + binMin);
+        } // Use the result from this iteration as the maximum for the next.
+
+
+        binMax = binMid;
+        let start = Math.max(1, expectedLocation - binMid + 1);
+        let finish = findAllMatches ? textLen : Math.min(expectedLocation + binMid, textLen) + patternLen; // Initialize the bit array
+
+        let bitArr = Array(finish + 2);
+        bitArr[finish + 1] = (1 << i) - 1;
+
+        for (let j = finish; j >= start; j -= 1) {
+          let currentLocation = j - 1;
+          let charMatch = patternAlphabet[text.charAt(currentLocation)];
+
+          if (computeMatches) {
+            // Speed up: quick bool to int conversion (i.e, `charMatch ? 1 : 0`)
+            matchMask[currentLocation] = +!!charMatch;
+          } // First pass: exact match
+
+
+          bitArr[j] = (bitArr[j + 1] << 1 | 1) & charMatch; // Subsequent passes: fuzzy match
+
+          if (i) {
+            bitArr[j] |= (lastBitArr[j + 1] | lastBitArr[j]) << 1 | 1 | lastBitArr[j + 1];
+          }
+
+          if (bitArr[j] & mask) {
+            finalScore = computeScore$1(pattern, {
+              errors: i,
+              currentLocation,
+              expectedLocation,
+              distance,
+              ignoreLocation
+            }); // This match will almost certainly be better than any existing match.
+            // But check anyway.
+
+            if (finalScore <= currentThreshold) {
+              // Indeed it is
+              currentThreshold = finalScore;
+              bestLocation = currentLocation; // Already passed `loc`, downhill from here on in.
+
+              if (bestLocation <= expectedLocation) {
+                break;
+              } // When passing `bestLocation`, don't exceed our current distance from `expectedLocation`.
+
+
+              start = Math.max(1, 2 * expectedLocation - bestLocation);
+            }
+          }
+        } // No hope for a (better) match at greater error levels.
+
+
+        const score = computeScore$1(pattern, {
+          errors: i + 1,
+          currentLocation: expectedLocation,
+          expectedLocation,
+          distance,
+          ignoreLocation
+        });
+
+        if (score > currentThreshold) {
+          break;
         }
 
-        for (let k = start; k < vlen; k++) {
-          peq[b.charCodeAt(k)] = 0;
+        lastBitArr = bitArr;
+      }
+
+      const result = {
+        isMatch: bestLocation >= 0,
+        // Count exact matches (those with a score of 0) to be "almost" exact
+        score: Math.max(0.001, finalScore)
+      };
+
+      if (computeMatches) {
+        const indices = convertMaskToIndices(matchMask, minMatchCharLength);
+
+        if (!indices.length) {
+          result.isMatch = false;
+        } else if (includeMatches) {
+          result.indices = indices;
         }
       }
 
-      let mv = 0;
-      let pv = -1;
-      const start = j * 32;
-      const vlen = Math.min(32, m - start) + start;
+      return result;
+    }
 
-      for (let k = start; k < vlen; k++) {
-        peq[b.charCodeAt(k)] |= 1 << k;
+    function createPatternAlphabet(pattern) {
+      let mask = {};
+
+      for (let i = 0, len = pattern.length; i < len; i += 1) {
+        const char = pattern.charAt(i);
+        mask[char] = (mask[char] || 0) | 1 << len - i - 1;
       }
 
-      let score = m;
+      return mask;
+    }
 
-      for (let i = 0; i < n; i++) {
-        const eq = peq[a.charCodeAt(i)];
-        const pb = phc[i / 32 | 0] >>> i & 1;
-        const mb = mhc[i / 32 | 0] >>> i & 1;
-        const xv = eq | mv;
-        const xh = ((eq | mb) & pv) + pv ^ pv | eq | mb;
-        let ph = mv | ~(xh | pv);
-        let mh = pv & xh;
-        score += ph >>> m - 1 & 1;
-        score -= mh >>> m - 1 & 1;
+    class BitapSearch {
+      constructor(pattern, {
+        location = Config.location,
+        threshold = Config.threshold,
+        distance = Config.distance,
+        includeMatches = Config.includeMatches,
+        findAllMatches = Config.findAllMatches,
+        minMatchCharLength = Config.minMatchCharLength,
+        isCaseSensitive = Config.isCaseSensitive,
+        ignoreLocation = Config.ignoreLocation
+      } = {}) {
+        this.options = {
+          location,
+          threshold,
+          distance,
+          includeMatches,
+          findAllMatches,
+          minMatchCharLength,
+          isCaseSensitive,
+          ignoreLocation
+        };
+        this.pattern = isCaseSensitive ? pattern : pattern.toLowerCase();
+        this.chunks = [];
 
-        if (ph >>> 31 ^ pb) {
-          phc[i / 32 | 0] ^= 1 << i;
+        if (!this.pattern.length) {
+          return;
         }
 
-        if (mh >>> 31 ^ mb) {
-          mhc[i / 32 | 0] ^= 1 << i;
+        const addChunk = (pattern, startIndex) => {
+          this.chunks.push({
+            pattern,
+            alphabet: createPatternAlphabet(pattern),
+            startIndex
+          });
+        };
+
+        const len = this.pattern.length;
+
+        if (len > MAX_BITS) {
+          let i = 0;
+          const remainder = len % MAX_BITS;
+          const end = len - remainder;
+
+          while (i < end) {
+            addChunk(this.pattern.substr(i, MAX_BITS), i);
+            i += MAX_BITS;
+          }
+
+          if (remainder) {
+            const startIndex = len - MAX_BITS;
+            addChunk(this.pattern.substr(startIndex), startIndex);
+          }
+        } else {
+          addChunk(this.pattern, 0);
+        }
+      }
+
+      searchIn(text) {
+        const {
+          isCaseSensitive,
+          includeMatches
+        } = this.options;
+
+        if (!isCaseSensitive) {
+          text = text.toLowerCase();
+        } // Exact match
+
+
+        if (this.pattern === text) {
+          let result = {
+            isMatch: true,
+            score: 0
+          };
+
+          if (includeMatches) {
+            result.indices = [[0, text.length - 1]];
+          }
+
+          return result;
+        } // Otherwise, use Bitap algorithm
+
+
+        const {
+          location,
+          distance,
+          threshold,
+          findAllMatches,
+          minMatchCharLength,
+          ignoreLocation
+        } = this.options;
+        let allIndices = [];
+        let totalScore = 0;
+        let hasMatches = false;
+        this.chunks.forEach(({
+          pattern,
+          alphabet,
+          startIndex
+        }) => {
+          const {
+            isMatch,
+            score,
+            indices
+          } = search(text, pattern, alphabet, {
+            location: location + startIndex,
+            distance,
+            threshold,
+            findAllMatches,
+            minMatchCharLength,
+            includeMatches,
+            ignoreLocation
+          });
+
+          if (isMatch) {
+            hasMatches = true;
+          }
+
+          totalScore += score;
+
+          if (isMatch && indices) {
+            allIndices = [...allIndices, ...indices];
+          }
+        });
+        let result = {
+          isMatch: hasMatches,
+          score: hasMatches ? totalScore / this.chunks.length : 1
+        };
+
+        if (hasMatches && includeMatches) {
+          result.indices = allIndices;
         }
 
-        ph = ph << 1 | pb;
-        mh = mh << 1 | mb;
-        pv = mh | ~(xv | ph);
-        mv = ph & xv;
+        return result;
       }
 
-      for (let k = start; k < vlen; k++) {
-        peq[b.charCodeAt(k)] = 0;
+    }
+
+    class BaseMatch {
+      constructor(pattern) {
+        this.pattern = pattern;
       }
 
-      return score;
+      static isMultiMatch(pattern) {
+        return getMatch(pattern, this.multiRegex);
+      }
+
+      static isSingleMatch(pattern) {
+        return getMatch(pattern, this.singleRegex);
+      }
+
+      search() {}
+
+    }
+
+    function getMatch(pattern, exp) {
+      const matches = pattern.match(exp);
+      return matches ? matches[1] : null;
+    } // Token: 'file
+
+
+    class ExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'exact';
+      }
+
+      static get multiRegex() {
+        return /^="(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^=(.*)$/;
+      }
+
+      search(text) {
+        const isMatch = text === this.pattern;
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [0, this.pattern.length - 1]
+        };
+      }
+
+    } // Token: !fire
+
+
+    class InverseExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'inverse-exact';
+      }
+
+      static get multiRegex() {
+        return /^!"(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^!(.*)$/;
+      }
+
+      search(text) {
+        const index = text.indexOf(this.pattern);
+        const isMatch = index === -1;
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [0, text.length - 1]
+        };
+      }
+
+    } // Token: ^file
+
+
+    class PrefixExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'prefix-exact';
+      }
+
+      static get multiRegex() {
+        return /^\^"(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^\^(.*)$/;
+      }
+
+      search(text) {
+        const isMatch = text.startsWith(this.pattern);
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [0, this.pattern.length - 1]
+        };
+      }
+
+    } // Token: !^fire
+
+
+    class InversePrefixExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'inverse-prefix-exact';
+      }
+
+      static get multiRegex() {
+        return /^!\^"(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^!\^(.*)$/;
+      }
+
+      search(text) {
+        const isMatch = !text.startsWith(this.pattern);
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [0, text.length - 1]
+        };
+      }
+
+    } // Token: .file$
+
+
+    class SuffixExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'suffix-exact';
+      }
+
+      static get multiRegex() {
+        return /^"(.*)"\$$/;
+      }
+
+      static get singleRegex() {
+        return /^(.*)\$$/;
+      }
+
+      search(text) {
+        const isMatch = text.endsWith(this.pattern);
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [text.length - this.pattern.length, text.length - 1]
+        };
+      }
+
+    } // Token: !.file$
+
+
+    class InverseSuffixExactMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'inverse-suffix-exact';
+      }
+
+      static get multiRegex() {
+        return /^!"(.*)"\$$/;
+      }
+
+      static get singleRegex() {
+        return /^!(.*)\$$/;
+      }
+
+      search(text) {
+        const isMatch = !text.endsWith(this.pattern);
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices: [0, text.length - 1]
+        };
+      }
+
+    }
+
+    class FuzzyMatch extends BaseMatch {
+      constructor(pattern, {
+        location = Config.location,
+        threshold = Config.threshold,
+        distance = Config.distance,
+        includeMatches = Config.includeMatches,
+        findAllMatches = Config.findAllMatches,
+        minMatchCharLength = Config.minMatchCharLength,
+        isCaseSensitive = Config.isCaseSensitive,
+        ignoreLocation = Config.ignoreLocation
+      } = {}) {
+        super(pattern);
+        this._bitapSearch = new BitapSearch(pattern, {
+          location,
+          threshold,
+          distance,
+          includeMatches,
+          findAllMatches,
+          minMatchCharLength,
+          isCaseSensitive,
+          ignoreLocation
+        });
+      }
+
+      static get type() {
+        return 'fuzzy';
+      }
+
+      static get multiRegex() {
+        return /^"(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^(.*)$/;
+      }
+
+      search(text) {
+        return this._bitapSearch.searchIn(text);
+      }
+
+    } // Token: 'file
+
+
+    class IncludeMatch extends BaseMatch {
+      constructor(pattern) {
+        super(pattern);
+      }
+
+      static get type() {
+        return 'include';
+      }
+
+      static get multiRegex() {
+        return /^'"(.*)"$/;
+      }
+
+      static get singleRegex() {
+        return /^'(.*)$/;
+      }
+
+      search(text) {
+        let location = 0;
+        let index;
+        const indices = [];
+        const patternLen = this.pattern.length; // Get all exact matches
+
+        while ((index = text.indexOf(this.pattern, location)) > -1) {
+          location = index + patternLen;
+          indices.push([index, location - 1]);
+        }
+
+        const isMatch = !!indices.length;
+        return {
+          isMatch,
+          score: isMatch ? 0 : 1,
+          indices
+        };
+      }
+
+    } // ❗Order is important. DO NOT CHANGE.
+
+
+    const searchers = [ExactMatch, IncludeMatch, PrefixExactMatch, InversePrefixExactMatch, InverseSuffixExactMatch, SuffixExactMatch, InverseExactMatch, FuzzyMatch];
+    const searchersLen = searchers.length; // Regex to split by spaces, but keep anything in quotes together
+
+    const SPACE_RE = / +(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/;
+    const OR_TOKEN = '|'; // Return a 2D array representation of the query, for simpler parsing.
+    // Example:
+    // "^core go$ | rb$ | py$ xy$" => [["^core", "go$"], ["rb$"], ["py$", "xy$"]]
+
+    function parseQuery(pattern, options = {}) {
+      return pattern.split(OR_TOKEN).map(item => {
+        let query = item.trim().split(SPACE_RE).filter(item => item && !!item.trim());
+        let results = [];
+
+        for (let i = 0, len = query.length; i < len; i += 1) {
+          const queryItem = query[i]; // 1. Handle multiple query match (i.e, once that are quoted, like `"hello world"`)
+
+          let found = false;
+          let idx = -1;
+
+          while (!found && ++idx < searchersLen) {
+            const searcher = searchers[idx];
+            let token = searcher.isMultiMatch(queryItem);
+
+            if (token) {
+              results.push(new searcher(token, options));
+              found = true;
+            }
+          }
+
+          if (found) {
+            continue;
+          } // 2. Handle single query matches (i.e, once that are *not* quoted)
+
+
+          idx = -1;
+
+          while (++idx < searchersLen) {
+            const searcher = searchers[idx];
+            let token = searcher.isSingleMatch(queryItem);
+
+            if (token) {
+              results.push(new searcher(token, options));
+              break;
+            }
+          }
+        }
+
+        return results;
+      });
+    } // These extended matchers can return an array of matches, as opposed
+    // to a singl match
+
+
+    const MultiMatchSet = new Set([FuzzyMatch.type, IncludeMatch.type]);
+    /**
+     * Command-like searching
+     * ======================
+     *
+     * Given multiple search terms delimited by spaces.e.g. `^jscript .python$ ruby !java`,
+     * search in a given text.
+     *
+     * Search syntax:
+     *
+     * | Token       | Match type                 | Description                            |
+     * | ----------- | -------------------------- | -------------------------------------- |
+     * | `jscript`   | fuzzy-match                | Items that fuzzy match `jscript`       |
+     * | `=scheme`   | exact-match                | Items that are `scheme`                |
+     * | `'python`   | include-match              | Items that include `python`            |
+     * | `!ruby`     | inverse-exact-match        | Items that do not include `ruby`       |
+     * | `^java`     | prefix-exact-match         | Items that start with `java`           |
+     * | `!^earlang` | inverse-prefix-exact-match | Items that do not start with `earlang` |
+     * | `.js$`      | suffix-exact-match         | Items that end with `.js`              |
+     * | `!.go$`     | inverse-suffix-exact-match | Items that do not end with `.go`       |
+     *
+     * A single pipe character acts as an OR operator. For example, the following
+     * query matches entries that start with `core` and end with either`go`, `rb`,
+     * or`py`.
+     *
+     * ```
+     * ^core go$ | rb$ | py$
+     * ```
+     */
+
+    class ExtendedSearch {
+      constructor(pattern, {
+        isCaseSensitive = Config.isCaseSensitive,
+        includeMatches = Config.includeMatches,
+        minMatchCharLength = Config.minMatchCharLength,
+        ignoreLocation = Config.ignoreLocation,
+        findAllMatches = Config.findAllMatches,
+        location = Config.location,
+        threshold = Config.threshold,
+        distance = Config.distance
+      } = {}) {
+        this.query = null;
+        this.options = {
+          isCaseSensitive,
+          includeMatches,
+          minMatchCharLength,
+          findAllMatches,
+          ignoreLocation,
+          location,
+          threshold,
+          distance
+        };
+        this.pattern = isCaseSensitive ? pattern : pattern.toLowerCase();
+        this.query = parseQuery(this.pattern, this.options);
+      }
+
+      static condition(_, options) {
+        return options.useExtendedSearch;
+      }
+
+      searchIn(text) {
+        const query = this.query;
+
+        if (!query) {
+          return {
+            isMatch: false,
+            score: 1
+          };
+        }
+
+        const {
+          includeMatches,
+          isCaseSensitive
+        } = this.options;
+        text = isCaseSensitive ? text : text.toLowerCase();
+        let numMatches = 0;
+        let allIndices = [];
+        let totalScore = 0; // ORs
+
+        for (let i = 0, qLen = query.length; i < qLen; i += 1) {
+          const searchers = query[i]; // Reset indices
+
+          allIndices.length = 0;
+          numMatches = 0; // ANDs
+
+          for (let j = 0, pLen = searchers.length; j < pLen; j += 1) {
+            const searcher = searchers[j];
+            const {
+              isMatch,
+              indices,
+              score
+            } = searcher.search(text);
+
+            if (isMatch) {
+              numMatches += 1;
+              totalScore += score;
+
+              if (includeMatches) {
+                const type = searcher.constructor.type;
+
+                if (MultiMatchSet.has(type)) {
+                  allIndices = [...allIndices, ...indices];
+                } else {
+                  allIndices.push(indices);
+                }
+              }
+            } else {
+              totalScore = 0;
+              numMatches = 0;
+              allIndices.length = 0;
+              break;
+            }
+          } // OR condition, so if TRUE, return
+
+
+          if (numMatches) {
+            let result = {
+              isMatch: true,
+              score: totalScore / numMatches
+            };
+
+            if (includeMatches) {
+              result.indices = allIndices;
+            }
+
+            return result;
+          }
+        } // Nothing was matched
+
+
+        return {
+          isMatch: false,
+          score: 1
+        };
+      }
+
+    }
+
+    const registeredSearchers = [];
+
+    function register(...args) {
+      registeredSearchers.push(...args);
+    }
+
+    function createSearcher(pattern, options) {
+      for (let i = 0, len = registeredSearchers.length; i < len; i += 1) {
+        let searcherClass = registeredSearchers[i];
+
+        if (searcherClass.condition(pattern, options)) {
+          return new searcherClass(pattern, options);
+        }
+      }
+
+      return new BitapSearch(pattern, options);
+    }
+
+    const LogicalOperator = {
+      AND: '$and',
+      OR: '$or'
+    };
+    const KeyType = {
+      PATH: '$path',
+      PATTERN: '$val'
     };
 
-    const distance = (a, b) => {
-      if (a.length < b.length) {
-        const tmp = b;
-        b = a;
-        a = tmp;
+    const isExpression = query => !!(query[LogicalOperator.AND] || query[LogicalOperator.OR]);
+
+    const isPath = query => !!query[KeyType.PATH];
+
+    const isLeaf = query => !isArray$3(query) && isObject$3(query) && !isExpression(query);
+
+    const convertToExplicit = query => ({
+      [LogicalOperator.AND]: Object.keys(query).map(key => ({
+        [key]: query[key]
+      }))
+    }); // When `auto` is `true`, the parse function will infer and initialize and add
+    // the appropriate `Searcher` instance
+
+
+    function parse$2(query, options, {
+      auto = true
+    } = {}) {
+      const next = query => {
+        let keys = Object.keys(query);
+        const isQueryPath = isPath(query);
+
+        if (!isQueryPath && keys.length > 1 && !isExpression(query)) {
+          return next(convertToExplicit(query));
+        }
+
+        if (isLeaf(query)) {
+          const key = isQueryPath ? query[KeyType.PATH] : keys[0];
+          const pattern = isQueryPath ? query[KeyType.PATTERN] : query[key];
+
+          if (!isString$1(pattern)) {
+            throw new Error(LOGICAL_SEARCH_INVALID_QUERY_FOR_KEY(key));
+          }
+
+          const obj = {
+            keyId: createKeyId(key),
+            pattern
+          };
+
+          if (auto) {
+            obj.searcher = createSearcher(pattern, options);
+          }
+
+          return obj;
+        }
+
+        let node = {
+          children: [],
+          operator: keys[0]
+        };
+        keys.forEach(key => {
+          const value = query[key];
+
+          if (isArray$3(value)) {
+            value.forEach(item => {
+              node.children.push(next(item));
+            });
+          }
+        });
+        return node;
+      };
+
+      if (!isExpression(query)) {
+        query = convertToExplicit(query);
       }
 
-      if (b.length === 0) {
-        return a.length;
+      return next(query);
+    } // Practical scoring function
+
+
+    function computeScore(results, {
+      ignoreFieldNorm = Config.ignoreFieldNorm
+    }) {
+      results.forEach(result => {
+        let totalScore = 1;
+        result.matches.forEach(({
+          key,
+          norm,
+          score
+        }) => {
+          const weight = key ? key.weight : null;
+          totalScore *= Math.pow(score === 0 && weight ? Number.EPSILON : score, (weight || 1) * (ignoreFieldNorm ? 1 : norm));
+        });
+        result.score = totalScore;
+      });
+    }
+
+    function transformMatches(result, data) {
+      const matches = result.matches;
+      data.matches = [];
+
+      if (!isDefined(matches)) {
+        return;
       }
 
-      if (a.length <= 32) {
-        return myers_32(a, b);
+      matches.forEach(match => {
+        if (!isDefined(match.indices) || !match.indices.length) {
+          return;
+        }
+
+        const {
+          indices,
+          value
+        } = match;
+        let obj = {
+          indices,
+          value
+        };
+
+        if (match.key) {
+          obj.key = match.key.src;
+        }
+
+        if (match.idx > -1) {
+          obj.refIndex = match.idx;
+        }
+
+        data.matches.push(obj);
+      });
+    }
+
+    function transformScore(result, data) {
+      data.score = result.score;
+    }
+
+    function format$1(results, docs, {
+      includeMatches = Config.includeMatches,
+      includeScore = Config.includeScore
+    } = {}) {
+      const transformers = [];
+      if (includeMatches) transformers.push(transformMatches);
+      if (includeScore) transformers.push(transformScore);
+      return results.map(result => {
+        const {
+          idx
+        } = result;
+        const data = {
+          item: docs[idx],
+          refIndex: idx
+        };
+
+        if (transformers.length) {
+          transformers.forEach(transformer => {
+            transformer(result, data);
+          });
+        }
+
+        return data;
+      });
+    }
+
+    class Fuse {
+      constructor(docs, options = {}, index) {
+        this.options = { ...Config,
+          ...options
+        };
+
+        if (this.options.useExtendedSearch && !true) {
+          throw new Error(EXTENDED_SEARCH_UNAVAILABLE);
+        }
+
+        this._keyStore = new KeyStore(this.options.keys);
+        this.setCollection(docs, index);
       }
 
-      return myers_x(a, b);
-    };
+      setCollection(docs, index) {
+        this._docs = docs;
+
+        if (index && !(index instanceof FuseIndex)) {
+          throw new Error(INCORRECT_INDEX_TYPE);
+        }
+
+        this._myIndex = index || createIndex(this.options.keys, this._docs, {
+          getFn: this.options.getFn,
+          fieldNormWeight: this.options.fieldNormWeight
+        });
+      }
+
+      add(doc) {
+        if (!isDefined(doc)) {
+          return;
+        }
+
+        this._docs.push(doc);
+
+        this._myIndex.add(doc);
+      }
+
+      remove(predicate = () => false) {
+        const results = [];
+
+        for (let i = 0, len = this._docs.length; i < len; i += 1) {
+          const doc = this._docs[i];
+
+          if (predicate(doc, i)) {
+            this.removeAt(i);
+            i -= 1;
+            len -= 1;
+            results.push(doc);
+          }
+        }
+
+        return results;
+      }
+
+      removeAt(idx) {
+        this._docs.splice(idx, 1);
+
+        this._myIndex.removeAt(idx);
+      }
+
+      getIndex() {
+        return this._myIndex;
+      }
+
+      search(query, {
+        limit = -1
+      } = {}) {
+        const {
+          includeMatches,
+          includeScore,
+          shouldSort,
+          sortFn,
+          ignoreFieldNorm
+        } = this.options;
+        let results = isString$1(query) ? isString$1(this._docs[0]) ? this._searchStringList(query) : this._searchObjectList(query) : this._searchLogical(query);
+        computeScore(results, {
+          ignoreFieldNorm
+        });
+
+        if (shouldSort) {
+          results.sort(sortFn);
+        }
+
+        if (isNumber$1(limit) && limit > -1) {
+          results = results.slice(0, limit);
+        }
+
+        return format$1(results, this._docs, {
+          includeMatches,
+          includeScore
+        });
+      }
+
+      _searchStringList(query) {
+        const searcher = createSearcher(query, this.options);
+        const {
+          records
+        } = this._myIndex;
+        const results = []; // Iterate over every string in the index
+
+        records.forEach(({
+          v: text,
+          i: idx,
+          n: norm
+        }) => {
+          if (!isDefined(text)) {
+            return;
+          }
+
+          const {
+            isMatch,
+            score,
+            indices
+          } = searcher.searchIn(text);
+
+          if (isMatch) {
+            results.push({
+              item: text,
+              idx,
+              matches: [{
+                score,
+                value: text,
+                norm,
+                indices
+              }]
+            });
+          }
+        });
+        return results;
+      }
+
+      _searchLogical(query) {
+        const expression = parse$2(query, this.options);
+
+        const evaluate = (node, item, idx) => {
+          if (!node.children) {
+            const {
+              keyId,
+              searcher
+            } = node;
+
+            const matches = this._findMatches({
+              key: this._keyStore.get(keyId),
+              value: this._myIndex.getValueForItemAtKeyId(item, keyId),
+              searcher
+            });
+
+            if (matches && matches.length) {
+              return [{
+                idx,
+                item,
+                matches
+              }];
+            }
+
+            return [];
+          }
+
+          const res = [];
+
+          for (let i = 0, len = node.children.length; i < len; i += 1) {
+            const child = node.children[i];
+            const result = evaluate(child, item, idx);
+
+            if (result.length) {
+              res.push(...result);
+            } else if (node.operator === LogicalOperator.AND) {
+              return [];
+            }
+          }
+
+          return res;
+        };
+
+        const records = this._myIndex.records;
+        const resultMap = {};
+        const results = [];
+        records.forEach(({
+          $: item,
+          i: idx
+        }) => {
+          if (isDefined(item)) {
+            let expResults = evaluate(expression, item, idx);
+
+            if (expResults.length) {
+              // Dedupe when adding
+              if (!resultMap[idx]) {
+                resultMap[idx] = {
+                  idx,
+                  item,
+                  matches: []
+                };
+                results.push(resultMap[idx]);
+              }
+
+              expResults.forEach(({
+                matches
+              }) => {
+                resultMap[idx].matches.push(...matches);
+              });
+            }
+          }
+        });
+        return results;
+      }
+
+      _searchObjectList(query) {
+        const searcher = createSearcher(query, this.options);
+        const {
+          keys,
+          records
+        } = this._myIndex;
+        const results = []; // List is Array<Object>
+
+        records.forEach(({
+          $: item,
+          i: idx
+        }) => {
+          if (!isDefined(item)) {
+            return;
+          }
+
+          let matches = []; // Iterate over every key (i.e, path), and fetch the value at that key
+
+          keys.forEach((key, keyIndex) => {
+            matches.push(...this._findMatches({
+              key,
+              value: item[keyIndex],
+              searcher
+            }));
+          });
+
+          if (matches.length) {
+            results.push({
+              idx,
+              item,
+              matches
+            });
+          }
+        });
+        return results;
+      }
+
+      _findMatches({
+        key,
+        value,
+        searcher
+      }) {
+        if (!isDefined(value)) {
+          return [];
+        }
+
+        let matches = [];
+
+        if (isArray$3(value)) {
+          value.forEach(({
+            v: text,
+            i: idx,
+            n: norm
+          }) => {
+            if (!isDefined(text)) {
+              return;
+            }
+
+            const {
+              isMatch,
+              score,
+              indices
+            } = searcher.searchIn(text);
+
+            if (isMatch) {
+              matches.push({
+                score,
+                key,
+                value: text,
+                idx,
+                norm,
+                indices
+              });
+            }
+          });
+        } else {
+          const {
+            v: text,
+            n: norm
+          } = value;
+          const {
+            isMatch,
+            score,
+            indices
+          } = searcher.searchIn(text);
+
+          if (isMatch) {
+            matches.push({
+              score,
+              key,
+              value: text,
+              norm,
+              indices
+            });
+          }
+        }
+
+        return matches;
+      }
+
+    }
+
+    Fuse.version = '6.6.2';
+    Fuse.createIndex = createIndex;
+    Fuse.parseIndex = parseIndex;
+    Fuse.config = Config;
+    {
+      Fuse.parseQuery = parse$2;
+    }
+    {
+      register(ExtendedSearch);
+    }
 
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[40] = list[i];
+      child_ctx[45] = list[i];
       return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[43] = list[i];
+      child_ctx[48] = list[i];
       return child_ctx;
     }
 
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[46] = list[i];
+      child_ctx[51] = list[i];
       return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[49] = list[i];
-      child_ctx[51] = i;
+      child_ctx[54] = list[i];
+      child_ctx[56] = i;
       return child_ctx;
-    } // (188:1) {#if showTooltip}
+    } // (230:1) {#if showTooltip}
 
 
     function create_if_block$3(ctx) {
@@ -27227,7 +29154,7 @@
           run_all(dispose);
         }
       };
-    } // (210:4) {#if lastUsed?.length && !searchValue}
+    } // (252:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -27294,7 +29221,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (214:8) {#if index === 0}
+    } // (256:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -27313,7 +29240,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (212:6) {#each lastUsed as entry, index}
+    } // (254:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -27327,7 +29254,7 @@
       var span1;
       var t3_value =
       /*entry*/
-      ctx[49].client.name + "";
+      ctx[54].client.name + "";
       var t3;
       var t4;
       var li1;
@@ -27336,7 +29263,7 @@
       var span3;
       var t7_value =
       /*entry*/
-      ctx[49].project.name + "";
+      ctx[54].project.name + "";
       var t7;
       var t8;
       var li2;
@@ -27345,14 +29272,14 @@
       var span5;
       var t11_value =
       /*entry*/
-      ctx[49].task.name + "";
+      ctx[54].task.name + "";
       var t11;
       var t12;
       var mounted;
       var dispose;
       var if_block =
       /*index*/
-      ctx[51] === 0 && create_if_block_4$1();
+      ctx[56] === 0 && create_if_block_4$1();
 
       function click_handler() {
         var _ctx;
@@ -27365,7 +29292,7 @@
           /*click_handler*/
           (_ctx = ctx)[34].apply(_ctx, [
           /*entry*/
-          ctx[49]].concat(args))
+          ctx[54]].concat(args))
         );
       }
 
@@ -27440,7 +29367,7 @@
           ctx = new_ctx;
           if (
           /*index*/
-          ctx[51] === 0) if_block.p(ctx, dirty);
+          ctx[56] === 0) if_block.p(ctx, dirty);
         },
         d: function d(detaching) {
           if (detaching) detach(li3);
@@ -27449,7 +29376,7 @@
           dispose();
         }
       };
-    } // (289:34) 
+    } // (331:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -27468,7 +29395,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (252:4) {#if searchResults?.length}
+    } // (294:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -27533,7 +29460,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (262:12) {#each project.tasks as task}
+    } // (304:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -27541,7 +29468,7 @@
       var a;
       var t0_value =
       /*task*/
-      ctx[46].label + "";
+      ctx[51].label + "";
       var t0;
       var t1;
       var mounted;
@@ -27557,12 +29484,12 @@
         return (
           /*click_handler_1*/
           (_ctx2 = ctx)[35].apply(_ctx2, [
-          /*result*/
-          ctx[40],
+          /*client*/
+          ctx[45],
           /*project*/
-          ctx[43],
+          ctx[48],
           /*task*/
-          ctx[46]].concat(args))
+          ctx[51]].concat(args))
         );
       }
 
@@ -27592,7 +29519,7 @@
           /*searchResults*/
           2048 && t0_value !== (t0_value =
           /*task*/
-          ctx[46].label + "")) set_data(t0, t0_value);
+          ctx[51].label + "")) set_data(t0, t0_value);
         },
         d: function d(detaching) {
           if (detaching) detach(li);
@@ -27600,7 +29527,7 @@
           dispose();
         }
       };
-    } // (258:9) {#each result.client.projects as project}
+    } // (300:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -27608,14 +29535,14 @@
       var span;
       var t0_value =
       /*project*/
-      ctx[43].label + "";
+      ctx[48].label + "";
       var t0;
       var t1;
       var ul;
       var t2;
       var each_value_2 =
       /*project*/
-      ctx[43].tasks;
+      ctx[48].tasks;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_2.length; i += 1) {
@@ -27655,14 +29582,14 @@
           /*searchResults*/
           2048 && t0_value !== (t0_value =
           /*project*/
-          ctx[43].label + "")) set_data(t0, t0_value);
+          ctx[48].label + "")) set_data(t0, t0_value);
 
           if (dirty[0] &
           /*selected, searchResults, showTooltip*/
           2561) {
             each_value_2 =
             /*project*/
-            ctx[43].tasks;
+            ctx[48].tasks;
 
             var _i9;
 
@@ -27692,7 +29619,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (253:5) {#each searchResults as result}
+    } // (295:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -27700,15 +29627,15 @@
       var li;
       var span;
       var t0_value =
-      /*result*/
-      ctx[40].client.label + "";
+      /*client*/
+      ctx[45].label + "";
       var t0;
       var t1;
       var ul0;
       var t2;
       var each_value_1 =
-      /*result*/
-      ctx[40].client.projects;
+      /*client*/
+      ctx[45].projects;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_1.length; i += 1) {
@@ -27750,15 +29677,15 @@
           if (dirty[0] &
           /*searchResults*/
           2048 && t0_value !== (t0_value =
-          /*result*/
-          ctx[40].client.label + "")) set_data(t0, t0_value);
+          /*client*/
+          ctx[45].label + "")) set_data(t0, t0_value);
 
           if (dirty[0] &
           /*searchResults, selected, showTooltip*/
           2561) {
             each_value_1 =
-            /*result*/
-            ctx[40].client.projects;
+            /*client*/
+            ctx[45].projects;
 
             var _i12;
 
@@ -28122,12 +30049,23 @@
             tasks: projectTasks
           });
         });
-        return {
-          client: _objectSpread2(_objectSpread2({}, client), {}, {
-            projects: clientProjects
-          })
-        };
+        return _objectSpread2(_objectSpread2({}, client), {}, {
+          projects: clientProjects
+        });
       });
+      var searchOptions = {
+        keys: ["label"],
+        threshold: 0.4,
+        //  A score of 0 indicates a perfect match, while a score of 1 indicates a complete mismatch.
+        includeScore: true
+      };
+      var clientsFuse = new Fuse(clients, searchOptions);
+      var projectsFuse = new Fuse(projects, searchOptions);
+      var tasksFuse = new Fuse(tasks, searchOptions);
+
+      var scoreSort = function scoreSort(a, b) {
+        return parseFloat(a.score) < parseFloat(b.score) ? -1 : parseFloat(a.score) > parseFloat(b.score) ? 1 : 0;
+      };
 
       var search = function search(q) {
         if (!q) {
@@ -28135,30 +30073,63 @@
           return;
         }
 
-        var acceptableDistance = 4;
-        $$invalidate(11, searchResults = _toConsumableArray(groupedData).map(function (entry) {
-          var _entry$client, _entry$client$project, _entry$client2;
+        var clientsResults = clientsFuse.search(q);
+        var projectsResults = projectsFuse.search(q);
+        var tasksResults = tasksFuse.search(q);
+        $$invalidate(11, searchResults = _toConsumableArray(groupedData).map(function (client) {
+          var _clientFound$score;
 
-          var projects = entry === null || entry === void 0 ? void 0 : (_entry$client = entry.client) === null || _entry$client === void 0 ? void 0 : (_entry$client$project = _entry$client.projects) === null || _entry$client$project === void 0 ? void 0 : _entry$client$project.map(function (project) {
-            var _project$tasks;
+          if (!client) {
+            return {
+              client: undefined
+            };
+          }
 
-            var tasks = project === null || project === void 0 ? void 0 : (_project$tasks = project.tasks) === null || _project$tasks === void 0 ? void 0 : _project$tasks.filter(function (task) {
-              return distance(task === null || task === void 0 ? void 0 : task.label, q) <= acceptableDistance;
+          var clientProjects = client.projects,
+              clientId = client.value;
+          var clientFound = clientsResults.find(function (result) {
+            return result.item.value === clientId;
+          });
+          var clientScore = parseFloat((_clientFound$score = clientFound === null || clientFound === void 0 ? void 0 : clientFound.score) !== null && _clientFound$score !== void 0 ? _clientFound$score : 1);
+          var projectsScore = 1;
+          var tasksScore = 1;
+          var projects = clientProjects === null || clientProjects === void 0 ? void 0 : clientProjects.map(function (project) {
+            var _projectFound$score, _project$tasks, _projectFound$score2;
+
+            var projectFound = projectsResults.find(function (result) {
+              return result.item.value === (project === null || project === void 0 ? void 0 : project.value);
             });
-            return tasks.length || distance(project === null || project === void 0 ? void 0 : project.label, q) <= acceptableDistance ? _objectSpread2(_objectSpread2({}, project), {}, {
+            projectsScore = Math.min(projectsScore, parseFloat((_projectFound$score = projectFound === null || projectFound === void 0 ? void 0 : projectFound.score) !== null && _projectFound$score !== void 0 ? _projectFound$score : 1));
+            var tasksPerProjectScore = 1;
+            var tasks = project === null || project === void 0 ? void 0 : (_project$tasks = project.tasks) === null || _project$tasks === void 0 ? void 0 : _project$tasks.map(function (task) {
+              var _taskFound$score;
+
+              var taskFound = tasksResults.find(function (result) {
+                return result.item.value === (task === null || task === void 0 ? void 0 : task.value);
+              });
+              var score = parseFloat((_taskFound$score = taskFound === null || taskFound === void 0 ? void 0 : taskFound.score) !== null && _taskFound$score !== void 0 ? _taskFound$score : 1);
+              tasksScore = Math.min(tasksScore, score);
+              tasksPerProjectScore = Math.min(tasksPerProjectScore, score);
+              return clientFound || projectFound || taskFound ? _objectSpread2(_objectSpread2({}, task), {}, {
+                score: score
+              }) : undefined;
+            }).filter(function (task) {
+              return task !== undefined;
+            }).sort(scoreSort);
+            return tasks.length || projectFound ? _objectSpread2(_objectSpread2({}, project), {}, {
+              score: Math.min(parseFloat((_projectFound$score2 = projectFound === null || projectFound === void 0 ? void 0 : projectFound.score) !== null && _projectFound$score2 !== void 0 ? _projectFound$score2 : 1), tasksPerProjectScore),
               tasks: tasks
             }) : undefined;
           }).filter(function (project) {
             return project !== undefined;
-          });
-          return {
-            client: projects !== null && projects !== void 0 && projects.length || distance(entry === null || entry === void 0 ? void 0 : (_entry$client2 = entry.client) === null || _entry$client2 === void 0 ? void 0 : _entry$client2.label, q) <= acceptableDistance ? _objectSpread2(_objectSpread2({}, entry === null || entry === void 0 ? void 0 : entry.client), {}, {
-              projects: projects
-            }) : undefined
-          };
-        }).filter(function (entry) {
-          return (entry === null || entry === void 0 ? void 0 : entry.client) !== undefined;
-        }));
+          }).sort(scoreSort);
+          return projects !== null && projects !== void 0 && projects.length || clientFound ? _objectSpread2(_objectSpread2({}, client), {}, {
+            projects: projects,
+            score: Math.min(parseFloat(clientScore), parseFloat(projectsScore), parseFloat(tasksScore))
+          }) : undefined;
+        }).filter(function (client) {
+          return client !== undefined;
+        }).sort(scoreSort));
       };
 
       var hideTooltip = function hideTooltip() {
@@ -28309,7 +30280,7 @@
       };
 
       var click_handler = function click_handler(entry, event) {
-        var _entry$task2, _entry$task3, _entry$project, _entry$project2, _entry$client3, _entry$client4;
+        var _entry$task2, _entry$task3, _entry$project, _entry$project2, _entry$client, _entry$client2;
 
         event.stopPropagation();
         event.preventDefault();
@@ -28323,20 +30294,20 @@
             value: entry === null || entry === void 0 ? void 0 : (_entry$project2 = entry.project) === null || _entry$project2 === void 0 ? void 0 : _entry$project2.uuid
           },
           client: {
-            label: entry === null || entry === void 0 ? void 0 : (_entry$client3 = entry.client) === null || _entry$client3 === void 0 ? void 0 : _entry$client3.name,
-            value: entry === null || entry === void 0 ? void 0 : (_entry$client4 = entry.client) === null || _entry$client4 === void 0 ? void 0 : _entry$client4.uuid
+            label: entry === null || entry === void 0 ? void 0 : (_entry$client = entry.client) === null || _entry$client === void 0 ? void 0 : _entry$client.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$client2 = entry.client) === null || _entry$client2 === void 0 ? void 0 : _entry$client2.uuid
           }
         });
         $$invalidate(0, showTooltip = false);
       };
 
-      var click_handler_1 = function click_handler_1(result, project, task, event) {
+      var click_handler_1 = function click_handler_1(client, project, task, event) {
         event.stopPropagation();
         event.preventDefault();
         $$invalidate(9, selected = {
           client: {
-            label: result.client.label,
-            value: result.client.value
+            label: client.label,
+            value: client.value
           },
           project: {
             label: project.label,
@@ -28614,32 +30585,6 @@
 
       return _createClass$1(Checkmark);
     }(SvelteComponent);
-
-    var $find = arrayIteration$1.find;
-
-
-
-    var FIND = 'find';
-    var SKIPS_HOLES = true; // Shouldn't skip holes
-
-    if (FIND in []) Array(1)[FIND](function () {
-      SKIPS_HOLES = false;
-    }); // `Array.prototype.find` method
-    // https://tc39.es/ecma262/#sec-array.prototype.find
-
-    _export$1({
-      target: 'Array',
-      proto: true,
-      forced: SKIPS_HOLES
-    }, {
-      find: function find(callbackfn
-      /* , that = undefined */
-      ) {
-        return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-      }
-    }); // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-
-    addToUnscopables$1(FIND);
 
     function create_fragment$5(ctx) {
       var form;
@@ -29771,31 +31716,31 @@
 
         switch (preset) {
           case "today":
-            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
+            $$invalidate(2, start = format$3(startOfToday(), dateFormat));
+            $$invalidate(1, end = format$3(startOfToday(), dateFormat));
             break;
 
           case "yesterday":
-            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(2, start = format$3(startOfYesterday(), dateFormat));
+            $$invalidate(1, end = format$3(startOfYesterday(), dateFormat));
             break;
 
           case "week":
-            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfWeek(startOfToday(), {
               weekStartsOn: dist_5$1()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfWeek(startOfToday(), {
               weekStartsOn: dist_5$1()
             }), dateFormat));
             break;
 
           case "week-1":
-            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: dist_5$1()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: dist_5$1()
@@ -29803,29 +31748,29 @@
             break;
 
           case "month":
-            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$3(startOfMonth(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$3(endOfMonth(startOfToday()), dateFormat));
             break;
 
           case "month-1":
-            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
             break;
 
           case "year":
-            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$3(startOfYear(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$3(endOfYear(startOfToday()), dateFormat));
             break;
 
           case "year-1":
-            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
             break;
