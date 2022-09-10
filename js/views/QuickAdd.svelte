@@ -20,11 +20,16 @@
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
 	};
 
-	let showTooltip = false;
+	let showTaskSelector = false;
+	let tasksButtons = [];
+	let lastUsedTasksButtons = [];
 
 	$: loading = false;
 	$: taskError = false;
 	$: selected = null;
+	$: searchResultsNumTasks = 0;
+	$: currentFocusTaskIndex = -1;
+	$: currentLastestFocusTaskIndex = -1;
 
 	let duration = 1;
 	let date = initialDate;
@@ -52,6 +57,64 @@
 		return { ...client, projects: clientProjects };
 	});
 
+	function handleKeyDown(e) {
+		if (!showTaskSelector) {
+			return;
+		}
+
+		switch (e.key) {
+			case "Escape":
+				e.preventDefault();
+				handleHideTaskSelector();
+				break;
+			case "ArrowDown":
+				e.preventDefault();
+				if (lastUsed?.length && !searchValue) {
+					const reachedEnd = currentLastestFocusTaskIndex + 1 >= lastUsed?.length;
+					if (reachedEnd) {
+						currentLastestFocusTaskIndex = 0;
+					} else {
+						currentLastestFocusTaskIndex++;
+					}
+					lastUsedTasksButtons[currentLastestFocusTaskIndex]?.focus();
+					break;
+				}
+				if (searchResults?.length) {
+					const reachedEnd = currentFocusTaskIndex + 1 >= searchResultsNumTasks;
+					if (reachedEnd) {
+						currentFocusTaskIndex = 0;
+					} else {
+						currentFocusTaskIndex++;
+					}
+					tasksButtons[currentFocusTaskIndex]?.focus();
+					break;
+				}
+			case "ArrowUp":
+				e.preventDefault();
+				if (lastUsed?.length && !searchValue) {
+					const reachedStart = currentLastestFocusTaskIndex - 1 < 0;
+					if (reachedStart) {
+						currentLastestFocusTaskIndex = lastUsed?.length - 1;
+					} else {
+						currentLastestFocusTaskIndex--;
+					}
+					lastUsedTasksButtons[currentLastestFocusTaskIndex]?.focus();
+					break;
+				}
+				if (searchResults?.length) {
+					const reachedStart = currentFocusTaskIndex - 1 < 0;
+					if (reachedStart) {
+						currentFocusTaskIndex = searchResultsNumTasks - 1;
+					} else {
+						currentFocusTaskIndex--;
+					}
+					tasksButtons[currentFocusTaskIndex]?.focus();
+					break;
+				}
+				break;
+		}
+	}
+
 	const searchOptions = {
 		keys: ["label"],
 		threshold: 0.4,
@@ -75,6 +138,7 @@
 		const clientsResults = clientsFuse.search(q);
 		const projectsResults = projectsFuse.search(q);
 		const tasksResults = tasksFuse.search(q);
+		let taskIndex = -1;
 
 		searchResults = [...groupedData]
 			.map((client) => {
@@ -101,7 +165,7 @@
 								tasksScore = Math.min(tasksScore, score);
 								tasksPerProjectScore = Math.min(tasksPerProjectScore, score);
 
-								return clientFound || projectFound || taskFound ? { ...task, score: score } : undefined;
+								return clientFound || projectFound || taskFound ? { ...task, score } : undefined;
 							})
 							.filter((task) => task !== undefined)
 							.sort(scoreSort);
@@ -122,11 +186,37 @@
 					: undefined;
 			})
 			.filter((client) => client !== undefined)
-			.sort(scoreSort);
+			.sort(scoreSort)
+			.map((client) => ({
+				...client,
+				projects: client.projects.map((project) => ({
+					...project,
+					tasks: project.tasks.map((task) => {
+						taskIndex++;
+						return { ...task, taskIndex };
+					}),
+				})),
+			}));
+
+		searchResultsNumTasks = taskIndex + 1;
 	};
 
-	const hideTooltip = () => {
-		showTooltip = false;
+	const handleShowTaskSelector = () => {
+		// We want to use the task input as a button
+		// and then focus the actual search input
+		buttonInput?.blur();
+		searchInput?.focus();
+		showTaskSelector = true;
+
+		currentFocusTaskIndex = -1;
+		currentLastestFocusTaskIndex = -1;
+	};
+
+	const handleHideTaskSelector = () => {
+		showTaskSelector = false;
+
+		currentFocusTaskIndex = -1;
+		currentLastestFocusTaskIndex = -1;
 	};
 
 	onMount(() => {
@@ -138,10 +228,10 @@
 		if (noteInput) {
 			noteInput.focus();
 		}
-		document.addEventListener("click", hideTooltip);
+		document.addEventListener("click", handleHideTaskSelector);
 
 		return () => {
-			document.removeEventListener("click", hideTooltip);
+			document.removeEventListener("click", handleHideTaskSelector);
 		};
 	});
 
@@ -174,6 +264,7 @@
 	};
 </script>
 
+<svelte:window on:keydown={handleKeyDown} />
 <form
 	class={`quick-add${loading ? " icon-loading" : ""}`}
 	on:submit={(event) => {
@@ -213,21 +304,15 @@
 		{translate("timemanager", "Client, project or task")}
 		<input
 			use:popperRef
-			on:focus={() => {
-				// We want to use this input as a button
-				// and then focus the actual search input
-				buttonInput?.blur();
-				searchInput?.focus();
-				showTooltip = true;
-			}}
+			on:focus={handleShowTaskSelector}
 			bind:this={buttonInput}
 			type="text"
 			placeholder={translate("timemanager", "Select...")}
-			disabled={showTooltip}
+			disabled={showTaskSelector}
 			value={selected ? `${selected.client.label} · ${selected.project.label} · ${selected.task.label}` : ""}
 		/>
 	</label>
-	{#if showTooltip}
+	{#if showTaskSelector}
 		<div
 			class="task-selector-popover popover"
 			use:popperContent={extraOpts}
@@ -257,6 +342,7 @@
 								<a
 									class="task last-used-wrapper"
 									href="?"
+									bind:this={lastUsedTasksButtons[index]}
 									on:click={(event) => {
 										event.stopPropagation();
 										event.preventDefault();
@@ -267,7 +353,10 @@
 											client: { label: entry?.client?.name, value: entry?.client?.uuid },
 										};
 
-										showTooltip = false;
+										showTaskSelector = false;
+									}}
+									on:focus={() => {
+										currentLastestFocusTaskIndex = index;
 									}}
 								>
 									<ul>
@@ -305,6 +394,7 @@
 													<li>
 														<a
 															href="?"
+															bind:this={tasksButtons[task.taskIndex]}
 															on:click={(event) => {
 																event.stopPropagation();
 																event.preventDefault();
@@ -315,7 +405,10 @@
 																	task,
 																};
 
-																showTooltip = false;
+																showTaskSelector = false;
+															}}
+															on:focus={() => {
+																currentFocusTaskIndex = task.taskIndex;
 															}}
 															class="task">{task.label}</a
 														>
