@@ -19,8 +19,6 @@ OC.L10N.register(
 		Delete: "删除",
 		"Do you want to delete this time entry?": "是否要删除此时间条目？",
 		"Duration (in hrs.) & Date": "日期和时间(小时)",
-		"Project & Task for": "为项目和任务",
-		"No projects/tasks or no client selected.": "没有项目/任务或没有客户被选中。",
 		Add: "添加",
 		"Current week": "本周",
 		"Next week": "下周",

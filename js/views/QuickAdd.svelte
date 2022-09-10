@@ -322,7 +322,7 @@
 			}}
 		>
 			<label class="search">
-				<span class="hidden-visually">{translate("timemanager", "Search for client, project or task")}</span>
+				<span class="hidden-visually">{translate("timemanager", "Type to search for client, project or task")}</span>
 				<input
 					bind:this={searchInput}
 					bind:value={searchValue}

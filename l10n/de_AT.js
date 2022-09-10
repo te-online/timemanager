@@ -18,8 +18,6 @@ OC.L10N.register(
 		Delete: "Löschen",
 		"Do you want to delete this time entry?": "Möchtest du diesen Zeiteintrag löschen?",
 		"Duration (in hrs.) & Date": "Dauer (in Std.) & Datum",
-		"Project & Task for": "Projekt & Aufgabe für",
-		"No projects/tasks or no client selected.": "Keine Projekte/Aufgaben oder kein Kunde ausgewählt",
 		Add: "Hinzufügen",
 		"Current week": "Aktuelle Woche",
 		"Next week": "Nächste Woche",
@@ -175,6 +173,10 @@ OC.L10N.register(
 		"All tasks": "Alle Aufgaben",
 		"Created by": "Einträge von",
 		"Filter by person": "Filtern nach Person",
+		"Type to search for client, project or task": "Suche nach Kunden, Projekten oder Aufgaben",
+		"Client, project or task": "Kunde, Projekt oder Aufgabe",
+		"Last used": "Zuletzt genutzt",
+		"Nothing found": "Nichts gefunden",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

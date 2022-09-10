@@ -18,8 +18,6 @@ OC.L10N.register(
 		Delete: "Supprimer",
 		"Do you want to delete this time entry?": "Souhaitez-vous supprimer cette saisie de temps ?",
 		"Duration (in hrs.) & Date": "Durée (en heure(s)) & Date",
-		"Project & Task for": "Projet & Tâche pour",
-		"No projects/tasks or no client selected.": "Aucun projet/tâche ni aucun client sélectionné.",
 		Add: "Ajouter",
 		"Current week": "Semaine en cours",
 		"Next week": "Semaine prochaine",

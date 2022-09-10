@@ -18,8 +18,6 @@ OC.L10N.register(
 		"Delete": "Smazat",
 		"Do you want to delete this time entry?": "Opravdu chcete tuto položku smazat?",
 		"Duration (in hrs.) & Date": "Doba trvání (v hod) a datum",
-		"Project & Task for": "Pojekt a úkol pro",
-		"No projects/tasks or no client selected.": "Nevybrán žádný projekt/úkol nebo zákazník.",
 		"Add": "Přidat",
 		"Current week": "Tento týden",
 		"Next week": "Příští týden",

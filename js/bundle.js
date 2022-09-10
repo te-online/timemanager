@@ -29043,7 +29043,7 @@
           div3 = element("div");
           label = element("label");
           span = element("span");
-          span.textContent = "".concat(dist_10("timemanager", "Search for client, project or task"));
+          span.textContent = "".concat(dist_10("timemanager", "Type to search for client, project or task"));
           t1 = space$1();
           input = element("input");
           t2 = space$1();
@@ -45281,11 +45281,7 @@
     var auth = unwrapExports(dist);
 
     var token = auth.getRequestToken();
-    var components = []; // let QuickAdd = QuickAddLegacy;
-    // if (process.env.FEATURE_QUICK_ADD_NEXT) {
-    // 	QuickAdd = QuickAddNext;
-    // }
-
+    var components = [];
     $(document).ready(function () {
       if ($('input[name="duration"]').length > 0) {
         $('input[name="duration"]')[0].focus();
