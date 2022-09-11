@@ -11,18 +11,26 @@
 	import { translate } from "@nextcloud/l10n";
 	import { createPopperActions } from "svelte-popperjs";
 	import Fuse from "fuse.js";
+	import { differenceInMinutes, parseISO } from "date-fns";
 
-	const [popperRef, popperContent] = createPopperActions({
-		placement: "bottom",
-		strategy: "fixed",
-	});
 	const extraOpts = {
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
 	};
+	const [taskSelectorPopperRef, taskSelectorPopperContent] = createPopperActions({
+		placement: "bottom",
+		strategy: "fixed",
+	});
+	const [noteSuggestPopperRef, noteSuggestPopperContent] = createPopperActions({
+		placement: "bottom-start",
+		strategy: "fixed",
+	});
 
 	let showTaskSelector = false;
+	let showNoteAutosuggest = false;
 	let tasksButtons = [];
 	let lastUsedTasksButtons = [];
+	let noteAutosuggestList = [];
+	let noteAutosuggestButtons = [];
 
 	$: loading = false;
 	$: taskError = false;
@@ -30,6 +38,7 @@
 	$: searchResultsNumTasks = 0;
 	$: currentFocusTaskIndex = -1;
 	$: currentLastestFocusTaskIndex = -1;
+	$: currentFocusNoteIndex = -1;
 
 	let duration = 1;
 	let date = initialDate;
@@ -38,6 +47,7 @@
 	let buttonInput;
 	let searchInput;
 	let searchValue;
+	let durationInput;
 
 	const latestEntriesByTask = {};
 	latestSearchEntries.map((entry) => {
@@ -45,6 +55,12 @@
 	});
 	const lastUsed = (Object.values(latestEntriesByTask) ?? []).slice(0, 3);
 	$: searchResults = [];
+
+	const latestTimeEntries = latestSearchEntries.map((entry) => ({
+		...entry,
+		label: entry?.time?.note,
+		value: entry?.time?.uuid,
+	}));
 
 	const groupedData = clients.map((client) => {
 		const clientProjects = projects
@@ -58,7 +74,7 @@
 	});
 
 	function handleKeyDown(e) {
-		if (!showTaskSelector) {
+		if (!showTaskSelector && !showNoteAutosuggest) {
 			return;
 		}
 
@@ -69,6 +85,16 @@
 				break;
 			case "ArrowDown":
 				e.preventDefault();
+				if (showNoteAutosuggest) {
+					const reachedEnd = currentFocusNoteIndex + 1 >= noteAutosuggestList?.length;
+					if (reachedEnd) {
+						currentFocusNoteIndex = 0;
+					} else {
+						currentFocusNoteIndex++;
+					}
+					noteAutosuggestButtons[currentFocusNoteIndex]?.focus();
+					break;
+				}
 				if (lastUsed?.length && !searchValue) {
 					const reachedEnd = currentLastestFocusTaskIndex + 1 >= lastUsed?.length;
 					if (reachedEnd) {
@@ -91,6 +117,16 @@
 				}
 			case "ArrowUp":
 				e.preventDefault();
+				if (showNoteAutosuggest) {
+					const reachedStart = currentFocusNoteIndex - 1 < 0;
+					if (reachedStart) {
+						currentFocusNoteIndex = noteAutosuggestList?.length - 1;
+					} else {
+						currentFocusNoteIndex--;
+					}
+					noteAutosuggestButtons[currentFocusNoteIndex]?.focus();
+					break;
+				}
 				if (lastUsed?.length && !searchValue) {
 					const reachedStart = currentLastestFocusTaskIndex - 1 < 0;
 					if (reachedStart) {
@@ -125,6 +161,7 @@
 	const clientsFuse = new Fuse(clients, searchOptions);
 	const projectsFuse = new Fuse(projects, searchOptions);
 	const tasksFuse = new Fuse(tasks, searchOptions);
+	const latestEntriesFuse = new Fuse(latestTimeEntries, { ...searchOptions, sort: true });
 
 	const scoreSort = (a, b) =>
 		parseFloat(a.score) < parseFloat(b.score) ? -1 : parseFloat(a.score) > parseFloat(b.score) ? 1 : 0;
@@ -210,28 +247,39 @@
 
 		currentFocusTaskIndex = -1;
 		currentLastestFocusTaskIndex = -1;
+
+		showNoteAutosuggest = false;
+		currentFocusNoteIndex = -1;
 	};
 
-	const handleHideTaskSelector = () => {
+	const handleHidePopovers = () => {
 		showTaskSelector = false;
+		showNoteAutosuggest = false;
 
 		currentFocusTaskIndex = -1;
 		currentLastestFocusTaskIndex = -1;
+		currentFocusNoteIndex = -1;
 	};
 
 	onMount(() => {
 		document.addEventListener("DOMContentLoaded", () => {
 			if (noteInput) {
 				noteInput.focus();
+				setTimeout(() => {
+					durationInput.disabled = false;
+				}, 500);
 			}
 		});
 		if (noteInput) {
 			noteInput.focus();
+			setTimeout(() => {
+				durationInput.disabled = false;
+			}, 500);
 		}
-		document.addEventListener("click", handleHideTaskSelector);
+		document.addEventListener("click", handleHidePopovers);
 
 		return () => {
-			document.removeEventListener("click", handleHideTaskSelector);
+			document.removeEventListener("click", handleHidePopovers);
 		};
 	});
 
@@ -254,7 +302,6 @@
 				},
 			});
 			if (response && response.ok) {
-				show = false;
 				document.querySelector(".app-timemanager [data-current-link]").click();
 			}
 		} catch (error) {
@@ -277,13 +324,93 @@
 	<label class="note">
 		{translate("timemanager", "Note")}
 		<input
+			use:noteSuggestPopperRef
 			type="text"
 			name="note"
 			class="note"
 			bind:value={note}
 			placeholder={translate("timemanager", "Describe what you did...")}
 			bind:this={noteInput}
+			on:input={(event) => {
+				const filterText = event?.target?.value ?? "";
+				if (filterText.length > 2) {
+					showNoteAutosuggest = true;
+
+					const searchResult = latestEntriesFuse.search(filterText);
+					noteAutosuggestList = searchResult.slice(0, 10).map((result) => result.item);
+				} else {
+					showNoteAutosuggest = false;
+
+					noteAutosuggestList = [];
+				}
+			}}
+			on:focus={(event) => {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const filterText = event?.target?.value ?? "";
+				if (filterText.length > 2) {
+					const searchResult = latestEntriesFuse.search(filterText);
+					noteAutosuggestList = searchResult.slice(0, 10).map((result) => result.item);
+					showNoteAutosuggest = true;
+				}
+
+				showTaskSelector = false;
+				currentFocusTaskIndex = -1;
+				currentLastestFocusTaskIndex = -1;
+			}}
+			on:click={(event) => {
+				event.preventDefault();
+				event.stopPropagation();
+			}}
+			autocapitalize="none"
+			autocomplete="off"
+			autocorrect="off"
+			spellcheck="false"
+			aria-autocomplete="list"
 		/>
+		{#if showNoteAutosuggest && noteAutosuggestList?.length}
+			<div class="note-autosuggest popover" use:noteSuggestPopperContent={extraOpts}>
+				<ul class="result">
+					{#each noteAutosuggestList as suggestion, index}
+						<li>
+							<a
+								class="task"
+								href="?"
+								bind:this={noteAutosuggestButtons[index]}
+								on:click={(event) => {
+									event.stopPropagation();
+									event.preventDefault();
+
+									const { time } = suggestion;
+									if (!time) {
+										return;
+									}
+									note = time.note ?? note;
+									const startDate = parseISO(time.start);
+									const endDate = parseISO(time.end);
+									duration = differenceInMinutes(endDate, startDate) / 60 ?? 1;
+									selected = {
+										task: { label: suggestion?.task?.name, value: suggestion?.task?.uuid },
+										project: { label: suggestion?.project?.name, value: suggestion?.project?.uuid },
+										client: { label: suggestion?.client?.name, value: suggestion?.client?.uuid },
+									};
+									showNoteAutosuggest = false;
+									currentFocusNoteIndex = -1;
+								}}
+								on:focus={() => {
+									currentFocusNoteIndex = index;
+								}}
+								tabindex={-1}
+							>
+								{suggestion?.time?.note ?? ""} ({suggestion?.client?.name ?? ""} › {suggestion?.project?.name ?? ""} › {suggestion
+									?.task?.name ?? ""})
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 	</label>
 	<label for="quick-add-time">
 		{@html translate("timemanager", "Duration (in hrs.) & Date")}
@@ -296,6 +423,12 @@
 				placeholder=""
 				class="duration-input"
 				bind:value={duration}
+				bind:this={durationInput}
+				on:focus={() => {
+					currentFocusNoteIndex = -1;
+					showNoteAutosuggest = false;
+				}}
+				disabled
 			/>
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>
@@ -303,19 +436,20 @@
 	<label class={`task-selector-trigger${taskError ? " error" : ""}`}>
 		{translate("timemanager", "Client, project or task")}
 		<input
-			use:popperRef
+			use:taskSelectorPopperRef
 			on:focus={handleShowTaskSelector}
 			bind:this={buttonInput}
 			type="text"
 			placeholder={translate("timemanager", "Select...")}
 			disabled={showTaskSelector}
-			value={selected ? `${selected.client.label} · ${selected.project.label} · ${selected.task.label}` : ""}
+			value={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
+			title={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
 		/>
 	</label>
 	{#if showTaskSelector}
 		<div
 			class="task-selector-popover popover"
-			use:popperContent={extraOpts}
+			use:taskSelectorPopperContent={extraOpts}
 			on:click={(event) => {
 				event.stopPropagation();
 				event.preventDefault();
@@ -330,6 +464,11 @@
 					class="search-input icon-search button-w-icon"
 					type="text"
 					placeholder={translate("timemanager", "Type to search for client, project or task")}
+					autocapitalize="none"
+					autocomplete="off"
+					autocorrect="off"
+					spellcheck="false"
+					aria-autocomplete="list"
 					autofocus
 				/>
 			</label>
@@ -358,6 +497,7 @@
 									on:focus={() => {
 										currentLastestFocusTaskIndex = index;
 									}}
+									tabindex={-1}
 								>
 									<ul>
 										<li>
@@ -410,8 +550,11 @@
 															on:focus={() => {
 																currentFocusTaskIndex = task.taskIndex;
 															}}
-															class="task">{task.label}</a
+															class="task"
+															tabindex={-1}
 														>
+															{task.label}
+														</a>
 													</li>
 												{/each}
 											</ul>
