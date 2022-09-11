@@ -29338,7 +29338,7 @@
       child_ctx[82] = list;
       child_ctx[80] = i;
       return child_ctx;
-    } // (383:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (384:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_6$1(ctx) {
@@ -29421,7 +29421,7 @@
           dispose();
         }
       };
-    } // (386:5) {#each noteAutosuggestList as suggestion, index}
+    } // (387:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29572,7 +29572,7 @@
           run_all(dispose);
         }
       };
-    } // (467:2) {:else}
+    } // (473:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -29672,7 +29672,7 @@
           run_all(dispose);
         }
       };
-    } // (450:2) {#if selected && !showTaskSelector}
+    } // (451:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -29736,7 +29736,7 @@
           attr(span3, "class", "value muted");
           attr(span4, "class", "label");
           attr(span5, "class", "value");
-          attr(a, "href", "?");
+          attr(a, "href", dist_4("apps/timemanager/404"));
           attr(a, "class", "combo-entry-wrapper");
         },
         m: function m(target, anchor) {
@@ -29792,7 +29792,7 @@
           run_all(dispose);
         }
       };
-    } // (481:1) {#if showTaskSelector}
+    } // (487:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -29954,7 +29954,7 @@
           run_all(dispose);
         }
       };
-    } // (508:4) {#if lastUsed?.length && !searchValue}
+    } // (514:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30021,7 +30021,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (512:8) {#if index === 0}
+    } // (518:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30040,7 +30040,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (510:6) {#each lastUsed as entry, index}
+    } // (516:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30157,7 +30157,7 @@
           attr(span4, "class", "label");
           attr(span5, "class", "value");
           attr(a, "class", "task last-used-wrapper");
-          attr(a, "href", "?");
+          attr(a, "href", dist_4("apps/timemanager/404"));
           attr(a, "tabindex", -1);
         },
         m: function m(target, anchor) {
@@ -30215,7 +30215,7 @@
           run_all(dispose);
         }
       };
-    } // (599:34) 
+    } // (605:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30234,7 +30234,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (555:4) {#if searchResults?.length}
+    } // (561:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30299,7 +30299,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (565:12) {#each project.tasks as task}
+    } // (571:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30364,7 +30364,7 @@
           a = element("a");
           t0 = text(t0_value);
           t1 = space$1();
-          attr(a, "href", "?");
+          attr(a, "href", dist_4("apps/timemanager/404"));
           attr(a, "class", "task");
           attr(a, "tabindex", -1);
         },
@@ -30405,7 +30405,7 @@
           run_all(dispose);
         }
       };
-    } // (561:9) {#each client.projects as project}
+    } // (567:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -30497,7 +30497,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (556:5) {#each searchResults as client}
+    } // (562:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -30934,7 +30934,7 @@
       };
 
       var _createPopperActions = createPopperActions({
-        placement: "bottom",
+        placement: "bottom-end",
         strategy: "fixed"
       }),
           _createPopperActions2 = _slicedToArray(_createPopperActions, 2),
@@ -32335,7 +32335,7 @@
 
     function create_if_block$2(ctx) {
       var label;
-      var t0_value = dist_10('timemanager', 'Created by') + "";
+      var t0_value = dist_10("timemanager", "Created by") + "";
       var t0;
       var t1;
       var select;
@@ -32344,10 +32344,10 @@
         props: {
           noOptionsMessage:
           /*loading*/
-          ctx[2] ? dist_10('timemanager', 'Loading...') : dist_10('timemanager', 'No options'),
-          placeholder: dist_10('timemanager', 'Search...'),
+          ctx[2] ? dist_10("timemanager", "Loading...") : dist_10("timemanager", "No options"),
+          placeholder: dist_10("timemanager", "Search..."),
           inputAttributes: {
-            id: 'sharee-filter-select'
+            id: "sharee-filter-select"
           },
           loadOptions:
           /*search*/
@@ -32385,7 +32385,7 @@
           /*loading*/
           4) select_changes.noOptionsMessage =
           /*loading*/
-          ctx[2] ? dist_10('timemanager', 'Loading...') : dist_10('timemanager', 'No options');
+          ctx[2] ? dist_10("timemanager", "Loading...") : dist_10("timemanager", "No options");
           if (dirty &
           /*selectedSharee*/
           2) select_changes.value =

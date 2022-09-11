@@ -12,12 +12,13 @@
 	import { createPopperActions } from "svelte-popperjs";
 	import Fuse from "fuse.js";
 	import { differenceInMinutes, parseISO } from "date-fns";
+	import { generateUrl } from "@nextcloud/router";
 
 	const extraOpts = {
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
 	};
 	const [taskSelectorPopperRef, taskSelectorPopperContent] = createPopperActions({
-		placement: "bottom",
+		placement: "bottom-end",
 		strategy: "fixed",
 	});
 	const [noteSuggestPopperRef, noteSuggestPopperContent] = createPopperActions({
@@ -448,7 +449,12 @@
 		<!-- This is to make Svelte linter happy -->
 		<input type="hidden" />
 		{#if selected && !showTaskSelector}
-			<a href="?" class="combo-entry-wrapper" on:focus={handleShowTaskSelector} on:click={handleShowTaskSelector}>
+			<a
+				href={generateUrl("apps/timemanager/404")}
+				class="combo-entry-wrapper"
+				on:focus={handleShowTaskSelector}
+				on:click={handleShowTaskSelector}
+			>
 				<ul>
 					<li>
 						<span class="label muted">{translate("timemanager", "Client")}</span>
@@ -512,7 +518,7 @@
 								{#if index === 0}<span class="client">{translate("timemanager", "Last used")}</span>{/if}
 								<a
 									class="task last-used-wrapper"
-									href="?"
+									href={generateUrl("apps/timemanager/404")}
 									bind:this={lastUsedTasksButtons[index]}
 									on:click={(event) => {
 										event.stopPropagation();
@@ -565,7 +571,7 @@
 												{#each project.tasks as task}
 													<li>
 														<a
-															href="?"
+															href={generateUrl("apps/timemanager/404")}
 															bind:this={tasksButtons[task.taskIndex]}
 															on:click={(event) => {
 																event.stopPropagation();
