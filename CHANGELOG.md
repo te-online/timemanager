@@ -8,6 +8,7 @@ Notable changes in each released version can be seen here.
 
 - Dashboard / Quick Add: Rework combo-selector for client, project and taks – I hope you like it, happy to get feedback.
 - Dashboard / Quick Add: Add autosuggest for previous notes for repeated time entries to prefill details
+- Maintenance: Update some JS dependencies
 
 ### Fixed
 
