@@ -2,6 +2,17 @@
 
 Notable changes in each released version can be seen here.
 
+## 0.3.3 Beta, 11. September 2022
+
+### Added
+
+- Dashboard / Quick Add: Rework combo-selector for client, project and taks – I hope you like it, happy to get feedback.
+- Dashboard / Quick Add: Add autosuggest for previous notes for repeated time entries to prefill details
+
+### Fixed
+
+- Previously missing colors for select inputs have been themed
+
 ## 0.3.2 Beta, 29. June 2022
 
 ### Added

@@ -10,19 +10,17 @@
 * 📈 make use of simple, but useful **statistics** and **reports**.
 
 #### Latest changes 🎉
-**0.3.2 Beta, 29. June 2022**
-- Add overview of all projects, tasks, and latest time entries when you select the respective menu entries without selecting a client first
-- Dashboard: Add ability to see latest time entries by other people in clients that you shared and enable to filter them by person
-- Reports: Add ability to filter reports by person who created the time entries
-- Bugfix: The list of clients, projects, and tasks that appears when you select the respective menu items didn't show items shared with you
-- Attempt to avoid more layout-shifts on Dashboard when JS has mounted components
+**0.3.3 Beta, 11. September 2022**
+- Dashboard / Quick Add: Rework combo-selector for client, project and taks – I hope you like it, happy to get feedback.
+- Dashboard / Quick Add: Add autosuggest for previous notes for repeated time entries to prefill details
+- Previously missing colors for select inputs have been themed
 
 _Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
 
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.3.2</version>
+	<version>0.3.3</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>
