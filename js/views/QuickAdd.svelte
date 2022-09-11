@@ -44,7 +44,6 @@
 	let date = initialDate;
 	let note;
 	let noteInput;
-	let buttonInput;
 	let searchInput;
 	let searchValue;
 	let durationInput;
@@ -73,6 +72,9 @@
 		return { ...client, projects: clientProjects };
 	});
 
+	/**
+	 * Handles keyboard navigation for popovers
+	 */
 	function handleKeyDown(e) {
 		if (!showTaskSelector && !showNoteAutosuggest) {
 			return;
@@ -81,7 +83,7 @@
 		switch (e.key) {
 			case "Escape":
 				e.preventDefault();
-				handleHideTaskSelector();
+				handleHidePopovers();
 				break;
 			case "ArrowDown":
 				e.preventDefault();
@@ -224,6 +226,7 @@
 			})
 			.filter((client) => client !== undefined)
 			.sort(scoreSort)
+			// Add index to each task for keyboard navigation
 			.map((client) => ({
 				...client,
 				projects: client.projects.map((project) => ({
@@ -238,12 +241,15 @@
 		searchResultsNumTasks = taskIndex + 1;
 	};
 
-	const handleShowTaskSelector = () => {
+	const handleShowTaskSelector = (event) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		showTaskSelector = true;
+
 		// We want to use the task input as a button
 		// and then focus the actual search input
-		buttonInput?.blur();
 		searchInput?.focus();
-		showTaskSelector = true;
 
 		currentFocusTaskIndex = -1;
 		currentLastestFocusTaskIndex = -1;
@@ -252,7 +258,12 @@
 		currentFocusNoteIndex = -1;
 	};
 
-	const handleHidePopovers = () => {
+	const handleHidePopovers = (event) => {
+		// Allow clicking on select button
+		if (event?.target?.id === "task-selector-button-input") {
+			return;
+		}
+
 		showTaskSelector = false;
 		showNoteAutosuggest = false;
 
@@ -434,17 +445,38 @@
 		</span>
 	</label>
 	<label class={`task-selector-trigger${taskError ? " error" : ""}`}>
-		{translate("timemanager", "Client, project or task")}
-		<input
-			use:taskSelectorPopperRef
-			on:focus={handleShowTaskSelector}
-			bind:this={buttonInput}
-			type="text"
-			placeholder={translate("timemanager", "Select...")}
-			disabled={showTaskSelector}
-			value={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
-			title={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
-		/>
+		<!-- This is to make Svelte linter happy -->
+		<input type="hidden" />
+		{#if selected && !showTaskSelector}
+			<a href="?" class="combo-entry-wrapper" on:focus={handleShowTaskSelector} on:click={handleShowTaskSelector}>
+				<ul>
+					<li>
+						<span class="label muted">{translate("timemanager", "Client")}</span>
+						<span class="value muted">{selected.client.label}</span>
+					</li>
+					<li>
+						<span class="label muted">{translate("timemanager", "Project")}</span>
+						<span class="value muted">{selected.project.label}</span>
+					</li>
+					<li>
+						<span class="label">{translate("timemanager", "Task")}</span>
+						<span class="value">{selected.task.label}</span>
+					</li>
+				</ul></a
+			>
+		{:else}
+			{translate("timemanager", "Client, project or task")}
+			<input
+				id="task-selector-button-input"
+				use:taskSelectorPopperRef
+				on:focus={handleShowTaskSelector}
+				type="text"
+				placeholder={translate("timemanager", "Select...")}
+				disabled={showTaskSelector}
+				value={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
+				title={selected ? `${selected.client.label} › ${selected.project.label} › ${selected.task.label}` : ""}
+			/>
+		{/if}
 	</label>
 	{#if showTaskSelector}
 		<div

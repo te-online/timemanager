@@ -498,6 +498,36 @@ label {
 		}
 	}
 
+	.combo-entry-wrapper {
+		padding: 3px 4px;
+
+		&:hover,
+		&:focus-visible {
+			background: var(--color-primary-light);
+		}
+
+		li {
+			display: flex;
+			padding: 0;
+
+			.label {
+				flex: 30%;
+				font-size: 12px;
+			}
+
+			.value {
+				flex: 70%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			.muted {
+				color: var(--color-text-lighter);
+			}
+		}
+	}
+
 	.reports-filters {
 		grid-template-columns: repeat(auto-fill, minmax(20%, 100px));
 	}
