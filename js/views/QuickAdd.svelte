@@ -275,6 +275,8 @@
 
 	onMount(() => {
 		document.addEventListener("DOMContentLoaded", () => {
+			// This fixes the "duration" input being focused automatically
+			// for some reason in some browsers
 			if (noteInput) {
 				noteInput.focus();
 				setTimeout(() => {
@@ -468,8 +470,10 @@
 						<span class="label">{translate("timemanager", "Task")}</span>
 						<span class="value">{selected.task.label}</span>
 					</li>
-				</ul></a
-			>
+				</ul>
+			</a>
+			<!-- This is needed for keyboard navigation in Safari, because it does not focus links by default -->
+			<input class="hidden-visually" name="show-task-selector" on:focus={handleShowTaskSelector} />
 		{:else}
 			{translate("timemanager", "Client, project or task")}
 			<input
@@ -614,6 +618,8 @@
 	{/if}
 	<span class="actions">
 		<!-- TRANSLATORS "Add" refers to adding a time entry. It's a button caption. -->
-		<button disabled={loading} type="submit" class="button primary">{translate("timemanager", "Add")}</button>
+		<button disabled={loading} type="submit" class="button primary button-w-icon icon-add"
+			>{translate("timemanager", "Add")}</button
+		>
 	</span>
 </form>

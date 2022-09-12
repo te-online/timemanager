@@ -29338,7 +29338,7 @@
       child_ctx[82] = list;
       child_ctx[80] = i;
       return child_ctx;
-    } // (384:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (386:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_6$1(ctx) {
@@ -29421,7 +29421,7 @@
           dispose();
         }
       };
-    } // (387:5) {#each noteAutosuggestList as suggestion, index}
+    } // (389:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29572,7 +29572,7 @@
           run_all(dispose);
         }
       };
-    } // (473:2) {:else}
+    } // (477:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -29672,7 +29672,7 @@
           run_all(dispose);
         }
       };
-    } // (451:2) {#if selected && !showTaskSelector}
+    } // (453:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -29704,6 +29704,8 @@
       /*selected*/
       ctx[14].task.label + "";
       var t10;
+      var t11;
+      var input;
       var mounted;
       var dispose;
       return {
@@ -29730,6 +29732,8 @@
           t9 = space$1();
           span5 = element("span");
           t10 = text(t10_value);
+          t11 = space$1();
+          input = element("input");
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
           attr(span2, "class", "label muted");
@@ -29738,6 +29742,8 @@
           attr(span5, "class", "value");
           attr(a, "href", dist_4("apps/timemanager/404"));
           attr(a, "class", "combo-entry-wrapper");
+          attr(input, "class", "hidden-visually");
+          attr(input, "name", "show-task-selector");
         },
         m: function m(target, anchor) {
           insert(target, a, anchor);
@@ -29759,11 +29765,15 @@
           append(li2, t9);
           append(li2, span5);
           append(span5, t10);
+          insert(target, t11, anchor);
+          insert(target, input, anchor);
 
           if (!mounted) {
             dispose = [listen(a, "focus",
             /*handleShowTaskSelector*/
             ctx[29]), listen(a, "click",
+            /*handleShowTaskSelector*/
+            ctx[29]), listen(input, "focus",
             /*handleShowTaskSelector*/
             ctx[29])];
             mounted = true;
@@ -29788,11 +29798,13 @@
         },
         d: function d(detaching) {
           if (detaching) detach(a);
+          if (detaching) detach(t11);
+          if (detaching) detach(input);
           mounted = false;
           run_all(dispose);
         }
       };
-    } // (487:1) {#if showTaskSelector}
+    } // (491:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -29954,7 +29966,7 @@
           run_all(dispose);
         }
       };
-    } // (514:4) {#if lastUsed?.length && !searchValue}
+    } // (518:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30021,7 +30033,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (518:8) {#if index === 0}
+    } // (522:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30040,7 +30052,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (516:6) {#each lastUsed as entry, index}
+    } // (520:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30215,7 +30227,7 @@
           run_all(dispose);
         }
       };
-    } // (605:34) 
+    } // (609:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30234,7 +30246,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (561:4) {#if searchResults?.length}
+    } // (565:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30299,7 +30311,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (571:12) {#each project.tasks as task}
+    } // (575:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30405,7 +30417,7 @@
           run_all(dispose);
         }
       };
-    } // (567:9) {#each client.projects as project}
+    } // (571:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -30497,7 +30509,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (562:5) {#each searchResults as client}
+    } // (566:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -30707,7 +30719,7 @@
           /*loading*/
           ctx[13];
           attr(button, "type", "submit");
-          attr(button, "class", "button primary");
+          attr(button, "class", "button primary button-w-icon icon-add");
           attr(span1, "class", "actions");
           attr(form, "class", form_class_value = "quick-add".concat(
           /*loading*/
@@ -31241,6 +31253,8 @@
 
       onMount(function () {
         document.addEventListener("DOMContentLoaded", function () {
+          // This fixes the "duration" input being focused automatically
+          // for some reason in some browsers
           if (noteInput) {
             noteInput.focus();
             setTimeout(function () {

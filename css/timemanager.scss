@@ -327,6 +327,7 @@ label {
 			button {
 				flex-shrink: 0;
 				margin-bottom: 0;
+				padding-left: 34px;
 			}
 		}
 
@@ -394,7 +395,12 @@ label {
 	}
 
 	.quick-add {
-		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
+		// Using minmax fixes some unpredictable layout-shifts in Safari...
+		grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
+
+		@media screen and (max-width: 768px) {
+			display: block;
+		}
 	}
 
 	.note-autosuggest {
