@@ -4,7 +4,7 @@
 
 	import Select from "svelte-select";
 	import { translate } from "@nextcloud/l10n";
-	import { generateOcsUrl, generateUrl } from "@nextcloud/router";
+	import { generateOcsUrl } from "@nextcloud/router";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { isFilterSet } from "../lib/stores";
@@ -12,7 +12,7 @@
 	let selectedSharee;
 	$: loading = false;
 
-	const handleSelectSharee = event => {
+	const handleSelectSharee = (event) => {
 		if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
 			return;
 		}
@@ -34,7 +34,7 @@
 		isFilterSet.set(false);
 	};
 
-	const search = async query => {
+	const search = async (query) => {
 		if (typeof query === "undefined") {
 			return;
 		}
@@ -46,8 +46,8 @@
 			{
 				headers: {
 					requesttoken: requestToken,
-					"content-type": "application/json"
-				}
+					"content-type": "application/json",
+				},
 			}
 		);
 
@@ -86,14 +86,15 @@
 
 {#if isVisible}
 	<label for="sharee-filter-select" class="sharee-filter-label">
-		{translate('timemanager', 'Created by')}
+		{translate("timemanager", "Created by")}
 		<Select
-			noOptionsMessage={loading ? translate('timemanager', 'Loading...') : translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Search...')}
-			inputAttributes={{ id: 'sharee-filter-select' }}
+			noOptionsMessage={loading ? translate("timemanager", "Loading...") : translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Search...")}
+			inputAttributes={{ id: "sharee-filter-select" }}
 			on:select={handleSelectSharee}
 			on:clear={handleClearSharee}
 			loadOptions={search}
-			value={selectedSharee} />
+			value={selectedSharee}
+		/>
 	</label>
 {/if}

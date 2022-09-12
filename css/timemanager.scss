@@ -327,6 +327,7 @@ label {
 			button {
 				flex-shrink: 0;
 				margin-bottom: 0;
+				padding-left: 34px;
 			}
 		}
 
@@ -340,7 +341,7 @@ label {
 			display: flex;
 			flex-flow: column;
 			&.error {
-				.selectContainer {
+				input {
 					border-color: var(--color-error);
 				}
 			}
@@ -359,10 +360,16 @@ label {
 		}
 
 		.note,
+		.search,
 		.task-selector-trigger {
 			input {
 				width: 100%;
 			}
+		}
+
+		.search-input {
+			width: 100%;
+			padding: 6px 12px 6px 34px;
 		}
 
 		input {
@@ -371,6 +378,14 @@ label {
 
 		.selectContainer {
 			margin: 3px 3px 3px 0;
+
+			input {
+				border-color: var(--color-border-dark);
+
+				&:focus {
+					border-color: var(--color-primary-element);
+				}
+			}
 		}
 	}
 
@@ -380,7 +395,142 @@ label {
 	}
 
 	.quick-add {
-		grid-template-columns: calc(100% - 556px) 206px 250px 100px;
+		// Using minmax fixes some unpredictable layout-shifts in Safari...
+		grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
+
+		@media screen and (max-width: 768px) {
+			display: block;
+		}
+	}
+
+	.note-autosuggest {
+		// extends .popover
+		width: 750px;
+		max-width: 60vw;
+		background: var(--color-main-background);
+		padding: 10px;
+
+		li {
+			padding: 3px 2px;
+		}
+
+		.task {
+			padding: 6px;
+			width: 100%;
+			display: inline-block;
+
+			&:hover,
+			&:focus-visible {
+				background: var(--color-primary-light);
+			}
+		}
+	}
+
+	.task-selector-popover {
+		// extends .popover
+		width: 466px;
+		background: var(--color-main-background);
+		padding-top: 12px;
+
+		.task-add-button {
+			padding-left: 34px;
+		}
+
+		.search-results,
+		.last-used {
+			li {
+				padding: 6px 3px;
+			}
+
+			.client {
+				text-transform: uppercase;
+				font-size: 12px;
+				font-weight: 600;
+			}
+
+			.project {
+				padding-left: 12px;
+				padding-top: 4px;
+				color: var(--color-text-lighter);
+
+				& ~ ul li {
+					padding: 0;
+				}
+			}
+
+			.task {
+				padding: 6px 3px 6px 24px;
+				width: 100%;
+				display: inline-block;
+
+				&:hover,
+				&:focus-visible {
+					background: var(--color-primary-light);
+				}
+			}
+
+			.no-result {
+				padding: 12px 6px;
+				color: var(--color-text-lighter);
+			}
+
+			.last-used-wrapper {
+				padding: 3px 8px;
+
+				li {
+					display: flex;
+					padding: 0;
+
+					.label {
+						flex: 30%;
+						font-size: 12px;
+					}
+
+					.value {
+						flex: 70%;
+					}
+
+					.muted {
+						color: var(--color-text-lighter);
+					}
+				}
+			}
+		}
+
+		.search-results {
+			max-height: calc(80vh - 250px);
+			overflow-y: auto;
+		}
+	}
+
+	.combo-entry-wrapper {
+		padding: 3px 4px;
+
+		&:hover,
+		&:focus-visible {
+			background: var(--color-primary-light);
+		}
+
+		li {
+			display: flex;
+			padding: 0;
+
+			.label {
+				flex: 30%;
+				font-size: 12px;
+			}
+
+			.value {
+				flex: 70%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			.muted {
+				color: var(--color-text-lighter);
+			}
+		}
 	}
 
 	.reports-filters {
@@ -620,7 +770,6 @@ label {
 	}
 
 	.filter-button {
-		background-position: 12px center;
 		padding: 6px 12px 6px 34px;
 		margin-left: 8px;
 		margin-bottom: -8px;
@@ -730,6 +879,10 @@ label {
 	padding: 0 12px 12px;
 }
 
+.button-w-icon {
+	background-position: 12px center;
+}
+
 @keyframes fallback {
 	0% {
 		height: 0;
@@ -764,13 +917,20 @@ label {
 }
 
 :root {
-	// svelte-select theming
-	--background: var(--color-main-background);
-	--listBackground: var(--color-main-background);
-	--itemHoverBG: var(--color-primary-light);
-	--multiItemActiveBG: var(--color-primary-element);
-	--multiItemBG: var(--color-primary-light);
-	--spinnerColor: var(--color-primary);
+	.selectContainer {
+		// svelte-select theming
+		--background: var(--color-main-background);
+		--listBackground: var(--color-main-background);
+		--itemHoverBG: var(--color-primary-light);
+		--itemIsActiveBG: var(--color-primary-light);
+		--multiItemActiveBG: var(--color-primary-element);
+		--multiItemBG: var(--color-primary-light);
+		--spinnerColor: var(--color-primary);
+		--borderFocusColor: var(--color-primary-element);
+		--borderHoverColor: var(--color-primary-element);
+		--inputColor: var(--color-main-text);
+		--border: 1px solid var(--color-border-dark);
+	}
 }
 
 @media print {

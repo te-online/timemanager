@@ -15,8 +15,7 @@ volumes:
 
 services:
   web:
-    <<: *restart_policy
-    <<: *logging_config
+    <<: [*restart_policy, *logging_config]
     image: nginx:alpine
     ports:
       - 8000:80
@@ -28,8 +27,7 @@ services:
       - ../:/var/www/html/custom_apps/timemanager:ro
 
   redis:
-    <<: *restart_policy
-    <<: *logging_config
+    <<: [*restart_policy, *logging_config]
     image: redis:alpine
     hostname: nextcloud-redis
     command: redis-server --requirepass ${REDIS_HOST_PASSWORD}
@@ -37,8 +35,7 @@ services:
       - "6379:6379"
 
   db:
-    <<: *restart_policy
-    <<: *logging_config
+    <<: [*restart_policy, *logging_config]
     image: mariadb:10.5
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     ports:
@@ -52,9 +49,8 @@ services:
       - MYSQL_USER=${MYSQL_USER}
 
   app:
-    <<: *restart_policy
-    <<: *logging_config
-    image: nextcloud:23-fpm-alpine
+    <<: [*restart_policy, *logging_config]
+    image: nextcloud:24-fpm-alpine
     ports:
       - 9000:9000
     links:
