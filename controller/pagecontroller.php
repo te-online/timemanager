@@ -1003,25 +1003,28 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function addTime($duration, $date, $note, $task) {
+	function addTime($startTime, $endTime, $date, $note, $task) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
-		// Convert 1,25 to 1.25
-		$duration = str_replace(",", ".", $duration);
-		// Cast to float
-		$duration = (float) $duration;
-		// Calculate start and end from duration
-		if (!empty($date)) {
-			// Add 24 hours to make it end of the day.
-			$end = date("Y-m-d H:i:s", strtotime($date) + 60 * 60 * 24);
-		} else {
-			$end = date("Y-m-d H:i:s");
+
+		// Build together start and end values
+		// $date only contains the 'Y-m-d' data
+		// $startTime & $endTime contain 'H:i'
+		$start = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${startTime}");
+		$end = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${endTime}");
+
+		if ($end < $start) {
+			// If endTime < startTime, endTime shall be on the next day
+			$end->modify("+1 day");
 		}
-		$start = date("Y-m-d H:i:s", strtotime($end) - 60 * 60 * $duration);
+
+		$start = $start->format("Y-m-d H:i:s");
+		$end = $end->format("Y-m-d H:i:s");
+
 		$this->storageHelper->addOrUpdateObject(
 			[
-				"start" => $start, // now - duration
-				"end" => $end, // now
+				"start" => $start,
+				"end" => $end,
 				"task_uuid" => $task,
 				"commit" => $commit,
 				"note" => $note,
@@ -1061,34 +1064,25 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function editTime($uuid, $duration, $date, $note) {
+	function editTime($uuid, $startTime, $endTime, $date, $note) {
 		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
 		if ($time) {
 			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
-			// Convert 1,25 to 1.25
-			$duration = str_replace(",", ".", $duration);
-			// Cast to float
-			$duration = (float) $duration;
-			// Date has changed
-			if ($date !== $time->getStartFormatted("Y-m-D H:i:s")) {
-				// Calculate start and end from duration
-				if (!empty($date)) {
-					// Add 24 hours to make it end of the day.
-					$end = date("Y-m-d H:i:s", strtotime($date) + 60 * 60 * 24);
-				} else {
-					$end = date("Y-m-d H:i:s");
-				}
-				$start = date("Y-m-d H:i:s", strtotime($end) - 60 * 60 * $duration);
-			} elseif ($duration !== $time->getDurationInHours()) {
-				// Date has not changed, just edit end with new duration
-				$start = $time->getStartFormatted("Y-m-d H:i:s");
-				$end = date("Y-m-d H:i:s", strtotime($start) + 60 * 60 * $duration);
-			} else {
-				// Date and duration have not changed
-				$start = $time->getStartFormatted("Y-m-d H:i:s");
-				$end = $time->getEndFormatted("Y-m-d H:i:s");
+
+			// Build together start and end values
+			// $date only contains the 'Y-m-d' data
+			// $startTime & $endTime contain 'H:i'
+			$start = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${startTime}");
+			$end = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${endTime}");
+
+			if ($end < $start) {
+				// If endTime < startTime, endTime shall be on the next day
+				$end->modify("+1 day");
 			}
+
+			$start = $start->format("Y-m-d H:i:s");
+			$end = $end->format("Y-m-d H:i:s");
 
 			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);

@@ -52,4 +52,35 @@ export class Helpers {
 		const locales = { de, fr, pt };
 		return { weekStartsOn: getFirstDay(), locale: locales[shortLocale] };
 	}
+
+	static calculateDuration(startTime, endTime) {
+		if (!startTime || !endTime) return undefined;
+
+		// Make sure, endTime is after startTime
+		var startDate = new Date("2000/01/01 " + startTime);
+		var endDate = new Date("2000/01/01 " + endTime);
+		// If endTime < startTime, endTime shall be on the next day
+		if (endDate < startDate) endDate.setTime(endDate.getTime() + 1000 * 60 * 60 * 24);
+
+		// Diff in ms
+		var diff = Math.abs(endDate - startDate);
+
+		// In hours
+		diff = diff / 1000 / 60 / 60;
+
+		return Math.round((diff + Number.EPSILON) * 100) / 100;
+	}
+
+	// NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+	static calculateEndTime(startTime, duration) {
+		if (!startTime || duration === "" || duration === undefined) return undefined;
+
+		// Start time in ms
+		var endTime = new Date("2000/01/01 " + startTime).getTime();
+
+		// Add duration converted to ms
+		endTime += duration * 60 * 60 * 1000;
+
+		return new Date(endTime).toTimeString().substring(0, 5);
+	}
 }

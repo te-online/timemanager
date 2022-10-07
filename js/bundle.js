@@ -356,11 +356,11 @@
     // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
 
-    var defineProperty$7 = Object.defineProperty;
+    var defineProperty$8 = Object.defineProperty;
 
     var setGlobal$1 = function (key, value) {
       try {
-        defineProperty$7(global_1, key, {
+        defineProperty$8(global_1, key, {
           value: value,
           configurable: true,
           writable: true
@@ -418,11 +418,11 @@
       };
     };
 
-    var TypeError$h = global_1.TypeError; // `RequireObjectCoercible` abstract operation
+    var TypeError$i = global_1.TypeError; // `RequireObjectCoercible` abstract operation
     // https://tc39.es/ecma262/#sec-requireobjectcoercible
 
     var requireObjectCoercible$1 = function (it) {
-      if (it == undefined) throw TypeError$h("Can't call method on " + it);
+      if (it == undefined) throw TypeError$i("Can't call method on " + it);
       return it;
     };
 
@@ -587,11 +587,11 @@
     });
 
     var String$5 = global_1.String;
-    var TypeError$g = global_1.TypeError; // `Assert: Type(argument) is Object`
+    var TypeError$h = global_1.TypeError; // `Assert: Type(argument) is Object`
 
     var anObject$1 = function (argument) {
       if (isObject$4(argument)) return argument;
-      throw TypeError$g(String$5(argument) + ' is not an object');
+      throw TypeError$h(String$5(argument) + ' is not an object');
     };
 
     var call$1 = Function.prototype.call;
@@ -619,11 +619,11 @@
       }
     };
 
-    var TypeError$f = global_1.TypeError; // `Assert: IsCallable(argument) is true`
+    var TypeError$g = global_1.TypeError; // `Assert: IsCallable(argument) is true`
 
     var aCallable = function (argument) {
       if (isCallable(argument)) return argument;
-      throw TypeError$f(tryToString(argument) + ' is not a function');
+      throw TypeError$g(tryToString(argument) + ' is not a function');
     };
 
     // `GetMethod` abstract operation
@@ -635,7 +635,7 @@
       return func == null ? undefined : aCallable(func);
     };
 
-    var TypeError$e = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
+    var TypeError$f = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
     // https://tc39.es/ecma262/#sec-ordinarytoprimitive
 
     var ordinaryToPrimitive = function (input, pref) {
@@ -643,10 +643,10 @@
       if (pref === 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
       if (isCallable(fn = input.valueOf) && !isObject$4(val = functionCall(fn, input))) return val;
       if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
-      throw TypeError$e("Can't convert object to primitive value");
+      throw TypeError$f("Can't convert object to primitive value");
     };
 
-    var TypeError$d = global_1.TypeError;
+    var TypeError$e = global_1.TypeError;
     var TO_PRIMITIVE = wellKnownSymbol$1('toPrimitive'); // `ToPrimitive` abstract operation
     // https://tc39.es/ecma262/#sec-toprimitive
 
@@ -659,7 +659,7 @@
         if (pref === undefined) pref = 'default';
         result = functionCall(exoticToPrim, input, pref);
         if (!isObject$4(result) || isSymbol(result)) return result;
-        throw TypeError$d("Can't convert object to primitive value");
+        throw TypeError$e("Can't convert object to primitive value");
       }
 
       if (pref === undefined) pref = 'number';
@@ -675,7 +675,7 @@
       return isSymbol(key) ? key : key + '';
     };
 
-    var TypeError$c = global_1.TypeError; // eslint-disable-next-line es-x/no-object-defineproperty -- safe
+    var TypeError$d = global_1.TypeError; // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
     var $defineProperty$1 = Object.defineProperty; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
@@ -713,7 +713,7 @@
       } catch (error) {
         /* empty */
       }
-      if ('get' in Attributes || 'set' in Attributes) throw TypeError$c('Accessors not supported');
+      if ('get' in Attributes || 'set' in Attributes) throw TypeError$d('Accessors not supported');
       if ('value' in Attributes) O[P] = Attributes.value;
       return O;
     };
@@ -767,16 +767,16 @@
     var WeakMap$3 = global_1.WeakMap;
     var nativeWeakMap$1 = isCallable(WeakMap$3) && /native code/.test(inspectSource$1(WeakMap$3));
 
-    var keys$4 = shared$1('keys');
+    var keys$5 = shared$1('keys');
 
     var sharedKey$1 = function (key) {
-      return keys$4[key] || (keys$4[key] = uid$1(key));
+      return keys$5[key] || (keys$5[key] = uid$1(key));
     };
 
     var hiddenKeys$3 = {};
 
     var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
-    var TypeError$b = global_1.TypeError;
+    var TypeError$c = global_1.TypeError;
     var WeakMap$2 = global_1.WeakMap;
     var set$2, get$2, has$2;
 
@@ -789,7 +789,7 @@
         var state;
 
         if (!isObject$4(it) || (state = get$2(it)).type !== TYPE) {
-          throw TypeError$b('Incompatible receiver, ' + TYPE + ' required');
+          throw TypeError$c('Incompatible receiver, ' + TYPE + ' required');
         }
 
         return state;
@@ -803,7 +803,7 @@
       var wmset$1 = functionUncurryThis(store$2.set);
 
       set$2 = function (it, metadata) {
-        if (wmhas$1(store$2, it)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
+        if (wmhas$1(store$2, it)) throw new TypeError$c(OBJECT_ALREADY_INITIALIZED$1);
         metadata.facade = it;
         wmset$1(store$2, it, metadata);
         return metadata;
@@ -821,7 +821,7 @@
       hiddenKeys$3[STATE$1] = true;
 
       set$2 = function (it, metadata) {
-        if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
+        if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$c(OBJECT_ALREADY_INITIALIZED$1);
         metadata.facade = it;
         createNonEnumerableProperty$1(it, STATE$1, metadata);
         return metadata;
@@ -1999,15 +1999,15 @@
 
     var $propertyIsEnumerable$2 = {}.propertyIsEnumerable; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
-    var getOwnPropertyDescriptor$5 = Object.getOwnPropertyDescriptor; // Nashorn ~ JDK8 bug
+    var getOwnPropertyDescriptor$6 = Object.getOwnPropertyDescriptor; // Nashorn ~ JDK8 bug
 
-    var NASHORN_BUG$1 = getOwnPropertyDescriptor$5 && !$propertyIsEnumerable$2.call({
+    var NASHORN_BUG$1 = getOwnPropertyDescriptor$6 && !$propertyIsEnumerable$2.call({
       1: 2
     }, 1); // `Object.prototype.propertyIsEnumerable` method implementation
     // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
 
     var f$a = NASHORN_BUG$1 ? function propertyIsEnumerable(V) {
-      var descriptor = getOwnPropertyDescriptor$5(this, V);
+      var descriptor = getOwnPropertyDescriptor$6(this, V);
       return !!descriptor && descriptor.enumerable;
     } : $propertyIsEnumerable$2;
 
@@ -2168,7 +2168,7 @@
     var POLYFILL$1 = isForced$1.POLYFILL = 'P';
     var isForced_1$1 = isForced$1;
 
-    var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor$1.f;
+    var getOwnPropertyDescriptor$5 = objectGetOwnPropertyDescriptor$1.f;
 
 
 
@@ -2214,7 +2214,7 @@
         sourceProperty = source[key];
 
         if (options.noTargetGet) {
-          descriptor = getOwnPropertyDescriptor$4(target, key);
+          descriptor = getOwnPropertyDescriptor$5(target, key);
           targetProperty = descriptor && descriptor.value;
         } else targetProperty = target[key];
 
@@ -2259,7 +2259,7 @@
       });
     };
 
-    var arraySlice = functionUncurryThis([].slice);
+    var arraySlice$1 = functionUncurryThis([].slice);
 
     var HAS_SPECIES_SUPPORT$4 = arrayMethodHasSpeciesSupport$1('slice');
     var SPECIES$9 = wellKnownSymbol$1('species');
@@ -2292,7 +2292,7 @@
           }
 
           if (Constructor === Array$3 || Constructor === undefined) {
-            return arraySlice(O, k, fin);
+            return arraySlice$1(O, k, fin);
           }
         }
 
@@ -2355,12 +2355,12 @@
       if (it != undefined) return getMethod(it, ITERATOR$b) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
     };
 
-    var TypeError$a = global_1.TypeError;
+    var TypeError$b = global_1.TypeError;
 
     var getIterator = function (argument, usingIterator) {
       var iteratorMethod = arguments.length < 2 ? getIteratorMethod$1(argument) : usingIterator;
       if (aCallable(iteratorMethod)) return anObject$1(functionCall(iteratorMethod, argument));
-      throw TypeError$a(tryToString(argument) + ' is not iterable');
+      throw TypeError$b(tryToString(argument) + ' is not iterable');
     };
 
     var Array$2 = global_1.Array; // `Array.from` method implementation
@@ -2477,7 +2477,7 @@
     };
 
     var charAt$7 = functionUncurryThis(''.charAt);
-    var charCodeAt = functionUncurryThis(''.charCodeAt);
+    var charCodeAt$1 = functionUncurryThis(''.charCodeAt);
     var stringSlice$4 = functionUncurryThis(''.slice);
 
     var createMethod$6 = function (CONVERT_TO_STRING) {
@@ -2487,8 +2487,8 @@
         var size = S.length;
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
-        first = charCodeAt(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$7(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        first = charCodeAt$1(S, position);
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt$1(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$7(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
 
@@ -2694,7 +2694,7 @@
       BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
     };
 
-    var defineProperty$6 = objectDefineProperty$1.f;
+    var defineProperty$7 = objectDefineProperty$1.f;
 
 
 
@@ -2706,7 +2706,7 @@
       if (target && !STATIC) target = target.prototype;
 
       if (target && !hasOwnProperty_1(target, TO_STRING_TAG$5)) {
-        defineProperty$6(target, TO_STRING_TAG$5, {
+        defineProperty$7(target, TO_STRING_TAG$5, {
           configurable: true,
           value: TAG
         });
@@ -2738,11 +2738,11 @@
     };
 
     var String$2 = global_1.String;
-    var TypeError$9 = global_1.TypeError;
+    var TypeError$a = global_1.TypeError;
 
     var aPossiblePrototype$1 = function (argument) {
       if (typeof argument == 'object' || isCallable(argument)) return argument;
-      throw TypeError$9("Can't set " + String$2(argument) + ' as a prototype');
+      throw TypeError$a("Can't set " + String$2(argument) + ' as a prototype');
     };
 
     /* eslint-disable no-proto -- safe */
@@ -2940,7 +2940,7 @@
       ArrayPrototype$2[UNSCOPABLES$1][key] = true;
     };
 
-    var defineProperty$5 = objectDefineProperty$1.f;
+    var defineProperty$6 = objectDefineProperty$1.f;
 
 
 
@@ -3009,7 +3009,7 @@
     addToUnscopables$1('entries'); // V8 ~ Chrome 45- bug
 
     if (descriptors$1 && values.name !== 'values') try {
-      defineProperty$5(values, 'name', {
+      defineProperty$6(values, 'name', {
         value: 'values'
       });
     } catch (error) {
@@ -3073,7 +3073,7 @@
     var IS_CONCAT_SPREADABLE$1 = wellKnownSymbol$1('isConcatSpreadable');
     var MAX_SAFE_INTEGER$3 = 0x1FFFFFFFFFFFFF;
     var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded';
-    var TypeError$8 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
+    var TypeError$9 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
     // deoptimization and serious performance degradation
     // https://github.com/zloirock/core-js/issues/679
 
@@ -3112,11 +3112,11 @@
 
           if (isConcatSpreadable$1(E)) {
             len = lengthOfArrayLike(E);
-            if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+            if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$9(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
 
             for (k = 0; k < len; k++, n++) if (k in E) createProperty$1(A, n, E[k]);
           } else {
-            if (n >= MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+            if (n >= MAX_SAFE_INTEGER$3) throw TypeError$9(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
             createProperty$1(A, n++, E);
           }
         }
@@ -3425,11 +3425,11 @@
       return isObject$4(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
     };
 
-    var TypeError$7 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
+    var TypeError$8 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
 
     var aConstructor = function (argument) {
       if (isConstructor(argument)) return argument;
-      throw TypeError$7(tryToString(argument) + ' is not a constructor');
+      throw TypeError$8(tryToString(argument) + ' is not a constructor');
     };
 
     var SPECIES$7 = wellKnownSymbol$1('species'); // `SpeciesConstructor` abstract operation
@@ -3464,7 +3464,7 @@
       return result;
     };
 
-    var TypeError$6 = global_1.TypeError; // `RegExpExec` abstract operation
+    var TypeError$7 = global_1.TypeError; // `RegExpExec` abstract operation
     // https://tc39.es/ecma262/#sec-regexpexec
 
     var regexpExecAbstract$1 = function (R, S) {
@@ -3477,7 +3477,7 @@
       }
 
       if (classofRaw$1(R) === 'RegExp') return functionCall(regexpExec$1, R, S);
-      throw TypeError$6('RegExp#exec called on incompatible receiver');
+      throw TypeError$7('RegExp#exec called on incompatible receiver');
     };
 
     var UNSUPPORTED_Y$4 = regexpStickyHelpers$1.UNSUPPORTED_Y;
@@ -3625,17 +3625,17 @@
       }
     };
 
-    var TypeError$5 = global_1.TypeError;
+    var TypeError$6 = global_1.TypeError;
 
     var anInstance$1 = function (it, Prototype) {
       if (objectIsPrototypeOf(Prototype, it)) return it;
-      throw TypeError$5('Incorrect invocation');
+      throw TypeError$6('Incorrect invocation');
     };
 
-    var TypeError$4 = global_1.TypeError;
+    var TypeError$5 = global_1.TypeError;
 
     var validateArgumentsLength = function (passed, required) {
-      if (passed < required) throw TypeError$4('Not enough arguments');
+      if (passed < required) throw TypeError$5('Not enough arguments');
       return passed;
     };
 
@@ -3688,7 +3688,7 @@
       set$1 = function setImmediate(handler) {
         validateArgumentsLength(arguments.length, 1);
         var fn = isCallable(handler) ? handler : Function$1(handler);
-        var args = arraySlice(arguments, 1);
+        var args = arraySlice$1(arguments, 1);
 
         queue$2[++counter] = function () {
           functionApply(fn, undefined, args);
@@ -3747,7 +3747,7 @@
 
     var engineIsWebosWebkit = /web0s(?!.*chrome)/i.test(engineUserAgent$1);
 
-    var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor$1.f;
+    var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor$1.f;
 
     var macrotask = task$1.set;
 
@@ -3764,7 +3764,7 @@
     var process$3 = global_1.process;
     var Promise$1 = global_1.Promise; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
 
-    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$3(global_1, 'queueMicrotask');
+    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$4(global_1, 'queueMicrotask');
     var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
     var flush$1, head, last, notify$1, toggle, node, promise, then; // modern engines have queueMicrotask method
 
@@ -3991,7 +3991,7 @@
     var NativePromisePrototype$1 = promiseNativeConstructor && promiseNativeConstructor.prototype;
     var PromiseConstructor = promiseNativeConstructor;
     var PromisePrototype = NativePromisePrototype$1;
-    var TypeError$3 = global_1.TypeError;
+    var TypeError$4 = global_1.TypeError;
     var document$2 = global_1.document;
     var process$2 = global_1.process;
     var newPromiseCapability = newPromiseCapability$1.f;
@@ -4038,7 +4038,7 @@
           }
 
           if (result === reaction.promise) {
-            reject(TypeError$3('Promise-chain cycle'));
+            reject(TypeError$4('Promise-chain cycle'));
           } else if (then = isThenable(result)) {
             functionCall(then, result, resolve, reject);
           } else resolve(result);
@@ -4137,7 +4137,7 @@
       if (unwrap) state = unwrap;
 
       try {
-        if (state.facade === value) throw TypeError$3("Promise can't be resolved itself");
+        if (state.facade === value) throw TypeError$4("Promise can't be resolved itself");
         var then = isThenable(value);
 
         if (then) {
@@ -4261,7 +4261,7 @@
     setToStringTag$1(PromiseConstructor, PROMISE, false);
     setSpecies$1(PROMISE);
 
-    var TypeError$2 = global_1.TypeError;
+    var TypeError$3 = global_1.TypeError;
 
     var Result$1 = function (stopped, result) {
       this.stopped = stopped;
@@ -4296,7 +4296,7 @@
         iterator = iterable;
       } else {
         iterFn = getIteratorMethod$1(iterable);
-        if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
+        if (!iterFn) throw TypeError$3(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
 
         if (isArrayIteratorMethod$1(iterFn)) {
           for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
@@ -12037,7 +12037,7 @@
       return addWeeks(dirtyDate, -amount);
     }
 
-    var defineProperty$4 = objectDefineProperty$1.f; // `Object.defineProperty` method
+    var defineProperty$5 = objectDefineProperty$1.f; // `Object.defineProperty` method
     // https://tc39.es/ecma262/#sec-object.defineproperty
     // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
@@ -12045,10 +12045,10 @@
     _export$1({
       target: 'Object',
       stat: true,
-      forced: Object.defineProperty !== defineProperty$4,
+      forced: Object.defineProperty !== defineProperty$5,
       sham: !descriptors$1
     }, {
-      defineProperty: defineProperty$4
+      defineProperty: defineProperty$5
     });
 
     var floor$2 = Math.floor;
@@ -12443,6 +12443,163 @@
         return objectKeys$1(toObject$1(it));
       }
     });
+
+    // `Number.EPSILON` constant
+    // https://tc39.es/ecma262/#sec-number.epsilon
+
+
+    _export$1({
+      target: 'Number',
+      stat: true
+    }, {
+      EPSILON: Math.pow(2, -52)
+    });
+
+    // makes subclassing work correct for wrapped built-ins
+
+
+    var inheritIfRequired$1 = function ($this, dummy, Wrapper) {
+      var NewTarget, NewTargetPrototype;
+      if ( // it can work only with native `setPrototypeOf`
+      objectSetPrototypeOf$1 && // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
+      isCallable(NewTarget = dummy.constructor) && NewTarget !== Wrapper && isObject$4(NewTargetPrototype = NewTarget.prototype) && NewTargetPrototype !== Wrapper.prototype) objectSetPrototypeOf$1($this, NewTargetPrototype);
+      return $this;
+    };
+
+    // `thisNumberValue` abstract operation
+    // https://tc39.es/ecma262/#sec-thisnumbervalue
+
+
+    var thisNumberValue = functionUncurryThis(1.0.valueOf);
+
+    // a string of all valid unicode whitespaces
+    var whitespaces$1 = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+    var replace = functionUncurryThis(''.replace);
+    var whitespace$1 = '[' + whitespaces$1 + ']';
+    var ltrim$1 = RegExp('^' + whitespace$1 + whitespace$1 + '*');
+    var rtrim$1 = RegExp(whitespace$1 + whitespace$1 + '*$'); // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+
+    var createMethod$5 = function (TYPE) {
+      return function ($this) {
+        var string = toString_1(requireObjectCoercible$1($this));
+        if (TYPE & 1) string = replace(string, ltrim$1, '');
+        if (TYPE & 2) string = replace(string, rtrim$1, '');
+        return string;
+      };
+    };
+
+    var stringTrim$1 = {
+      // `String.prototype.{ trimLeft, trimStart }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+      start: createMethod$5(1),
+      // `String.prototype.{ trimRight, trimEnd }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimend
+      end: createMethod$5(2),
+      // `String.prototype.trim` method
+      // https://tc39.es/ecma262/#sec-string.prototype.trim
+      trim: createMethod$5(3)
+    };
+
+    var getOwnPropertyNames$2 = objectGetOwnPropertyNames$1.f;
+
+    var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor$1.f;
+
+    var defineProperty$4 = objectDefineProperty$1.f;
+
+
+
+    var trim$2 = stringTrim$1.trim;
+
+    var NUMBER$1 = 'Number';
+    var NativeNumber$1 = global_1[NUMBER$1];
+    var NumberPrototype$1 = NativeNumber$1.prototype;
+    var TypeError$2 = global_1.TypeError;
+    var arraySlice = functionUncurryThis(''.slice);
+    var charCodeAt = functionUncurryThis(''.charCodeAt); // `ToNumeric` abstract operation
+    // https://tc39.es/ecma262/#sec-tonumeric
+
+    var toNumeric = function (value) {
+      var primValue = toPrimitive$1(value, 'number');
+      return typeof primValue == 'bigint' ? primValue : toNumber$1(primValue);
+    }; // `ToNumber` abstract operation
+    // https://tc39.es/ecma262/#sec-tonumber
+
+
+    var toNumber$1 = function (argument) {
+      var it = toPrimitive$1(argument, 'number');
+      var first, third, radix, maxCode, digits, length, index, code;
+      if (isSymbol(it)) throw TypeError$2('Cannot convert a Symbol value to a number');
+
+      if (typeof it == 'string' && it.length > 2) {
+        it = trim$2(it);
+        first = charCodeAt(it, 0);
+
+        if (first === 43 || first === 45) {
+          third = charCodeAt(it, 2);
+          if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
+        } else if (first === 48) {
+          switch (charCodeAt(it, 1)) {
+            case 66:
+            case 98:
+              radix = 2;
+              maxCode = 49;
+              break;
+            // fast equal of /^0b[01]+$/i
+
+            case 79:
+            case 111:
+              radix = 8;
+              maxCode = 55;
+              break;
+            // fast equal of /^0o[0-7]+$/i
+
+            default:
+              return +it;
+          }
+
+          digits = arraySlice(it, 2);
+          length = digits.length;
+
+          for (index = 0; index < length; index++) {
+            code = charCodeAt(digits, index); // parseInt parses a string to a first unavailable symbol
+            // but ToNumber should return NaN if a string contains unavailable symbols
+
+            if (code < 48 || code > maxCode) return NaN;
+          }
+
+          return parseInt(digits, radix);
+        }
+      }
+
+      return +it;
+    }; // `Number` constructor
+    // https://tc39.es/ecma262/#sec-number-constructor
+
+
+    if (isForced_1$1(NUMBER$1, !NativeNumber$1(' 0o1') || !NativeNumber$1('0b1') || NativeNumber$1('+0x1'))) {
+      var NumberWrapper$1 = function Number(value) {
+        var n = arguments.length < 1 ? 0 : NativeNumber$1(toNumeric(value));
+        var dummy = this; // check on 1..constructor(foo) case
+
+        return objectIsPrototypeOf(NumberPrototype$1, dummy) && fails$1(function () {
+          thisNumberValue(dummy);
+        }) ? inheritIfRequired$1(Object(n), dummy, NumberWrapper$1) : n;
+      };
+
+      for (var keys$4 = descriptors$1 ? getOwnPropertyNames$2(NativeNumber$1) : ( // ES3:
+      'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' + // ES2015 (in case, if modules with ES2015 Number statics required before):
+      'EPSILON,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,isFinite,isInteger,isNaN,isSafeInteger,parseFloat,parseInt,' + // ESNext
+      'fromString,range').split(','), j$1 = 0, key$1; keys$4.length > j$1; j$1++) {
+        if (hasOwnProperty_1(NativeNumber$1, key$1 = keys$4[j$1]) && !hasOwnProperty_1(NumberWrapper$1, key$1)) {
+          defineProperty$4(NumberWrapper$1, key$1, getOwnPropertyDescriptor$3(NativeNumber$1, key$1));
+        }
+      }
+
+      NumberWrapper$1.prototype = NumberPrototype$1;
+      NumberPrototype$1.constructor = NumberWrapper$1;
+      defineBuiltIn(global_1, NUMBER$1, NumberWrapper$1);
+    }
 
     var formatDistanceLocale$2 = {
       lessThanXSeconds: {
@@ -13761,6 +13918,32 @@
             weekStartsOn: dist_5$1(),
             locale: locales[shortLocale]
           };
+        }
+      }, {
+        key: "calculateDuration",
+        value: function calculateDuration(startTime, endTime) {
+          if (!startTime || !endTime) return undefined; // Make sure, endTime is after startTime
+
+          var startDate = new Date("2000/01/01 " + startTime);
+          var endDate = new Date("2000/01/01 " + endTime); // If endTime < startTime, endTime shall be on the next day
+
+          if (endDate < startDate) endDate.setTime(endDate.getTime() + 1000 * 60 * 60 * 24); // Diff in ms
+
+          var diff = Math.abs(endDate - startDate); // In hours
+
+          diff = diff / 1000 / 60 / 60;
+          return Math.round((diff + Number.EPSILON) * 100) / 100;
+        } // NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+
+      }, {
+        key: "calculateEndTime",
+        value: function calculateEndTime(startTime, duration) {
+          if (!startTime || duration === "" || duration === undefined) return undefined; // Start time in ms
+
+          var endTime = new Date("2000/01/01 " + startTime).getTime(); // Add duration converted to ms
+
+          endTime += duration * 60 * 60 * 1000;
+          return new Date(endTime).toTimeString().substring(0, 5);
         }
       }]);
 
@@ -17146,7 +17329,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_10('timemanager', 'Cancel'));
+          button.textContent = "".concat(dist_10("timemanager", "Cancel"));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -17182,7 +17365,7 @@
       var t1;
       var form;
       var label0;
-      var t2_value = dist_10('timemanager', 'Duration (in hrs.)') + "";
+      var t2_value = dist_10("timemanager", "Duration (in hrs.)") + "";
       var t2;
       var t3;
       var br0;
@@ -17192,60 +17375,72 @@
       var br1;
       var t6;
       var label1;
-      var t7_value = dist_10('timemanager', 'Date') + "";
+      var t7_value = dist_10("timemanager", "Start time / End time") + "";
       var t7;
       var t8;
       var br2;
       var t9;
       var input1;
       var t10;
-      var br3;
-      var t11;
-      var label2;
-      var t12_value = dist_10('timemanager', 'Note') + "";
-      var t12;
-      var t13;
-      var br4;
-      var t14;
-      var textarea;
-      var t15;
-      var br5;
-      var t16;
-      var label3;
-      var t17_value = dist_10('timemanager', 'For task') + "";
-      var t17;
-      var t18;
-      var br6;
-      var t19;
-      var strong0;
-      var t20;
-      var t21;
-      var label4;
-      var t22_value = dist_10('timemanager', 'For project') + "";
-      var t22;
-      var t23;
-      var br7;
-      var t24;
-      var strong1;
-      var t25;
-      var t26;
-      var label5;
-      var t27_value = dist_10('timemanager', 'For client') + "";
-      var t27;
-      var t28;
-      var br8;
-      var t29;
-      var strong2;
-      var t30;
-      var t31;
-      var br9;
-      var t32;
       var input2;
+      var t11;
+      var br3;
+      var t12;
+      var label2;
+      var t13_value = dist_10("timemanager", "Date") + "";
+      var t13;
+      var t14;
+      var br4;
+      var t15;
+      var input3;
+      var t16;
+      var br5;
+      var t17;
+      var label3;
+      var t18_value = dist_10("timemanager", "Note") + "";
+      var t18;
+      var t19;
+      var br6;
+      var t20;
+      var textarea;
+      var t21;
+      var br7;
+      var t22;
+      var label4;
+      var t23_value = dist_10("timemanager", "For task") + "";
+      var t23;
+      var t24;
+      var br8;
+      var t25;
+      var strong0;
+      var t26;
+      var t27;
+      var label5;
+      var t28_value = dist_10("timemanager", "For project") + "";
+      var t28;
+      var t29;
+      var br9;
+      var t30;
+      var strong1;
+      var t31;
+      var t32;
+      var label6;
+      var t33_value = dist_10("timemanager", "For client") + "";
       var t33;
+      var t34;
+      var br10;
+      var t35;
+      var strong2;
+      var t36;
+      var t37;
+      var br11;
+      var t38;
+      var input4;
+      var t39;
       var div0;
       var button;
-      var t34;
-      var t35;
+      var t40;
+      var t41;
       var mounted;
       var dispose;
       var if_block = !
@@ -17276,83 +17471,113 @@
           t9 = space$1();
           input1 = element("input");
           t10 = space$1();
-          br3 = element("br");
+          input2 = element("input");
           t11 = space$1();
+          br3 = element("br");
+          t12 = space$1();
           label2 = element("label");
-          t12 = text(t12_value);
-          t13 = space$1();
-          br4 = element("br");
+          t13 = text(t13_value);
           t14 = space$1();
-          textarea = element("textarea");
+          br4 = element("br");
           t15 = space$1();
-          br5 = element("br");
+          input3 = element("input");
           t16 = space$1();
+          br5 = element("br");
+          t17 = space$1();
           label3 = element("label");
-          t17 = text(t17_value);
-          t18 = space$1();
-          br6 = element("br");
+          t18 = text(t18_value);
           t19 = space$1();
+          br6 = element("br");
+          t20 = space$1();
+          textarea = element("textarea");
+          t21 = space$1();
+          br7 = element("br");
+          t22 = space$1();
+          label4 = element("label");
+          t23 = text(t23_value);
+          t24 = space$1();
+          br8 = element("br");
+          t25 = space$1();
           strong0 = element("strong");
-          t20 = text(
+          t26 = text(
           /*taskName*/
           ctx[4]);
-          t21 = space$1();
-          label4 = element("label");
-          t22 = text(t22_value);
-          t23 = space$1();
-          br7 = element("br");
-          t24 = space$1();
+          t27 = space$1();
+          label5 = element("label");
+          t28 = text(t28_value);
+          t29 = space$1();
+          br9 = element("br");
+          t30 = space$1();
           strong1 = element("strong");
-          t25 = text(
+          t31 = text(
           /*projectName*/
           ctx[3]);
-          t26 = space$1();
-          label5 = element("label");
-          t27 = text(t27_value);
-          t28 = space$1();
-          br8 = element("br");
-          t29 = space$1();
+          t32 = space$1();
+          label6 = element("label");
+          t33 = text(t33_value);
+          t34 = space$1();
+          br10 = element("br");
+          t35 = space$1();
           strong2 = element("strong");
-          t30 = text(
+          t36 = text(
           /*clientName*/
           ctx[2]);
-          t31 = space$1();
-          br9 = element("br");
-          t32 = space$1();
-          input2 = element("input");
-          t33 = space$1();
+          t37 = space$1();
+          br11 = element("br");
+          t38 = space$1();
+          input4 = element("input");
+          t39 = space$1();
           div0 = element("div");
           button = element("button");
-          t34 = text(
+          t40 = text(
           /*timeEditorButtonCaption*/
           ctx[8]);
-          t35 = space$1();
+          t41 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
           attr(input0, "type", "number");
           attr(input0, "name", "duration");
           attr(input0, "step", "0.01");
+          attr(input0, "min", "0");
+          attr(input0, "max", "23.99");
           attr(input0, "placeholder", "");
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           input0.required = true;
-          attr(input1, "type", "date");
-          attr(input1, "name", "date");
-          set_style(input1, "width", "100%");
+          attr(input1, "type", "time");
+          attr(input1, "name", "startTime");
+          attr(input1, "placeholder", "--:--");
+          set_style(input1, "width", "48%");
+          set_style(input1, "margin-right", "0%");
           attr(input1, "class", "input-wide");
+          attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
+          input1.required = true;
+          attr(input2, "type", "time");
+          attr(input2, "name", "endTime");
+          attr(input2, "placeholder", "--:--");
+          set_style(input2, "width", "48%");
+          set_style(input2, "margin-right", "0%");
+          set_style(input2, "float", "right");
+          attr(input2, "class", "input-wide");
+          attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
+          input2.required = true;
+          attr(input3, "type", "date");
+          attr(input3, "name", "date");
+          set_style(input3, "width", "100%");
+          attr(input3, "class", "input-wide");
           set_style(textarea, "width", "100%");
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
           attr(textarea, "placeholder", dist_10('timemanager', 'Describe what you did...'));
           textarea.value =
           /*note*/
-          ctx[11];
-          attr(label3, "class", "space-top");
+          ctx[13];
           attr(label4, "class", "space-top");
           attr(label5, "class", "space-top");
-          attr(input2, "type", "hidden");
-          attr(input2, "name", "requesttoken");
-          input2.value =
+          attr(label6, "class", "space-top");
+          attr(input4, "type", "hidden");
+          attr(input4, "name", "requesttoken");
+          input4.value =
           /*requestToken*/
           ctx[1];
           attr(button, "type", "submit");
@@ -17378,7 +17603,7 @@
           append(label0, input0);
           set_input_value(input0,
           /*duration*/
-          ctx[9]);
+          ctx[11]);
           append(form, t5);
           append(form, br1);
           append(form, t6);
@@ -17389,65 +17614,92 @@
           append(label1, t9);
           append(label1, input1);
           set_input_value(input1,
-          /*date*/
+          /*startTime*/
+          ctx[9]);
+          append(label1, t10);
+          append(label1, input2);
+          set_input_value(input2,
+          /*endTime*/
           ctx[10]);
-          append(form, t10);
-          append(form, br3);
           append(form, t11);
+          append(form, br3);
+          append(form, t12);
           append(form, label2);
-          append(label2, t12);
           append(label2, t13);
-          append(label2, br4);
           append(label2, t14);
-          append(label2, textarea);
-          append(form, t15);
-          append(form, br5);
+          append(label2, br4);
+          append(label2, t15);
+          append(label2, input3);
+          set_input_value(input3,
+          /*date*/
+          ctx[12]);
           append(form, t16);
+          append(form, br5);
+          append(form, t17);
           append(form, label3);
-          append(label3, t17);
           append(label3, t18);
-          append(label3, br6);
           append(label3, t19);
-          append(label3, strong0);
-          append(strong0, t20);
+          append(label3, br6);
+          append(label3, t20);
+          append(label3, textarea);
           append(form, t21);
+          append(form, br7);
+          append(form, t22);
           append(form, label4);
-          append(label4, t22);
           append(label4, t23);
-          append(label4, br7);
           append(label4, t24);
-          append(label4, strong1);
-          append(strong1, t25);
-          append(form, t26);
+          append(label4, br8);
+          append(label4, t25);
+          append(label4, strong0);
+          append(strong0, t26);
+          append(form, t27);
           append(form, label5);
-          append(label5, t27);
           append(label5, t28);
-          append(label5, br8);
           append(label5, t29);
-          append(label5, strong2);
-          append(strong2, t30);
-          append(form, t31);
-          append(form, br9);
+          append(label5, br9);
+          append(label5, t30);
+          append(label5, strong1);
+          append(strong1, t31);
           append(form, t32);
-          append(form, input2);
-          append(form, t33);
+          append(form, label6);
+          append(label6, t33);
+          append(label6, t34);
+          append(label6, br10);
+          append(label6, t35);
+          append(label6, strong2);
+          append(strong2, t36);
+          append(form, t37);
+          append(form, br11);
+          append(form, t38);
+          append(form, input4);
+          append(form, t39);
           append(form, div0);
           append(div0, button);
-          append(button, t34);
-          append(div0, t35);
+          append(button, t40);
+          append(div0, t41);
           if (if_block) if_block.m(div0, null);
           input0.focus();
 
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler*/
-            ctx[16]), listen(input1, "input",
-            /*input1_input_handler*/
-            ctx[17]), listen(textarea, "input",
+            ctx[18]), listen(input0, "input",
             /*input_handler*/
-            ctx[18]), listen(form, "submit", prevent_default(
+            ctx[19]), listen(input1, "input",
+            /*input1_input_handler*/
+            ctx[20]), listen(input1, "input",
+            /*input_handler_1*/
+            ctx[21]), listen(input2, "input",
+            /*input2_input_handler*/
+            ctx[22]), listen(input2, "input",
+            /*input_handler_2*/
+            ctx[23]), listen(input3, "input",
+            /*input3_input_handler*/
+            ctx[24]), listen(textarea, "input",
+            /*input_handler_3*/
+            ctx[25]), listen(form, "submit", prevent_default(
             /*submit*/
-            ctx[12]))];
+            ctx[14]))];
             mounted = true;
           }
         },
@@ -17463,57 +17715,73 @@
 
           if (dirty &
           /*duration*/
-          512 && to_number(input0.value) !==
+          2048 && to_number(input0.value) !==
           /*duration*/
-          ctx[9]) {
+          ctx[11]) {
             set_input_value(input0,
             /*duration*/
+            ctx[11]);
+          }
+
+          if (dirty &
+          /*startTime*/
+          512) {
+            set_input_value(input1,
+            /*startTime*/
             ctx[9]);
           }
 
           if (dirty &
-          /*date*/
+          /*endTime*/
           1024) {
-            set_input_value(input1,
-            /*date*/
+            set_input_value(input2,
+            /*endTime*/
             ctx[10]);
           }
 
           if (dirty &
+          /*date*/
+          4096) {
+            set_input_value(input3,
+            /*date*/
+            ctx[12]);
+          }
+
+          if (dirty &
           /*note*/
-          2048) {
+          8192) {
             textarea.value =
             /*note*/
-            ctx[11];
+            ctx[13];
           }
 
           if (dirty &
           /*taskName*/
-          16) set_data(t20,
+          16) set_data(t26,
           /*taskName*/
           ctx[4]);
           if (dirty &
           /*projectName*/
-          8) set_data(t25,
+          8) set_data(t31,
           /*projectName*/
           ctx[3]);
           if (dirty &
           /*clientName*/
-          4) set_data(t30,
+          4) set_data(t36,
           /*clientName*/
           ctx[2]);
 
           if (dirty &
           /*requestToken*/
           2) {
-            input2.value =
+            input4.value =
             /*requestToken*/
             ctx[1];
           }
 
           if (dirty &
           /*timeEditorButtonCaption*/
-          256) set_data(t34,
+          256) set_data(t40,
           /*timeEditorButtonCaption*/
           ctx[8]);
 
@@ -17565,13 +17833,16 @@
           editTimeEntryData = _$$props$editTimeEntr === void 0 ? {} : _$$props$editTimeEntr;
       var timeEditorCaption = $$props.timeEditorCaption;
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
-      var duration = editTimeEntryData.duration;
+      var startTime = editTimeEntryData.startTime || "";
+      var endTime = editTimeEntryData.endTime || "";
+      var duration = Helpers.calculateDuration(startTime, endTime);
       var date = editTimeEntryData.date || initialDate;
       var note = editTimeEntryData.note || "";
 
       var submit = function submit() {
         onSubmit({
-          duration: duration,
+          startTime: startTime,
+          endTime: endTime,
           date: date,
           note: note
         });
@@ -17579,16 +17850,38 @@
 
       function input0_input_handler() {
         duration = to_number(this.value);
-        $$invalidate(9, duration);
+        $$invalidate(11, duration);
       }
+
+      var input_handler = function input_handler() {
+        return $$invalidate(10, endTime = Helpers.calculateEndTime(startTime, duration));
+      };
 
       function input1_input_handler() {
-        date = this.value;
-        $$invalidate(10, date);
+        startTime = this.value;
+        $$invalidate(9, startTime);
       }
 
-      var input_handler = function input_handler(e) {
-        return $$invalidate(11, note = e.target.value);
+      var input_handler_1 = function input_handler_1() {
+        return $$invalidate(11, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+
+      function input2_input_handler() {
+        endTime = this.value;
+        $$invalidate(10, endTime);
+      }
+
+      var input_handler_2 = function input_handler_2() {
+        return $$invalidate(11, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+
+      function input3_input_handler() {
+        date = this.value;
+        $$invalidate(12, date);
+      }
+
+      var input_handler_3 = function input_handler_3(e) {
+        return $$invalidate(13, note = e.target.value);
       };
 
       $$self.$$set = function ($$props) {
@@ -17597,16 +17890,16 @@
         if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
         if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
-        if ('initialDate' in $$props) $$invalidate(13, initialDate = $$props.initialDate);
+        if ('initialDate' in $$props) $$invalidate(15, initialDate = $$props.initialDate);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(14, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(15, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(16, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(17, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
       };
 
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, duration, date, note, submit, initialDate, onSubmit, editTimeEntryData, input0_input_handler, input1_input_handler, input_handler];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, startTime, endTime, duration, date, note, submit, initialDate, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
     }
 
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -17626,11 +17919,11 @@
           clientName: 2,
           projectName: 3,
           taskName: 4,
-          initialDate: 13,
+          initialDate: 15,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 14,
-          editTimeEntryData: 15,
+          onSubmit: 16,
+          editTimeEntryData: 17,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8
         });
@@ -18024,16 +18317,17 @@
 
       var save = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
-          var duration, date, note, entry, response;
+          var startTime, endTime, date, note, entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  duration = _ref4.duration, date = _ref4.date, note = _ref4.note;
+                  startTime = _ref4.startTime, endTime = _ref4.endTime, date = _ref4.date, note = _ref4.note;
                   $$invalidate(11, loading = true);
                   _context.prev = 2;
                   entry = {
-                    duration: duration,
+                    startTime: startTime,
+                    endTime: endTime,
                     date: date,
                     note: note
                   };
@@ -25121,7 +25415,7 @@
     var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable$1);
     var push$2 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
 
-    var createMethod$5 = function (TO_ENTRIES) {
+    var createMethod$4 = function (TO_ENTRIES) {
       return function (it) {
         var O = toIndexedObject$1(it);
         var keys = objectKeys$1(O);
@@ -25145,10 +25439,10 @@
     var objectToArray = {
       // `Object.entries` method
       // https://tc39.es/ecma262/#sec-object.entries
-      entries: createMethod$5(true),
+      entries: createMethod$4(true),
       // `Object.values` method
       // https://tc39.es/ecma262/#sec-object.values
-      values: createMethod$5(false)
+      values: createMethod$4(false)
     };
 
     var $values = objectToArray.values; // `Object.values` method
@@ -25163,35 +25457,6 @@
         return $values(O);
       }
     });
-
-    // a string of all valid unicode whitespaces
-    var whitespaces$1 = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-    var replace = functionUncurryThis(''.replace);
-    var whitespace$1 = '[' + whitespaces$1 + ']';
-    var ltrim$1 = RegExp('^' + whitespace$1 + whitespace$1 + '*');
-    var rtrim$1 = RegExp(whitespace$1 + whitespace$1 + '*$'); // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-
-    var createMethod$4 = function (TYPE) {
-      return function ($this) {
-        var string = toString_1(requireObjectCoercible$1($this));
-        if (TYPE & 1) string = replace(string, ltrim$1, '');
-        if (TYPE & 2) string = replace(string, rtrim$1, '');
-        return string;
-      };
-    };
-
-    var stringTrim$1 = {
-      // `String.prototype.{ trimLeft, trimStart }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-      start: createMethod$4(1),
-      // `String.prototype.{ trimRight, trimEnd }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimend
-      end: createMethod$4(2),
-      // `String.prototype.trim` method
-      // https://tc39.es/ecma262/#sec-string.prototype.trim
-      trim: createMethod$4(3)
-    };
 
     var trim$1 = stringTrim$1.trim;
 
@@ -29306,39 +29571,39 @@
 
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[69] = list[i];
+      child_ctx[76] = list[i];
       return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[72] = list[i];
+      child_ctx[79] = list[i];
       return child_ctx;
     }
 
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[75] = list[i];
-      child_ctx[76] = list;
-      child_ctx[77] = i;
+      child_ctx[82] = list[i];
+      child_ctx[83] = list;
+      child_ctx[84] = i;
       return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[78] = list[i];
-      child_ctx[79] = list;
-      child_ctx[80] = i;
+      child_ctx[85] = list[i];
+      child_ctx[86] = list;
+      child_ctx[87] = i;
       return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[81] = list[i];
-      child_ctx[82] = list;
-      child_ctx[80] = i;
+      child_ctx[88] = list[i];
+      child_ctx[89] = list;
+      child_ctx[87] = i;
       return child_ctx;
-    } // (386:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (389:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_6$1(ctx) {
@@ -29377,16 +29642,16 @@
 
           if (!mounted) {
             dispose = action_destroyer(/*noteSuggestPopperContent*/
-            ctx[24].call(null, div,
+            ctx[26].call(null, div,
             /*extraOpts*/
-            ctx[20]));
+            ctx[22]));
             mounted = true;
           }
         },
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/
-          82290) {
+          328818) {
             each_value_4 =
             /*noteAutosuggestList*/
             ctx[4];
@@ -29421,37 +29686,37 @@
           dispose();
         }
       };
-    } // (389:5) {#each noteAutosuggestList as suggestion, index}
+    } // (392:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
-      var _ctx$81$time$note, _ctx$, _ctx$$time, _ctx$81$client$name, _ctx$2, _ctx$2$client, _ctx$81$project$name, _ctx$3, _ctx$3$project, _ctx$81$task$name, _ctx$4, _ctx$4$task;
+      var _ctx$88$time$note, _ctx$, _ctx$$time, _ctx$88$client$name, _ctx$2, _ctx$2$client, _ctx$88$project$name, _ctx$3, _ctx$3$project, _ctx$88$task$name, _ctx$4, _ctx$4$task;
 
       var li;
       var a;
       var t0_value = (
       /*suggestion*/
-      (_ctx$81$time$note = (_ctx$ = ctx[81]) === null || _ctx$ === void 0 ? void 0 : (_ctx$$time = _ctx$.time) === null || _ctx$$time === void 0 ? void 0 : _ctx$$time.note) !== null && _ctx$81$time$note !== void 0 ? _ctx$81$time$note : "") + "";
+      (_ctx$88$time$note = (_ctx$ = ctx[88]) === null || _ctx$ === void 0 ? void 0 : (_ctx$$time = _ctx$.time) === null || _ctx$$time === void 0 ? void 0 : _ctx$$time.note) !== null && _ctx$88$time$note !== void 0 ? _ctx$88$time$note : "") + "";
       var t0;
       var t1;
       var t2_value = (
       /*suggestion*/
-      (_ctx$81$client$name = (_ctx$2 = ctx[81]) === null || _ctx$2 === void 0 ? void 0 : (_ctx$2$client = _ctx$2.client) === null || _ctx$2$client === void 0 ? void 0 : _ctx$2$client.name) !== null && _ctx$81$client$name !== void 0 ? _ctx$81$client$name : "") + "";
+      (_ctx$88$client$name = (_ctx$2 = ctx[88]) === null || _ctx$2 === void 0 ? void 0 : (_ctx$2$client = _ctx$2.client) === null || _ctx$2$client === void 0 ? void 0 : _ctx$2$client.name) !== null && _ctx$88$client$name !== void 0 ? _ctx$88$client$name : "") + "";
       var t2;
       var t3;
       var t4_value = (
       /*suggestion*/
-      (_ctx$81$project$name = (_ctx$3 = ctx[81]) === null || _ctx$3 === void 0 ? void 0 : (_ctx$3$project = _ctx$3.project) === null || _ctx$3$project === void 0 ? void 0 : _ctx$3$project.name) !== null && _ctx$81$project$name !== void 0 ? _ctx$81$project$name : "") + "";
+      (_ctx$88$project$name = (_ctx$3 = ctx[88]) === null || _ctx$3 === void 0 ? void 0 : (_ctx$3$project = _ctx$3.project) === null || _ctx$3$project === void 0 ? void 0 : _ctx$3$project.name) !== null && _ctx$88$project$name !== void 0 ? _ctx$88$project$name : "") + "";
       var t4;
       var t5;
       var t6_value = (
       /*suggestion*/
-      (_ctx$81$task$name = (_ctx$4 = ctx[81]) === null || _ctx$4 === void 0 ? void 0 : (_ctx$4$task = _ctx$4.task) === null || _ctx$4$task === void 0 ? void 0 : _ctx$4$task.name) !== null && _ctx$81$task$name !== void 0 ? _ctx$81$task$name : "") + "";
+      (_ctx$88$task$name = (_ctx$4 = ctx[88]) === null || _ctx$4 === void 0 ? void 0 : (_ctx$4$task = _ctx$4.task) === null || _ctx$4$task === void 0 ? void 0 : _ctx$4$task.name) !== null && _ctx$88$task$name !== void 0 ? _ctx$88$task$name : "") + "";
       var t6;
       var t7;
       var index =
       /*index*/
-      ctx[80];
+      ctx[87];
       var t8;
       var mounted;
       var dispose;
@@ -29459,14 +29724,14 @@
       var assign_a = function assign_a() {
         return (
           /*a_binding*/
-          ctx[42](a, index)
+          ctx[44](a, index)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding*/
-          ctx[42](null, index)
+          ctx[44](null, index)
         );
       };
 
@@ -29479,18 +29744,18 @@
 
         return (
           /*click_handler_1*/
-          (_ctx = ctx)[43].apply(_ctx, [
+          (_ctx = ctx)[45].apply(_ctx, [
           /*suggestion*/
-          ctx[81]].concat(args))
+          ctx[88]].concat(args))
         );
       }
 
       function focus_handler_1() {
         return (
           /*focus_handler_1*/
-          ctx[44](
+          ctx[46](
           /*index*/
-          ctx[80])
+          ctx[87])
         );
       }
 
@@ -29531,37 +29796,37 @@
           }
         },
         p: function p(new_ctx, dirty) {
-          var _ctx$81$time$note2, _ctx$5, _ctx$5$time, _ctx$81$client$name2, _ctx$6, _ctx$6$client, _ctx$81$project$name2, _ctx$7, _ctx$7$project, _ctx$81$task$name2, _ctx$8, _ctx$8$task;
+          var _ctx$88$time$note2, _ctx$5, _ctx$5$time, _ctx$88$client$name2, _ctx$6, _ctx$6$client, _ctx$88$project$name2, _ctx$7, _ctx$7$project, _ctx$88$task$name2, _ctx$8, _ctx$8$task;
 
           ctx = new_ctx;
           if (dirty[0] &
           /*noteAutosuggestList*/
           16 && t0_value !== (t0_value = (
           /*suggestion*/
-          (_ctx$81$time$note2 = (_ctx$5 = ctx[81]) === null || _ctx$5 === void 0 ? void 0 : (_ctx$5$time = _ctx$5.time) === null || _ctx$5$time === void 0 ? void 0 : _ctx$5$time.note) !== null && _ctx$81$time$note2 !== void 0 ? _ctx$81$time$note2 : "") + "")) set_data(t0, t0_value);
+          (_ctx$88$time$note2 = (_ctx$5 = ctx[88]) === null || _ctx$5 === void 0 ? void 0 : (_ctx$5$time = _ctx$5.time) === null || _ctx$5$time === void 0 ? void 0 : _ctx$5$time.note) !== null && _ctx$88$time$note2 !== void 0 ? _ctx$88$time$note2 : "") + "")) set_data(t0, t0_value);
           if (dirty[0] &
           /*noteAutosuggestList*/
           16 && t2_value !== (t2_value = (
           /*suggestion*/
-          (_ctx$81$client$name2 = (_ctx$6 = ctx[81]) === null || _ctx$6 === void 0 ? void 0 : (_ctx$6$client = _ctx$6.client) === null || _ctx$6$client === void 0 ? void 0 : _ctx$6$client.name) !== null && _ctx$81$client$name2 !== void 0 ? _ctx$81$client$name2 : "") + "")) set_data(t2, t2_value);
+          (_ctx$88$client$name2 = (_ctx$6 = ctx[88]) === null || _ctx$6 === void 0 ? void 0 : (_ctx$6$client = _ctx$6.client) === null || _ctx$6$client === void 0 ? void 0 : _ctx$6$client.name) !== null && _ctx$88$client$name2 !== void 0 ? _ctx$88$client$name2 : "") + "")) set_data(t2, t2_value);
           if (dirty[0] &
           /*noteAutosuggestList*/
           16 && t4_value !== (t4_value = (
           /*suggestion*/
-          (_ctx$81$project$name2 = (_ctx$7 = ctx[81]) === null || _ctx$7 === void 0 ? void 0 : (_ctx$7$project = _ctx$7.project) === null || _ctx$7$project === void 0 ? void 0 : _ctx$7$project.name) !== null && _ctx$81$project$name2 !== void 0 ? _ctx$81$project$name2 : "") + "")) set_data(t4, t4_value);
+          (_ctx$88$project$name2 = (_ctx$7 = ctx[88]) === null || _ctx$7 === void 0 ? void 0 : (_ctx$7$project = _ctx$7.project) === null || _ctx$7$project === void 0 ? void 0 : _ctx$7$project.name) !== null && _ctx$88$project$name2 !== void 0 ? _ctx$88$project$name2 : "") + "")) set_data(t4, t4_value);
           if (dirty[0] &
           /*noteAutosuggestList*/
           16 && t6_value !== (t6_value = (
           /*suggestion*/
-          (_ctx$81$task$name2 = (_ctx$8 = ctx[81]) === null || _ctx$8 === void 0 ? void 0 : (_ctx$8$task = _ctx$8.task) === null || _ctx$8$task === void 0 ? void 0 : _ctx$8$task.name) !== null && _ctx$81$task$name2 !== void 0 ? _ctx$81$task$name2 : "") + "")) set_data(t6, t6_value);
+          (_ctx$88$task$name2 = (_ctx$8 = ctx[88]) === null || _ctx$8 === void 0 ? void 0 : (_ctx$8$task = _ctx$8.task) === null || _ctx$8$task === void 0 ? void 0 : _ctx$8$task.name) !== null && _ctx$88$task$name2 !== void 0 ? _ctx$88$task$name2 : "") + "")) set_data(t6, t6_value);
 
           if (index !==
           /*index*/
-          ctx[80]) {
+          ctx[87]) {
             unassign_a();
             index =
             /*index*/
-            ctx[80];
+            ctx[87];
             assign_a();
           }
         },
@@ -29572,7 +29837,7 @@
           run_all(dispose);
         }
       };
-    } // (477:2) {:else}
+    } // (505:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -29597,22 +29862,22 @@
           ctx[0];
           input.value = input_value_value =
           /*selected*/
-          ctx[14] ? "".concat(
+          ctx[16] ? "".concat(
           /*selected*/
-          ctx[14].client.label, " \u203A ").concat(
+          ctx[16].client.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].project.label, " \u203A ").concat(
+          ctx[16].project.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].task.label) : "";
+          ctx[16].task.label) : "";
           attr(input, "title", input_title_value =
           /*selected*/
-          ctx[14] ? "".concat(
+          ctx[16] ? "".concat(
           /*selected*/
-          ctx[14].client.label, " \u203A ").concat(
+          ctx[16].client.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].project.label, " \u203A ").concat(
+          ctx[16].project.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].task.label) : "");
+          ctx[16].task.label) : "");
         },
         m: function m(target, anchor) {
           insert(target, t0, anchor);
@@ -29621,9 +29886,9 @@
 
           if (!mounted) {
             dispose = [action_destroyer(/*taskSelectorPopperRef*/
-            ctx[21].call(null, input)), listen(input, "focus",
+            ctx[23].call(null, input)), listen(input, "focus",
             /*handleShowTaskSelector*/
-            ctx[29])];
+            ctx[31])];
             mounted = true;
           }
         },
@@ -29638,29 +29903,29 @@
 
           if (dirty[0] &
           /*selected*/
-          16384 && input_value_value !== (input_value_value =
+          65536 && input_value_value !== (input_value_value =
           /*selected*/
-          ctx[14] ? "".concat(
+          ctx[16] ? "".concat(
           /*selected*/
-          ctx[14].client.label, " \u203A ").concat(
+          ctx[16].client.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].project.label, " \u203A ").concat(
+          ctx[16].project.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].task.label) : "") && input.value !== input_value_value) {
+          ctx[16].task.label) : "") && input.value !== input_value_value) {
             input.value = input_value_value;
           }
 
           if (dirty[0] &
           /*selected*/
-          16384 && input_title_value !== (input_title_value =
+          65536 && input_title_value !== (input_title_value =
           /*selected*/
-          ctx[14] ? "".concat(
+          ctx[16] ? "".concat(
           /*selected*/
-          ctx[14].client.label, " \u203A ").concat(
+          ctx[16].client.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].project.label, " \u203A ").concat(
+          ctx[16].project.label, " \u203A ").concat(
           /*selected*/
-          ctx[14].task.label) : "")) {
+          ctx[16].task.label) : "")) {
             attr(input, "title", input_title_value);
           }
         },
@@ -29672,7 +29937,7 @@
           run_all(dispose);
         }
       };
-    } // (453:2) {#if selected && !showTaskSelector}
+    } // (481:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -29684,7 +29949,7 @@
       var span1;
       var t2_value =
       /*selected*/
-      ctx[14].client.label + "";
+      ctx[16].client.label + "";
       var t2;
       var t3;
       var li1;
@@ -29693,7 +29958,7 @@
       var span3;
       var t6_value =
       /*selected*/
-      ctx[14].project.label + "";
+      ctx[16].project.label + "";
       var t6;
       var t7;
       var li2;
@@ -29702,7 +29967,7 @@
       var span5;
       var t10_value =
       /*selected*/
-      ctx[14].task.label + "";
+      ctx[16].task.label + "";
       var t10;
       var t11;
       var input;
@@ -29771,30 +30036,30 @@
           if (!mounted) {
             dispose = [listen(a, "focus",
             /*handleShowTaskSelector*/
-            ctx[29]), listen(a, "click",
+            ctx[31]), listen(a, "click",
             /*handleShowTaskSelector*/
-            ctx[29]), listen(input, "focus",
+            ctx[31]), listen(input, "focus",
             /*handleShowTaskSelector*/
-            ctx[29])];
+            ctx[31])];
             mounted = true;
           }
         },
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*selected*/
-          16384 && t2_value !== (t2_value =
+          65536 && t2_value !== (t2_value =
           /*selected*/
-          ctx[14].client.label + "")) set_data(t2, t2_value);
+          ctx[16].client.label + "")) set_data(t2, t2_value);
           if (dirty[0] &
           /*selected*/
-          16384 && t6_value !== (t6_value =
+          65536 && t6_value !== (t6_value =
           /*selected*/
-          ctx[14].project.label + "")) set_data(t6, t6_value);
+          ctx[16].project.label + "")) set_data(t6, t6_value);
           if (dirty[0] &
           /*selected*/
-          16384 && t10_value !== (t10_value =
+          65536 && t10_value !== (t10_value =
           /*selected*/
-          ctx[14].task.label + "")) set_data(t10, t10_value);
+          ctx[16].task.label + "")) set_data(t10, t10_value);
         },
         d: function d(detaching) {
           if (detaching) detach(a);
@@ -29804,7 +30069,7 @@
           run_all(dispose);
         }
       };
-    } // (491:1) {#if showTaskSelector}
+    } // (519:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -29825,19 +30090,19 @@
       var dispose;
       var if_block0 =
       /*lastUsed*/
-      ((_ctx$9 = ctx[25]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && !
+      ((_ctx$9 = ctx[27]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && !
       /*searchValue*/
-      ctx[11] && create_if_block_3$1(ctx);
+      ctx[13] && create_if_block_3$1(ctx);
 
       function select_block_type_1(ctx, dirty) {
         var _ctx$10, _ctx$11;
 
         if (
         /*searchResults*/
-        (_ctx$10 = ctx[19]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
+        (_ctx$10 = ctx[21]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
         if (
         /*searchValue*/
-        (_ctx$11 = ctx[11]) !== null && _ctx$11 !== void 0 && _ctx$11.length) return create_if_block_2$1;
+        (_ctx$11 = ctx[13]) !== null && _ctx$11 !== void 0 && _ctx$11.length) return create_if_block_2$1;
       }
 
       var current_block_type = select_block_type_1(ctx);
@@ -29883,10 +30148,10 @@
           append(label, input);
           /*input_binding*/
 
-          ctx[49](input);
+          ctx[56](input);
           set_input_value(input,
           /*searchValue*/
-          ctx[11]);
+          ctx[13]);
           append(div3, t2);
           append(div3, div0);
           if (if_block0) if_block0.m(div0, null);
@@ -29900,12 +30165,12 @@
           if (!mounted) {
             dispose = [listen(input, "input",
             /*input_input_handler*/
-            ctx[50]), listen(input, "input",
-            /*input_handler_1*/
-            ctx[51]), action_destroyer(/*taskSelectorPopperContent*/
-            ctx[22].call(null, div3,
+            ctx[57]), listen(input, "input",
+            /*input_handler_4*/
+            ctx[58]), action_destroyer(/*taskSelectorPopperContent*/
+            ctx[24].call(null, div3,
             /*extraOpts*/
-            ctx[20])), listen(div3, "click", click_handler_4)];
+            ctx[22])), listen(div3, "click", click_handler_4)];
             mounted = true;
           }
         },
@@ -29914,19 +30179,19 @@
 
           if (dirty[0] &
           /*searchValue*/
-          2048 && input.value !==
+          8192 && input.value !==
           /*searchValue*/
-          ctx[11]) {
+          ctx[13]) {
             set_input_value(input,
             /*searchValue*/
-            ctx[11]);
+            ctx[13]);
           }
 
           if (
           /*lastUsed*/
-          (_ctx$12 = ctx[25]) !== null && _ctx$12 !== void 0 && _ctx$12.length && !
+          (_ctx$12 = ctx[27]) !== null && _ctx$12 !== void 0 && _ctx$12.length && !
           /*searchValue*/
-          ctx[11]) {
+          ctx[13]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -29955,7 +30220,7 @@
           if (detaching) detach(div3);
           /*input_binding*/
 
-          ctx[49](null);
+          ctx[56](null);
           if (if_block0) if_block0.d();
 
           if (if_block1) {
@@ -29966,14 +30231,14 @@
           run_all(dispose);
         }
       };
-    } // (518:4) {#if lastUsed?.length && !searchValue}
+    } // (546:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
       var ul;
       var each_value_3 =
       /*lastUsed*/
-      ctx[25];
+      ctx[27];
       var each_blocks = [];
 
       for (var i = 0; i < each_value_3.length; i += 1) {
@@ -30000,10 +30265,10 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*lastUsedTasksButtons, selected, lastUsed, showTaskSelector, currentLastestFocusTaskIndex*/
-          33701897) {
+          134807561) {
             each_value_3 =
             /*lastUsed*/
-            ctx[25];
+            ctx[27];
 
             var _i6;
 
@@ -30033,7 +30298,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (522:8) {#if index === 0}
+    } // (550:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30052,7 +30317,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (520:6) {#each lastUsed as entry, index}
+    } // (548:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30066,7 +30331,7 @@
       var span1;
       var t3_value =
       /*entry*/
-      ctx[78].client.name + "";
+      ctx[85].client.name + "";
       var t3;
       var t4;
       var li1;
@@ -30075,7 +30340,7 @@
       var span3;
       var t7_value =
       /*entry*/
-      ctx[78].project.name + "";
+      ctx[85].project.name + "";
       var t7;
       var t8;
       var li2;
@@ -30084,29 +30349,29 @@
       var span5;
       var t11_value =
       /*entry*/
-      ctx[78].task.name + "";
+      ctx[85].task.name + "";
       var t11;
       var index =
       /*index*/
-      ctx[80];
+      ctx[87];
       var t12;
       var mounted;
       var dispose;
       var if_block =
       /*index*/
-      ctx[80] === 0 && create_if_block_4$1();
+      ctx[87] === 0 && create_if_block_4$1();
 
       var assign_a = function assign_a() {
         return (
           /*a_binding_1*/
-          ctx[52](a, index)
+          ctx[59](a, index)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding_1*/
-          ctx[52](null, index)
+          ctx[59](null, index)
         );
       };
 
@@ -30119,18 +30384,18 @@
 
         return (
           /*click_handler_2*/
-          (_ctx2 = ctx)[53].apply(_ctx2, [
+          (_ctx2 = ctx)[60].apply(_ctx2, [
           /*entry*/
-          ctx[78]].concat(args))
+          ctx[85]].concat(args))
         );
       }
 
       function focus_handler_3() {
         return (
           /*focus_handler_3*/
-          ctx[54](
+          ctx[61](
           /*index*/
-          ctx[80])
+          ctx[87])
         );
       }
 
@@ -30207,15 +30472,15 @@
           ctx = new_ctx;
           if (
           /*index*/
-          ctx[80] === 0) if_block.p(ctx, dirty);
+          ctx[87] === 0) if_block.p(ctx, dirty);
 
           if (index !==
           /*index*/
-          ctx[80]) {
+          ctx[87]) {
             unassign_a();
             index =
             /*index*/
-            ctx[80];
+            ctx[87];
             assign_a();
           }
         },
@@ -30227,7 +30492,7 @@
           run_all(dispose);
         }
       };
-    } // (609:34) 
+    } // (637:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30246,14 +30511,14 @@
           if (detaching) detach(p);
         }
       };
-    } // (565:4) {#if searchResults?.length}
+    } // (593:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value =
       /*searchResults*/
-      ctx[19];
+      ctx[21];
       var each_blocks = [];
 
       for (var i = 0; i < each_value.length; i += 1) {
@@ -30278,10 +30543,10 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/
-          802821) {
+          3211269) {
             each_value =
             /*searchResults*/
-            ctx[19];
+            ctx[21];
 
             var _i9;
 
@@ -30311,7 +30576,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (575:12) {#each project.tasks as task}
+    } // (603:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30319,11 +30584,11 @@
       var a;
       var t0_value =
       /*task*/
-      ctx[75].label + "";
+      ctx[82].label + "";
       var t0;
       var task =
       /*task*/
-      ctx[75];
+      ctx[82];
       var t1;
       var mounted;
       var dispose;
@@ -30331,14 +30596,14 @@
       var assign_a = function assign_a() {
         return (
           /*a_binding_2*/
-          ctx[55](a, task)
+          ctx[62](a, task)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding_2*/
-          ctx[55](null, task)
+          ctx[62](null, task)
         );
       };
 
@@ -30351,22 +30616,22 @@
 
         return (
           /*click_handler_3*/
-          (_ctx3 = ctx)[56].apply(_ctx3, [
+          (_ctx3 = ctx)[63].apply(_ctx3, [
           /*client*/
-          ctx[69],
+          ctx[76],
           /*project*/
-          ctx[72],
+          ctx[79],
           /*task*/
-          ctx[75]].concat(args))
+          ctx[82]].concat(args))
         );
       }
 
       function focus_handler_4() {
         return (
           /*focus_handler_4*/
-          ctx[57](
+          ctx[64](
           /*task*/
-          ctx[75])
+          ctx[82])
         );
       }
 
@@ -30396,17 +30661,17 @@
           ctx = new_ctx;
           if (dirty[0] &
           /*searchResults*/
-          524288 && t0_value !== (t0_value =
+          2097152 && t0_value !== (t0_value =
           /*task*/
-          ctx[75].label + "")) set_data(t0, t0_value);
+          ctx[82].label + "")) set_data(t0, t0_value);
 
           if (task !==
           /*task*/
-          ctx[75]) {
+          ctx[82]) {
             unassign_a();
             task =
             /*task*/
-            ctx[75];
+            ctx[82];
             assign_a();
           }
         },
@@ -30417,7 +30682,7 @@
           run_all(dispose);
         }
       };
-    } // (571:9) {#each client.projects as project}
+    } // (599:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -30425,14 +30690,14 @@
       var span;
       var t0_value =
       /*project*/
-      ctx[72].label + "";
+      ctx[79].label + "";
       var t0;
       var t1;
       var ul;
       var t2;
       var each_value_2 =
       /*project*/
-      ctx[72].tasks;
+      ctx[79].tasks;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_2.length; i += 1) {
@@ -30470,16 +30735,16 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          524288 && t0_value !== (t0_value =
+          2097152 && t0_value !== (t0_value =
           /*project*/
-          ctx[72].label + "")) set_data(t0, t0_value);
+          ctx[79].label + "")) set_data(t0, t0_value);
 
           if (dirty[0] &
           /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/
-          802821) {
+          3211269) {
             each_value_2 =
             /*project*/
-            ctx[72].tasks;
+            ctx[79].tasks;
 
             var _i12;
 
@@ -30509,7 +30774,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (566:5) {#each searchResults as client}
+    } // (594:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -30518,14 +30783,14 @@
       var span;
       var t0_value =
       /*client*/
-      ctx[69].label + "";
+      ctx[76].label + "";
       var t0;
       var t1;
       var ul0;
       var t2;
       var each_value_1 =
       /*client*/
-      ctx[69].projects;
+      ctx[76].projects;
       var each_blocks = [];
 
       for (var i = 0; i < each_value_1.length; i += 1) {
@@ -30566,16 +30831,16 @@
         p: function p(ctx, dirty) {
           if (dirty[0] &
           /*searchResults*/
-          524288 && t0_value !== (t0_value =
+          2097152 && t0_value !== (t0_value =
           /*client*/
-          ctx[69].label + "")) set_data(t0, t0_value);
+          ctx[76].label + "")) set_data(t0, t0_value);
 
           if (dirty[0] &
           /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/
-          802821) {
+          3211269) {
             each_value_1 =
             /*client*/
-            ctx[69].projects;
+            ctx[76].projects;
 
             var _i15;
 
@@ -30627,16 +30892,20 @@
       var t5;
       var input2;
       var t6;
-      var label2;
       var input3;
       var t7;
-      var label2_class_value;
+      var input4;
       var t8;
+      var label2;
+      var input5;
       var t9;
+      var label2_class_value;
+      var t10;
+      var t11;
       var span1;
       var button;
-      var t10_value = dist_10("timemanager", "Add") + "";
-      var t10;
+      var t12_value = dist_10("timemanager", "Add") + "";
+      var t12;
       var form_class_value;
       var mounted;
       var dispose;
@@ -30649,7 +30918,7 @@
       function select_block_type(ctx, dirty) {
         if (
         /*selected*/
-        ctx[14] && !
+        ctx[16] && !
         /*showTaskSelector*/
         ctx[0]) return create_if_block_5$1;
         return create_else_block;
@@ -30678,16 +30947,20 @@
           t5 = space$1();
           input2 = element("input");
           t6 = space$1();
-          label2 = element("label");
           input3 = element("input");
           t7 = space$1();
-          if_block1.c();
+          input4 = element("input");
           t8 = space$1();
-          if (if_block2) if_block2.c();
+          label2 = element("label");
+          input5 = element("input");
           t9 = space$1();
+          if_block1.c();
+          t10 = space$1();
+          if (if_block2) if_block2.c();
+          t11 = space$1();
           span1 = element("span");
           button = element("button");
-          t10 = text(t10_value);
+          t12 = text(t12_value);
           attr(input0, "type", "text");
           attr(input0, "name", "note");
           attr(input0, "class", "note");
@@ -30703,27 +30976,43 @@
           attr(input1, "type", "number");
           attr(input1, "name", "duration");
           attr(input1, "step", "0.01");
+          attr(input1, "min", "0");
+          attr(input1, "max", "23.99");
           attr(input1, "placeholder", "");
           attr(input1, "class", "duration-input");
           input1.disabled = true;
-          attr(input2, "type", "date");
-          attr(input2, "name", "date");
-          attr(input2, "class", "date-input");
+          attr(input2, "type", "time");
+          attr(input2, "name", "startTime");
+          attr(input2, "placeholder", "--:--");
+          set_style(input2, "width", "100px");
+          attr(input2, "class", "input-wide");
+          attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
+          input2.required = true;
+          attr(input3, "type", "time");
+          attr(input3, "name", "endTime");
+          attr(input3, "placeholder", "--:--");
+          set_style(input3, "width", "100px");
+          attr(input3, "class", "input-wide");
+          attr(input3, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
+          input3.required = true;
+          attr(input4, "type", "date");
+          attr(input4, "name", "date");
+          attr(input4, "class", "date-input");
           attr(span0, "class", "double");
           attr(label1, "for", "quick-add-time");
-          attr(input3, "type", "hidden");
+          attr(input5, "type", "hidden");
           attr(label2, "class", label2_class_value = "task-selector-trigger".concat(
           /*taskError*/
-          ctx[15] ? " error" : ""));
+          ctx[17] ? " error" : ""));
           button.disabled =
           /*loading*/
-          ctx[13];
+          ctx[15];
           attr(button, "type", "submit");
           attr(button, "class", "button primary button-w-icon icon-add");
           attr(span1, "class", "actions");
           attr(form, "class", form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[13] ? " icon-loading" : ""));
+          ctx[15] ? " icon-loading" : ""));
         },
         m: function m(target, anchor) {
           insert(target, form, anchor);
@@ -30733,10 +31022,10 @@
           append(label0, input0);
           set_input_value(input0,
           /*note*/
-          ctx[8]);
+          ctx[10]);
           /*input0_binding*/
 
-          ctx[39](input0);
+          ctx[41](input0);
           append(label0, t2);
           if (if_block0) if_block0.m(label0, null);
           append(form, t3);
@@ -30750,43 +31039,63 @@
           ctx[6]);
           /*input1_binding*/
 
-          ctx[46](input1);
+          ctx[49](input1);
           append(span0, t5);
           append(span0, input2);
           set_input_value(input2,
-          /*date*/
+          /*startTime*/
           ctx[7]);
-          append(form, t6);
-          append(form, label2);
-          append(label2, input3);
-          append(label2, t7);
-          if_block1.m(label2, null);
+          append(span0, t6);
+          append(span0, input3);
+          set_input_value(input3,
+          /*endTime*/
+          ctx[8]);
+          append(span0, t7);
+          append(span0, input4);
+          set_input_value(input4,
+          /*date*/
+          ctx[9]);
           append(form, t8);
+          append(form, label2);
+          append(label2, input5);
+          append(label2, t9);
+          if_block1.m(label2, null);
+          append(form, t10);
           if (if_block2) if_block2.m(form, null);
-          append(form, t9);
+          append(form, t11);
           append(form, span1);
           append(span1, button);
-          append(button, t10);
+          append(button, t12);
 
           if (!mounted) {
             dispose = [listen(window, "keydown",
             /*handleKeyDown*/
-            ctx[26]), action_destroyer(/*noteSuggestPopperRef*/
-            ctx[23].call(null, input0)), listen(input0, "input",
+            ctx[28]), action_destroyer(/*noteSuggestPopperRef*/
+            ctx[25].call(null, input0)), listen(input0, "input",
             /*input0_input_handler*/
-            ctx[38]), listen(input0, "input",
+            ctx[40]), listen(input0, "input",
             /*input_handler*/
-            ctx[40]), listen(input0, "focus",
+            ctx[42]), listen(input0, "focus",
             /*focus_handler*/
-            ctx[41]), listen(input0, "click", click_handler), listen(input1, "input",
+            ctx[43]), listen(input0, "click", click_handler), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[45]), listen(input1, "focus",
+            ctx[47]), listen(input1, "input",
+            /*input_handler_1*/
+            ctx[48]), listen(input1, "focus",
             /*focus_handler_2*/
-            ctx[47]), listen(input2, "input",
+            ctx[50]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[48]), listen(form, "submit",
+            ctx[51]), listen(input2, "input",
+            /*input_handler_2*/
+            ctx[52]), listen(input3, "input",
+            /*input3_input_handler*/
+            ctx[53]), listen(input3, "input",
+            /*input_handler_3*/
+            ctx[54]), listen(input4, "input",
+            /*input4_input_handler*/
+            ctx[55]), listen(form, "submit",
             /*submit_handler*/
-            ctx[58])];
+            ctx[65])];
             mounted = true;
           }
         },
@@ -30795,12 +31104,12 @@
 
           if (dirty[0] &
           /*note*/
-          256 && input0.value !==
+          1024 && input0.value !==
           /*note*/
-          ctx[8]) {
+          ctx[10]) {
             set_input_value(input0,
             /*note*/
-            ctx[8]);
+            ctx[10]);
           }
 
           if (
@@ -30831,11 +31140,27 @@
           }
 
           if (dirty[0] &
-          /*date*/
+          /*startTime*/
           128) {
             set_input_value(input2,
-            /*date*/
+            /*startTime*/
             ctx[7]);
+          }
+
+          if (dirty[0] &
+          /*endTime*/
+          256) {
+            set_input_value(input3,
+            /*endTime*/
+            ctx[8]);
+          }
+
+          if (dirty[0] &
+          /*date*/
+          512) {
+            set_input_value(input4,
+            /*date*/
+            ctx[9]);
           }
 
           if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
@@ -30852,9 +31177,9 @@
 
           if (dirty[0] &
           /*taskError*/
-          32768 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat(
+          131072 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat(
           /*taskError*/
-          ctx[15] ? " error" : ""))) {
+          ctx[17] ? " error" : ""))) {
             attr(label2, "class", label2_class_value);
           }
 
@@ -30866,7 +31191,7 @@
             } else {
               if_block2 = create_if_block$3(ctx);
               if_block2.c();
-              if_block2.m(form, t9);
+              if_block2.m(form, t11);
             }
           } else if (if_block2) {
             if_block2.d(1);
@@ -30875,17 +31200,17 @@
 
           if (dirty[0] &
           /*loading*/
-          8192) {
+          32768) {
             button.disabled =
             /*loading*/
-            ctx[13];
+            ctx[15];
           }
 
           if (dirty[0] &
           /*loading*/
-          8192 && form_class_value !== (form_class_value = "quick-add".concat(
+          32768 && form_class_value !== (form_class_value = "quick-add".concat(
           /*loading*/
-          ctx[13] ? " icon-loading" : ""))) {
+          ctx[15] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -30895,11 +31220,11 @@
           if (detaching) detach(form);
           /*input0_binding*/
 
-          ctx[39](null);
+          ctx[41](null);
           if (if_block0) if_block0.d();
           /*input1_binding*/
 
-          ctx[46](null);
+          ctx[49](null);
           if_block1.d();
           if (if_block2) if_block2.d();
           mounted = false;
@@ -30968,6 +31293,8 @@
       var noteAutosuggestList = [];
       var noteAutosuggestButtons = [];
       var duration = 1;
+      var startTime = new Date().toTimeString().substring(0, 5);
+      var endTime = startTime;
       var date = initialDate;
       var note;
       var noteInput;
@@ -31030,9 +31357,9 @@
               var reachedEnd = currentFocusNoteIndex + 1 >= ((_noteAutosuggestList = noteAutosuggestList) === null || _noteAutosuggestList === void 0 ? void 0 : _noteAutosuggestList.length);
 
               if (reachedEnd) {
-                $$invalidate(16, currentFocusNoteIndex = 0);
+                $$invalidate(18, currentFocusNoteIndex = 0);
               } else {
-                $$invalidate(16, currentFocusNoteIndex++, currentFocusNoteIndex);
+                $$invalidate(18, currentFocusNoteIndex++, currentFocusNoteIndex);
               }
 
               (_noteAutosuggestButto = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto === void 0 ? void 0 : _noteAutosuggestButto.focus();
@@ -31045,9 +31372,9 @@
               var _reachedEnd = currentLastestFocusTaskIndex + 1 >= (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length);
 
               if (_reachedEnd) {
-                $$invalidate(17, currentLastestFocusTaskIndex = 0);
+                $$invalidate(19, currentLastestFocusTaskIndex = 0);
               } else {
-                $$invalidate(17, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
+                $$invalidate(19, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
               }
 
               (_lastUsedTasksButtons = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons === void 0 ? void 0 : _lastUsedTasksButtons.focus();
@@ -31060,9 +31387,9 @@
               var _reachedEnd2 = currentFocusTaskIndex + 1 >= searchResultsNumTasks;
 
               if (_reachedEnd2) {
-                $$invalidate(18, currentFocusTaskIndex = 0);
+                $$invalidate(20, currentFocusTaskIndex = 0);
               } else {
-                $$invalidate(18, currentFocusTaskIndex++, currentFocusTaskIndex);
+                $$invalidate(20, currentFocusTaskIndex++, currentFocusTaskIndex);
               }
 
               (_tasksButtons$current = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current === void 0 ? void 0 : _tasksButtons$current.focus();
@@ -31080,9 +31407,9 @@
               if (reachedStart) {
                 var _noteAutosuggestList2;
 
-                $$invalidate(16, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
+                $$invalidate(18, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
               } else {
-                $$invalidate(16, currentFocusNoteIndex--, currentFocusNoteIndex);
+                $$invalidate(18, currentFocusNoteIndex--, currentFocusNoteIndex);
               }
 
               (_noteAutosuggestButto2 = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto2 === void 0 ? void 0 : _noteAutosuggestButto2.focus();
@@ -31095,9 +31422,9 @@
               var _reachedStart = currentLastestFocusTaskIndex - 1 < 0;
 
               if (_reachedStart) {
-                $$invalidate(17, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
+                $$invalidate(19, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
               } else {
-                $$invalidate(17, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
+                $$invalidate(19, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
               }
 
               (_lastUsedTasksButtons2 = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons2 === void 0 ? void 0 : _lastUsedTasksButtons2.focus();
@@ -31110,9 +31437,9 @@
               var _reachedStart2 = currentFocusTaskIndex - 1 < 0;
 
               if (_reachedStart2) {
-                $$invalidate(18, currentFocusTaskIndex = searchResultsNumTasks - 1);
+                $$invalidate(20, currentFocusTaskIndex = searchResultsNumTasks - 1);
               } else {
-                $$invalidate(18, currentFocusTaskIndex--, currentFocusTaskIndex);
+                $$invalidate(20, currentFocusTaskIndex--, currentFocusTaskIndex);
               }
 
               (_tasksButtons$current2 = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current2 === void 0 ? void 0 : _tasksButtons$current2.focus();
@@ -31142,7 +31469,7 @@
 
       var search = function search(q) {
         if (!q) {
-          $$invalidate(19, searchResults = []);
+          $$invalidate(21, searchResults = []);
           return;
         }
 
@@ -31150,7 +31477,7 @@
         var projectsResults = projectsFuse.search(q);
         var tasksResults = tasksFuse.search(q);
         var taskIndex = -1;
-        $$invalidate(19, searchResults = _toConsumableArray(groupedData).map(function (client) {
+        $$invalidate(21, searchResults = _toConsumableArray(groupedData).map(function (client) {
           var _clientFound$score;
 
           if (!client) {
@@ -31230,10 +31557,10 @@
         // and then focus the actual search input
 
         (_searchInput = searchInput) === null || _searchInput === void 0 ? void 0 : _searchInput.focus();
-        $$invalidate(18, currentFocusTaskIndex = -1);
-        $$invalidate(17, currentLastestFocusTaskIndex = -1);
+        $$invalidate(20, currentFocusTaskIndex = -1);
+        $$invalidate(19, currentLastestFocusTaskIndex = -1);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(16, currentFocusNoteIndex = -1);
+        $$invalidate(18, currentFocusNoteIndex = -1);
       };
 
       var handleHidePopovers = function handleHidePopovers(event) {
@@ -31246,9 +31573,9 @@
 
         $$invalidate(0, showTaskSelector = false);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(18, currentFocusTaskIndex = -1);
-        $$invalidate(17, currentLastestFocusTaskIndex = -1);
-        $$invalidate(16, currentFocusNoteIndex = -1);
+        $$invalidate(20, currentFocusTaskIndex = -1);
+        $$invalidate(19, currentLastestFocusTaskIndex = -1);
+        $$invalidate(18, currentFocusNoteIndex = -1);
       };
 
       onMount(function () {
@@ -31258,7 +31585,7 @@
           if (noteInput) {
             noteInput.focus();
             setTimeout(function () {
-              $$invalidate(12, durationInput.disabled = false, durationInput);
+              $$invalidate(14, durationInput.disabled = false, durationInput);
             }, 500);
           }
         });
@@ -31266,7 +31593,7 @@
         if (noteInput) {
           noteInput.focus();
           setTimeout(function () {
-            $$invalidate(12, durationInput.disabled = false, durationInput);
+            $$invalidate(14, durationInput.disabled = false, durationInput);
           }, 500);
         }
 
@@ -31285,22 +31612,23 @@
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(13, loading = true);
-                  $$invalidate(15, taskError = false);
+                  $$invalidate(15, loading = true);
+                  $$invalidate(17, taskError = false);
 
                   if ((_selected = selected) !== null && _selected !== void 0 && (_selected$task = _selected.task) !== null && _selected$task !== void 0 && _selected$task.value) {
                     _context.next = 6;
                     break;
                   }
 
-                  $$invalidate(13, loading = false);
-                  $$invalidate(15, taskError = true);
+                  $$invalidate(15, loading = false);
+                  $$invalidate(17, taskError = true);
                   return _context.abrupt("return");
 
                 case 6:
                   _context.prev = 6;
                   entry = {
-                    duration: duration,
+                    startTime: startTime,
+                    endTime: endTime,
                     date: date,
                     note: note,
                     task: selected.task.value
@@ -31331,7 +31659,7 @@
                   console.error(_context.t0);
 
                 case 17:
-                  $$invalidate(13, loading = false);
+                  $$invalidate(15, loading = false);
 
                 case 18:
                 case "end":
@@ -31348,13 +31676,13 @@
 
       function input0_input_handler() {
         note = this.value;
-        $$invalidate(8, note);
+        $$invalidate(10, note);
       }
 
       function input0_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           noteInput = $$value;
-          $$invalidate(9, noteInput);
+          $$invalidate(11, noteInput);
         });
       }
 
@@ -31391,8 +31719,8 @@
         }
 
         $$invalidate(0, showTaskSelector = false);
-        $$invalidate(18, currentFocusTaskIndex = -1);
-        $$invalidate(17, currentLastestFocusTaskIndex = -1);
+        $$invalidate(20, currentFocusTaskIndex = -1);
+        $$invalidate(19, currentLastestFocusTaskIndex = -1);
       };
 
       function a_binding($$value, index) {
@@ -31413,11 +31741,11 @@
           return;
         }
 
-        $$invalidate(8, note = (_time$note = time.note) !== null && _time$note !== void 0 ? _time$note : note);
+        $$invalidate(10, note = (_time$note = time.note) !== null && _time$note !== void 0 ? _time$note : note);
         var startDate = parseISO(time.start);
         var endDate = parseISO(time.end);
         $$invalidate(6, duration = (_ref2 = differenceInMinutes(endDate, startDate) / 60) !== null && _ref2 !== void 0 ? _ref2 : 1);
-        $$invalidate(14, selected = {
+        $$invalidate(16, selected = {
           task: {
             label: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
             value: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$task2 = suggestion.task) === null || _suggestion$task2 === void 0 ? void 0 : _suggestion$task2.uuid
@@ -31432,11 +31760,11 @@
           }
         });
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(16, currentFocusNoteIndex = -1);
+        $$invalidate(18, currentFocusNoteIndex = -1);
       };
 
       var focus_handler_1 = function focus_handler_1(index) {
-        $$invalidate(16, currentFocusNoteIndex = index);
+        $$invalidate(18, currentFocusNoteIndex = index);
       };
 
       function input1_input_handler() {
@@ -31444,36 +31772,58 @@
         $$invalidate(6, duration);
       }
 
+      var input_handler_1 = function input_handler_1() {
+        return $$invalidate(8, endTime = Helpers.calculateEndTime(startTime, duration));
+      };
+
       function input1_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           durationInput = $$value;
-          $$invalidate(12, durationInput);
+          $$invalidate(14, durationInput);
         });
       }
 
       var focus_handler_2 = function focus_handler_2() {
-        $$invalidate(16, currentFocusNoteIndex = -1);
+        $$invalidate(18, currentFocusNoteIndex = -1);
         $$invalidate(1, showNoteAutosuggest = false);
       };
 
       function input2_input_handler() {
+        startTime = this.value;
+        $$invalidate(7, startTime);
+      }
+
+      var input_handler_2 = function input_handler_2() {
+        return $$invalidate(6, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+
+      function input3_input_handler() {
+        endTime = this.value;
+        $$invalidate(8, endTime);
+      }
+
+      var input_handler_3 = function input_handler_3() {
+        return $$invalidate(6, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+
+      function input4_input_handler() {
         date = this.value;
-        $$invalidate(7, date);
+        $$invalidate(9, date);
       }
 
       function input_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           searchInput = $$value;
-          $$invalidate(10, searchInput);
+          $$invalidate(12, searchInput);
         });
       }
 
       function input_input_handler() {
         searchValue = this.value;
-        $$invalidate(11, searchValue);
+        $$invalidate(13, searchValue);
       }
 
-      var input_handler_1 = function input_handler_1() {
+      var input_handler_4 = function input_handler_4() {
         return search(searchValue);
       };
 
@@ -31489,7 +31839,7 @@
 
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(14, selected = {
+        $$invalidate(16, selected = {
           task: {
             label: entry === null || entry === void 0 ? void 0 : (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
             value: entry === null || entry === void 0 ? void 0 : (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
@@ -31507,7 +31857,7 @@
       };
 
       var focus_handler_3 = function focus_handler_3(index) {
-        $$invalidate(17, currentLastestFocusTaskIndex = index);
+        $$invalidate(19, currentLastestFocusTaskIndex = index);
       };
 
       function a_binding_2($$value, task) {
@@ -31520,7 +31870,7 @@
       var click_handler_3 = function click_handler_3(client, project, task, event) {
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(14, selected = {
+        $$invalidate(16, selected = {
           client: {
             label: client.label,
             value: client.value
@@ -31535,7 +31885,7 @@
       };
 
       var focus_handler_4 = function focus_handler_4(task) {
-        $$invalidate(18, currentFocusTaskIndex = task.taskIndex);
+        $$invalidate(20, currentFocusTaskIndex = task.taskIndex);
       };
 
       var submit_handler = function submit_handler(event) {
@@ -31545,32 +31895,32 @@
       };
 
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(31, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(32, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(33, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(34, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(35, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(36, initialDate = $$props.initialDate);
-        if ('latestSearchEntries' in $$props) $$invalidate(37, latestSearchEntries = $$props.latestSearchEntries);
+        if ('action' in $$props) $$invalidate(33, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(34, requestToken = $$props.requestToken);
+        if ('clients' in $$props) $$invalidate(35, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(36, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(37, tasks = $$props.tasks);
+        if ('initialDate' in $$props) $$invalidate(38, initialDate = $$props.initialDate);
+        if ('latestSearchEntries' in $$props) $$invalidate(39, latestSearchEntries = $$props.latestSearchEntries);
       };
 
-      $$invalidate(13, loading = false);
+      $$invalidate(15, loading = false);
 
-      $$invalidate(15, taskError = false);
+      $$invalidate(17, taskError = false);
 
-      $$invalidate(14, selected = null);
+      $$invalidate(16, selected = null);
 
       searchResultsNumTasks = 0;
 
-      $$invalidate(18, currentFocusTaskIndex = -1);
+      $$invalidate(20, currentFocusTaskIndex = -1);
 
-      $$invalidate(17, currentLastestFocusTaskIndex = -1);
+      $$invalidate(19, currentLastestFocusTaskIndex = -1);
 
-      $$invalidate(16, currentFocusNoteIndex = -1);
+      $$invalidate(18, currentFocusNoteIndex = -1);
 
-      $$invalidate(19, searchResults = []);
+      $$invalidate(21, searchResults = []);
 
-      return [showTaskSelector, showNoteAutosuggest, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, date, note, noteInput, searchInput, searchValue, durationInput, loading, selected, taskError, currentFocusNoteIndex, currentLastestFocusTaskIndex, currentFocusTaskIndex, searchResults, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, save, action, requestToken, clients, projects, tasks, initialDate, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_input_handler, input1_binding, focus_handler_2, input2_input_handler, input_binding, input_input_handler, input_handler_1, a_binding_1, click_handler_2, focus_handler_3, a_binding_2, click_handler_3, focus_handler_4, submit_handler];
+      return [showTaskSelector, showNoteAutosuggest, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, loading, selected, taskError, currentFocusNoteIndex, currentLastestFocusTaskIndex, currentFocusTaskIndex, searchResults, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, save, action, requestToken, clients, projects, tasks, initialDate, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_input_handler, input_handler_1, input1_binding, focus_handler_2, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3, input4_input_handler, input_binding, input_input_handler, input_handler_4, a_binding_1, click_handler_2, focus_handler_3, a_binding_2, click_handler_3, focus_handler_4, submit_handler];
     }
 
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -31585,13 +31935,13 @@
 
         _this = _super.call(this);
         init$2(_assertThisInitialized(_this), options, instance$7, create_fragment$7, safe_not_equal, {
-          action: 31,
-          requestToken: 32,
-          clients: 33,
-          projects: 34,
-          tasks: 35,
-          initialDate: 36,
-          latestSearchEntries: 37
+          action: 33,
+          requestToken: 34,
+          clients: 35,
+          projects: 36,
+          tasks: 37,
+          initialDate: 38,
+          latestSearchEntries: 39
         }, null, [-1, -1, -1]);
         return _this;
       }

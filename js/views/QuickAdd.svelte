@@ -13,6 +13,7 @@
 	import Fuse from "fuse.js";
 	import { differenceInMinutes, parseISO } from "date-fns";
 	import { generateUrl } from "@nextcloud/router";
+	import { Helpers } from "../lib/helpers";
 
 	const extraOpts = {
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
@@ -42,6 +43,8 @@
 	$: currentFocusNoteIndex = -1;
 
 	let duration = 1;
+	let startTime = new Date().toTimeString().substring(0, 5);
+	let endTime = startTime;
 	let date = initialDate;
 	let note;
 	let noteInput;
@@ -306,7 +309,7 @@
 			return;
 		}
 		try {
-			let entry = { duration, date, note, task: selected.task.value };
+			let entry = { startTime, endTime, date, note, task: selected.task.value };
 			const response = await fetch(action, {
 				method: "POST",
 				body: JSON.stringify(entry),
@@ -434,15 +437,40 @@
 				type="number"
 				name="duration"
 				step="0.01"
+				min="0"
+				max="23.99"
 				placeholder=""
 				class="duration-input"
 				bind:value={duration}
+				on:input={() => (endTime = Helpers.calculateEndTime(startTime, duration))}
 				bind:this={durationInput}
 				on:focus={() => {
 					currentFocusNoteIndex = -1;
 					showNoteAutosuggest = false;
 				}}
 				disabled
+			/>
+			<input
+				type="time"
+				name="startTime"
+				placeholder="--:--"
+				style="width: 100px"
+				class="input-wide"
+				bind:value={startTime}
+				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+				pattern="[0-9]{2}:[0-9]{2}"
+				required
+			/>
+			<input
+				type="time"
+				name="endTime"
+				placeholder="--:--"
+				style="width: 100px"
+				class="input-wide"
+				pattern="[0-9]{2}:[0-9]{2}"
+				bind:value={endTime}
+				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+				required
 			/>
 			<input type="date" name="date" class="date-input" bind:value={date} />
 		</span>

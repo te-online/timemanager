@@ -24,10 +24,10 @@
 		Helpers.hideFallbacks("TimeEditor.svelte");
 	});
 
-	const save = async ({ duration, date, note }) => {
+	const save = async ({ startTime, endTime, date, note }) => {
 		loading = true;
 		try {
-			let entry = { duration, date, note };
+			let entry = { startTime, endTime, date, note };
 			if (timeUuid) {
 				entry.uuid = timeUuid;
 			}
@@ -73,6 +73,7 @@
 			{timeEditorButtonCaption}
 			{timeEditorCaption}
 			{editTimeEntryData}
-			{isServer} />
+			{isServer}
+		/>
 	</Overlay>
 {/if}

@@ -29,6 +29,7 @@ OC.L10N.register(
 		Today: "heute",
 		Statistics: "Statistik",
 		"Duration (in hrs.)": "Dauer (in Std.)",
+		"Start time / End time": "Startzeit / Endzeit",
 		Date: "Datum",
 		Edit: "Bearbeiten",
 		"Edit time entry": "Zeiteintrag bearbeiten",

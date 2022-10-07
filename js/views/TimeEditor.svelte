@@ -13,13 +13,16 @@
 	export let timeEditorButtonCaption;
 
 	import { translate } from "@nextcloud/l10n";
+	import { Helpers } from "../lib/helpers";
 
-	let duration = editTimeEntryData.duration;
+	let startTime = editTimeEntryData.startTime || "";
+	let endTime = editTimeEntryData.endTime || "";
+	let duration = Helpers.calculateDuration(startTime, endTime);
 	let date = editTimeEntryData.date || initialDate;
 	let note = editTimeEntryData.note || "";
 
 	const submit = () => {
-		onSubmit({ duration, date, note });
+		onSubmit({ startTime, endTime, date, note });
 	};
 </script>
 
@@ -27,28 +30,59 @@
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<label>
-			{translate('timemanager', 'Duration (in hrs.)')}
+			{translate("timemanager", "Duration (in hrs.)")}
 			<br />
 			<input
 				autofocus
 				type="number"
 				name="duration"
 				step="0.01"
+				min="0"
+				max="23.99"
 				placeholder=""
 				style="width: 100%"
 				class="input-wide"
 				bind:value={duration}
-				required />
+				on:input={() => (endTime = Helpers.calculateEndTime(startTime, duration))}
+				required
+			/>
 		</label>
 		<br />
 		<label>
-			{translate('timemanager', 'Date')}
+			{translate("timemanager", "Start time / End time")}
+			<br />
+			<input
+				type="time"
+				name="startTime"
+				placeholder="--:--"
+				style="width: 48%;margin-right: 0%"
+				class="input-wide"
+				bind:value={startTime}
+				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+				pattern="[0-9]{2}:[0-9]{2}"
+				required
+			/>
+			<input
+				type="time"
+				name="endTime"
+				placeholder="--:--"
+				style="width: 48%;margin-right: 0%;float: right;"
+				class="input-wide"
+				pattern="[0-9]{2}:[0-9]{2}"
+				bind:value={endTime}
+				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+				required
+			/>
+		</label>
+		<br />
+		<label>
+			{translate("timemanager", "Date")}
 			<br />
 			<input type="date" name="date" style="width: 100%" class="input-wide" bind:value={date} />
 		</label>
 		<br />
 		<label>
-			{translate('timemanager', 'Note')}
+			{translate("timemanager", "Note")}
 			<br />
 			<!-- prettier-ignore -->
 			<textarea
@@ -60,17 +94,17 @@
 		</label>
 		<br />
 		<label class="space-top">
-			{translate('timemanager', 'For task')}
+			{translate("timemanager", "For task")}
 			<br />
 			<strong>{taskName}</strong>
 		</label>
 		<label class="space-top">
-			{translate('timemanager', 'For project')}
+			{translate("timemanager", "For project")}
 			<br />
 			<strong>{projectName}</strong>
 		</label>
 		<label class="space-top">
-			{translate('timemanager', 'For client')}
+			{translate("timemanager", "For client")}
 			<br />
 			<strong>{clientName}</strong>
 		</label>
@@ -80,7 +114,7 @@
 			<button type="submit" class="button primary">{timeEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{translate('timemanager', 'Cancel')}
+					{translate("timemanager", "Cancel")}
 				</button>
 			{/if}
 		</div>

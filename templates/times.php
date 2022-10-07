@@ -156,7 +156,8 @@ $l = \OC::$server->getL10N('timemanager');
 											data-svelte="EditTimeEntryButton.svelte"
 											data-uuid="<?php p($time->getUuid()); ?>"
 											data-edit-data="<?php p(json_encode([
-												"duration" => $time->getDurationInHours(),
+												"startTime" => $time->getStartTime(),
+												"endTime" => $time->getEndTime(),
 												"date" => $time->getStartFormatted('Y-m-d'),
 												"note" => $time->getNote()
 											])); ?>"
