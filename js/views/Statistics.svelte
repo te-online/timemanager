@@ -137,6 +137,8 @@
 		const end = format(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
 		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}`;
 
+		const timezone = Helpers.getTimezone();
+
 		// Parse current URL for filters
 		const urlParts = document.location.href.split("?");
 		if (urlParts.length > 1) {
@@ -165,6 +167,11 @@
 					statUrl += `&userFilter=${value}`;
 				}
 			});
+		}
+		
+		
+		if (timezone) {
+			statUrl += `&timezone=${timezone}`;
 		}
 
 		const stats = await fetch(statUrl, {

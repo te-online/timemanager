@@ -149,6 +149,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
+					"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
@@ -304,6 +305,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
+					"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
 				],
 				"includeShared" => true,
 			];
@@ -566,6 +568,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
 			],
 			"requestToken" => $requestToken,
 			"clientName" => $client_name,
@@ -769,6 +772,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
@@ -952,6 +956,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",

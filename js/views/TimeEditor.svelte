@@ -15,10 +15,10 @@
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
 
-	let startTime = editTimeEntryData.startTime || "";
-	let endTime = editTimeEntryData.endTime || "";
+	let startTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'time') || "";
+	let endTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.endTime, undefined, 'time') || "";
 	let duration = Helpers.calculateDuration(startTime, endTime);
-	let date = editTimeEntryData.date || initialDate;
+	let date = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'date');
 	let note = editTimeEntryData.note || "";
 
 	const submit = () => {

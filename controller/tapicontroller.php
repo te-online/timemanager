@@ -235,12 +235,30 @@ class TApiController extends ApiController {
 		string $tasks = null,
 		string $status = null,
 		$shared = false,
-		string $userFilter = ""
+		string $userFilter = "",
+		string $timezone = ""
 	) {
 		// Get possible task ids to filters for
 		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared);
 
 		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
+
+		// Calculate UTC $start and $end, as database entries are UTC, but user expects his local time
+		// His local time can only be evaluated in JS and is passed through the $timezone parameter
+		if ($timezone) {
+			$dateTimezone = new \DateTimeZone($timezone);
+
+			// Build together start and end values
+			$startDatetime = \DateTime::createFromFormat("Y-m-d H:i:s", $start, $dateTimezone);
+			$endDatetime = \DateTime::createFromFormat("Y-m-d H:i:s", $end, $dateTimezone);
+
+			// Change to UTC
+			$startDatetime->setTimezone(new \DateTimeZone("UTC"));
+			$endDatetime->setTimezone(new \DateTimeZone("UTC"));
+
+			$start = $startDatetime->format("Y-m-d H:i:s");
+			$end = $endDatetime->format("Y-m-d H:i:s");
+		}
 
 		// Get all time entries for time period
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared);
@@ -269,25 +287,25 @@ class TApiController extends ApiController {
 
 			// Group by date
 			if ($group_by === "day") {
-				$day = $time->getStartFormatted("Y-m-d");
+				$day = $time->getStartFormatted("Y-m-d", $dateTimezone);
 				if (!isset($grouped[$day])) {
 					$grouped[$day] = 0;
 				}
 				$grouped[$day] += $duration;
 			} elseif ($group_by === "week") {
-				$week = $time->getStartFormatted("Y-W");
+				$week = $time->getStartFormatted("Y-W", $dateTimezone);
 				if (!isset($grouped[$week])) {
 					$grouped[$week] = 0;
 				}
 				$grouped[$week] += $duration;
 			} elseif ($group_by === "month") {
-				$month = $time->getStartFormatted("Y-m");
+				$month = $time->getStartFormatted("Y-m", $dateTimezone);
 				if (!isset($grouped[$month])) {
 					$grouped[$month] = 0;
 				}
 				$grouped[$month] += $duration;
 			} elseif ($group_by === "year") {
-				$year = $time->getStartFormatted("Y");
+				$year = $time->getStartFormatted("Y", $dateTimezone);
 				if (!isset($grouped[$year])) {
 					$grouped[$year] = 0;
 				}

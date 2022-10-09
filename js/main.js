@@ -269,6 +269,13 @@ const init = () => {
 	// 	})
 	// );
 
+	const transformDatetimeElement = function () {
+		$(this).text(Helpers.formatLocalDate($(this).data("datetime")));
+	};
+
+	const items = $("[data-datetime]");
+	items.each(transformDatetimeElement);
+
 	document.body.classList.add("tm_ready");
 };
 

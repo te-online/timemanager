@@ -134,7 +134,9 @@ $l = \OC::$server->getL10N('timemanager');
 										<?php p($time->getNote()); ?>
 									</div>
 									<div class="tm_item-date">
-										<?php p($time->getStartLocalized()); ?>
+										<span data-datetime="<?php p($time->getStartFormatted("Y-m-d H:i:s")); ?>">
+											<?php p($time->getStartLocalized()); ?>
+										</span>
 										<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
 											&nbsp;&middot;&nbsp;
 											<span class="author">

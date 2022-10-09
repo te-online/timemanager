@@ -13944,6 +13944,94 @@
 
           endTime += duration * 60 * 60 * 1000;
           return new Date(endTime).toTimeString().substring(0, 5);
+        } // Uses calculateDatetimeWithTimezone to transform a given UTC date and time into a timezone local date or time
+
+      }, {
+        key: "calculateToLocalDatetime",
+        value: function calculateToLocalDatetime(date, time, timezone) {
+          var output = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "date" | "time";
+          if (!timezone) timezone = this.getTimezone();
+          var datetime = new Date("".concat(date, " ").concat(time, "Z"));
+          return this.calculateDatetimeWithTimezone(datetime, timezone, output);
+        } // Uses calculateDatetimeWithTimezone to transform a given date, time and timezone into a UTC date or time
+
+      }, {
+        key: "calculateToUTCDatetime",
+        value: function calculateToUTCDatetime(date, time, timezone) {
+          var output = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "date" | "time";
+          if (!timezone) timezone = this.getTimezone();
+          var datetime = new Date(new Date("".concat(date, " ").concat(time)).toLocaleString("en-US", {
+            timezone: timezone
+          }));
+          return this.calculateDatetimeWithTimezone(datetime, "UTC", output);
+        } // Used by Helpers class only to transform dates and times from UTC to local and vice versa. Depending on output
+        // parameter this function either returns "yyyy-MM-DD" or "HH:mm"
+
+      }, {
+        key: "calculateDatetimeWithTimezone",
+        value: function calculateDatetimeWithTimezone(datetime, timezone) {
+          var output = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "date" | "time";
+          var datetimeFormat = output === "date" ? new Intl.DateTimeFormat("fr-CA", // Returns yyyy-MM-DD
+          {
+            timeZone: timezone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }) : new Intl.DateTimeFormat("en-US", // Returns HH:mm
+          {
+            timeZone: timezone,
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+          });
+          return datetimeFormat.format(datetime);
+        } // Transforms a UTC date into a local date. Used in main.js to transform all UI-visible dates in
+        // times/statistics into local times.
+        // To add a date to a php template to be transformed once loaded, add the following code into php:
+        // <span data-datetime="<?php p($time->getStartFormatted("Y-m-d H:i:s")); ?>"> ...
+        // In main.js transformDatetimeElement replaces all these values with local date values.
+        // Returns a localized long date format.
+
+      }, {
+        key: "formatLocalDate",
+        value: function formatLocalDate(date, timezone) {
+          if (!timezone) timezone = this.getTimezone(); // Time
+
+          var datetime = new Date("".concat(date, "Z"));
+          var datetimeFormat = new Intl.DateTimeFormat("default", {
+            timeZone: timezone,
+            year: "numeric",
+            month: "long",
+            day: "2-digit",
+            weekday: "long"
+          });
+          return datetimeFormat.format(datetime);
+        } // Fetch current timezone. Might be timezone set in nextcloud/calendar settings or by browser.
+
+      }, {
+        key: "getTimezone",
+        value: function getTimezone() {
+          var store;
+
+          try {
+            store = JSON.parse(document.querySelector("span[data-store]").getAttribute("data-store"));
+          } catch (_unused) {// Failed to find store
+          }
+
+          var timezone = undefined;
+
+          if (store && store["settings"] && store["settings"]["timezone"]) {
+            var storeTimezone = store["settings"]["timezone"];
+            if (storeTimezone && storeTimezone !== "automatic") timezone = storeTimezone;
+          }
+
+          if (!timezone) {
+            // nextcloud/calendar actually uses jstz to determine the user/browser timezone
+            // if no other timezone was defined
+            timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          }
+
+          return timezone;
         }
       }]);
 
@@ -13955,7 +14043,7 @@
       child_ctx[25] = list[i];
       child_ctx[27] = i;
       return child_ctx;
-    } // (227:0) {#if controls}
+    } // (234:0) {#if controls}
 
 
     function create_if_block_7$1(ctx) {
@@ -13973,7 +14061,7 @@
           if (detaching) detach(h2);
         }
       };
-    } // (231:1) {#if controls}
+    } // (238:1) {#if controls}
 
 
     function create_if_block_6$3(ctx) {
@@ -14061,7 +14149,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (245:3) {#if !loading && weekTotal > 0}
+    } // (252:3) {#if !loading && weekTotal > 0}
 
 
     function create_if_block_3$3(ctx) {
@@ -14126,7 +14214,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (248:6) {#if point && point.stats}
+    } // (255:6) {#if point && point.stats}
 
 
     function create_if_block_4$3(ctx) {
@@ -14211,7 +14299,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (249:7) {#if point.stats.total > 0}
+    } // (256:7) {#if point.stats.total > 0}
 
 
     function create_if_block_5$3(ctx) {
@@ -14273,7 +14361,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (246:4) {#each points as point, index}
+    } // (253:4) {#each points as point, index}
 
 
     function create_each_block$8(ctx) {
@@ -14319,7 +14407,7 @@
           if (if_block) if_block.d();
         }
       };
-    } // (261:3) {#if controls && !loading && weekTotal === 0}
+    } // (268:3) {#if controls && !loading && weekTotal === 0}
 
 
     function create_if_block_2$4(ctx) {
@@ -14338,7 +14426,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (265:2) {#if controls}
+    } // (272:2) {#if controls}
 
 
     function create_if_block$j(ctx) {
@@ -14495,7 +14583,7 @@
           run_all(dispose);
         }
       };
-    } // (277:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    } // (284:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
     function create_if_block_1$7(ctx) {
@@ -14856,14 +14944,15 @@
 
       var loadStats = /*#__PURE__*/function () {
         var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-          var start, end, statUrl, urlParts, queryString, queryStringParts, stats;
+          var start, end, statUrl, timezone, urlParts, queryString, queryStringParts, stats;
           return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
                   start = format$3(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
                   end = format$3(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
-                  statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
+                  statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0);
+                  timezone = Helpers.getTimezone(); // Parse current URL for filters
 
                   urlParts = document.location.href.split("?");
 
@@ -14902,7 +14991,11 @@
                     });
                   }
 
-                  _context3.next = 7;
+                  if (timezone) {
+                    statUrl += "&timezone=".concat(timezone);
+                  }
+
+                  _context3.next = 9;
                   return fetch(statUrl, {
                     method: "GET",
                     headers: {
@@ -14911,15 +15004,15 @@
                     }
                   });
 
-                case 7:
+                case 9:
                   stats = _context3.sent;
-                  _context3.next = 10;
+                  _context3.next = 12;
                   return stats.json();
 
-                case 10:
+                case 12:
                   return _context3.abrupt("return", _context3.sent);
 
-                case 11:
+                case 13:
                 case "end":
                   return _context3.stop();
               }
@@ -17833,10 +17926,10 @@
           editTimeEntryData = _$$props$editTimeEntr === void 0 ? {} : _$$props$editTimeEntr;
       var timeEditorCaption = $$props.timeEditorCaption;
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
-      var startTime = editTimeEntryData.startTime || "";
-      var endTime = editTimeEntryData.endTime || "";
+      var startTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'time') || "";
+      var endTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.endTime, undefined, 'time') || "";
       var duration = Helpers.calculateDuration(startTime, endTime);
-      var date = editTimeEntryData.date || initialDate;
+      var date = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'date');
       var note = editTimeEntryData.note || "";
 
       var submit = function submit() {
@@ -17975,7 +18068,7 @@
           dispose();
         }
       };
-    } // (53:0) {#if !timeUuid}
+    } // (58:0) {#if !timeUuid}
 
 
     function create_if_block_1$6(ctx) {
@@ -18019,7 +18112,7 @@
           dispose();
         }
       };
-    } // (62:0) {#if show}
+    } // (67:0) {#if show}
 
 
     function create_if_block$b(ctx) {
@@ -18078,7 +18171,7 @@
           destroy_component(overlay, detaching);
         }
       };
-    } // (63:1) <Overlay {loading}>
+    } // (68:1) <Overlay {loading}>
 
 
     function create_default_slot$5(ctx) {
@@ -18317,7 +18410,7 @@
 
       var save = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
-          var startTime, endTime, date, note, entry, response;
+          var startTime, endTime, date, note, utcStartTime, utcEndTime, utcDate, entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -18325,10 +18418,14 @@
                   startTime = _ref4.startTime, endTime = _ref4.endTime, date = _ref4.date, note = _ref4.note;
                   $$invalidate(11, loading = true);
                   _context.prev = 2;
+                  // Convert from local to UTC
+                  utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
+                  utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
+                  utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
                   entry = {
-                    startTime: startTime,
-                    endTime: endTime,
-                    date: date,
+                    startTime: utcStartTime,
+                    endTime: utcEndTime,
+                    date: utcDate,
                     note: note
                   };
 
@@ -18336,7 +18433,7 @@
                     entry.uuid = timeUuid;
                   }
 
-                  _context.next = 7;
+                  _context.next = 10;
                   return fetch(timeUuid ? editTimeEntryAction : action, {
                     method: timeUuid ? "PATCH" : "POST",
                     body: JSON.stringify(entry),
@@ -18346,7 +18443,7 @@
                     }
                   });
 
-                case 7:
+                case 10:
                   response = _context.sent;
 
                   if (response && response.ok) {
@@ -18354,23 +18451,23 @@
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
 
-                  _context.next = 14;
+                  _context.next = 17;
                   break;
 
-                case 11:
-                  _context.prev = 11;
+                case 14:
+                  _context.prev = 14;
                   _context.t0 = _context["catch"](2);
                   console.error(_context.t0);
 
-                case 14:
+                case 17:
                   $$invalidate(11, loading = false);
 
-                case 15:
+                case 18:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[2, 11]]);
+          }, _callee, null, [[2, 14]]);
         }));
 
         return function save(_x) {
@@ -29603,7 +29700,7 @@
       child_ctx[89] = list;
       child_ctx[87] = i;
       return child_ctx;
-    } // (389:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (394:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_6$1(ctx) {
@@ -29686,7 +29783,7 @@
           dispose();
         }
       };
-    } // (392:5) {#each noteAutosuggestList as suggestion, index}
+    } // (397:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29837,7 +29934,7 @@
           run_all(dispose);
         }
       };
-    } // (505:2) {:else}
+    } // (510:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -29937,7 +30034,7 @@
           run_all(dispose);
         }
       };
-    } // (481:2) {#if selected && !showTaskSelector}
+    } // (486:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -30069,7 +30166,7 @@
           run_all(dispose);
         }
       };
-    } // (519:1) {#if showTaskSelector}
+    } // (524:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -30231,7 +30328,7 @@
           run_all(dispose);
         }
       };
-    } // (546:4) {#if lastUsed?.length && !searchValue}
+    } // (551:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30298,7 +30395,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (550:8) {#if index === 0}
+    } // (555:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30317,7 +30414,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (548:6) {#each lastUsed as entry, index}
+    } // (553:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30492,7 +30589,7 @@
           run_all(dispose);
         }
       };
-    } // (637:34) 
+    } // (642:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30511,7 +30608,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (593:4) {#if searchResults?.length}
+    } // (598:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30576,7 +30673,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (603:12) {#each project.tasks as task}
+    } // (608:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30682,7 +30779,7 @@
           run_all(dispose);
         }
       };
-    } // (599:9) {#each client.projects as project}
+    } // (604:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -30774,7 +30871,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (594:5) {#each searchResults as client}
+    } // (599:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -30885,7 +30982,7 @@
       var t3;
       var label1;
       var html_tag;
-      var raw_value = dist_10("timemanager", "Duration (in hrs.) & Date") + "";
+      var raw_value = dist_10("timemanager", "Duration (in hrs.), Start time, End time & Date") + "";
       var t4;
       var span0;
       var input1;
@@ -31294,7 +31391,7 @@
       var noteAutosuggestButtons = [];
       var duration = 1;
       var startTime = new Date().toTimeString().substring(0, 5);
-      var endTime = startTime;
+      var endTime = Helpers.calculateEndTime(startTime, duration);
       var date = initialDate;
       var note;
       var noteInput;
@@ -31607,7 +31704,7 @@
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
           var _selected, _selected$task;
 
-          var entry, response;
+          var utcStartTime, utcEndTime, utcDate, entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -31626,14 +31723,18 @@
 
                 case 6:
                   _context.prev = 6;
+                  // Convert from local to UTC
+                  utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
+                  utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
+                  utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
                   entry = {
-                    startTime: startTime,
-                    endTime: endTime,
-                    date: date,
+                    startTime: utcStartTime,
+                    endTime: utcEndTime,
+                    date: utcDate,
                     note: note,
                     task: selected.task.value
                   };
-                  _context.next = 10;
+                  _context.next = 13;
                   return fetch(action, {
                     method: "POST",
                     body: JSON.stringify(entry),
@@ -31643,30 +31744,30 @@
                     }
                   });
 
-                case 10:
+                case 13:
                   response = _context.sent;
 
                   if (response && response.ok) {
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
 
-                  _context.next = 17;
+                  _context.next = 20;
                   break;
 
-                case 14:
-                  _context.prev = 14;
+                case 17:
+                  _context.prev = 17;
                   _context.t0 = _context["catch"](6);
                   console.error(_context.t0);
 
-                case 17:
+                case 20:
                   $$invalidate(15, loading = false);
 
-                case 18:
+                case 21:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[6, 14]]);
+          }, _callee, null, [[6, 17]]);
         }));
 
         return function save() {
@@ -46837,6 +46938,12 @@
       // 	})
       // );
 
+      var transformDatetimeElement = function transformDatetimeElement() {
+        $(this).text(Helpers.formatLocalDate($(this).data("datetime")));
+      };
+
+      var items = $("[data-datetime]");
+      items.each(transformDatetimeElement);
       document.body.classList.add("tm_ready");
     };
 

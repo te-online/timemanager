@@ -17,7 +17,7 @@ OC.L10N.register(
 		Cancel: "Abbrechen",
 		Delete: "Löschen",
 		"Do you want to delete this time entry?": "Möchtest du diesen Zeiteintrag löschen?",
-		"Duration (in hrs.) & Date": "Dauer (in Std.) & Datum",
+		"Duration (in hrs.), Start time, End time & Date": "Dauer (in Std.), Startzeit, Endzeit & Datum",
 		Add: "Hinzufügen",
 		"Current week": "Aktuelle Woche",
 		"Next week": "Nächste Woche",

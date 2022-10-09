@@ -44,7 +44,7 @@
 
 	let duration = 1;
 	let startTime = new Date().toTimeString().substring(0, 5);
-	let endTime = startTime;
+	let endTime = Helpers.calculateEndTime(startTime, duration);
 	let date = initialDate;
 	let note;
 	let noteInput;
@@ -309,7 +309,12 @@
 			return;
 		}
 		try {
-			let entry = { startTime, endTime, date, note, task: selected.task.value };
+			// Convert from local to UTC
+			const utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
+			const utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
+			const utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
+
+			let entry = { startTime: utcStartTime, endTime: utcEndTime, date: utcDate, note, task: selected.task.value };
 			const response = await fetch(action, {
 				method: "POST",
 				body: JSON.stringify(entry),
@@ -430,7 +435,7 @@
 		{/if}
 	</label>
 	<label for="quick-add-time">
-		{@html translate("timemanager", "Duration (in hrs.) & Date")}
+		{@html translate("timemanager", "Duration (in hrs.), Start time, End time & Date")}
 		<span class="double">
 			<input
 				id="quick-add-time"

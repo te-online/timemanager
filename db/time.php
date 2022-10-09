@@ -55,8 +55,9 @@ class Time extends Entity {
 	 *
 	 * @return string
 	 */
-	function getStartFormatted($format = "D, j. F Y") {
-		$start = date_create($this->getStart());
+	function getStartFormatted($format = "D, j. F Y", \DateTimeZone $timezone = null) {
+		$start = date_create($this->getStart(), new \DateTimeZone('UTC'));
+		if ($timezone) $start->setTimezone($timezone);
 		return date_format($start, $format);
 	}
 

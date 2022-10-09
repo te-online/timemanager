@@ -27,7 +27,12 @@
 	const save = async ({ startTime, endTime, date, note }) => {
 		loading = true;
 		try {
-			let entry = { startTime, endTime, date, note };
+			// Convert from local to UTC
+			const utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
+			const utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
+			const utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
+
+			let entry = { startTime: utcStartTime, endTime: utcEndTime, date: utcDate, note };
 			if (timeUuid) {
 				entry.uuid = timeUuid;
 			}
