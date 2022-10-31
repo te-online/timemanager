@@ -56,12 +56,18 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can activate app", () => {
 		cy.visit("/settings/apps");
-		cy.get(".apps-list-container div.section").contains("TimeManager").parent().find("input[value='Enable']").click();
 		cy.get(".apps-list-container div.section")
 			.contains("TimeManager")
 			.parent()
-			.find("input[value='Enable']")
-			.should("not.exist");
+			.within(() => {
+				cy.contains("Enable").click();
+			});
+		cy.get(".apps-list-container div.section")
+			.contains("TimeManager")
+			.parent()
+			.within(() => {
+				cy.contains("Enable").should("not.exist");
+			});
 	});
 
 	it("can import from a CSV file", () => {
