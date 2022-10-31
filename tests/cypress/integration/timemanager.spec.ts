@@ -56,18 +56,27 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can activate app", () => {
 		cy.visit("/settings/apps");
-		cy.get(".apps-list-container div.section")
-			.contains("TimeManager")
-			.parent()
-			.within(() => {
-				cy.contains("Enable").click();
-			});
-		cy.get(".apps-list-container div.section")
-			.contains("TimeManager")
-			.parent()
-			.within(() => {
-				cy.contains("Enable").should("not.exist");
-			});
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get(".apps-list-container div.section")
+				.contains("TimeManager")
+				.parent()
+				.within(() => {
+					cy.contains("Enable").click();
+				});
+			cy.get(".apps-list-container div.section")
+				.contains("TimeManager")
+				.parent()
+				.within(() => {
+					cy.contains("Enable").should("not.exist");
+				});
+		} else {
+			cy.get(".apps-list-container div.section").contains("TimeManager").parent().find("input[value='Enable']").click();
+			cy.get(".apps-list-container div.section")
+				.contains("TimeManager")
+				.parent()
+				.find("input[value='Enable']")
+				.should("not.exist");
+		}
 	});
 
 	it("can import from a CSV file", () => {
@@ -79,7 +88,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as import test user
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		// Navigate to tools page
@@ -132,7 +141,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as import test user
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		// Navigate to tools page
@@ -163,7 +172,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as import test user
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		// Navigate to tools page
@@ -750,7 +759,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
@@ -797,7 +806,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
@@ -881,7 +890,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
@@ -931,7 +940,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
@@ -967,7 +976,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
@@ -1170,7 +1179,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// Log in as sharee test user
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
-		cy.get('input[type="submit"]').click();
+		cy.get('[type="submit"]').click();
 		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
 
 		cy.visit("/apps/timemanager");
