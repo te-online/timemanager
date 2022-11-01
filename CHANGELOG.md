@@ -2,6 +2,16 @@
 
 Notable changes in each released version can be seen here.
 
+## 0.3.4 Beta, 31. October 2022
+
+### Fixed
+
+- SVG Favicon was re-generated (thanks to @devattendant)
+
+### Added
+
+- Run tests for Nextcloud 25 and bump compatibility to Nextcloud 26
+
 ## 0.3.3 Beta, 11. September 2022
 
 ### Added
