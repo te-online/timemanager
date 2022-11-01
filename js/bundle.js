@@ -46491,6 +46491,6 @@
     };
 
     init();
-    components.push(new PagePjax(init));
+    new PagePjax(init);
 
 })();

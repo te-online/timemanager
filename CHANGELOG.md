@@ -7,6 +7,8 @@ Notable changes in each released version can be seen here.
 ### Fixed
 
 - SVG Favicon was re-generated (thanks to @devattendant)
+- Add transform step for SCSS, since it [got removed from NC25](https://github.com/nextcloud/server/pull/32261)
+- Fix input fields border style for NC25 on reports page
 
 ### Added
 

@@ -22,6 +22,7 @@ import auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
+let pjax = null;
 
 $(document).ready(function () {
 	if ($('input[name="duration"]').length > 0) {
@@ -274,4 +275,4 @@ const init = () => {
 };
 
 init();
-components.push(new PagePjax(init));
+pjax = new PagePjax(init);
