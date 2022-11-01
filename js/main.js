@@ -19,6 +19,7 @@ import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
 import auth from "@nextcloud/auth";
+import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
 
@@ -273,4 +274,4 @@ const init = () => {
 };
 
 init();
-new PagePjax(init);
+components.push(new PagePjax(init));
