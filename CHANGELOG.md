@@ -2,17 +2,21 @@
 
 Notable changes in each released version can be seen here.
 
-## 0.3.4 Beta, 31. October 2022
+## 0.3.4 Beta, 6. November 2022
 
 ### Fixed
 
 - SVG Favicon was re-generated (thanks to @devattendant)
 - Add transform step for SCSS, since it [got removed from NC25](https://github.com/nextcloud/server/pull/32261)
 - Fix input fields border style for NC25 on reports page
+- Remove border from file input for NC25
+- Fix Cypress tests for NC25 failing due to `position: fixed` and `overflow: hidden` breaking Cypress' scrolling
+- Fix user filter showing on time entries list even though no entries were shared
+- Fix warning when checkmark status is not defined on a time entry
 
 ### Added
 
-- Run tests for Nextcloud 25 and bump compatibility to Nextcloud 26
+- Run tests for Nextcloud 25 and bump compatibility to Nextcloud 25
 
 ## 0.3.3 Beta, 11. September 2022
 
