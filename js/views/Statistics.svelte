@@ -24,12 +24,12 @@
 		differenceInWeeks,
 		differenceInMonths,
 		differenceInYears,
-		addYears
+		addYears,
 	} from "date-fns";
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
 
-	const simpleRounding = number => Math.round(number * 100) / 100;
+	const simpleRounding = Helpers.simpleRounding;
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
@@ -74,30 +74,30 @@
 		// Determine scale
 		if (durationDays > 31 && durationDays <= 180) {
 			scale = "week";
-			Array.from(Array(durationWeeks + 1).keys()).forEach(week => {
+			Array.from(Array(durationWeeks + 1).keys()).forEach((week) => {
 				points.push({
-					date: addWeeks(startCursor, week)
+					date: addWeeks(startCursor, week),
 				});
 			});
 		} else if (durationDays > 180 && durationMonths <= 24) {
 			scale = "month";
-			Array.from(Array(durationMonths + 1).keys()).forEach(month => {
+			Array.from(Array(durationMonths + 1).keys()).forEach((month) => {
 				points.push({
-					date: addMonths(startCursor, month)
+					date: addMonths(startCursor, month),
 				});
 			});
 		} else if (durationMonths > 24) {
 			scale = "year";
-			Array.from(Array(durationYears + 1).keys()).forEach(year => {
+			Array.from(Array(durationYears + 1).keys()).forEach((year) => {
 				points.push({
-					date: addYears(startCursor, year)
+					date: addYears(startCursor, year),
 				});
 			});
 		} else {
 			scale = "day";
-			Array.from(Array(durationDays + 1).keys()).forEach(day => {
+			Array.from(Array(durationDays + 1).keys()).forEach((day) => {
 				points.push({
-					date: addDays(startCursor, day)
+					date: addDays(startCursor, day),
 				});
 			});
 		}
@@ -106,11 +106,11 @@
 		const { grouped, js_date_format } = await loadStats();
 
 		// Extract points from grouped array
-		points = points.map(point => {
+		points = points.map((point) => {
 			// Get total from API response
 			const total = grouped[format(point.date, js_date_format)];
 			point.stats = {
-				total: total ? simpleRounding(total) : 0
+				total: total ? simpleRounding(total) : 0,
 			};
 			// Find highest value
 			if (total > highest) {
@@ -146,7 +146,7 @@
 			const queryStringParts = queryString.split("&");
 			let queryStringVariables = {};
 			// Map over all query params
-			queryStringParts.forEach(part => {
+			queryStringParts.forEach((part) => {
 				// Split query params
 				const partParts = part.split("=");
 				const [name, value] = partParts;
@@ -168,8 +168,7 @@
 				}
 			});
 		}
-		
-		
+
 		if (timezone) {
 			statUrl += `&timezone=${timezone}`;
 		}
@@ -178,13 +177,13 @@
 			method: "GET",
 			headers: {
 				requesttoken: requestToken,
-				"content-type": "application/json"
-			}
+				"content-type": "application/json",
+			},
 		});
 		return await stats.json();
 	};
 
-	const weekNavigation = mode => {
+	const weekNavigation = (mode) => {
 		if (mode === "reset") {
 			startCursor = startOfWeek(startOfToday(), localeOptions);
 			endCursor = endOfWeek(startCursor, localeOptions);
@@ -232,62 +231,69 @@
 </script>
 
 {#if controls}
-	<h2>{translate('timemanager', 'Statistics')}</h2>
+	<h2>{translate("timemanager", "Statistics")}</h2>
 {/if}
-<div class={`${loading ? 'icon-loading' : ''}`}>
+<div class={`${loading ? "icon-loading" : ""}`}>
 	{#if controls}
 		<div class="top-stats">
 			<figure>
-				<figcaption class="tm_label">{translate('timemanager', 'Today')}</figcaption>
-				{simpleRounding(todayTotal)} {translate('timemanager', 'hrs.')}
+				<figcaption class="tm_label">{translate("timemanager", "Today")}</figcaption>
+				{simpleRounding(todayTotal)}
+				{translate("timemanager", "hrs.")}
 			</figure>
 			<figure>
-				<figcaption class="tm_label">{translate('timemanager', 'Week')}</figcaption>
-				{simpleRounding(weekTotal)} {translate('timemanager', 'hrs.')}
+				<figcaption class="tm_label">{translate("timemanager", "Week")}</figcaption>
+				{simpleRounding(weekTotal)}
+				{translate("timemanager", "hrs.")}
 			</figure>
 		</div>
 	{/if}
 	<div class="graphs">
-		<div class={`hours-per-week ${points.length > 12 || window.clientWidth < 768 ? 'many' : 'few'}`}>
+		<div class={`hours-per-week ${points.length > 12 || window.clientWidth < 768 ? "many" : "few"}`}>
 			{#if !loading && weekTotal > 0}
 				{#each points as point, index}
 					<div class="column">
 						{#if point && point.stats}
 							{#if point.stats.total > 0}
-								<span class="hours-label">{point.stats.total} {translate('timemanager', 'hrs.')}</span>
+								<span class="hours-label">{point.stats.total} {translate("timemanager", "hrs.")}</span>
 								<div class="column-inner" style={`height: ${(point.stats.total / highest) * 100}%`} />
 							{/if}
 							<div class="date-label">
-								<span class="day">{formatDateForScale(point.date, 'primary')}</span>
-								<span class="date">{formatDateForScale(point.date, 'secondary')}</span>
+								<span class="day">{formatDateForScale(point.date, "primary")}</span>
+								<span class="date">{formatDateForScale(point.date, "secondary")}</span>
 							</div>
 						{/if}
 					</div>
 				{/each}
 			{/if}
 			{#if controls && !loading && weekTotal === 0}
-				<p class="empty">{translate('timemanager', 'When you add entries for this week graphs will appear here.')}</p>
+				<p class="empty">{translate("timemanager", "When you add entries for this week graphs will appear here.")}</p>
 			{/if}
 		</div>
 		{#if controls}
 			<nav class="week-navigation">
-				<button class="previous" on:click|preventDefault={() => weekNavigation('previous')}>
-					{translate('timemanager', 'Previous week')}
+				<button class="previous" on:click|preventDefault={() => weekNavigation("previous")}>
+					{translate("timemanager", "Previous week")}
 				</button>
 				<span>
-					{translate('timemanager', 'Week')} {currentWeek}
+					{translate("timemanager", "Week")}
+					{currentWeek}
 					<span class="dates">
-						({format(startOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y', localeOptions)} &ndash; {format(endOfWeek(startCursor, localeOptions), 'iiiiii d.MM.Y', localeOptions)})
+						({format(startOfWeek(startCursor, localeOptions), "iiiiii d.MM.Y", localeOptions)} &ndash; {format(
+							endOfWeek(startCursor, localeOptions),
+							"iiiiii d.MM.Y",
+							localeOptions
+						)})
 					</span>
 				</span>
 				<span>
 					{#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
-						<button class="current" on:click|preventDefault={() => weekNavigation('reset')}>
-							{translate('timemanager', 'Current week')}
+						<button class="current" on:click|preventDefault={() => weekNavigation("reset")}>
+							{translate("timemanager", "Current week")}
 						</button>
 					{/if}
-					<button class="next" on:click|preventDefault={() => weekNavigation('next')}>
-						{translate('timemanager', 'Next week')}
+					<button class="next" on:click|preventDefault={() => weekNavigation("next")}>
+						{translate("timemanager", "Next week")}
 					</button>
 				</span>
 			</nav>

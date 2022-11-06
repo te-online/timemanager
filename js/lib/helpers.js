@@ -178,4 +178,8 @@ export class Helpers {
 		}
 		return timezone;
 	}
+
+	static simpleRounding(number) {
+		return Math.round(number * 100) / 100;
+	}
 }
