@@ -788,6 +788,13 @@ label {
 			}
 		}
 	}
+
+	// Fix Nextcloud 25's weird styling of file inputs
+	input[type="file"] {
+		border: 0;
+		border-radius: 0;
+		padding: 0;
+	}
 }
 
 .oc-dialog-buttonrow.reverse {

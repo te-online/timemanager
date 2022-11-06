@@ -592,6 +592,11 @@ label {
       border-radius: 100%;
       background: var(--color-primary); }
 
+#content.app-timemanager input[type="file"] {
+  border: 0;
+  border-radius: 0;
+  padding: 0; }
+
 .oc-dialog-buttonrow.reverse {
   flex-flow: row-reverse; }
 
