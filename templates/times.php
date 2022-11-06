@@ -104,7 +104,7 @@ $l = \OC::$server->getL10N('timemanager');
 									<?php
 										$paymentStatus = 'unpaid';
 										$paymentAction = 'paid';
-										if(strtolower($time->getPaymentStatus()) === 'paid') {
+										if ($time->getPaymentStatus() !== null && strtolower($time->getPaymentStatus()) === 'paid') {
 											$paymentStatus = 'paid';
 											$paymentAction = 'unpaid';
 										}

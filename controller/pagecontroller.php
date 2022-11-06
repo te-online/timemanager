@@ -934,7 +934,7 @@ class PageController extends Controller {
 			$userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : []
 		);
 		$sharedTimeEntries = array_filter($times, function ($entry) {
-			return !$entry->time->current_user_is_author;
+			return !$entry->current_user_is_author;
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
