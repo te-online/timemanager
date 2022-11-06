@@ -356,11 +356,11 @@
     // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
 
-    var defineProperty$8 = Object.defineProperty;
+    var defineProperty$7 = Object.defineProperty;
 
     var setGlobal$1 = function (key, value) {
       try {
-        defineProperty$8(global_1, key, {
+        defineProperty$7(global_1, key, {
           value: value,
           configurable: true,
           writable: true
@@ -418,11 +418,11 @@
       };
     };
 
-    var TypeError$i = global_1.TypeError; // `RequireObjectCoercible` abstract operation
+    var TypeError$h = global_1.TypeError; // `RequireObjectCoercible` abstract operation
     // https://tc39.es/ecma262/#sec-requireobjectcoercible
 
     var requireObjectCoercible$1 = function (it) {
-      if (it == undefined) throw TypeError$i("Can't call method on " + it);
+      if (it == undefined) throw TypeError$h("Can't call method on " + it);
       return it;
     };
 
@@ -587,11 +587,11 @@
     });
 
     var String$5 = global_1.String;
-    var TypeError$h = global_1.TypeError; // `Assert: Type(argument) is Object`
+    var TypeError$g = global_1.TypeError; // `Assert: Type(argument) is Object`
 
     var anObject$1 = function (argument) {
       if (isObject$4(argument)) return argument;
-      throw TypeError$h(String$5(argument) + ' is not an object');
+      throw TypeError$g(String$5(argument) + ' is not an object');
     };
 
     var call$1 = Function.prototype.call;
@@ -619,11 +619,11 @@
       }
     };
 
-    var TypeError$g = global_1.TypeError; // `Assert: IsCallable(argument) is true`
+    var TypeError$f = global_1.TypeError; // `Assert: IsCallable(argument) is true`
 
     var aCallable = function (argument) {
       if (isCallable(argument)) return argument;
-      throw TypeError$g(tryToString(argument) + ' is not a function');
+      throw TypeError$f(tryToString(argument) + ' is not a function');
     };
 
     // `GetMethod` abstract operation
@@ -635,7 +635,7 @@
       return func == null ? undefined : aCallable(func);
     };
 
-    var TypeError$f = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
+    var TypeError$e = global_1.TypeError; // `OrdinaryToPrimitive` abstract operation
     // https://tc39.es/ecma262/#sec-ordinarytoprimitive
 
     var ordinaryToPrimitive = function (input, pref) {
@@ -643,10 +643,10 @@
       if (pref === 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
       if (isCallable(fn = input.valueOf) && !isObject$4(val = functionCall(fn, input))) return val;
       if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$4(val = functionCall(fn, input))) return val;
-      throw TypeError$f("Can't convert object to primitive value");
+      throw TypeError$e("Can't convert object to primitive value");
     };
 
-    var TypeError$e = global_1.TypeError;
+    var TypeError$d = global_1.TypeError;
     var TO_PRIMITIVE = wellKnownSymbol$1('toPrimitive'); // `ToPrimitive` abstract operation
     // https://tc39.es/ecma262/#sec-toprimitive
 
@@ -659,7 +659,7 @@
         if (pref === undefined) pref = 'default';
         result = functionCall(exoticToPrim, input, pref);
         if (!isObject$4(result) || isSymbol(result)) return result;
-        throw TypeError$e("Can't convert object to primitive value");
+        throw TypeError$d("Can't convert object to primitive value");
       }
 
       if (pref === undefined) pref = 'number';
@@ -675,7 +675,7 @@
       return isSymbol(key) ? key : key + '';
     };
 
-    var TypeError$d = global_1.TypeError; // eslint-disable-next-line es-x/no-object-defineproperty -- safe
+    var TypeError$c = global_1.TypeError; // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
     var $defineProperty$1 = Object.defineProperty; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
@@ -713,7 +713,7 @@
       } catch (error) {
         /* empty */
       }
-      if ('get' in Attributes || 'set' in Attributes) throw TypeError$d('Accessors not supported');
+      if ('get' in Attributes || 'set' in Attributes) throw TypeError$c('Accessors not supported');
       if ('value' in Attributes) O[P] = Attributes.value;
       return O;
     };
@@ -767,16 +767,16 @@
     var WeakMap$3 = global_1.WeakMap;
     var nativeWeakMap$1 = isCallable(WeakMap$3) && /native code/.test(inspectSource$1(WeakMap$3));
 
-    var keys$5 = shared$1('keys');
+    var keys$4 = shared$1('keys');
 
     var sharedKey$1 = function (key) {
-      return keys$5[key] || (keys$5[key] = uid$1(key));
+      return keys$4[key] || (keys$4[key] = uid$1(key));
     };
 
     var hiddenKeys$3 = {};
 
     var OBJECT_ALREADY_INITIALIZED$1 = 'Object already initialized';
-    var TypeError$c = global_1.TypeError;
+    var TypeError$b = global_1.TypeError;
     var WeakMap$2 = global_1.WeakMap;
     var set$2, get$2, has$2;
 
@@ -789,7 +789,7 @@
         var state;
 
         if (!isObject$4(it) || (state = get$2(it)).type !== TYPE) {
-          throw TypeError$c('Incompatible receiver, ' + TYPE + ' required');
+          throw TypeError$b('Incompatible receiver, ' + TYPE + ' required');
         }
 
         return state;
@@ -803,7 +803,7 @@
       var wmset$1 = functionUncurryThis(store$2.set);
 
       set$2 = function (it, metadata) {
-        if (wmhas$1(store$2, it)) throw new TypeError$c(OBJECT_ALREADY_INITIALIZED$1);
+        if (wmhas$1(store$2, it)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
         metadata.facade = it;
         wmset$1(store$2, it, metadata);
         return metadata;
@@ -821,7 +821,7 @@
       hiddenKeys$3[STATE$1] = true;
 
       set$2 = function (it, metadata) {
-        if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$c(OBJECT_ALREADY_INITIALIZED$1);
+        if (hasOwnProperty_1(it, STATE$1)) throw new TypeError$b(OBJECT_ALREADY_INITIALIZED$1);
         metadata.facade = it;
         createNonEnumerableProperty$1(it, STATE$1, metadata);
         return metadata;
@@ -1999,15 +1999,15 @@
 
     var $propertyIsEnumerable$2 = {}.propertyIsEnumerable; // eslint-disable-next-line es-x/no-object-getownpropertydescriptor -- safe
 
-    var getOwnPropertyDescriptor$6 = Object.getOwnPropertyDescriptor; // Nashorn ~ JDK8 bug
+    var getOwnPropertyDescriptor$5 = Object.getOwnPropertyDescriptor; // Nashorn ~ JDK8 bug
 
-    var NASHORN_BUG$1 = getOwnPropertyDescriptor$6 && !$propertyIsEnumerable$2.call({
+    var NASHORN_BUG$1 = getOwnPropertyDescriptor$5 && !$propertyIsEnumerable$2.call({
       1: 2
     }, 1); // `Object.prototype.propertyIsEnumerable` method implementation
     // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
 
     var f$a = NASHORN_BUG$1 ? function propertyIsEnumerable(V) {
-      var descriptor = getOwnPropertyDescriptor$6(this, V);
+      var descriptor = getOwnPropertyDescriptor$5(this, V);
       return !!descriptor && descriptor.enumerable;
     } : $propertyIsEnumerable$2;
 
@@ -2168,7 +2168,7 @@
     var POLYFILL$1 = isForced$1.POLYFILL = 'P';
     var isForced_1$1 = isForced$1;
 
-    var getOwnPropertyDescriptor$5 = objectGetOwnPropertyDescriptor$1.f;
+    var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor$1.f;
 
 
 
@@ -2214,7 +2214,7 @@
         sourceProperty = source[key];
 
         if (options.noTargetGet) {
-          descriptor = getOwnPropertyDescriptor$5(target, key);
+          descriptor = getOwnPropertyDescriptor$4(target, key);
           targetProperty = descriptor && descriptor.value;
         } else targetProperty = target[key];
 
@@ -2259,7 +2259,7 @@
       });
     };
 
-    var arraySlice$1 = functionUncurryThis([].slice);
+    var arraySlice = functionUncurryThis([].slice);
 
     var HAS_SPECIES_SUPPORT$4 = arrayMethodHasSpeciesSupport$1('slice');
     var SPECIES$9 = wellKnownSymbol$1('species');
@@ -2292,7 +2292,7 @@
           }
 
           if (Constructor === Array$3 || Constructor === undefined) {
-            return arraySlice$1(O, k, fin);
+            return arraySlice(O, k, fin);
           }
         }
 
@@ -2355,12 +2355,12 @@
       if (it != undefined) return getMethod(it, ITERATOR$b) || getMethod(it, '@@iterator') || iterators$1[classof$1(it)];
     };
 
-    var TypeError$b = global_1.TypeError;
+    var TypeError$a = global_1.TypeError;
 
     var getIterator = function (argument, usingIterator) {
       var iteratorMethod = arguments.length < 2 ? getIteratorMethod$1(argument) : usingIterator;
       if (aCallable(iteratorMethod)) return anObject$1(functionCall(iteratorMethod, argument));
-      throw TypeError$b(tryToString(argument) + ' is not iterable');
+      throw TypeError$a(tryToString(argument) + ' is not iterable');
     };
 
     var Array$2 = global_1.Array; // `Array.from` method implementation
@@ -2477,7 +2477,7 @@
     };
 
     var charAt$7 = functionUncurryThis(''.charAt);
-    var charCodeAt$1 = functionUncurryThis(''.charCodeAt);
+    var charCodeAt = functionUncurryThis(''.charCodeAt);
     var stringSlice$4 = functionUncurryThis(''.slice);
 
     var createMethod$6 = function (CONVERT_TO_STRING) {
@@ -2487,8 +2487,8 @@
         var size = S.length;
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
-        first = charCodeAt$1(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt$1(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$7(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        first = charCodeAt(S, position);
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$7(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
 
@@ -2694,7 +2694,7 @@
       BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$3
     };
 
-    var defineProperty$7 = objectDefineProperty$1.f;
+    var defineProperty$6 = objectDefineProperty$1.f;
 
 
 
@@ -2706,7 +2706,7 @@
       if (target && !STATIC) target = target.prototype;
 
       if (target && !hasOwnProperty_1(target, TO_STRING_TAG$5)) {
-        defineProperty$7(target, TO_STRING_TAG$5, {
+        defineProperty$6(target, TO_STRING_TAG$5, {
           configurable: true,
           value: TAG
         });
@@ -2738,11 +2738,11 @@
     };
 
     var String$2 = global_1.String;
-    var TypeError$a = global_1.TypeError;
+    var TypeError$9 = global_1.TypeError;
 
     var aPossiblePrototype$1 = function (argument) {
       if (typeof argument == 'object' || isCallable(argument)) return argument;
-      throw TypeError$a("Can't set " + String$2(argument) + ' as a prototype');
+      throw TypeError$9("Can't set " + String$2(argument) + ' as a prototype');
     };
 
     /* eslint-disable no-proto -- safe */
@@ -2940,7 +2940,7 @@
       ArrayPrototype$2[UNSCOPABLES$1][key] = true;
     };
 
-    var defineProperty$6 = objectDefineProperty$1.f;
+    var defineProperty$5 = objectDefineProperty$1.f;
 
 
 
@@ -3009,7 +3009,7 @@
     addToUnscopables$1('entries'); // V8 ~ Chrome 45- bug
 
     if (descriptors$1 && values.name !== 'values') try {
-      defineProperty$6(values, 'name', {
+      defineProperty$5(values, 'name', {
         value: 'values'
       });
     } catch (error) {
@@ -3073,7 +3073,7 @@
     var IS_CONCAT_SPREADABLE$1 = wellKnownSymbol$1('isConcatSpreadable');
     var MAX_SAFE_INTEGER$3 = 0x1FFFFFFFFFFFFF;
     var MAXIMUM_ALLOWED_INDEX_EXCEEDED$1 = 'Maximum allowed index exceeded';
-    var TypeError$9 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
+    var TypeError$8 = global_1.TypeError; // We can't use this feature detection in V8 since it causes
     // deoptimization and serious performance degradation
     // https://github.com/zloirock/core-js/issues/679
 
@@ -3112,11 +3112,11 @@
 
           if (isConcatSpreadable$1(E)) {
             len = lengthOfArrayLike(E);
-            if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$9(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+            if (n + len > MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
 
             for (k = 0; k < len; k++, n++) if (k in E) createProperty$1(A, n, E[k]);
           } else {
-            if (n >= MAX_SAFE_INTEGER$3) throw TypeError$9(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
+            if (n >= MAX_SAFE_INTEGER$3) throw TypeError$8(MAXIMUM_ALLOWED_INDEX_EXCEEDED$1);
             createProperty$1(A, n++, E);
           }
         }
@@ -3425,11 +3425,11 @@
       return isObject$4(it) && ((isRegExp = it[MATCH$3]) !== undefined ? !!isRegExp : classofRaw$1(it) == 'RegExp');
     };
 
-    var TypeError$8 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
+    var TypeError$7 = global_1.TypeError; // `Assert: IsConstructor(argument) is true`
 
     var aConstructor = function (argument) {
       if (isConstructor(argument)) return argument;
-      throw TypeError$8(tryToString(argument) + ' is not a constructor');
+      throw TypeError$7(tryToString(argument) + ' is not a constructor');
     };
 
     var SPECIES$7 = wellKnownSymbol$1('species'); // `SpeciesConstructor` abstract operation
@@ -3464,7 +3464,7 @@
       return result;
     };
 
-    var TypeError$7 = global_1.TypeError; // `RegExpExec` abstract operation
+    var TypeError$6 = global_1.TypeError; // `RegExpExec` abstract operation
     // https://tc39.es/ecma262/#sec-regexpexec
 
     var regexpExecAbstract$1 = function (R, S) {
@@ -3477,7 +3477,7 @@
       }
 
       if (classofRaw$1(R) === 'RegExp') return functionCall(regexpExec$1, R, S);
-      throw TypeError$7('RegExp#exec called on incompatible receiver');
+      throw TypeError$6('RegExp#exec called on incompatible receiver');
     };
 
     var UNSUPPORTED_Y$4 = regexpStickyHelpers$1.UNSUPPORTED_Y;
@@ -3625,17 +3625,17 @@
       }
     };
 
-    var TypeError$6 = global_1.TypeError;
+    var TypeError$5 = global_1.TypeError;
 
     var anInstance$1 = function (it, Prototype) {
       if (objectIsPrototypeOf(Prototype, it)) return it;
-      throw TypeError$6('Incorrect invocation');
+      throw TypeError$5('Incorrect invocation');
     };
 
-    var TypeError$5 = global_1.TypeError;
+    var TypeError$4 = global_1.TypeError;
 
     var validateArgumentsLength = function (passed, required) {
-      if (passed < required) throw TypeError$5('Not enough arguments');
+      if (passed < required) throw TypeError$4('Not enough arguments');
       return passed;
     };
 
@@ -3688,7 +3688,7 @@
       set$1 = function setImmediate(handler) {
         validateArgumentsLength(arguments.length, 1);
         var fn = isCallable(handler) ? handler : Function$1(handler);
-        var args = arraySlice$1(arguments, 1);
+        var args = arraySlice(arguments, 1);
 
         queue$2[++counter] = function () {
           functionApply(fn, undefined, args);
@@ -3747,7 +3747,7 @@
 
     var engineIsWebosWebkit = /web0s(?!.*chrome)/i.test(engineUserAgent$1);
 
-    var getOwnPropertyDescriptor$4 = objectGetOwnPropertyDescriptor$1.f;
+    var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor$1.f;
 
     var macrotask = task$1.set;
 
@@ -3764,7 +3764,7 @@
     var process$3 = global_1.process;
     var Promise$1 = global_1.Promise; // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
 
-    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$4(global_1, 'queueMicrotask');
+    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$3(global_1, 'queueMicrotask');
     var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
     var flush$1, head, last, notify$1, toggle, node, promise, then; // modern engines have queueMicrotask method
 
@@ -3991,7 +3991,7 @@
     var NativePromisePrototype$1 = promiseNativeConstructor && promiseNativeConstructor.prototype;
     var PromiseConstructor = promiseNativeConstructor;
     var PromisePrototype = NativePromisePrototype$1;
-    var TypeError$4 = global_1.TypeError;
+    var TypeError$3 = global_1.TypeError;
     var document$2 = global_1.document;
     var process$2 = global_1.process;
     var newPromiseCapability = newPromiseCapability$1.f;
@@ -4038,7 +4038,7 @@
           }
 
           if (result === reaction.promise) {
-            reject(TypeError$4('Promise-chain cycle'));
+            reject(TypeError$3('Promise-chain cycle'));
           } else if (then = isThenable(result)) {
             functionCall(then, result, resolve, reject);
           } else resolve(result);
@@ -4137,7 +4137,7 @@
       if (unwrap) state = unwrap;
 
       try {
-        if (state.facade === value) throw TypeError$4("Promise can't be resolved itself");
+        if (state.facade === value) throw TypeError$3("Promise can't be resolved itself");
         var then = isThenable(value);
 
         if (then) {
@@ -4261,7 +4261,7 @@
     setToStringTag$1(PromiseConstructor, PROMISE, false);
     setSpecies$1(PROMISE);
 
-    var TypeError$3 = global_1.TypeError;
+    var TypeError$2 = global_1.TypeError;
 
     var Result$1 = function (stopped, result) {
       this.stopped = stopped;
@@ -4296,7 +4296,7 @@
         iterator = iterable;
       } else {
         iterFn = getIteratorMethod$1(iterable);
-        if (!iterFn) throw TypeError$3(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
+        if (!iterFn) throw TypeError$2(tryToString(iterable) + ' is not iterable'); // optimisation for array iterators
 
         if (isArrayIteratorMethod$1(iterFn)) {
           for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
@@ -12037,7 +12037,7 @@
       return addWeeks(dirtyDate, -amount);
     }
 
-    var defineProperty$5 = objectDefineProperty$1.f; // `Object.defineProperty` method
+    var defineProperty$4 = objectDefineProperty$1.f; // `Object.defineProperty` method
     // https://tc39.es/ecma262/#sec-object.defineproperty
     // eslint-disable-next-line es-x/no-object-defineproperty -- safe
 
@@ -12045,10 +12045,10 @@
     _export$1({
       target: 'Object',
       stat: true,
-      forced: Object.defineProperty !== defineProperty$5,
+      forced: Object.defineProperty !== defineProperty$4,
       sham: !descriptors$1
     }, {
-      defineProperty: defineProperty$5
+      defineProperty: defineProperty$4
     });
 
     var floor$2 = Math.floor;
@@ -12443,163 +12443,6 @@
         return objectKeys$1(toObject$1(it));
       }
     });
-
-    // `Number.EPSILON` constant
-    // https://tc39.es/ecma262/#sec-number.epsilon
-
-
-    _export$1({
-      target: 'Number',
-      stat: true
-    }, {
-      EPSILON: Math.pow(2, -52)
-    });
-
-    // makes subclassing work correct for wrapped built-ins
-
-
-    var inheritIfRequired$1 = function ($this, dummy, Wrapper) {
-      var NewTarget, NewTargetPrototype;
-      if ( // it can work only with native `setPrototypeOf`
-      objectSetPrototypeOf$1 && // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
-      isCallable(NewTarget = dummy.constructor) && NewTarget !== Wrapper && isObject$4(NewTargetPrototype = NewTarget.prototype) && NewTargetPrototype !== Wrapper.prototype) objectSetPrototypeOf$1($this, NewTargetPrototype);
-      return $this;
-    };
-
-    // `thisNumberValue` abstract operation
-    // https://tc39.es/ecma262/#sec-thisnumbervalue
-
-
-    var thisNumberValue = functionUncurryThis(1.0.valueOf);
-
-    // a string of all valid unicode whitespaces
-    var whitespaces$1 = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-    var replace = functionUncurryThis(''.replace);
-    var whitespace$1 = '[' + whitespaces$1 + ']';
-    var ltrim$1 = RegExp('^' + whitespace$1 + whitespace$1 + '*');
-    var rtrim$1 = RegExp(whitespace$1 + whitespace$1 + '*$'); // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-
-    var createMethod$5 = function (TYPE) {
-      return function ($this) {
-        var string = toString_1(requireObjectCoercible$1($this));
-        if (TYPE & 1) string = replace(string, ltrim$1, '');
-        if (TYPE & 2) string = replace(string, rtrim$1, '');
-        return string;
-      };
-    };
-
-    var stringTrim$1 = {
-      // `String.prototype.{ trimLeft, trimStart }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-      start: createMethod$5(1),
-      // `String.prototype.{ trimRight, trimEnd }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimend
-      end: createMethod$5(2),
-      // `String.prototype.trim` method
-      // https://tc39.es/ecma262/#sec-string.prototype.trim
-      trim: createMethod$5(3)
-    };
-
-    var getOwnPropertyNames$2 = objectGetOwnPropertyNames$1.f;
-
-    var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor$1.f;
-
-    var defineProperty$4 = objectDefineProperty$1.f;
-
-
-
-    var trim$2 = stringTrim$1.trim;
-
-    var NUMBER$1 = 'Number';
-    var NativeNumber$1 = global_1[NUMBER$1];
-    var NumberPrototype$1 = NativeNumber$1.prototype;
-    var TypeError$2 = global_1.TypeError;
-    var arraySlice = functionUncurryThis(''.slice);
-    var charCodeAt = functionUncurryThis(''.charCodeAt); // `ToNumeric` abstract operation
-    // https://tc39.es/ecma262/#sec-tonumeric
-
-    var toNumeric = function (value) {
-      var primValue = toPrimitive$1(value, 'number');
-      return typeof primValue == 'bigint' ? primValue : toNumber$1(primValue);
-    }; // `ToNumber` abstract operation
-    // https://tc39.es/ecma262/#sec-tonumber
-
-
-    var toNumber$1 = function (argument) {
-      var it = toPrimitive$1(argument, 'number');
-      var first, third, radix, maxCode, digits, length, index, code;
-      if (isSymbol(it)) throw TypeError$2('Cannot convert a Symbol value to a number');
-
-      if (typeof it == 'string' && it.length > 2) {
-        it = trim$2(it);
-        first = charCodeAt(it, 0);
-
-        if (first === 43 || first === 45) {
-          third = charCodeAt(it, 2);
-          if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
-        } else if (first === 48) {
-          switch (charCodeAt(it, 1)) {
-            case 66:
-            case 98:
-              radix = 2;
-              maxCode = 49;
-              break;
-            // fast equal of /^0b[01]+$/i
-
-            case 79:
-            case 111:
-              radix = 8;
-              maxCode = 55;
-              break;
-            // fast equal of /^0o[0-7]+$/i
-
-            default:
-              return +it;
-          }
-
-          digits = arraySlice(it, 2);
-          length = digits.length;
-
-          for (index = 0; index < length; index++) {
-            code = charCodeAt(digits, index); // parseInt parses a string to a first unavailable symbol
-            // but ToNumber should return NaN if a string contains unavailable symbols
-
-            if (code < 48 || code > maxCode) return NaN;
-          }
-
-          return parseInt(digits, radix);
-        }
-      }
-
-      return +it;
-    }; // `Number` constructor
-    // https://tc39.es/ecma262/#sec-number-constructor
-
-
-    if (isForced_1$1(NUMBER$1, !NativeNumber$1(' 0o1') || !NativeNumber$1('0b1') || NativeNumber$1('+0x1'))) {
-      var NumberWrapper$1 = function Number(value) {
-        var n = arguments.length < 1 ? 0 : NativeNumber$1(toNumeric(value));
-        var dummy = this; // check on 1..constructor(foo) case
-
-        return objectIsPrototypeOf(NumberPrototype$1, dummy) && fails$1(function () {
-          thisNumberValue(dummy);
-        }) ? inheritIfRequired$1(Object(n), dummy, NumberWrapper$1) : n;
-      };
-
-      for (var keys$4 = descriptors$1 ? getOwnPropertyNames$2(NativeNumber$1) : ( // ES3:
-      'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' + // ES2015 (in case, if modules with ES2015 Number statics required before):
-      'EPSILON,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,isFinite,isInteger,isNaN,isSafeInteger,parseFloat,parseInt,' + // ESNext
-      'fromString,range').split(','), j$1 = 0, key$1; keys$4.length > j$1; j$1++) {
-        if (hasOwnProperty_1(NativeNumber$1, key$1 = keys$4[j$1]) && !hasOwnProperty_1(NumberWrapper$1, key$1)) {
-          defineProperty$4(NumberWrapper$1, key$1, getOwnPropertyDescriptor$3(NativeNumber$1, key$1));
-        }
-      }
-
-      NumberWrapper$1.prototype = NumberPrototype$1;
-      NumberPrototype$1.constructor = NumberWrapper$1;
-      defineBuiltIn(global_1, NUMBER$1, NumberWrapper$1);
-    }
 
     var formatDistanceLocale$2 = {
       lessThanXSeconds: {
@@ -13922,17 +13765,9 @@
       }, {
         key: "calculateDuration",
         value: function calculateDuration(startTime, endTime) {
-          if (!startTime || !endTime) return undefined; // Make sure, endTime is after startTime
-
-          var startDate = new Date("2000/01/01 " + startTime);
-          var endDate = new Date("2000/01/01 " + endTime); // If endTime < startTime, endTime shall be on the next day
-
-          if (endDate < startDate) endDate.setTime(endDate.getTime() + 1000 * 60 * 60 * 24); // Diff in ms
-
-          var diff = Math.abs(endDate - startDate); // In hours
-
-          diff = diff / 1000 / 60 / 60;
-          return Math.round((diff + Number.EPSILON) * 100) / 100;
+          var start = parse$3(startTime, "HH:mm", new Date());
+          var end = parse$3(endTime, "HH:mm", new Date());
+          return this.simpleRounding(differenceInMinutes(end, start) / 60);
         } // NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
 
       }, {
@@ -14033,6 +13868,11 @@
 
           return timezone;
         }
+      }, {
+        key: "simpleRounding",
+        value: function simpleRounding(number) {
+          return Math.round(number * 100) / 100;
+        }
       }]);
 
       return Helpers;
@@ -14043,7 +13883,7 @@
       child_ctx[25] = list[i];
       child_ctx[27] = i;
       return child_ctx;
-    } // (234:0) {#if controls}
+    } // (233:0) {#if controls}
 
 
     function create_if_block_7$1(ctx) {
@@ -14051,7 +13891,7 @@
       return {
         c: function c() {
           h2 = element("h2");
-          h2.textContent = "".concat(dist_10('timemanager', 'Statistics'));
+          h2.textContent = "".concat(dist_10("timemanager", "Statistics"));
         },
         m: function m(target, anchor) {
           insert(target, h2, anchor);
@@ -14061,7 +13901,7 @@
           if (detaching) detach(h2);
         }
       };
-    } // (238:1) {#if controls}
+    } // (237:1) {#if controls}
 
 
     function create_if_block_6$3(ctx) {
@@ -14076,7 +13916,7 @@
       ctx[4]) + "";
       var t2;
       var t3;
-      var t4_value = dist_10('timemanager', 'hrs.') + "";
+      var t4_value = dist_10("timemanager", "hrs.") + "";
       var t4;
       var t5;
       var figure1;
@@ -14089,14 +13929,14 @@
       ctx[5]) + "";
       var t8;
       var t9;
-      var t10_value = dist_10('timemanager', 'hrs.') + "";
+      var t10_value = dist_10("timemanager", "hrs.") + "";
       var t10;
       return {
         c: function c() {
           div = element("div");
           figure0 = element("figure");
           figcaption0 = element("figcaption");
-          figcaption0.textContent = "".concat(dist_10('timemanager', 'Today'));
+          figcaption0.textContent = "".concat(dist_10("timemanager", "Today"));
           t1 = space$1();
           t2 = text(t2_value);
           t3 = space$1();
@@ -14104,7 +13944,7 @@
           t5 = space$1();
           figure1 = element("figure");
           figcaption1 = element("figcaption");
-          figcaption1.textContent = "".concat(dist_10('timemanager', 'Week'));
+          figcaption1.textContent = "".concat(dist_10("timemanager", "Week"));
           t7 = space$1();
           t8 = text(t8_value);
           t9 = space$1();
@@ -14149,7 +13989,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (252:3) {#if !loading && weekTotal > 0}
+    } // (253:3) {#if !loading && weekTotal > 0}
 
 
     function create_if_block_3$3(ctx) {
@@ -14214,7 +14054,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (255:6) {#if point && point.stats}
+    } // (256:6) {#if point && point.stats}
 
 
     function create_if_block_4$3(ctx) {
@@ -14225,7 +14065,7 @@
       /*formatDateForScale*/
       ctx[11](
       /*point*/
-      ctx[25].date, 'primary') + "";
+      ctx[25].date, "primary") + "";
       var t1;
       var t2;
       var span1;
@@ -14233,7 +14073,7 @@
       /*formatDateForScale*/
       ctx[11](
       /*point*/
-      ctx[25].date, 'secondary') + "";
+      ctx[25].date, "secondary") + "";
       var t3;
       var if_block =
       /*point*/
@@ -14284,14 +14124,14 @@
           /*formatDateForScale*/
           ctx[11](
           /*point*/
-          ctx[25].date, 'primary') + "")) set_data(t1, t1_value);
+          ctx[25].date, "primary") + "")) set_data(t1, t1_value);
           if (dirty &
           /*points*/
           8 && t3_value !== (t3_value =
           /*formatDateForScale*/
           ctx[11](
           /*point*/
-          ctx[25].date, 'secondary') + "")) set_data(t3, t3_value);
+          ctx[25].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d: function d(detaching) {
           if (if_block) if_block.d(detaching);
@@ -14299,7 +14139,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (256:7) {#if point.stats.total > 0}
+    } // (257:7) {#if point.stats.total > 0}
 
 
     function create_if_block_5$3(ctx) {
@@ -14309,7 +14149,7 @@
       ctx[25].stats.total + "";
       var t0;
       var t1;
-      var t2_value = dist_10('timemanager', 'hrs.') + "";
+      var t2_value = dist_10("timemanager", "hrs.") + "";
       var t2;
       var t3;
       var div;
@@ -14361,7 +14201,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (253:4) {#each points as point, index}
+    } // (254:4) {#each points as point, index}
 
 
     function create_each_block$8(ctx) {
@@ -14407,7 +14247,7 @@
           if (if_block) if_block.d();
         }
       };
-    } // (268:3) {#if controls && !loading && weekTotal === 0}
+    } // (269:3) {#if controls && !loading && weekTotal === 0}
 
 
     function create_if_block_2$4(ctx) {
@@ -14415,7 +14255,7 @@
       return {
         c: function c() {
           p = element("p");
-          p.textContent = "".concat(dist_10('timemanager', 'When you add entries for this week graphs will appear here.'));
+          p.textContent = "".concat(dist_10("timemanager", "When you add entries for this week graphs will appear here."));
           attr(p, "class", "empty");
         },
         m: function m(target, anchor) {
@@ -14426,7 +14266,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (272:2) {#if controls}
+    } // (273:2) {#if controls}
 
 
     function create_if_block$j(ctx) {
@@ -14434,7 +14274,7 @@
       var button0;
       var t1;
       var span1;
-      var t2_value = dist_10('timemanager', 'Week') + "";
+      var t2_value = dist_10("timemanager", "Week") + "";
       var t2;
       var t3;
       var t4;
@@ -14445,7 +14285,7 @@
       /*startCursor*/
       ctx[1],
       /*localeOptions*/
-      ctx[9]), 'iiiiii d.MM.Y',
+      ctx[9]), "iiiiii d.MM.Y",
       /*localeOptions*/
       ctx[9]) + "";
       var t7;
@@ -14454,7 +14294,7 @@
       /*startCursor*/
       ctx[1],
       /*localeOptions*/
-      ctx[9]), 'iiiiii d.MM.Y',
+      ctx[9]), "iiiiii d.MM.Y",
       /*localeOptions*/
       ctx[9]) + "";
       var t9;
@@ -14475,7 +14315,7 @@
         c: function c() {
           nav = element("nav");
           button0 = element("button");
-          button0.textContent = "".concat(dist_10('timemanager', 'Previous week'));
+          button0.textContent = "".concat(dist_10("timemanager", "Previous week"));
           t1 = space$1();
           span1 = element("span");
           t2 = text(t2_value);
@@ -14495,7 +14335,7 @@
           if (if_block) if_block.c();
           t12 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(dist_10('timemanager', 'Next week'));
+          button1.textContent = "".concat(dist_10("timemanager", "Next week"));
           attr(button0, "class", "previous");
           attr(span0, "class", "dates");
           attr(button1, "class", "next");
@@ -14543,7 +14383,7 @@
           /*startCursor*/
           ctx[1],
           /*localeOptions*/
-          ctx[9]), 'iiiiii d.MM.Y',
+          ctx[9]), "iiiiii d.MM.Y",
           /*localeOptions*/
           ctx[9]) + "")) set_data(t7, t7_value);
           if (dirty &
@@ -14552,7 +14392,7 @@
           /*startCursor*/
           ctx[1],
           /*localeOptions*/
-          ctx[9]), 'iiiiii d.MM.Y',
+          ctx[9]), "iiiiii d.MM.Y",
           /*localeOptions*/
           ctx[9]) + "")) set_data(t9, t9_value);
           if (dirty &
@@ -14583,7 +14423,7 @@
           run_all(dispose);
         }
       };
-    } // (284:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    } // (290:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
     function create_if_block_1$7(ctx) {
@@ -14593,7 +14433,7 @@
       return {
         c: function c() {
           button = element("button");
-          button.textContent = "".concat(dist_10('timemanager', 'Current week'));
+          button.textContent = "".concat(dist_10("timemanager", "Current week"));
           attr(button, "class", "current");
         },
         m: function m(target, anchor) {
@@ -14662,11 +14502,11 @@
           if (if_block4) if_block4.c();
           attr(div0, "class", div0_class_value = "hours-per-week ".concat(
           /*points*/
-          ctx[3].length > 12 || window.clientWidth < 768 ? 'many' : 'few'));
+          ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"));
           attr(div1, "class", "graphs");
           attr(div2, "class", div2_class_value = "".concat(
           /*loading*/
-          ctx[2] ? 'icon-loading' : ''));
+          ctx[2] ? "icon-loading" : ""));
         },
         m: function m(target, anchor) {
           if (if_block0) if_block0.m(target, anchor);
@@ -14756,7 +14596,7 @@
           /*points*/
           8 && div0_class_value !== (div0_class_value = "hours-per-week ".concat(
           /*points*/
-          ctx[3].length > 12 || window.clientWidth < 768 ? 'many' : 'few'))) {
+          ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"))) {
             attr(div0, "class", div0_class_value);
           }
 
@@ -14779,7 +14619,7 @@
           /*loading*/
           4 && div2_class_value !== (div2_class_value = "".concat(
           /*loading*/
-          ctx[2] ? 'icon-loading' : ''))) {
+          ctx[2] ? "icon-loading" : ""))) {
             attr(div2, "class", div2_class_value);
           }
         },
@@ -14815,11 +14655,7 @@
           controls = _$$props$controls === void 0 ? true : _$$props$controls;
       var _$$props$includeShare = $$props.includeShared,
           includeShared = _$$props$includeShare === void 0 ? false : _$$props$includeShare;
-
-      var simpleRounding = function simpleRounding(number) {
-        return Math.round(number * 100) / 100;
-      };
-
+      var simpleRounding = Helpers.simpleRounding;
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
           start = _$$props$start === void 0 ? format$3(startOfWeek(new Date(), localeOptions), dateFormat$1, new Date()) : _$$props$start;
@@ -15076,15 +14912,15 @@
       };
 
       var click_handler = function click_handler() {
-        return weekNavigation('previous');
+        return weekNavigation("previous");
       };
 
       var click_handler_1 = function click_handler_1() {
-        return weekNavigation('reset');
+        return weekNavigation("reset");
       };
 
       var click_handler_2 = function click_handler_2() {
-        return weekNavigation('next');
+        return weekNavigation("next");
       };
 
       $$self.$$set = function ($$props) {
@@ -25512,7 +25348,7 @@
     var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable$1);
     var push$2 = functionUncurryThis([].push); // `Object.{ entries, values }` methods implementation
 
-    var createMethod$4 = function (TO_ENTRIES) {
+    var createMethod$5 = function (TO_ENTRIES) {
       return function (it) {
         var O = toIndexedObject$1(it);
         var keys = objectKeys$1(O);
@@ -25536,10 +25372,10 @@
     var objectToArray = {
       // `Object.entries` method
       // https://tc39.es/ecma262/#sec-object.entries
-      entries: createMethod$4(true),
+      entries: createMethod$5(true),
       // `Object.values` method
       // https://tc39.es/ecma262/#sec-object.values
-      values: createMethod$4(false)
+      values: createMethod$5(false)
     };
 
     var $values = objectToArray.values; // `Object.values` method
@@ -25554,6 +25390,35 @@
         return $values(O);
       }
     });
+
+    // a string of all valid unicode whitespaces
+    var whitespaces$1 = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+    var replace = functionUncurryThis(''.replace);
+    var whitespace$1 = '[' + whitespaces$1 + ']';
+    var ltrim$1 = RegExp('^' + whitespace$1 + whitespace$1 + '*');
+    var rtrim$1 = RegExp(whitespace$1 + whitespace$1 + '*$'); // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+
+    var createMethod$4 = function (TYPE) {
+      return function ($this) {
+        var string = toString_1(requireObjectCoercible$1($this));
+        if (TYPE & 1) string = replace(string, ltrim$1, '');
+        if (TYPE & 2) string = replace(string, rtrim$1, '');
+        return string;
+      };
+    };
+
+    var stringTrim$1 = {
+      // `String.prototype.{ trimLeft, trimStart }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+      start: createMethod$4(1),
+      // `String.prototype.{ trimRight, trimEnd }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimend
+      end: createMethod$4(2),
+      // `String.prototype.trim` method
+      // https://tc39.es/ecma262/#sec-string.prototype.trim
+      trim: createMethod$4(3)
+    };
 
     var trim$1 = stringTrim$1.trim;
 
@@ -31082,14 +30947,14 @@
           attr(input2, "name", "startTime");
           attr(input2, "placeholder", "--:--");
           set_style(input2, "width", "100px");
-          attr(input2, "class", "input-wide");
+          attr(input2, "class", "time-input");
           attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input2.required = true;
           attr(input3, "type", "time");
           attr(input3, "name", "endTime");
           attr(input3, "placeholder", "--:--");
           set_style(input3, "width", "100px");
-          attr(input3, "class", "input-wide");
+          attr(input3, "class", "time-input");
           attr(input3, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input3.required = true;
           attr(input4, "type", "date");
