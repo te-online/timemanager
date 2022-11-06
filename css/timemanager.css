@@ -287,7 +287,11 @@ label {
   #content.app-timemanager .quick-add .date-input,
   #content.app-timemanager .reports-filters .date-input,
   #content.app-timemanager .reports-timerange .date-input {
-    width: 140px; }
+    width: 170px; }
+  #content.app-timemanager .quick-add .time-input,
+  #content.app-timemanager .reports-filters .time-input,
+  #content.app-timemanager .reports-timerange .time-input {
+    padding: 0 5px; }
   #content.app-timemanager .quick-add .note input,
   #content.app-timemanager .quick-add .search input,
   #content.app-timemanager .quick-add .task-selector-trigger input,
@@ -321,7 +325,7 @@ label {
   min-height: 156px; }
 
 #content.app-timemanager .quick-add {
-  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px; }
+  grid-template-columns: minmax(200px, calc(100% - 700px)) 380px 250px 100px; }
   @media screen and (max-width: 768px) {
     #content.app-timemanager .quick-add {
       display: block; } }

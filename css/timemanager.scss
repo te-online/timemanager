@@ -356,7 +356,11 @@ label {
 		}
 
 		.date-input {
-			width: 140px;
+			width: 170px;
+		}
+
+		.time-input {
+			padding: 0 5px;
 		}
 
 		.note,
@@ -393,7 +397,7 @@ label {
 
 	.quick-add {
 		// Using minmax fixes some unpredictable layout-shifts in Safari...
-		grid-template-columns: minmax(200px, calc(100% - 700px)) 350px 250px 100px;
+		grid-template-columns: minmax(200px, calc(100% - 700px)) 380px 250px 100px;
 
 		@media screen and (max-width: 768px) {
 			display: block;

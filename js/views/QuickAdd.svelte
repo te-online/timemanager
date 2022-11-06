@@ -460,7 +460,7 @@
 				name="startTime"
 				placeholder="--:--"
 				style="width: 100px"
-				class="input-wide"
+				class="time-input"
 				bind:value={startTime}
 				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
 				pattern="[0-9]{2}:[0-9]{2}"
@@ -471,7 +471,7 @@
 				name="endTime"
 				placeholder="--:--"
 				style="width: 100px"
-				class="input-wide"
+				class="time-input"
 				pattern="[0-9]{2}:[0-9]{2}"
 				bind:value={endTime}
 				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
