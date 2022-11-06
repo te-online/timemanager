@@ -2,6 +2,18 @@
 
 Notable changes in each released version can be seen here.
 
+## 0.3.4 Beta, 31. October 2022
+
+### Fixed
+
+- SVG Favicon was re-generated (thanks to @devattendant)
+- Add transform step for SCSS, since it [got removed from NC25](https://github.com/nextcloud/server/pull/32261)
+- Fix input fields border style for NC25 on reports page
+
+### Added
+
+- Run tests for Nextcloud 25 and bump compatibility to Nextcloud 26
+
 ## 0.3.3 Beta, 11. September 2022
 
 ### Added

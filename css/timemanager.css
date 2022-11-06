@@ -1,0 +1,716 @@
+#content * {
+  box-sizing: border-box; }
+
+#new-item input,
+#new-item textarea {
+  display: block;
+  width: 300px; }
+
+#app-content {
+  padding: 15px; }
+
+.tm_item-row {
+  width: 100%;
+  padding: 1px 10px; }
+  .tm_item-row.with-link {
+    padding: 0; }
+  .reports .tm_item-row.with-link > a,
+  .tools .tm_item-row {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    padding-top: 8px;
+    padding-bottom: 8px; }
+    .reports .tm_item-row.with-link > a h3,
+    .tools .tm_item-row h3 {
+      margin: 0; }
+    .reports .tm_item-row.with-link > a details,
+    .tools .tm_item-row details {
+      margin-top: 6px;
+      grid-column-start: 1;
+      grid-column-end: 3; }
+  .tools .tm_item-row {
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: 10px; }
+  .tm_item-row a:hover,
+  .tm_item-row a:focus {
+    background: var(--color-primary-light); }
+  .tm_item-row a {
+    display: block;
+    padding: 1px 10px 5px;
+    background: var(--color-main-background-translucent);
+    transition: background-color 0.3s ease; }
+  .tm_item-row:nth-child(odd) {
+    /* background: lightgrey; */
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border); }
+
+.tm_item-excerpt {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  flex-flow: row wrap; }
+  .tm_item-excerpt > span {
+    display: flex;
+    align-items: center; }
+
+.tm_item-note {
+  width: 100%;
+  margin-bottom: 5px; }
+
+.tm_item-date {
+  font-weight: 200;
+  min-height: 34px;
+  display: flex;
+  align-items: center; }
+  .tm_item-date > .author {
+    display: flex;
+    align-items: center; }
+
+.tm_object-details {
+  margin-bottom: 20px; }
+
+.tm_item-list {
+  margin-top: 20px;
+  max-width: 600px; }
+  .tm_item-list.space-bottom {
+    margin-bottom: 40px; }
+
+.tm_object-details a {
+  border-bottom: 1px solid var(--color-loading-light);
+  padding-bottom: 4px;
+  transition: border-color 0.3s ease; }
+
+.tm_object-details a:hover,
+.tm_object-details a:focus {
+  border-color: var(--color-primary); }
+
+.tm_object-details h2 {
+  margin-bottom: 30px;
+  display: flex; }
+
+/* .tm_object-details h2 a {
+	margin-left: 10px;
+} */
+.tm_summary {
+  display: flex;
+  background: var(--color-primary-light);
+  padding: 10px;
+  margin-bottom: 50px; }
+
+.tm_summary p {
+  margin-left: 35px; }
+
+.tm_summary p:first-child {
+  margin-left: 0; }
+
+.tm_label,
+.tm_new-item label {
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-text-light);
+  display: block;
+  font-size: 9pt; }
+
+.tm_object-details-item {
+  margin-bottom: 15px; }
+
+.tm_object-details form {
+  display: inline;
+  margin-right: 3px; }
+  .tm_object-details form button {
+    margin-right: 0; }
+
+.tm_add {
+  padding: 20px 25px 25px;
+  border: 1px solid var(--color-border);
+  border-radius: 2px; }
+
+.tm_add h3 {
+  margin-bottom: 20px; }
+
+.tm_icon-checkmark {
+  margin-top: -5px;
+  background-color: transparent;
+  border: 0;
+  padding-bottom: 4px; }
+
+.tm_icon-checkmark-unpaid {
+  opacity: 0.2; }
+
+.tm_inline-hover-form {
+  display: none;
+  margin-left: 5px; }
+
+.btn.small,
+.tm_inline-hover-form .btn {
+  padding: 3px 6px;
+  min-height: initial;
+  height: 28px;
+  margin-left: 10px; }
+
+.tm_item-row:hover .tm_inline-hover-form {
+  display: block; }
+
+/* For some reason this is needed to fix the icon position in the nav */
+#app-navigation img {
+  margin-bottom: -3px; }
+
+.trim {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  max-width: calc(100% - 220px); }
+
+body.loading #content.app-timemanager:before {
+  content: "";
+  position: absolute;
+  top: 50px;
+  left: -150px;
+  opacity: 0.5;
+  width: 150px;
+  height: 4px;
+  background: var(--color-primary);
+  animation: loading 5s 0.3s ease infinite;
+  z-index: 9999; }
+
+body.loading-error #content.app-timemanager:before {
+  content: "";
+  position: absolute;
+  top: 50px;
+  left: 0;
+  opacity: 0.5;
+  width: 100%;
+  height: 4px;
+  background: var(--color-error);
+  z-index: 9999; }
+
+@keyframes loading {
+  0% {
+    left: -150px; }
+  50% {
+    left: 100%; }
+  100% {
+    left: 0; } }
+
+.app-timemanager .oc-dialog .inner {
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 300px;
+  max-width: 400px; }
+  .app-timemanager .oc-dialog .inner.push-bottom {
+    margin-bottom: 15px; }
+  .app-timemanager .oc-dialog .inner .urldisplay {
+    word-wrap: break-word; }
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: normal; }
+  label.space-top {
+    margin-top: 15px; }
+
+#content.app-timemanager h2.list-title {
+  display: inline-block;
+  margin-right: 5px; }
+
+#content.app-timemanager .new {
+  display: inline-block; }
+
+@supports (animation: fallback 0.1s 3s forwards) {
+  #content.app-timemanager [data-svelte-hide] {
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
+    width: 0;
+    animation: fallback 0.1s 3s forwards; } }
+
+#content.app-timemanager .quick-add,
+#content.app-timemanager .reports-filters,
+#content.app-timemanager .reports-timerange {
+  display: grid;
+  margin-left: -30px;
+  width: calc(100% + 60px);
+  column-gap: 12px; }
+  #content.app-timemanager .quick-add.reports-filters, #content.app-timemanager .quick-add.reports-timerange,
+  #content.app-timemanager .reports-filters.reports-filters,
+  #content.app-timemanager .reports-filters.reports-timerange,
+  #content.app-timemanager .reports-timerange.reports-filters,
+  #content.app-timemanager .reports-timerange.reports-timerange {
+    width: calc(100% - 12px);
+    margin-left: 0; }
+  @media screen and (max-width: 1024px) {
+    #content.app-timemanager .quick-add, #content.app-timemanager .quick-add.reports-filters, #content.app-timemanager .quick-add.reports-timerange,
+    #content.app-timemanager .reports-filters,
+    #content.app-timemanager .reports-filters.reports-filters,
+    #content.app-timemanager .reports-filters.reports-timerange,
+    #content.app-timemanager .reports-timerange,
+    #content.app-timemanager .reports-timerange.reports-filters,
+    #content.app-timemanager .reports-timerange.reports-timerange {
+      grid-template-columns: 100%; } }
+  #content.app-timemanager .quick-add > .actions,
+  #content.app-timemanager .reports-filters > .actions,
+  #content.app-timemanager .reports-timerange > .actions {
+    display: flex;
+    align-items: center;
+    padding-top: 20px; }
+    #content.app-timemanager .quick-add > .actions button,
+    #content.app-timemanager .reports-filters > .actions button,
+    #content.app-timemanager .reports-timerange > .actions button {
+      flex-shrink: 0;
+      margin-bottom: 0;
+      padding-left: 34px; }
+  #content.app-timemanager .quick-add .parents,
+  #content.app-timemanager .reports-filters .parents,
+  #content.app-timemanager .reports-timerange .parents {
+    margin-right: 12px;
+    width: 100%; }
+  #content.app-timemanager .quick-add label,
+  #content.app-timemanager .reports-filters label,
+  #content.app-timemanager .reports-timerange label {
+    font-size: 12px;
+    display: flex;
+    flex-flow: column; }
+    #content.app-timemanager .quick-add label.error input,
+    #content.app-timemanager .reports-filters label.error input,
+    #content.app-timemanager .reports-timerange label.error input {
+      border-color: var(--color-error); }
+    #content.app-timemanager .quick-add label .double,
+    #content.app-timemanager .reports-filters label .double,
+    #content.app-timemanager .reports-timerange label .double {
+      display: flex; }
+  #content.app-timemanager .quick-add .duration-input,
+  #content.app-timemanager .reports-filters .duration-input,
+  #content.app-timemanager .reports-timerange .duration-input {
+    width: 60px; }
+  #content.app-timemanager .quick-add .date-input,
+  #content.app-timemanager .reports-filters .date-input,
+  #content.app-timemanager .reports-timerange .date-input {
+    width: 140px; }
+  #content.app-timemanager .quick-add .note input,
+  #content.app-timemanager .quick-add .search input,
+  #content.app-timemanager .quick-add .task-selector-trigger input,
+  #content.app-timemanager .reports-filters .note input,
+  #content.app-timemanager .reports-filters .search input,
+  #content.app-timemanager .reports-filters .task-selector-trigger input,
+  #content.app-timemanager .reports-timerange .note input,
+  #content.app-timemanager .reports-timerange .search input,
+  #content.app-timemanager .reports-timerange .task-selector-trigger input {
+    width: 100%; }
+  #content.app-timemanager .quick-add .search-input,
+  #content.app-timemanager .reports-filters .search-input,
+  #content.app-timemanager .reports-timerange .search-input {
+    width: 100%;
+    padding: 6px 12px 6px 34px; }
+  #content.app-timemanager .quick-add input,
+  #content.app-timemanager .reports-filters input,
+  #content.app-timemanager .reports-timerange input {
+    height: 42px; }
+  #content.app-timemanager .quick-add .selectContainer,
+  #content.app-timemanager .reports-filters .selectContainer,
+  #content.app-timemanager .reports-timerange .selectContainer {
+    margin: 3px 3px 3px 0; }
+    #content.app-timemanager .quick-add .selectContainer input,
+    #content.app-timemanager .reports-filters .selectContainer input,
+    #content.app-timemanager .reports-timerange .selectContainer input {
+      border: 0;
+      background: none; }
+
+#content.app-timemanager .quick-add-section {
+  min-height: 156px; }
+
+#content.app-timemanager .quick-add {
+  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px; }
+  @media screen and (max-width: 768px) {
+    #content.app-timemanager .quick-add {
+      display: block; } }
+
+#content.app-timemanager .note-autosuggest {
+  width: 750px;
+  max-width: 60vw;
+  background: var(--color-main-background);
+  padding: 10px; }
+  #content.app-timemanager .note-autosuggest li {
+    padding: 3px 2px; }
+  #content.app-timemanager .note-autosuggest .task {
+    padding: 6px;
+    width: 100%;
+    display: inline-block; }
+    #content.app-timemanager .note-autosuggest .task:hover, #content.app-timemanager .note-autosuggest .task:focus-visible {
+      background: var(--color-primary-light); }
+
+#content.app-timemanager .task-selector-popover {
+  width: 466px;
+  background: var(--color-main-background);
+  padding-top: 12px; }
+  #content.app-timemanager .task-selector-popover .task-add-button {
+    padding-left: 34px; }
+  #content.app-timemanager .task-selector-popover .search-results li,
+  #content.app-timemanager .task-selector-popover .last-used li {
+    padding: 6px 3px; }
+  #content.app-timemanager .task-selector-popover .search-results .client,
+  #content.app-timemanager .task-selector-popover .last-used .client {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600; }
+  #content.app-timemanager .task-selector-popover .search-results .project,
+  #content.app-timemanager .task-selector-popover .last-used .project {
+    padding-left: 12px;
+    padding-top: 4px;
+    color: var(--color-text-lighter); }
+    #content.app-timemanager .task-selector-popover .search-results .project ~ ul li,
+    #content.app-timemanager .task-selector-popover .last-used .project ~ ul li {
+      padding: 0; }
+  #content.app-timemanager .task-selector-popover .search-results .task,
+  #content.app-timemanager .task-selector-popover .last-used .task {
+    padding: 6px 3px 6px 24px;
+    width: 100%;
+    display: inline-block; }
+    #content.app-timemanager .task-selector-popover .search-results .task:hover, #content.app-timemanager .task-selector-popover .search-results .task:focus-visible,
+    #content.app-timemanager .task-selector-popover .last-used .task:hover,
+    #content.app-timemanager .task-selector-popover .last-used .task:focus-visible {
+      background: var(--color-primary-light); }
+  #content.app-timemanager .task-selector-popover .search-results .no-result,
+  #content.app-timemanager .task-selector-popover .last-used .no-result {
+    padding: 12px 6px;
+    color: var(--color-text-lighter); }
+  #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper,
+  #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper {
+    padding: 3px 8px; }
+    #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper li,
+    #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper li {
+      display: flex;
+      padding: 0; }
+      #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper li .label,
+      #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper li .label {
+        flex: 30%;
+        font-size: 12px; }
+      #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper li .value,
+      #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper li .value {
+        flex: 70%; }
+      #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper li .muted,
+      #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper li .muted {
+        color: var(--color-text-lighter); }
+  #content.app-timemanager .task-selector-popover .search-results {
+    max-height: calc(80vh - 250px);
+    overflow-y: auto; }
+
+#content.app-timemanager .combo-entry-wrapper {
+  padding: 3px 4px; }
+  #content.app-timemanager .combo-entry-wrapper:hover, #content.app-timemanager .combo-entry-wrapper:focus-visible {
+    background: var(--color-primary-light); }
+  #content.app-timemanager .combo-entry-wrapper li {
+    display: flex;
+    padding: 0; }
+    #content.app-timemanager .combo-entry-wrapper li .label {
+      flex: 30%;
+      font-size: 12px; }
+    #content.app-timemanager .combo-entry-wrapper li .value {
+      flex: 70%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap; }
+    #content.app-timemanager .combo-entry-wrapper li .muted {
+      color: var(--color-text-lighter); }
+
+#content.app-timemanager .reports-filters {
+  grid-template-columns: repeat(auto-fill, minmax(20%, 100px)); }
+
+#content.app-timemanager .reports-timerange {
+  margin-top: 12px;
+  grid-template-columns: 200px repeat(2, 130px) repeat(2, 150px); }
+
+#content.app-timemanager .checkbox-action label {
+  display: inline; }
+
+#content.app-timemanager .checkbox-action-loading.icon-loading:after {
+  height: 8px;
+  width: 8px;
+  margin: -6px 0 0 -44px; }
+
+#content.app-timemanager .statistics {
+  margin-left: -30px;
+  width: calc(100% + 45px);
+  min-height: 40vh; }
+  #content.app-timemanager .statistics .week-navigation {
+    margin-top: 24px;
+    color: var(--color-text-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    #content.app-timemanager .statistics .week-navigation .dates {
+      color: var(--color-text-lighter); }
+  #content.app-timemanager .statistics .top-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 48px; }
+    #content.app-timemanager .statistics .top-stats figure {
+      font-size: 28px; }
+      #content.app-timemanager .statistics .top-stats figure figcaption {
+        padding-bottom: 12px; }
+  #content.app-timemanager .statistics .hours-per-week {
+    display: grid;
+    grid-template-columns: repeat(var(--tm-stats-columns, 7), minmax(auto, 100px));
+    justify-content: center;
+    height: 40vh;
+    width: 100%;
+    margin-top: 12px; }
+    #content.app-timemanager .statistics .hours-per-week .empty {
+      color: var(--color-text-lighter);
+      grid-column-start: 1;
+      grid-column-end: 8;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    #content.app-timemanager .statistics .hours-per-week .column {
+      height: calc(100% - 75px);
+      align-self: flex-end;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-flow: column; }
+      #content.app-timemanager .statistics .hours-per-week .column-inner {
+        background: var(--color-primary);
+        opacity: 0.57;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: calc(100% - 6px);
+        max-width: 60px;
+        transform-origin: bottom center; }
+        @supports (animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards) {
+          #content.app-timemanager .statistics .hours-per-week .column-inner {
+            transform: scaleY(0.4);
+            opacity: 0;
+            animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards; } }
+    #content.app-timemanager .statistics .hours-per-week .date-label {
+      color: var(--color-text-lighter);
+      position: relative;
+      text-align: center;
+      transition: opacity 0.3s ease; }
+      #content.app-timemanager .statistics .hours-per-week .date-label span {
+        display: block; }
+      #content.app-timemanager .statistics .hours-per-week .date-label .day {
+        color: var(--color-text-light); }
+      #content.app-timemanager .statistics .hours-per-week .date-label .date {
+        margin-top: -6px; }
+      #content.app-timemanager .statistics .hours-per-week .date-label:before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: calc(50% - 2px);
+        height: 8px;
+        width: 1px;
+        background: var(--color-background-darker); }
+    #content.app-timemanager .statistics .hours-per-week .hours-label {
+      color: var(--color-text-light);
+      margin-bottom: 4px;
+      text-align: center;
+      transform-origin: bottom center; }
+      @supports (animation: fade 0.4s 0.2s ease forwards) {
+        #content.app-timemanager .statistics .hours-per-week .hours-label {
+          opacity: 0;
+          animation: fade 0.4s 0.2s ease forwards; } }
+    #content.app-timemanager .statistics .hours-per-week.many .column:nth-child(odd) .date-label {
+      opacity: 0; }
+    #content.app-timemanager .statistics .hours-per-week.many:hover .column:not(:hover) .date-label {
+      opacity: 0; }
+    #content.app-timemanager .statistics .hours-per-week.many:hover .column:nth-child(odd):hover .date-label {
+      opacity: 1; }
+    #content.app-timemanager .statistics .hours-per-week.many .date-label {
+      width: 200%;
+      font-size: 9pt; }
+      #content.app-timemanager .statistics .hours-per-week.many .date-label .date {
+        margin-top: -10px; }
+    #content.app-timemanager .statistics .hours-per-week.many .hours-label {
+      width: 200%;
+      font-size: 9pt; }
+
+#content.app-timemanager .reports h2 {
+  margin-bottom: 24px; }
+
+#content.app-timemanager .reports details {
+  padding-left: 12px;
+  padding-bottom: 12px;
+  padding-top: 6px;
+  color: var(--color-text-lighter);
+  cursor: pointer; }
+  #content.app-timemanager .reports details .tm_item-note {
+    color: var(--color-text-light); }
+
+#content.app-timemanager .reports .statistics {
+  width: 100%;
+  margin-left: 0;
+  min-height: 300px; }
+  #content.app-timemanager .reports .statistics .hours-per-week {
+    height: 300px; }
+
+#content.app-timemanager .reports .sharee-filter-label {
+  position: relative;
+  margin-right: 10px; }
+  #content.app-timemanager .reports .sharee-filter-label:after {
+    content: "";
+    height: 65%;
+    width: 1px;
+    background: var(--color-border-dark);
+    display: block;
+    position: absolute;
+    right: -10px;
+    bottom: 0; }
+
+#content.app-timemanager .reports-section {
+  min-height: 308px; }
+
+#content.app-timemanager .tools .csv_list {
+  display: grid;
+  grid-template-columns: 150px 1fr; }
+
+#content.app-timemanager .tools form {
+  padding: 36px 0 48px; }
+
+#content.app-timemanager .latest-headline {
+  margin-bottom: 24px; }
+
+#content.app-timemanager .filter-button {
+  padding: 6px 12px 6px 34px;
+  margin-left: 8px;
+  margin-bottom: -8px;
+  margin-top: -4px;
+  position: relative; }
+  #content.app-timemanager .filter-button.active {
+    padding-right: 36px; }
+    #content.app-timemanager .filter-button.active:after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 100%;
+      background: var(--color-primary); }
+
+.oc-dialog-buttonrow.reverse {
+  flex-flow: row-reverse; }
+
+.sharing-dialog .sharee-list {
+  margin-top: 15px;
+  margin-bottom: 25px; }
+  .sharing-dialog .sharee-list li {
+    min-height: 30px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+    .sharing-dialog .sharee-list li figure {
+      display: flex;
+      align-items: center; }
+    .sharing-dialog .sharee-list li img {
+      margin: auto 5px auto 0;
+      border-radius: 100%;
+      width: 32px;
+      height: 32px; }
+
+.sharing-dialog aside {
+  margin-top: 24px; }
+  .sharing-dialog aside p {
+    font-size: 14px;
+    color: var(--color-text-lighter);
+    line-height: 24px;
+    margin-top: 12px; }
+
+.existing-sharees {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center; }
+  .existing-sharees li {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    min-height: 32px; }
+    .existing-sharees li img {
+      margin: auto 5px;
+      border-radius: 100%;
+      width: 32px;
+      height: 32px; }
+  .existing-sharees.compact li {
+    margin-bottom: 0;
+    min-height: 16px;
+    color: var(--color-text-lighter); }
+  .existing-sharees.compact img {
+    width: 16px;
+    height: 16px; }
+
+.popover {
+  background: var(--color-background-dark);
+  box-shadow: var(--color-primary-light) 0px 1px 4px 1px;
+  width: 320px;
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  padding: 0 12px 12px; }
+
+.button-w-icon {
+  background-position: 12px center; }
+
+@keyframes fallback {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 0; }
+  100% {
+    height: 100%;
+    width: 100%;
+    opacity: 1; } }
+
+@keyframes scale {
+  0% {
+    transform: scaleY(0.4);
+    opacity: 0; }
+  100% {
+    transform: scaleY(1);
+    opacity: 1; } }
+
+@keyframes fade {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+:root .selectContainer {
+  --background: var(--color-main-background);
+  --listBackground: var(--color-main-background);
+  --itemHoverBG: var(--color-primary-light);
+  --itemIsActiveBG: var(--color-primary-light);
+  --multiItemActiveBG: var(--color-primary-element);
+  --multiItemBG: var(--color-primary-light);
+  --spinnerColor: var(--color-primary);
+  --borderFocusColor: var(--color-primary-element);
+  --borderHoverColor: var(--color-primary-element);
+  --inputColor: var(--color-main-text);
+  --border: 1px solid var(--color-border-dark); }
+
+@media print {
+  #app-navigation,
+  .reports-filters,
+  .filters-form-title,
+  #content.app-timemanager .quick-add > .actions,
+  #content.app-timemanager .reports-filters > .actions,
+  #content.app-timemanager .reports-timerange > .actions,
+  .reports-timerange .status,
+  button[type="button"],
+  .export-button,
+  #header {
+    display: none !important; }
+  #app-navigation:not(.hidden) + #app-content {
+    margin-left: 0; }
+  #content {
+    padding-top: 0; }
+  .section {
+    padding: 0.12cm; }
+  details > .tm_item-row {
+    break-inside: avoid; }
+  .statistics .column-inner {
+    border: 1px solid var(--color-text-light); } }

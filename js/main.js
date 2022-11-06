@@ -19,8 +19,10 @@ import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
 import auth from "@nextcloud/auth";
+import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
+let pjax = null;
 
 $(document).ready(function () {
 	if ($('input[name="duration"]').length > 0) {
@@ -280,4 +282,4 @@ const init = () => {
 };
 
 init();
-new PagePjax(init);
+pjax = new PagePjax(init);

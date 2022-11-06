@@ -247,7 +247,7 @@ class PageController extends Controller {
 						"start" => $time->getStart(),
 						"end" => $time->getEnd(),
 						"note" => $time->getNote(),
-						"status" => strtolower($time->getPaymentStatus()) === "paid" ? "resolved" : "unresolved",
+						"status" => strtolower($time->getPaymentStatus() || '') === "paid" ? "resolved" : "unresolved",
 						"duration" => $hours,
 						"client" => $client->getName(),
 						"project" => $project->getName(),
@@ -938,7 +938,7 @@ class PageController extends Controller {
 			$userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : []
 		);
 		$sharedTimeEntries = array_filter($times, function ($entry) {
-			return !$entry->time->current_user_is_author;
+			return !$entry->current_user_is_author;
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 

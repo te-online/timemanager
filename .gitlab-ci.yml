@@ -29,7 +29,7 @@ stages:
     # Get the IP of the web container
     - export SERVER_IP=$(docker container inspect -f '{{ .NetworkSettings.Networks.tests_default.IPAddress }}' $(docker ps -qf "name=web"))
     # Run tests in cypress container
-    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.6-chrome100-ff98 sh -c "cd tests && npm ci && npm test -- --config baseUrl=http://$SERVER_IP"
+    - docker run --network tests_default -v $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME -w $CI_BUILDS_DIR/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME cypress/browsers:node14.17.6-chrome100-ff98 sh -c "cd tests && npm ci && export CYPRESS_NC_VERSION=$NC_VERSION && npm test -- --config baseUrl=http://$SERVER_IP"
     # Echo log file for debug purposes
     - docker exec $(docker ps -qf "name=app") sh -c 'cat data/nextcloud.log' > nextcloud.log
     - cat nextcloud.log | jq .message
@@ -49,8 +49,17 @@ stages:
 app_test_nc_23:
   extends: .app_tests
   before_script:
-    - sed -i "s#nextcloud:24-fpm-alpine#nextcloud:23-fpm-alpine#g" tests/docker-compose.yml
+    - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:23-fpm-alpine#g" tests/docker-compose.yml
     - *before_script
 
 app_test_nc_24:
   extends: .app_tests
+  before_script:
+    - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:24-fpm-alpine#g" tests/docker-compose.yml
+    - *before_script
+
+app_test_nc_25:
+  extends: .app_tests
+  before_script:
+    - export NC_VERSION=25
+    - *before_script
