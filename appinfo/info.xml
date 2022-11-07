@@ -9,14 +9,7 @@
 * ✅ **check or uncheck** a time entry (e.g. to save whether you've billed it)
 * 📈 make use of simple, but useful **statistics** and **reports**.
 
-#### Latest changes 🎉
-**0.3.3 Beta, 11. September 2022**
-- Dashboard / Quick Add: Rework combo-selector for client, project and taks – I hope you like it, happy to get feedback.
-- Dashboard / Quick Add: Add autosuggest for previous notes for repeated time entries to prefill details
-- Previously missing colors for select inputs have been themed
-- Maintenance: Update some JS dependencies
-
-_Please refer to the [full changelog](https://github.com/te-online/timemanager/#changelog) to see older releases_
+_[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.md) to see older releases_
 
 📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
 	<licence>AGPL</licence>

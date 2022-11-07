@@ -247,7 +247,7 @@ class PageController extends Controller {
 						"start" => $time->getStart(),
 						"end" => $time->getEnd(),
 						"note" => $time->getNote(),
-						"status" => strtolower($time->getPaymentStatus() || '') === "paid" ? "resolved" : "unresolved",
+						"status" => strtolower($time->getPaymentStatus()) === "paid" ? "resolved" : "unresolved",
 						"duration" => $hours,
 						"client" => $client->getName(),
 						"project" => $project->getName(),

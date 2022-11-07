@@ -89,7 +89,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -100,14 +100,14 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Generate preview from file").click();
 
 		// Check counts in preview
-		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).should("be.visible");
-		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).should("be.visible");
-		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).should("be.visible");
+		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).scrollIntoView().should("be.visible");
+		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).scrollIntoView().should("be.visible");
+		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).scrollIntoView().should("be.visible");
 		cy.contains("button", "Import now").click();
 
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Import successful").should("be.visible");
-		cy.contains("Done:").should("be.visible");
+		cy.contains(".oc-dialog", "Import successful").scrollIntoView().should("be.visible");
+		cy.contains("Done:").scrollIntoView().should("be.visible");
 		cy.contains("button", "Close").click();
 		waitForOcDialog();
 
@@ -142,7 +142,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -154,7 +154,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Generate preview from file").click();
 
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Error reading CSV file").should("be.visible");
+		cy.contains(".oc-dialog", "Error reading CSV file").scrollIntoView().should("be.visible");
 		cy.contains("It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks.").should(
 			"be.visible"
 		);
@@ -173,7 +173,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type("import-test");
 		cy.get('input[name="password"]').type("import-test-password");
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -185,9 +185,9 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Generate preview from file").click();
 
 		// Check counts in preview
-		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).should("be.visible");
-		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).should("be.visible");
-		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).should("be.visible");
+		cy.contains("dt", "Clients").siblings("dd").contains(clients.length).scrollIntoView().should("be.visible");
+		cy.contains("dt", "Projects").siblings("dd").contains(allProjects.length).scrollIntoView().should("be.visible");
+		cy.contains("dt", "Tasks").siblings("dd").contains(allTasks.length).scrollIntoView().should("be.visible");
 	});
 
 	it("can create clients", () => {
@@ -200,7 +200,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('textarea[name="note"]').type("Some client note");
 			cy.get(".oc-dialog form").submit();
 			cy.contains(".list-title", "Clients");
-			cy.contains("div.tm_item-row", client.Name).should("be.visible");
+			cy.contains("div.tm_item-row", client.Name).scrollIntoView().should("be.visible");
 			cy.get("div.tm_item-row").should("have.length", index + 1);
 		}
 	});
@@ -215,19 +215,19 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		waitForOcDialog();
 		cy.contains("a", "Edit client").click();
-		cy.contains(".oc-dialog", "Edit client").should("be.visible");
+		cy.contains(".oc-dialog", "Edit client").scrollIntoView().should("be.visible");
 		cy.get('input[name="name"]').type(" (changed)");
 		cy.get('textarea[name="note"]').type(" (note updated)");
 		cy.contains("button", "Edit client").click();
 
 		waitForPjax();
-		cy.contains("span.tm_label", "Client").parent().contains(`${secondClient.Name} (changed)`).should("be.visible");
-		cy.contains("span.tm_label", "Note").parent().contains("Some client note (note updated)").should("be.visible");
+		cy.contains("span.tm_label", "Client").parent().contains(`${secondClient.Name} (changed)`).scrollIntoView().should("be.visible");
+		cy.contains("span.tm_label", "Note").parent().contains("Some client note (note updated)").scrollIntoView().should("be.visible");
 
 		cy.get("a").contains("Clients").click();
 		cy.contains(".list-title", "Clients");
 		cy.get("div.tm_item-row").should("have.length", clients.length);
-		cy.contains("div.tm_item-row", `${secondClient.Name} (changed)`).should("be.visible");
+		cy.contains("div.tm_item-row", `${secondClient.Name} (changed)`).scrollIntoView().should("be.visible");
 	});
 
 	it("can share clients", () => {
@@ -240,11 +240,11 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		for (const username of testusers.slice(1)) {
 			waitForOcDialog();
 			cy.contains("button", "Share client").click();
-			cy.contains(".oc-dialog", "Share with").should("be.visible");
+			cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
 			cy.get("input#sharee-select").type(username);
 			cy.get("label.sharees .item.first").click();
 			cy.contains("button", "Add").click();
-			cy.contains("span.tm_label", "Shared with").parent().contains(username).should("be.visible");
+			cy.contains("span.tm_label", "Shared with").parent().contains(username).scrollIntoView().should("be.visible");
 		}
 
 		cy.get("a").contains("Clients").click();
@@ -255,11 +255,11 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		for (const username of testusers.slice(1)) {
 			waitForOcDialog();
 			cy.contains("button", "Share client").click();
-			cy.contains(".oc-dialog", "Share with").should("be.visible");
+			cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
 			cy.get("input#sharee-select").type(username);
 			cy.get("label.sharees .item.first").click();
 			cy.contains("button", "Add").click();
-			cy.contains("span.tm_label", "Shared with").parent().contains(username).should("be.visible");
+			cy.contains("span.tm_label", "Shared with").parent().contains(username).scrollIntoView().should("be.visible");
 		}
 	});
 
@@ -292,7 +292,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 				cy.get('input[name="name"]').type(project.Name);
 				cy.get(".oc-dialog form").submit();
 				waitForPjax();
-				cy.contains("div.tm_item-row", project.Name).should("be.visible");
+				cy.contains("div.tm_item-row", project.Name).scrollIntoView().should("be.visible");
 				cy.get("div.tm_item-row").should("have.length", index + 1);
 			}
 		}
@@ -317,14 +317,14 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Edit project").click();
 
 		waitForPjax();
-		cy.contains("span.tm_label", "Project").parent().contains(`${thirdProject.Name} (changed)`).should("be.visible");
+		cy.contains("span.tm_label", "Project").parent().contains(`${thirdProject.Name} (changed)`).scrollIntoView().should("be.visible");
 
 		cy.get("a").contains(secondClient.Name).click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
 			projects.filter((project) => project.Client === secondClient.Name).length
 		);
-		cy.contains("div.tm_item-row", `${thirdProject.Name} (changed)`).should("be.visible");
+		cy.contains("div.tm_item-row", `${thirdProject.Name} (changed)`).scrollIntoView().should("be.visible");
 	});
 
 	it("can delete project on a client", () => {
@@ -389,7 +389,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 					cy.get('input[name="name"]').type(task.Name);
 					cy.get(".oc-dialog form").submit();
 					waitForPjax();
-					cy.contains("div.tm_item-row", task.Name).should("be.visible");
+					cy.contains("div.tm_item-row", task.Name).scrollIntoView().should("be.visible");
 					cy.get("div.tm_item-row").should("have.length", numTasks);
 				}
 			}
@@ -419,11 +419,11 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Edit task").click();
 
 		waitForPjax();
-		cy.contains("span.tm_label", "Task").parent().contains(`${thirdTask.Name} (changed)`).should("be.visible");
+		cy.contains("span.tm_label", "Task").parent().contains(`${thirdTask.Name} (changed)`).scrollIntoView().should("be.visible");
 
 		cy.get("a").contains(fifthProject.Name).click();
 		cy.get("div.tm_item-row").should("have.length", tasks.filter((task) => task.Project === fifthProject.Name).length);
-		cy.contains("div.tm_item-row", `${thirdTask.Name} (changed)`).should("be.visible");
+		cy.contains("div.tm_item-row", `${thirdTask.Name} (changed)`).scrollIntoView().should("be.visible");
 	});
 
 	it("can delete task on a project", () => {
@@ -477,9 +477,9 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('textarea[name="note"]').type(timeEntry.note);
 			cy.get(".oc-dialog form").submit();
 			waitForPjax();
-			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.note).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.formattedDate).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate).scrollIntoView().should("be.visible");
 			cy.get("div.tm_item-row").should("have.length", index + 1);
 		}
 	});
@@ -509,9 +509,9 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('textarea[name="note"]').type(timeEntry.note);
 			cy.get(".oc-dialog form").submit();
 			waitForPjax();
-			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.note).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.formattedDate).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate).scrollIntoView().should("be.visible");
 			cy.get("div.tm_item-row").should("have.length", index + 1);
 		}
 	});
@@ -545,7 +545,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get(".oc-dialog form").submit();
 
 		waitForPjax();
-		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("be.visible");
+		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).scrollIntoView().should("be.visible");
 		cy.get("div.tm_item-row").should("have.length", timeEntries.length);
 	});
 
@@ -571,7 +571,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('input[type="checkbox"]').click({ force: true });
 		});
 
-		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note).scrollIntoView().should("be.visible");
 		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
 			cy.get('input[type="checkbox"]:checked').should(should);
 		});
@@ -580,7 +580,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		// See if status survives a page refresh
 		cy.reload(true);
 
-		cy.contains("div.tm_item-row", firstTimeEntry.note).should("be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note).scrollIntoView().should("be.visible");
 		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
 			cy.get('input[type="checkbox"]:checked').should(should);
 		});
@@ -632,9 +632,9 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('textarea[name="note"]').type(secondTimeEntry.note);
 		cy.get(".oc-dialog form").submit();
 		waitForPjax();
-		cy.contains("div.tm_item-row", secondTimeEntry.time.replace(",", ".")).should("be.visible");
-		cy.contains("div.tm_item-row", secondTimeEntry.note).should("be.visible");
-		cy.contains("div.tm_item-row", secondTimeEntry.formattedDate).should("be.visible");
+		cy.contains("div.tm_item-row", secondTimeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+		cy.contains("div.tm_item-row", secondTimeEntry.note).scrollIntoView().should("be.visible");
+		cy.contains("div.tm_item-row", secondTimeEntry.formattedDate).scrollIntoView().should("be.visible");
 		cy.get("div.tm_item-row").should("have.length", timeEntries.length);
 	});
 
@@ -760,7 +760,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -807,7 +807,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -834,9 +834,9 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('textarea[name="note"]').type(`[Sharee entry]: ${timeEntry.note}`);
 			cy.get(".oc-dialog form").submit();
 			waitForPjax();
-			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).should("be.visible");
-			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.formattedDate).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate).scrollIntoView().should("be.visible");
 			cy.get("div.tm_item-row").should("have.length", index + 1);
 		}
 
@@ -868,10 +868,10 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		cy.get("div.tm_item-row").should("have.length", timeEntries.length * 2);
 		for (const timeEntry of sharedTimeEntries) {
-			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.note).should("be.visible");
-			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`).should("be.visible");
-			cy.contains("div.tm_item-row", timeEntry.formattedDate).should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`).scrollIntoView().should("be.visible");
+			cy.contains("div.tm_item-row", timeEntry.formattedDate).scrollIntoView().should("be.visible");
 		}
 	};
 
@@ -891,7 +891,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -941,7 +941,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -977,7 +977,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testuser);
 		cy.get('input[name="password"]').type(`${testuser}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Projects").click();
@@ -1180,7 +1180,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="user"]').type(testusers[1]);
 		cy.get('input[name="password"]').type(`${testusers[1]}-password`);
 		cy.get('[type="submit"]').click();
-		cy.contains("#app-dashboard", "Recommended files").should("be.visible");
+		cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
