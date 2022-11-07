@@ -29670,7 +29670,7 @@
       child_ctx[96] = list;
       child_ctx[94] = i;
       return child_ctx;
-    } // (427:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (426:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_7(ctx) {
@@ -29753,7 +29753,7 @@
           dispose();
         }
       };
-    } // (430:5) {#each noteAutosuggestList as suggestion, index}
+    } // (429:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29904,7 +29904,7 @@
           run_all(dispose);
         }
       };
-    } // (490:1) {#if showDurationSelector}
+    } // (489:1) {#if showDurationSelector}
 
 
     function create_if_block_6$1(ctx) {
@@ -30095,7 +30095,7 @@
           run_all(dispose);
         }
       };
-    } // (589:2) {:else}
+    } // (588:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -30195,7 +30195,7 @@
           run_all(dispose);
         }
       };
-    } // (565:2) {#if selected && !showTaskSelector}
+    } // (564:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -30327,7 +30327,7 @@
           run_all(dispose);
         }
       };
-    } // (603:1) {#if showTaskSelector}
+    } // (602:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -30489,7 +30489,7 @@
           run_all(dispose);
         }
       };
-    } // (630:4) {#if lastUsed?.length && !searchValue}
+    } // (629:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30558,7 +30558,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (634:8) {#if index === 0}
+    } // (633:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30577,7 +30577,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (632:6) {#each lastUsed as entry, index}
+    } // (631:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30752,7 +30752,7 @@
           run_all(dispose);
         }
       };
-    } // (721:34) 
+    } // (720:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30771,7 +30771,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (677:4) {#if searchResults?.length}
+    } // (676:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30836,7 +30836,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (687:12) {#each project.tasks as task}
+    } // (686:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30942,7 +30942,7 @@
           run_all(dispose);
         }
       };
-    } // (683:9) {#each client.projects as project}
+    } // (682:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -31034,7 +31034,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (678:5) {#each searchResults as client}
+    } // (677:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {

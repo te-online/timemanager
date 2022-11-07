@@ -14,7 +14,6 @@
 	import { differenceInMinutes, format, isDate, parse, parseISO, startOfDay } from "date-fns";
 	import { generateUrl } from "@nextcloud/router";
 	import { Helpers } from "../lib/helpers";
-	import { start } from "@popperjs/core";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
