@@ -13942,8 +13942,8 @@
             return undefined;
           }
 
-          var endTime = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
-          return addMinutes(endTime, duration * 60).toTimeString().substring(0, 5);
+          var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+          return addMinutes(start, duration * 60).toTimeString().substring(0, 5);
         } // Uses calculateDatetimeWithTimezone to transform a given UTC date and time into a timezone local date or time
 
       }, {

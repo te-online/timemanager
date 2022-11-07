@@ -91,9 +91,9 @@ export class Helpers {
 			return undefined;
 		}
 
-		const endTime = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
 
-		return addMinutes(endTime, duration * 60)
+		return addMinutes(start, duration * 60)
 			.toTimeString()
 			.substring(0, 5);
 	}
