@@ -257,7 +257,7 @@ class ObjectMapper extends Mapper {
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql =
 				"SELECT DISTINCT `$this->tableName`.* FROM (`$this->tableName` LEFT JOIN `*PREFIX*timemanager_share` ON `$this->tableName`.`uuid` = `*PREFIX*timemanager_share`.`object_uuid`) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ?" .
+				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
 				$this->getOrderByClause($orderby, $sort) .
 				";";
 
