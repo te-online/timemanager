@@ -253,16 +253,8 @@ body.loading-error #content.app-timemanager:before {
 .app-timemanager .oc-dialog .inner {
 	padding-left: 10px;
 	padding-right: 10px;
-	min-width: 300px;
-	max-width: 400px;
-
-	&.push-bottom {
-		margin-bottom: 15px;
-	}
-
-	.urldisplay {
-		word-wrap: break-word;
-	}
+	min-width: 380px;
+	max-width: 480px;
 }
 
 label {
