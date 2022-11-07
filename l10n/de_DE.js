@@ -17,7 +17,7 @@ OC.L10N.register(
 		Cancel: "Abbrechen",
 		Delete: "Löschen",
 		"Do you want to delete this time entry?": "Möchten Sie diesen Zeiteintrag löschen?",
-		"Duration (in hrs.), Start time, End time & Date": "Dauer (in Std.), Startzeit, Endzeit & Datum",
+		"Duration (in hrs.) & Date": "Dauer (in Std.) & Datum",
 		Add: "Hinzufügen",
 		"Current week": "Aktuelle Woche",
 		"Next week": "Nächste Woche",
@@ -29,7 +29,6 @@ OC.L10N.register(
 		Today: "heute",
 		Statistics: "Statistik",
 		"Duration (in hrs.)": "Dauer (in Std.)",
-		"Start time / End time": "Startzeit / Endzeit",
 		Date: "Datum",
 		Edit: "Bearbeiten",
 		"Edit time entry": "Zeiteintrag bearbeiten",
@@ -181,6 +180,9 @@ OC.L10N.register(
 		"Client, project or task": "Kunde, Projekt oder Aufgabe",
 		"Last used": "Zuletzt genutzt",
 		"Nothing found": "Nichts gefunden",
+		"Start time": "Startzeit",
+		"End time": "Endzeit",
+		"{duration} hrs. on {date}": "{duration} Std. am {date}",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

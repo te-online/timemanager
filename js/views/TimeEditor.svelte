@@ -15,10 +15,27 @@
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
 
-	let startTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'time') || "";
-	let endTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.endTime, undefined, 'time') || "";
+	let startTime =
+		Helpers.calculateToLocalDatetime(
+			editTimeEntryData.date || initialDate,
+			editTimeEntryData.startTime,
+			undefined,
+			"time"
+		) || "";
+	let endTime =
+		Helpers.calculateToLocalDatetime(
+			editTimeEntryData.date || initialDate,
+			editTimeEntryData.endTime,
+			undefined,
+			"time"
+		) || "";
 	let duration = Helpers.calculateDuration(startTime, endTime);
-	let date = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, 'date');
+	let date = Helpers.calculateToLocalDatetime(
+		editTimeEntryData.date || initialDate,
+		editTimeEntryData.startTime,
+		undefined,
+		"date"
+	);
 	let note = editTimeEntryData.note || "";
 
 	const submit = () => {
@@ -29,51 +46,55 @@
 <div class="inner tm_new-item">
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
-		<label>
-			{translate("timemanager", "Duration (in hrs.)")}
-			<br />
-			<input
-				autofocus
-				type="number"
-				name="duration"
-				step="0.01"
-				min="0"
-				max="23.99"
-				placeholder=""
-				style="width: 100%"
-				class="input-wide"
-				bind:value={duration}
-				on:input={() => (endTime = Helpers.calculateEndTime(startTime, duration))}
-				required
-			/>
-		</label>
-		<br />
-		<label>
-			{translate("timemanager", "Start time / End time")}
-			<br />
-			<input
-				type="time"
-				name="startTime"
-				placeholder="--:--"
-				style="width: 48%;margin-right: 0%"
-				class="input-wide"
-				bind:value={startTime}
-				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
-				pattern="[0-9]{2}:[0-9]{2}"
-				required
-			/>
-			<input
-				type="time"
-				name="endTime"
-				placeholder="--:--"
-				style="width: 48%;margin-right: 0%;float: right;"
-				class="input-wide"
-				pattern="[0-9]{2}:[0-9]{2}"
-				bind:value={endTime}
-				on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
-				required
-			/>
-		</label>
+		<span class="flex-fields">
+			<label>
+				{translate("timemanager", "Duration (in hrs.)")}
+				<br />
+				<input
+					autofocus
+					type="text"
+					name="duration"
+					placeholder=""
+					class="input-wide"
+					bind:value={duration}
+					on:input={() => {
+						duration = Helpers.normalizeDuration(duration);
+						endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+					}}
+					required
+				/>
+			</label>
+			<span class="flex-fields">
+				<label>
+					{translate("timemanager", "Start time")}
+					<br />
+					<input
+						type="time"
+						name="startTime"
+						placeholder="--:--"
+						class="input-wide"
+						bind:value={startTime}
+						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+						pattern="[0-9]{2}:[0-9]{2}"
+						required
+					/>
+				</label>
+				<label>
+					{translate("timemanager", "End time")}
+					<br />
+					<input
+						type="time"
+						name="endTime"
+						placeholder="--:--"
+						class="input-wide"
+						pattern="[0-9]{2}:[0-9]{2}"
+						bind:value={endTime}
+						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+						required
+					/>
+				</label>
+			</span>
+		</span>
 		<br />
 		<label>
 			{translate("timemanager", "Date")}

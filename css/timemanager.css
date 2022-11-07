@@ -276,18 +276,18 @@ label {
     #content.app-timemanager .reports-filters label.error input,
     #content.app-timemanager .reports-timerange label.error input {
       border-color: var(--color-error); }
-    #content.app-timemanager .quick-add label .double,
-    #content.app-timemanager .reports-filters label .double,
-    #content.app-timemanager .reports-timerange label .double {
-      display: flex; }
+  #content.app-timemanager .quick-add .duration-trigger,
+  #content.app-timemanager .reports-filters .duration-trigger,
+  #content.app-timemanager .reports-timerange .duration-trigger {
+    width: 100%; }
   #content.app-timemanager .quick-add .duration-input,
   #content.app-timemanager .reports-filters .duration-input,
   #content.app-timemanager .reports-timerange .duration-input {
-    width: 60px; }
+    width: 80px; }
   #content.app-timemanager .quick-add .date-input,
   #content.app-timemanager .reports-filters .date-input,
   #content.app-timemanager .reports-timerange .date-input {
-    width: 170px; }
+    width: 100%; }
   #content.app-timemanager .quick-add .time-input,
   #content.app-timemanager .reports-filters .time-input,
   #content.app-timemanager .reports-timerange .time-input {
@@ -325,7 +325,7 @@ label {
   min-height: 156px; }
 
 #content.app-timemanager .quick-add {
-  grid-template-columns: minmax(200px, calc(100% - 700px)) 380px 250px 100px; }
+  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px; }
   @media screen and (max-width: 768px) {
     #content.app-timemanager .quick-add {
       display: block; } }
@@ -343,6 +343,12 @@ label {
     display: inline-block; }
     #content.app-timemanager .note-autosuggest .task:hover, #content.app-timemanager .note-autosuggest .task:focus-visible {
       background: var(--color-primary-light); }
+
+#content.app-timemanager .duration-selector-popover {
+  width: 350px;
+  max-width: 40vw;
+  background: var(--color-main-background);
+  padding: 12px; }
 
 #content.app-timemanager .task-selector-popover {
   width: 466px;
@@ -600,6 +606,11 @@ label {
   border: 0;
   border-radius: 0;
   padding: 0; }
+
+.flex-fields {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px; }
 
 .oc-dialog-buttonrow.reverse {
   flex-flow: row-reverse; }

@@ -345,18 +345,18 @@ label {
 					border-color: var(--color-error);
 				}
 			}
+		}
 
-			.double {
-				display: flex;
-			}
+		.duration-trigger {
+			width: 100%;
 		}
 
 		.duration-input {
-			width: 60px;
+			width: 80px;
 		}
 
 		.date-input {
-			width: 170px;
+			width: 100%;
 		}
 
 		.time-input {
@@ -397,7 +397,7 @@ label {
 
 	.quick-add {
 		// Using minmax fixes some unpredictable layout-shifts in Safari...
-		grid-template-columns: minmax(200px, calc(100% - 700px)) 380px 250px 100px;
+		grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
 
 		@media screen and (max-width: 768px) {
 			display: block;
@@ -425,6 +425,14 @@ label {
 				background: var(--color-primary-light);
 			}
 		}
+	}
+
+	.duration-selector-popover {
+		// extends .popover
+		width: 350px;
+		max-width: 40vw;
+		background: var(--color-main-background);
+		padding: 12px;
 	}
 
 	.task-selector-popover {
@@ -799,6 +807,12 @@ label {
 		border-radius: 0;
 		padding: 0;
 	}
+}
+
+.flex-fields {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 6px;
 }
 
 .oc-dialog-buttonrow.reverse {

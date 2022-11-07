@@ -1,6 +1,6 @@
 import { de, fr, pt } from "date-fns/locale";
 import { getFirstDay, getLocale } from "@nextcloud/l10n";
-import { differenceInMinutes, parse } from "date-fns";
+import { addMinutes, differenceInMinutes, parse } from "date-fns";
 
 export class Helpers {
 	// Helps replacing a SSR node with a Svelte component
@@ -55,22 +55,47 @@ export class Helpers {
 	}
 
 	static calculateDuration(startTime, endTime) {
-		const start = parse(startTime, "HH:mm", new Date());
-		const end = parse(endTime, "HH:mm", new Date());
-		return this.simpleRounding(differenceInMinutes(end, start) / 60);
+		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+		const end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+		return Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+	}
+
+	static normalizeDuration(duration) {
+		if (!duration) {
+			return duration;
+		}
+
+		const value = `${duration}`;
+		let normalizedValue = value.replace(/[^0-9.,]*/g, "");
+
+		// Replace decimal comma with dot
+		normalizedValue = normalizedValue.replace(/,/g, ".");
+		// Remove duplicate decimal dots
+		if (normalizedValue.includes(".")) {
+			const partsArray = normalizedValue.split(".");
+			const [wholeNumber] = partsArray;
+			partsArray.shift();
+			normalizedValue = `${wholeNumber}.${partsArray.join("")}`;
+
+			if (value.endsWith(".") && partsArray.length <= 1) {
+				return duration;
+			}
+		}
+
+		return normalizedValue;
 	}
 
 	// NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
 	static calculateEndTime(startTime, duration) {
-		if (!startTime || duration === "" || duration === undefined) return undefined;
+		if (!startTime || !duration) {
+			return undefined;
+		}
 
-		// Start time in ms
-		var endTime = new Date("2000/01/01 " + startTime).getTime();
+		const endTime = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
 
-		// Add duration converted to ms
-		endTime += duration * 60 * 60 * 1000;
-
-		return new Date(endTime).toTimeString().substring(0, 5);
+		return addMinutes(endTime, duration * 60)
+			.toTimeString()
+			.substring(0, 5);
 	}
 
 	// Uses calculateDatetimeWithTimezone to transform a given UTC date and time into a timezone local date or time

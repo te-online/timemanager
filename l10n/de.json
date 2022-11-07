@@ -16,7 +16,7 @@
 		"Cancel": "Abbrechen",
 		"Delete": "Löschen",
 		"Do you want to delete this time entry?": "Möchtest du diesen Zeiteintrag löschen?",
-		"Duration (in hrs.), Start time, End time & Date": "Dauer (in Std.), Startzeit, Endzeit & Datum",
+		"Duration (in hrs.) & Date": "Dauer (in Std.) & Datum",
 		"Add": "Hinzufügen",
 		"Current week": "Aktuelle Woche",
 		"Next week": "Nächste Woche",
@@ -27,7 +27,6 @@
 		"Today": "heute",
 		"Statistics": "Statistik",
 		"Duration (in hrs.)": "Dauer (in Std.)",
-		"Start time / End time": "Startzeit / Endzeit",
 		"Date": "Datum",
 		"Edit": "Bearbeiten",
 		"Edit time entry": "Zeiteintrag bearbeiten",
@@ -153,7 +152,10 @@
 		"All projects": "Alle Projekte",
 		"All tasks": "Alle Aufgaben",
 		"Created by": "Einträge von",
-		"Filter by person": "Filtern nach Person"
+		"Filter by person": "Filtern nach Person",
+		"Start time": "Startzeit",
+		"End time": "Endzeit",
+		"{duration} hrs. on {date}": "{duration} Std. am {date}"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }
