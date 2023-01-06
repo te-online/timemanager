@@ -28,7 +28,7 @@ $l = \OC::$server->getL10N('timemanager');
 					</h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label"><?php p($l->t('Created')); ?></span>
-						<?php p($_['task']->getCreatedDate()); ?>
+						<span data-datetime="<?php p($_['task']->getCreatedDateISO()); ?>"><?php p($_['task']->getCreatedDate()); ?></span>
 					</div>
 					<div class="tm_object-details-item">
 						<span data-svelte="ShareStatus.svelte"></span>
