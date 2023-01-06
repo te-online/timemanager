@@ -235,7 +235,7 @@ class TApiController extends ApiController {
 		string $tasks = null,
 		string $status = null,
 		$shared = false,
-		string $userFilter = "",
+		string $userFilter = ""
 	) {
 		// Get possible task ids to filters for
 		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared);
