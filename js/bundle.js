@@ -13943,95 +13943,13 @@
           }
 
           var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
-          return addMinutes(start, duration * 60).toTimeString().substring(0, 5);
-        } // Uses calculateDatetimeWithTimezone to transform a given UTC date and time into a timezone local date or time
-
+          return addMinutes(start, Math.round(duration * 60)).toTimeString().substring(0, 5);
+        }
       }, {
-        key: "calculateToLocalDatetime",
-        value: function calculateToLocalDatetime(date, time, timezone) {
-          var output = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "date" | "time";
-          if (!timezone) timezone = this.getTimezone();
-          var datetime = new Date("".concat(date, " ").concat(time, "Z"));
-          return this.calculateDatetimeWithTimezone(datetime, timezone, output);
-        } // Uses calculateDatetimeWithTimezone to transform a given date, time and timezone into a UTC date or time
-
-      }, {
-        key: "calculateToUTCDatetime",
-        value: function calculateToUTCDatetime(date, time, timezone) {
-          var output = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "date" | "time";
-          if (!timezone) timezone = this.getTimezone();
-          var datetime = new Date(new Date("".concat(date, " ").concat(time)).toLocaleString("en-US", {
-            timezone: timezone
-          }));
-          return this.calculateDatetimeWithTimezone(datetime, "UTC", output);
-        } // Used by Helpers class only to transform dates and times from UTC to local and vice versa. Depending on output
-        // parameter this function either returns "yyyy-MM-DD" or "HH:mm"
-
-      }, {
-        key: "calculateDatetimeWithTimezone",
-        value: function calculateDatetimeWithTimezone(datetime, timezone) {
-          var output = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "date" | "time";
-          var datetimeFormat = output === "date" ? new Intl.DateTimeFormat("fr-CA", // Returns yyyy-MM-DD
-          {
-            timeZone: timezone,
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
-          }) : new Intl.DateTimeFormat("en-US", // Returns HH:mm
-          {
-            timeZone: timezone,
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
-          });
-          return datetimeFormat.format(datetime);
-        } // Transforms a UTC date into a local date. Used in main.js to transform all UI-visible dates in
-        // times/statistics into local times.
-        // To add a date to a php template to be transformed once loaded, add the following code into php:
-        // <span data-datetime="<?php p($time->getStartFormatted("Y-m-d H:i:s")); ?>"> ...
-        // In main.js transformDatetimeElement replaces all these values with local date values.
-        // Returns a localized long date format.
-
-      }, {
-        key: "formatLocalDate",
-        value: function formatLocalDate(date, timezone) {
-          if (!timezone) timezone = this.getTimezone(); // Time
-
-          var datetime = new Date("".concat(date, "Z"));
-          var datetimeFormat = new Intl.DateTimeFormat("default", {
-            timeZone: timezone,
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-            weekday: "long"
-          });
-          return datetimeFormat.format(datetime);
-        } // Fetch current timezone. Might be timezone set in nextcloud/calendar settings or by browser.
-
-      }, {
-        key: "getTimezone",
-        value: function getTimezone() {
-          var store;
-
-          try {
-            store = JSON.parse(document.querySelector("span[data-store]").getAttribute("data-store"));
-          } catch (_unused) {// Failed to find store
-          }
-
-          var timezone = undefined;
-
-          if (store && store["settings"] && store["settings"]["timezone"]) {
-            var storeTimezone = store["settings"]["timezone"];
-            if (storeTimezone && storeTimezone !== "automatic") timezone = storeTimezone;
-          }
-
-          if (!timezone) {
-            // nextcloud/calendar actually uses jstz to determine the user/browser timezone
-            // if no other timezone was defined
-            timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          }
-
-          return timezone;
+        key: "toUTC",
+        value: function toUTC(date) {
+          date.setTime(date.getTime() + date.getTimezoneOffset() * 60000);
+          return date;
         }
       }, {
         key: "simpleRounding",
@@ -14048,7 +13966,7 @@
       child_ctx[25] = list[i];
       child_ctx[27] = i;
       return child_ctx;
-    } // (233:0) {#if controls}
+    } // (227:0) {#if controls}
 
 
     function create_if_block_7$2(ctx) {
@@ -14066,7 +13984,7 @@
           if (detaching) detach(h2);
         }
       };
-    } // (237:1) {#if controls}
+    } // (231:1) {#if controls}
 
 
     function create_if_block_6$3(ctx) {
@@ -14154,7 +14072,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (253:3) {#if !loading && weekTotal > 0}
+    } // (247:3) {#if !loading && weekTotal > 0}
 
 
     function create_if_block_3$3(ctx) {
@@ -14219,7 +14137,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (256:6) {#if point && point.stats}
+    } // (250:6) {#if point && point.stats}
 
 
     function create_if_block_4$3(ctx) {
@@ -14304,7 +14222,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (257:7) {#if point.stats.total > 0}
+    } // (251:7) {#if point.stats.total > 0}
 
 
     function create_if_block_5$3(ctx) {
@@ -14366,7 +14284,7 @@
           if (detaching) detach(div);
         }
       };
-    } // (254:4) {#each points as point, index}
+    } // (248:4) {#each points as point, index}
 
 
     function create_each_block$8(ctx) {
@@ -14412,7 +14330,7 @@
           if (if_block) if_block.d();
         }
       };
-    } // (269:3) {#if controls && !loading && weekTotal === 0}
+    } // (263:3) {#if controls && !loading && weekTotal === 0}
 
 
     function create_if_block_2$4(ctx) {
@@ -14431,7 +14349,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (273:2) {#if controls}
+    } // (267:2) {#if controls}
 
 
     function create_if_block$j(ctx) {
@@ -14588,7 +14506,7 @@
           run_all(dispose);
         }
       };
-    } // (290:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    } // (284:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
 
 
     function create_if_block_1$7(ctx) {
@@ -14802,7 +14720,8 @@
       };
     }
 
-    var dateFormat$2 = "yyyy-MM-dd";
+    var dateFormat$4 = "yyyy-MM-dd";
+    var apiDateFormat = "yyyy-MM-dd HH:mm:ss";
 
     function instance$r($$self, $$props, $$invalidate) {
       var loading;
@@ -14823,9 +14742,9 @@
       var simpleRounding = Helpers.simpleRounding;
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
-          start = _$$props$start === void 0 ? format$3(startOfWeek(new Date(), localeOptions), dateFormat$2, new Date()) : _$$props$start;
+          start = _$$props$start === void 0 ? format$3(startOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$start;
       var _$$props$end = $$props.end,
-          end = _$$props$end === void 0 ? format$3(endOfWeek(new Date(), localeOptions), dateFormat$2, new Date()) : _$$props$end;
+          end = _$$props$end === void 0 ? format$3(endOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$end;
 
       var updateWeek = function updateWeek() {
         $$invalidate(5, weekTotal = 0);
@@ -14945,21 +14864,20 @@
 
       var loadStats = /*#__PURE__*/function () {
         var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-          var start, end, statUrl, timezone, urlParts, queryString, queryStringParts, stats;
+          var start, end, statUrl, urlParts, queryString, queryStringParts, stats;
           return regeneratorRuntime.wrap(function _callee3$(_context3) {
             while (1) {
               switch (_context3.prev = _context3.next) {
                 case 0:
-                  start = format$3(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
-                  end = format$3(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
-                  statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0);
-                  timezone = Helpers.getTimezone(); // Parse current URL for filters
+                  start = format$3(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
+                  end = format$3(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
+                  statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
 
                   urlParts = document.location.href.split("?");
 
                   if (urlParts.length > 1) {
                     queryString = urlParts[1];
-                    queryStringParts = queryString.split("&");
+                    queryStringParts = queryString.split("&"); // Map over all query params
 
                     queryStringParts.forEach(function (part) {
                       // Split query params
@@ -14992,11 +14910,7 @@
                     });
                   }
 
-                  if (timezone) {
-                    statUrl += "&timezone=".concat(timezone);
-                  }
-
-                  _context3.next = 9;
+                  _context3.next = 7;
                   return fetch(statUrl, {
                     method: "GET",
                     headers: {
@@ -15005,15 +14919,15 @@
                     }
                   });
 
-                case 9:
+                case 7:
                   stats = _context3.sent;
-                  _context3.next = 12;
+                  _context3.next = 10;
                   return stats.json();
 
-                case 12:
+                case 10:
                   return _context3.abrupt("return", _context3.sent);
 
-                case 13:
+                case 11:
                 case "end":
                   return _context3.stop();
               }
@@ -15101,13 +15015,13 @@
         if ($$self.$$.dirty &
         /*start*/
         32768) {
-          $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$2, new Date())) ? parse$3(start, dateFormat$2, new Date()) : startOfWeek(new Date(), localeOptions));
+          $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
 
         if ($$self.$$.dirty &
         /*end*/
         65536) {
-          endCursor = isDate$1(parse$3(end, dateFormat$2, new Date())) ? parse$3(end, dateFormat$2, new Date()) : endOfWeek(new Date(), localeOptions);
+          endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
 
@@ -17762,7 +17676,7 @@
           append(label0, input0);
           set_input_value(input0,
           /*duration*/
-          ctx[11]);
+          ctx[10]);
           append(span1, t5);
           append(span1, span0);
           append(span0, label1);
@@ -17773,7 +17687,7 @@
           append(label1, input1);
           set_input_value(input1,
           /*startTime*/
-          ctx[9]);
+          ctx[11]);
           append(span0, t9);
           append(span0, label2);
           append(label2, t10);
@@ -17783,7 +17697,7 @@
           append(label2, input2);
           set_input_value(input2,
           /*endTime*/
-          ctx[10]);
+          ctx[12]);
           append(form, t13);
           append(form, br3);
           append(form, t14);
@@ -17795,7 +17709,7 @@
           append(label3, input3);
           set_input_value(input3,
           /*date*/
-          ctx[12]);
+          ctx[9]);
           append(form, t18);
           append(form, br5);
           append(form, t19);
@@ -17846,21 +17760,21 @@
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler*/
-            ctx[18]), listen(input0, "input",
+            ctx[17]), listen(input0, "input",
             /*input_handler*/
-            ctx[19]), listen(input1, "input",
+            ctx[18]), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[20]), listen(input1, "input",
+            ctx[19]), listen(input1, "input",
             /*input_handler_1*/
-            ctx[21]), listen(input2, "input",
+            ctx[20]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[22]), listen(input2, "input",
+            ctx[21]), listen(input2, "input",
             /*input_handler_2*/
-            ctx[23]), listen(input3, "input",
+            ctx[22]), listen(input3, "input",
             /*input3_input_handler*/
-            ctx[24]), listen(textarea, "input",
+            ctx[23]), listen(textarea, "input",
             /*input_handler_3*/
-            ctx[25]), listen(form, "submit", prevent_default(
+            ctx[24]), listen(form, "submit", prevent_default(
             /*submit*/
             ctx[14]))];
             mounted = true;
@@ -17878,36 +17792,36 @@
 
           if (dirty &
           /*duration*/
-          2048 && input0.value !==
+          1024 && input0.value !==
           /*duration*/
-          ctx[11]) {
+          ctx[10]) {
             set_input_value(input0,
             /*duration*/
-            ctx[11]);
-          }
-
-          if (dirty &
-          /*startTime*/
-          512) {
-            set_input_value(input1,
-            /*startTime*/
-            ctx[9]);
-          }
-
-          if (dirty &
-          /*endTime*/
-          1024) {
-            set_input_value(input2,
-            /*endTime*/
             ctx[10]);
           }
 
           if (dirty &
-          /*date*/
+          /*startTime*/
+          2048) {
+            set_input_value(input1,
+            /*startTime*/
+            ctx[11]);
+          }
+
+          if (dirty &
+          /*endTime*/
           4096) {
+            set_input_value(input2,
+            /*endTime*/
+            ctx[12]);
+          }
+
+          if (dirty &
+          /*date*/
+          512) {
             set_input_value(input3,
             /*date*/
-            ctx[12]);
+            ctx[9]);
           }
 
           if (dirty &
@@ -17982,13 +17896,15 @@
       };
     }
 
+    var timeFormat = "HH:mm";
+    var dateFormat$3 = "yyyy-MM-dd";
+
     function instance$j($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var taskName = $$props.taskName;
-      var initialDate = $$props.initialDate;
       var isServer = $$props.isServer;
       var onCancel = $$props.onCancel;
       var onSubmit = $$props.onSubmit;
@@ -17996,52 +17912,54 @@
           editTimeEntryData = _$$props$editTimeEntr === void 0 ? {} : _$$props$editTimeEntr;
       var timeEditorCaption = $$props.timeEditorCaption;
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
-      var startTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, "time") || "";
-      var endTime = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.endTime, undefined, "time") || "";
-      var duration = Helpers.calculateDuration(startTime, endTime);
-      var date = Helpers.calculateToLocalDatetime(editTimeEntryData.date || initialDate, editTimeEntryData.startTime, undefined, "date");
+      var localeOptions = Helpers.getDateLocaleOptions();
+      var initialDate = format$3(new Date(), dateFormat$3, localeOptions);
+      var startDate = parseISO(editTimeEntryData.date);
+      var date = startDate ? format$3(startDate, dateFormat$3, localeOptions) : initialDate;
+      var duration = editTimeEntryData.duration;
+      var startTime = format$3(startDate, timeFormat, localeOptions);
+      var endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
       var note = editTimeEntryData.note || "";
 
       var submit = function submit() {
         onSubmit({
-          startTime: startTime,
-          endTime: endTime,
-          date: date,
+          duration: duration,
+          date: "".concat(date, "T").concat(startTime, ":00"),
           note: note
         });
       };
 
       function input0_input_handler() {
         duration = this.value;
-        $$invalidate(11, duration);
+        $$invalidate(10, duration);
       }
 
       var input_handler = function input_handler() {
-        $$invalidate(11, duration = Helpers.normalizeDuration(duration));
-        $$invalidate(10, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        $$invalidate(10, duration = Helpers.normalizeDuration(duration));
+        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
 
       function input1_input_handler() {
         startTime = this.value;
-        $$invalidate(9, startTime);
+        $$invalidate(11, startTime);
       }
 
       var input_handler_1 = function input_handler_1() {
-        return $$invalidate(11, duration = Helpers.calculateDuration(startTime, endTime));
+        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
       };
 
       function input2_input_handler() {
         endTime = this.value;
-        $$invalidate(10, endTime);
+        $$invalidate(12, endTime);
       }
 
       var input_handler_2 = function input_handler_2() {
-        return $$invalidate(11, duration = Helpers.calculateDuration(startTime, endTime));
+        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
       };
 
       function input3_input_handler() {
         date = this.value;
-        $$invalidate(12, date);
+        $$invalidate(9, date);
       }
 
       var input_handler_3 = function input_handler_3(e) {
@@ -18054,16 +17972,15 @@
         if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
         if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
-        if ('initialDate' in $$props) $$invalidate(15, initialDate = $$props.initialDate);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(16, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(17, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(15, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(16, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
       };
 
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, startTime, endTime, duration, date, note, submit, initialDate, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, submit, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
     }
 
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
@@ -18083,11 +18000,10 @@
           clientName: 2,
           projectName: 3,
           taskName: 4,
-          initialDate: 15,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 16,
-          editTimeEntryData: 17,
+          onSubmit: 15,
+          editTimeEntryData: 16,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8
         });
@@ -18109,7 +18025,7 @@
           button = element("button");
           t = text(
           /*timeEditorButtonCaption*/
-          ctx[7]);
+          ctx[6]);
           attr(button, "type", "button");
           attr(button, "class", "btn");
           attr(div, "class", "tm_inline-hover-form");
@@ -18122,16 +18038,16 @@
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(
             /*click_handler_1*/
-            ctx[16]));
+            ctx[15]));
             mounted = true;
           }
         },
         p: function p(ctx, dirty) {
           if (dirty &
           /*timeEditorButtonCaption*/
-          128) set_data(t,
+          64) set_data(t,
           /*timeEditorButtonCaption*/
-          ctx[7]);
+          ctx[6]);
         },
         d: function d(detaching) {
           if (detaching) detach(div);
@@ -18139,7 +18055,7 @@
           dispose();
         }
       };
-    } // (58:0) {#if !timeUuid}
+    } // (60:0) {#if !timeUuid}
 
 
     function create_if_block_1$6(ctx) {
@@ -18154,7 +18070,7 @@
           span = element("span");
           t = text(
           /*timeEditorButtonCaption*/
-          ctx[7]);
+          ctx[6]);
           attr(a, "href", "#/");
           attr(a, "class", "button primary new");
         },
@@ -18166,16 +18082,16 @@
           if (!mounted) {
             dispose = listen(a, "click", prevent_default(
             /*click_handler*/
-            ctx[15]));
+            ctx[14]));
             mounted = true;
           }
         },
         p: function p(ctx, dirty) {
           if (dirty &
           /*timeEditorButtonCaption*/
-          128) set_data(t,
+          64) set_data(t,
           /*timeEditorButtonCaption*/
-          ctx[7]);
+          ctx[6]);
         },
         d: function d(detaching) {
           if (detaching) detach(a);
@@ -18183,7 +18099,7 @@
           dispose();
         }
       };
-    } // (67:0) {#if show}
+    } // (69:0) {#if show}
 
 
     function create_if_block$b(ctx) {
@@ -18193,7 +18109,7 @@
         props: {
           loading:
           /*loading*/
-          ctx[11],
+          ctx[10],
           $$slots: {
             default: [create_default_slot$5]
           },
@@ -18214,13 +18130,13 @@
           var overlay_changes = {};
           if (dirty &
           /*loading*/
-          2048) overlay_changes.loading =
+          1024) overlay_changes.loading =
           /*loading*/
-          ctx[11];
+          ctx[10];
 
           if (dirty &
-          /*$$scope, action, requestToken, show, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/
-          268285) {
+          /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/
+          265213) {
             overlay_changes.$$scope = {
               dirty: dirty,
               ctx: ctx
@@ -18242,7 +18158,7 @@
           destroy_component(overlay, detaching);
         }
       };
-    } // (68:1) <Overlay {loading}>
+    } // (70:1) <Overlay {loading}>
 
 
     function create_default_slot$5(ctx) {
@@ -18258,10 +18174,10 @@
           ctx[2],
           onCancel:
           /*func*/
-          ctx[17],
+          ctx[16],
           onSubmit:
           /*save*/
-          ctx[13],
+          ctx[12],
           clientName:
           /*clientName*/
           ctx[3],
@@ -18271,21 +18187,18 @@
           taskName:
           /*taskName*/
           ctx[5],
-          initialDate:
-          /*initialDate*/
-          ctx[6],
           timeEditorButtonCaption:
           /*timeEditorButtonCaption*/
-          ctx[7],
+          ctx[6],
           timeEditorCaption:
           /*timeEditorCaption*/
-          ctx[8],
+          ctx[7],
           editTimeEntryData:
           /*editTimeEntryData*/
-          ctx[9],
+          ctx[8],
           isServer:
           /*isServer*/
-          ctx[10]
+          ctx[9]
         }
       });
       return {
@@ -18310,9 +18223,9 @@
           ctx[2];
           if (dirty &
           /*show*/
-          4096) timeeditor_changes.onCancel =
+          2048) timeeditor_changes.onCancel =
           /*func*/
-          ctx[17];
+          ctx[16];
           if (dirty &
           /*clientName*/
           8) timeeditor_changes.clientName =
@@ -18329,30 +18242,25 @@
           /*taskName*/
           ctx[5];
           if (dirty &
-          /*initialDate*/
-          64) timeeditor_changes.initialDate =
-          /*initialDate*/
+          /*timeEditorButtonCaption*/
+          64) timeeditor_changes.timeEditorButtonCaption =
+          /*timeEditorButtonCaption*/
           ctx[6];
           if (dirty &
-          /*timeEditorButtonCaption*/
-          128) timeeditor_changes.timeEditorButtonCaption =
-          /*timeEditorButtonCaption*/
+          /*timeEditorCaption*/
+          128) timeeditor_changes.timeEditorCaption =
+          /*timeEditorCaption*/
           ctx[7];
           if (dirty &
-          /*timeEditorCaption*/
-          256) timeeditor_changes.timeEditorCaption =
-          /*timeEditorCaption*/
+          /*editTimeEntryData*/
+          256) timeeditor_changes.editTimeEntryData =
+          /*editTimeEntryData*/
           ctx[8];
           if (dirty &
-          /*editTimeEntryData*/
-          512) timeeditor_changes.editTimeEntryData =
-          /*editTimeEntryData*/
+          /*isServer*/
+          512) timeeditor_changes.isServer =
+          /*isServer*/
           ctx[9];
-          if (dirty &
-          /*isServer*/
-          1024) timeeditor_changes.isServer =
-          /*isServer*/
-          ctx[10];
           timeeditor.$set(timeeditor_changes);
         },
         i: function i(local) {
@@ -18386,7 +18294,7 @@
       var if_block0 = current_block_type(ctx);
       var if_block1 =
       /*show*/
-      ctx[12] && create_if_block$b(ctx);
+      ctx[11] && create_if_block$b(ctx);
       return {
         c: function c() {
           if_block0.c();
@@ -18419,13 +18327,13 @@
 
           if (
           /*show*/
-          ctx[12]) {
+          ctx[11]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
 
               if (dirty &
               /*show*/
-              4096) {
+              2048) {
                 transition_in(if_block1, 1);
               }
             } else {
@@ -18460,6 +18368,8 @@
       };
     }
 
+    var dateFormat$2 = "yyyy-MM-dd HH:mm:ss";
+
     function instance$i($$self, $$props, $$invalidate) {
       var show;
       var loading;
@@ -18470,33 +18380,28 @@
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var taskName = $$props.taskName;
-      var initialDate = $$props.initialDate;
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
       var timeEditorCaption = $$props.timeEditorCaption;
       var editTimeEntryData = $$props.editTimeEntryData;
       var isServer = $$props.isServer;
+      var localeOptions = Helpers.getDateLocaleOptions();
       onMount(function () {
         Helpers.hideFallbacks("TimeEditor.svelte");
       });
 
       var save = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref4) {
-          var startTime, endTime, date, note, utcStartTime, utcEndTime, utcDate, entry, response;
+          var duration, date, note, entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  startTime = _ref4.startTime, endTime = _ref4.endTime, date = _ref4.date, note = _ref4.note;
-                  $$invalidate(11, loading = true);
+                  duration = _ref4.duration, date = _ref4.date, note = _ref4.note;
+                  $$invalidate(10, loading = true);
                   _context.prev = 2;
-                  // Convert from local to UTC
-                  utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
-                  utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
-                  utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
                   entry = {
-                    startTime: utcStartTime,
-                    endTime: utcEndTime,
-                    date: utcDate,
+                    duration: duration,
+                    date: format$3(Helpers.toUTC(parseISO(date)), dateFormat$2, localeOptions),
                     note: note
                   };
 
@@ -18504,7 +18409,7 @@
                     entry.uuid = timeUuid;
                   }
 
-                  _context.next = 10;
+                  _context.next = 7;
                   return fetch(timeUuid ? editTimeEntryAction : action, {
                     method: timeUuid ? "PATCH" : "POST",
                     body: JSON.stringify(entry),
@@ -18514,31 +18419,31 @@
                     }
                   });
 
-                case 10:
+                case 7:
                   response = _context.sent;
 
                   if (response && response.ok) {
-                    $$invalidate(12, show = false);
+                    $$invalidate(11, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
 
-                  _context.next = 17;
+                  _context.next = 14;
                   break;
 
-                case 14:
-                  _context.prev = 14;
+                case 11:
+                  _context.prev = 11;
                   _context.t0 = _context["catch"](2);
                   console.error(_context.t0);
 
-                case 17:
-                  $$invalidate(11, loading = false);
+                case 14:
+                  $$invalidate(10, loading = false);
 
-                case 18:
+                case 15:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[2, 14]]);
+          }, _callee, null, [[2, 11]]);
         }));
 
         return function save(_x) {
@@ -18547,37 +18452,36 @@
       }();
 
       var click_handler = function click_handler() {
-        return $$invalidate(12, show = !show);
+        return $$invalidate(11, show = !show);
       };
 
       var click_handler_1 = function click_handler_1() {
-        return $$invalidate(12, show = !show);
+        return $$invalidate(11, show = !show);
       };
 
       var func = function func() {
-        return $$invalidate(12, show = false);
+        return $$invalidate(11, show = false);
       };
 
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editTimeEntryAction' in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
+        if ('editTimeEntryAction' in $$props) $$invalidate(13, editTimeEntryAction = $$props.editTimeEntryAction);
         if ('timeUuid' in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
         if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
         if ('clientName' in $$props) $$invalidate(3, clientName = $$props.clientName);
         if ('projectName' in $$props) $$invalidate(4, projectName = $$props.projectName);
         if ('taskName' in $$props) $$invalidate(5, taskName = $$props.taskName);
-        if ('initialDate' in $$props) $$invalidate(6, initialDate = $$props.initialDate);
-        if ('timeEditorButtonCaption' in $$props) $$invalidate(7, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
-        if ('timeEditorCaption' in $$props) $$invalidate(8, timeEditorCaption = $$props.timeEditorCaption);
-        if ('editTimeEntryData' in $$props) $$invalidate(9, editTimeEntryData = $$props.editTimeEntryData);
-        if ('isServer' in $$props) $$invalidate(10, isServer = $$props.isServer);
+        if ('timeEditorButtonCaption' in $$props) $$invalidate(6, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+        if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
+        if ('editTimeEntryData' in $$props) $$invalidate(8, editTimeEntryData = $$props.editTimeEntryData);
+        if ('isServer' in $$props) $$invalidate(9, isServer = $$props.isServer);
       };
 
-      $$invalidate(12, show = false);
+      $$invalidate(11, show = false);
 
-      $$invalidate(11, loading = false);
+      $$invalidate(10, loading = false);
 
-      return [action, timeUuid, requestToken, clientName, projectName, taskName, initialDate, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
+      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
     }
 
     var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
@@ -18593,17 +18497,16 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized(_this), options, instance$i, create_fragment$j, safe_not_equal, {
           action: 0,
-          editTimeEntryAction: 14,
+          editTimeEntryAction: 13,
           timeUuid: 1,
           requestToken: 2,
           clientName: 3,
           projectName: 4,
           taskName: 5,
-          initialDate: 6,
-          timeEditorButtonCaption: 7,
-          timeEditorCaption: 8,
-          editTimeEntryData: 9,
-          isServer: 10
+          timeEditorButtonCaption: 6,
+          timeEditorCaption: 7,
+          editTimeEntryData: 8,
+          isServer: 9
         });
         return _this;
       }
@@ -29670,7 +29573,7 @@
       child_ctx[96] = list;
       child_ctx[94] = i;
       return child_ctx;
-    } // (426:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (428:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_7(ctx) {
@@ -29753,7 +29656,7 @@
           dispose();
         }
       };
-    } // (429:5) {#each noteAutosuggestList as suggestion, index}
+    } // (431:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29791,14 +29694,14 @@
       var assign_a = function assign_a() {
         return (
           /*a_binding*/
-          ctx[50](a, index)
+          ctx[49](a, index)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding*/
-          ctx[50](null, index)
+          ctx[49](null, index)
         );
       };
 
@@ -29811,7 +29714,7 @@
 
         return (
           /*click_handler_1*/
-          (_ctx = ctx)[51].apply(_ctx, [
+          (_ctx = ctx)[50].apply(_ctx, [
           /*suggestion*/
           ctx[95]].concat(args))
         );
@@ -29820,7 +29723,7 @@
       function focus_handler_1() {
         return (
           /*focus_handler_1*/
-          ctx[52](
+          ctx[51](
           /*index*/
           ctx[94])
         );
@@ -29904,7 +29807,7 @@
           run_all(dispose);
         }
       };
-    } // (489:1) {#if showDurationSelector}
+    } // (491:1) {#if showDurationSelector}
 
 
     function create_if_block_6$1(ctx) {
@@ -30000,7 +29903,7 @@
           ctx[7]);
           /*input0_binding_1*/
 
-          ctx[56](input0);
+          ctx[55](input0);
           append(span1, t1);
           append(span1, span0);
           append(span0, label1);
@@ -30030,21 +29933,21 @@
           if (!mounted) {
             dispose = [listen(input0, "input",
             /*input0_input_handler_1*/
-            ctx[54]), listen(input0, "input",
+            ctx[53]), listen(input0, "input",
             /*input_handler_1*/
-            ctx[55]), listen(input1, "input",
+            ctx[54]), listen(input1, "input",
             /*input1_input_handler*/
-            ctx[57]), listen(input1, "input",
+            ctx[56]), listen(input1, "input",
             /*input_handler_2*/
-            ctx[58]), listen(input2, "input",
+            ctx[57]), listen(input2, "input",
             /*input2_input_handler*/
-            ctx[59]), listen(input2, "input",
+            ctx[58]), listen(input2, "input",
             /*input_handler_3*/
-            ctx[60]), listen(input3, "input",
+            ctx[59]), listen(input3, "input",
             /*input3_input_handler*/
-            ctx[61]), listen(input3, "blur",
+            ctx[60]), listen(input3, "blur",
             /*blur_handler*/
-            ctx[62]), action_destroyer(/*durationSelectorPopperContent*/
+            ctx[61]), action_destroyer(/*durationSelectorPopperContent*/
             ctx[31].call(null, div,
             /*extraOpts*/
             ctx[25])), listen(div, "click", click_handler_2)];
@@ -30090,12 +29993,12 @@
           if (detaching) detach(div);
           /*input0_binding_1*/
 
-          ctx[56](null);
+          ctx[55](null);
           mounted = false;
           run_all(dispose);
         }
       };
-    } // (588:2) {:else}
+    } // (590:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -30195,7 +30098,7 @@
           run_all(dispose);
         }
       };
-    } // (564:2) {#if selected && !showTaskSelector}
+    } // (566:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -30327,7 +30230,7 @@
           run_all(dispose);
         }
       };
-    } // (602:1) {#if showTaskSelector}
+    } // (604:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -30406,7 +30309,7 @@
           append(label, input);
           /*input_binding*/
 
-          ctx[63](input);
+          ctx[62](input);
           set_input_value(input,
           /*searchValue*/
           ctx[14]);
@@ -30423,9 +30326,9 @@
           if (!mounted) {
             dispose = [listen(input, "input",
             /*input_input_handler*/
-            ctx[64]), listen(input, "input",
+            ctx[63]), listen(input, "input",
             /*input_handler_4*/
-            ctx[65]), action_destroyer(/*taskSelectorPopperContent*/
+            ctx[64]), action_destroyer(/*taskSelectorPopperContent*/
             ctx[27].call(null, div3,
             /*extraOpts*/
             ctx[25])), listen(div3, "click", click_handler_5)];
@@ -30478,7 +30381,7 @@
           if (detaching) detach(div3);
           /*input_binding*/
 
-          ctx[63](null);
+          ctx[62](null);
           if (if_block0) if_block0.d();
 
           if (if_block1) {
@@ -30489,7 +30392,7 @@
           run_all(dispose);
         }
       };
-    } // (629:4) {#if lastUsed?.length && !searchValue}
+    } // (631:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30558,7 +30461,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (633:8) {#if index === 0}
+    } // (635:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30577,7 +30480,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (631:6) {#each lastUsed as entry, index}
+    } // (633:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30624,14 +30527,14 @@
       var assign_a = function assign_a() {
         return (
           /*a_binding_1*/
-          ctx[66](a, index)
+          ctx[65](a, index)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding_1*/
-          ctx[66](null, index)
+          ctx[65](null, index)
         );
       };
 
@@ -30644,7 +30547,7 @@
 
         return (
           /*click_handler_3*/
-          (_ctx2 = ctx)[67].apply(_ctx2, [
+          (_ctx2 = ctx)[66].apply(_ctx2, [
           /*entry*/
           ctx[92]].concat(args))
         );
@@ -30653,7 +30556,7 @@
       function focus_handler_2() {
         return (
           /*focus_handler_2*/
-          ctx[68](
+          ctx[67](
           /*index*/
           ctx[94])
         );
@@ -30752,7 +30655,7 @@
           run_all(dispose);
         }
       };
-    } // (720:34) 
+    } // (722:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30771,7 +30674,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (676:4) {#if searchResults?.length}
+    } // (678:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30836,7 +30739,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (686:12) {#each project.tasks as task}
+    } // (688:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30856,14 +30759,14 @@
       var assign_a = function assign_a() {
         return (
           /*a_binding_2*/
-          ctx[69](a, task)
+          ctx[68](a, task)
         );
       };
 
       var unassign_a = function unassign_a() {
         return (
           /*a_binding_2*/
-          ctx[69](null, task)
+          ctx[68](null, task)
         );
       };
 
@@ -30876,7 +30779,7 @@
 
         return (
           /*click_handler_4*/
-          (_ctx3 = ctx)[70].apply(_ctx3, [
+          (_ctx3 = ctx)[69].apply(_ctx3, [
           /*client*/
           ctx[83],
           /*project*/
@@ -30889,7 +30792,7 @@
       function focus_handler_3() {
         return (
           /*focus_handler_3*/
-          ctx[71](
+          ctx[70](
           /*task*/
           ctx[89])
         );
@@ -30942,7 +30845,7 @@
           run_all(dispose);
         }
       };
-    } // (682:9) {#each client.projects as project}
+    } // (684:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -31034,7 +30937,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (677:5) {#each searchResults as client}
+    } // (679:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -31275,7 +31178,7 @@
           ctx[11]);
           /*input0_binding*/
 
-          ctx[47](input0);
+          ctx[46](input0);
           append(label0, t2);
           if (if_block0) if_block0.m(label0, null);
           append(form, t3);
@@ -31285,7 +31188,7 @@
           append(label1, input1);
           /*input1_binding*/
 
-          ctx[53](input1);
+          ctx[52](input1);
           append(form, t5);
           if (if_block1) if_block1.m(form, null);
           append(form, t6);
@@ -31306,18 +31209,18 @@
             ctx[33]), action_destroyer(/*noteSuggestPopperRef*/
             ctx[28].call(null, input0)), listen(input0, "input",
             /*input0_input_handler*/
-            ctx[46]), listen(input0, "input",
+            ctx[45]), listen(input0, "input",
             /*input_handler*/
-            ctx[48]), listen(input0, "focus",
+            ctx[47]), listen(input0, "focus",
             /*focus_handler*/
-            ctx[49]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/
+            ctx[48]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/
             ctx[30].call(null, input1)), listen(input1, "focus",
             /*handleShowDurationSelector*/
             ctx[37]), listen(input1, "click",
             /*handleShowDurationSelector*/
             ctx[37]), listen(input1, "change", change_handler), listen(form, "submit",
             /*submit_handler*/
-            ctx[72])];
+            ctx[71])];
             mounted = true;
           }
         },
@@ -31454,11 +31357,11 @@
           if (detaching) detach(form);
           /*input0_binding*/
 
-          ctx[47](null);
+          ctx[46](null);
           if (if_block0) if_block0.d();
           /*input1_binding*/
 
-          ctx[53](null);
+          ctx[52](null);
           if (if_block1) if_block1.d();
           if_block2.d();
           if (if_block3) if_block3.d();
@@ -31503,9 +31406,9 @@
       var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
-      var initialDate = $$props.initialDate;
       var latestSearchEntries = $$props.latestSearchEntries;
       var localeOptions = Helpers.getDateLocaleOptions();
+      var initialDate = format$3(new Date(), dateFormat$1, localeOptions);
       var extraOpts = {
         modifiers: [{
           name: "offset",
@@ -31880,7 +31783,7 @@
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
           var _selected, _selected$task;
 
-          var utcStartTime, utcEndTime, utcDate, entry, response;
+          var startDateFormat, startDate, entry, response;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -31898,19 +31801,16 @@
                   return _context.abrupt("return");
 
                 case 6:
-                  _context.prev = 6;
-                  // Convert from local to UTC
-                  utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
-                  utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
-                  utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
+                  startDateFormat = "yyyy-MM-dd HH:mm:ss";
+                  startDate = "".concat(date, "T").concat(startTime, ":00");
+                  _context.prev = 8;
                   entry = {
-                    startTime: utcStartTime,
-                    endTime: utcEndTime,
-                    date: utcDate,
+                    duration: duration,
+                    date: format$3(Helpers.toUTC(parseISO(startDate)), startDateFormat, localeOptions),
                     note: note,
                     task: selected.task.value
                   };
-                  _context.next = 13;
+                  _context.next = 12;
                   return fetch(action, {
                     method: "POST",
                     body: JSON.stringify(entry),
@@ -31920,30 +31820,30 @@
                     }
                   });
 
-                case 13:
+                case 12:
                   response = _context.sent;
 
                   if (response && response.ok) {
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
 
-                  _context.next = 20;
+                  _context.next = 19;
                   break;
 
-                case 17:
-                  _context.prev = 17;
-                  _context.t0 = _context["catch"](6);
+                case 16:
+                  _context.prev = 16;
+                  _context.t0 = _context["catch"](8);
                   console.error(_context.t0);
 
-                case 20:
+                case 19:
                   $$invalidate(17, loading = false);
 
-                case 21:
+                case 20:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[6, 17]]);
+          }, _callee, null, [[8, 16]]);
         }));
 
         return function save() {
@@ -32187,8 +32087,7 @@
         if ('clients' in $$props) $$invalidate(41, clients = $$props.clients);
         if ('projects' in $$props) $$invalidate(42, projects = $$props.projects);
         if ('tasks' in $$props) $$invalidate(43, tasks = $$props.tasks);
-        if ('initialDate' in $$props) $$invalidate(44, initialDate = $$props.initialDate);
-        if ('latestSearchEntries' in $$props) $$invalidate(45, latestSearchEntries = $$props.latestSearchEntries);
+        if ('latestSearchEntries' in $$props) $$invalidate(44, latestSearchEntries = $$props.latestSearchEntries);
       };
 
       $$invalidate(17, loading = false);
@@ -32207,7 +32106,7 @@
 
       $$invalidate(23, searchResults = []);
 
-      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, action, requestToken, clients, projects, tasks, initialDate, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input0_input_handler_1, input_handler_1, input0_binding_1, input1_input_handler, input_handler_2, input2_input_handler, input_handler_3, input3_input_handler, blur_handler, input_binding, input_input_handler, input_handler_4, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
+      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, action, requestToken, clients, projects, tasks, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input0_input_handler_1, input_handler_1, input0_binding_1, input1_input_handler, input_handler_2, input2_input_handler, input_handler_3, input3_input_handler, blur_handler, input_binding, input_input_handler, input_handler_4, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
 
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
@@ -32227,8 +32126,7 @@
           clients: 41,
           projects: 42,
           tasks: 43,
-          initialDate: 44,
-          latestSearchEntries: 45
+          latestSearchEntries: 44
         }, null, [-1, -1, -1, -1]);
         return _this;
       }
@@ -46930,6 +46828,8 @@
 
     var token = auth.getRequestToken();
     var components = [];
+    var defaultDateFormat = "EEEE, MMMM d, y";
+    var localeOptions = Helpers.getDateLocaleOptions();
     $(document).ready(function () {
       if ($('input[name="duration"]').length > 0) {
         $('input[name="duration"]')[0].focus();
@@ -47124,12 +47024,22 @@
       // 	})
       // );
 
-      var transformDatetimeElement = function transformDatetimeElement() {
-        $(this).text(Helpers.formatLocalDate($(this).data("datetime")));
-      };
+      var dateTimeElements = document.querySelectorAll("[data-datetime]");
 
-      var items = $("[data-datetime]");
-      items.each(transformDatetimeElement);
+      if (dateTimeElements && dateTimeElements.length > 0) {
+        dateTimeElements.forEach(function (element) {
+          var _store$settings$forma, _store, _store$settings;
+
+          var datetime = element.getAttribute("data-datetime");
+
+          if (!datetime) {
+            return;
+          }
+
+          element.innerHTML = format$3(parseISO(datetime), (_store$settings$forma = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.formatFull) !== null && _store$settings$forma !== void 0 ? _store$settings$forma : defaultDateFormat, localeOptions);
+        });
+      }
+
       document.body.classList.add("tm_ready");
     };
 

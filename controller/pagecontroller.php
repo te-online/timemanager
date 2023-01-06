@@ -44,6 +44,8 @@ class PageController extends Controller {
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
+	/** @var string  */
+	private $fullDateFormat;
 
 	/**
 	 * constructor of the controller
@@ -87,6 +89,11 @@ class PageController extends Controller {
 			$this->shareMapper,
 			$this->config,
 			(string) $userId
+		);
+
+		$this->fullDateFormat = \Punic\Calendar::getDateFormat(
+			"full",
+			$this->config->getUserValue($this->userId, "core", "locale")
 		);
 	}
 
@@ -141,7 +148,6 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.times"),
 				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
 				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
@@ -149,7 +155,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
-					"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
+					"formatFull" => $this->fullDateFormat,
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
@@ -290,7 +296,6 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
 				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
 				"requestToken" => $requestToken,
@@ -305,7 +310,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
-					"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
+					"formatFull" => $this->fullDateFormat,
 				],
 				"includeShared" => true,
 			];
@@ -376,6 +381,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"formatFull" => $this->fullDateFormat,
 			],
 			"clientEditorButtonCaption" => $l->t("Add client"),
 			"clientEditorCaption" => $l->t("New client"),
@@ -568,7 +574,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
+				"formatFull" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => $client_name,
@@ -772,7 +778,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
+				"formatFull" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
@@ -956,13 +962,12 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"timezone" => $this->config->getUserValue($this->userId, "calendar", "timezone"),
+				"formatFull" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
 			"taskName" => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "",
-			"initialDate" => date("Y-m-d"),
 			"taskEditorButtonCaption" => $l->t("Edit task"),
 			"taskEditorCaption" => $l->t("Edit task"),
 			"taskUuid" => $task_uuid,
@@ -1008,28 +1013,22 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function addTime($startTime, $endTime, $date, $note, $task) {
+	function addTime($duration, $date, $note, $task) {
 		$commit = UUID::v4();
 		$this->storageHelper->insertCommit($commit);
+		// Convert 1,25 to 1.25
+		$duration = str_replace(",", ".", $duration);
+		// Cast to float
+		$duration = (float) $duration;
 
-		// Build together start and end values
-		// $date only contains the 'Y-m-d' data
-		// $startTime & $endTime contain 'H:i'
-		$start = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${startTime}");
-		$end = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${endTime}");
-
-		if ($end < $start) {
-			// If endTime < startTime, endTime shall be on the next day
-			$end->modify("+1 day");
-		}
-
-		$start = $start->format("Y-m-d H:i:s");
-		$end = $end->format("Y-m-d H:i:s");
+		$start = date("Y-m-d H:i:s", strtotime($date));
+		// Calculate end from start and duration
+		$end = date("Y-m-d H:i:s", strtotime(sprintf("%s + %s minute", $start, round($duration * 60))));
 
 		$this->storageHelper->addOrUpdateObject(
 			[
-				"start" => $start,
-				"end" => $end,
+				"start" => $start, // now - duration
+				"end" => $end, // now
 				"task_uuid" => $task,
 				"commit" => $commit,
 				"note" => $note,
@@ -1069,25 +1068,19 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function editTime($uuid, $startTime, $endTime, $date, $note) {
+	function editTime($uuid, $duration, $date, $note) {
 		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
 		if ($time) {
 			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
+			// Convert 1,25 to 1.25
+			$duration = str_replace(",", ".", $duration);
+			// Cast to float
+			$duration = (float) $duration;
 
-			// Build together start and end values
-			// $date only contains the 'Y-m-d' data
-			// $startTime & $endTime contain 'H:i'
-			$start = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${startTime}");
-			$end = \DateTime::createFromFormat("Y-m-d H:i", "${date} ${endTime}");
-
-			if ($end < $start) {
-				// If endTime < startTime, endTime shall be on the next day
-				$end->modify("+1 day");
-			}
-
-			$start = $start->format("Y-m-d H:i:s");
-			$end = $end->format("Y-m-d H:i:s");
+			$start = date("Y-m-d H:i:s", strtotime($date));
+			// Calculate end from start and duration
+			$end = date("Y-m-d H:i:s", strtotime(sprintf("%s + %s minute", $start, round($duration * 60))));
 
 			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
@@ -1096,7 +1089,7 @@ class PageController extends Controller {
 			$time->setCommit($commit);
 			$time->setStart($start); // given date
 			$time->setEnd($end); // date + duration
-			$time->setNote($note); // date + duration
+			$time->setNote($note);
 			$this->timeMapper->update($time);
 
 			$urlGenerator = \OC::$server->getURLGenerator();

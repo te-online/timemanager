@@ -56,8 +56,8 @@ $l = \OC::$server->getL10N('timemanager');
 				<h2 class="list-title"><?php p($l->t('Time entries')); ?></h2>
 				<?php if ($_['task']) { ?>
 					<span data-svelte="TimeEditorDialog.svelte"></span>
-					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
+				<span data-store="<?php p($_['store']); ?>"></span>
 				<?php if (!$_['task']) { ?>
 					<div class="tm_item-list space-bottom">
 						<?php print_unescaped($this->inc('partials/latest')); ?>
@@ -134,7 +134,7 @@ $l = \OC::$server->getL10N('timemanager');
 										<?php p($time->getNote()); ?>
 									</div>
 									<div class="tm_item-date">
-										<span data-datetime="<?php p($time->getStartFormatted("Y-m-d H:i:s")); ?>">
+										<span data-datetime="<?php p($time->getStartFormatted("c")); ?>">
 											<?php p($time->getStartLocalized()); ?>
 										</span>
 										<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
@@ -158,9 +158,8 @@ $l = \OC::$server->getL10N('timemanager');
 											data-svelte="EditTimeEntryButton.svelte"
 											data-uuid="<?php p($time->getUuid()); ?>"
 											data-edit-data="<?php p(json_encode([
-												"startTime" => $time->getStartTime(),
-												"endTime" => $time->getEndTime(),
-												"date" => $time->getStartFormatted('Y-m-d'),
+												"duration" => $time->getDurationInHours(),
+												"date" => $time->getStartFormatted('c'),
 												"note" => $time->getNote()
 											])); ?>"
 										>

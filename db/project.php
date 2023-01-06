@@ -55,7 +55,16 @@ class Project extends Entity {
 	 * @return string
 	 */
 	function getCreatedDate() {
-		$created = date_create($this->getCreated());
-		return date_format($created, "j. F Y");
+		$l = \OC::$server->getL10N("timemanager");
+		return $l->l("date", $this->getCreated(), ["width" => "full"]);
+	}
+
+	/**
+	 * Gets the created date as ISO string
+	 *
+	 * @return string
+	 */
+	function getCreatedDateISO() {
+		return ISODate::convert($this->getCreated());
 	}
 }

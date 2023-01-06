@@ -33,6 +33,7 @@
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
+	const apiDateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	export let start = format(startOfWeek(new Date(), localeOptions), dateFormat, new Date());
 	export let end = format(endOfWeek(new Date(), localeOptions), dateFormat, new Date());
@@ -133,18 +134,15 @@
 	};
 
 	const loadStats = async () => {
-		const start = format(startOfDay(startCursor), "yyyy-MM-dd HH:mm:ss");
-		const end = format(endOfDay(endCursor), "yyyy-MM-dd HH:mm:ss");
+		const start = format(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
+		const end = format(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
 		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}`;
-
-		const timezone = Helpers.getTimezone();
 
 		// Parse current URL for filters
 		const urlParts = document.location.href.split("?");
 		if (urlParts.length > 1) {
 			const queryString = urlParts[1];
 			const queryStringParts = queryString.split("&");
-			let queryStringVariables = {};
 			// Map over all query params
 			queryStringParts.forEach((part) => {
 				// Split query params
@@ -167,10 +165,6 @@
 					statUrl += `&userFilter=${value}`;
 				}
 			});
-		}
-
-		if (timezone) {
-			statUrl += `&timezone=${timezone}`;
 		}
 
 		const stats = await fetch(statUrl, {

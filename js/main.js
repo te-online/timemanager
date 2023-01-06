@@ -18,11 +18,15 @@ import UserFilterButton from "./views/UserFilterButton.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
+import { format, parseISO } from "date-fns";
 import auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
 let pjax = null;
+
+const defaultDateFormat = "EEEE, MMMM d, y";
+const localeOptions = Helpers.getDateLocaleOptions();
 
 $(document).ready(function () {
 	if ($('input[name="duration"]').length > 0) {
@@ -271,12 +275,16 @@ const init = () => {
 	// 	})
 	// );
 
-	const transformDatetimeElement = function () {
-		$(this).text(Helpers.formatLocalDate($(this).data("datetime")));
-	};
-
-	const items = $("[data-datetime]");
-	items.each(transformDatetimeElement);
+	const dateTimeElements = document.querySelectorAll("[data-datetime]");
+	if (dateTimeElements && dateTimeElements.length > 0) {
+		dateTimeElements.forEach((element) => {
+			const datetime = element.getAttribute("data-datetime");
+			if (!datetime) {
+				return;
+			}
+			element.innerHTML = format(parseISO(datetime), store?.settings?.formatFull ?? defaultDateFormat, localeOptions);
+		});
+	}
 
 	document.body.classList.add("tm_ready");
 };

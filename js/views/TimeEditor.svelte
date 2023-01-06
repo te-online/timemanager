@@ -4,7 +4,6 @@
 	export let clientName;
 	export let projectName;
 	export let taskName;
-	export let initialDate;
 	export let isServer;
 	export let onCancel;
 	export let onSubmit;
@@ -14,32 +13,22 @@
 
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
+	import { format, parseISO } from "date-fns";
 
-	let startTime =
-		Helpers.calculateToLocalDatetime(
-			editTimeEntryData.date || initialDate,
-			editTimeEntryData.startTime,
-			undefined,
-			"time"
-		) || "";
-	let endTime =
-		Helpers.calculateToLocalDatetime(
-			editTimeEntryData.date || initialDate,
-			editTimeEntryData.endTime,
-			undefined,
-			"time"
-		) || "";
-	let duration = Helpers.calculateDuration(startTime, endTime);
-	let date = Helpers.calculateToLocalDatetime(
-		editTimeEntryData.date || initialDate,
-		editTimeEntryData.startTime,
-		undefined,
-		"date"
-	);
+	const localeOptions = Helpers.getDateLocaleOptions();
+	const timeFormat = "HH:mm";
+	const dateFormat = "yyyy-MM-dd";
+	const initialDate = format(new Date(), dateFormat, localeOptions);
+
+	const startDate = parseISO(editTimeEntryData.date);
+	let date = startDate ? format(startDate, dateFormat, localeOptions) : initialDate;
+	let duration = editTimeEntryData.duration;
+	let startTime = format(startDate, timeFormat, localeOptions);
+	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
 
 	const submit = () => {
-		onSubmit({ startTime, endTime, date, note });
+		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
 	};
 </script>
 

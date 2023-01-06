@@ -4,7 +4,6 @@
 	export let clients;
 	export let projects;
 	export let tasks;
-	export let initialDate;
 	export let latestSearchEntries;
 
 	import { onMount } from "svelte";
@@ -17,6 +16,7 @@
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
+	const initialDate = format(new Date(), dateFormat, localeOptions);
 
 	const extraOpts = {
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
@@ -338,13 +338,15 @@
 			taskError = true;
 			return;
 		}
+		const startDateFormat = "yyyy-MM-dd HH:mm:ss";
+		const startDate = `${date}T${startTime}:00`;
 		try {
-			// Convert from local to UTC
-			const utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
-			const utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
-			const utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
-
-			let entry = { startTime: utcStartTime, endTime: utcEndTime, date: utcDate, note, task: selected.task.value };
+			let entry = {
+				duration,
+				date: format(Helpers.toUTC(parseISO(startDate)), startDateFormat, localeOptions),
+				note,
+				task: selected.task.value,
+			};
 			const response = await fetch(action, {
 				method: "POST",
 				body: JSON.stringify(entry),

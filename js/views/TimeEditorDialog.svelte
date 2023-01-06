@@ -6,7 +6,6 @@
 	export let clientName;
 	export let projectName;
 	export let taskName;
-	export let initialDate;
 	export let timeEditorButtonCaption;
 	export let timeEditorCaption;
 	export let editTimeEntryData;
@@ -16,6 +15,10 @@
 	import TimeEditor from "./TimeEditor.svelte";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
+	import { parseISO, format } from "date-fns";
+
+	const localeOptions = Helpers.getDateLocaleOptions();
+	const dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	$: show = false;
 	$: loading = false;
@@ -24,15 +27,14 @@
 		Helpers.hideFallbacks("TimeEditor.svelte");
 	});
 
-	const save = async ({ startTime, endTime, date, note }) => {
+	const save = async ({ duration, date, note }) => {
 		loading = true;
 		try {
-			// Convert from local to UTC
-			const utcStartTime = Helpers.calculateToUTCDatetime(date, startTime, undefined, "time");
-			const utcEndTime = Helpers.calculateToUTCDatetime(date, endTime, undefined, "time");
-			const utcDate = Helpers.calculateToUTCDatetime(date, startTime, undefined, "date");
-
-			let entry = { startTime: utcStartTime, endTime: utcEndTime, date: utcDate, note };
+			let entry = {
+				duration,
+				date: format(Helpers.toUTC(parseISO(date)), dateFormat, localeOptions),
+				note,
+			};
 			if (timeUuid) {
 				entry.uuid = timeUuid;
 			}
@@ -74,7 +76,6 @@
 			{clientName}
 			{projectName}
 			{taskName}
-			{initialDate}
 			{timeEditorButtonCaption}
 			{timeEditorCaption}
 			{editTimeEntryData}
