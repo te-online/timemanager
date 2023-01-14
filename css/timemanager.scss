@@ -897,6 +897,11 @@ label {
 	background-position: 12px center;
 }
 
+input.time-input,
+input.duration-input {
+	width: 100px;
+}
+
 @keyframes fallback {
 	0% {
 		height: 0;

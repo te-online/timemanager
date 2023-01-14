@@ -44,7 +44,7 @@
 					type="text"
 					name="duration"
 					placeholder=""
-					class="input-wide"
+					class="duration-input"
 					bind:value={duration}
 					on:input={() => {
 						duration = Helpers.normalizeDuration(duration);
@@ -61,7 +61,7 @@
 						type="time"
 						name="startTime"
 						placeholder="--:--"
-						class="input-wide"
+						class="time-input"
 						bind:value={startTime}
 						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
 						pattern="[0-9]{2}:[0-9]{2}"
@@ -75,7 +75,7 @@
 						type="time"
 						name="endTime"
 						placeholder="--:--"
-						class="input-wide"
+						class="time-input"
 						pattern="[0-9]{2}:[0-9]{2}"
 						bind:value={endTime}
 						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
