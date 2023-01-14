@@ -282,7 +282,7 @@ const init = () => {
 			if (!datetime) {
 				return;
 			}
-			element.innerHTML = format(
+			element.innerText = format(
 				parseISO(datetime),
 				store?.settings?.fullDateFormat ?? defaultDateFormat,
 				localeOptions

@@ -47037,7 +47037,7 @@
             return;
           }
 
-          element.innerHTML = format$3(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
+          element.innerText = format$3(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
         });
       }
 
