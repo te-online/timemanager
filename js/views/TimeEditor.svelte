@@ -18,10 +18,10 @@
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const timeFormat = "HH:mm";
 	const dateFormat = "yyyy-MM-dd";
-	const initialDate = format(new Date(), dateFormat, localeOptions);
+	const hasDate = Boolean(editTimeEntryData.date);
 
-	const startDate = parseISO(editTimeEntryData.date);
-	let date = startDate ? format(startDate, dateFormat, localeOptions) : initialDate;
+	const startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
+	let date = format(startDate, dateFormat, localeOptions);
 	let duration = editTimeEntryData.duration;
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
