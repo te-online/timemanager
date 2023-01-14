@@ -23,7 +23,7 @@ import auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
-let pjax = null;
+const pjax = [];
 
 const defaultDateFormat = "EEEE, MMMM d, y";
 const localeOptions = Helpers.getDateLocaleOptions();
@@ -282,7 +282,11 @@ const init = () => {
 			if (!datetime) {
 				return;
 			}
-			element.innerHTML = format(parseISO(datetime), store?.settings?.formatFull ?? defaultDateFormat, localeOptions);
+			element.innerHTML = format(
+				parseISO(datetime),
+				store?.settings?.fullDateFormat ?? defaultDateFormat,
+				localeOptions
+			);
 		});
 	}
 
@@ -290,4 +294,4 @@ const init = () => {
 };
 
 init();
-pjax = new PagePjax(init);
+pjax.push(new PagePjax(init));

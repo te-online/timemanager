@@ -42982,7 +42982,7 @@
       !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/);
     };
 
-    var pjax = createCommonjsModule$1(function (module) {
+    var pjax$1 = createCommonjsModule$1(function (module) {
     var Pjax = function (options) {
       this.state = {
         numPendingSwitches: 0,
@@ -43226,7 +43226,7 @@
       /**
        * Enable seamless page navigation with pjax.
        */
-      this.pjaxInstance = new pjax({
+      this.pjaxInstance = new pjax$1({
         elements: [".timemanager-pjax-link"],
         selectors: [".app-timemanager #app-navigation ul", ".app-timemanager #app-content .container"],
         cacheBust: false,
@@ -46828,6 +46828,7 @@
 
     var token = auth.getRequestToken();
     var components = [];
+    var pjax = [];
     var defaultDateFormat = "EEEE, MMMM d, y";
     var localeOptions = Helpers.getDateLocaleOptions();
     $(document).ready(function () {
@@ -47028,7 +47029,7 @@
 
       if (dateTimeElements && dateTimeElements.length > 0) {
         dateTimeElements.forEach(function (element) {
-          var _store$settings$forma, _store, _store$settings;
+          var _store$settings$fullD, _store, _store$settings;
 
           var datetime = element.getAttribute("data-datetime");
 
@@ -47036,7 +47037,7 @@
             return;
           }
 
-          element.innerHTML = format$3(parseISO(datetime), (_store$settings$forma = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.formatFull) !== null && _store$settings$forma !== void 0 ? _store$settings$forma : defaultDateFormat, localeOptions);
+          element.innerHTML = format$3(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
         });
       }
 
@@ -47044,6 +47045,6 @@
     };
 
     init();
-    new PagePjax(init);
+    pjax.push(new PagePjax(init));
 
 })();
