@@ -259,8 +259,11 @@ label {
     #content.app-timemanager .reports-filters > .actions button,
     #content.app-timemanager .reports-timerange > .actions button {
       flex-shrink: 0;
-      margin-bottom: 0;
-      padding-left: 34px; }
+      margin-bottom: 0; }
+      #content.app-timemanager .quick-add > .actions button.button-w-icon,
+      #content.app-timemanager .reports-filters > .actions button.button-w-icon,
+      #content.app-timemanager .reports-timerange > .actions button.button-w-icon {
+        padding-left: 34px; }
   #content.app-timemanager .quick-add .parents,
   #content.app-timemanager .reports-filters .parents,
   #content.app-timemanager .reports-timerange .parents {
@@ -415,11 +418,11 @@ label {
       color: var(--color-text-lighter); }
 
 #content.app-timemanager .reports-filters {
-  grid-template-columns: repeat(auto-fill, minmax(20%, 100px)); }
+  grid-template-columns: repeat(auto-fill, minmax(calc(20% - 10px), 100px)); }
 
 #content.app-timemanager .reports-timerange {
   margin-top: 12px;
-  grid-template-columns: 200px repeat(2, 130px) repeat(2, 150px); }
+  grid-template-columns: 200px repeat(4, 150px); }
 
 #content.app-timemanager .checkbox-action label {
   display: inline; }
@@ -503,8 +506,8 @@ label {
         top: -8px;
         left: calc(50% - 2px);
         height: 8px;
-        width: 1px;
-        background: var(--color-background-darker); }
+        width: 0;
+        border-left: 1px solid var(--color-background-darker); }
     #content.app-timemanager .statistics .hours-per-week .hours-label {
       color: var(--color-text-light);
       margin-bottom: 4px;
@@ -596,6 +599,9 @@ label {
   border: 0;
   border-radius: 0;
   padding: 0; }
+
+#content.app-timemanager input[type="date"] {
+  min-width: 150px; }
 
 .oc-dialog-buttonrow.reverse {
   flex-flow: row-reverse; }
@@ -711,11 +717,24 @@ label {
     display: none !important; }
   #app-navigation:not(.hidden) + #app-content {
     margin-left: 0; }
+  html,
+  body,
   #content {
-    padding-top: 0; }
+    overflow: initial;
+    position: relative !important;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 0; }
+  #app-content {
+    overflow: initial; }
+  * {
+    background: none !important;
+    color: black !important; }
   .section {
     padding: 0.12cm; }
-  details > .tm_item-row {
+  .tm_item-row {
     break-inside: avoid; }
   .statistics .column-inner {
     border: 1px solid var(--color-text-light); } }
