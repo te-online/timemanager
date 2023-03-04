@@ -1,4 +1,4 @@
-image: docker/compose:latest
+image: docker
 
 .before_script: &before_script
   - apk add jq
