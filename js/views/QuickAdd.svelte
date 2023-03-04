@@ -4,15 +4,19 @@
 	export let clients;
 	export let projects;
 	export let tasks;
-	export let initialDate;
 	export let latestSearchEntries;
 
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
 	import { createPopperActions } from "svelte-popperjs";
 	import Fuse from "fuse.js";
-	import { differenceInMinutes, parseISO } from "date-fns";
+	import { format, isDate, parse, parseISO, startOfDay } from "date-fns";
 	import { generateUrl } from "@nextcloud/router";
+	import { Helpers } from "../lib/helpers";
+
+	const localeOptions = Helpers.getDateLocaleOptions();
+	const dateFormat = "yyyy-MM-dd";
+	const initialDate = format(new Date(), dateFormat, localeOptions);
 
 	const extraOpts = {
 		modifiers: [{ name: "offset", options: { offset: [0, 8] } }],
@@ -25,9 +29,14 @@
 		placement: "bottom-start",
 		strategy: "fixed",
 	});
+	const [durationSelectorPopperRef, durationSelectorPopperContent] = createPopperActions({
+		placement: "bottom-end",
+		strategy: "fixed",
+	});
 
 	let showTaskSelector = false;
 	let showNoteAutosuggest = false;
+	let showDurationSelector = false;
 	let tasksButtons = [];
 	let lastUsedTasksButtons = [];
 	let noteAutosuggestList = [];
@@ -42,12 +51,15 @@
 	$: currentFocusNoteIndex = -1;
 
 	let duration = 1;
+	let startTime = new Date().toTimeString().substring(0, 5);
+	let endTime = Helpers.calculateEndTime(startTime, duration);
 	let date = initialDate;
 	let note;
 	let noteInput;
 	let searchInput;
 	let searchValue;
 	let durationInput;
+	let durationTrigger;
 
 	const latestEntriesByTask = {};
 	latestSearchEntries.map((entry) => {
@@ -257,6 +269,8 @@
 
 		showNoteAutosuggest = false;
 		currentFocusNoteIndex = -1;
+
+		showDurationSelector = false;
 	};
 
 	const handleHidePopovers = (event) => {
@@ -267,10 +281,29 @@
 
 		showTaskSelector = false;
 		showNoteAutosuggest = false;
+		showDurationSelector = false;
 
 		currentFocusTaskIndex = -1;
 		currentLastestFocusTaskIndex = -1;
 		currentFocusNoteIndex = -1;
+	};
+
+	const handleShowDurationSelector = (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+
+		showDurationSelector = true;
+
+		showNoteAutosuggest = false;
+		currentFocusNoteIndex = -1;
+
+		showTaskSelector = false;
+		currentFocusTaskIndex = -1;
+		currentLastestFocusTaskIndex = -1;
+
+		setTimeout(() => {
+			durationInput?.focus();
+		}, 250);
 	};
 
 	onMount(() => {
@@ -280,14 +313,14 @@
 			if (noteInput) {
 				noteInput.focus();
 				setTimeout(() => {
-					durationInput.disabled = false;
+					durationTrigger.disabled = false;
 				}, 500);
 			}
 		});
 		if (noteInput) {
 			noteInput.focus();
 			setTimeout(() => {
-				durationInput.disabled = false;
+				durationTrigger.disabled = false;
 			}, 500);
 		}
 		document.addEventListener("click", handleHidePopovers);
@@ -305,8 +338,15 @@
 			taskError = true;
 			return;
 		}
+		const startDateFormat = "yyyy-MM-dd HH:mm:ss";
+		const startDate = `${date}T${startTime}:00`;
 		try {
-			let entry = { duration, date, note, task: selected.task.value };
+			let entry = {
+				duration,
+				date: format(Helpers.toUTC(parseISO(startDate)), startDateFormat, localeOptions),
+				note,
+				task: selected.task.value,
+			};
 			const response = await fetch(action, {
 				method: "POST",
 				body: JSON.stringify(entry),
@@ -328,6 +368,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <form
 	class={`quick-add${loading ? " icon-loading" : ""}`}
+	data-cy="quick-add-form"
 	on:submit={(event) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -372,6 +413,8 @@
 				showTaskSelector = false;
 				currentFocusTaskIndex = -1;
 				currentLastestFocusTaskIndex = -1;
+
+				showDurationSelector = false;
 			}}
 			on:click={(event) => {
 				event.preventDefault();
@@ -403,7 +446,10 @@
 									note = time.note ?? note;
 									const startDate = parseISO(time.start);
 									const endDate = parseISO(time.end);
-									duration = differenceInMinutes(endDate, startDate) / 60 ?? 1;
+									duration = Helpers.calculateDuration(
+										format(startDate, "HH:mm", startDate),
+										format(endDate, "HH:mm", endDate)
+									);
 									selected = {
 										task: { label: suggestion?.task?.name, value: suggestion?.task?.uuid },
 										project: { label: suggestion?.project?.name, value: suggestion?.project?.uuid },
@@ -426,27 +472,99 @@
 			</div>
 		{/if}
 	</label>
-	<label for="quick-add-time">
+	<label>
 		{@html translate("timemanager", "Duration (in hrs.) & Date")}
-		<span class="double">
-			<input
-				id="quick-add-time"
-				type="number"
-				name="duration"
-				step="0.01"
-				placeholder=""
-				class="duration-input"
-				bind:value={duration}
-				bind:this={durationInput}
-				on:focus={() => {
-					currentFocusNoteIndex = -1;
-					showNoteAutosuggest = false;
-				}}
-				disabled
-			/>
-			<input type="date" name="date" class="date-input" bind:value={date} />
-		</span>
+		<input
+			class="duration-trigger"
+			type="text"
+			value={translate("timemanager", "{duration} hrs. on {date}", {
+				duration: duration ?? 0,
+				date:
+					date && isDate(startOfDay(parse(date, dateFormat, new Date()), localeOptions))
+						? format(startOfDay(parse(date, dateFormat, new Date()), localeOptions), "PP", localeOptions)
+						: "?",
+			})}
+			use:durationSelectorPopperRef
+			on:focus={handleShowDurationSelector}
+			on:click={handleShowDurationSelector}
+			on:change={() => {}}
+			disabled={showDurationSelector}
+			bind:this={durationTrigger}
+			data-cy="quick-add-duration"
+		/>
 	</label>
+	{#if showDurationSelector}
+		<div
+			class="duration-selector-popover popover"
+			use:durationSelectorPopperContent={extraOpts}
+			on:click={(event) => {
+				event.stopPropagation();
+				event.preventDefault();
+			}}
+		>
+			<span class="flex-fields">
+				<label>
+					{@html translate("timemanager", "Duration (in hrs.)")}
+					<!-- This can't be type=number, because some browser have issues with (localized) decimals then -->
+					<input
+						id="quick-add-time"
+						type="text"
+						name="duration"
+						placeholder=""
+						class="duration-input"
+						bind:value={duration}
+						on:input={() => {
+							duration = Helpers.normalizeDuration(duration);
+							endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+						}}
+						bind:this={durationInput}
+					/>
+				</label>
+				<span class="flex-fields">
+					<label>
+						{@html translate("timemanager", "Start time")}
+						<input
+							type="time"
+							name="startTime"
+							placeholder="--:--"
+							class="time-input"
+							bind:value={startTime}
+							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+							pattern="[0-9]{2}:[0-9]{2}"
+							required
+						/>
+					</label>
+					<label>
+						{@html translate("timemanager", "End time")}
+						<input
+							type="time"
+							name="endTime"
+							placeholder="--:--"
+							class="time-input"
+							pattern="[0-9]{2}:[0-9]{2}"
+							bind:value={endTime}
+							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+							required
+						/>
+					</label>
+				</span>
+			</span>
+			<label>
+				{@html translate("timemanager", "Date")}
+				<input
+					type="date"
+					name="date"
+					class="date-input"
+					bind:value={date}
+					on:blur={() => {
+						if (!date || !isDate(parse(date, dateFormat, new Date()))) {
+							date = format(startOfDay(new Date(), localeOptions), dateFormat, new Date());
+						}
+					}}
+				/>
+			</label>
+		</div>
+	{/if}
 	<label class={`task-selector-trigger${taskError ? " error" : ""}`}>
 		<!-- This is to make Svelte linter happy -->
 		<input type="hidden" />
@@ -512,6 +630,7 @@
 					spellcheck="false"
 					aria-autocomplete="list"
 					autofocus
+					data-cy="quick-add-task-search"
 				/>
 			</label>
 			<div class="last-used">

@@ -19,7 +19,7 @@ _Looking for screenshots, official release packages or a place to leave a rating
 ## Planned features
 
 - _Allow tracking of time in the background._
-- _Work with start & end of time entry or duration._
+- _~~Work with start & end of time entry or duration.~~_ ✅
 - _Allow to organize time entries without assigning them to tasks, projects or clients._
 - _REST API improvements for mobile clients_
 

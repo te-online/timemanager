@@ -1,5 +1,6 @@
 import { de, fr, pt } from "date-fns/locale";
 import { getFirstDay, getLocale } from "@nextcloud/l10n";
+import { addMinutes, differenceInMinutes, parse } from "date-fns";
 
 export class Helpers {
 	// Helps replacing a SSR node with a Svelte component
@@ -51,5 +52,62 @@ export class Helpers {
 		const shortLocale = getLocale().split("_")[0];
 		const locales = { de, fr, pt };
 		return { weekStartsOn: getFirstDay(), locale: locales[shortLocale] };
+	}
+
+	static calculateDuration(startTime, endTime) {
+		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+		const end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+		const duration = Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+		if (isNaN(duration)) {
+			return 0;
+		}
+		return duration;
+	}
+
+	static normalizeDuration(duration) {
+		if (!duration) {
+			return duration;
+		}
+
+		const value = `${duration}`;
+		let normalizedValue = value.replace(/[^0-9.,]*/g, "");
+
+		// Replace decimal comma with dot
+		normalizedValue = normalizedValue.replace(/,/g, ".");
+		// Remove duplicate decimal dots
+		if (normalizedValue.includes(".")) {
+			const partsArray = normalizedValue.split(".");
+			const [wholeNumber] = partsArray;
+			partsArray.shift();
+			normalizedValue = `${wholeNumber}.${partsArray.join("")}`;
+
+			if (value.endsWith(".") && partsArray.length <= 1) {
+				return duration;
+			}
+		}
+
+		return normalizedValue;
+	}
+
+	// NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+	static calculateEndTime(startTime, duration) {
+		if (!startTime || !duration) {
+			return undefined;
+		}
+
+		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+
+		return addMinutes(start, Math.round(duration * 60))
+			.toTimeString()
+			.substring(0, 5);
+	}
+
+	static toUTC(date) {
+		date.setTime(date.getTime() + date.getTimezoneOffset() * 60000);
+		return date;
+	}
+
+	static simpleRounding(number) {
+		return Math.round(number * 100) / 100;
 	}
 }

@@ -28,7 +28,7 @@ $l = \OC::$server->getL10N('timemanager');
 					</h2>
 					<div class="tm_object-details-item">
 						<span class="tm_label"><?php p($l->t('Created')); ?></span>
-						<?php p($_['task']->getCreatedDate()); ?>
+						<span data-datetime="<?php p($_['task']->getCreatedDateISO()); ?>"><?php p($_['task']->getCreatedDate()); ?></span>
 					</div>
 					<div class="tm_object-details-item">
 						<span data-svelte="ShareStatus.svelte"></span>
@@ -56,8 +56,8 @@ $l = \OC::$server->getL10N('timemanager');
 				<h2 class="list-title"><?php p($l->t('Time entries')); ?></h2>
 				<?php if ($_['task']) { ?>
 					<span data-svelte="TimeEditorDialog.svelte"></span>
-					<span data-store="<?php p($_['store']); ?>"></span>
 				<?php } ?>
+				<span data-store="<?php p($_['store']); ?>"></span>
 				<?php if (!$_['task']) { ?>
 					<div class="tm_item-list space-bottom">
 						<?php print_unescaped($this->inc('partials/latest')); ?>
@@ -134,7 +134,9 @@ $l = \OC::$server->getL10N('timemanager');
 										<?php p($time->getNote()); ?>
 									</div>
 									<div class="tm_item-date">
-										<?php p($time->getStartLocalized()); ?>
+										<span data-datetime="<?php p($time->getStartFormatted("c")); ?>">
+											<?php p($time->getStartLocalized()); ?>
+										</span>
 										<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
 											&nbsp;&middot;&nbsp;
 											<span class="author">
@@ -157,7 +159,7 @@ $l = \OC::$server->getL10N('timemanager');
 											data-uuid="<?php p($time->getUuid()); ?>"
 											data-edit-data="<?php p(json_encode([
 												"duration" => $time->getDurationInHours(),
-												"date" => $time->getStartFormatted('Y-m-d'),
+												"date" => $time->getStartFormatted('c'),
 												"note" => $time->getNote()
 											])); ?>"
 										>

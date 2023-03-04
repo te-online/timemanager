@@ -4,7 +4,6 @@
 	export let clientName;
 	export let projectName;
 	export let taskName;
-	export let initialDate;
 	export let isServer;
 	export let onCancel;
 	export let onSubmit;
@@ -13,42 +12,87 @@
 	export let timeEditorButtonCaption;
 
 	import { translate } from "@nextcloud/l10n";
+	import { Helpers } from "../lib/helpers";
+	import { format, parseISO } from "date-fns";
 
+	const localeOptions = Helpers.getDateLocaleOptions();
+	const timeFormat = "HH:mm";
+	const dateFormat = "yyyy-MM-dd";
+	const hasDate = Boolean(editTimeEntryData.date);
+
+	const startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
+	let date = format(startDate, dateFormat, localeOptions);
 	let duration = editTimeEntryData.duration;
-	let date = editTimeEntryData.date || initialDate;
+	let startTime = format(startDate, timeFormat, localeOptions);
+	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
 
 	const submit = () => {
-		onSubmit({ duration, date, note });
+		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
 	};
 </script>
 
 <div class="inner tm_new-item">
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
-		<label>
-			{translate('timemanager', 'Duration (in hrs.)')}
-			<br />
-			<input
-				autofocus
-				type="number"
-				name="duration"
-				step="0.01"
-				placeholder=""
-				style="width: 100%"
-				class="input-wide"
-				bind:value={duration}
-				required />
-		</label>
+		<span class="flex-fields">
+			<label>
+				{translate("timemanager", "Duration (in hrs.)")}
+				<br />
+				<input
+					autofocus
+					type="text"
+					name="duration"
+					placeholder=""
+					class="duration-input"
+					bind:value={duration}
+					on:input={() => {
+						duration = Helpers.normalizeDuration(duration);
+						endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+					}}
+					required
+				/>
+			</label>
+			<span class="flex-fields">
+				<label>
+					{translate("timemanager", "Start time")}
+					<br />
+					<input
+						type="time"
+						name="startTime"
+						placeholder="--:--"
+						class="time-input"
+						bind:value={startTime}
+						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+						pattern="[0-9]{2}:[0-9]{2}"
+						required
+					/>
+				</label>
+				<label>
+					{translate("timemanager", "End time")}
+					<br />
+					<input
+						type="time"
+						name="endTime"
+						placeholder="--:--"
+						class="time-input"
+						pattern="[0-9]{2}:[0-9]{2}"
+						bind:value={endTime}
+						on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+						required
+					/>
+				</label>
+			</span>
+		</span>
 		<br />
 		<label>
-			{translate('timemanager', 'Date')}
+			{translate("timemanager", "Date")}
 			<br />
 			<input type="date" name="date" style="width: 100%" class="input-wide" bind:value={date} />
 		</label>
 		<br />
 		<label>
-			{translate('timemanager', 'Note')}
+			{translate("timemanager", "Note")}
 			<br />
 			<!-- prettier-ignore -->
 			<textarea
@@ -60,17 +104,17 @@
 		</label>
 		<br />
 		<label class="space-top">
-			{translate('timemanager', 'For task')}
+			{translate("timemanager", "For task")}
 			<br />
 			<strong>{taskName}</strong>
 		</label>
 		<label class="space-top">
-			{translate('timemanager', 'For project')}
+			{translate("timemanager", "For project")}
 			<br />
 			<strong>{projectName}</strong>
 		</label>
 		<label class="space-top">
-			{translate('timemanager', 'For client')}
+			{translate("timemanager", "For client")}
 			<br />
 			<strong>{clientName}</strong>
 		</label>
@@ -80,7 +124,7 @@
 			<button type="submit" class="button primary">{timeEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>
-					{translate('timemanager', 'Cancel')}
+					{translate("timemanager", "Cancel")}
 				</button>
 			{/if}
 		</div>

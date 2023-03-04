@@ -152,7 +152,10 @@
 		"All projects": "Alle Projekte",
 		"All tasks": "Alle Aufgaben",
 		"Created by": "Einträge von",
-		"Filter by person": "Filtern nach Person"
+		"Filter by person": "Filtern nach Person",
+		"Start time": "Startzeit",
+		"End time": "Endzeit",
+		"{duration} hrs. on {date}": "{duration} Std. am {date}"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

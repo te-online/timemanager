@@ -96,4 +96,24 @@ class Time extends Entity {
 		$diff = date_diff($start, $end);
 		return round($diff->format("%h%") + $diff->format("%i%") / 60, 2);
 	}
+
+	/**
+	 * Gets the start time.
+	 *
+	 * @return string
+	 */
+	function getStartTime() {
+		$start = date_create($this->getStart());
+		return date_format($start, "H:i");
+	}
+
+	/**
+	 * Gets the end time.
+	 *
+	 * @return string
+	 */
+	function getEndTime() {
+		$end = date_create($this->getEnd());
+		return date_format($end, "H:i");
+	}
 }

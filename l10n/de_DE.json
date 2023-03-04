@@ -156,7 +156,10 @@
 		"Type to search for client, project or task": "Suche nach Kunden, Projekten oder Aufgaben",
 		"Client, project or task": "Kunde, Projekt oder Aufgabe",
 		"Last used": "Zuletzt genutzt",
-		"Nothing found": "Nichts gefunden"
+		"Nothing found": "Nichts gefunden",
+		"Start time": "Startzeit",
+		"End time": "Endzeit",
+		"{duration} hrs. on {date}": "{duration} Std. am {date}"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

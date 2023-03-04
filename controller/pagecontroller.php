@@ -44,6 +44,8 @@ class PageController extends Controller {
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
+	/** @var string  */
+	private $fullDateFormat;
 
 	/**
 	 * constructor of the controller
@@ -87,6 +89,11 @@ class PageController extends Controller {
 			$this->shareMapper,
 			$this->config,
 			(string) $userId
+		);
+
+		$this->fullDateFormat = \Punic\Calendar::getDateFormat(
+			"full",
+			$this->config->getUserValue($this->userId, "core", "locale")
 		);
 	}
 
@@ -141,7 +148,6 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.times"),
 				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
 				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
@@ -149,6 +155,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
+					"fullDateFormat" => $this->fullDateFormat,
 				],
 				"requestToken" => $requestToken,
 				"isServer" => true,
@@ -289,7 +296,6 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"initialDate" => date("Y-m-d"),
 				"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
 				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
 				"requestToken" => $requestToken,
@@ -304,6 +310,7 @@ class PageController extends Controller {
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
+					"fullDateFormat" => $this->fullDateFormat,
 				],
 				"includeShared" => true,
 			];
@@ -374,6 +381,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"clientEditorButtonCaption" => $l->t("Add client"),
 			"clientEditorCaption" => $l->t("New client"),
@@ -566,6 +574,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => $client_name,
@@ -769,6 +778,7 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
@@ -952,12 +962,12 @@ class PageController extends Controller {
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
 			"taskName" => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "",
-			"initialDate" => date("Y-m-d"),
 			"taskEditorButtonCaption" => $l->t("Edit task"),
 			"taskEditorCaption" => $l->t("Edit task"),
 			"taskUuid" => $task_uuid,
@@ -1010,14 +1020,11 @@ class PageController extends Controller {
 		$duration = str_replace(",", ".", $duration);
 		// Cast to float
 		$duration = (float) $duration;
-		// Calculate start and end from duration
-		if (!empty($date)) {
-			// Add 24 hours to make it end of the day.
-			$end = date("Y-m-d H:i:s", strtotime($date) + 60 * 60 * 24);
-		} else {
-			$end = date("Y-m-d H:i:s");
-		}
-		$start = date("Y-m-d H:i:s", strtotime($end) - 60 * 60 * $duration);
+
+		$start = date("Y-m-d H:i:s", strtotime($date));
+		// Calculate end from start and duration
+		$end = date("Y-m-d H:i:s", strtotime(sprintf("%s + %s minute", $start, round($duration * 60))));
+
 		$this->storageHelper->addOrUpdateObject(
 			[
 				"start" => $start, // now - duration
@@ -1070,25 +1077,10 @@ class PageController extends Controller {
 			$duration = str_replace(",", ".", $duration);
 			// Cast to float
 			$duration = (float) $duration;
-			// Date has changed
-			if ($date !== $time->getStartFormatted("Y-m-D H:i:s")) {
-				// Calculate start and end from duration
-				if (!empty($date)) {
-					// Add 24 hours to make it end of the day.
-					$end = date("Y-m-d H:i:s", strtotime($date) + 60 * 60 * 24);
-				} else {
-					$end = date("Y-m-d H:i:s");
-				}
-				$start = date("Y-m-d H:i:s", strtotime($end) - 60 * 60 * $duration);
-			} elseif ($duration !== $time->getDurationInHours()) {
-				// Date has not changed, just edit end with new duration
-				$start = $time->getStartFormatted("Y-m-d H:i:s");
-				$end = date("Y-m-d H:i:s", strtotime($start) + 60 * 60 * $duration);
-			} else {
-				// Date and duration have not changed
-				$start = $time->getStartFormatted("Y-m-d H:i:s");
-				$end = $time->getEndFormatted("Y-m-d H:i:s");
-			}
+
+			$start = date("Y-m-d H:i:s", strtotime($date));
+			// Calculate end from start and duration
+			$end = date("Y-m-d H:i:s", strtotime(sprintf("%s + %s minute", $start, round($duration * 60))));
 
 			$commit = UUID::v4();
 			$this->storageHelper->insertCommit($commit);
@@ -1097,7 +1089,7 @@ class PageController extends Controller {
 			$time->setCommit($commit);
 			$time->setStart($start); // given date
 			$time->setEnd($end); // date + duration
-			$time->setNote($note); // date + duration
+			$time->setNote($note);
 			$this->timeMapper->update($time);
 
 			$urlGenerator = \OC::$server->getURLGenerator();

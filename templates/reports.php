@@ -79,7 +79,7 @@ $l = \OC::$server->getL10N("timemanager");
 									<?php p($time->getNote()); ?>
 								</div>
 								<div class="tm_item-date">
-									<?php p($entry->project->getName()); ?>&nbsp;&middot;&nbsp;<?php p($entry->task->getName()); ?>&nbsp;&middot;&nbsp;<?php p($time->getStartLocalized()); ?>
+									<?php p($entry->project->getName()); ?>&nbsp;&middot;&nbsp;<?php p($entry->task->getName()); ?>&nbsp;&middot;&nbsp;<span data-datetime="<?php p($time->getStartFormatted("c")); ?>"><?php p($time->getStartLocalized()); ?></span>
 									<?php if (isset($time->author_display_name) && !$time->current_user_is_author) { ?>
 										&nbsp;&middot;&nbsp;
 										<span class="author">

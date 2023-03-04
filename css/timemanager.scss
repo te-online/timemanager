@@ -253,16 +253,8 @@ body.loading-error #content.app-timemanager:before {
 .app-timemanager .oc-dialog .inner {
 	padding-left: 10px;
 	padding-right: 10px;
-	min-width: 300px;
-	max-width: 400px;
-
-	&.push-bottom {
-		margin-bottom: 15px;
-	}
-
-	.urldisplay {
-		word-wrap: break-word;
-	}
+	min-width: 380px;
+	max-width: 480px;
 }
 
 label {
@@ -348,18 +340,22 @@ label {
 					border-color: var(--color-error);
 				}
 			}
+		}
 
-			.double {
-				display: flex;
-			}
+		.duration-trigger {
+			width: 100%;
 		}
 
 		.duration-input {
-			width: 60px;
+			width: 80px;
 		}
 
 		.date-input {
-			width: 140px;
+			width: 100%;
+		}
+
+		.time-input {
+			padding: 0 5px;
 		}
 
 		.note,
@@ -424,6 +420,14 @@ label {
 				background: var(--color-primary-light);
 			}
 		}
+	}
+
+	.duration-selector-popover {
+		// extends .popover
+		width: 350px;
+		max-width: 40vw;
+		background: var(--color-main-background);
+		padding: 12px;
 	}
 
 	.task-selector-popover {
@@ -805,6 +809,12 @@ label {
 	}
 }
 
+.flex-fields {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 6px;
+}
+
 .oc-dialog-buttonrow.reverse {
 	flex-flow: row-reverse;
 }
@@ -893,6 +903,11 @@ label {
 
 .button-w-icon {
 	background-position: 12px center;
+}
+
+input.time-input,
+input.duration-input {
+	width: 100px;
 }
 
 @keyframes fallback {

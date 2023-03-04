@@ -20,7 +20,7 @@
 		<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $entry->task->getUuid(); ?>">
 			<h3><?php p($entry->client->getName()); ?> › <?php p($entry->project->getName()); ?> › <?php p($entry->task->getName()); ?></h3>
 			<div class="tm_item-excerpt">
-				<span><?php p($entry->time->getStartLocalized()); ?></span>
+				<span data-datetime="<?php p($entry->time->getStartFormatted("c")); ?>"><?php p($entry->time->getStartLocalized()); ?></span>
 				&nbsp;&middot;&nbsp;<span><?php p($entry->time->getDurationInHours()); ?> <?php p($l->t('hrs.')); ?></span>
 				<?php if (isset($entry->time->author_display_name) && !$entry->time->current_user_is_author) { ?>
 					&nbsp;&middot;&nbsp;

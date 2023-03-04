@@ -1,4 +1,4 @@
-image: docker/compose:latest
+image: docker
 
 .before_script: &before_script
   - apk add jq
@@ -63,3 +63,9 @@ app_test_nc_25:
   before_script:
     - export NC_VERSION=25
     - *before_script
+
+# app_test_nc_26:
+#   extends: .app_tests
+#   before_script:
+#     - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:26beta-fpm-alpine#g" tests/docker-compose.yml
+#     - *before_script

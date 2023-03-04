@@ -177,6 +177,9 @@ OC.L10N.register(
 		"Client, project or task": "Kunde, Projekt oder Aufgabe",
 		"Last used": "Zuletzt genutzt",
 		"Nothing found": "Nichts gefunden",
+		"Start time": "Startzeit",
+		"End time": "Endzeit",
+		"{duration} hrs. on {date}": "{duration} Std. am {date}",
 	},
 	"nplurals=2; plural=(n != 1);"
 );

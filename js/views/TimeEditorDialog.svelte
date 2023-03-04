@@ -6,7 +6,6 @@
 	export let clientName;
 	export let projectName;
 	export let taskName;
-	export let initialDate;
 	export let timeEditorButtonCaption;
 	export let timeEditorCaption;
 	export let editTimeEntryData;
@@ -16,6 +15,10 @@
 	import TimeEditor from "./TimeEditor.svelte";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
+	import { parseISO, format } from "date-fns";
+
+	const localeOptions = Helpers.getDateLocaleOptions();
+	const dateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	$: show = false;
 	$: loading = false;
@@ -27,7 +30,11 @@
 	const save = async ({ duration, date, note }) => {
 		loading = true;
 		try {
-			let entry = { duration, date, note };
+			let entry = {
+				duration,
+				date: format(Helpers.toUTC(parseISO(date)), dateFormat, localeOptions),
+				note,
+			};
 			if (timeUuid) {
 				entry.uuid = timeUuid;
 			}
@@ -69,10 +76,10 @@
 			{clientName}
 			{projectName}
 			{taskName}
-			{initialDate}
 			{timeEditorButtonCaption}
 			{timeEditorCaption}
 			{editTimeEntryData}
-			{isServer} />
+			{isServer}
+		/>
 	</Overlay>
 {/if}
