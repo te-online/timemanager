@@ -10,7 +10,11 @@ before_script:
   - *before_script
 
 services:
-  - docker:18.09.7-dind
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
 
 stages:
   - test
