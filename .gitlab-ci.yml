@@ -10,7 +10,7 @@ before_script:
   - *before_script
 
 services:
-  - docker:dind
+  - docker:20.10.22-dind
 
 stages:
   - test
