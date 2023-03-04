@@ -327,7 +327,10 @@ label {
 			button {
 				flex-shrink: 0;
 				margin-bottom: 0;
-				padding-left: 34px;
+
+				&.button-w-icon {
+					padding-left: 34px;
+				}
 			}
 		}
 
@@ -531,7 +534,7 @@ label {
 	}
 
 	.reports-filters {
-		grid-template-columns: repeat(auto-fill, minmax(20%, 100px));
+		grid-template-columns: repeat(auto-fill, minmax(calc(20% - 10px), 100px));
 	}
 
 	.reports-timerange {
