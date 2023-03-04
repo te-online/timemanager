@@ -10,7 +10,7 @@
 	import { translate } from "@nextcloud/l10n";
 	import { createPopperActions } from "svelte-popperjs";
 	import Fuse from "fuse.js";
-	import { differenceInMinutes, format, isDate, parse, parseISO, startOfDay } from "date-fns";
+	import { format, isDate, parse, parseISO, startOfDay } from "date-fns";
 	import { generateUrl } from "@nextcloud/router";
 	import { Helpers } from "../lib/helpers";
 
@@ -368,6 +368,7 @@
 <svelte:window on:keydown={handleKeyDown} />
 <form
 	class={`quick-add${loading ? " icon-loading" : ""}`}
+	data-cy="quick-add-form"
 	on:submit={(event) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -445,7 +446,10 @@
 									note = time.note ?? note;
 									const startDate = parseISO(time.start);
 									const endDate = parseISO(time.end);
-									duration = differenceInMinutes(endDate, startDate) / 60 ?? 1;
+									duration = Helpers.calculateDuration(
+										format(startDate, "HH:mm", startDate),
+										format(endDate, "HH:mm", endDate)
+									);
 									selected = {
 										task: { label: suggestion?.task?.name, value: suggestion?.task?.uuid },
 										project: { label: suggestion?.project?.name, value: suggestion?.project?.uuid },
@@ -486,6 +490,7 @@
 			on:change={() => {}}
 			disabled={showDurationSelector}
 			bind:this={durationTrigger}
+			data-cy="quick-add-duration"
 		/>
 	</label>
 	{#if showDurationSelector}
@@ -625,6 +630,7 @@
 					spellcheck="false"
 					aria-autocomplete="list"
 					autofocus
+					data-cy="quick-add-task-search"
 				/>
 			</label>
 			<div class="last-used">

@@ -57,7 +57,11 @@ export class Helpers {
 	static calculateDuration(startTime, endTime) {
 		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
 		const end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
-		return Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+		const duration = Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+		if (isNaN(duration)) {
+			return 0;
+		}
+		return duration;
 	}
 
 	static normalizeDuration(duration) {

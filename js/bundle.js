@@ -13904,7 +13904,13 @@
         value: function calculateDuration(startTime, endTime) {
           var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
           var end = parse$3(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
-          return Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+          var duration = Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+
+          if (isNaN(duration)) {
+            return 0;
+          }
+
+          return duration;
         }
       }, {
         key: "normalizeDuration",
@@ -29573,7 +29579,7 @@
       child_ctx[96] = list;
       child_ctx[94] = i;
       return child_ctx;
-    } // (428:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    } // (429:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
 
 
     function create_if_block_7(ctx) {
@@ -29656,7 +29662,7 @@
           dispose();
         }
       };
-    } // (431:5) {#each noteAutosuggestList as suggestion, index}
+    } // (432:5) {#each noteAutosuggestList as suggestion, index}
 
 
     function create_each_block_4(ctx) {
@@ -29807,7 +29813,7 @@
           run_all(dispose);
         }
       };
-    } // (491:1) {#if showDurationSelector}
+    } // (496:1) {#if showDurationSelector}
 
 
     function create_if_block_6$1(ctx) {
@@ -29998,7 +30004,7 @@
           run_all(dispose);
         }
       };
-    } // (590:2) {:else}
+    } // (595:2) {:else}
 
 
     function create_else_block(ctx) {
@@ -30098,7 +30104,7 @@
           run_all(dispose);
         }
       };
-    } // (566:2) {#if selected && !showTaskSelector}
+    } // (571:2) {#if selected && !showTaskSelector}
 
 
     function create_if_block_5$1(ctx) {
@@ -30230,7 +30236,7 @@
           run_all(dispose);
         }
       };
-    } // (604:1) {#if showTaskSelector}
+    } // (609:1) {#if showTaskSelector}
 
 
     function create_if_block$3(ctx) {
@@ -30294,6 +30300,7 @@
           attr(input, "spellcheck", "false");
           attr(input, "aria-autocomplete", "list");
           input.autofocus = true;
+          attr(input, "data-cy", "quick-add-task-search");
           attr(label, "class", "search");
           attr(div0, "class", "last-used");
           attr(div1, "class", "search-results");
@@ -30392,7 +30399,7 @@
           run_all(dispose);
         }
       };
-    } // (631:4) {#if lastUsed?.length && !searchValue}
+    } // (637:4) {#if lastUsed?.length && !searchValue}
 
 
     function create_if_block_3$1(ctx) {
@@ -30461,7 +30468,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (635:8) {#if index === 0}
+    } // (641:8) {#if index === 0}
 
 
     function create_if_block_4$1(ctx) {
@@ -30480,7 +30487,7 @@
           if (detaching) detach(span);
         }
       };
-    } // (633:6) {#each lastUsed as entry, index}
+    } // (639:6) {#each lastUsed as entry, index}
 
 
     function create_each_block_3(ctx) {
@@ -30655,7 +30662,7 @@
           run_all(dispose);
         }
       };
-    } // (722:34) 
+    } // (728:34) 
 
 
     function create_if_block_2$1(ctx) {
@@ -30674,7 +30681,7 @@
           if (detaching) detach(p);
         }
       };
-    } // (678:4) {#if searchResults?.length}
+    } // (684:4) {#if searchResults?.length}
 
 
     function create_if_block_1$1(ctx) {
@@ -30739,7 +30746,7 @@
           if (detaching) detach(each_1_anchor);
         }
       };
-    } // (688:12) {#each project.tasks as task}
+    } // (694:12) {#each project.tasks as task}
 
 
     function create_each_block_2$1(ctx) {
@@ -30845,7 +30852,7 @@
           run_all(dispose);
         }
       };
-    } // (684:9) {#each client.projects as project}
+    } // (690:9) {#each client.projects as project}
 
 
     function create_each_block_1$1(ctx) {
@@ -30937,7 +30944,7 @@
           destroy_each(each_blocks, detaching);
         }
       };
-    } // (679:5) {#each searchResults as client}
+    } // (685:5) {#each searchResults as client}
 
 
     function create_each_block$1(ctx) {
@@ -31153,6 +31160,7 @@
           input1.disabled =
           /*showDurationSelector*/
           ctx[2];
+          attr(input1, "data-cy", "quick-add-duration");
           attr(input2, "type", "hidden");
           attr(label2, "class", label2_class_value = "task-selector-trigger".concat(
           /*taskError*/
@@ -31166,6 +31174,7 @@
           attr(form, "class", form_class_value = "quick-add".concat(
           /*loading*/
           ctx[17] ? " icon-loading" : ""));
+          attr(form, "data-cy", "quick-add-form");
         },
         m: function m(target, anchor) {
           insert(target, form, anchor);
@@ -31909,7 +31918,7 @@
       }
 
       var click_handler_1 = function click_handler_1(suggestion, event) {
-        var _time$note, _ref2, _suggestion$task, _suggestion$task2, _suggestion$project, _suggestion$project2, _suggestion$client, _suggestion$client2;
+        var _time$note, _suggestion$task, _suggestion$task2, _suggestion$project, _suggestion$project2, _suggestion$client, _suggestion$client2;
 
         event.stopPropagation();
         event.preventDefault();
@@ -31922,7 +31931,7 @@
         $$invalidate(11, note = (_time$note = time.note) !== null && _time$note !== void 0 ? _time$note : note);
         var startDate = parseISO(time.start);
         var endDate = parseISO(time.end);
-        $$invalidate(7, duration = (_ref2 = differenceInMinutes(endDate, startDate) / 60) !== null && _ref2 !== void 0 ? _ref2 : 1);
+        $$invalidate(7, duration = Helpers.calculateDuration(format$3(startDate, "HH:mm", startDate), format$3(endDate, "HH:mm", endDate)));
         $$invalidate(18, selected = {
           task: {
             label: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
