@@ -501,57 +501,6 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		}
 	});
 
-	it("can create time entries via Quick Add on the Dashboard", () => {
-		cy.visit("/apps/timemanager");
-
-		const secondClient = clients[1];
-		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
-		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
-		const timeEntry = timeEntries[0];
-
-		cy.get('input[name="note"]').type(timeEntry.note);
-		cy.get('[data-cy="quick-add-duration"]').click();
-
-		// Wait for autofocus to settle, in this case
-		waitForOcDialog();
-
-		// Check that duration is correctly caculated from arbitrary times
-		cy.get('input[name="startTime"]').type("12:13");
-		cy.get('input[name="endTime"]').type("15:54");
-		cy.get('input[name="duration"]')
-			.invoke("val")
-			.then((duration) => {
-				expect(duration).to.equal("3.68"); // 221 minutes
-			});
-
-		cy.get('input[name="duration"]').clear().type(timeEntry.time);
-
-		// Check that difference between start and end equals duration
-		cy.get('input[name="startTime"]')
-			.invoke("val")
-			.then((startTime) => {
-				cy.get('input[name="endTime"]')
-					.invoke("val")
-					.then((endTime) => {
-						const start = parse(startTime.toString(), "HH:mm", new Date());
-						const end = parse(endTime.toString(), "HH:mm", new Date());
-						expect(`${differenceInMinutes(end, start) / 60}`).to.equal(timeEntry.time);
-					});
-			});
-
-		cy.get("#task-selector-button-input").click();
-		cy.get('[data-cy="quick-add-task-search"]').type(firstTask.Name.substring(0, firstTask.Name.length - 3));
-		cy.contains("a", firstTask.Name).click();
-
-		cy.get('form[data-cy="quick-add-form"').submit();
-		waitForPjax();
-
-		cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
-		cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
-		// Find day in formatted date
-		cy.contains("div.tm_item-row", format(new Date(), "EEEE")).scrollIntoView().should("be.visible");
-	});
-
 	it("can create time entries in shared client", () => {
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -1265,5 +1214,56 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can access time entries for previously shared client (as a sharer)", () => {
 		inspectSharedTimeEntries();
+	});
+
+	it("can create time entries via Quick Add on the Dashboard", () => {
+		cy.visit("/apps/timemanager");
+
+		const secondClient = clients[1];
+		const firstProject = projects.filter((project) => project.Client === secondClient.Name)[0];
+		const firstTask = tasks.filter((task) => task.Project === firstProject.Name)[0];
+		const timeEntry = timeEntries[0];
+
+		cy.get('input[name="note"]').type(timeEntry.note);
+		cy.get('[data-cy="quick-add-duration"]').click();
+
+		// Wait for autofocus to settle, in this case
+		waitForOcDialog();
+
+		// Check that duration is correctly caculated from arbitrary times
+		cy.get('input[name="startTime"]').type("12:13");
+		cy.get('input[name="endTime"]').type("15:54");
+		cy.get('input[name="duration"]')
+			.invoke("val")
+			.then((duration) => {
+				expect(duration).to.equal("3.68"); // 221 minutes
+			});
+
+		cy.get('input[name="duration"]').clear().type(timeEntry.time);
+
+		// Check that difference between start and end equals duration
+		cy.get('input[name="startTime"]')
+			.invoke("val")
+			.then((startTime) => {
+				cy.get('input[name="endTime"]')
+					.invoke("val")
+					.then((endTime) => {
+						const start = parse(startTime.toString(), "HH:mm", new Date());
+						const end = parse(endTime.toString(), "HH:mm", new Date());
+						expect(`${differenceInMinutes(end, start) / 60}`).to.equal(timeEntry.time);
+					});
+			});
+
+		cy.get("#task-selector-button-input").click();
+		cy.get('[data-cy="quick-add-task-search"]').type(firstTask.Name.substring(0, firstTask.Name.length - 3));
+		cy.contains("a", firstTask.Name).click();
+
+		cy.get('form[data-cy="quick-add-form"').submit();
+		waitForPjax();
+
+		cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
+		cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
+		// Find day in formatted date
+		cy.contains("div.tm_item-row", format(new Date(), "EEEE")).scrollIntoView().should("be.visible");
 	});
 });
