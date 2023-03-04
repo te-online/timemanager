@@ -536,7 +536,7 @@ label {
 
 	.reports-timerange {
 		margin-top: 12px;
-		grid-template-columns: 200px repeat(2, 130px) repeat(2, 150px);
+		grid-template-columns: 200px repeat(4, 150px);
 	}
 
 	.checkbox-action label {
@@ -649,8 +649,8 @@ label {
 					top: -8px;
 					left: calc(50% - 2px);
 					height: 8px;
-					width: 1px;
-					background: var(--color-background-darker);
+					width: 0;
+					border-left: 1px solid var(--color-background-darker);
 				}
 			}
 
@@ -794,6 +794,11 @@ label {
 		border: 0;
 		border-radius: 0;
 		padding: 0;
+	}
+
+	// Fix Nexctloud 25's too small date inputs
+	input[type="date"] {
+		min-width: 150px;
 	}
 }
 
@@ -957,9 +962,29 @@ label {
 		margin-left: 0;
 	}
 
-	// Remove extra spacing caused by header
+	// NC25 introduced a "framed" content.
+	// This fixes subsequent pages not being printed
+	// and other layout issues
+	html,
+	body,
 	#content {
-		padding-top: 0;
+		overflow: initial;
+		position: relative !important;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border-radius: 0;
+	}
+
+	#app-content {
+		overflow: initial;
+	}
+
+	// Streamline text color and remove backgrounds
+	* {
+		background: none !important;
+		color: black !important;
 	}
 
 	// Adjust section spacing
@@ -968,7 +993,7 @@ label {
 	}
 
 	// Don't break pages inside a time entry item on reports page
-	details > .tm_item-row {
+	.tm_item-row {
 		break-inside: avoid;
 	}
 
