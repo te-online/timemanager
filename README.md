@@ -15,6 +15,7 @@ _Looking for screenshots, official release packages or a place to leave a rating
 - 📊 Take a glance at simple, but useful statistics.
 - 📒 Create basic reports using filters, timerange selection and a simple graph.
 - 🤝 Track your time together with others by sharing a client and its associated projects and tasks (_web app only_).
+- 🕰 Work with start & end of time entry or duration.
 
 ## Planned features
 
