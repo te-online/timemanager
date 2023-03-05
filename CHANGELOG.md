@@ -2,6 +2,22 @@
 
 Notable changes in each released version can be seen here.
 
+## 0.3.5 Beta, 5. March 2023
+
+### Fixed
+
+- Fix buttons on Reports page have padding for icon, but no icon is shown (issue #94)
+- Fix crash when running Nextcloud on top of PostgreSQL due to missing space character in query (issue #100)
+- Fix broken print stylesheet in NC25 due to massive upstream styling changes (issue #109)
+
+### Added
+
+- Choose between setting duration or start and end time when creating & editing time entries w/ automatic conversion (thanks to @devattendant, PR !99)
+- Dates should now be displayed in the user's browser's current timezone
+- Simple end-to-end test for Quick Add widget and duration/start/end conversion
+- Maintenance: Update a bunch of JS dependencies
+- Add Russian localization (thanks to @lonelywoolf)
+
 ## 0.3.4 Beta, 6. November 2022
 
 ### Fixed
