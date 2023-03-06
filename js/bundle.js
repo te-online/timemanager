@@ -30244,7 +30244,7 @@
       };
     }
 
-    // (496:1) {#if showDurationSelector}
+    // (497:1) {#if showDurationSelector}
     function create_if_block_6$1(ctx) {
       var div;
       var span1;
@@ -30384,7 +30384,7 @@
       };
     }
 
-    // (595:2) {:else}
+    // (596:2) {:else}
     function create_else_block(ctx) {
       var t0_value = translate_1("timemanager", "Client, project or task") + "";
       var t0;
@@ -30399,7 +30399,7 @@
           t0 = text$1(t0_value);
           t1 = space$1();
           input = element("input");
-          attr(input, "id", "task-selector-button-input");
+          attr(input, "data-hideevent", "skip");
           attr(input, "type", "text");
           attr(input, "placeholder", translate_1("timemanager", "Select..."));
           input.disabled = /*showTaskSelector*/ctx[0];
@@ -30436,7 +30436,7 @@
       };
     }
 
-    // (571:2) {#if selected && !showTaskSelector}
+    // (572:2) {#if selected && !showTaskSelector}
     function create_if_block_5$1(ctx) {
       var a;
       var ul;
@@ -30543,7 +30543,7 @@
       };
     }
 
-    // (609:1) {#if showTaskSelector}
+    // (610:1) {#if showTaskSelector}
     function create_if_block$3(ctx) {
       var _ctx$9;
       var div3;
@@ -30666,7 +30666,7 @@
       };
     }
 
-    // (637:4) {#if lastUsed?.length && !searchValue}
+    // (638:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
       var each_value_3 = /*lastUsed*/ctx[32];
@@ -30715,7 +30715,7 @@
       };
     }
 
-    // (641:8) {#if index === 0}
+    // (642:8) {#if index === 0}
     function create_if_block_4$1(ctx) {
       var span;
       return {
@@ -30734,7 +30734,7 @@
       };
     }
 
-    // (639:6) {#each lastUsed as entry, index}
+    // (640:6) {#each lastUsed as entry, index}
     function create_each_block_3(ctx) {
       var li3;
       var t0;
@@ -30872,7 +30872,7 @@
       };
     }
 
-    // (728:34) 
+    // (729:34) 
     function create_if_block_2$1(ctx) {
       var p;
       return {
@@ -30891,7 +30891,7 @@
       };
     }
 
-    // (684:4) {#if searchResults?.length}
+    // (685:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value = /*searchResults*/ctx[23];
@@ -30939,7 +30939,7 @@
       };
     }
 
-    // (694:12) {#each project.tasks as task}
+    // (695:12) {#each project.tasks as task}
     function create_each_block_2$1(ctx) {
       var li;
       var a;
@@ -31008,7 +31008,7 @@
       };
     }
 
-    // (690:9) {#each client.projects as project}
+    // (691:9) {#each client.projects as project}
     function create_each_block_1$1(ctx) {
       var li;
       var span;
@@ -31074,7 +31074,7 @@
       };
     }
 
-    // (685:5) {#each searchResults as client}
+    // (686:5) {#each searchResults as client}
     function create_each_block$1(ctx) {
       var ul1;
       var li;
@@ -31230,6 +31230,7 @@
           });
           input1.disabled = /*showDurationSelector*/ctx[2];
           attr(input1, "data-cy", "quick-add-duration");
+          attr(input1, "data-hideevent", "skip");
           attr(input2, "type", "hidden");
           attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[19] ? " error" : ""));
           button.disabled = /*loading*/ctx[17];
@@ -31474,7 +31475,7 @@
       */
       function handleKeyDown(e) {
         var _searchResults, _searchResults2;
-        if (!showTaskSelector && !showNoteAutosuggest) {
+        if (!showDurationSelector && !showTaskSelector && !showNoteAutosuggest) {
           return;
         }
         switch (e.key) {
@@ -31663,9 +31664,9 @@
         $$invalidate(2, showDurationSelector = false);
       };
       var handleHidePopovers = function handleHidePopovers(event) {
-        var _event$target;
-        // Allow clicking on select button
-        if ((event === null || event === void 0 ? void 0 : (_event$target = event.target) === null || _event$target === void 0 ? void 0 : _event$target.id) === "task-selector-button-input") {
+        var _event$target, _event$target$getAttr;
+        // Fix inputs triggering the hide event
+        if ((event === null || event === void 0 ? void 0 : (_event$target = event.target) === null || _event$target === void 0 ? void 0 : (_event$target$getAttr = _event$target.getAttribute) === null || _event$target$getAttr === void 0 ? void 0 : _event$target$getAttr.call(_event$target, "data-hideEvent")) === "skip") {
           return;
         }
         $$invalidate(0, showTaskSelector = false);

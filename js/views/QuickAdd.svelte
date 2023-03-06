@@ -89,7 +89,7 @@
 	 * Handles keyboard navigation for popovers
 	 */
 	function handleKeyDown(e) {
-		if (!showTaskSelector && !showNoteAutosuggest) {
+		if (!showDurationSelector && !showTaskSelector && !showNoteAutosuggest) {
 			return;
 		}
 
@@ -274,8 +274,8 @@
 	};
 
 	const handleHidePopovers = (event) => {
-		// Allow clicking on select button
-		if (event?.target?.id === "task-selector-button-input") {
+		// Fix inputs triggering the hide event
+		if (event?.target?.getAttribute?.("data-hideEvent") === "skip") {
 			return;
 		}
 
@@ -491,6 +491,7 @@
 			disabled={showDurationSelector}
 			bind:this={durationTrigger}
 			data-cy="quick-add-duration"
+			data-hideEvent="skip"
 		/>
 	</label>
 	{#if showDurationSelector}
@@ -595,7 +596,7 @@
 		{:else}
 			{translate("timemanager", "Client, project or task")}
 			<input
-				id="task-selector-button-input"
+				data-hideEvent="skip"
 				use:taskSelectorPopperRef
 				on:focus={handleShowTaskSelector}
 				type="text"
