@@ -1,6 +1,10 @@
 # Changelog
 
-Notable changes in each released version can be seen here.
+## 0.3.6 Beta, 6. March 2023
+
+### Fixed
+
+- Quick Add: Fix duration popover closing when using the mouse to open it in Chrome (issue #114)
 
 ## 0.3.5 Beta, 5. March 2023
 
