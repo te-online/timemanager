@@ -1,15 +1,19 @@
 <?php
-script('timemanager', 'timemanager');
+
+use \OCP\Util;
+
+Util::addScript('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
+
 $urlGenerator = \OC::$server->getURLGenerator();
-$l = \OC::$server->getL10N('timemanager');
+$l = Util::getL10N('timemanager');
 ?>
 
-<?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
+<?php print_unescaped($this->inc('partials/navigation')); ?>
 
 <div id="app-content">
 	<div class="container">
-		<?php if($_['client']) { ?>
+		<?php if ($_['client']) { ?>
 			<div class="section">
 				<div class="tm_object-details">
 					<h2>
@@ -33,14 +37,14 @@ $l = \OC::$server->getL10N('timemanager');
 							<?php p($_['client']->getPostcode()); ?> <?php p($_['client']->getCity()); ?>
 						</div>
 					<?php } ?>
-					<?php if($_['client']) { ?>
+					<?php if ($_['client']) { ?>
 						<div class="tm_object-details-item">
 							<span data-svelte="ShareStatus.svelte"></span>
 							<span data-svelte-hide="ShareStatus.svelte">
 								<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
 							</span>
 						</div>
-						<?php if($_['canEdit']) { ?>
+						<?php if ($_['canEdit']) { ?>
 							<span data-svelte="ClientEditorDialog.svelte"></span>
 							<span data-svelte="DeleteButton.svelte"></span>
 							<span data-svelte-hide="DeleteButton.svelte">
@@ -53,7 +57,7 @@ $l = \OC::$server->getL10N('timemanager');
 						<?php } ?>
 					<?php } ?>
 				</div>
-				<?php if($_['canEdit']) { ?>
+				<?php if ($_['canEdit']) { ?>
 					<div class="tm_add" data-svelte-hide="ProjectEditor.svelte">
 						<div id="new-item" class="tm_new-item">
 							<?php print_unescaped($_['templates']['ProjectEditor.svelte']); ?>
@@ -67,8 +71,8 @@ $l = \OC::$server->getL10N('timemanager');
 				<div class="tm_item-list space-bottom">
 					<h2 class="list-title"><?php p($l->t('All projects')); ?></h2>
 					<?php if (count($_['projects']) > 0) {
-						foreach ($_['projects'] as $project) { 
-							?>
+						foreach ($_['projects'] as $project) {
+					?>
 							<div class="tm_item-row with-link">
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><em><?php p($project->client->getName()); ?></em> › <?php p($project->getName()); ?></h3>
@@ -79,19 +83,20 @@ $l = \OC::$server->getL10N('timemanager');
 									</div>
 								</a>
 							</div>
-					<?php } } ?>
+					<?php }
+					} ?>
 				</div>
 			<?php } ?>
 			<div class="tm_item-list">
 				<h2 class="list-title"><?php p($l->t('Projects')); ?></h2>
-				<?php if($_['client'] && $_['canEdit']) { ?>
+				<?php if ($_['client'] && $_['canEdit']) { ?>
 					<span data-svelte="ProjectEditorDialog.svelte"></span>
 				<?php } ?>
 				<span data-store="<?php p($_['store']); ?>"></span>
 				<?php if (!$_['client']) { ?>
 					<p><?php p($l->t('Select a client to show projects for')); ?></p>
 					<form action="" method="get">
-						<?php if (count($_['clients']) > 0 ) { ?>
+						<?php if (count($_['clients']) > 0) { ?>
 							<select name="client">
 								<?php foreach ($_['clients'] as $client) { ?>
 									<option value="<?php p($client->getUuid()); ?>"><?php p($client->getName()); ?></option>
@@ -104,9 +109,9 @@ $l = \OC::$server->getL10N('timemanager');
 					</form>
 					<p><em><?php p($l->t('Select a client first to show projects for this client.')); ?></em></p>
 				<?php } else { ?>
-					<?php if(count($_['projects']) > 0) {
-						foreach($_['projects'] as $project) { 
-							?>
+					<?php if (count($_['projects']) > 0) {
+						foreach ($_['projects'] as $project) {
+					?>
 							<div class="tm_item-row with-link">
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>?project=<?php echo $project->getUuid(); ?>">
 									<h3><?php p($project->getName()); ?></h3>
@@ -115,7 +120,8 @@ $l = \OC::$server->getL10N('timemanager');
 									</div>
 								</a>
 							</div>
-					<?php } } else { ?>
+						<?php }
+					} else { ?>
 						<div class="tm_item-row">
 							<h3><?php p($l->t("You don't have any projects, yet. Try adding one by clicking “Add project”.")); ?></h3>
 						</div>

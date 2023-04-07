@@ -1,13 +1,17 @@
 <?php
-	/**
-	 * Displays a short in-line version of the sharing status of an entity,
-	 * provided it has the `sharees` array and `sharer` property set.
-	 * Expects the full entity passed in as `entity` template variable
-	 */
+
+/**
+ * Displays a short in-line version of the sharing status of an entity,
+ * provided it has the `sharees` array and `sharer` property set.
+ * Expects the full entity passed in as `entity` template variable
+ */
 ?>
 <?php
-	$urlGenerator = \OC::$server->getURLGenerator();
-	$l = \OC::$server->getL10N('timemanager');
+
+use \OCP\Util;
+
+$urlGenerator = \OC::$server->getURLGenerator();
+$l = Util::getL10N('timemanager');
 ?>
 <?php if (isset($_['entity']->sharees) && count($_['entity']->sharees) > 0) { ?>
 	&nbsp;&middot;&nbsp;

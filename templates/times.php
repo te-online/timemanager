@@ -1,11 +1,15 @@
 <?php
-script('timemanager', 'timemanager');
+
+use \OCP\Util;
+
+Util::addScript('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
+
 $urlGenerator = \OC::$server->getURLGenerator();
-$l = \OC::$server->getL10N('timemanager');
+$l = Util::getL10N('timemanager');
 ?>
 
-<?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
+<?php print_unescaped($this->inc('partials/navigation')); ?>
 
 <div id="app-content">
 	<div class="container">
@@ -36,7 +40,7 @@ $l = \OC::$server->getL10N('timemanager');
 							<?php print_unescaped($_['templates']['ShareStatus.svelte']); ?>
 						</span>
 					</div>
-					<?php if($_['task'] && $_['canEdit']) { ?>
+					<?php if ($_['task'] && $_['canEdit']) { ?>
 						<span data-svelte="TaskEditorDialog.svelte"></span>
 						<span data-svelte="DeleteButton.svelte"></span>
 						<span data-svelte-hide="DeleteButton.svelte">
@@ -70,20 +74,20 @@ $l = \OC::$server->getL10N('timemanager');
 							<select name="task">
 								<?php foreach ($_['tasks'] as $task) {
 									// Look up project for task
-									$project = array_reduce($_['projects'], function ($carry, $oneProject) use(&$task) {
+									$project = array_reduce($_['projects'], function ($carry, $oneProject) use (&$task) {
 										if ($oneProject->getUuid() === $task->getProjectUuid()) {
 											$carry = $oneProject;
 										}
 										return $carry;
 									});
 									// Look up client for project
-									$client = array_reduce($_['clients'], function ($carry, $oneClient) use(&$project) {
+									$client = array_reduce($_['clients'], function ($carry, $oneClient) use (&$project) {
 										if ($oneClient->getUuid() === $project->getClientUuid()) {
 											$carry = $oneClient;
 										}
 										return $carry;
 									});
-									?>
+								?>
 									<option value="<?php p($task->getUuid()); ?>"><?php p($client->getName() . ' › ' . $project->getName() . ' › ' . $task->getName()); ?></option>
 								<?php } ?>
 							</select>
@@ -183,7 +187,8 @@ $l = \OC::$server->getL10N('timemanager');
 									</div>
 								</div>
 							</div>
-					<?php } } else { ?>
+						<?php }
+					} else { ?>
 						<div class="tm_item-row">
 							<h3><?php p($l->t("You don't have any time entries, yet. Try adding one by clicking “Add time entry”.")); ?></h3>
 						</div>

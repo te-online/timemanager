@@ -1,9 +1,11 @@
 <?php
-script("timemanager", "timemanager");
-style("timemanager", "timemanager");
 
-$urlGenerator = \OC::$server->getURLGenerator();
-$l = \OC::$server->getL10N("timemanager");
+use \OCP\Util;
+
+Util::addScript('timemanager', 'timemanager');
+style('timemanager', 'timemanager');
+
+$l = Util::getL10N('timemanager');
 ?>
 
 <?php print_unescaped($this->inc("partials/navigation")); ?>
