@@ -19,7 +19,7 @@ import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
 import { format, parseISO } from "date-fns";
-import auth from "@nextcloud/auth";
+import * as auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
