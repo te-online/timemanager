@@ -59,6 +59,7 @@ services:
     volumes:
       - nextcloud:/var/www/html
       - ../:/var/www/html/custom_apps/timemanager
+      - ./opcache-recommended.ini:/usr/local/etc/php/conf.d/opcache-recommended.ini
     environment:
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_HOST_PASSWORD=${REDIS_HOST_PASSWORD}
