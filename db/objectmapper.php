@@ -2,7 +2,7 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
 use OCP\IDBConnection;
 
 /**
@@ -11,7 +11,7 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  * @method Client insert(Client $entity)
  */
-class ObjectMapper extends Mapper {
+class ObjectMapper extends QBMapper {
 	protected $userId;
 	protected $db;
 	protected $commitMapper;
@@ -28,11 +28,17 @@ class ObjectMapper extends Mapper {
 	}
 
 	function getActiveObjects($orderby = "created", $sort = "ASC"): array {
-		$sql =
-			"SELECT * FROM `$this->tableName` WHERE `user_id` = ? AND `status` != ? " .
-			$this->getOrderByClause($orderby, $sort) .
-			";";
-		return $this->findEntities($sql, [$this->userId, "deleted"]);
+		$sql = $this->db->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`user_id` = ?")
+			->andWhere("`status` != ?")
+			->orderBy(\strtolower($orderby), $sort);
+
+		$sql->setParameters([$this->userId, "deleted"]);
+
+		return $this->findEntities($sql);
 	}
 
 	/**
@@ -44,50 +50,106 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false): array {
+		$sql = $this->db->getQueryBuilder();
 		if ($shared && strpos($this->tableName, "_client") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (`$this->tableName` LEFT JOIN `*PREFIX*timemanager_share` ON `$this->tableName`.`uuid` = `*PREFIX*timemanager_share`.`object_uuid`) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? AND `$this->tableName`.`$attr` = ? " .
-				$this->getOrderByClause($orderby) .
-				";";
+			$sql
+				->selectDistinct("client.*")
+				->from($this->tableName, "client")
+				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.`uuid` = share.`object_uuid`");
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted", $value]);
+			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "client.`user_id` = ?");
+
+			$sql
+				->where($expr)
+				->andWhere("client.`status` != ?")
+				->andWhere("client.`$attr` = ?")
+				->orderBy(\strtolower($orderby), "ASC");
+
+			$sql->setParameters([$this->userId, $this->userId, "deleted", $value]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (`$this->tableName` LEFT JOIN `*PREFIX*timemanager_share` ON " .
-				"(`$this->tableName`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` != ?)) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) " .
-				"AND `$this->tableName`.`status` != ? AND `$this->tableName`.`$attr` = ? " .
-				$this->getOrderByClause($orderby) .
-				";";
+			$sql
+				->selectDistinct("project.*")
+				->from($this->tableName, "project")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?)"
+				);
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "project.`user_id` = ?");
+
+			$sql
+				->where($expr)
+				->andWhere("project.`status` != ?")
+				->andWhere("project.`$attr` = ?")
+				->orderBy(\strtolower($orderby), "ASC");
+
+			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM ((`$this->tableName` INNER JOIN `*PREFIX*timemanager_project` ON `$this->tableName`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`)" .
-				"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` != ?)) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? AND `$this->tableName`.`$attr` = ? " .
-				$this->getOrderByClause($orderby) .
-				";";
+			$sql
+				->selectDistinct("task.*")
+				->from($this->tableName, "task")
+				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?)"
+				);
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "task.`user_id` = ?");
+
+			$sql
+				->where($expr)
+				->andWhere("task.`status` != ?")
+				->andWhere("task.`$attr` = ?")
+				->orderBy(\strtolower($orderby), "ASC");
+
+			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (((`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) " .
-				"INNER JOIN `*PREFIX*timemanager_project` ON `*PREFIX*timemanager_task`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`)" .
-				"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` = ?)) " .
-				"WHERE (`*PREFIX*timemanager_share`.`author_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? AND `$this->tableName`.`$attr` = ? " .
-				$this->getOrderByClause($orderby) .
-				";";
+			$sql
+				->selectDistinct("time.*")
+				->from($this->tableName, "time")
+				->innerJoin("time", "*PREFIX*timemanager_task", "task", "time.`task_uuid` = task.`uuid`")
+				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
+				);
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$expr = $sql->expr()->orX("share.`author_user_id` = ?", "time.`user_id` = ?");
+
+			$sql
+				->where($expr)
+				->andWhere("time.`status` != ?")
+				->andWhere("time.`$attr` = ?")
+				->orderBy(\strtolower($orderby), "ASC");
+
+			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+
+			return $this->findEntities($sql);
 		} else {
-			$sql =
-				"SELECT * FROM `$this->tableName` WHERE `user_id` = ? AND `status` != ? AND `$attr` = ? " .
-				$this->getOrderByClause($orderby) .
-				";";
+			$sql = $this->db->getQueryBuilder();
+			$sql
+				->select("*")
+				->from($this->tableName)
+				->where("`user_id` = ?")
+				->andWhere("`status` != ?")
+				->andWhere("`$attr` = ?")
+				->orderBy(\strtolower($orderby), "ASC");
 
-			return $this->findEntities($sql, [$this->userId, "deleted", $value]);
+			$sql->setParameters([$this->userId, "deleted", $value]);
+
+			return $this->findEntities($sql);
 		}
 	}
 
@@ -109,51 +171,102 @@ class ObjectMapper extends Mapper {
 		$shared = false
 	): array {
 		$params = [$this->userId, "deleted", $date_start, $date_end];
+		$sql = $this->db->getQueryBuilder();
 		// Range can be one day as well
 		if ($date_start === $date_end) {
 			array_pop($params);
 			if ($shared) {
-				$sql =
-					"SELECT DISTINCT `$this->tableName`.* FROM (((`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) " .
-					"INNER JOIN `*PREFIX*timemanager_project` ON `*PREFIX*timemanager_task`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`) " .
-					"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` = ?)) " .
-					"WHERE (`*PREFIX*timemanager_share`.`author_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? AND date(`$this->tableName`.`start`) = ?";
+				$sql
+					->selectDistinct("current.*")
+					->from($this->tableName, "current")
+					->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+					->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+					->leftJoin(
+						"project",
+						"*PREFIX*timemanager_share",
+						"share",
+						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
+					);
+
+				$expr = $sql->expr()->orX("share.`author_user_id` = ?", "current.`user_id` = ?");
+
+				$sql
+					->where($expr)
+					->andWhere("current.`status` != ?")
+					->andWhere("date(current.`start`) = ?");
+
 				$params = array_merge([$this->userId, $this->userId], $params);
 			} else {
-				$sql = "SELECT * FROM `$this->tableName` WHERE `user_id` = ? AND `status` != ? AND date(start) = ?";
+				$sql
+					->select("*")
+					->from($this->tableName)
+					->where("`user_id` = ?")
+					->andWhere("`status` != ?")
+					->andWhere("date(start) = ?");
 			}
 		} else {
 			if ($shared) {
-				$sql =
-					"SELECT DISTINCT `$this->tableName`.* FROM (((`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) " .
-					"INNER JOIN `*PREFIX*timemanager_project` ON `*PREFIX*timemanager_task`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`) " .
-					"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` = ?)) " .
-					"WHERE (`*PREFIX*timemanager_share`.`author_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
-					"AND date(`$this->tableName`.`start`) >= ? AND date(`$this->tableName`.`start`) <= ? ";
+				$sql
+					->selectDistinct("current.*")
+					->from($this->tableName, "current")
+					->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+					->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+					->leftJoin(
+						"project",
+						"*PREFIX*timemanager_share",
+						"share",
+						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
+					);
+
+				$expr = $sql->expr()->orX("share.`author_user_id` = ?", "current.`user_id` = ?");
+
+				$sql
+					->where($expr)
+					->andWhere("current.`status` != ?")
+					->andWhere("date(current.`start`) >= ?")
+					->andWhere("date(current.`start`) <= ?");
+
 				$params = array_merge([$this->userId, $this->userId], $params);
 			} else {
-				$sql = "SELECT * FROM `$this->tableName` WHERE `user_id` = ? AND `status` != ? AND date(start) >= ? AND date(start) <= ? ";
+				$sql
+					->select("*")
+					->from($this->tableName)
+					->where("`user_id` = ?")
+					->andWhere("`status` != ?")
+					->andWhere("date(start) >= ?")
+					->andWhere("date(start) <= ?");
 			}
 		}
 		if (isset($status) && $status) {
 			if ($status === "paid") {
-				$sql .= "AND LOWER(`payment_status`) = ? ";
+				$sql->andWhere("LOWER(`payment_status`) = ?");
 				$params[] = strtolower($status);
 			} else {
-				$sql .= "AND (`payment_status` IS NULL OR LOWER(`payment_status`) <> ?) ";
+				$expr = $sql->expr()->orX("`payment_status` IS NULL", "LOWER(`payment_status`) <> ?");
+				$sql->andWhere($expr);
 				$params[] = "paid";
 			}
 		}
 		if (count($filter_tasks) > 0) {
-			$sql .= "AND `task_uuid` IN ('" . implode("','", $filter_tasks) . "') ";
+			$sql->andWhere("`task_uuid` IN ('" . implode("','", $filter_tasks) . "')");
 		}
-		$sql .= $this->getOrderByClause($orderby) . ";";
-		return $this->findEntities($sql, $params);
+
+		$sql->orderBy(\strtolower($orderby), "ASC");
+		$sql->setParameters($params);
+
+		return $this->findEntities($sql);
 	}
 
 	function getObjectById(string $uuid): ?\OCP\AppFramework\Db\Entity {
-		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `uuid` = ? LIMIT 1;";
-		$objects = $this->findEntities($sql, [$this->userId, $uuid]);
+		$sql = $this->db->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`user_id` = ?")
+			->andWhere("`uuid` = ?")
+			->setMaxResults(1);
+		$sql->setParameters([$this->userId, $uuid]);
+		$objects = $this->findEntities($sql);
 		if (count($objects) > 0) {
 			return $objects[0];
 		} else {
@@ -180,69 +293,95 @@ class ObjectMapper extends Mapper {
 
 	function getCreatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = "SELECT `$this->tableName`.* ";
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) ";
-			$sql .= "WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->where("current.`user_id` = ?")
+				->andWhere("*PREFIX*timemanager_task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
-			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+			$sql->where("`$this->tableName`.`user_id` = ?");
 		}
 
-		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
-		$sql .= "`$this->tableName`.`created` = `$this->tableName`.`changed` AND `$this->tableName`.`status` != ? ORDER BY `$this->tableName`.`changed`;";
+		$sql->andWhere("`" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("`$this->tableName`.`created` = `$this->tableName`.`changed`");
+		$sql->andWhere("`$this->tableName`.`status` != ?");
+		$sql->orderBy("`$this->tableName`.`changed`", "ASC");
+
+		$sql->setParameters($params);
 
 		$objects = array_map(function ($object) {
 			return $object->toArray();
-		}, $this->findEntities($sql, $params));
+		}, $this->findEntities($sql));
 
 		return $objects;
 	}
 
 	function getUpdatedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = "SELECT `$this->tableName`.* ";
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) ";
-			$sql .= "WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->where("current.`user_id` = ?")
+				->andWhere("task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
-			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
-		$sql .= "`$this->tableName`.`created` != `$this->tableName`.`changed` AND `$this->tableName`.`status` != ? ORDER BY `$this->tableName`.`changed`;";
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("current.`created` != current.`changed`");
+		$sql->andWhere("current.`status` != ?");
+		$sql->orderBy("current.`changed`", "ASC");
+
+		$sql->setParameters($params);
 
 		$objects = array_map(function ($object) {
 			return $object->toArray();
-		}, $this->findEntities($sql, $params));
+		}, $this->findEntities($sql));
 
 		return $objects;
 	}
 
 	function getDeletedObjectsAfterCommit($commit) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = "SELECT `$this->tableName`.* ";
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$sql .= "FROM (`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) ";
-			$sql .= "WHERE `$this->tableName`.`user_id` = ? AND `*PREFIX*timemanager_task`.`user_id` = ? ";
+			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->where("current.`user_id` = ?")
+				->andWhere("task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
-			$sql .= "FROM `$this->tableName` WHERE `$this->tableName`.`user_id` = ? ";
+			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql .= "AND `" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" ) AND ';
-		$sql .= "`$this->tableName`.`status` = ? ORDER BY `$this->tableName`.`changed`;";
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("current.`status` = ?");
+		$sql->orderBy("current.`changed`", "ASC");
+
+		$sql->setParameters($params);
 
 		$objects = array_map(function ($object) {
 			return $object->toArray();
-		}, $this->findEntities($sql, $params));
+		}, $this->findEntities($sql));
 
 		return $objects;
 	}
@@ -254,57 +393,84 @@ class ObjectMapper extends Mapper {
 	 * @return Object[] list if matching items
 	 */
 	function findActiveForCurrentUser($orderby = "created", $shared = false, $sort = "ASC") {
+		$sql = $this->db->getQueryBuilder();
 		if ($shared && strpos($this->tableName, "_client") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (`$this->tableName` LEFT JOIN `*PREFIX*timemanager_share` ON `$this->tableName`.`uuid` = `*PREFIX*timemanager_share`.`object_uuid`) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
-				$this->getOrderByClause($orderby, $sort) .
-				";";
+			$sql
+				->selectDistinct("client.*")
+				->from($this->tableName, "client")
+				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.uuid = share.object_uuid");
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
+			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "client.user_id = ?");
+			$sql->where($expr)->andWhere("client.status != ?");
+
+			$sql->orderBy(\strtolower($orderby), $sort);
+			$sql->setParameters([$this->userId, $this->userId, "deleted"]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (`$this->tableName` LEFT JOIN `*PREFIX*timemanager_share` ON `$this->tableName`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid`) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
-				$this->getOrderByClause($orderby, $sort) .
-				";";
+			$sql
+				->selectDistinct("project.*")
+				->from($this->tableName, "project")
+				->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.client_uuid = share.object_uuid");
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, "deleted"]);
+			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "project.user_id = ?");
+			$sql->where($expr)->andWhere("project.status != ?");
+
+			$sql->orderBy(\strtolower($orderby), $sort);
+			$sql->setParameters([$this->userId, $this->userId, "deleted"]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM ((`$this->tableName` INNER JOIN `*PREFIX*timemanager_project` ON `$this->tableName`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`)" .
-				"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` != ?)) " .
-				"WHERE (`*PREFIX*timemanager_share`.`recipient_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
-				$this->getOrderByClause($orderby, $sort) .
-				";";
+			$sql
+				->selectDistinct("task.*")
+				->from($this->tableName, "task")
+				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.project_uuid = project.uuid")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.client_uuid = share.object_uuid AND share.author_user_id != ?"
+				);
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted"]);
+			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "task.user_id = ?");
+			$sql->where($expr)->andWhere("task.status != ?");
+
+			$sql->orderBy(\strtolower($orderby), $sort);
+			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted"]);
+
+			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
-			$sql =
-				"SELECT DISTINCT `$this->tableName`.* FROM (((`$this->tableName` INNER JOIN `*PREFIX*timemanager_task` ON `$this->tableName`.`task_uuid` = `*PREFIX*timemanager_task`.`uuid`) " .
-				"INNER JOIN `*PREFIX*timemanager_project` ON `*PREFIX*timemanager_task`.`project_uuid` = `*PREFIX*timemanager_project`.`uuid`)" .
-				"LEFT JOIN `*PREFIX*timemanager_share` ON (`*PREFIX*timemanager_project`.`client_uuid` = `*PREFIX*timemanager_share`.`object_uuid` AND `*PREFIX*timemanager_share`.`author_user_id` = ?)) " .
-				"WHERE (`*PREFIX*timemanager_share`.`author_user_id` = ? OR `$this->tableName`.`user_id` = ?) AND `$this->tableName`.`status` != ? " .
-				$this->getOrderByClause($orderby, $sort) .
-				";";
+			$sql
+				->selectDistinct("time.*")
+				->from($this->tableName, "time")
+				->innerJoin("time", "*PREFIX*timemanager_task", "task", "time.task_uuid = task.uuid")
+				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.project_uuid = project.uuid")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.client_uuid = share.object_uuid AND share.author_user_id = ?"
+				);
 
-			return $this->findEntities($sql, [$this->userId, $this->userId, $this->userId, "deleted"]);
+			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "time.user_id = ?");
+			$sql->where($expr)->andWhere("time.status != ?");
+
+			$sql->orderBy(\strtolower($orderby), $sort);
+			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted"]);
+
+			return $this->findEntities($sql);
 		} else {
-			$sql =
-				"SELECT * FROM `$this->tableName` WHERE `user_id` = ? AND `status` != ? " .
-				$this->getOrderByClause($orderby, $sort) .
-				";";
+			$sql = $this->db->getQueryBuilder();
+			$sql
+				->select("*")
+				->from($this->tableName)
+				->where("user_id = ?")
+				->andWhere("status != ?")
+				->orderBy(\strtolower($orderby), $sort);
 
-			return $this->findEntities($sql, [$this->userId, "deleted"]);
+			$sql->setParameters([$this->userId, "deleted"]);
+
+			return $this->findEntities($sql);
 		}
-	}
-
-	/**
-	 * Creates a proper ORDER BY clause for given orderby column.
-	 *
-	 * @return string
-	 */
-	function getOrderByClause($orderby, $sort = "ASC") {
-		return sprintf("ORDER BY `%s` %s", \strtolower($orderby), $sort);
 	}
 }

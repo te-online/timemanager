@@ -11,6 +11,8 @@ use OCP\IDBConnection;
  * @method Project insert(Project $entity)
  */
 class ProjectMapper extends ObjectMapper {
+	private $taskMapper;
+
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper, TaskMapper $taskMapper) {
 		parent::__construct($db, $commitMapper, "timemanager_project");
 		$this->taskMapper = $taskMapper;

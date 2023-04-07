@@ -10,37 +10,46 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  */
 class ShareMapper extends ObjectMapper {
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper) {
-		parent::__construct($db, $commitMapper, "timemanager_share");
+	protected IDBConnection $connection;
+
+	public function __construct(IDBConnection $connection, CommitMapper $commitMapper) {
+		$this->connection = $connection;
+		parent::__construct($connection, $commitMapper, "timemanager_share");
 	}
 
 	public function findShareesForClient($client_uuid): array {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE (`author_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
-		return $this->findEntities($sql, [$this->userId, $client_uuid]);
+		$sql = $this->connection->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`author_user_id` = ?")
+			->andWhere("`object_uuid` = ?")
+			->andWhere("`entity_type` = 'client'");
+		$sql->setParameters([$this->userId, $client_uuid]);
+		return $this->findEntities($sql);
 	}
 
 	public function findSharerForClient($client_uuid): array {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE (`recipient_user_id` = ?) AND `object_uuid` = ? AND `entity_type` = 'client';";
-		return $this->findEntities($sql, [$this->userId, $client_uuid]);
+		$sql = $this->connection->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`recipient_user_id` = ?")
+			->andWhere("`object_uuid` = ?")
+			->andWhere("`entity_type` = 'client'");
+		$sql->setParameters([$this->userId, $client_uuid]);
+		return $this->findEntities($sql);
 	}
 
 	public function findByUuid($uuid): array {
-		$sql =
-			"SELECT * " .
-			"FROM `" .
-			$this->tableName .
-			"` " .
-			"WHERE (`author_user_id` = ?) AND `uuid` = ? AND `entity_type` = 'client';";
-		return $this->findEntities($sql, [$this->userId, $uuid]);
+		$sql = $this->connection->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`author_user_id` = ?")
+			->andWhere("`uuid` = ?")
+			->andWhere("`entity_type` = 'client'");
+		$sql->setParameters([$this->userId, $uuid]);
+		return $this->findEntities($sql);
 	}
 }
