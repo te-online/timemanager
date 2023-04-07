@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.7 Beta, 7. April 2023
+
+### Fixed
+
+- ...
+
+### Changed
+
+- ...
+
 ## 0.3.6 Beta, 6. March 2023
 
 ### Fixed
