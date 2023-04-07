@@ -46,12 +46,6 @@ stages:
     - cd tests
     - docker-compose down -v
 
-app_test_nc_23:
-  extends: .app_tests
-  before_script:
-    - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:23-fpm-alpine#g" tests/docker-compose.yml
-    - *before_script
-
 app_test_nc_24:
   extends: .app_tests
   before_script:
@@ -64,8 +58,9 @@ app_test_nc_25:
     - export NC_VERSION=25
     - *before_script
 
-# app_test_nc_26:
-#   extends: .app_tests
-#   before_script:
-#     - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:26beta-fpm-alpine#g" tests/docker-compose.yml
-#     - *before_script
+app_test_nc_26:
+  extends: .app_tests
+  before_script:
+    - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:26-fpm-alpine#g" tests/docker-compose.yml
+    - export NC_VERSION=26
+    - *before_script
