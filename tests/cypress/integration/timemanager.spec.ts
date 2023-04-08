@@ -82,8 +82,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can import from a CSV file", () => {
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as import test user
@@ -135,8 +140,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("shows an error message if CSV cannot be parsed", () => {
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as import test user
@@ -166,8 +176,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can import CSV file with semicolon delimiter", () => {
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as import test user
@@ -769,8 +784,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 	it("can see clients, projects, tasks shared with me", () => {
 		const sharedClient = clients[2];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
@@ -816,8 +836,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 		const testuser = testusers[1];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
@@ -900,8 +925,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 		const testuser = testusers[2];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
@@ -950,8 +980,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 		const testuser = testusers[1];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
@@ -986,8 +1021,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 		const testuser = testusers[1];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
@@ -1033,8 +1073,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can get API response with created, updated, deleted items", () => {
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Check API response for each user
@@ -1189,8 +1234,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 	it("cannot access unshared clients or time entries (as a sharee)", () => {
 		const sharedClient = clients[2];
 		// Log out admin user
-		cy.get("div#settings div#expand").click({ timeout: 4000 });
-		cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		if (Cypress.env("NC_VERSION") && Cypress.env("NC_VERSION") >= 25) {
+			cy.get('[aria-label="Open settings menu"]').click({ timeout: 4000 });
+			cy.contains("a", "Log out").click({ timeout: 4000 });
+		} else {
+			cy.get("div#settings div#expand").click({ timeout: 4000 });
+			cy.get('[data-id="logout"] > a').click({ timeout: 4000 });
+		}
 		cy.reload(true);
 
 		// Log in as sharee test user
