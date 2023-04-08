@@ -76,7 +76,7 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?)"
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?"
 				);
 
 			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "project.`user_id` = ?");
@@ -99,7 +99,7 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?)"
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?"
 				);
 
 			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "task.`user_id` = ?");
