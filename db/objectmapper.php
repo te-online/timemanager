@@ -306,13 +306,13 @@ class ObjectMapper extends QBMapper {
 				->andWhere("*PREFIX*timemanager_task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
-			$sql->where("`$this->tableName`.`user_id` = ?");
+			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql->andWhere("`" . $this->tableName . '`.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
-		$sql->andWhere("`$this->tableName`.`created` = `$this->tableName`.`changed`");
-		$sql->andWhere("`$this->tableName`.`status` != ?");
-		$sql->orderBy("`$this->tableName`.`changed`", "ASC");
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("current.`created` = current.`changed`");
+		$sql->andWhere("current.`status` != ?");
+		$sql->orderBy("current.`changed`", "ASC");
 
 		$sql->setParameters($params);
 
