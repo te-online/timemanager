@@ -299,9 +299,8 @@ class ObjectMapper extends QBMapper {
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
 			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
 				->where("current.`user_id` = ?")
 				->andWhere("*PREFIX*timemanager_task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
@@ -331,9 +330,8 @@ class ObjectMapper extends QBMapper {
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
 			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
 				->where("current.`user_id` = ?")
 				->andWhere("task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
@@ -363,9 +361,8 @@ class ObjectMapper extends QBMapper {
 		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
-			$expr = $sql->expr()->comparison("current.`task_uuid`", "=", "task.`uuid`");
 			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", $expr)
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
 				->where("current.`user_id` = ?")
 				->andWhere("task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
