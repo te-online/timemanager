@@ -13,14 +13,6 @@ $l = Util::getL10N('timemanager');
 
 <div id="app-content">
 	<div class="container">
-		<div class="section" data-svelte-hide="ClientEditor.svelte">
-			<div class="tm_add">
-				<div id="new-item" class="tm_new-item">
-					<?php print_unescaped($_['templates']['ClientEditor.svelte']); ?>
-				</div>
-			</div>
-		</div>
-
 		<div class="section">
 			<h2 class="list-title"><?php p($l->t('Clients')); ?></h2>
 			<span data-svelte="ClientEditorDialog.svelte"></span>
@@ -50,6 +42,14 @@ $l = Util::getL10N('timemanager');
 					<h3><?php p($l->t("You don't have any clients, yet. Get started by clicking “Add client”.")); ?></h3>
 				</div>
 			<?php } ?>
+		</div>
+
+		<div class="section" data-svelte-hide="ClientEditor.svelte">
+			<div class="tm_add">
+				<div id="new-item" class="tm_new-item">
+				<?php print_unescaped($_['templates']['ClientEditor.svelte']); ?>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
