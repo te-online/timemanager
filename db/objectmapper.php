@@ -311,7 +311,7 @@ class ObjectMapper extends QBMapper {
 		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
 		$sql->andWhere("current.`created` = current.`changed`");
 		$sql->andWhere("current.`status` != ?");
-		$sql->orderBy("current.`changed`", "ASC");
+		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters($params);
 
@@ -342,7 +342,7 @@ class ObjectMapper extends QBMapper {
 		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
 		$sql->andWhere("current.`created` != current.`changed`");
 		$sql->andWhere("current.`status` != ?");
-		$sql->orderBy("current.`changed`", "ASC");
+		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters($params);
 
@@ -372,7 +372,7 @@ class ObjectMapper extends QBMapper {
 
 		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
 		$sql->andWhere("current.`status` = ?");
-		$sql->orderBy("current.`changed`", "ASC");
+		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters($params);
 

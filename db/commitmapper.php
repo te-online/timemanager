@@ -62,8 +62,9 @@ class CommitMapper extends QBMapper {
 				->from($this->tableName)
 				->where("`user_id` = ?")
 				->andWhere("`created` > ?")
-				->orderBy("`created`");
+				->orderBy("created");
 			$sql->setParameters([$this->userId, $givenCommit[0]->getCreated()]);
+
 			$commits = array_map(function ($commit) {
 				return $commit->toString();
 			}, $this->findEntities($sql));
@@ -74,12 +75,13 @@ class CommitMapper extends QBMapper {
 				->select("*")
 				->from($this->tableName)
 				->where("`user_id` = ?")
-				->orderBy("`created`");
+				->orderBy("created");
 			$sql->setParameters([$this->userId]);
 			$commits = array_map(function ($commit) {
 				return $commit->toString();
 			}, $this->findEntities($sql));
 		}
+
 		return $commits;
 	}
 }
