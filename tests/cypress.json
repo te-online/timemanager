@@ -1,9 +1,0 @@
-{
-	"viewportWidth": 1280,
-	"viewportHeight": 660,
-	"video": false,
-	"reporter": "junit",
-	"reporterOptions": {
-		"mochaFile": "results/TEST-[hash].xml"
-	}
-}
