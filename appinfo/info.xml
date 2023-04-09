@@ -3,7 +3,8 @@
 	<id>timemanager</id>
 	<name>TimeManager</name>
 	<summary>An app to track how you spend your time.</summary>
-	<description><![CDATA[### Time tracking in Nextcloud!
+	<description>
+		<![CDATA[### Time tracking in Nextcloud!
 * 📁 **organize time entries** based on tasks, projects and clients
 * ⏱ **quickly record** a time entry for your latest tasks
 * ✅ **check or uncheck** a time entry (e.g. to save whether you've billed it)
@@ -11,10 +12,11 @@
 
 _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.md) to see older releases_
 
-📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]></description>
+📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app)]]>
+	</description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>
@@ -30,7 +32,7 @@ _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.m
 	<repository type="git">https://github.com/te-online/timemanager.git</repository>
 	<bugs>https://github.com/te-online/timemanager/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="13" max-version="25" />
+		<nextcloud min-version="24" max-version="26" />
 	</dependencies>
 	<navigations>
 		<navigation>

@@ -2,7 +2,7 @@
 
 namespace OCA\TimeManager\Db;
 
-use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\QBMapper;
 use OCP\IDBConnection;
 
 /**
@@ -11,11 +11,13 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  * @method Commit insert(Commit $entity)
  */
-class CommitMapper extends Mapper {
+class CommitMapper extends QBMapper {
 	protected $userId;
+	protected IDBConnection $connection;
 
-	public function __construct(IDBConnection $db) {
-		parent::__construct($db, "timemanager_commit");
+	public function __construct(IDBConnection $connection) {
+		$this->connection = $connection;
+		parent::__construct($connection, "timemanager_commit");
 	}
 
 	function setCurrentUser($userId) {
@@ -23,8 +25,16 @@ class CommitMapper extends Mapper {
 	}
 
 	function getLatestCommit() {
-		$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? ORDER BY `created` DESC LIMIT 1;";
-		$commit = $this->findEntities($sql, [$this->userId]);
+		$sql = $this->connection->getQueryBuilder();
+		$sql
+			->select("*")
+			->from($this->tableName)
+			->where("`user_id` = ?")
+			->orderBy("created", "DESC")
+			->setMaxResults(1);
+		$sql->setParameters([$this->userId]);
+		$commit = $this->findEntities($sql);
+
 		if (count($commit) > 0) {
 			return $commit[0]->getCommit();
 		} else {
@@ -34,31 +44,44 @@ class CommitMapper extends Mapper {
 
 	function getCommitsAfter($commit) {
 		// Find the given commit first, see if we have it.
-		$sql = "SELECT `commit` " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? AND `commit` = ? LIMIT 1;";
-		$givenCommit = $this->findEntities($sql, [$this->userId, $commit]);
+		$sql = $this->connection->getQueryBuilder();
+		$sql
+			->select("commit")
+			->from($this->tableName)
+			->where("`user_id` = ?")
+			->andWhere("`commit` = ?")
+			->setMaxResults(1);
+		$sql->setParameters([$this->userId, $commit]);
+		$givenCommit = $this->findEntities($sql);
 
 		// The given commit is found, all fine.
 		if (count($givenCommit) > 0) {
-			$sql =
-				"SELECT * " .
-				"FROM `" .
-				$this->tableName .
-				"` " .
-				"WHERE `user_id` = ? AND `created` >" .
-				" (SELECT `created` FROM `" .
-				$this->tableName .
-				"` WHERE `commit` = ? LIMIT 1) " .
-				"ORDER BY `created`;";
+			$sql = $this->connection->getQueryBuilder();
+			$sql
+				->select("*")
+				->from($this->tableName)
+				->where("`user_id` = ?")
+				->andWhere("`created` > ?")
+				->orderBy("created");
+			$sql->setParameters([$this->userId, $givenCommit[0]->getCreated()]);
+
 			$commits = array_map(function ($commit) {
 				return $commit->toString();
-			}, $this->findEntities($sql, [$this->userId, $commit]));
+			}, $this->findEntities($sql));
 		} else {
 			// The given commit is unknown. All commits are applicable.
-			$sql = "SELECT * " . "FROM `" . $this->tableName . "` " . "WHERE `user_id` = ? " . "ORDER BY `created`;";
+			$sql = $this->connection->getQueryBuilder();
+			$sql
+				->select("*")
+				->from($this->tableName)
+				->where("`user_id` = ?")
+				->orderBy("created");
+			$sql->setParameters([$this->userId]);
 			$commits = array_map(function ($commit) {
 				return $commit->toString();
-			}, $this->findEntities($sql, [$this->userId]));
+			}, $this->findEntities($sql));
 		}
+
 		return $commits;
 	}
 }

@@ -1,6 +1,9 @@
 <?php
+
+use \OCP\Util;
+
 $urlGenerator = \OC::$server->getURLGenerator();
-$l = \OC::$server->getL10N('timemanager');
+$l = Util::getL10N('timemanager');
 ?>
 
 <div id="app-navigation">

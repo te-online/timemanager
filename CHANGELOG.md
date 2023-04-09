@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.7 Beta, 7. April 2023
+
+### Added
+
+- Run tests for Nextcloud 26 and bump compatibility to Nextcloud 26
+- Update JS dependencies
+
+### Fixed
+
+- Migrate to QueryBuilder for all SQL queries to restore Nextcloud 26 compatibility (#32 and #117)
+
 ## 0.3.6 Beta, 6. March 2023
 
 ### Fixed

@@ -192,7 +192,7 @@ class StorageHelper {
 	 * @param string $entity the entity to look for
 	 * @return ClientMapper|ProjectMapper|TaskMapper|TimeMapper matching mapper
 	 */
-	function findEntityMapper(string $entity): \OCP\AppFramework\Db\Mapper {
+	function findEntityMapper(string $entity): \OCP\AppFramework\Db\QBMapper {
 		switch ($entity) {
 			case "clients":
 				return $this->clientMapper;

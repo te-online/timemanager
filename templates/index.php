@@ -1,10 +1,15 @@
 <?php
-script('timemanager', 'timemanager');
+
+use \OCP\Util;
+
+Util::addScript('timemanager', 'timemanager');
 style('timemanager', 'timemanager');
+
+$l = Util::getL10N('timemanager');
 
 ?>
 
-<?php print_unescaped( $this->inc( 'partials/navigation' ) ); ?>
+<?php print_unescaped($this->inc('partials/navigation')); ?>
 
 <div id="app-content">
 	<div class="container">
@@ -14,7 +19,7 @@ style('timemanager', 'timemanager');
 				<span data-store="<?php p($_['store']); ?>"></span>
 			</section>
 
-			<?php print_unescaped( $this->inc( 'partials/latest' ) ); ?>
+			<?php print_unescaped($this->inc('partials/latest')); ?>
 
 			<section class="section statistics" data-svelte="Statistics.svelte"></section>
 		</div>

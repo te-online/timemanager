@@ -1,6 +1,9 @@
 <?php
-	$urlGenerator = \OC::$server->getURLGenerator();
-	$l = \OC::$server->getL10N('timemanager');
+
+use \OCP\Util;
+
+$urlGenerator = \OC::$server->getURLGenerator();
+$l = Util::getL10N('timemanager');
 ?>
 
 <h2 class="latest-headline">
