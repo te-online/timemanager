@@ -449,7 +449,7 @@ class ObjectMapper extends QBMapper {
 					"project.client_uuid = share.object_uuid AND share.author_user_id = ?"
 				);
 
-			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "time.user_id = ?");
+			$expr = $sql->expr()->orX("share.author_user_id = ?", "time.user_id = ?");
 			$sql->where($expr)->andWhere("time.status != ?");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
