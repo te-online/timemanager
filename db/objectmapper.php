@@ -302,7 +302,7 @@ class ObjectMapper extends QBMapper {
 			$sql
 				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
 				->where("current.`user_id` = ?")
-				->andWhere("*PREFIX*timemanager_task.`user_id` = ?");
+				->andWhere("task.`user_id` = ?");
 			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
 			$sql->where("current.`user_id` = ?");
