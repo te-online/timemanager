@@ -30118,7 +30118,7 @@
       return child_ctx;
     }
 
-    // (430:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    // (429:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
     function create_if_block_7(ctx) {
       var div;
       var ul;
@@ -30181,7 +30181,7 @@
       };
     }
 
-    // (433:5) {#each noteAutosuggestList as suggestion, index}
+    // (432:5) {#each noteAutosuggestList as suggestion, index}
     function create_each_block_4(ctx) {
       var _ctx$95$time$note, _ctx$, _ctx$$time, _ctx$95$client$name, _ctx$2, _ctx$2$client, _ctx$95$project$name, _ctx$3, _ctx$3$project, _ctx$95$task$name, _ctx$4, _ctx$4$task;
       var li;
@@ -30279,7 +30279,7 @@
       };
     }
 
-    // (498:1) {#if showDurationSelector}
+    // (497:1) {#if showDurationSelector}
     function create_if_block_6$1(ctx) {
       var div;
       var span1;
@@ -30422,7 +30422,7 @@
       };
     }
 
-    // (606:2) {:else}
+    // (605:2) {:else}
     function create_else_block(ctx) {
       var t0_value = translate_1("timemanager", "Client, project or task") + "";
       var t0;
@@ -30474,7 +30474,7 @@
       };
     }
 
-    // (582:2) {#if selected && !showTaskSelector}
+    // (581:2) {#if selected && !showTaskSelector}
     function create_if_block_5$1(ctx) {
       var a;
       var ul;
@@ -30581,7 +30581,7 @@
       };
     }
 
-    // (620:1) {#if showTaskSelector}
+    // (619:1) {#if showTaskSelector}
     function create_if_block$3(ctx) {
       var _ctx$9;
       var div3;
@@ -30704,7 +30704,7 @@
       };
     }
 
-    // (649:4) {#if lastUsed?.length && !searchValue}
+    // (648:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
       var each_value_3 = /*lastUsed*/ctx[32];
@@ -30755,7 +30755,7 @@
       };
     }
 
-    // (653:8) {#if index === 0}
+    // (652:8) {#if index === 0}
     function create_if_block_4$1(ctx) {
       var span;
       return {
@@ -30774,7 +30774,7 @@
       };
     }
 
-    // (651:6) {#each lastUsed as entry, index}
+    // (650:6) {#each lastUsed as entry, index}
     function create_each_block_3(ctx) {
       var li3;
       var t0;
@@ -30912,7 +30912,7 @@
       };
     }
 
-    // (740:34) 
+    // (739:34) 
     function create_if_block_2$1(ctx) {
       var p;
       return {
@@ -30931,7 +30931,7 @@
       };
     }
 
-    // (696:4) {#if searchResults?.length}
+    // (695:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value = /*searchResults*/ctx[23];
@@ -30981,7 +30981,7 @@
       };
     }
 
-    // (706:12) {#each project.tasks as task}
+    // (705:12) {#each project.tasks as task}
     function create_each_block_2$1(ctx) {
       var li;
       var a;
@@ -31050,7 +31050,7 @@
       };
     }
 
-    // (702:9) {#each client.projects as project}
+    // (701:9) {#each client.projects as project}
     function create_each_block_1$1(ctx) {
       var li;
       var span;
@@ -31118,7 +31118,7 @@
       };
     }
 
-    // (697:5) {#each searchResults as client}
+    // (696:5) {#each searchResults as client}
     function create_each_block$1(ctx) {
       var ul1;
       var li;
@@ -31719,10 +31719,6 @@
       };
       var handleHidePopovers = function handleHidePopovers(event) {
         var _event$target2, _event$target2$getAtt;
-        console.log({
-          event: event
-        });
-
         // Fix inputs triggering the hide event
         if ((event === null || event === void 0 ? void 0 : (_event$target2 = event.target) === null || _event$target2 === void 0 ? void 0 : (_event$target2$getAtt = _event$target2.getAttribute) === null || _event$target2$getAtt === void 0 ? void 0 : _event$target2$getAtt.call(_event$target2, "data-hideEvent")) === "skip") {
           return;
