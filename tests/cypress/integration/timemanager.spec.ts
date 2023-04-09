@@ -1304,7 +1304,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 					});
 			});
 
-		cy.get("#task-selector-button-input").click();
+		cy.get('[data-cy="task-selector-trigger"]').click();
 		cy.get('[data-cy="quick-add-task-search"]').type(firstTask.Name.substring(0, firstTask.Name.length - 3));
 		cy.contains("a", firstTask.Name).click();
 

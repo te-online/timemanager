@@ -31276,6 +31276,7 @@
           attr(input1, "data-hideevent", "skip");
           attr(input2, "type", "hidden");
           attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[19] ? " error" : ""));
+          attr(label2, "data-cy", "task-selector-trigger");
           button.disabled = /*loading*/ctx[17];
           attr(button, "type", "submit");
           attr(button, "class", "button primary button-w-icon icon-add");

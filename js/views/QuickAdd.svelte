@@ -566,7 +566,7 @@
 			</label>
 		</div>
 	{/if}
-	<label class={`task-selector-trigger${taskError ? " error" : ""}`}>
+	<label class={`task-selector-trigger${taskError ? " error" : ""}`} data-cy="task-selector-trigger">
 		<!-- This is to make Svelte linter happy -->
 		<input type="hidden" />
 		{#if selected && !showTaskSelector}
