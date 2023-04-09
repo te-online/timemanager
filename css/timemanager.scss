@@ -397,6 +397,8 @@ label {
 		@media screen and (max-width: 768px) {
 			display: block;
 		}
+
+		--quick-add-z-index: 99999;
 	}
 
 	.note-autosuggest {
@@ -405,6 +407,7 @@ label {
 		max-width: 60vw;
 		background: var(--color-main-background);
 		padding: 10px;
+		z-index: var(--quick-add-z-index);
 
 		li {
 			padding: 3px 2px;
@@ -428,6 +431,7 @@ label {
 		max-width: 40vw;
 		background: var(--color-main-background);
 		padding: 12px;
+		z-index: var(--quick-add-z-index);
 	}
 
 	.task-selector-popover {
@@ -435,6 +439,7 @@ label {
 		width: 466px;
 		background: var(--color-main-background);
 		padding-top: 12px;
+		z-index: var(--quick-add-z-index);
 
 		.task-add-button {
 			padding-left: 34px;
@@ -957,6 +962,13 @@ input.duration-input {
 		--borderHoverColor: var(--color-primary-element);
 		--inputColor: var(--color-main-text);
 		--border: 1px solid var(--color-border-dark);
+	}
+
+	// This fixes Chrome's "calendar" icon not being visible in dark mode
+	@media (prefers-color-scheme: dark) {
+		input {
+			color-scheme: dark;
+		}
 	}
 }
 

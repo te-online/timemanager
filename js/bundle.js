@@ -30118,7 +30118,7 @@
       return child_ctx;
     }
 
-    // (429:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    // (430:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
     function create_if_block_7(ctx) {
       var div;
       var ul;
@@ -30181,7 +30181,7 @@
       };
     }
 
-    // (432:5) {#each noteAutosuggestList as suggestion, index}
+    // (433:5) {#each noteAutosuggestList as suggestion, index}
     function create_each_block_4(ctx) {
       var _ctx$95$time$note, _ctx$, _ctx$$time, _ctx$95$client$name, _ctx$2, _ctx$2$client, _ctx$95$project$name, _ctx$3, _ctx$3$project, _ctx$95$task$name, _ctx$4, _ctx$4$task;
       var li;
@@ -30279,7 +30279,7 @@
       };
     }
 
-    // (497:1) {#if showDurationSelector}
+    // (498:1) {#if showDurationSelector}
     function create_if_block_6$1(ctx) {
       var div;
       var span1;
@@ -30346,6 +30346,7 @@
           attr(input1, "class", "time-input");
           attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input1.required = true;
+          attr(input1, "data-hideevent", "skip");
           html_tag_2.a = t4;
           attr(input2, "type", "time");
           attr(input2, "name", "endTime");
@@ -30353,12 +30354,14 @@
           attr(input2, "class", "time-input");
           attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input2.required = true;
+          attr(input2, "data-hideevent", "skip");
           attr(span0, "class", "flex-fields");
           attr(span1, "class", "flex-fields");
           html_tag_3.a = t6;
           attr(input3, "type", "date");
           attr(input3, "name", "date");
           attr(input3, "class", "date-input");
+          attr(input3, "data-hideevent", "skip");
           attr(div, "class", "duration-selector-popover popover");
         },
         m: function m(target, anchor) {
@@ -30391,7 +30394,7 @@
           append(label3, input3);
           set_input_value(input3, /*date*/ctx[10]);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[53]), listen(input0, "input", /*input_handler_1*/ctx[54]), listen(input1, "input", /*input1_input_handler*/ctx[56]), listen(input1, "input", /*input_handler_2*/ctx[57]), listen(input2, "input", /*input2_input_handler*/ctx[58]), listen(input2, "input", /*input_handler_3*/ctx[59]), listen(input3, "input", /*input3_input_handler*/ctx[60]), listen(input3, "blur", /*blur_handler*/ctx[61]), action_destroyer(/*durationSelectorPopperContent*/ctx[31].call(null, div, /*extraOpts*/ctx[25])), listen(div, "click", click_handler_2)];
+            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[53]), listen(input0, "input", /*input_handler_1*/ctx[54]), listen(input1, "input", /*input1_input_handler*/ctx[56]), listen(input1, "input", /*input_handler_2*/ctx[57]), listen(input2, "input", /*input2_input_handler*/ctx[58]), listen(input2, "input", /*input_handler_3*/ctx[59]), listen(input3, "input", /*input3_input_handler*/ctx[60]), listen(input3, "blur", /*blur_handler*/ctx[61]), action_destroyer(/*durationSelectorPopperContent*/ctx[31].call(null, div, /*extraOpts*/ctx[25])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
             mounted = true;
           }
         },
@@ -30419,7 +30422,7 @@
       };
     }
 
-    // (596:2) {:else}
+    // (606:2) {:else}
     function create_else_block(ctx) {
       var t0_value = translate_1("timemanager", "Client, project or task") + "";
       var t0;
@@ -30471,7 +30474,7 @@
       };
     }
 
-    // (572:2) {#if selected && !showTaskSelector}
+    // (582:2) {#if selected && !showTaskSelector}
     function create_if_block_5$1(ctx) {
       var a;
       var ul;
@@ -30578,7 +30581,7 @@
       };
     }
 
-    // (610:1) {#if showTaskSelector}
+    // (620:1) {#if showTaskSelector}
     function create_if_block$3(ctx) {
       var _ctx$9;
       var div3;
@@ -30655,7 +30658,7 @@
           append(div3, div2);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[63]), listen(input, "input", /*input_handler_4*/ctx[64]), action_destroyer(/*taskSelectorPopperContent*/ctx[27].call(null, div3, /*extraOpts*/ctx[25])), listen(div3, "click", click_handler_5)];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[63]), listen(input, "input", /*input_handler_4*/ctx[64]), action_destroyer(/*taskSelectorPopperContent*/ctx[27].call(null, div3, /*extraOpts*/ctx[25])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
             mounted = true;
           }
         },
@@ -30701,7 +30704,7 @@
       };
     }
 
-    // (638:4) {#if lastUsed?.length && !searchValue}
+    // (649:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
       var each_value_3 = /*lastUsed*/ctx[32];
@@ -30752,7 +30755,7 @@
       };
     }
 
-    // (642:8) {#if index === 0}
+    // (653:8) {#if index === 0}
     function create_if_block_4$1(ctx) {
       var span;
       return {
@@ -30771,7 +30774,7 @@
       };
     }
 
-    // (640:6) {#each lastUsed as entry, index}
+    // (651:6) {#each lastUsed as entry, index}
     function create_each_block_3(ctx) {
       var li3;
       var t0;
@@ -30909,7 +30912,7 @@
       };
     }
 
-    // (729:34) 
+    // (740:34) 
     function create_if_block_2$1(ctx) {
       var p;
       return {
@@ -30928,7 +30931,7 @@
       };
     }
 
-    // (685:4) {#if searchResults?.length}
+    // (696:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
       var each_value = /*searchResults*/ctx[23];
@@ -30978,7 +30981,7 @@
       };
     }
 
-    // (695:12) {#each project.tasks as task}
+    // (706:12) {#each project.tasks as task}
     function create_each_block_2$1(ctx) {
       var li;
       var a;
@@ -31047,7 +31050,7 @@
       };
     }
 
-    // (691:9) {#each client.projects as project}
+    // (702:9) {#each client.projects as project}
     function create_each_block_1$1(ctx) {
       var li;
       var span;
@@ -31115,7 +31118,7 @@
       };
     }
 
-    // (686:5) {#each searchResults as client}
+    // (697:5) {#each searchResults as client}
     function create_each_block$1(ctx) {
       var ul1;
       var li;
@@ -31414,13 +31417,20 @@
     };
     var change_handler = function change_handler() {};
     var click_handler_2 = function click_handler_2(event) {
+      var _event$target, _event$target$getAttr;
+      // Fix inputs triggering the hide event
+      if ((event === null || event === void 0 ? void 0 : (_event$target = event.target) === null || _event$target === void 0 ? void 0 : (_event$target$getAttr = _event$target.getAttribute) === null || _event$target$getAttr === void 0 ? void 0 : _event$target$getAttr.call(_event$target, "data-hideEvent")) === "skip") {
+        return;
+      }
       event.stopPropagation();
       event.preventDefault();
     };
+    var keypress_handler = function keypress_handler() {};
     var click_handler_5 = function click_handler_5(event) {
       event.stopPropagation();
       event.preventDefault();
     };
+    var keypress_handler_1 = function keypress_handler_1() {};
     function instance$7($$self, $$props, $$invalidate) {
       var _Object$values;
       var loading;
@@ -31708,9 +31718,13 @@
         $$invalidate(2, showDurationSelector = false);
       };
       var handleHidePopovers = function handleHidePopovers(event) {
-        var _event$target, _event$target$getAttr;
+        var _event$target2, _event$target2$getAtt;
+        console.log({
+          event: event
+        });
+
         // Fix inputs triggering the hide event
-        if ((event === null || event === void 0 ? void 0 : (_event$target = event.target) === null || _event$target === void 0 ? void 0 : (_event$target$getAttr = _event$target.getAttribute) === null || _event$target$getAttr === void 0 ? void 0 : _event$target$getAttr.call(_event$target, "data-hideEvent")) === "skip") {
+        if ((event === null || event === void 0 ? void 0 : (_event$target2 = event.target) === null || _event$target2 === void 0 ? void 0 : (_event$target2$getAtt = _event$target2.getAttribute) === null || _event$target2$getAtt === void 0 ? void 0 : _event$target2$getAtt.call(_event$target2, "data-hideEvent")) === "skip") {
           return;
         }
         $$invalidate(0, showTaskSelector = false);
@@ -31825,8 +31839,8 @@
         });
       }
       var input_handler = function input_handler(event) {
-        var _event$target$value, _event$target2;
-        var filterText = (_event$target$value = event === null || event === void 0 ? void 0 : (_event$target2 = event.target) === null || _event$target2 === void 0 ? void 0 : _event$target2.value) !== null && _event$target$value !== void 0 ? _event$target$value : "";
+        var _event$target$value, _event$target3;
+        var filterText = (_event$target$value = event === null || event === void 0 ? void 0 : (_event$target3 = event.target) === null || _event$target3 === void 0 ? void 0 : _event$target3.value) !== null && _event$target$value !== void 0 ? _event$target$value : "";
         if (filterText.length > 2) {
           $$invalidate(1, showNoteAutosuggest = true);
           var searchResult = latestEntriesFuse.search(filterText);
@@ -31839,10 +31853,10 @@
         }
       };
       var focus_handler = function focus_handler(event) {
-        var _event$target$value2, _event$target3;
+        var _event$target$value2, _event$target4;
         event.preventDefault();
         event.stopPropagation();
-        var filterText = (_event$target$value2 = event === null || event === void 0 ? void 0 : (_event$target3 = event.target) === null || _event$target3 === void 0 ? void 0 : _event$target3.value) !== null && _event$target$value2 !== void 0 ? _event$target$value2 : "";
+        var filterText = (_event$target$value2 = event === null || event === void 0 ? void 0 : (_event$target4 = event.target) === null || _event$target4 === void 0 ? void 0 : _event$target4.value) !== null && _event$target$value2 !== void 0 ? _event$target$value2 : "";
         if (filterText.length > 2) {
           var searchResult = latestEntriesFuse.search(filterText);
           $$invalidate(5, noteAutosuggestList = searchResult.slice(0, 10).map(function (result) {

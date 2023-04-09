@@ -499,9 +499,15 @@
 			class="duration-selector-popover popover"
 			use:durationSelectorPopperContent={extraOpts}
 			on:click={(event) => {
+				// Fix inputs triggering the hide event
+				if (event?.target?.getAttribute?.("data-hideEvent") === "skip") {
+					return;
+				}
+
 				event.stopPropagation();
 				event.preventDefault();
 			}}
+			on:keypress={() => {}}
 		>
 			<span class="flex-fields">
 				<label>
@@ -533,6 +539,7 @@
 							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
 							pattern="[0-9]{2}:[0-9]{2}"
 							required
+							data-hideEvent="skip"
 						/>
 					</label>
 					<label>
@@ -546,6 +553,7 @@
 							bind:value={endTime}
 							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
 							required
+							data-hideEvent="skip"
 						/>
 					</label>
 				</span>
@@ -562,6 +570,7 @@
 							date = format(startOfDay(new Date(), localeOptions), dateFormat, new Date());
 						}
 					}}
+					data-hideEvent="skip"
 				/>
 			</label>
 		</div>
@@ -615,6 +624,7 @@
 				event.stopPropagation();
 				event.preventDefault();
 			}}
+			on:keypress={() => {}}
 		>
 			<label class="search">
 				<span class="hidden-visually">{translate("timemanager", "Type to search for client, project or task")}</span>

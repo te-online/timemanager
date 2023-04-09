@@ -324,7 +324,8 @@ label {
   min-height: 156px; }
 
 #content.app-timemanager .quick-add {
-  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px; }
+  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
+  --quick-add-z-index: 99999; }
   @media screen and (max-width: 768px) {
     #content.app-timemanager .quick-add {
       display: block; } }
@@ -333,7 +334,8 @@ label {
   width: 750px;
   max-width: 60vw;
   background: var(--color-main-background);
-  padding: 10px; }
+  padding: 10px;
+  z-index: var(--quick-add-z-index); }
   #content.app-timemanager .note-autosuggest li {
     padding: 3px 2px; }
   #content.app-timemanager .note-autosuggest .task {
@@ -347,12 +349,14 @@ label {
   width: 350px;
   max-width: 40vw;
   background: var(--color-main-background);
-  padding: 12px; }
+  padding: 12px;
+  z-index: var(--quick-add-z-index); }
 
 #content.app-timemanager .task-selector-popover {
   width: 466px;
   background: var(--color-main-background);
-  padding-top: 12px; }
+  padding-top: 12px;
+  z-index: var(--quick-add-z-index); }
   #content.app-timemanager .task-selector-popover .task-add-button {
     padding-left: 34px; }
   #content.app-timemanager .task-selector-popover .search-results li,
@@ -717,6 +721,10 @@ input.duration-input {
   --borderHoverColor: var(--color-primary-element);
   --inputColor: var(--color-main-text);
   --border: 1px solid var(--color-border-dark); }
+
+@media (prefers-color-scheme: dark) {
+  :root input {
+    color-scheme: dark; } }
 
 @media print {
   #app-navigation,
