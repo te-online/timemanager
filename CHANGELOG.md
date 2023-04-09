@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.7 Beta, 7. April 2023
+## 0.3.7 Beta, 9. April 2023
 
 ### Added
 
@@ -10,6 +10,7 @@
 ### Fixed
 
 - Migrate to QueryBuilder for all SQL queries to restore Nextcloud 26 compatibility (#32 and #117)
+- Quick Add: Date fields are able to open brower's built-in mini calendar again (#115)
 
 ## 0.3.6 Beta, 6. March 2023
 
