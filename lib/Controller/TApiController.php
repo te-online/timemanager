@@ -9,7 +9,7 @@ use OCA\TimeManager\Db\TaskMapper;
 use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\ShareMapper;
-use OCA\TimeManager\Db\storageHelper;
+use OCA\TimeManager\Db\StorageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;

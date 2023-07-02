@@ -4,9 +4,9 @@ namespace OCA\TimeManager\Helper;
 
 class PHP_Svelte {
 	static function render_template(string $filename = "", array $props = []) {
-		$location = dirname(__FILE__) . "/../js/views/" . $filename;
+		$location = dirname(__FILE__) . "/../../js/views/" . $filename;
 		if ($location) {
-			$template = file_get_contents(dirname(__FILE__) . "/../js/views/" . $filename);
+			$template = file_get_contents(dirname(__FILE__) . "/../../js/views/" . $filename);
 			if ($template) {
 				// Strip script and style tags
 				$rendered_template = preg_replace('@<(script|style)[^>]*?>.*?</\\1>@si', "", $template);
