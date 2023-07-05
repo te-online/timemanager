@@ -16,7 +16,7 @@ _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.m
 	</description>
 	<licence>AGPL</licence>
 	<author>Thomas Ebert</author>
-	<version>0.3.7</version>
+	<version>0.3.8</version>
 	<category>tools</category>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_statistics.png</screenshot>
 	<screenshot>https://raw.githubusercontent.com/te-online/timemanager/main/img/timemanager_overview.png</screenshot>
@@ -33,7 +33,7 @@ _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.m
 	<bugs>https://github.com/te-online/timemanager/issues</bugs>
 	<namespace>TimeManager</namespace>
 	<dependencies>
-		<nextcloud min-version="24" max-version="27" />
+		<nextcloud min-version="25" max-version="27" />
 	</dependencies>
 	<navigations>
 		<navigation>
