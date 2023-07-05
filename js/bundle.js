@@ -54,7 +54,7 @@
       for (var i = 1; i < arguments.length; i++) {
         var source = null != arguments[i] ? arguments[i] : {};
         i % 2 ? ownKeys$1(Object(source), !0).forEach(function (key) {
-          _defineProperty$1(target, key, source[key]);
+          _defineProperty$w(target, key, source[key]);
         }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys$1(Object(source)).forEach(function (key) {
           Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
         });
@@ -392,30 +392,30 @@
         });
       };
     }
-    function _classCallCheck$1(instance, Constructor) {
+    function _classCallCheck$x(instance, Constructor) {
       if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
       }
     }
-    function _defineProperties$1(target, props) {
+    function _defineProperties$x(target, props) {
       for (var i = 0; i < props.length; i++) {
         var descriptor = props[i];
         descriptor.enumerable = descriptor.enumerable || false;
         descriptor.configurable = true;
         if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, _toPropertyKey$1(descriptor.key), descriptor);
+        Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
       }
     }
-    function _createClass$1(Constructor, protoProps, staticProps) {
-      if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
-      if (staticProps) _defineProperties$1(Constructor, staticProps);
+    function _createClass$x(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$x(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$x(Constructor, staticProps);
       Object.defineProperty(Constructor, "prototype", {
         writable: false
       });
       return Constructor;
     }
-    function _defineProperty$1(obj, key, value) {
-      key = _toPropertyKey$1(key);
+    function _defineProperty$w(obj, key, value) {
+      key = _toPropertyKey(key);
       if (key in obj) {
         Object.defineProperty(obj, key, {
           value: value,
@@ -428,7 +428,7 @@
       }
       return obj;
     }
-    function _inherits$1(subClass, superClass) {
+    function _inherits$w(subClass, superClass) {
       if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function");
       }
@@ -442,22 +442,22 @@
       Object.defineProperty(subClass, "prototype", {
         writable: false
       });
-      if (superClass) _setPrototypeOf$1(subClass, superClass);
+      if (superClass) _setPrototypeOf$x(subClass, superClass);
     }
-    function _getPrototypeOf$1(o) {
-      _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
+    function _getPrototypeOf$w(o) {
+      _getPrototypeOf$w = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
         return o.__proto__ || Object.getPrototypeOf(o);
       };
-      return _getPrototypeOf$1(o);
+      return _getPrototypeOf$w(o);
     }
-    function _setPrototypeOf$1(o, p) {
-      _setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    function _setPrototypeOf$x(o, p) {
+      _setPrototypeOf$x = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
         o.__proto__ = p;
         return o;
       };
-      return _setPrototypeOf$1(o, p);
+      return _setPrototypeOf$x(o, p);
     }
-    function _isNativeReflectConstruct$1() {
+    function _isNativeReflectConstruct$x() {
       if (typeof Reflect === "undefined" || !Reflect.construct) return false;
       if (Reflect.construct.sham) return false;
       if (typeof Proxy === "function") return true;
@@ -468,63 +468,63 @@
         return false;
       }
     }
-    function _assertThisInitialized$1(self) {
+    function _assertThisInitialized$w(self) {
       if (self === void 0) {
         throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
       }
       return self;
     }
-    function _possibleConstructorReturn$1(self, call) {
+    function _possibleConstructorReturn$w(self, call) {
       if (call && (typeof call === "object" || typeof call === "function")) {
         return call;
       } else if (call !== void 0) {
         throw new TypeError("Derived constructors may only return object or undefined");
       }
-      return _assertThisInitialized$1(self);
+      return _assertThisInitialized$w(self);
     }
-    function _createSuper$1(Derived) {
-      var hasNativeReflectConstruct = _isNativeReflectConstruct$1();
+    function _createSuper$w(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$x();
       return function _createSuperInternal() {
-        var Super = _getPrototypeOf$1(Derived),
+        var Super = _getPrototypeOf$w(Derived),
           result;
         if (hasNativeReflectConstruct) {
-          var NewTarget = _getPrototypeOf$1(this).constructor;
+          var NewTarget = _getPrototypeOf$w(this).constructor;
           result = Reflect.construct(Super, arguments, NewTarget);
         } else {
           result = Super.apply(this, arguments);
         }
-        return _possibleConstructorReturn$1(this, result);
+        return _possibleConstructorReturn$w(this, result);
       };
     }
     function _slicedToArray(arr, i) {
-      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$1(arr, i) || _nonIterableRest();
+      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$2(arr, i) || _nonIterableRest();
     }
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$1(arr) || _nonIterableSpread();
+    function _toConsumableArray$1(arr) {
+      return _arrayWithoutHoles$1(arr) || _iterableToArray$1(arr) || _unsupportedIterableToArray$2(arr) || _nonIterableSpread$1();
     }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray$1(arr);
+    function _arrayWithoutHoles$1(arr) {
+      if (Array.isArray(arr)) return _arrayLikeToArray$2(arr);
     }
     function _arrayWithHoles(arr) {
       if (Array.isArray(arr)) return arr;
     }
-    function _iterableToArray(iter) {
+    function _iterableToArray$1(iter) {
       if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
     }
-    function _unsupportedIterableToArray$1(o, minLen) {
+    function _unsupportedIterableToArray$2(o, minLen) {
       if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray$1(o, minLen);
+      if (typeof o === "string") return _arrayLikeToArray$2(o, minLen);
       var n = Object.prototype.toString.call(o).slice(8, -1);
       if (n === "Object" && o.constructor) n = o.constructor.name;
       if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen);
     }
-    function _arrayLikeToArray$1(arr, len) {
+    function _arrayLikeToArray$2(arr, len) {
       if (len == null || len > arr.length) len = arr.length;
       for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
       return arr2;
     }
-    function _nonIterableSpread() {
+    function _nonIterableSpread$1() {
       throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
     }
     function _nonIterableRest() {
@@ -533,7 +533,7 @@
     function _createForOfIteratorHelper$1(o, allowArrayLike) {
       var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
       if (!it) {
-        if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") {
           if (it) o = it;
           var i = 0;
           var F = function () {};
@@ -581,7 +581,7 @@
         }
       };
     }
-    function _toPrimitive$1(input, hint) {
+    function _toPrimitive(input, hint) {
       if (typeof input !== "object" || input === null) return input;
       var prim = input[Symbol.toPrimitive];
       if (prim !== undefined) {
@@ -591,8 +591,8 @@
       }
       return (hint === "string" ? String : Number)(input);
     }
-    function _toPropertyKey$1(arg) {
-      var key = _toPrimitive$1(arg, "string");
+    function _toPropertyKey(arg) {
+      var key = _toPrimitive(arg, "string");
       return typeof key === "symbol" ? key : String(key);
     }
 
@@ -604,10 +604,6 @@
 
     function createCommonjsModule(fn, module) {
     	return module = { exports: {} }, fn(module, module.exports), module.exports;
-    }
-
-    function getCjsExportFromNamespace (n) {
-    	return n && n['default'] || n;
     }
 
     var check = function (it) {
@@ -623,7 +619,38 @@
     // eslint-disable-next-line no-new-func -- fallback
     function () {
       return this;
-    }() || commonjsGlobal || Function('return this')();
+    }() || Function('return this')();
+
+    // eslint-disable-next-line es/no-object-defineproperty -- safe
+    var defineProperty$5 = Object.defineProperty;
+    var defineGlobalProperty = function (key, value) {
+      try {
+        defineProperty$5(global_1, key, {
+          value: value,
+          configurable: true,
+          writable: true
+        });
+      } catch (error) {
+        global_1[key] = value;
+      }
+      return value;
+    };
+
+    var SHARED = '__core-js_shared__';
+    var store$1 = global_1[SHARED] || defineGlobalProperty(SHARED, {});
+    var sharedStore = store$1;
+
+    var shared = createCommonjsModule(function (module) {
+    (module.exports = function (key, value) {
+      return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
+    })('versions', []).push({
+      version: '3.30.0',
+      mode: 'global',
+      copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
+      license: 'https://github.com/zloirock/core-js/blob/v3.30.0/LICENSE',
+      source: 'https://github.com/zloirock/core-js'
+    });
+    });
 
     var fails = function (exec) {
       try {
@@ -633,16 +660,6 @@
       }
     };
 
-    // Detect IE8's incomplete defineProperty implementation
-    var descriptors = !fails(function () {
-      // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-      return Object.defineProperty({}, 1, {
-        get: function () {
-          return 7;
-        }
-      })[1] != 7;
-    });
-
     var functionBindNative = !fails(function () {
       // eslint-disable-next-line es/no-function-prototype-bind -- safe
       var test = function () {/* empty */}.bind();
@@ -650,66 +667,14 @@
       return typeof test != 'function' || test.hasOwnProperty('prototype');
     });
 
-    var call$2 = Function.prototype.call;
-    var functionCall = functionBindNative ? call$2.bind(call$2) : function () {
-      return call$2.apply(call$2, arguments);
-    };
-
-    var $propertyIsEnumerable$1 = {}.propertyIsEnumerable;
-    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-    var getOwnPropertyDescriptor$4 = Object.getOwnPropertyDescriptor;
-
-    // Nashorn ~ JDK8 bug
-    var NASHORN_BUG = getOwnPropertyDescriptor$4 && !$propertyIsEnumerable$1.call({
-      1: 2
-    }, 1);
-
-    // `Object.prototype.propertyIsEnumerable` method implementation
-    // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
-    var f$6 = NASHORN_BUG ? function propertyIsEnumerable(V) {
-      var descriptor = getOwnPropertyDescriptor$4(this, V);
-      return !!descriptor && descriptor.enumerable;
-    } : $propertyIsEnumerable$1;
-
-    var objectPropertyIsEnumerable = {
-    	f: f$6
-    };
-
-    var createPropertyDescriptor = function (bitmap, value) {
-      return {
-        enumerable: !(bitmap & 1),
-        configurable: !(bitmap & 2),
-        writable: !(bitmap & 4),
-        value: value
-      };
-    };
-
     var FunctionPrototype$2 = Function.prototype;
-    var call$1 = FunctionPrototype$2.call;
-    var uncurryThisWithBind = functionBindNative && FunctionPrototype$2.bind.bind(call$1, call$1);
+    var call$2 = FunctionPrototype$2.call;
+    var uncurryThisWithBind = functionBindNative && FunctionPrototype$2.bind.bind(call$2, call$2);
     var functionUncurryThis = functionBindNative ? uncurryThisWithBind : function (fn) {
       return function () {
-        return call$1.apply(fn, arguments);
+        return call$2.apply(fn, arguments);
       };
     };
-
-    var toString$3 = functionUncurryThis({}.toString);
-    var stringSlice$4 = functionUncurryThis(''.slice);
-    var classofRaw = function (it) {
-      return stringSlice$4(toString$3(it), 8, -1);
-    };
-
-    var $Object$4 = Object;
-    var split = functionUncurryThis(''.split);
-
-    // fallback for non-array-like ES3 and non-enumerable old V8 strings
-    var indexedObject = fails(function () {
-      // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
-      // eslint-disable-next-line no-prototype-builtins -- safe
-      return !$Object$4('z').propertyIsEnumerable(0);
-    }) ? function (it) {
-      return classofRaw(it) == 'String' ? split(it, '') : $Object$4(it);
-    } : $Object$4;
 
     // we can't use just `it == null` since of `document.all` special case
     // https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
@@ -726,48 +691,29 @@
       return it;
     };
 
-    // toObject with fallback for non-array-like ES3 strings
+    var $Object$4 = Object;
 
-
-    var toIndexedObject = function (it) {
-      return indexedObject(requireObjectCoercible(it));
+    // `ToObject` abstract operation
+    // https://tc39.es/ecma262/#sec-toobject
+    var toObject = function (argument) {
+      return $Object$4(requireObjectCoercible(argument));
     };
 
-    var documentAll$2 = typeof document == 'object' && document.all;
+    var hasOwnProperty$2 = functionUncurryThis({}.hasOwnProperty);
 
-    // https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
-    // eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
-    var IS_HTMLDDA = typeof documentAll$2 == 'undefined' && documentAll$2 !== undefined;
-    var documentAll_1 = {
-      all: documentAll$2,
-      IS_HTMLDDA: IS_HTMLDDA
+    // `HasOwnProperty` abstract operation
+    // https://tc39.es/ecma262/#sec-hasownproperty
+    // eslint-disable-next-line es/no-object-hasown -- safe
+    var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
+      return hasOwnProperty$2(toObject(it), key);
     };
 
-    var documentAll$1 = documentAll_1.all;
-
-    // `IsCallable` abstract operation
-    // https://tc39.es/ecma262/#sec-iscallable
-    var isCallable = documentAll_1.IS_HTMLDDA ? function (argument) {
-      return typeof argument == 'function' || argument === documentAll$1;
-    } : function (argument) {
-      return typeof argument == 'function';
+    var id = 0;
+    var postfix = Math.random();
+    var toString$3 = functionUncurryThis(1.0.toString);
+    var uid = function (key) {
+      return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$3(++id + postfix, 36);
     };
-
-    var documentAll = documentAll_1.all;
-    var isObject$2 = documentAll_1.IS_HTMLDDA ? function (it) {
-      return typeof it == 'object' ? it !== null : isCallable(it) || it === documentAll;
-    } : function (it) {
-      return typeof it == 'object' ? it !== null : isCallable(it);
-    };
-
-    var aFunction = function (argument) {
-      return isCallable(argument) ? argument : undefined;
-    };
-    var getBuiltIn = function (namespace, method) {
-      return arguments.length < 2 ? aFunction(global_1[namespace]) : global_1[namespace] && global_1[namespace][method];
-    };
-
-    var objectIsPrototypeOf = functionUncurryThis({}.isPrototypeOf);
 
     var engineUserAgent = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
 
@@ -798,16 +744,12 @@
 
 
 
-    var $String$4 = global_1.String;
-
     // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
     var symbolConstructorDetection = !!Object.getOwnPropertySymbols && !fails(function () {
       var symbol = Symbol();
       // Chrome 38 Symbol has incorrect toString conversion
       // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
-      // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
-      // of course, fail.
-      return !$String$4(symbol) || !(Object(symbol) instanceof Symbol) ||
+      return !String(symbol) || !(Object(symbol) instanceof Symbol) ||
       // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
       !Symbol.sham && engineV8Version && engineV8Version < 41;
     });
@@ -815,105 +757,6 @@
     /* eslint-disable es/no-symbol -- required for testing */
 
     var useSymbolAsUid = symbolConstructorDetection && !Symbol.sham && typeof Symbol.iterator == 'symbol';
-
-    var $Object$3 = Object;
-    var isSymbol = useSymbolAsUid ? function (it) {
-      return typeof it == 'symbol';
-    } : function (it) {
-      var $Symbol = getBuiltIn('Symbol');
-      return isCallable($Symbol) && objectIsPrototypeOf($Symbol.prototype, $Object$3(it));
-    };
-
-    var $String$3 = String;
-    var tryToString = function (argument) {
-      try {
-        return $String$3(argument);
-      } catch (error) {
-        return 'Object';
-      }
-    };
-
-    var $TypeError$f = TypeError;
-
-    // `Assert: IsCallable(argument) is true`
-    var aCallable = function (argument) {
-      if (isCallable(argument)) return argument;
-      throw $TypeError$f(tryToString(argument) + ' is not a function');
-    };
-
-    // `GetMethod` abstract operation
-    // https://tc39.es/ecma262/#sec-getmethod
-    var getMethod = function (V, P) {
-      var func = V[P];
-      return isNullOrUndefined(func) ? undefined : aCallable(func);
-    };
-
-    var $TypeError$e = TypeError;
-
-    // `OrdinaryToPrimitive` abstract operation
-    // https://tc39.es/ecma262/#sec-ordinarytoprimitive
-    var ordinaryToPrimitive = function (input, pref) {
-      var fn, val;
-      if (pref === 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
-      if (isCallable(fn = input.valueOf) && !isObject$2(val = functionCall(fn, input))) return val;
-      if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
-      throw $TypeError$e("Can't convert object to primitive value");
-    };
-
-    // eslint-disable-next-line es/no-object-defineproperty -- safe
-    var defineProperty$5 = Object.defineProperty;
-    var defineGlobalProperty = function (key, value) {
-      try {
-        defineProperty$5(global_1, key, {
-          value: value,
-          configurable: true,
-          writable: true
-        });
-      } catch (error) {
-        global_1[key] = value;
-      }
-      return value;
-    };
-
-    var SHARED = '__core-js_shared__';
-    var store$1 = global_1[SHARED] || defineGlobalProperty(SHARED, {});
-    var sharedStore = store$1;
-
-    var shared = createCommonjsModule(function (module) {
-    (module.exports = function (key, value) {
-      return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
-    })('versions', []).push({
-      version: '3.31.0',
-      mode: 'global',
-      copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
-      license: 'https://github.com/zloirock/core-js/blob/v3.31.0/LICENSE',
-      source: 'https://github.com/zloirock/core-js'
-    });
-    });
-
-    var $Object$2 = Object;
-
-    // `ToObject` abstract operation
-    // https://tc39.es/ecma262/#sec-toobject
-    var toObject = function (argument) {
-      return $Object$2(requireObjectCoercible(argument));
-    };
-
-    var hasOwnProperty$1 = functionUncurryThis({}.hasOwnProperty);
-
-    // `HasOwnProperty` abstract operation
-    // https://tc39.es/ecma262/#sec-hasownproperty
-    // eslint-disable-next-line es/no-object-hasown -- safe
-    var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
-      return hasOwnProperty$1(toObject(it), key);
-    };
-
-    var id = 0;
-    var postfix = Math.random();
-    var toString$2 = functionUncurryThis(1.0.toString);
-    var uid = function (key) {
-      return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$2(++id + postfix, 36);
-    };
 
     var Symbol$2 = global_1.Symbol;
     var WellKnownSymbolsStore = shared('wks');
@@ -925,30 +768,46 @@
       return WellKnownSymbolsStore[name];
     };
 
-    var $TypeError$d = TypeError;
-    var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+    var TO_STRING_TAG$3 = wellKnownSymbol('toStringTag');
+    var test$1 = {};
+    test$1[TO_STRING_TAG$3] = 'z';
+    var toStringTagSupport = String(test$1) === '[object z]';
 
-    // `ToPrimitive` abstract operation
-    // https://tc39.es/ecma262/#sec-toprimitive
-    var toPrimitive = function (input, pref) {
-      if (!isObject$2(input) || isSymbol(input)) return input;
-      var exoticToPrim = getMethod(input, TO_PRIMITIVE);
-      var result;
-      if (exoticToPrim) {
-        if (pref === undefined) pref = 'default';
-        result = functionCall(exoticToPrim, input, pref);
-        if (!isObject$2(result) || isSymbol(result)) return result;
-        throw $TypeError$d("Can't convert object to primitive value");
-      }
-      if (pref === undefined) pref = 'number';
-      return ordinaryToPrimitive(input, pref);
+    var documentAll$2 = typeof document == 'object' && document.all;
+
+    // https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+    // eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
+    var IS_HTMLDDA = typeof documentAll$2 == 'undefined' && documentAll$2 !== undefined;
+    var documentAll_1 = {
+      all: documentAll$2,
+      IS_HTMLDDA: IS_HTMLDDA
     };
 
-    // `ToPropertyKey` abstract operation
-    // https://tc39.es/ecma262/#sec-topropertykey
-    var toPropertyKey = function (argument) {
-      var key = toPrimitive(argument, 'string');
-      return isSymbol(key) ? key : key + '';
+    var documentAll$1 = documentAll_1.all;
+
+    // `IsCallable` abstract operation
+    // https://tc39.es/ecma262/#sec-iscallable
+    var isCallable = documentAll_1.IS_HTMLDDA ? function (argument) {
+      return typeof argument == 'function' || argument === documentAll$1;
+    } : function (argument) {
+      return typeof argument == 'function';
+    };
+
+    // Detect IE8's incomplete defineProperty implementation
+    var descriptors = !fails(function () {
+      // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+      return Object.defineProperty({}, 1, {
+        get: function () {
+          return 7;
+        }
+      })[1] != 7;
+    });
+
+    var documentAll = documentAll_1.all;
+    var isObject$2 = documentAll_1.IS_HTMLDDA ? function (it) {
+      return typeof it == 'object' ? it !== null : isCallable(it) || it === documentAll;
+    } : function (it) {
+      return typeof it == 'object' ? it !== null : isCallable(it);
     };
 
     var document$3 = global_1.document;
@@ -968,24 +827,6 @@
       }).a != 7;
     });
 
-    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-    var $getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor;
-
-    // `Object.getOwnPropertyDescriptor` method
-    // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
-    var f$5 = descriptors ? $getOwnPropertyDescriptor$1 : function getOwnPropertyDescriptor(O, P) {
-      O = toIndexedObject(O);
-      P = toPropertyKey(P);
-      if (ie8DomDefine) try {
-        return $getOwnPropertyDescriptor$1(O, P);
-      } catch (error) {/* empty */}
-      if (hasOwnProperty_1(O, P)) return createPropertyDescriptor(!functionCall(objectPropertyIsEnumerable.f, O, P), O[P]);
-    };
-
-    var objectGetOwnPropertyDescriptor = {
-    	f: f$5
-    };
-
     // V8 ~ Chrome 36-
     // https://bugs.chromium.org/p/v8/issues/detail?id=3334
     var v8PrototypeDefineBug = descriptors && fails(function () {
@@ -996,32 +837,116 @@
       }).prototype != 42;
     });
 
-    var $String$2 = String;
-    var $TypeError$c = TypeError;
+    var $String$3 = String;
+    var $TypeError$f = TypeError;
 
     // `Assert: Type(argument) is Object`
     var anObject = function (argument) {
       if (isObject$2(argument)) return argument;
-      throw $TypeError$c($String$2(argument) + ' is not an object');
+      throw $TypeError$f($String$3(argument) + ' is not an object');
+    };
+
+    var call$1 = Function.prototype.call;
+    var functionCall = functionBindNative ? call$1.bind(call$1) : function () {
+      return call$1.apply(call$1, arguments);
+    };
+
+    var aFunction = function (argument) {
+      return isCallable(argument) ? argument : undefined;
+    };
+    var getBuiltIn = function (namespace, method) {
+      return arguments.length < 2 ? aFunction(global_1[namespace]) : global_1[namespace] && global_1[namespace][method];
+    };
+
+    var objectIsPrototypeOf = functionUncurryThis({}.isPrototypeOf);
+
+    var $Object$3 = Object;
+    var isSymbol = useSymbolAsUid ? function (it) {
+      return typeof it == 'symbol';
+    } : function (it) {
+      var $Symbol = getBuiltIn('Symbol');
+      return isCallable($Symbol) && objectIsPrototypeOf($Symbol.prototype, $Object$3(it));
+    };
+
+    var $String$2 = String;
+    var tryToString = function (argument) {
+      try {
+        return $String$2(argument);
+      } catch (error) {
+        return 'Object';
+      }
+    };
+
+    var $TypeError$e = TypeError;
+
+    // `Assert: IsCallable(argument) is true`
+    var aCallable = function (argument) {
+      if (isCallable(argument)) return argument;
+      throw $TypeError$e(tryToString(argument) + ' is not a function');
+    };
+
+    // `GetMethod` abstract operation
+    // https://tc39.es/ecma262/#sec-getmethod
+    var getMethod = function (V, P) {
+      var func = V[P];
+      return isNullOrUndefined(func) ? undefined : aCallable(func);
+    };
+
+    var $TypeError$d = TypeError;
+
+    // `OrdinaryToPrimitive` abstract operation
+    // https://tc39.es/ecma262/#sec-ordinarytoprimitive
+    var ordinaryToPrimitive = function (input, pref) {
+      var fn, val;
+      if (pref === 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
+      if (isCallable(fn = input.valueOf) && !isObject$2(val = functionCall(fn, input))) return val;
+      if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
+      throw $TypeError$d("Can't convert object to primitive value");
+    };
+
+    var $TypeError$c = TypeError;
+    var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
+
+    // `ToPrimitive` abstract operation
+    // https://tc39.es/ecma262/#sec-toprimitive
+    var toPrimitive = function (input, pref) {
+      if (!isObject$2(input) || isSymbol(input)) return input;
+      var exoticToPrim = getMethod(input, TO_PRIMITIVE);
+      var result;
+      if (exoticToPrim) {
+        if (pref === undefined) pref = 'default';
+        result = functionCall(exoticToPrim, input, pref);
+        if (!isObject$2(result) || isSymbol(result)) return result;
+        throw $TypeError$c("Can't convert object to primitive value");
+      }
+      if (pref === undefined) pref = 'number';
+      return ordinaryToPrimitive(input, pref);
+    };
+
+    // `ToPropertyKey` abstract operation
+    // https://tc39.es/ecma262/#sec-topropertykey
+    var toPropertyKey = function (argument) {
+      var key = toPrimitive(argument, 'string');
+      return isSymbol(key) ? key : key + '';
     };
 
     var $TypeError$b = TypeError;
     // eslint-disable-next-line es/no-object-defineproperty -- safe
     var $defineProperty = Object.defineProperty;
     // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-    var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+    var $getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor;
     var ENUMERABLE = 'enumerable';
     var CONFIGURABLE$1 = 'configurable';
     var WRITABLE = 'writable';
 
     // `Object.defineProperty` method
     // https://tc39.es/ecma262/#sec-object.defineproperty
-    var f$4 = descriptors ? v8PrototypeDefineBug ? function defineProperty(O, P, Attributes) {
+    var f$6 = descriptors ? v8PrototypeDefineBug ? function defineProperty(O, P, Attributes) {
       anObject(O);
       P = toPropertyKey(P);
       anObject(Attributes);
       if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && WRITABLE in Attributes && !Attributes[WRITABLE]) {
-        var current = $getOwnPropertyDescriptor(O, P);
+        var current = $getOwnPropertyDescriptor$1(O, P);
         if (current && current[WRITABLE]) {
           O[P] = Attributes.value;
           Attributes = {
@@ -1045,14 +970,7 @@
     };
 
     var objectDefineProperty = {
-    	f: f$4
-    };
-
-    var createNonEnumerableProperty = descriptors ? function (object, key, value) {
-      return objectDefineProperty.f(object, key, createPropertyDescriptor(1, value));
-    } : function (object, key, value) {
-      object[key] = value;
-      return object;
+    	f: f$6
     };
 
     var FunctionPrototype$1 = Function.prototype;
@@ -1080,6 +998,22 @@
 
     var WeakMap$1 = global_1.WeakMap;
     var weakMapBasicDetection = isCallable(WeakMap$1) && /native code/.test(String(WeakMap$1));
+
+    var createPropertyDescriptor = function (bitmap, value) {
+      return {
+        enumerable: !(bitmap & 1),
+        configurable: !(bitmap & 2),
+        writable: !(bitmap & 4),
+        value: value
+      };
+    };
+
+    var createNonEnumerableProperty = descriptors ? function (object, key, value) {
+      return objectDefineProperty.f(object, key, createPropertyDescriptor(1, value));
+    } : function (object, key, value) {
+      object[key] = value;
+      return object;
+    };
 
     var keys$1 = shared('keys');
     var sharedKey = function (key) {
@@ -1225,6 +1159,125 @@
       return O;
     };
 
+    var toString$2 = functionUncurryThis({}.toString);
+    var stringSlice$4 = functionUncurryThis(''.slice);
+    var classofRaw = function (it) {
+      return stringSlice$4(toString$2(it), 8, -1);
+    };
+
+    var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
+    var $Object$2 = Object;
+
+    // ES3 wrong here
+    var CORRECT_ARGUMENTS = classofRaw(function () {
+      return arguments;
+    }()) == 'Arguments';
+
+    // fallback for IE11 Script Access Denied error
+    var tryGet = function (it, key) {
+      try {
+        return it[key];
+      } catch (error) {/* empty */}
+    };
+
+    // getting tag from ES6+ `Object.prototype.toString`
+    var classof = toStringTagSupport ? classofRaw : function (it) {
+      var O, tag, result;
+      return it === undefined ? 'Undefined' : it === null ? 'Null'
+      // @@toStringTag case
+      : typeof (tag = tryGet(O = $Object$2(it), TO_STRING_TAG$2)) == 'string' ? tag
+      // builtinTag case
+      : CORRECT_ARGUMENTS ? classofRaw(O)
+      // ES3 arguments fallback
+      : (result = classofRaw(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
+    };
+
+    // `Object.prototype.toString` method implementation
+    // https://tc39.es/ecma262/#sec-object.prototype.tostring
+    var objectToString$1 = toStringTagSupport ? {}.toString : function toString() {
+      return '[object ' + classof(this) + ']';
+    };
+
+    // `Object.prototype.toString` method
+    // https://tc39.es/ecma262/#sec-object.prototype.tostring
+    if (!toStringTagSupport) {
+      defineBuiltIn(Object.prototype, 'toString', objectToString$1, {
+        unsafe: true
+      });
+    }
+
+    // iterable DOM collections
+    // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+    var domIterables = {
+      CSSRuleList: 0,
+      CSSStyleDeclaration: 0,
+      CSSValueList: 0,
+      ClientRectList: 0,
+      DOMRectList: 0,
+      DOMStringList: 0,
+      DOMTokenList: 1,
+      DataTransferItemList: 0,
+      FileList: 0,
+      HTMLAllCollection: 0,
+      HTMLCollection: 0,
+      HTMLFormElement: 0,
+      HTMLSelectElement: 0,
+      MediaList: 0,
+      MimeTypeArray: 0,
+      NamedNodeMap: 0,
+      NodeList: 1,
+      PaintRequestList: 0,
+      Plugin: 0,
+      PluginArray: 0,
+      SVGLengthList: 0,
+      SVGNumberList: 0,
+      SVGPathSegList: 0,
+      SVGPointList: 0,
+      SVGStringList: 0,
+      SVGTransformList: 0,
+      SourceBufferList: 0,
+      StyleSheetList: 0,
+      TextTrackCueList: 0,
+      TextTrackList: 0,
+      TouchList: 0
+    };
+
+    // in old WebKit versions, `element.classList` is not an instance of global `DOMTokenList`
+
+    var classList = documentCreateElement('span').classList;
+    var DOMTokenListPrototype = classList && classList.constructor && classList.constructor.prototype;
+    var domTokenListPrototype = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
+
+    var functionUncurryThisClause = function (fn) {
+      // Nashorn bug:
+      //   https://github.com/zloirock/core-js/issues/1128
+      //   https://github.com/zloirock/core-js/issues/1130
+      if (classofRaw(fn) === 'Function') return functionUncurryThis(fn);
+    };
+
+    var bind$2 = functionUncurryThisClause(functionUncurryThisClause.bind);
+
+    // optional / simple context binding
+    var functionBindContext = function (fn, that) {
+      aCallable(fn);
+      return that === undefined ? fn : functionBindNative ? bind$2(fn, that) : function /* ...args */
+      () {
+        return fn.apply(that, arguments);
+      };
+    };
+
+    var $Object$1 = Object;
+    var split = functionUncurryThis(''.split);
+
+    // fallback for non-array-like ES3 and non-enumerable old V8 strings
+    var indexedObject = fails(function () {
+      // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+      // eslint-disable-next-line no-prototype-builtins -- safe
+      return !$Object$1('z').propertyIsEnumerable(0);
+    }) ? function (it) {
+      return classofRaw(it) == 'String' ? split(it, '') : $Object$1(it);
+    } : $Object$1;
+
     var ceil = Math.ceil;
     var floor$2 = Math.floor;
 
@@ -1244,23 +1297,12 @@
       return number !== number || number === 0 ? 0 : mathTrunc(number);
     };
 
-    var max$4 = Math.max;
     var min$4 = Math.min;
-
-    // Helper for a popular repeating case of the spec:
-    // Let integer be ? ToInteger(index).
-    // If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
-    var toAbsoluteIndex = function (index, length) {
-      var integer = toIntegerOrInfinity(index);
-      return integer < 0 ? max$4(integer + length, 0) : min$4(integer, length);
-    };
-
-    var min$3 = Math.min;
 
     // `ToLength` abstract operation
     // https://tc39.es/ecma262/#sec-tolength
     var toLength = function (argument) {
-      return argument > 0 ? min$3(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+      return argument > 0 ? min$4(toIntegerOrInfinity(argument), 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
     };
 
     // `LengthOfArrayLike` abstract operation
@@ -1269,8 +1311,253 @@
       return toLength(obj.length);
     };
 
+    // `IsArray` abstract operation
+    // https://tc39.es/ecma262/#sec-isarray
+    // eslint-disable-next-line es/no-array-isarray -- safe
+    var isArray$3 = Array.isArray || function isArray(argument) {
+      return classofRaw(argument) == 'Array';
+    };
+
+    var noop$3 = function () {/* empty */};
+    var empty$1 = [];
+    var construct$1 = getBuiltIn('Reflect', 'construct');
+    var constructorRegExp = /^\s*(?:class|function)\b/;
+    var exec = functionUncurryThis(constructorRegExp.exec);
+    var INCORRECT_TO_STRING = !constructorRegExp.exec(noop$3);
+    var isConstructorModern = function isConstructor(argument) {
+      if (!isCallable(argument)) return false;
+      try {
+        construct$1(noop$3, empty$1, argument);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    };
+    var isConstructorLegacy = function isConstructor(argument) {
+      if (!isCallable(argument)) return false;
+      switch (classof(argument)) {
+        case 'AsyncFunction':
+        case 'GeneratorFunction':
+        case 'AsyncGeneratorFunction':
+          return false;
+      }
+      try {
+        // we can't check .prototype since constructors produced by .bind haven't it
+        // `Function#toString` throws on some built-it function in some legacy engines
+        // (for example, `DOMQuad` and similar in FF41-)
+        return INCORRECT_TO_STRING || !!exec(constructorRegExp, inspectSource(argument));
+      } catch (error) {
+        return true;
+      }
+    };
+    isConstructorLegacy.sham = true;
+
+    // `IsConstructor` abstract operation
+    // https://tc39.es/ecma262/#sec-isconstructor
+    var isConstructor = !construct$1 || fails(function () {
+      var called;
+      return isConstructorModern(isConstructorModern.call) || !isConstructorModern(Object) || !isConstructorModern(function () {
+        called = true;
+      }) || called;
+    }) ? isConstructorLegacy : isConstructorModern;
+
+    var SPECIES$6 = wellKnownSymbol('species');
+    var $Array$3 = Array;
+
+    // a part of `ArraySpeciesCreate` abstract operation
+    // https://tc39.es/ecma262/#sec-arrayspeciescreate
+    var arraySpeciesConstructor = function (originalArray) {
+      var C;
+      if (isArray$3(originalArray)) {
+        C = originalArray.constructor;
+        // cross-realm fallback
+        if (isConstructor(C) && (C === $Array$3 || isArray$3(C.prototype))) C = undefined;else if (isObject$2(C)) {
+          C = C[SPECIES$6];
+          if (C === null) C = undefined;
+        }
+      }
+      return C === undefined ? $Array$3 : C;
+    };
+
+    // `ArraySpeciesCreate` abstract operation
+    // https://tc39.es/ecma262/#sec-arrayspeciescreate
+    var arraySpeciesCreate = function (originalArray, length) {
+      return new (arraySpeciesConstructor(originalArray))(length === 0 ? 0 : length);
+    };
+
+    var push$4 = functionUncurryThis([].push);
+
+    // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
+    var createMethod$4 = function (TYPE) {
+      var IS_MAP = TYPE == 1;
+      var IS_FILTER = TYPE == 2;
+      var IS_SOME = TYPE == 3;
+      var IS_EVERY = TYPE == 4;
+      var IS_FIND_INDEX = TYPE == 6;
+      var IS_FILTER_REJECT = TYPE == 7;
+      var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+      return function ($this, callbackfn, that, specificCreate) {
+        var O = toObject($this);
+        var self = indexedObject(O);
+        var boundFunction = functionBindContext(callbackfn, that);
+        var length = lengthOfArrayLike(self);
+        var index = 0;
+        var create = specificCreate || arraySpeciesCreate;
+        var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : undefined;
+        var value, result;
+        for (; length > index; index++) if (NO_HOLES || index in self) {
+          value = self[index];
+          result = boundFunction(value, index, O);
+          if (TYPE) {
+            if (IS_MAP) target[index] = result; // map
+            else if (result) switch (TYPE) {
+              case 3:
+                return true;
+              // some
+              case 5:
+                return value;
+              // find
+              case 6:
+                return index;
+              // findIndex
+              case 2:
+                push$4(target, value);
+              // filter
+            } else switch (TYPE) {
+              case 4:
+                return false;
+              // every
+              case 7:
+                push$4(target, value);
+              // filterReject
+            }
+          }
+        }
+
+        return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
+      };
+    };
+    var arrayIteration = {
+      // `Array.prototype.forEach` method
+      // https://tc39.es/ecma262/#sec-array.prototype.foreach
+      forEach: createMethod$4(0),
+      // `Array.prototype.map` method
+      // https://tc39.es/ecma262/#sec-array.prototype.map
+      map: createMethod$4(1),
+      // `Array.prototype.filter` method
+      // https://tc39.es/ecma262/#sec-array.prototype.filter
+      filter: createMethod$4(2),
+      // `Array.prototype.some` method
+      // https://tc39.es/ecma262/#sec-array.prototype.some
+      some: createMethod$4(3),
+      // `Array.prototype.every` method
+      // https://tc39.es/ecma262/#sec-array.prototype.every
+      every: createMethod$4(4),
+      // `Array.prototype.find` method
+      // https://tc39.es/ecma262/#sec-array.prototype.find
+      find: createMethod$4(5),
+      // `Array.prototype.findIndex` method
+      // https://tc39.es/ecma262/#sec-array.prototype.findIndex
+      findIndex: createMethod$4(6),
+      // `Array.prototype.filterReject` method
+      // https://github.com/tc39/proposal-array-filtering
+      filterReject: createMethod$4(7)
+    };
+
+    var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+      var method = [][METHOD_NAME];
+      return !!method && fails(function () {
+        // eslint-disable-next-line no-useless-call -- required for testing
+        method.call(null, argument || function () {
+          return 1;
+        }, 1);
+      });
+    };
+
+    var $forEach = arrayIteration.forEach;
+
+    var STRICT_METHOD$1 = arrayMethodIsStrict('forEach');
+
+    // `Array.prototype.forEach` method implementation
+    // https://tc39.es/ecma262/#sec-array.prototype.foreach
+    var arrayForEach$1 = !STRICT_METHOD$1 ? function forEach(callbackfn /* , thisArg */) {
+      return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+      // eslint-disable-next-line es/no-array-prototype-foreach -- safe
+    } : [].forEach;
+
+    var handlePrototype$1 = function (CollectionPrototype) {
+      // some Chrome versions have non-configurable methods on DOMTokenList
+      if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach$1) try {
+        createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach$1);
+      } catch (error) {
+        CollectionPrototype.forEach = arrayForEach$1;
+      }
+    };
+    for (var COLLECTION_NAME$1 in domIterables) {
+      if (domIterables[COLLECTION_NAME$1]) {
+        handlePrototype$1(global_1[COLLECTION_NAME$1] && global_1[COLLECTION_NAME$1].prototype);
+      }
+    }
+    handlePrototype$1(domTokenListPrototype);
+
+    var $propertyIsEnumerable$1 = {}.propertyIsEnumerable;
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    var getOwnPropertyDescriptor$4 = Object.getOwnPropertyDescriptor;
+
+    // Nashorn ~ JDK8 bug
+    var NASHORN_BUG = getOwnPropertyDescriptor$4 && !$propertyIsEnumerable$1.call({
+      1: 2
+    }, 1);
+
+    // `Object.prototype.propertyIsEnumerable` method implementation
+    // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+    var f$5 = NASHORN_BUG ? function propertyIsEnumerable(V) {
+      var descriptor = getOwnPropertyDescriptor$4(this, V);
+      return !!descriptor && descriptor.enumerable;
+    } : $propertyIsEnumerable$1;
+
+    var objectPropertyIsEnumerable = {
+    	f: f$5
+    };
+
+    // toObject with fallback for non-array-like ES3 strings
+
+
+    var toIndexedObject = function (it) {
+      return indexedObject(requireObjectCoercible(it));
+    };
+
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    var $getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+
+    // `Object.getOwnPropertyDescriptor` method
+    // https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+    var f$4 = descriptors ? $getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+      O = toIndexedObject(O);
+      P = toPropertyKey(P);
+      if (ie8DomDefine) try {
+        return $getOwnPropertyDescriptor(O, P);
+      } catch (error) {/* empty */}
+      if (hasOwnProperty_1(O, P)) return createPropertyDescriptor(!functionCall(objectPropertyIsEnumerable.f, O, P), O[P]);
+    };
+
+    var objectGetOwnPropertyDescriptor = {
+    	f: f$4
+    };
+
+    var max$4 = Math.max;
+    var min$3 = Math.min;
+
+    // Helper for a popular repeating case of the spec:
+    // Let integer be ? ToInteger(index).
+    // If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
+    var toAbsoluteIndex = function (index, length) {
+      var integer = toIntegerOrInfinity(index);
+      return integer < 0 ? max$4(integer + length, 0) : min$3(integer, length);
+    };
+
     // `Array.prototype.{ indexOf, includes }` methods implementation
-    var createMethod$4 = function (IS_INCLUDES) {
+    var createMethod$3 = function (IS_INCLUDES) {
       return function ($this, el, fromIndex) {
         var O = toIndexedObject($this);
         var length = lengthOfArrayLike(O);
@@ -1292,24 +1579,24 @@
     var arrayIncludes = {
       // `Array.prototype.includes` method
       // https://tc39.es/ecma262/#sec-array.prototype.includes
-      includes: createMethod$4(true),
+      includes: createMethod$3(true),
       // `Array.prototype.indexOf` method
       // https://tc39.es/ecma262/#sec-array.prototype.indexof
-      indexOf: createMethod$4(false)
+      indexOf: createMethod$3(false)
     };
 
     var indexOf$2 = arrayIncludes.indexOf;
 
-    var push$4 = functionUncurryThis([].push);
+    var push$3 = functionUncurryThis([].push);
     var objectKeysInternal = function (object, names) {
       var O = toIndexedObject(object);
       var i = 0;
       var result = [];
       var key;
-      for (key in O) !hasOwnProperty_1(hiddenKeys$1, key) && hasOwnProperty_1(O, key) && push$4(result, key);
+      for (key in O) !hasOwnProperty_1(hiddenKeys$1, key) && hasOwnProperty_1(O, key) && push$3(result, key);
       // Don't enum bug & hidden keys
       while (names.length > i) if (hasOwnProperty_1(O, key = names[i++])) {
-        ~indexOf$2(result, key) || push$4(result, key);
+        ~indexOf$2(result, key) || push$3(result, key);
       }
       return result;
     };
@@ -1424,324 +1711,6 @@
         defineBuiltIn(target, key, sourceProperty, options);
       }
     };
-
-    // `Object.keys` method
-    // https://tc39.es/ecma262/#sec-object.keys
-    // eslint-disable-next-line es/no-object-keys -- safe
-    var objectKeys = Object.keys || function keys(O) {
-      return objectKeysInternal(O, enumBugKeys);
-    };
-
-    var FAILS_ON_PRIMITIVES = fails(function () {
-      objectKeys(1);
-    });
-
-    // `Object.keys` method
-    // https://tc39.es/ecma262/#sec-object.keys
-    _export({
-      target: 'Object',
-      stat: true,
-      forced: FAILS_ON_PRIMITIVES
-    }, {
-      keys: function keys(it) {
-        return objectKeys(toObject(it));
-      }
-    });
-
-    var TO_STRING_TAG$3 = wellKnownSymbol('toStringTag');
-    var test$1 = {};
-    test$1[TO_STRING_TAG$3] = 'z';
-    var toStringTagSupport = String(test$1) === '[object z]';
-
-    var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
-    var $Object$1 = Object;
-
-    // ES3 wrong here
-    var CORRECT_ARGUMENTS = classofRaw(function () {
-      return arguments;
-    }()) == 'Arguments';
-
-    // fallback for IE11 Script Access Denied error
-    var tryGet = function (it, key) {
-      try {
-        return it[key];
-      } catch (error) {/* empty */}
-    };
-
-    // getting tag from ES6+ `Object.prototype.toString`
-    var classof = toStringTagSupport ? classofRaw : function (it) {
-      var O, tag, result;
-      return it === undefined ? 'Undefined' : it === null ? 'Null'
-      // @@toStringTag case
-      : typeof (tag = tryGet(O = $Object$1(it), TO_STRING_TAG$2)) == 'string' ? tag
-      // builtinTag case
-      : CORRECT_ARGUMENTS ? classofRaw(O)
-      // ES3 arguments fallback
-      : (result = classofRaw(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
-    };
-
-    // `Object.prototype.toString` method implementation
-    // https://tc39.es/ecma262/#sec-object.prototype.tostring
-    var objectToString$1 = toStringTagSupport ? {}.toString : function toString() {
-      return '[object ' + classof(this) + ']';
-    };
-
-    // `Object.prototype.toString` method
-    // https://tc39.es/ecma262/#sec-object.prototype.tostring
-    if (!toStringTagSupport) {
-      defineBuiltIn(Object.prototype, 'toString', objectToString$1, {
-        unsafe: true
-      });
-    }
-
-    // iterable DOM collections
-    // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
-    var domIterables = {
-      CSSRuleList: 0,
-      CSSStyleDeclaration: 0,
-      CSSValueList: 0,
-      ClientRectList: 0,
-      DOMRectList: 0,
-      DOMStringList: 0,
-      DOMTokenList: 1,
-      DataTransferItemList: 0,
-      FileList: 0,
-      HTMLAllCollection: 0,
-      HTMLCollection: 0,
-      HTMLFormElement: 0,
-      HTMLSelectElement: 0,
-      MediaList: 0,
-      MimeTypeArray: 0,
-      NamedNodeMap: 0,
-      NodeList: 1,
-      PaintRequestList: 0,
-      Plugin: 0,
-      PluginArray: 0,
-      SVGLengthList: 0,
-      SVGNumberList: 0,
-      SVGPathSegList: 0,
-      SVGPointList: 0,
-      SVGStringList: 0,
-      SVGTransformList: 0,
-      SourceBufferList: 0,
-      StyleSheetList: 0,
-      TextTrackCueList: 0,
-      TextTrackList: 0,
-      TouchList: 0
-    };
-
-    // in old WebKit versions, `element.classList` is not an instance of global `DOMTokenList`
-
-    var classList = documentCreateElement('span').classList;
-    var DOMTokenListPrototype = classList && classList.constructor && classList.constructor.prototype;
-    var domTokenListPrototype = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
-
-    var functionUncurryThisClause = function (fn) {
-      // Nashorn bug:
-      //   https://github.com/zloirock/core-js/issues/1128
-      //   https://github.com/zloirock/core-js/issues/1130
-      if (classofRaw(fn) === 'Function') return functionUncurryThis(fn);
-    };
-
-    var bind$2 = functionUncurryThisClause(functionUncurryThisClause.bind);
-
-    // optional / simple context binding
-    var functionBindContext = function (fn, that) {
-      aCallable(fn);
-      return that === undefined ? fn : functionBindNative ? bind$2(fn, that) : function /* ...args */
-      () {
-        return fn.apply(that, arguments);
-      };
-    };
-
-    // `IsArray` abstract operation
-    // https://tc39.es/ecma262/#sec-isarray
-    // eslint-disable-next-line es/no-array-isarray -- safe
-    var isArray$3 = Array.isArray || function isArray(argument) {
-      return classofRaw(argument) == 'Array';
-    };
-
-    var noop$3 = function () {/* empty */};
-    var empty$1 = [];
-    var construct$1 = getBuiltIn('Reflect', 'construct');
-    var constructorRegExp = /^\s*(?:class|function)\b/;
-    var exec = functionUncurryThis(constructorRegExp.exec);
-    var INCORRECT_TO_STRING = !constructorRegExp.exec(noop$3);
-    var isConstructorModern = function isConstructor(argument) {
-      if (!isCallable(argument)) return false;
-      try {
-        construct$1(noop$3, empty$1, argument);
-        return true;
-      } catch (error) {
-        return false;
-      }
-    };
-    var isConstructorLegacy = function isConstructor(argument) {
-      if (!isCallable(argument)) return false;
-      switch (classof(argument)) {
-        case 'AsyncFunction':
-        case 'GeneratorFunction':
-        case 'AsyncGeneratorFunction':
-          return false;
-      }
-      try {
-        // we can't check .prototype since constructors produced by .bind haven't it
-        // `Function#toString` throws on some built-it function in some legacy engines
-        // (for example, `DOMQuad` and similar in FF41-)
-        return INCORRECT_TO_STRING || !!exec(constructorRegExp, inspectSource(argument));
-      } catch (error) {
-        return true;
-      }
-    };
-    isConstructorLegacy.sham = true;
-
-    // `IsConstructor` abstract operation
-    // https://tc39.es/ecma262/#sec-isconstructor
-    var isConstructor = !construct$1 || fails(function () {
-      var called;
-      return isConstructorModern(isConstructorModern.call) || !isConstructorModern(Object) || !isConstructorModern(function () {
-        called = true;
-      }) || called;
-    }) ? isConstructorLegacy : isConstructorModern;
-
-    var SPECIES$6 = wellKnownSymbol('species');
-    var $Array$3 = Array;
-
-    // a part of `ArraySpeciesCreate` abstract operation
-    // https://tc39.es/ecma262/#sec-arrayspeciescreate
-    var arraySpeciesConstructor = function (originalArray) {
-      var C;
-      if (isArray$3(originalArray)) {
-        C = originalArray.constructor;
-        // cross-realm fallback
-        if (isConstructor(C) && (C === $Array$3 || isArray$3(C.prototype))) C = undefined;else if (isObject$2(C)) {
-          C = C[SPECIES$6];
-          if (C === null) C = undefined;
-        }
-      }
-      return C === undefined ? $Array$3 : C;
-    };
-
-    // `ArraySpeciesCreate` abstract operation
-    // https://tc39.es/ecma262/#sec-arrayspeciescreate
-    var arraySpeciesCreate = function (originalArray, length) {
-      return new (arraySpeciesConstructor(originalArray))(length === 0 ? 0 : length);
-    };
-
-    var push$3 = functionUncurryThis([].push);
-
-    // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
-    var createMethod$3 = function (TYPE) {
-      var IS_MAP = TYPE == 1;
-      var IS_FILTER = TYPE == 2;
-      var IS_SOME = TYPE == 3;
-      var IS_EVERY = TYPE == 4;
-      var IS_FIND_INDEX = TYPE == 6;
-      var IS_FILTER_REJECT = TYPE == 7;
-      var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-      return function ($this, callbackfn, that, specificCreate) {
-        var O = toObject($this);
-        var self = indexedObject(O);
-        var boundFunction = functionBindContext(callbackfn, that);
-        var length = lengthOfArrayLike(self);
-        var index = 0;
-        var create = specificCreate || arraySpeciesCreate;
-        var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : undefined;
-        var value, result;
-        for (; length > index; index++) if (NO_HOLES || index in self) {
-          value = self[index];
-          result = boundFunction(value, index, O);
-          if (TYPE) {
-            if (IS_MAP) target[index] = result; // map
-            else if (result) switch (TYPE) {
-              case 3:
-                return true;
-              // some
-              case 5:
-                return value;
-              // find
-              case 6:
-                return index;
-              // findIndex
-              case 2:
-                push$3(target, value);
-              // filter
-            } else switch (TYPE) {
-              case 4:
-                return false;
-              // every
-              case 7:
-                push$3(target, value);
-              // filterReject
-            }
-          }
-        }
-
-        return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
-      };
-    };
-    var arrayIteration = {
-      // `Array.prototype.forEach` method
-      // https://tc39.es/ecma262/#sec-array.prototype.foreach
-      forEach: createMethod$3(0),
-      // `Array.prototype.map` method
-      // https://tc39.es/ecma262/#sec-array.prototype.map
-      map: createMethod$3(1),
-      // `Array.prototype.filter` method
-      // https://tc39.es/ecma262/#sec-array.prototype.filter
-      filter: createMethod$3(2),
-      // `Array.prototype.some` method
-      // https://tc39.es/ecma262/#sec-array.prototype.some
-      some: createMethod$3(3),
-      // `Array.prototype.every` method
-      // https://tc39.es/ecma262/#sec-array.prototype.every
-      every: createMethod$3(4),
-      // `Array.prototype.find` method
-      // https://tc39.es/ecma262/#sec-array.prototype.find
-      find: createMethod$3(5),
-      // `Array.prototype.findIndex` method
-      // https://tc39.es/ecma262/#sec-array.prototype.findIndex
-      findIndex: createMethod$3(6),
-      // `Array.prototype.filterReject` method
-      // https://github.com/tc39/proposal-array-filtering
-      filterReject: createMethod$3(7)
-    };
-
-    var arrayMethodIsStrict = function (METHOD_NAME, argument) {
-      var method = [][METHOD_NAME];
-      return !!method && fails(function () {
-        // eslint-disable-next-line no-useless-call -- required for testing
-        method.call(null, argument || function () {
-          return 1;
-        }, 1);
-      });
-    };
-
-    var $forEach = arrayIteration.forEach;
-
-    var STRICT_METHOD$1 = arrayMethodIsStrict('forEach');
-
-    // `Array.prototype.forEach` method implementation
-    // https://tc39.es/ecma262/#sec-array.prototype.foreach
-    var arrayForEach$1 = !STRICT_METHOD$1 ? function forEach(callbackfn /* , thisArg */) {
-      return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-      // eslint-disable-next-line es/no-array-prototype-foreach -- safe
-    } : [].forEach;
-
-    var handlePrototype$1 = function (CollectionPrototype) {
-      // some Chrome versions have non-configurable methods on DOMTokenList
-      if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach$1) try {
-        createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach$1);
-      } catch (error) {
-        CollectionPrototype.forEach = arrayForEach$1;
-      }
-    };
-    for (var COLLECTION_NAME$1 in domIterables) {
-      if (domIterables[COLLECTION_NAME$1]) {
-        handlePrototype$1(global_1[COLLECTION_NAME$1] && global_1[COLLECTION_NAME$1].prototype);
-      }
-    }
-    handlePrototype$1(domTokenListPrototype);
 
     var createProperty = function (object, key, value) {
       var propertyKey = toPropertyKey(key);
@@ -1976,6 +1945,13 @@
       // `String.prototype.at` method
       // https://github.com/mathiasbynens/String.prototype.at
       charAt: createMethod$2(true)
+    };
+
+    // `Object.keys` method
+    // https://tc39.es/ecma262/#sec-object.keys
+    // eslint-disable-next-line es/no-object-keys -- safe
+    var objectKeys = Object.keys || function keys(O) {
+      return objectKeysInternal(O, enumBugKeys);
     };
 
     // `Object.defineProperties` method
@@ -2469,10 +2445,10 @@
     });
 
     var $TypeError$8 = TypeError;
-    var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
+    var MAX_SAFE_INTEGER$2 = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
 
     var doesNotExceedSafeInteger = function (it) {
-      if (it > MAX_SAFE_INTEGER) throw $TypeError$8('Maximum allowed index exceeded');
+      if (it > MAX_SAFE_INTEGER$2) throw $TypeError$8('Maximum allowed index exceeded');
       return it;
     };
 
@@ -4129,16 +4105,6 @@
         }
     }
 
-    function _typeof(obj) {
-      "@babel/helpers - typeof";
-
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-        return typeof obj;
-      } : function (obj) {
-        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      }, _typeof(obj);
-    }
-
     function toInteger(dirtyNumber) {
       if (dirtyNumber === null || dirtyNumber === true || dirtyNumber === false) {
         return NaN;
@@ -4156,6 +4122,20 @@
       }
     }
 
+    function _typeof$A(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$A = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$A = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$A(obj);
+    }
     /**
      * @name toDate
      * @category Common Helpers
@@ -4186,12 +4166,12 @@
      * const result = toDate(1392098430000)
      * //=> Tue Feb 11 2014 11:30:30
      */
+
     function toDate(argument) {
       requiredArgs(1, arguments);
-      var argStr = Object.prototype.toString.call(argument);
+      var argStr = Object.prototype.toString.call(argument); // Clone the date
 
-      // Clone the date
-      if (argument instanceof Date || _typeof(argument) === 'object' && argStr === '[object Date]') {
+      if (argument instanceof Date || _typeof$A(argument) === 'object' && argStr === '[object Date]') {
         // Prevent the date to lose the milliseconds when passed to new Date() in IE10
         return new Date(argument.getTime());
       } else if (typeof argument === 'number' || argStr === '[object Number]') {
@@ -4199,8 +4179,8 @@
       } else {
         if ((typeof argument === 'string' || argStr === '[object String]') && typeof console !== 'undefined') {
           // eslint-disable-next-line no-console
-          console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments");
-          // eslint-disable-next-line no-console
+          console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments"); // eslint-disable-next-line no-console
+
           console.warn(new Error().stack);
         }
         return new Date(NaN);
@@ -4225,6 +4205,7 @@
      * const result = addDays(new Date(2014, 8, 1), 10)
      * //=> Thu Sep 11 2014 00:00:00
      */
+
     function addDays(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var date = toDate(dirtyDate);
@@ -4258,6 +4239,7 @@
      * const result = addMonths(new Date(2014, 8, 1), 5)
      * //=> Sun Feb 01 2015 00:00:00
      */
+
     function addMonths(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var date = toDate(dirtyDate);
@@ -4269,9 +4251,7 @@
         // If 0 months, no-op to avoid changing times in the hour before end of DST
         return date;
       }
-      var dayOfMonth = date.getDate();
-
-      // The JS Date object supports date math by accepting out-of-bounds values for
+      var dayOfMonth = date.getDate(); // The JS Date object supports date math by accepting out-of-bounds values for
       // month, day, etc. For example, new Date(2020, 0, 0) returns 31 Dec 2019 and
       // new Date(2020, 13, 1) returns 1 Feb 2021.  This is *almost* the behavior we
       // want except that dates will wrap around the end of a month, meaning that
@@ -4279,6 +4259,7 @@
       // we'll default to the end of the desired month by adding 1 to the desired
       // month and using a date of 0 to back up one day to the end of the desired
       // month.
+
       var endOfDesiredMonth = new Date(date.getTime());
       endOfDesiredMonth.setMonth(date.getMonth() + amount + 1, 0);
       var daysInMonth = endOfDesiredMonth.getDate();
@@ -4317,6 +4298,7 @@
      * const result = addMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
      * //=> Thu Jul 10 2014 12:45:30.750
      */
+
     function addMilliseconds(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var timestamp = toDate(dirtyDate).getTime();
@@ -4356,13 +4338,13 @@
      * const result = startOfWeek(new Date(2014, 8, 2, 11, 55, 0), { weekStartsOn: 1 })
      * //=> Mon Sep 01 2014 00:00:00
      */
+
     function startOfWeek(dirtyDate, options) {
       var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(1, arguments);
       var defaultOptions = getDefaultOptions();
-      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0);
+      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -4409,6 +4391,7 @@
      * const result = startOfDay(new Date(2014, 8, 2, 11, 55, 0))
      * //=> Tue Sep 02 2014 00:00:00
      */
+
     function startOfDay(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -4417,7 +4400,6 @@
     }
 
     var MILLISECONDS_IN_DAY$1 = 86400000;
-
     /**
      * @name differenceInCalendarDays
      * @category Day Helpers
@@ -4448,21 +4430,20 @@
      * )
      * //=> 1
      */
+
     function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var startOfDayLeft = startOfDay(dirtyDateLeft);
       var startOfDayRight = startOfDay(dirtyDateRight);
       var timestampLeft = startOfDayLeft.getTime() - getTimezoneOffsetInMilliseconds(startOfDayLeft);
-      var timestampRight = startOfDayRight.getTime() - getTimezoneOffsetInMilliseconds(startOfDayRight);
-
-      // Round the number of days to the nearest integer
+      var timestampRight = startOfDayRight.getTime() - getTimezoneOffsetInMilliseconds(startOfDayRight); // Round the number of days to the nearest integer
       // because the number of milliseconds in a day is not constant
       // (e.g. it's different in the day of the daylight saving time clock shift)
+
       return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY$1);
     }
 
     var MILLISECONDS_IN_MINUTE = 60000;
-
     /**
      * @name addMinutes
      * @category Minute Helpers
@@ -4481,6 +4462,7 @@
      * const result = addMinutes(new Date(2014, 6, 10, 12, 0), 30)
      * //=> Thu Jul 10 2014 12:30:00
      */
+
     function addMinutes(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -4505,6 +4487,7 @@
      * const result = addWeeks(new Date(2014, 8, 1), 4)
      * //=> Mon Sep 29 2014 00:00:00
      */
+
     function addWeeks(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -4530,6 +4513,7 @@
      * const result = addYears(new Date(2014, 8, 1), 5)
      * //=> Sun Sep 01 2019 00:00:00
      */
+
     function addYears(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -4568,6 +4552,7 @@
      * //   Sun Jul 02 1995 00:00:00
      * // ]
      */
+
     function compareAsc(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
@@ -4576,8 +4561,7 @@
       if (diff < 0) {
         return -1;
       } else if (diff > 0) {
-        return 1;
-        // Return 0 if diff is 0; return NaN if diff is NaN
+        return 1; // Return 0 if diff is 0; return NaN if diff is NaN
       } else {
         return diff;
       }
@@ -4591,8 +4575,8 @@
      * @type {number}
      * @default
      */
-    var millisecondsInMinute = 60000;
 
+    var millisecondsInMinute = 60000;
     /**
      * Milliseconds in 1 hour
      *
@@ -4601,8 +4585,8 @@
      * @type {number}
      * @default
      */
-    var millisecondsInHour = 3600000;
 
+    var millisecondsInHour = 3600000;
     /**
      * Milliseconds in 1 second
      *
@@ -4611,6 +4595,7 @@
      * @type {number}
      * @default
      */
+
     var millisecondsInSecond = 1000;
 
     /**
@@ -4641,6 +4626,7 @@
      * const result = isSameDay(new Date(2014, 8, 4), new Date(2015, 8, 4))
      * //=> false
      */
+
     function isSameDay(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeftStartOfDay = startOfDay(dirtyDateLeft);
@@ -4648,6 +4634,20 @@
       return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
     }
 
+    function _typeof$z(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$z = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$z = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$z(obj);
+    }
     /**
      * @name isDate
      * @category Common Helpers
@@ -4680,9 +4680,10 @@
      * const result = isDate({})
      * //=> false
      */
+
     function isDate$1(value) {
       requiredArgs(1, arguments);
-      return value instanceof Date || _typeof(value) === 'object' && Object.prototype.toString.call(value) === '[object Date]';
+      return value instanceof Date || _typeof$z(value) === 'object' && Object.prototype.toString.call(value) === '[object Date]';
     }
 
     /**
@@ -4716,6 +4717,7 @@
      * const result = isValid(new Date(''))
      * //=> false
      */
+
     function isValid(dirtyDate) {
       requiredArgs(1, arguments);
       if (!isDate$1(dirtyDate) && typeof dirtyDate !== 'number') {
@@ -4746,6 +4748,7 @@
      * )
      * //=> 8
      */
+
     function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
@@ -4776,6 +4779,7 @@
      * )
      * //=> 2
      */
+
     function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
@@ -4786,18 +4790,17 @@
     // for accurate equality comparisons of UTC timestamps that end up
     // having the same representation in local time, e.g. one hour before
     // DST ends vs. the instant that DST ends.
+
     function compareLocalAsc(dateLeft, dateRight) {
       var diff = dateLeft.getFullYear() - dateRight.getFullYear() || dateLeft.getMonth() - dateRight.getMonth() || dateLeft.getDate() - dateRight.getDate() || dateLeft.getHours() - dateRight.getHours() || dateLeft.getMinutes() - dateRight.getMinutes() || dateLeft.getSeconds() - dateRight.getSeconds() || dateLeft.getMilliseconds() - dateRight.getMilliseconds();
       if (diff < 0) {
         return -1;
       } else if (diff > 0) {
-        return 1;
-        // Return 0 if diff is 0; return NaN if diff is NaN
+        return 1; // Return 0 if diff is 0; return NaN if diff is NaN
       } else {
         return diff;
       }
     }
-
     /**
      * @name differenceInDays
      * @category Day Helpers
@@ -4847,19 +4850,19 @@
      * )
     //=> 92
      */
+
     function differenceInDays(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
       var dateRight = toDate(dirtyDateRight);
       var sign = compareLocalAsc(dateLeft, dateRight);
       var difference = Math.abs(differenceInCalendarDays(dateLeft, dateRight));
-      dateLeft.setDate(dateLeft.getDate() - sign * difference);
-
-      // Math.abs(diff in full days - diff in calendar days) === 1 if last calendar day is not full
+      dateLeft.setDate(dateLeft.getDate() - sign * difference); // Math.abs(diff in full days - diff in calendar days) === 1 if last calendar day is not full
       // If so, result must be decreased by 1 in absolute value
+
       var isLastDayNotFull = Number(compareLocalAsc(dateLeft, dateRight) === -sign);
-      var result = sign * (difference - isLastDayNotFull);
-      // Prevent negative zero
+      var result = sign * (difference - isLastDayNotFull); // Prevent negative zero
+
       return result === 0 ? 0 : result;
     }
 
@@ -4885,6 +4888,7 @@
      * )
      * //=> 1100
      */
+
     function differenceInMilliseconds(dateLeft, dateRight) {
       requiredArgs(2, arguments);
       return toDate(dateLeft).getTime() - toDate(dateRight).getTime();
@@ -4935,6 +4939,7 @@
      * )
      * //=> -1
      */
+
     function differenceInMinutes(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInMilliseconds(dateLeft, dateRight) / millisecondsInMinute;
@@ -4959,6 +4964,7 @@
      * const result = endOfDay(new Date(2014, 8, 2, 11, 55, 0))
      * //=> Tue Sep 02 2014 23:59:59.999
      */
+
     function endOfDay(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -4984,6 +4990,7 @@
      * const result = endOfMonth(new Date(2014, 8, 2, 11, 55, 0))
      * //=> Tue Sep 30 2014 23:59:59.999
      */
+
     function endOfMonth(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -5010,6 +5017,7 @@
      * const result = isLastDayOfMonth(new Date(2014, 1, 28))
      * //=> true
      */
+
     function isLastDayOfMonth(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -5034,15 +5042,15 @@
      * const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
      * //=> 7
      */
+
     function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
       var dateRight = toDate(dirtyDateRight);
       var sign = compareAsc(dateLeft, dateRight);
       var difference = Math.abs(differenceInCalendarMonths(dateLeft, dateRight));
-      var result;
+      var result; // Check for the difference of less than month
 
-      // Check for the difference of less than month
       if (difference < 1) {
         result = 0;
       } else {
@@ -5051,20 +5059,17 @@
           // to compare it with Jan
           dateLeft.setDate(30);
         }
-        dateLeft.setMonth(dateLeft.getMonth() - sign * difference);
-
-        // Math.abs(diff in full months - diff in calendar months) === 1 if last calendar month is not full
+        dateLeft.setMonth(dateLeft.getMonth() - sign * difference); // Math.abs(diff in full months - diff in calendar months) === 1 if last calendar month is not full
         // If so, result must be decreased by 1 in absolute value
-        var isLastMonthNotFull = compareAsc(dateLeft, dateRight) === -sign;
 
-        // Check for cases of one full calendar month
+        var isLastMonthNotFull = compareAsc(dateLeft, dateRight) === -sign; // Check for cases of one full calendar month
+
         if (isLastDayOfMonth(toDate(dirtyDateLeft)) && difference === 1 && compareAsc(dirtyDateLeft, dateRight) === 1) {
           isLastMonthNotFull = false;
         }
         result = sign * (difference - Number(isLastMonthNotFull));
-      }
+      } // Prevent negative zero
 
-      // Prevent negative zero
       return result === 0 ? 0 : result;
     }
 
@@ -5109,6 +5114,7 @@
      * )
      * //=> 8
      */
+
     function differenceInWeeks(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInDays(dateLeft, dateRight) / 7;
@@ -5133,23 +5139,22 @@
      * const result = differenceInYears(new Date(2015, 1, 11), new Date(2013, 11, 31))
      * //=> 1
      */
+
     function differenceInYears(dirtyDateLeft, dirtyDateRight) {
       requiredArgs(2, arguments);
       var dateLeft = toDate(dirtyDateLeft);
       var dateRight = toDate(dirtyDateRight);
       var sign = compareAsc(dateLeft, dateRight);
-      var difference = Math.abs(differenceInCalendarYears(dateLeft, dateRight));
-
-      // Set both dates to a valid leap year for accurate comparison when dealing
+      var difference = Math.abs(differenceInCalendarYears(dateLeft, dateRight)); // Set both dates to a valid leap year for accurate comparison when dealing
       // with leap days
-      dateLeft.setFullYear(1584);
-      dateRight.setFullYear(1584);
 
-      // Math.abs(diff in full years - diff in calendar years) === 1 if last calendar year is not full
+      dateLeft.setFullYear(1584);
+      dateRight.setFullYear(1584); // Math.abs(diff in full years - diff in calendar years) === 1 if last calendar year is not full
       // If so, result must be decreased by 1 in absolute value
+
       var isLastYearNotFull = compareAsc(dateLeft, dateRight) === -sign;
-      var result = sign * (difference - Number(isLastYearNotFull));
-      // Prevent negative zero
+      var result = sign * (difference - Number(isLastYearNotFull)); // Prevent negative zero
+
       return result === 0 ? 0 : result;
     }
 
@@ -5171,6 +5176,7 @@
      * const result = startOfMonth(new Date(2014, 8, 2, 11, 55, 0))
      * //=> Mon Sep 01 2014 00:00:00
      */
+
     function startOfMonth(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -5197,6 +5203,7 @@
      * const result = endOfYear(new Date(2014, 8, 2, 11, 55, 00))
      * //=> Wed Dec 31 2014 23:59:59.999
      */
+
     function endOfYear(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
@@ -5224,6 +5231,7 @@
      * const result = startOfYear(new Date(2014, 8, 2, 11, 55, 00))
      * //=> Wed Jan 01 2014 00:00:00
      */
+
     function startOfYear(dirtyDate) {
       requiredArgs(1, arguments);
       var cleanDate = toDate(dirtyDate);
@@ -5264,9 +5272,8 @@
       var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(1, arguments);
       var defaultOptions = getDefaultOptions();
-      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0);
+      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -5296,6 +5303,7 @@
      * const result = subMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
      * //=> Thu Jul 10 2014 12:45:29.250
      */
+
     function subMilliseconds(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -5360,11 +5368,10 @@
     function getUTCISOWeek(dirtyDate) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
-      var diff = startOfUTCISOWeek(date).getTime() - startOfUTCISOWeekYear(date).getTime();
-
-      // Round the number of days to the nearest integer
+      var diff = startOfUTCISOWeek(date).getTime() - startOfUTCISOWeekYear(date).getTime(); // Round the number of days to the nearest integer
       // because the number of milliseconds in a week is not constant
       // (e.g. it's different in the week of the daylight saving time clock shift)
+
       return Math.round(diff / MILLISECONDS_IN_WEEK$2) + 1;
     }
 
@@ -5372,9 +5379,8 @@
       var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(1, arguments);
       var defaultOptions = getDefaultOptions();
-      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0);
+      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -5392,9 +5398,8 @@
       var date = toDate(dirtyDate);
       var year = date.getUTCFullYear();
       var defaultOptions = getDefaultOptions();
-      var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
+      var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
-      // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
@@ -5432,11 +5437,10 @@
     function getUTCWeek(dirtyDate, options) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
-      var diff = startOfUTCWeek(date, options).getTime() - startOfUTCWeekYear(date, options).getTime();
-
-      // Round the number of days to the nearest integer
+      var diff = startOfUTCWeek(date, options).getTime() - startOfUTCWeekYear(date, options).getTime(); // Round the number of days to the nearest integer
       // because the number of milliseconds in a week is not constant
       // (e.g. it's different in the week of the daylight saving time clock shift)
+
       return Math.round(diff / MILLISECONDS_IN_WEEK$1) + 1;
     }
 
@@ -5461,6 +5465,7 @@
      *
      * Letters marked by * are not implemented but reserved by Unicode standard.
      */
+
     var formatters$2 = {
       // Year
       y: function y(date, token) {
@@ -5472,9 +5477,8 @@
         // | AD 123   |   123 | 23 |   123 |  0123 | 00123 |
         // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
         // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
+        var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
 
-        var signedYear = date.getUTCFullYear();
-        // Returns 1 for 1 BC (which is year 0 in JavaScript)
         var year = signedYear > 0 ? signedYear : 1 - signedYear;
         return addLeadingZeros(token === 'yy' ? year % 100 : year, token.length);
       },
@@ -5539,6 +5543,7 @@
       evening: 'evening',
       night: 'night'
     };
+
     /*
      * |     | Unit                           |     | Unit                           |
      * |-----|--------------------------------|-----|--------------------------------|
@@ -5584,7 +5589,6 @@
      * - `P` is long localized date format
      * - `p` is long localized time format
      */
-
     var formatters = {
       // Era
       G: function G(date, token, localize) {
@@ -5598,11 +5602,13 @@
               width: 'abbreviated'
             });
           // A, B
+
           case 'GGGGG':
             return localize.era(era, {
               width: 'narrow'
             });
           // Anno Domini, Before Christ
+
           case 'GGGG':
           default:
             return localize.era(era, {
@@ -5614,8 +5620,8 @@
       y: function y(date, token, localize) {
         // Ordinal number
         if (token === 'yo') {
-          var signedYear = date.getUTCFullYear();
-          // Returns 1 for 1 BC (which is year 0 in JavaScript)
+          var signedYear = date.getUTCFullYear(); // Returns 1 for 1 BC (which is year 0 in JavaScript)
+
           var year = signedYear > 0 ? signedYear : 1 - signedYear;
           return localize.ordinalNumber(year, {
             unit: 'year'
@@ -5625,31 +5631,27 @@
       },
       // Local week-numbering year
       Y: function Y(date, token, localize, options) {
-        var signedWeekYear = getUTCWeekYear(date, options);
-        // Returns 1 for 1 BC (which is year 0 in JavaScript)
-        var weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
+        var signedWeekYear = getUTCWeekYear(date, options); // Returns 1 for 1 BC (which is year 0 in JavaScript)
 
-        // Two digit year
+        var weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear; // Two digit year
+
         if (token === 'YY') {
           var twoDigitYear = weekYear % 100;
           return addLeadingZeros(twoDigitYear, 2);
-        }
+        } // Ordinal number
 
-        // Ordinal number
         if (token === 'Yo') {
           return localize.ordinalNumber(weekYear, {
             unit: 'year'
           });
-        }
+        } // Padding
 
-        // Padding
         return addLeadingZeros(weekYear, token.length);
       },
       // ISO week-numbering year
       R: function R(date, token) {
-        var isoWeekYear = getUTCISOWeekYear(date);
+        var isoWeekYear = getUTCISOWeekYear(date); // Padding
 
-        // Padding
         return addLeadingZeros(isoWeekYear, token.length);
       },
       // Extended year. This is a single number designating the year of this calendar system.
@@ -5673,26 +5675,31 @@
           case 'Q':
             return String(quarter);
           // 01, 02, 03, 04
+
           case 'QQ':
             return addLeadingZeros(quarter, 2);
           // 1st, 2nd, 3rd, 4th
+
           case 'Qo':
             return localize.ordinalNumber(quarter, {
               unit: 'quarter'
             });
           // Q1, Q2, Q3, Q4
+
           case 'QQQ':
             return localize.quarter(quarter, {
               width: 'abbreviated',
               context: 'formatting'
             });
           // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
           case 'QQQQQ':
             return localize.quarter(quarter, {
               width: 'narrow',
               context: 'formatting'
             });
           // 1st quarter, 2nd quarter, ...
+
           case 'QQQQ':
           default:
             return localize.quarter(quarter, {
@@ -5709,26 +5716,31 @@
           case 'q':
             return String(quarter);
           // 01, 02, 03, 04
+
           case 'qq':
             return addLeadingZeros(quarter, 2);
           // 1st, 2nd, 3rd, 4th
+
           case 'qo':
             return localize.ordinalNumber(quarter, {
               unit: 'quarter'
             });
           // Q1, Q2, Q3, Q4
+
           case 'qqq':
             return localize.quarter(quarter, {
               width: 'abbreviated',
               context: 'standalone'
             });
           // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
           case 'qqqqq':
             return localize.quarter(quarter, {
               width: 'narrow',
               context: 'standalone'
             });
           // 1st quarter, 2nd quarter, ...
+
           case 'qqqq':
           default:
             return localize.quarter(quarter, {
@@ -5745,23 +5757,27 @@
           case 'MM':
             return formatters$3.M(date, token);
           // 1st, 2nd, ..., 12th
+
           case 'Mo':
             return localize.ordinalNumber(month + 1, {
               unit: 'month'
             });
           // Jan, Feb, ..., Dec
+
           case 'MMM':
             return localize.month(month, {
               width: 'abbreviated',
               context: 'formatting'
             });
           // J, F, ..., D
+
           case 'MMMMM':
             return localize.month(month, {
               width: 'narrow',
               context: 'formatting'
             });
           // January, February, ..., December
+
           case 'MMMM':
           default:
             return localize.month(month, {
@@ -5778,26 +5794,31 @@
           case 'L':
             return String(month + 1);
           // 01, 02, ..., 12
+
           case 'LL':
             return addLeadingZeros(month + 1, 2);
           // 1st, 2nd, ..., 12th
+
           case 'Lo':
             return localize.ordinalNumber(month + 1, {
               unit: 'month'
             });
           // Jan, Feb, ..., Dec
+
           case 'LLL':
             return localize.month(month, {
               width: 'abbreviated',
               context: 'standalone'
             });
           // J, F, ..., D
+
           case 'LLLLL':
             return localize.month(month, {
               width: 'narrow',
               context: 'standalone'
             });
           // January, February, ..., December
+
           case 'LLLL':
           default:
             return localize.month(month, {
@@ -5858,18 +5879,21 @@
               context: 'formatting'
             });
           // T
+
           case 'EEEEE':
             return localize.day(dayOfWeek, {
               width: 'narrow',
               context: 'formatting'
             });
           // Tu
+
           case 'EEEEEE':
             return localize.day(dayOfWeek, {
               width: 'short',
               context: 'formatting'
             });
           // Tuesday
+
           case 'EEEE':
           default:
             return localize.day(dayOfWeek, {
@@ -5887,9 +5911,11 @@
           case 'e':
             return String(localDayOfWeek);
           // Padded numerical value
+
           case 'ee':
             return addLeadingZeros(localDayOfWeek, 2);
           // 1st, 2nd, ..., 7th
+
           case 'eo':
             return localize.ordinalNumber(localDayOfWeek, {
               unit: 'day'
@@ -5900,18 +5926,21 @@
               context: 'formatting'
             });
           // T
+
           case 'eeeee':
             return localize.day(dayOfWeek, {
               width: 'narrow',
               context: 'formatting'
             });
           // Tu
+
           case 'eeeeee':
             return localize.day(dayOfWeek, {
               width: 'short',
               context: 'formatting'
             });
           // Tuesday
+
           case 'eeee':
           default:
             return localize.day(dayOfWeek, {
@@ -5929,9 +5958,11 @@
           case 'c':
             return String(localDayOfWeek);
           // Padded numerical value
+
           case 'cc':
             return addLeadingZeros(localDayOfWeek, token.length);
           // 1st, 2nd, ..., 7th
+
           case 'co':
             return localize.ordinalNumber(localDayOfWeek, {
               unit: 'day'
@@ -5942,18 +5973,21 @@
               context: 'standalone'
             });
           // T
+
           case 'ccccc':
             return localize.day(dayOfWeek, {
               width: 'narrow',
               context: 'standalone'
             });
           // Tu
+
           case 'cccccc':
             return localize.day(dayOfWeek, {
               width: 'short',
               context: 'standalone'
             });
           // Tuesday
+
           case 'cccc':
           default:
             return localize.day(dayOfWeek, {
@@ -5971,32 +6005,38 @@
           case 'i':
             return String(isoDayOfWeek);
           // 02
+
           case 'ii':
             return addLeadingZeros(isoDayOfWeek, token.length);
           // 2nd
+
           case 'io':
             return localize.ordinalNumber(isoDayOfWeek, {
               unit: 'day'
             });
           // Tue
+
           case 'iii':
             return localize.day(dayOfWeek, {
               width: 'abbreviated',
               context: 'formatting'
             });
           // T
+
           case 'iiiii':
             return localize.day(dayOfWeek, {
               width: 'narrow',
               context: 'formatting'
             });
           // Tu
+
           case 'iiiiii':
             return localize.day(dayOfWeek, {
               width: 'short',
               context: 'formatting'
             });
           // Tuesday
+
           case 'iiii':
           default:
             return localize.day(dayOfWeek, {
@@ -6178,20 +6218,21 @@
           // Hours and optional minutes
           case 'X':
             return formatTimezoneWithOptionalMinutes(timezoneOffset);
-
           // Hours, minutes and optional seconds without `:` delimiter
           // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
           // so this token always has the same output as `XX`
+
           case 'XXXX':
           case 'XX':
             // Hours and minutes without `:` delimiter
             return formatTimezone(timezoneOffset);
-
           // Hours, minutes and optional seconds with `:` delimiter
           // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
           // so this token always has the same output as `XXX`
+
           case 'XXXXX':
           case 'XXX': // Hours and minutes with `:` delimiter
+
           default:
             return formatTimezone(timezoneOffset, ':');
         }
@@ -6204,20 +6245,21 @@
           // Hours and optional minutes
           case 'x':
             return formatTimezoneWithOptionalMinutes(timezoneOffset);
-
           // Hours, minutes and optional seconds without `:` delimiter
           // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
           // so this token always has the same output as `xx`
+
           case 'xxxx':
           case 'xx':
             // Hours and minutes without `:` delimiter
             return formatTimezone(timezoneOffset);
-
           // Hours, minutes and optional seconds with `:` delimiter
           // Note: neither ISO-8601 nor JavaScript supports seconds in timezone offsets
           // so this token always has the same output as `xxx`
+
           case 'xxxxx':
           case 'xxx': // Hours and minutes with `:` delimiter
+
           default:
             return formatTimezone(timezoneOffset, ':');
         }
@@ -6233,6 +6275,7 @@
           case 'OOO':
             return 'GMT' + formatTimezoneShort(timezoneOffset, ':');
           // Long
+
           case 'OOOO':
           default:
             return 'GMT' + formatTimezone(timezoneOffset, ':');
@@ -6249,6 +6292,7 @@
           case 'zzz':
             return 'GMT' + formatTimezoneShort(timezoneOffset, ':');
           // Long
+
           case 'zzzz':
           default:
             return 'GMT' + formatTimezone(timezoneOffset, ':');
@@ -6550,8 +6594,8 @@
           var _width = options !== null && options !== void 0 && options.width ? String(options.width) : args.defaultWidth;
           valuesArray = args.values[_width] || args.values[_defaultWidth];
         }
-        var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
-        // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challenge you to try to remove it!
+        var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challenge you to try to remove it!
+
         return valuesArray[index];
       };
     }
@@ -6565,12 +6609,11 @@
       narrow: ['1', '2', '3', '4'],
       abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
       wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
-    };
-
-    // Note: in English, the names of days of the week and months are capitalized.
+    }; // Note: in English, the names of days of the week and months are capitalized.
     // If you are making a new locale based on this one, check if the same is true for the language you're working on.
     // Generally, formatted dates should look like they are in the middle of a sentence,
     // e.g. in Spanish language the weekdays and months should be in the lowercase.
+
     var monthValues$3 = {
       narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
       abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -6647,9 +6690,7 @@
       }
     };
     var ordinalNumber$3 = function ordinalNumber(dirtyNumber, _options) {
-      var number = Number(dirtyNumber);
-
-      // If ordinal numbers depend on context, for example,
+      var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
       // if they are different for different grammatical genders,
       // use `options.unit`.
       //
@@ -6874,7 +6915,9 @@
       localize: localize$7,
       match: match$7,
       options: {
-        weekStartsOn: 0 /* Sunday */,
+        weekStartsOn: 0
+        /* Sunday */,
+
         firstWeekContainsDate: 1
       }
     };
@@ -6890,15 +6933,14 @@
     //   If there is no matching single quote
     //   then the sequence will continue until the end of the string.
     // - . matches any single character unmatched by previous parts of the RegExps
-    var formattingTokensRegExp$1 = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
 
-    // This RegExp catches symbols escaped by quotes, and also
+    var formattingTokensRegExp$1 = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g; // This RegExp catches symbols escaped by quotes, and also
     // sequences of symbols P, p, and the combinations like `PPPPPPPppppp`
+
     var longFormattingTokensRegExp$1 = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
     var escapedStringRegExp$1 = /^'([^]*?)'?$/;
     var doubleQuoteRegExp$1 = /''/g;
     var unescapedLatinCharacterRegExp$1 = /[a-zA-Z]/;
-
     /**
      * @name format
      * @category Common Helpers
@@ -7191,21 +7233,19 @@
      * //=> "3 o'clock"
      */
 
-    function format$2(dirtyDate, dirtyFormatStr, options) {
+    function format$3(dirtyDate, dirtyFormatStr, options) {
       var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
       requiredArgs(2, arguments);
       var formatStr = String(dirtyFormatStr);
       var defaultOptions = getDefaultOptions();
       var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : defaultLocale;
-      var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1);
+      var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
-      // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
-      var weekStartsOn = toInteger((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0);
+      var weekStartsOn = toInteger((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -7218,11 +7258,10 @@
       var originalDate = toDate(dirtyDate);
       if (!isValid(originalDate)) {
         throw new RangeError('Invalid time value');
-      }
-
-      // Convert the date in system timezone to the same date in UTC+00:00 timezone.
+      } // Convert the date in system timezone to the same date in UTC+00:00 timezone.
       // This ensures that when UTC functions will be implemented, locales will be compatible with them.
       // See an issue about UTC functions: https://github.com/date-fns/date-fns/issues/376
+
       var timezoneOffset = getTimezoneOffsetInMilliseconds(originalDate);
       var utcDate = subMilliseconds(originalDate, timezoneOffset);
       var formatterOptions = {
@@ -7323,15 +7362,15 @@
      * const result = getWeekYear(new Date(2004, 11, 26), { firstWeekContainsDate: 4 })
      * //=> 2004
      */
+
     function getWeekYear(dirtyDate, options) {
       var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
       var year = date.getFullYear();
       var defaultOptions = getDefaultOptions();
-      var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
+      var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
-      // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
@@ -7391,6 +7430,7 @@
      * })
      * //=> Mon Jan 03 2005 00:00:00
      */
+
     function startOfWeekYear(dirtyDate, options) {
       var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(1, arguments);
@@ -7405,7 +7445,6 @@
     }
 
     var MILLISECONDS_IN_WEEK = 604800000;
-
     /**
      * @name getWeek
      * @category Week Helpers
@@ -7448,97 +7487,28 @@
     function getWeek(dirtyDate, options) {
       requiredArgs(1, arguments);
       var date = toDate(dirtyDate);
-      var diff = startOfWeek(date, options).getTime() - startOfWeekYear(date, options).getTime();
-
-      // Round the number of days to the nearest integer
+      var diff = startOfWeek(date, options).getTime() - startOfWeekYear(date, options).getTime(); // Round the number of days to the nearest integer
       // because the number of milliseconds in a week is not constant
       // (e.g. it's different in the week of the daylight saving time clock shift)
+
       return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
     }
 
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length) len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-      return arr2;
-    }
+    function _typeof$y(obj) {
+      "@babel/helpers - typeof";
 
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor) n = o.constructor.name;
-      if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-
-    function _createForOfIteratorHelper(o, allowArrayLike) {
-      var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-      if (!it) {
-        if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-          if (it) o = it;
-          var i = 0;
-          var F = function F() {};
-          return {
-            s: F,
-            n: function n() {
-              if (i >= o.length) return {
-                done: true
-              };
-              return {
-                done: false,
-                value: o[i++]
-              };
-            },
-            e: function e(_e) {
-              throw _e;
-            },
-            f: F
-          };
-        }
-        throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$y = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$y = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
       }
-      var normalCompletion = true,
-        didErr = false,
-        err;
-      return {
-        s: function s() {
-          it = it.call(o);
-        },
-        n: function n() {
-          var step = it.next();
-          normalCompletion = step.done;
-          return step;
-        },
-        e: function e(_e2) {
-          didErr = true;
-          err = _e2;
-        },
-        f: function f() {
-          try {
-            if (!normalCompletion && it["return"] != null) it["return"]();
-          } finally {
-            if (didErr) throw err;
-          }
-        }
-      };
+      return _typeof$y(obj);
     }
-
-    function _assertThisInitialized(self) {
-      if (self === void 0) {
-        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-      }
-      return self;
-    }
-
-    function _setPrototypeOf(o, p) {
-      _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-        o.__proto__ = p;
-        return o;
-      };
-      return _setPrototypeOf(o, p);
-    }
-
-    function _inherits(subClass, superClass) {
+    function _inherits$v(subClass, superClass) {
       if (typeof superClass !== "function" && superClass !== null) {
         throw new TypeError("Super expression must either be null or a function");
       }
@@ -7549,20 +7519,42 @@
           configurable: true
         }
       });
-      Object.defineProperty(subClass, "prototype", {
-        writable: false
-      });
-      if (superClass) _setPrototypeOf(subClass, superClass);
+      if (superClass) _setPrototypeOf$w(subClass, superClass);
     }
-
-    function _getPrototypeOf(o) {
-      _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
-        return o.__proto__ || Object.getPrototypeOf(o);
+    function _setPrototypeOf$w(o, p) {
+      _setPrototypeOf$w = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
       };
-      return _getPrototypeOf(o);
+      return _setPrototypeOf$w(o, p);
     }
-
-    function _isNativeReflectConstruct() {
+    function _createSuper$v(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$w();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$v(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$v(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$v(this, result);
+      };
+    }
+    function _possibleConstructorReturn$v(self, call) {
+      if (call && (_typeof$y(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$v(self);
+    }
+    function _assertThisInitialized$v(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$w() {
       if (typeof Reflect === "undefined" || !Reflect.construct) return false;
       if (Reflect.construct.sham) return false;
       if (typeof Proxy === "function") return true;
@@ -7573,73 +7565,32 @@
         return false;
       }
     }
-
-    function _possibleConstructorReturn(self, call) {
-      if (call && (_typeof(call) === "object" || typeof call === "function")) {
-        return call;
-      } else if (call !== void 0) {
-        throw new TypeError("Derived constructors may only return object or undefined");
-      }
-      return _assertThisInitialized(self);
-    }
-
-    function _createSuper(Derived) {
-      var hasNativeReflectConstruct = _isNativeReflectConstruct();
-      return function _createSuperInternal() {
-        var Super = _getPrototypeOf(Derived),
-          result;
-        if (hasNativeReflectConstruct) {
-          var NewTarget = _getPrototypeOf(this).constructor;
-          result = Reflect.construct(Super, arguments, NewTarget);
-        } else {
-          result = Super.apply(this, arguments);
-        }
-        return _possibleConstructorReturn(this, result);
+    function _getPrototypeOf$v(o) {
+      _getPrototypeOf$v = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
       };
+      return _getPrototypeOf$v(o);
     }
-
-    function _classCallCheck(instance, Constructor) {
+    function _classCallCheck$w(instance, Constructor) {
       if (!(instance instanceof Constructor)) {
         throw new TypeError("Cannot call a class as a function");
       }
     }
-
-    function _toPrimitive(input, hint) {
-      if (_typeof(input) !== "object" || input === null) return input;
-      var prim = input[Symbol.toPrimitive];
-      if (prim !== undefined) {
-        var res = prim.call(input, hint || "default");
-        if (_typeof(res) !== "object") return res;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return (hint === "string" ? String : Number)(input);
-    }
-
-    function _toPropertyKey(arg) {
-      var key = _toPrimitive(arg, "string");
-      return _typeof(key) === "symbol" ? key : String(key);
-    }
-
-    function _defineProperties(target, props) {
+    function _defineProperties$w(target, props) {
       for (var i = 0; i < props.length; i++) {
         var descriptor = props[i];
         descriptor.enumerable = descriptor.enumerable || false;
         descriptor.configurable = true;
         if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    function _createClass(Constructor, protoProps, staticProps) {
-      if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) _defineProperties(Constructor, staticProps);
-      Object.defineProperty(Constructor, "prototype", {
-        writable: false
-      });
+    function _createClass$w(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$w(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$w(Constructor, staticProps);
       return Constructor;
     }
-
-    function _defineProperty(obj, key, value) {
-      key = _toPropertyKey(key);
+    function _defineProperty$v(obj, key, value) {
       if (key in obj) {
         Object.defineProperty(obj, key, {
           value: value,
@@ -7652,15 +7603,13 @@
       }
       return obj;
     }
-
     var TIMEZONE_UNIT_PRIORITY = 10;
     var Setter = /*#__PURE__*/function () {
       function Setter() {
-        _classCallCheck(this, Setter);
-        _defineProperty(this, "priority", void 0);
-        _defineProperty(this, "subPriority", 0);
+        _classCallCheck$w(this, Setter);
+        _defineProperty$v(this, "subPriority", 0);
       }
-      _createClass(Setter, [{
+      _createClass$w(Setter, [{
         key: "validate",
         value: function validate(_utcDate, _options) {
           return true;
@@ -7669,11 +7618,11 @@
       return Setter;
     }();
     var ValueSetter = /*#__PURE__*/function (_Setter) {
-      _inherits(ValueSetter, _Setter);
-      var _super = _createSuper(ValueSetter);
+      _inherits$v(ValueSetter, _Setter);
+      var _super = _createSuper$v(ValueSetter);
       function ValueSetter(value, validateValue, setValue, priority, subPriority) {
         var _this;
-        _classCallCheck(this, ValueSetter);
+        _classCallCheck$w(this, ValueSetter);
         _this = _super.call(this);
         _this.value = value;
         _this.validateValue = validateValue;
@@ -7684,7 +7633,7 @@
         }
         return _this;
       }
-      _createClass(ValueSetter, [{
+      _createClass$w(ValueSetter, [{
         key: "validate",
         value: function validate(utcDate, options) {
           return this.validateValue(utcDate, this.value, options);
@@ -7698,20 +7647,20 @@
       return ValueSetter;
     }(Setter);
     var DateToSystemTimezoneSetter = /*#__PURE__*/function (_Setter2) {
-      _inherits(DateToSystemTimezoneSetter, _Setter2);
-      var _super2 = _createSuper(DateToSystemTimezoneSetter);
+      _inherits$v(DateToSystemTimezoneSetter, _Setter2);
+      var _super2 = _createSuper$v(DateToSystemTimezoneSetter);
       function DateToSystemTimezoneSetter() {
         var _this2;
-        _classCallCheck(this, DateToSystemTimezoneSetter);
+        _classCallCheck$w(this, DateToSystemTimezoneSetter);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this2 = _super2.call.apply(_super2, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this2), "priority", TIMEZONE_UNIT_PRIORITY);
-        _defineProperty(_assertThisInitialized(_this2), "subPriority", -1);
+        _defineProperty$v(_assertThisInitialized$v(_this2), "priority", TIMEZONE_UNIT_PRIORITY);
+        _defineProperty$v(_assertThisInitialized$v(_this2), "subPriority", -1);
         return _this2;
       }
-      _createClass(DateToSystemTimezoneSetter, [{
+      _createClass$w(DateToSystemTimezoneSetter, [{
         key: "set",
         value: function set(date, flags) {
           if (flags.timestampIsSet) {
@@ -7726,14 +7675,30 @@
       return DateToSystemTimezoneSetter;
     }(Setter);
 
+    function _classCallCheck$v(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$v(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$v(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$v(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$v(Constructor, staticProps);
+      return Constructor;
+    }
     var Parser$1 = /*#__PURE__*/function () {
       function Parser() {
-        _classCallCheck(this, Parser);
-        _defineProperty(this, "incompatibleTokens", void 0);
-        _defineProperty(this, "priority", void 0);
-        _defineProperty(this, "subPriority", void 0);
+        _classCallCheck$v(this, Parser);
       }
-      _createClass(Parser, [{
+      _createClass$v(Parser, [{
         key: "run",
         value: function run(dateString, token, match, options) {
           var result = this.parse(dateString, token, match, options);
@@ -7754,21 +7719,130 @@
       return Parser;
     }();
 
+    function _typeof$x(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$x = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$x = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$x(obj);
+    }
+    function _classCallCheck$u(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$u(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$u(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$u(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$u(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$u(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$v(subClass, superClass);
+    }
+    function _setPrototypeOf$v(o, p) {
+      _setPrototypeOf$v = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$v(o, p);
+    }
+    function _createSuper$u(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$v();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$u(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$u(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$u(this, result);
+      };
+    }
+    function _possibleConstructorReturn$u(self, call) {
+      if (call && (_typeof$x(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$u(self);
+    }
+    function _assertThisInitialized$u(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$v() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$u(o) {
+      _getPrototypeOf$u = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$u(o);
+    }
+    function _defineProperty$u(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var EraParser = /*#__PURE__*/function (_Parser) {
-      _inherits(EraParser, _Parser);
-      var _super = _createSuper(EraParser);
+      _inherits$u(EraParser, _Parser);
+      var _super = _createSuper$u(EraParser);
       function EraParser() {
         var _this;
-        _classCallCheck(this, EraParser);
+        _classCallCheck$u(this, EraParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 140);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['R', 'u', 't', 'T']);
+        _defineProperty$u(_assertThisInitialized$u(_this), "priority", 140);
+        _defineProperty$u(_assertThisInitialized$u(_this), "incompatibleTokens", ['R', 'u', 't', 'T']);
         return _this;
       }
-      _createClass(EraParser, [{
+      _createClass$u(EraParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -7782,11 +7856,13 @@
                 width: 'narrow'
               });
             // A, B
+
             case 'GGGGG':
               return match.era(dateString, {
                 width: 'narrow'
               });
             // Anno Domini, Before Christ
+
             case 'GGGG':
             default:
               return match.era(dateString, {
@@ -7831,7 +7907,6 @@
       // 0 to 59
       second: /^[0-5]?\d/,
       // 0 to 59
-
       singleDigit: /^\d/,
       // 0 to 9
       twoDigits: /^\d{1,2}/,
@@ -7840,7 +7915,6 @@
       // 0 to 999
       fourDigits: /^\d{1,4}/,
       // 0 to 9999
-
       anyDigitsSigned: /^-?\d+/,
       singleDigitSigned: /^-?\d/,
       // 0 to 9, -0 to -9
@@ -7882,9 +7956,8 @@
       var matchResult = dateString.match(pattern);
       if (!matchResult) {
         return null;
-      }
+      } // Input is 'Z'
 
-      // Input is 'Z'
       if (matchResult[0] === 'Z') {
         return {
           value: 0,
@@ -7949,11 +8022,11 @@
       }
     }
     function normalizeTwoDigitYear(twoDigitYear, currentYear) {
-      var isCommonEra = currentYear > 0;
-      // Absolute number of the current year:
+      var isCommonEra = currentYear > 0; // Absolute number of the current year:
       // 1 -> 1 AC
       // 0 -> 1 BC
       // -1 -> 2 BC
+
       var absCurrentYear = isCommonEra ? currentYear : 1 - currentYear;
       var result;
       if (absCurrentYear <= 50) {
@@ -7970,6 +8043,115 @@
       return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
     }
 
+    function _typeof$w(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$w = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$w = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$w(obj);
+    }
+    function _classCallCheck$t(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$t(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$t(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$t(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$t(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$t(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$u(subClass, superClass);
+    }
+    function _setPrototypeOf$u(o, p) {
+      _setPrototypeOf$u = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$u(o, p);
+    }
+    function _createSuper$t(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$u();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$t(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$t(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$t(this, result);
+      };
+    }
+    function _possibleConstructorReturn$t(self, call) {
+      if (call && (_typeof$w(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$t(self);
+    }
+    function _assertThisInitialized$t(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$u() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$t(o) {
+      _getPrototypeOf$t = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$t(o);
+    }
+    function _defineProperty$t(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_Patterns
     // | Year     |     y | yy |   yyy |  yyyy | yyyyy |
     // |----------|-------|----|-------|-------|-------|
@@ -7979,20 +8161,20 @@
     // | AD 1234  |  1234 | 34 |  1234 |  1234 | 01234 |
     // | AD 12345 | 12345 | 45 | 12345 | 12345 | 12345 |
     var YearParser = /*#__PURE__*/function (_Parser) {
-      _inherits(YearParser, _Parser);
-      var _super = _createSuper(YearParser);
+      _inherits$t(YearParser, _Parser);
+      var _super = _createSuper$t(YearParser);
       function YearParser() {
         var _this;
-        _classCallCheck(this, YearParser);
+        _classCallCheck$t(this, YearParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 130);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'u', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$t(_assertThisInitialized$t(_this), "priority", 130);
+        _defineProperty$t(_assertThisInitialized$t(_this), "incompatibleTokens", ['Y', 'R', 'u', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(YearParser, [{
+      _createClass$t(YearParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           var valueCallback = function valueCallback(year) {
@@ -8036,22 +8218,131 @@
       return YearParser;
     }(Parser$1);
 
+    function _typeof$v(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$v = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$v = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$v(obj);
+    }
+    function _classCallCheck$s(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$s(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$s(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$s(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$s(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$s(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$t(subClass, superClass);
+    }
+    function _setPrototypeOf$t(o, p) {
+      _setPrototypeOf$t = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$t(o, p);
+    }
+    function _createSuper$s(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$t();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$s(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$s(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$s(this, result);
+      };
+    }
+    function _possibleConstructorReturn$s(self, call) {
+      if (call && (_typeof$v(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$s(self);
+    }
+    function _assertThisInitialized$s(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$t() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$s(o) {
+      _getPrototypeOf$s = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$s(o);
+    }
+    function _defineProperty$s(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     // Local week-numbering year
     var LocalWeekYearParser = /*#__PURE__*/function (_Parser) {
-      _inherits(LocalWeekYearParser, _Parser);
-      var _super = _createSuper(LocalWeekYearParser);
+      _inherits$s(LocalWeekYearParser, _Parser);
+      var _super = _createSuper$s(LocalWeekYearParser);
       function LocalWeekYearParser() {
         var _this;
-        _classCallCheck(this, LocalWeekYearParser);
+        _classCallCheck$s(this, LocalWeekYearParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 130);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'R', 'u', 'Q', 'q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
+        _defineProperty$s(_assertThisInitialized$s(_this), "priority", 130);
+        _defineProperty$s(_assertThisInitialized$s(_this), "incompatibleTokens", ['y', 'R', 'u', 'Q', 'q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
         return _this;
       }
-      _createClass(LocalWeekYearParser, [{
+      _createClass$s(LocalWeekYearParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           var valueCallback = function valueCallback(year) {
@@ -8095,21 +8386,131 @@
       return LocalWeekYearParser;
     }(Parser$1);
 
+    function _typeof$u(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$u = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$u = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$u(obj);
+    }
+    function _classCallCheck$r(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$r(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$r(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$r(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$r(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$r(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$s(subClass, superClass);
+    }
+    function _setPrototypeOf$s(o, p) {
+      _setPrototypeOf$s = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$s(o, p);
+    }
+    function _createSuper$r(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$s();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$r(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$r(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$r(this, result);
+      };
+    }
+    function _possibleConstructorReturn$r(self, call) {
+      if (call && (_typeof$u(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$r(self);
+    }
+    function _assertThisInitialized$r(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$s() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$r(o) {
+      _getPrototypeOf$r = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$r(o);
+    }
+    function _defineProperty$r(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var ISOWeekYearParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ISOWeekYearParser, _Parser);
-      var _super = _createSuper(ISOWeekYearParser);
+      _inherits$r(ISOWeekYearParser, _Parser);
+      var _super = _createSuper$r(ISOWeekYearParser);
       function ISOWeekYearParser() {
         var _this;
-        _classCallCheck(this, ISOWeekYearParser);
+        _classCallCheck$r(this, ISOWeekYearParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 130);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['G', 'y', 'Y', 'u', 'Q', 'q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
+        _defineProperty$r(_assertThisInitialized$r(_this), "priority", 130);
+        _defineProperty$r(_assertThisInitialized$r(_this), "incompatibleTokens", ['G', 'y', 'Y', 'u', 'Q', 'q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(ISOWeekYearParser, [{
+      _createClass$r(ISOWeekYearParser, [{
         key: "parse",
         value: function parse(dateString, token) {
           if (token === 'R') {
@@ -8129,21 +8530,130 @@
       return ISOWeekYearParser;
     }(Parser$1);
 
+    function _typeof$t(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$t = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$t = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$t(obj);
+    }
+    function _classCallCheck$q(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$q(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$q(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$q(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$q(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$q(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$r(subClass, superClass);
+    }
+    function _setPrototypeOf$r(o, p) {
+      _setPrototypeOf$r = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$r(o, p);
+    }
+    function _createSuper$q(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$r();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$q(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$q(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$q(this, result);
+      };
+    }
+    function _possibleConstructorReturn$q(self, call) {
+      if (call && (_typeof$t(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$q(self);
+    }
+    function _assertThisInitialized$q(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$r() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$q(o) {
+      _getPrototypeOf$q = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$q(o);
+    }
+    function _defineProperty$q(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var ExtendedYearParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ExtendedYearParser, _Parser);
-      var _super = _createSuper(ExtendedYearParser);
+      _inherits$q(ExtendedYearParser, _Parser);
+      var _super = _createSuper$q(ExtendedYearParser);
       function ExtendedYearParser() {
         var _this;
-        _classCallCheck(this, ExtendedYearParser);
+        _classCallCheck$q(this, ExtendedYearParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 130);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['G', 'y', 'Y', 'R', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$q(_assertThisInitialized$q(_this), "priority", 130);
+        _defineProperty$q(_assertThisInitialized$q(_this), "incompatibleTokens", ['G', 'y', 'Y', 'R', 'w', 'I', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(ExtendedYearParser, [{
+      _createClass$q(ExtendedYearParser, [{
         key: "parse",
         value: function parse(dateString, token) {
           if (token === 'u') {
@@ -8162,21 +8672,130 @@
       return ExtendedYearParser;
     }(Parser$1);
 
+    function _typeof$s(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$s = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$s = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$s(obj);
+    }
+    function _classCallCheck$p(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$p(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$p(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$p(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$p(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$p(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$q(subClass, superClass);
+    }
+    function _setPrototypeOf$q(o, p) {
+      _setPrototypeOf$q = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$q(o, p);
+    }
+    function _createSuper$p(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$q();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$p(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$p(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$p(this, result);
+      };
+    }
+    function _possibleConstructorReturn$p(self, call) {
+      if (call && (_typeof$s(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$p(self);
+    }
+    function _assertThisInitialized$p(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$q() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$p(o) {
+      _getPrototypeOf$p = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$p(o);
+    }
+    function _defineProperty$p(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var QuarterParser = /*#__PURE__*/function (_Parser) {
-      _inherits(QuarterParser, _Parser);
-      var _super = _createSuper(QuarterParser);
+      _inherits$p(QuarterParser, _Parser);
+      var _super = _createSuper$p(QuarterParser);
       function QuarterParser() {
         var _this;
-        _classCallCheck(this, QuarterParser);
+        _classCallCheck$p(this, QuarterParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 120);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$p(_assertThisInitialized$p(_this), "priority", 120);
+        _defineProperty$p(_assertThisInitialized$p(_this), "incompatibleTokens", ['Y', 'R', 'q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(QuarterParser, [{
+      _createClass$p(QuarterParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8186,11 +8805,13 @@
               // 01, 02, 03, 04
               return parseNDigits(token.length, dateString);
             // 1st, 2nd, 3rd, 4th
+
             case 'Qo':
               return match.ordinalNumber(dateString, {
                 unit: 'quarter'
               });
             // Q1, Q2, Q3, Q4
+
             case 'QQQ':
               return match.quarter(dateString, {
                 width: 'abbreviated',
@@ -8200,12 +8821,14 @@
                 context: 'formatting'
               });
             // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
             case 'QQQQQ':
               return match.quarter(dateString, {
                 width: 'narrow',
                 context: 'formatting'
               });
             // 1st quarter, 2nd quarter, ...
+
             case 'QQQQ':
             default:
               return match.quarter(dateString, {
@@ -8236,21 +8859,130 @@
       return QuarterParser;
     }(Parser$1);
 
+    function _typeof$r(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$r = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$r = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$r(obj);
+    }
+    function _classCallCheck$o(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$o(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$o(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$o(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$o(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$o(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$p(subClass, superClass);
+    }
+    function _setPrototypeOf$p(o, p) {
+      _setPrototypeOf$p = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$p(o, p);
+    }
+    function _createSuper$o(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$p();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$o(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$o(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$o(this, result);
+      };
+    }
+    function _possibleConstructorReturn$o(self, call) {
+      if (call && (_typeof$r(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$o(self);
+    }
+    function _assertThisInitialized$o(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$p() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$o(o) {
+      _getPrototypeOf$o = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$o(o);
+    }
+    function _defineProperty$o(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var StandAloneQuarterParser = /*#__PURE__*/function (_Parser) {
-      _inherits(StandAloneQuarterParser, _Parser);
-      var _super = _createSuper(StandAloneQuarterParser);
+      _inherits$o(StandAloneQuarterParser, _Parser);
+      var _super = _createSuper$o(StandAloneQuarterParser);
       function StandAloneQuarterParser() {
         var _this;
-        _classCallCheck(this, StandAloneQuarterParser);
+        _classCallCheck$o(this, StandAloneQuarterParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 120);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'Q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$o(_assertThisInitialized$o(_this), "priority", 120);
+        _defineProperty$o(_assertThisInitialized$o(_this), "incompatibleTokens", ['Y', 'R', 'Q', 'M', 'L', 'w', 'I', 'd', 'D', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(StandAloneQuarterParser, [{
+      _createClass$o(StandAloneQuarterParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8260,11 +8992,13 @@
               // 01, 02, 03, 04
               return parseNDigits(token.length, dateString);
             // 1st, 2nd, 3rd, 4th
+
             case 'qo':
               return match.ordinalNumber(dateString, {
                 unit: 'quarter'
               });
             // Q1, Q2, Q3, Q4
+
             case 'qqq':
               return match.quarter(dateString, {
                 width: 'abbreviated',
@@ -8274,12 +9008,14 @@
                 context: 'standalone'
               });
             // 1, 2, 3, 4 (narrow quarter; could be not numerical)
+
             case 'qqqqq':
               return match.quarter(dateString, {
                 width: 'narrow',
                 context: 'standalone'
               });
             // 1st quarter, 2nd quarter, ...
+
             case 'qqqq':
             default:
               return match.quarter(dateString, {
@@ -8310,21 +9046,130 @@
       return StandAloneQuarterParser;
     }(Parser$1);
 
+    function _typeof$q(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$q = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$q = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$q(obj);
+    }
+    function _classCallCheck$n(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$n(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$n(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$n(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$n(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$n(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$o(subClass, superClass);
+    }
+    function _setPrototypeOf$o(o, p) {
+      _setPrototypeOf$o = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$o(o, p);
+    }
+    function _createSuper$n(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$o();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$n(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$n(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$n(this, result);
+      };
+    }
+    function _possibleConstructorReturn$n(self, call) {
+      if (call && (_typeof$q(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$n(self);
+    }
+    function _assertThisInitialized$n(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$o() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$n(o) {
+      _getPrototypeOf$n = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$n(o);
+    }
+    function _defineProperty$n(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var MonthParser = /*#__PURE__*/function (_Parser) {
-      _inherits(MonthParser, _Parser);
-      var _super = _createSuper(MonthParser);
+      _inherits$n(MonthParser, _Parser);
+      var _super = _createSuper$n(MonthParser);
       function MonthParser() {
         var _this;
-        _classCallCheck(this, MonthParser);
+        _classCallCheck$n(this, MonthParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'L', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
-        _defineProperty(_assertThisInitialized(_this), "priority", 110);
+        _defineProperty$n(_assertThisInitialized$n(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'L', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$n(_assertThisInitialized$n(_this), "priority", 110);
         return _this;
       }
-      _createClass(MonthParser, [{
+      _createClass$n(MonthParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           var valueCallback = function valueCallback(value) {
@@ -8335,14 +9180,17 @@
             case 'M':
               return mapValue(parseNumericPattern(numericPatterns.month, dateString), valueCallback);
             // 01, 02, ..., 12
+
             case 'MM':
               return mapValue(parseNDigits(2, dateString), valueCallback);
             // 1st, 2nd, ..., 12th
+
             case 'Mo':
               return mapValue(match.ordinalNumber(dateString, {
                 unit: 'month'
               }), valueCallback);
             // Jan, Feb, ..., Dec
+
             case 'MMM':
               return match.month(dateString, {
                 width: 'abbreviated',
@@ -8352,12 +9200,14 @@
                 context: 'formatting'
               });
             // J, F, ..., D
+
             case 'MMMMM':
               return match.month(dateString, {
                 width: 'narrow',
                 context: 'formatting'
               });
             // January, February, ..., December
+
             case 'MMMM':
             default:
               return match.month(dateString, {
@@ -8388,21 +9238,130 @@
       return MonthParser;
     }(Parser$1);
 
+    function _typeof$p(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$p = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$p = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$p(obj);
+    }
+    function _classCallCheck$m(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$m(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$m(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$m(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$m(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$m(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$n(subClass, superClass);
+    }
+    function _setPrototypeOf$n(o, p) {
+      _setPrototypeOf$n = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$n(o, p);
+    }
+    function _createSuper$m(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$n();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$m(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$m(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$m(this, result);
+      };
+    }
+    function _possibleConstructorReturn$m(self, call) {
+      if (call && (_typeof$p(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$m(self);
+    }
+    function _assertThisInitialized$m(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$n() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$m(o) {
+      _getPrototypeOf$m = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$m(o);
+    }
+    function _defineProperty$m(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var StandAloneMonthParser = /*#__PURE__*/function (_Parser) {
-      _inherits(StandAloneMonthParser, _Parser);
-      var _super = _createSuper(StandAloneMonthParser);
+      _inherits$m(StandAloneMonthParser, _Parser);
+      var _super = _createSuper$m(StandAloneMonthParser);
       function StandAloneMonthParser() {
         var _this;
-        _classCallCheck(this, StandAloneMonthParser);
+        _classCallCheck$m(this, StandAloneMonthParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 110);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$m(_assertThisInitialized$m(_this), "priority", 110);
+        _defineProperty$m(_assertThisInitialized$m(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(StandAloneMonthParser, [{
+      _createClass$m(StandAloneMonthParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           var valueCallback = function valueCallback(value) {
@@ -8413,14 +9372,17 @@
             case 'L':
               return mapValue(parseNumericPattern(numericPatterns.month, dateString), valueCallback);
             // 01, 02, ..., 12
+
             case 'LL':
               return mapValue(parseNDigits(2, dateString), valueCallback);
             // 1st, 2nd, ..., 12th
+
             case 'Lo':
               return mapValue(match.ordinalNumber(dateString, {
                 unit: 'month'
               }), valueCallback);
             // Jan, Feb, ..., Dec
+
             case 'LLL':
               return match.month(dateString, {
                 width: 'abbreviated',
@@ -8430,12 +9392,14 @@
                 context: 'standalone'
               });
             // J, F, ..., D
+
             case 'LLLLL':
               return match.month(dateString, {
                 width: 'narrow',
                 context: 'standalone'
               });
             // January, February, ..., December
+
             case 'LLLL':
             default:
               return match.month(dateString, {
@@ -8475,21 +9439,131 @@
       return date;
     }
 
+    function _typeof$o(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$o = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$o = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$o(obj);
+    }
+    function _classCallCheck$l(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$l(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$l(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$l(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$l(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$l(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$m(subClass, superClass);
+    }
+    function _setPrototypeOf$m(o, p) {
+      _setPrototypeOf$m = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$m(o, p);
+    }
+    function _createSuper$l(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$m();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$l(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$l(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$l(this, result);
+      };
+    }
+    function _possibleConstructorReturn$l(self, call) {
+      if (call && (_typeof$o(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$l(self);
+    }
+    function _assertThisInitialized$l(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$m() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$l(o) {
+      _getPrototypeOf$l = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$l(o);
+    }
+    function _defineProperty$l(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var LocalWeekParser = /*#__PURE__*/function (_Parser) {
-      _inherits(LocalWeekParser, _Parser);
-      var _super = _createSuper(LocalWeekParser);
+      _inherits$l(LocalWeekParser, _Parser);
+      var _super = _createSuper$l(LocalWeekParser);
       function LocalWeekParser() {
         var _this;
-        _classCallCheck(this, LocalWeekParser);
+        _classCallCheck$l(this, LocalWeekParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 100);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
+        _defineProperty$l(_assertThisInitialized$l(_this), "priority", 100);
+        _defineProperty$l(_assertThisInitialized$l(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'i', 't', 'T']);
         return _this;
       }
-      _createClass(LocalWeekParser, [{
+      _createClass$l(LocalWeekParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8526,21 +9600,131 @@
       return date;
     }
 
+    function _typeof$n(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$n = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$n = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$n(obj);
+    }
+    function _classCallCheck$k(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$k(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$k(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$k(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$k(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$k(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$l(subClass, superClass);
+    }
+    function _setPrototypeOf$l(o, p) {
+      _setPrototypeOf$l = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$l(o, p);
+    }
+    function _createSuper$k(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$l();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$k(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$k(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$k(this, result);
+      };
+    }
+    function _possibleConstructorReturn$k(self, call) {
+      if (call && (_typeof$n(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$k(self);
+    }
+    function _assertThisInitialized$k(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$l() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$k(o) {
+      _getPrototypeOf$k = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$k(o);
+    }
+    function _defineProperty$k(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var ISOWeekParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ISOWeekParser, _Parser);
-      var _super = _createSuper(ISOWeekParser);
+      _inherits$k(ISOWeekParser, _Parser);
+      var _super = _createSuper$k(ISOWeekParser);
       function ISOWeekParser() {
         var _this;
-        _classCallCheck(this, ISOWeekParser);
+        _classCallCheck$k(this, ISOWeekParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 100);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
+        _defineProperty$k(_assertThisInitialized$k(_this), "priority", 100);
+        _defineProperty$k(_assertThisInitialized$k(_this), "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(ISOWeekParser, [{
+      _createClass$k(ISOWeekParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8568,26 +9752,134 @@
       return ISOWeekParser;
     }(Parser$1);
 
-    var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var DAYS_IN_MONTH_LEAP_YEAR = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    function _typeof$m(obj) {
+      "@babel/helpers - typeof";
 
-    // Day of the month
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$m = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$m = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$m(obj);
+    }
+    function _classCallCheck$j(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$j(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$j(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$j(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$j(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$j(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$k(subClass, superClass);
+    }
+    function _setPrototypeOf$k(o, p) {
+      _setPrototypeOf$k = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$k(o, p);
+    }
+    function _createSuper$j(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$k();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$j(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$j(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$j(this, result);
+      };
+    }
+    function _possibleConstructorReturn$j(self, call) {
+      if (call && (_typeof$m(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$j(self);
+    }
+    function _assertThisInitialized$j(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$k() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$j(o) {
+      _getPrototypeOf$j = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$j(o);
+    }
+    function _defineProperty$j(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+    var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var DAYS_IN_MONTH_LEAP_YEAR = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // Day of the month
+
     var DateParser = /*#__PURE__*/function (_Parser) {
-      _inherits(DateParser, _Parser);
-      var _super = _createSuper(DateParser);
+      _inherits$j(DateParser, _Parser);
+      var _super = _createSuper$j(DateParser);
       function DateParser() {
         var _this;
-        _classCallCheck(this, DateParser);
+        _classCallCheck$j(this, DateParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "subPriority", 1);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$j(_assertThisInitialized$j(_this), "priority", 90);
+        _defineProperty$j(_assertThisInitialized$j(_this), "subPriority", 1);
+        _defineProperty$j(_assertThisInitialized$j(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'w', 'I', 'D', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(DateParser, [{
+      _createClass$j(DateParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8624,22 +9916,131 @@
       return DateParser;
     }(Parser$1);
 
+    function _typeof$l(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$l = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$l = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$l(obj);
+    }
+    function _classCallCheck$i(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$i(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$i(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$i(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$i(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$i(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$j(subClass, superClass);
+    }
+    function _setPrototypeOf$j(o, p) {
+      _setPrototypeOf$j = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$j(o, p);
+    }
+    function _createSuper$i(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$j();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$i(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$i(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$i(this, result);
+      };
+    }
+    function _possibleConstructorReturn$i(self, call) {
+      if (call && (_typeof$l(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$i(self);
+    }
+    function _assertThisInitialized$i(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$j() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$i(o) {
+      _getPrototypeOf$i = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$i(o);
+    }
+    function _defineProperty$i(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var DayOfYearParser = /*#__PURE__*/function (_Parser) {
-      _inherits(DayOfYearParser, _Parser);
-      var _super = _createSuper(DayOfYearParser);
+      _inherits$i(DayOfYearParser, _Parser);
+      var _super = _createSuper$i(DayOfYearParser);
       function DayOfYearParser() {
         var _this;
-        _classCallCheck(this, DayOfYearParser);
+        _classCallCheck$i(this, DayOfYearParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "subpriority", 1);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'L', 'w', 'I', 'd', 'E', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$i(_assertThisInitialized$i(_this), "priority", 90);
+        _defineProperty$i(_assertThisInitialized$i(_this), "subpriority", 1);
+        _defineProperty$i(_assertThisInitialized$i(_this), "incompatibleTokens", ['Y', 'R', 'q', 'Q', 'M', 'L', 'w', 'I', 'd', 'E', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(DayOfYearParser, [{
+      _createClass$i(DayOfYearParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8680,9 +10081,8 @@
       var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
       requiredArgs(2, arguments);
       var defaultOptions = getDefaultOptions();
-      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0);
+      var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -8696,21 +10096,131 @@
       return date;
     }
 
+    function _typeof$k(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$k = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$k = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$k(obj);
+    }
+    function _classCallCheck$h(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$h(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$h(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$h(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$h(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$h(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$i(subClass, superClass);
+    }
+    function _setPrototypeOf$i(o, p) {
+      _setPrototypeOf$i = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$i(o, p);
+    }
+    function _createSuper$h(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$i();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$h(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$h(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$h(this, result);
+      };
+    }
+    function _possibleConstructorReturn$h(self, call) {
+      if (call && (_typeof$k(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$h(self);
+    }
+    function _assertThisInitialized$h(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$i() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$h(o) {
+      _getPrototypeOf$h = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$h(o);
+    }
+    function _defineProperty$h(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var DayParser = /*#__PURE__*/function (_Parser) {
-      _inherits(DayParser, _Parser);
-      var _super = _createSuper(DayParser);
+      _inherits$h(DayParser, _Parser);
+      var _super = _createSuper$h(DayParser);
       function DayParser() {
         var _this;
-        _classCallCheck(this, DayParser);
+        _classCallCheck$h(this, DayParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['D', 'i', 'e', 'c', 't', 'T']);
+        _defineProperty$h(_assertThisInitialized$h(_this), "priority", 90);
+        _defineProperty$h(_assertThisInitialized$h(_this), "incompatibleTokens", ['D', 'i', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(DayParser, [{
+      _createClass$h(DayParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -8729,12 +10239,14 @@
                 context: 'formatting'
               });
             // T
+
             case 'EEEEE':
               return match.day(dateString, {
                 width: 'narrow',
                 context: 'formatting'
               });
             // Tu
+
             case 'EEEEEE':
               return match.day(dateString, {
                 width: 'short',
@@ -8744,6 +10256,7 @@
                 context: 'formatting'
               });
             // Tuesday
+
             case 'EEEE':
             default:
               return match.day(dateString, {
@@ -8777,21 +10290,131 @@
       return DayParser;
     }(Parser$1);
 
+    function _typeof$j(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$j = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$j = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$j(obj);
+    }
+    function _classCallCheck$g(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$g(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$g(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$g(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$g(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$g(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$h(subClass, superClass);
+    }
+    function _setPrototypeOf$h(o, p) {
+      _setPrototypeOf$h = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$h(o, p);
+    }
+    function _createSuper$g(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$h();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$g(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$g(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$g(this, result);
+      };
+    }
+    function _possibleConstructorReturn$g(self, call) {
+      if (call && (_typeof$j(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$g(self);
+    }
+    function _assertThisInitialized$g(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$h() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$g(o) {
+      _getPrototypeOf$g = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$g(o);
+    }
+    function _defineProperty$g(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var LocalDayParser = /*#__PURE__*/function (_Parser) {
-      _inherits(LocalDayParser, _Parser);
-      var _super = _createSuper(LocalDayParser);
+      _inherits$g(LocalDayParser, _Parser);
+      var _super = _createSuper$g(LocalDayParser);
       function LocalDayParser() {
         var _this;
-        _classCallCheck(this, LocalDayParser);
+        _classCallCheck$g(this, LocalDayParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'c', 't', 'T']);
+        _defineProperty$g(_assertThisInitialized$g(_this), "priority", 90);
+        _defineProperty$g(_assertThisInitialized$g(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(LocalDayParser, [{
+      _createClass$g(LocalDayParser, [{
         key: "parse",
         value: function parse(dateString, token, match, options) {
           var valueCallback = function valueCallback(value) {
@@ -8805,11 +10428,13 @@
               // 03
               return mapValue(parseNDigits(token.length, dateString), valueCallback);
             // 3rd
+
             case 'eo':
               return mapValue(match.ordinalNumber(dateString, {
                 unit: 'day'
               }), valueCallback);
             // Tue
+
             case 'eee':
               return match.day(dateString, {
                 width: 'abbreviated',
@@ -8822,12 +10447,14 @@
                 context: 'formatting'
               });
             // T
+
             case 'eeeee':
               return match.day(dateString, {
                 width: 'narrow',
                 context: 'formatting'
               });
             // Tu
+
             case 'eeeeee':
               return match.day(dateString, {
                 width: 'short',
@@ -8837,6 +10464,7 @@
                 context: 'formatting'
               });
             // Tuesday
+
             case 'eeee':
             default:
               return match.day(dateString, {
@@ -8870,21 +10498,131 @@
       return LocalDayParser;
     }(Parser$1);
 
+    function _typeof$i(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$i = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$i = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$i(obj);
+    }
+    function _classCallCheck$f(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$f(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$f(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$f(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$f(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$f(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$g(subClass, superClass);
+    }
+    function _setPrototypeOf$g(o, p) {
+      _setPrototypeOf$g = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$g(o, p);
+    }
+    function _createSuper$f(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$g();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$f(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$f(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$f(this, result);
+      };
+    }
+    function _possibleConstructorReturn$f(self, call) {
+      if (call && (_typeof$i(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$f(self);
+    }
+    function _assertThisInitialized$f(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$g() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$f(o) {
+      _getPrototypeOf$f = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$f(o);
+    }
+    function _defineProperty$f(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var StandAloneLocalDayParser = /*#__PURE__*/function (_Parser) {
-      _inherits(StandAloneLocalDayParser, _Parser);
-      var _super = _createSuper(StandAloneLocalDayParser);
+      _inherits$f(StandAloneLocalDayParser, _Parser);
+      var _super = _createSuper$f(StandAloneLocalDayParser);
       function StandAloneLocalDayParser() {
         var _this;
-        _classCallCheck(this, StandAloneLocalDayParser);
+        _classCallCheck$f(this, StandAloneLocalDayParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'e', 't', 'T']);
+        _defineProperty$f(_assertThisInitialized$f(_this), "priority", 90);
+        _defineProperty$f(_assertThisInitialized$f(_this), "incompatibleTokens", ['y', 'R', 'u', 'q', 'Q', 'M', 'L', 'I', 'd', 'D', 'E', 'i', 'e', 't', 'T']);
         return _this;
       }
-      _createClass(StandAloneLocalDayParser, [{
+      _createClass$f(StandAloneLocalDayParser, [{
         key: "parse",
         value: function parse(dateString, token, match, options) {
           var valueCallback = function valueCallback(value) {
@@ -8898,11 +10636,13 @@
               // 03
               return mapValue(parseNDigits(token.length, dateString), valueCallback);
             // 3rd
+
             case 'co':
               return mapValue(match.ordinalNumber(dateString, {
                 unit: 'day'
               }), valueCallback);
             // Tue
+
             case 'ccc':
               return match.day(dateString, {
                 width: 'abbreviated',
@@ -8915,12 +10655,14 @@
                 context: 'standalone'
               });
             // T
+
             case 'ccccc':
               return match.day(dateString, {
                 width: 'narrow',
                 context: 'standalone'
               });
             // Tu
+
             case 'cccccc':
               return match.day(dateString, {
                 width: 'short',
@@ -8930,6 +10672,7 @@
                 context: 'standalone'
               });
             // Tuesday
+
             case 'cccc':
             default:
               return match.day(dateString, {
@@ -8979,21 +10722,131 @@
       return date;
     }
 
+    function _typeof$h(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$h = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$h = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$h(obj);
+    }
+    function _classCallCheck$e(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$e(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$e(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$e(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$e(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$e(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$f(subClass, superClass);
+    }
+    function _setPrototypeOf$f(o, p) {
+      _setPrototypeOf$f = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$f(o, p);
+    }
+    function _createSuper$e(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$f();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$e(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$e(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$e(this, result);
+      };
+    }
+    function _possibleConstructorReturn$e(self, call) {
+      if (call && (_typeof$h(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$e(self);
+    }
+    function _assertThisInitialized$e(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$f() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$e(o) {
+      _getPrototypeOf$e = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$e(o);
+    }
+    function _defineProperty$e(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var ISODayParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ISODayParser, _Parser);
-      var _super = _createSuper(ISODayParser);
+      _inherits$e(ISODayParser, _Parser);
+      var _super = _createSuper$e(ISODayParser);
       function ISODayParser() {
         var _this;
-        _classCallCheck(this, ISODayParser);
+        _classCallCheck$e(this, ISODayParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 90);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'E', 'e', 'c', 't', 'T']);
+        _defineProperty$e(_assertThisInitialized$e(_this), "priority", 90);
+        _defineProperty$e(_assertThisInitialized$e(_this), "incompatibleTokens", ['y', 'Y', 'u', 'q', 'Q', 'M', 'L', 'w', 'd', 'D', 'E', 'e', 'c', 't', 'T']);
         return _this;
       }
-      _createClass(ISODayParser, [{
+      _createClass$e(ISODayParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           var valueCallback = function valueCallback(value) {
@@ -9009,11 +10862,13 @@
               // 02
               return parseNDigits(token.length, dateString);
             // 2nd
+
             case 'io':
               return match.ordinalNumber(dateString, {
                 unit: 'day'
               });
             // Tue
+
             case 'iii':
               return mapValue(match.day(dateString, {
                 width: 'abbreviated',
@@ -9026,12 +10881,14 @@
                 context: 'formatting'
               }), valueCallback);
             // T
+
             case 'iiiii':
               return mapValue(match.day(dateString, {
                 width: 'narrow',
                 context: 'formatting'
               }), valueCallback);
             // Tu
+
             case 'iiiiii':
               return mapValue(match.day(dateString, {
                 width: 'short',
@@ -9041,6 +10898,7 @@
                 context: 'formatting'
               }), valueCallback);
             // Tuesday
+
             case 'iiii':
             default:
               return mapValue(match.day(dateString, {
@@ -9074,21 +10932,130 @@
       return ISODayParser;
     }(Parser$1);
 
+    function _typeof$g(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$g = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$g = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$g(obj);
+    }
+    function _classCallCheck$d(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$d(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$d(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$d(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$d(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$d(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$e(subClass, superClass);
+    }
+    function _setPrototypeOf$e(o, p) {
+      _setPrototypeOf$e = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$e(o, p);
+    }
+    function _createSuper$d(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$e();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$d(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$d(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$d(this, result);
+      };
+    }
+    function _possibleConstructorReturn$d(self, call) {
+      if (call && (_typeof$g(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$d(self);
+    }
+    function _assertThisInitialized$d(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$e() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$d(o) {
+      _getPrototypeOf$d = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$d(o);
+    }
+    function _defineProperty$d(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var AMPMParser = /*#__PURE__*/function (_Parser) {
-      _inherits(AMPMParser, _Parser);
-      var _super = _createSuper(AMPMParser);
+      _inherits$d(AMPMParser, _Parser);
+      var _super = _createSuper$d(AMPMParser);
       function AMPMParser() {
         var _this;
-        _classCallCheck(this, AMPMParser);
+        _classCallCheck$d(this, AMPMParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 80);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['b', 'B', 'H', 'k', 't', 'T']);
+        _defineProperty$d(_assertThisInitialized$d(_this), "priority", 80);
+        _defineProperty$d(_assertThisInitialized$d(_this), "incompatibleTokens", ['b', 'B', 'H', 'k', 't', 'T']);
         return _this;
       }
-      _createClass(AMPMParser, [{
+      _createClass$d(AMPMParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9131,21 +11098,130 @@
       return AMPMParser;
     }(Parser$1);
 
+    function _typeof$f(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$f = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$f = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$f(obj);
+    }
+    function _classCallCheck$c(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$c(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$c(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$c(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$c(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$c(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$d(subClass, superClass);
+    }
+    function _setPrototypeOf$d(o, p) {
+      _setPrototypeOf$d = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$d(o, p);
+    }
+    function _createSuper$c(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$d();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$c(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$c(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$c(this, result);
+      };
+    }
+    function _possibleConstructorReturn$c(self, call) {
+      if (call && (_typeof$f(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$c(self);
+    }
+    function _assertThisInitialized$c(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$d() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$c(o) {
+      _getPrototypeOf$c = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$c(o);
+    }
+    function _defineProperty$c(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var AMPMMidnightParser = /*#__PURE__*/function (_Parser) {
-      _inherits(AMPMMidnightParser, _Parser);
-      var _super = _createSuper(AMPMMidnightParser);
+      _inherits$c(AMPMMidnightParser, _Parser);
+      var _super = _createSuper$c(AMPMMidnightParser);
       function AMPMMidnightParser() {
         var _this;
-        _classCallCheck(this, AMPMMidnightParser);
+        _classCallCheck$c(this, AMPMMidnightParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 80);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['a', 'B', 'H', 'k', 't', 'T']);
+        _defineProperty$c(_assertThisInitialized$c(_this), "priority", 80);
+        _defineProperty$c(_assertThisInitialized$c(_this), "incompatibleTokens", ['a', 'B', 'H', 'k', 't', 'T']);
         return _this;
       }
-      _createClass(AMPMMidnightParser, [{
+      _createClass$c(AMPMMidnightParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9188,21 +11264,131 @@
       return AMPMMidnightParser;
     }(Parser$1);
 
+    function _typeof$e(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$e = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$e = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$e(obj);
+    }
+    function _classCallCheck$b(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$b(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$b(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$b(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$b(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$b(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$c(subClass, superClass);
+    }
+    function _setPrototypeOf$c(o, p) {
+      _setPrototypeOf$c = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$c(o, p);
+    }
+    function _createSuper$b(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$c();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$b(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$b(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$b(this, result);
+      };
+    }
+    function _possibleConstructorReturn$b(self, call) {
+      if (call && (_typeof$e(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$b(self);
+    }
+    function _assertThisInitialized$b(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$c() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$b(o) {
+      _getPrototypeOf$b = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$b(o);
+    }
+    function _defineProperty$b(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var DayPeriodParser = /*#__PURE__*/function (_Parser) {
-      _inherits(DayPeriodParser, _Parser);
-      var _super = _createSuper(DayPeriodParser);
+      _inherits$b(DayPeriodParser, _Parser);
+      var _super = _createSuper$b(DayPeriodParser);
       function DayPeriodParser() {
         var _this;
-        _classCallCheck(this, DayPeriodParser);
+        _classCallCheck$b(this, DayPeriodParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 80);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['a', 'b', 't', 'T']);
+        _defineProperty$b(_assertThisInitialized$b(_this), "priority", 80);
+        _defineProperty$b(_assertThisInitialized$b(_this), "incompatibleTokens", ['a', 'b', 't', 'T']);
         return _this;
       }
-      _createClass(DayPeriodParser, [{
+      _createClass$b(DayPeriodParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9245,21 +11431,130 @@
       return DayPeriodParser;
     }(Parser$1);
 
+    function _typeof$d(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$d = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$d = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$d(obj);
+    }
+    function _classCallCheck$a(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$a(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$a(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$a(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$a(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$a(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$b(subClass, superClass);
+    }
+    function _setPrototypeOf$b(o, p) {
+      _setPrototypeOf$b = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$b(o, p);
+    }
+    function _createSuper$a(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$b();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$a(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$a(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$a(this, result);
+      };
+    }
+    function _possibleConstructorReturn$a(self, call) {
+      if (call && (_typeof$d(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$a(self);
+    }
+    function _assertThisInitialized$a(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$b() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$a(o) {
+      _getPrototypeOf$a = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$a(o);
+    }
+    function _defineProperty$a(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var Hour1to12Parser = /*#__PURE__*/function (_Parser) {
-      _inherits(Hour1to12Parser, _Parser);
-      var _super = _createSuper(Hour1to12Parser);
+      _inherits$a(Hour1to12Parser, _Parser);
+      var _super = _createSuper$a(Hour1to12Parser);
       function Hour1to12Parser() {
         var _this;
-        _classCallCheck(this, Hour1to12Parser);
+        _classCallCheck$a(this, Hour1to12Parser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 70);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['H', 'K', 'k', 't', 'T']);
+        _defineProperty$a(_assertThisInitialized$a(_this), "priority", 70);
+        _defineProperty$a(_assertThisInitialized$a(_this), "incompatibleTokens", ['H', 'K', 'k', 't', 'T']);
         return _this;
       }
-      _createClass(Hour1to12Parser, [{
+      _createClass$a(Hour1to12Parser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9295,21 +11590,130 @@
       return Hour1to12Parser;
     }(Parser$1);
 
+    function _typeof$c(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$c = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$c = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$c(obj);
+    }
+    function _classCallCheck$9(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$9(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$9(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$9(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$9(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$9(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$a(subClass, superClass);
+    }
+    function _setPrototypeOf$a(o, p) {
+      _setPrototypeOf$a = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$a(o, p);
+    }
+    function _createSuper$9(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$a();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$9(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$9(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$9(this, result);
+      };
+    }
+    function _possibleConstructorReturn$9(self, call) {
+      if (call && (_typeof$c(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$9(self);
+    }
+    function _assertThisInitialized$9(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$a() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$9(o) {
+      _getPrototypeOf$9 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$9(o);
+    }
+    function _defineProperty$9(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var Hour0to23Parser = /*#__PURE__*/function (_Parser) {
-      _inherits(Hour0to23Parser, _Parser);
-      var _super = _createSuper(Hour0to23Parser);
+      _inherits$9(Hour0to23Parser, _Parser);
+      var _super = _createSuper$9(Hour0to23Parser);
       function Hour0to23Parser() {
         var _this;
-        _classCallCheck(this, Hour0to23Parser);
+        _classCallCheck$9(this, Hour0to23Parser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 70);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['a', 'b', 'h', 'K', 'k', 't', 'T']);
+        _defineProperty$9(_assertThisInitialized$9(_this), "priority", 70);
+        _defineProperty$9(_assertThisInitialized$9(_this), "incompatibleTokens", ['a', 'b', 'h', 'K', 'k', 't', 'T']);
         return _this;
       }
-      _createClass(Hour0to23Parser, [{
+      _createClass$9(Hour0to23Parser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9338,21 +11742,130 @@
       return Hour0to23Parser;
     }(Parser$1);
 
+    function _typeof$b(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$b = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$b = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$b(obj);
+    }
+    function _classCallCheck$8(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$8(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$8(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$8(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$8(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$8(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$9(subClass, superClass);
+    }
+    function _setPrototypeOf$9(o, p) {
+      _setPrototypeOf$9 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$9(o, p);
+    }
+    function _createSuper$8(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$9();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$8(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$8(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$8(this, result);
+      };
+    }
+    function _possibleConstructorReturn$8(self, call) {
+      if (call && (_typeof$b(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$8(self);
+    }
+    function _assertThisInitialized$8(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$9() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$8(o) {
+      _getPrototypeOf$8 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$8(o);
+    }
+    function _defineProperty$8(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var Hour0To11Parser = /*#__PURE__*/function (_Parser) {
-      _inherits(Hour0To11Parser, _Parser);
-      var _super = _createSuper(Hour0To11Parser);
+      _inherits$8(Hour0To11Parser, _Parser);
+      var _super = _createSuper$8(Hour0To11Parser);
       function Hour0To11Parser() {
         var _this;
-        _classCallCheck(this, Hour0To11Parser);
+        _classCallCheck$8(this, Hour0To11Parser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 70);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['h', 'H', 'k', 't', 'T']);
+        _defineProperty$8(_assertThisInitialized$8(_this), "priority", 70);
+        _defineProperty$8(_assertThisInitialized$8(_this), "incompatibleTokens", ['h', 'H', 'k', 't', 'T']);
         return _this;
       }
-      _createClass(Hour0To11Parser, [{
+      _createClass$8(Hour0To11Parser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9386,21 +11899,130 @@
       return Hour0To11Parser;
     }(Parser$1);
 
+    function _typeof$a(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$a = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$a = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$a(obj);
+    }
+    function _classCallCheck$7(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$7(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$7(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$7(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$7(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$7(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$8(subClass, superClass);
+    }
+    function _setPrototypeOf$8(o, p) {
+      _setPrototypeOf$8 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$8(o, p);
+    }
+    function _createSuper$7(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$8();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$7(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$7(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$7(this, result);
+      };
+    }
+    function _possibleConstructorReturn$7(self, call) {
+      if (call && (_typeof$a(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$7(self);
+    }
+    function _assertThisInitialized$7(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$8() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$7(o) {
+      _getPrototypeOf$7 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$7(o);
+    }
+    function _defineProperty$7(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var Hour1To24Parser = /*#__PURE__*/function (_Parser) {
-      _inherits(Hour1To24Parser, _Parser);
-      var _super = _createSuper(Hour1To24Parser);
+      _inherits$7(Hour1To24Parser, _Parser);
+      var _super = _createSuper$7(Hour1To24Parser);
       function Hour1To24Parser() {
         var _this;
-        _classCallCheck(this, Hour1To24Parser);
+        _classCallCheck$7(this, Hour1To24Parser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 70);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['a', 'b', 'h', 'H', 'K', 't', 'T']);
+        _defineProperty$7(_assertThisInitialized$7(_this), "priority", 70);
+        _defineProperty$7(_assertThisInitialized$7(_this), "incompatibleTokens", ['a', 'b', 'h', 'H', 'K', 't', 'T']);
         return _this;
       }
-      _createClass(Hour1To24Parser, [{
+      _createClass$7(Hour1To24Parser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9430,21 +12052,130 @@
       return Hour1To24Parser;
     }(Parser$1);
 
+    function _typeof$9(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$9 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$9 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$9(obj);
+    }
+    function _classCallCheck$6(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$6(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$6(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$6(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$6(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$6(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$7(subClass, superClass);
+    }
+    function _setPrototypeOf$7(o, p) {
+      _setPrototypeOf$7 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$7(o, p);
+    }
+    function _createSuper$6(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$7();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$6(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$6(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$6(this, result);
+      };
+    }
+    function _possibleConstructorReturn$6(self, call) {
+      if (call && (_typeof$9(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$6(self);
+    }
+    function _assertThisInitialized$6(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$7() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$6(o) {
+      _getPrototypeOf$6 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$6(o);
+    }
+    function _defineProperty$6(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var MinuteParser = /*#__PURE__*/function (_Parser) {
-      _inherits(MinuteParser, _Parser);
-      var _super = _createSuper(MinuteParser);
+      _inherits$6(MinuteParser, _Parser);
+      var _super = _createSuper$6(MinuteParser);
       function MinuteParser() {
         var _this;
-        _classCallCheck(this, MinuteParser);
+        _classCallCheck$6(this, MinuteParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 60);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['t', 'T']);
+        _defineProperty$6(_assertThisInitialized$6(_this), "priority", 60);
+        _defineProperty$6(_assertThisInitialized$6(_this), "incompatibleTokens", ['t', 'T']);
         return _this;
       }
-      _createClass(MinuteParser, [{
+      _createClass$6(MinuteParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9473,21 +12204,130 @@
       return MinuteParser;
     }(Parser$1);
 
+    function _typeof$8(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$8 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$8 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$8(obj);
+    }
+    function _classCallCheck$5(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$5(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$5(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$5(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$5(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$5(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$6(subClass, superClass);
+    }
+    function _setPrototypeOf$6(o, p) {
+      _setPrototypeOf$6 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$6(o, p);
+    }
+    function _createSuper$5(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$6();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$5(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$5(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$5(this, result);
+      };
+    }
+    function _possibleConstructorReturn$5(self, call) {
+      if (call && (_typeof$8(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$5(self);
+    }
+    function _assertThisInitialized$5(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$6() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$5(o) {
+      _getPrototypeOf$5 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$5(o);
+    }
+    function _defineProperty$5(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var SecondParser = /*#__PURE__*/function (_Parser) {
-      _inherits(SecondParser, _Parser);
-      var _super = _createSuper(SecondParser);
+      _inherits$5(SecondParser, _Parser);
+      var _super = _createSuper$5(SecondParser);
       function SecondParser() {
         var _this;
-        _classCallCheck(this, SecondParser);
+        _classCallCheck$5(this, SecondParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 50);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['t', 'T']);
+        _defineProperty$5(_assertThisInitialized$5(_this), "priority", 50);
+        _defineProperty$5(_assertThisInitialized$5(_this), "incompatibleTokens", ['t', 'T']);
         return _this;
       }
-      _createClass(SecondParser, [{
+      _createClass$5(SecondParser, [{
         key: "parse",
         value: function parse(dateString, token, match) {
           switch (token) {
@@ -9516,21 +12356,130 @@
       return SecondParser;
     }(Parser$1);
 
+    function _typeof$7(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$7 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$7 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$7(obj);
+    }
+    function _classCallCheck$4(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$4(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$4(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$4(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$4(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$4(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$5(subClass, superClass);
+    }
+    function _setPrototypeOf$5(o, p) {
+      _setPrototypeOf$5 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$5(o, p);
+    }
+    function _createSuper$4(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$5();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$4(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$4(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$4(this, result);
+      };
+    }
+    function _possibleConstructorReturn$4(self, call) {
+      if (call && (_typeof$7(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$4(self);
+    }
+    function _assertThisInitialized$4(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$5() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$4(o) {
+      _getPrototypeOf$4 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$4(o);
+    }
+    function _defineProperty$4(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var FractionOfSecondParser = /*#__PURE__*/function (_Parser) {
-      _inherits(FractionOfSecondParser, _Parser);
-      var _super = _createSuper(FractionOfSecondParser);
+      _inherits$4(FractionOfSecondParser, _Parser);
+      var _super = _createSuper$4(FractionOfSecondParser);
       function FractionOfSecondParser() {
         var _this;
-        _classCallCheck(this, FractionOfSecondParser);
+        _classCallCheck$4(this, FractionOfSecondParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 30);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['t', 'T']);
+        _defineProperty$4(_assertThisInitialized$4(_this), "priority", 30);
+        _defineProperty$4(_assertThisInitialized$4(_this), "incompatibleTokens", ['t', 'T']);
         return _this;
       }
-      _createClass(FractionOfSecondParser, [{
+      _createClass$4(FractionOfSecondParser, [{
         key: "parse",
         value: function parse(dateString, token) {
           var valueCallback = function valueCallback(value) {
@@ -9548,21 +12497,131 @@
       return FractionOfSecondParser;
     }(Parser$1);
 
+    function _typeof$6(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$6 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$6 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$6(obj);
+    }
+    function _classCallCheck$3(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$3(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$3(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$3(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$3(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$3(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$4(subClass, superClass);
+    }
+    function _setPrototypeOf$4(o, p) {
+      _setPrototypeOf$4 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$4(o, p);
+    }
+    function _createSuper$3(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$4();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$3(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$3(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$3(this, result);
+      };
+    }
+    function _possibleConstructorReturn$3(self, call) {
+      if (call && (_typeof$6(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$3(self);
+    }
+    function _assertThisInitialized$3(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$4() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$3(o) {
+      _getPrototypeOf$3 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$3(o);
+    }
+    function _defineProperty$3(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var ISOTimezoneWithZParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ISOTimezoneWithZParser, _Parser);
-      var _super = _createSuper(ISOTimezoneWithZParser);
+      _inherits$3(ISOTimezoneWithZParser, _Parser);
+      var _super = _createSuper$3(ISOTimezoneWithZParser);
       function ISOTimezoneWithZParser() {
         var _this;
-        _classCallCheck(this, ISOTimezoneWithZParser);
+        _classCallCheck$3(this, ISOTimezoneWithZParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 10);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['t', 'T', 'x']);
+        _defineProperty$3(_assertThisInitialized$3(_this), "priority", 10);
+        _defineProperty$3(_assertThisInitialized$3(_this), "incompatibleTokens", ['t', 'T', 'x']);
         return _this;
       }
-      _createClass(ISOTimezoneWithZParser, [{
+      _createClass$3(ISOTimezoneWithZParser, [{
         key: "parse",
         value: function parse(dateString, token) {
           switch (token) {
@@ -9591,21 +12650,131 @@
       return ISOTimezoneWithZParser;
     }(Parser$1);
 
+    function _typeof$5(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$5 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$5 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$5(obj);
+    }
+    function _classCallCheck$2(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$2(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$2(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$2(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$2(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$2(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$3(subClass, superClass);
+    }
+    function _setPrototypeOf$3(o, p) {
+      _setPrototypeOf$3 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$3(o, p);
+    }
+    function _createSuper$2(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$3();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$2(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$2(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$2(this, result);
+      };
+    }
+    function _possibleConstructorReturn$2(self, call) {
+      if (call && (_typeof$5(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$2(self);
+    }
+    function _assertThisInitialized$2(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$3() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$2(o) {
+      _getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$2(o);
+    }
+    function _defineProperty$2(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
+
     var ISOTimezoneParser = /*#__PURE__*/function (_Parser) {
-      _inherits(ISOTimezoneParser, _Parser);
-      var _super = _createSuper(ISOTimezoneParser);
+      _inherits$2(ISOTimezoneParser, _Parser);
+      var _super = _createSuper$2(ISOTimezoneParser);
       function ISOTimezoneParser() {
         var _this;
-        _classCallCheck(this, ISOTimezoneParser);
+        _classCallCheck$2(this, ISOTimezoneParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 10);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", ['t', 'T', 'X']);
+        _defineProperty$2(_assertThisInitialized$2(_this), "priority", 10);
+        _defineProperty$2(_assertThisInitialized$2(_this), "incompatibleTokens", ['t', 'T', 'X']);
         return _this;
       }
-      _createClass(ISOTimezoneParser, [{
+      _createClass$2(ISOTimezoneParser, [{
         key: "parse",
         value: function parse(dateString, token) {
           switch (token) {
@@ -9634,21 +12803,130 @@
       return ISOTimezoneParser;
     }(Parser$1);
 
+    function _typeof$4(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$4 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$4 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$4(obj);
+    }
+    function _classCallCheck$1(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties$1(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass$1(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties$1(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits$1(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$2(subClass, superClass);
+    }
+    function _setPrototypeOf$2(o, p) {
+      _setPrototypeOf$2 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$2(o, p);
+    }
+    function _createSuper$1(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$2();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf$1(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf$1(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn$1(this, result);
+      };
+    }
+    function _possibleConstructorReturn$1(self, call) {
+      if (call && (_typeof$4(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized$1(self);
+    }
+    function _assertThisInitialized$1(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$2() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf$1(o) {
+      _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf$1(o);
+    }
+    function _defineProperty$1(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var TimestampSecondsParser = /*#__PURE__*/function (_Parser) {
-      _inherits(TimestampSecondsParser, _Parser);
-      var _super = _createSuper(TimestampSecondsParser);
+      _inherits$1(TimestampSecondsParser, _Parser);
+      var _super = _createSuper$1(TimestampSecondsParser);
       function TimestampSecondsParser() {
         var _this;
-        _classCallCheck(this, TimestampSecondsParser);
+        _classCallCheck$1(this, TimestampSecondsParser);
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
         _this = _super.call.apply(_super, [this].concat(args));
-        _defineProperty(_assertThisInitialized(_this), "priority", 40);
-        _defineProperty(_assertThisInitialized(_this), "incompatibleTokens", '*');
+        _defineProperty$1(_assertThisInitialized$1(_this), "priority", 40);
+        _defineProperty$1(_assertThisInitialized$1(_this), "incompatibleTokens", '*');
         return _this;
       }
-      _createClass(TimestampSecondsParser, [{
+      _createClass$1(TimestampSecondsParser, [{
         key: "parse",
         value: function parse(dateString) {
           return parseAnyDigitsSigned(dateString);
@@ -9664,6 +12942,115 @@
       return TimestampSecondsParser;
     }(Parser$1);
 
+    function _typeof$3(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$3 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$3 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$3(obj);
+    }
+    function _classCallCheck(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+    function _defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    function _createClass(Constructor, protoProps, staticProps) {
+      if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) _defineProperties(Constructor, staticProps);
+      return Constructor;
+    }
+    function _inherits(subClass, superClass) {
+      if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+      subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+          value: subClass,
+          writable: true,
+          configurable: true
+        }
+      });
+      if (superClass) _setPrototypeOf$1(subClass, superClass);
+    }
+    function _setPrototypeOf$1(o, p) {
+      _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf$1(o, p);
+    }
+    function _createSuper(Derived) {
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$1();
+      return function _createSuperInternal() {
+        var Super = _getPrototypeOf(Derived),
+          result;
+        if (hasNativeReflectConstruct) {
+          var NewTarget = _getPrototypeOf(this).constructor;
+          result = Reflect.construct(Super, arguments, NewTarget);
+        } else {
+          result = Super.apply(this, arguments);
+        }
+        return _possibleConstructorReturn(this, result);
+      };
+    }
+    function _possibleConstructorReturn(self, call) {
+      if (call && (_typeof$3(call) === "object" || typeof call === "function")) {
+        return call;
+      }
+      return _assertThisInitialized(self);
+    }
+    function _assertThisInitialized(self) {
+      if (self === void 0) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+      }
+      return self;
+    }
+    function _isNativeReflectConstruct$1() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _getPrototypeOf(o) {
+      _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+      return _getPrototypeOf(o);
+    }
+    function _defineProperty(obj, key, value) {
+      if (key in obj) {
+        Object.defineProperty(obj, key, {
+          value: value,
+          enumerable: true,
+          configurable: true,
+          writable: true
+        });
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }
     var TimestampMillisecondsParser = /*#__PURE__*/function (_Parser) {
       _inherits(TimestampMillisecondsParser, _Parser);
       var _super = _createSuper(TimestampMillisecondsParser);
@@ -9737,6 +13124,7 @@
      *   `Y` is supposed to be used in conjunction with `w` and `e`
      *   for week-numbering date specific to the locale.
      */
+
     var parsers = {
       G: new EraParser(),
       y: new YearParser(),
@@ -9771,6 +13159,86 @@
       T: new TimestampMillisecondsParser()
     };
 
+    function _typeof$2(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$2 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$2 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$2(obj);
+    }
+    function _createForOfIteratorHelper(o, allowArrayLike) {
+      var it;
+      if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+        if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") {
+          if (it) o = it;
+          var i = 0;
+          var F = function F() {};
+          return {
+            s: F,
+            n: function n() {
+              if (i >= o.length) return {
+                done: true
+              };
+              return {
+                done: false,
+                value: o[i++]
+              };
+            },
+            e: function e(_e) {
+              throw _e;
+            },
+            f: F
+          };
+        }
+        throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+      }
+      var normalCompletion = true,
+        didErr = false,
+        err;
+      return {
+        s: function s() {
+          it = o[Symbol.iterator]();
+        },
+        n: function n() {
+          var step = it.next();
+          normalCompletion = step.done;
+          return step;
+        },
+        e: function e(_e2) {
+          didErr = true;
+          err = _e2;
+        },
+        f: function f() {
+          try {
+            if (!normalCompletion && it.return != null) it.return();
+          } finally {
+            if (didErr) throw err;
+          }
+        }
+      };
+    }
+    function _unsupportedIterableToArray$1(o, minLen) {
+      if (!o) return;
+      if (typeof o === "string") return _arrayLikeToArray$1(o, minLen);
+      var n = Object.prototype.toString.call(o).slice(8, -1);
+      if (n === "Object" && o.constructor) n = o.constructor.name;
+      if (n === "Map" || n === "Set") return Array.from(o);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen);
+    }
+    function _arrayLikeToArray$1(arr, len) {
+      if (len == null || len > arr.length) len = arr.length;
+      for (var i = 0, arr2 = new Array(len); i < len; i++) {
+        arr2[i] = arr[i];
+      }
+      return arr2;
+    }
     // - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
     //   (one of the certain letters followed by `o`)
     // - (\w)\1* matches any sequences of the same letter
@@ -9781,16 +13249,15 @@
     //   If there is no matching single quote
     //   then the sequence will continue until the end of the string.
     // - . matches any single character unmatched by previous parts of the RegExps
-    var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
 
-    // This RegExp catches symbols escaped by quotes, and also
+    var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g; // This RegExp catches symbols escaped by quotes, and also
     // sequences of symbols P, p, and the combinations like `PPPPPPPppppp`
+
     var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
     var escapedStringRegExp = /^'([^]*?)'?$/;
     var doubleQuoteRegExp = /''/g;
     var notWhitespaceRegExp = /\S/;
     var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
-
     /**
      * @name parse
      * @category Common Helpers
@@ -10092,7 +13559,8 @@
      * })
      * //=> Sun Feb 28 2010 00:00:00
      */
-    function parse$2(dirtyDateString, dirtyFormatString, dirtyReferenceDate, options) {
+
+    function parse$3(dirtyDateString, dirtyFormatString, dirtyReferenceDate, options) {
       var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
       requiredArgs(3, arguments);
       var dateString = String(dirtyDateString);
@@ -10102,15 +13570,13 @@
       if (!locale.match) {
         throw new RangeError('locale must contain match property');
       }
-      var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1);
+      var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1); // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
 
-      // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
       if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
         throw new RangeError('firstWeekContainsDate must be between 1 and 7 inclusively');
       }
-      var weekStartsOn = toInteger((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0);
+      var weekStartsOn = toInteger((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0); // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
 
-      // Test if weekStartsOn is between 0 and 6 _and_ is not NaN
       if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
         throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
       }
@@ -10125,9 +13591,8 @@
         firstWeekContainsDate: firstWeekContainsDate,
         weekStartsOn: weekStartsOn,
         locale: locale
-      };
+      }; // If timezone isn't specified, it will be set to the system timezone
 
-      // If timezone isn't specified, it will be set to the system timezone
       var setters = [new DateToSystemTimezoneSetter()];
       var tokens = formatString.match(longFormattingTokensRegExp).map(function (substring) {
         var firstCharacter = substring[0];
@@ -10178,16 +13643,14 @@
           } else {
             if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
               throw new RangeError('Format string contains an unescaped latin alphabet character `' + firstCharacter + '`');
-            }
+            } // Replace two single quote characters with one single quote character
 
-            // Replace two single quote characters with one single quote character
             if (token === "''") {
               token = "'";
             } else if (firstCharacter === "'") {
               token = cleanEscapedString(token);
-            }
+            } // Cut token from string, or, if string doesn't match the token, return Invalid Date
 
-            // Cut token from string, or, if string doesn't match the token, return Invalid Date
             if (dateString.indexOf(token) === 0) {
               dateString = dateString.slice(token.length);
             } else {
@@ -10199,10 +13662,8 @@
         };
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var _ret = _loop();
-          if (_typeof(_ret) === "object") return _ret.v;
-        }
-
-        // Check if the remaining input contains something other than whitespace
+          if (_typeof$2(_ret) === "object") return _ret.v;
+        } // Check if the remaining input contains something other than whitespace
       } catch (err) {
         _iterator.e(err);
       } finally {
@@ -10229,9 +13690,8 @@
       var date = toDate(dirtyReferenceDate);
       if (isNaN(date.getTime())) {
         return new Date(NaN);
-      }
+      } // Convert the date in system timezone to the same date in UTC+00:00 timezone.
 
-      // Convert the date in system timezone to the same date in UTC+00:00 timezone.
       var utcDate = subMilliseconds(date, getTimezoneOffsetInMilliseconds(date));
       var flags = {};
       var _iterator2 = _createForOfIteratorHelper(uniquePrioritySetters),
@@ -10242,12 +13702,11 @@
           if (!setter.validate(utcDate, subFnOptions)) {
             return new Date(NaN);
           }
-          var result = setter.set(utcDate, flags, subFnOptions);
-          // Result is tuple (date, flags)
+          var result = setter.set(utcDate, flags, subFnOptions); // Result is tuple (date, flags)
+
           if (Array.isArray(result)) {
             utcDate = result[0];
-            assign(flags, result[1]);
-            // Result is date
+            assign(flags, result[1]); // Result is date
           } else {
             utcDate = result;
           }
@@ -10281,6 +13740,7 @@
      * const result = subDays(new Date(2014, 8, 1), 10)
      * //=> Fri Aug 22 2014 00:00:00
      */
+
     function subDays(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -10319,6 +13779,7 @@
      * const result = parseISO('+02014101', { additionalDigits: 1 })
      * //=> Fri Apr 11 2014 00:00:00
      */
+
     function parseISO(argument, options) {
       var _options$additionalDi;
       requiredArgs(1, arguments);
@@ -10353,12 +13814,12 @@
           return new Date(NaN);
         }
       } else {
-        var dirtyDate = new Date(timestamp + time);
-        // js parsed string assuming it's in UTC timezone
+        var dirtyDate = new Date(timestamp + time); // js parsed string assuming it's in UTC timezone
         // but we need it to be parsed in our timezone
         // so we use utc values to build date in our timezone.
         // Year values from 0 to 99 map to the years 1900 to 1999
         // so set year explicitly with setFullYear.
+
         var result = new Date(0);
         result.setFullYear(dirtyDate.getUTCFullYear(), dirtyDate.getUTCMonth(), dirtyDate.getUTCDate());
         result.setHours(dirtyDate.getUTCHours(), dirtyDate.getUTCMinutes(), dirtyDate.getUTCSeconds(), dirtyDate.getUTCMilliseconds());
@@ -10377,10 +13838,9 @@
     function splitDateString(dateString) {
       var dateStrings = {};
       var array = dateString.split(patterns.dateTimeDelimiter);
-      var timeString;
-
-      // The regex match should only return at maximum two array elements.
+      var timeString; // The regex match should only return at maximum two array elements.
       // [date], [time], or [date, time].
+
       if (array.length > 2) {
         return dateStrings;
       }
@@ -10407,16 +13867,15 @@
     }
     function parseYear(dateString, additionalDigits) {
       var regex = new RegExp('^(?:(\\d{4}|[+-]\\d{' + (4 + additionalDigits) + '})|(\\d{2}|[+-]\\d{' + (2 + additionalDigits) + '})$)');
-      var captures = dateString.match(regex);
-      // Invalid ISO-formatted year
+      var captures = dateString.match(regex); // Invalid ISO-formatted year
+
       if (!captures) return {
         year: NaN,
         restDateString: ''
       };
       var year = captures[1] ? parseInt(captures[1]) : null;
-      var century = captures[2] ? parseInt(captures[2]) : null;
+      var century = captures[2] ? parseInt(captures[2]) : null; // either year or century is null, not both
 
-      // either year or century is null, not both
       return {
         year: century === null ? year : century * 100,
         restDateString: dateString.slice((captures[1] || captures[2]).length)
@@ -10425,8 +13884,8 @@
     function parseDate(dateString, year) {
       // Invalid ISO-formatted year
       if (year === null) return new Date(NaN);
-      var captures = dateString.match(dateRegex);
-      // Invalid ISO-formatted string
+      var captures = dateString.match(dateRegex); // Invalid ISO-formatted string
+
       if (!captures) return new Date(NaN);
       var isWeekDate = !!captures[4];
       var dayOfYear = parseDateUnit(captures[1]);
@@ -10485,11 +13944,9 @@
       var diff = (week - 1) * 7 + day + 1 - fourthOfJanuaryDay;
       date.setUTCDate(date.getUTCDate() + diff);
       return date;
-    }
-
-    // Validation functions
-
+    } // Validation functions
     // February is null to handle the leap year (using ||)
+
     var daysInMonths = [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     function isLeapYearIndex(year) {
       return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
@@ -10532,6 +13989,7 @@
      * const result = startOfToday()
      * //=> Mon Oct 6 2014 00:00:00
      */
+
     function startOfToday() {
       return startOfDay(Date.now());
     }
@@ -10584,12 +14042,27 @@
      * const result = subMonths(new Date(2015, 1, 1), 5)
      * //=> Mon Sep 01 2014 00:00:00
      */
+
     function subMonths(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
       return addMonths(dirtyDate, -amount);
     }
 
+    function _typeof$1(obj) {
+      "@babel/helpers - typeof";
+
+      if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof$1 = function _typeof(obj) {
+          return typeof obj;
+        };
+      } else {
+        _typeof$1 = function _typeof(obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+      }
+      return _typeof$1(obj);
+    }
     /**
      * @name sub
      * @category Common Helpers
@@ -10629,24 +14102,22 @@
      * })
      * //=> Mon Sep 1 2014 10:19:50
      */
+
     function sub(date, duration) {
       requiredArgs(2, arguments);
-      if (!duration || _typeof(duration) !== 'object') return new Date(NaN);
+      if (!duration || _typeof$1(duration) !== 'object') return new Date(NaN);
       var years = duration.years ? toInteger(duration.years) : 0;
       var months = duration.months ? toInteger(duration.months) : 0;
       var weeks = duration.weeks ? toInteger(duration.weeks) : 0;
       var days = duration.days ? toInteger(duration.days) : 0;
       var hours = duration.hours ? toInteger(duration.hours) : 0;
       var minutes = duration.minutes ? toInteger(duration.minutes) : 0;
-      var seconds = duration.seconds ? toInteger(duration.seconds) : 0;
+      var seconds = duration.seconds ? toInteger(duration.seconds) : 0; // Subtract years and months
 
-      // Subtract years and months
-      var dateWithoutMonths = subMonths(date, months + years * 12);
+      var dateWithoutMonths = subMonths(date, months + years * 12); // Subtract weeks and days
 
-      // Subtract weeks and days
-      var dateWithoutDays = subDays(dateWithoutMonths, days + weeks * 7);
+      var dateWithoutDays = subDays(dateWithoutMonths, days + weeks * 7); // Subtract hours, minutes and seconds
 
-      // Subtract hours, minutes and seconds
       var minutestoSub = minutes + hours * 60;
       var secondstoSub = seconds + minutestoSub * 60;
       var mstoSub = secondstoSub * 1000;
@@ -10672,6 +14143,7 @@
      * const result = subWeeks(new Date(2014, 8, 1), 4)
      * //=> Mon Aug 04 2014 00:00:00
      */
+
     function subWeeks(dirtyDate, dirtyAmount) {
       requiredArgs(2, arguments);
       var amount = toInteger(dirtyAmount);
@@ -11237,7 +14709,7 @@
       }
     });
 
-    var dist$1 = createCommonjsModule(function (module, exports) {
+    var dist = createCommonjsModule(function (module, exports) {
 
 
     Object.defineProperty(exports, "__esModule", {
@@ -11249,6 +14721,8 @@
 
 
 
+
+    /// <reference types="@nextcloud/typings" />
 
     /**
      * Get an url with webroot to a file in an app
@@ -11440,34 +14914,96 @@
     exports.getRootUrl = getRootUrl;
     });
 
-    unwrapExports(dist$1);
-    dist$1.linkTo;
-    dist$1.imagePath;
-    dist$1.getRootUrl;
-    var dist_4 = dist$1.generateUrl;
-    dist$1.generateRemoteUrl;
-    var dist_6 = dist$1.generateOcsUrl;
-    dist$1.generateFilePath;
+    unwrapExports(dist);
+    dist.linkTo;
+    dist.imagePath;
+    dist.getRootUrl;
+    var dist_4 = dist.generateUrl;
+    dist.generateRemoteUrl;
+    var dist_6 = dist.generateOcsUrl;
+    dist.generateFilePath;
 
-    /*! @license DOMPurify 3.0.4 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.0.4/LICENSE */
+    /*! @license DOMPurify 2.4.5 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.5/LICENSE */
 
-    const {
-      entries,
-      setPrototypeOf,
-      isFrozen,
-      getPrototypeOf,
-      getOwnPropertyDescriptor: getOwnPropertyDescriptor$1
-    } = Object;
-    let {
-      freeze,
-      seal,
-      create
-    } = Object; // eslint-disable-line import/no-mutable-exports
+    function _typeof(obj) {
+      "@babel/helpers - typeof";
 
-    let {
-      apply,
-      construct
-    } = typeof Reflect !== 'undefined' && Reflect;
+      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      }, _typeof(obj);
+    }
+    function _setPrototypeOf(o, p) {
+      _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf(o, p);
+    }
+    function _isNativeReflectConstruct() {
+      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+      if (Reflect.construct.sham) return false;
+      if (typeof Proxy === "function") return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _construct(Parent, args, Class) {
+      if (_isNativeReflectConstruct()) {
+        _construct = Reflect.construct;
+      } else {
+        _construct = function _construct(Parent, args, Class) {
+          var a = [null];
+          a.push.apply(a, args);
+          var Constructor = Function.bind.apply(Parent, a);
+          var instance = new Constructor();
+          if (Class) _setPrototypeOf(instance, Class.prototype);
+          return instance;
+        };
+      }
+      return _construct.apply(null, arguments);
+    }
+    function _toConsumableArray(arr) {
+      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    }
+    function _arrayWithoutHoles(arr) {
+      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+    }
+    function _iterableToArray(iter) {
+      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+    }
+    function _unsupportedIterableToArray(o, minLen) {
+      if (!o) return;
+      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+      var n = Object.prototype.toString.call(o).slice(8, -1);
+      if (n === "Object" && o.constructor) n = o.constructor.name;
+      if (n === "Map" || n === "Set") return Array.from(o);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+    }
+    function _arrayLikeToArray(arr, len) {
+      if (len == null || len > arr.length) len = arr.length;
+      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+      return arr2;
+    }
+    function _nonIterableSpread() {
+      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    var hasOwnProperty$1 = Object.hasOwnProperty,
+      setPrototypeOf = Object.setPrototypeOf,
+      isFrozen = Object.isFrozen,
+      getPrototypeOf = Object.getPrototypeOf,
+      getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor;
+    var freeze = Object.freeze,
+      seal = Object.seal,
+      create = Object.create; // eslint-disable-line import/no-mutable-exports
+
+    var _ref = typeof Reflect !== 'undefined' && Reflect,
+      apply = _ref.apply,
+      construct = _ref.construct;
     if (!apply) {
       apply = function apply(fun, thisValue, args) {
         return fun.apply(thisValue, args);
@@ -11485,20 +15021,20 @@
     }
     if (!construct) {
       construct = function construct(Func, args) {
-        return new Func(...args);
+        return _construct(Func, _toConsumableArray(args));
       };
     }
-    const arrayForEach = unapply(Array.prototype.forEach);
-    const arrayPop = unapply(Array.prototype.pop);
-    const arrayPush = unapply(Array.prototype.push);
-    const stringToLowerCase = unapply(String.prototype.toLowerCase);
-    const stringToString = unapply(String.prototype.toString);
-    const stringMatch = unapply(String.prototype.match);
-    const stringReplace = unapply(String.prototype.replace);
-    const stringIndexOf$1 = unapply(String.prototype.indexOf);
-    const stringTrim$1 = unapply(String.prototype.trim);
-    const regExpTest = unapply(RegExp.prototype.test);
-    const typeErrorCreate = unconstruct(TypeError);
+    var arrayForEach = unapply(Array.prototype.forEach);
+    var arrayPop = unapply(Array.prototype.pop);
+    var arrayPush = unapply(Array.prototype.push);
+    var stringToLowerCase = unapply(String.prototype.toLowerCase);
+    var stringToString = unapply(String.prototype.toString);
+    var stringMatch = unapply(String.prototype.match);
+    var stringReplace = unapply(String.prototype.replace);
+    var stringIndexOf$1 = unapply(String.prototype.indexOf);
+    var stringTrim$1 = unapply(String.prototype.trim);
+    var regExpTest = unapply(RegExp.prototype.test);
+    var typeErrorCreate = unconstruct(TypeError);
     function unapply(func) {
       return function (thisArg) {
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -11518,19 +15054,18 @@
     /* Add properties to a lookup table */
 
     function addToSet(set, array, transformCaseFunc) {
-      var _transformCaseFunc;
-      transformCaseFunc = (_transformCaseFunc = transformCaseFunc) !== null && _transformCaseFunc !== void 0 ? _transformCaseFunc : stringToLowerCase;
+      transformCaseFunc = transformCaseFunc ? transformCaseFunc : stringToLowerCase;
       if (setPrototypeOf) {
         // Make 'in' and truthy checks like Boolean(set.constructor)
         // independent of any properties defined on Object.prototype.
         // Prevent prototype setters from intercepting set as a this value.
         setPrototypeOf(set, null);
       }
-      let l = array.length;
+      var l = array.length;
       while (l--) {
-        let element = array[l];
+        var element = array[l];
         if (typeof element === 'string') {
-          const lcElement = transformCaseFunc(element);
+          var lcElement = transformCaseFunc(element);
           if (lcElement !== element) {
             // Config presets (e.g. tags.js, attrs.js) are immutable.
             if (!isFrozen(array)) {
@@ -11546,18 +15081,23 @@
     /* Shallow clone an object */
 
     function clone$1(object) {
-      const newObject = create(null);
-      for (const [property, value] of entries(object)) {
-        newObject[property] = value;
+      var newObject = create(null);
+      var property;
+      for (property in object) {
+        if (apply(hasOwnProperty$1, object, [property]) === true) {
+          newObject[property] = object[property];
+        }
       }
       return newObject;
     }
-    /* This method automatically checks if the prop is function
-     * or getter and behaves accordingly. */
+    /* IE10 doesn't support __lookupGetter__ so lets'
+     * simulate it. It also automatically checks
+     * if the prop is function or getter and behaves
+     * accordingly. */
 
     function lookupGetter(object, prop) {
       while (object !== null) {
-        const desc = getOwnPropertyDescriptor$1(object, prop);
+        var desc = getOwnPropertyDescriptor$1(object, prop);
         if (desc) {
           if (desc.get) {
             return unapply(desc.get);
@@ -11574,81 +15114,71 @@
       }
       return fallbackValue;
     }
-    const html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'shadow', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']); // SVG
+    var html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'shadow', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']); // SVG
 
-    const svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
-    const svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feDropShadow', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']); // List of SVG elements that are disallowed by default.
+    var svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
+    var svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']); // List of SVG elements that are disallowed by default.
     // We still need to know them so that we can do namespace
     // checks properly in case one wants to add them to
     // allow-list.
 
-    const svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
-    const mathMl$1 = freeze(['math', 'menclose', 'merror', 'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover', 'mprescripts']); // Similarly to SVG, we want to know all MathML elements,
+    var svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'fedropshadow', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
+    var mathMl$1 = freeze(['math', 'menclose', 'merror', 'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover']); // Similarly to SVG, we want to know all MathML elements,
     // even those that we disallow by default.
 
-    const mathMlDisallowed = freeze(['maction', 'maligngroup', 'malignmark', 'mlongdiv', 'mscarries', 'mscarry', 'msgroup', 'mstack', 'msline', 'msrow', 'semantics', 'annotation', 'annotation-xml', 'mprescripts', 'none']);
-    const text = freeze(['#text']);
-    const html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns', 'slot']);
-    const svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
-    const mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
-    const xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
-    const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
+    var mathMlDisallowed = freeze(['maction', 'maligngroup', 'malignmark', 'mlongdiv', 'mscarries', 'mscarry', 'msgroup', 'mstack', 'msline', 'msrow', 'semantics', 'annotation', 'annotation-xml', 'mprescripts', 'none']);
+    var text = freeze(['#text']);
+    var html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns', 'slot']);
+    var svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
+    var mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
+    var xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
+    var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
 
-    const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-    const TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
-    const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
+    var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+    var TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
+    var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
 
-    const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
+    var ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
 
-    const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
+    var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
     );
 
-    const IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
-    const ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g // eslint-disable-line no-control-regex
+    var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+    var ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g // eslint-disable-line no-control-regex
     );
 
-    const DOCTYPE_NAME = seal(/^html$/i);
-    var EXPRESSIONS = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      MUSTACHE_EXPR: MUSTACHE_EXPR,
-      ERB_EXPR: ERB_EXPR,
-      TMPLIT_EXPR: TMPLIT_EXPR,
-      DATA_ATTR: DATA_ATTR,
-      ARIA_ATTR: ARIA_ATTR,
-      IS_ALLOWED_URI: IS_ALLOWED_URI,
-      IS_SCRIPT_OR_DATA: IS_SCRIPT_OR_DATA,
-      ATTR_WHITESPACE: ATTR_WHITESPACE,
-      DOCTYPE_NAME: DOCTYPE_NAME
-    });
-    const getGlobal = () => typeof window === 'undefined' ? null : window;
+    var DOCTYPE_NAME = seal(/^html$/i);
+    var getGlobal = function getGlobal() {
+      return typeof window === 'undefined' ? null : window;
+    };
     /**
      * Creates a no-op policy for internal use only.
      * Don't export this function outside this module!
      * @param {?TrustedTypePolicyFactory} trustedTypes The policy factory.
-     * @param {HTMLScriptElement} purifyHostElement The Script element used to load DOMPurify (to determine policy name suffix).
+     * @param {Document} document The document object (to determine policy name suffix)
      * @return {?TrustedTypePolicy} The policy created (or null, if Trusted Types
-     * are not supported or creating the policy failed).
+     * are not supported).
      */
 
-    const _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, purifyHostElement) {
-      if (typeof trustedTypes !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
+    var _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, document) {
+      if (_typeof(trustedTypes) !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
         return null;
       } // Allow the callers to control the unique policy name
       // by adding a data-tt-policy-suffix to the script element with the DOMPurify.
       // Policy creation with duplicate names throws in Trusted Types.
 
-      let suffix = null;
-      const ATTR_NAME = 'data-tt-policy-suffix';
-      if (purifyHostElement && purifyHostElement.hasAttribute(ATTR_NAME)) {
-        suffix = purifyHostElement.getAttribute(ATTR_NAME);
+      var suffix = null;
+      var ATTR_NAME = 'data-tt-policy-suffix';
+      if (document.currentScript && document.currentScript.hasAttribute(ATTR_NAME)) {
+        suffix = document.currentScript.getAttribute(ATTR_NAME);
       }
-      const policyName = 'dompurify' + (suffix ? '#' + suffix : '');
+      var policyName = 'dompurify' + (suffix ? '#' + suffix : '');
       try {
         return trustedTypes.createPolicy(policyName, {
-          createHTML(html) {
+          createHTML: function createHTML(html) {
             return html;
           },
-          createScriptURL(scriptUrl) {
+          createScriptURL: function createScriptURL(scriptUrl) {
             return scriptUrl;
           }
         });
@@ -11661,14 +15191,16 @@
       }
     };
     function createDOMPurify() {
-      let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
-      const DOMPurify = root => createDOMPurify(root);
+      var window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
+      var DOMPurify = function DOMPurify(root) {
+        return createDOMPurify(root);
+      };
       /**
        * Version label, exposed for easier checks
        * if DOMPurify is up to date or not
        */
 
-      DOMPurify.version = '3.0.4';
+      DOMPurify.version = '2.4.5';
       /**
        * Array of elements that DOMPurify removed during sanitation.
        * Empty if nothing was removed.
@@ -11681,27 +15213,23 @@
         DOMPurify.isSupported = false;
         return DOMPurify;
       }
-      const originalDocument = window.document;
-      const currentScript = originalDocument.currentScript;
-      let {
-        document
-      } = window;
-      const {
-        DocumentFragment,
-        HTMLTemplateElement,
-        Node,
-        Element,
-        NodeFilter,
-        NamedNodeMap = window.NamedNodeMap || window.MozNamedAttrMap,
-        HTMLFormElement,
-        DOMParser,
-        trustedTypes
-      } = window;
-      const ElementPrototype = Element.prototype;
-      const cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
-      const getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
-      const getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
-      const getParentNode = lookupGetter(ElementPrototype, 'parentNode'); // As per issue #47, the web-components registry is inherited by a
+      var originalDocument = window.document;
+      var document = window.document;
+      var DocumentFragment = window.DocumentFragment,
+        HTMLTemplateElement = window.HTMLTemplateElement,
+        Node = window.Node,
+        Element = window.Element,
+        NodeFilter = window.NodeFilter,
+        _window$NamedNodeMap = window.NamedNodeMap,
+        NamedNodeMap = _window$NamedNodeMap === void 0 ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap,
+        HTMLFormElement = window.HTMLFormElement,
+        DOMParser = window.DOMParser,
+        trustedTypes = window.trustedTypes;
+      var ElementPrototype = Element.prototype;
+      var cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
+      var getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
+      var getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
+      var getParentNode = lookupGetter(ElementPrototype, 'parentNode'); // As per issue #47, the web-components registry is inherited by a
       // new document created via createHTMLDocument. As per the spec
       // (http://w3c.github.io/webcomponents/spec/custom/#creating-and-passing-registries)
       // a new empty registry is used when creating a template contents owner
@@ -11709,40 +15237,37 @@
       // is inherited.
 
       if (typeof HTMLTemplateElement === 'function') {
-        const template = document.createElement('template');
+        var template = document.createElement('template');
         if (template.content && template.content.ownerDocument) {
           document = template.content.ownerDocument;
         }
       }
-      let trustedTypesPolicy;
-      let emptyHTML = '';
-      const {
-        implementation,
-        createNodeIterator,
-        createDocumentFragment,
-        getElementsByTagName
-      } = document;
-      const {
-        importNode
-      } = originalDocument;
-      let hooks = {};
+      var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
+      var emptyHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML('') : '';
+      var _document = document,
+        implementation = _document.implementation,
+        createNodeIterator = _document.createNodeIterator,
+        createDocumentFragment = _document.createDocumentFragment,
+        getElementsByTagName = _document.getElementsByTagName;
+      var importNode = originalDocument.importNode;
+      var documentMode = {};
+      try {
+        documentMode = clone$1(document).documentMode ? document.documentMode : {};
+      } catch (_) {}
+      var hooks = {};
       /**
        * Expose whether this browser supports running the full DOMPurify.
        */
 
-      DOMPurify.isSupported = typeof entries === 'function' && typeof getParentNode === 'function' && implementation && implementation.createHTMLDocument !== undefined;
-      const {
-        MUSTACHE_EXPR,
-        ERB_EXPR,
-        TMPLIT_EXPR,
-        DATA_ATTR,
-        ARIA_ATTR,
-        IS_SCRIPT_OR_DATA,
-        ATTR_WHITESPACE
-      } = EXPRESSIONS;
-      let {
-        IS_ALLOWED_URI: IS_ALLOWED_URI$1
-      } = EXPRESSIONS;
+      DOMPurify.isSupported = typeof getParentNode === 'function' && implementation && typeof implementation.createHTMLDocument !== 'undefined' && documentMode !== 9;
+      var MUSTACHE_EXPR$1 = MUSTACHE_EXPR,
+        ERB_EXPR$1 = ERB_EXPR,
+        TMPLIT_EXPR$1 = TMPLIT_EXPR,
+        DATA_ATTR$1 = DATA_ATTR,
+        ARIA_ATTR$1 = ARIA_ATTR,
+        IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA,
+        ATTR_WHITESPACE$1 = ATTR_WHITESPACE;
+      var IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
       /**
        * We consider the elements and attributes below to be safe. Ideally
        * don't add any new ones but feel free to remove unwanted ones.
@@ -11750,12 +15275,12 @@
 
       /* allowed element names */
 
-      let ALLOWED_TAGS = null;
-      const DEFAULT_ALLOWED_TAGS = addToSet({}, [...html$1, ...svg$1, ...svgFilters, ...mathMl$1, ...text]);
+      var ALLOWED_TAGS = null;
+      var DEFAULT_ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray(html$1), _toConsumableArray(svg$1), _toConsumableArray(svgFilters), _toConsumableArray(mathMl$1), _toConsumableArray(text)));
       /* Allowed attribute names */
 
-      let ALLOWED_ATTR = null;
-      const DEFAULT_ALLOWED_ATTR = addToSet({}, [...html, ...svg, ...mathMl, ...xml]);
+      var ALLOWED_ATTR = null;
+      var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray(html), _toConsumableArray(svg), _toConsumableArray(mathMl), _toConsumableArray(xml)));
       /*
        * Configure how DOMPUrify should handle custom elements and their attributes as well as customized built-in elements.
        * @property {RegExp|Function|null} tagNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any custom elements)
@@ -11763,7 +15288,7 @@
        * @property {boolean} allowCustomizedBuiltInElements allow custom elements derived from built-ins if they pass CUSTOM_ELEMENT_HANDLING.tagNameCheck. Default: `false`.
        */
 
-      let CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
+      var CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
         tagNameCheck: {
           writable: true,
           configurable: false,
@@ -11785,57 +15310,57 @@
       }));
       /* Explicitly forbidden tags (overrides ALLOWED_TAGS/ADD_TAGS) */
 
-      let FORBID_TAGS = null;
+      var FORBID_TAGS = null;
       /* Explicitly forbidden attributes (overrides ALLOWED_ATTR/ADD_ATTR) */
 
-      let FORBID_ATTR = null;
+      var FORBID_ATTR = null;
       /* Decide if ARIA attributes are okay */
 
-      let ALLOW_ARIA_ATTR = true;
+      var ALLOW_ARIA_ATTR = true;
       /* Decide if custom data attributes are okay */
 
-      let ALLOW_DATA_ATTR = true;
+      var ALLOW_DATA_ATTR = true;
       /* Decide if unknown protocols are okay */
 
-      let ALLOW_UNKNOWN_PROTOCOLS = false;
+      var ALLOW_UNKNOWN_PROTOCOLS = false;
       /* Decide if self-closing tags in attributes are allowed.
        * Usually removed due to a mXSS issue in jQuery 3.0 */
 
-      let ALLOW_SELF_CLOSE_IN_ATTR = true;
+      var ALLOW_SELF_CLOSE_IN_ATTR = true;
       /* Output should be safe for common template engines.
        * This means, DOMPurify removes data attributes, mustaches and ERB
        */
 
-      let SAFE_FOR_TEMPLATES = false;
+      var SAFE_FOR_TEMPLATES = false;
       /* Decide if document with <html>... should be returned */
 
-      let WHOLE_DOCUMENT = false;
+      var WHOLE_DOCUMENT = false;
       /* Track whether config is already set on this instance of DOMPurify. */
 
-      let SET_CONFIG = false;
+      var SET_CONFIG = false;
       /* Decide if all elements (e.g. style, script) must be children of
        * document.body. By default, browsers might move them to document.head */
 
-      let FORCE_BODY = false;
+      var FORCE_BODY = false;
       /* Decide if a DOM `HTMLBodyElement` should be returned, instead of a html
        * string (or a TrustedHTML object if Trusted Types are supported).
        * If `WHOLE_DOCUMENT` is enabled a `HTMLHtmlElement` will be returned instead
        */
 
-      let RETURN_DOM = false;
+      var RETURN_DOM = false;
       /* Decide if a DOM `DocumentFragment` should be returned, instead of a html
        * string  (or a TrustedHTML object if Trusted Types are supported) */
 
-      let RETURN_DOM_FRAGMENT = false;
+      var RETURN_DOM_FRAGMENT = false;
       /* Try to return a Trusted Type object instead of a string, return a string in
        * case Trusted Types are not supported  */
 
-      let RETURN_TRUSTED_TYPE = false;
+      var RETURN_TRUSTED_TYPE = false;
       /* Output should be free from DOM clobbering attacks?
        * This sanitizes markups named with colliding, clobberable built-in DOM APIs.
        */
 
-      let SANITIZE_DOM = true;
+      var SANITIZE_DOM = true;
       /* Achieve full DOM Clobbering protection by isolating the namespace of named
        * properties and JS variables, mitigating attacks that abuse the HTML/DOM spec rules.
        *
@@ -11850,56 +15375,56 @@
        * with a constant string, i.e., `user-content-`
        */
 
-      let SANITIZE_NAMED_PROPS = false;
-      const SANITIZE_NAMED_PROPS_PREFIX = 'user-content-';
+      var SANITIZE_NAMED_PROPS = false;
+      var SANITIZE_NAMED_PROPS_PREFIX = 'user-content-';
       /* Keep element content when removing element? */
 
-      let KEEP_CONTENT = true;
+      var KEEP_CONTENT = true;
       /* If a `Node` is passed to sanitize(), then performs sanitization in-place instead
        * of importing it into a new Document and returning a sanitized copy */
 
-      let IN_PLACE = false;
+      var IN_PLACE = false;
       /* Allow usage of profiles like html, svg and mathMl */
 
-      let USE_PROFILES = {};
+      var USE_PROFILES = {};
       /* Tags to ignore content of when KEEP_CONTENT is true */
 
-      let FORBID_CONTENTS = null;
-      const DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
+      var FORBID_CONTENTS = null;
+      var DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
       /* Tags that are safe for data: URIs */
 
-      let DATA_URI_TAGS = null;
-      const DEFAULT_DATA_URI_TAGS = addToSet({}, ['audio', 'video', 'img', 'source', 'image', 'track']);
+      var DATA_URI_TAGS = null;
+      var DEFAULT_DATA_URI_TAGS = addToSet({}, ['audio', 'video', 'img', 'source', 'image', 'track']);
       /* Attributes safe for values like "javascript:" */
 
-      let URI_SAFE_ATTRIBUTES = null;
-      const DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ['alt', 'class', 'for', 'id', 'label', 'name', 'pattern', 'placeholder', 'role', 'summary', 'title', 'value', 'style', 'xmlns']);
-      const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
-      const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
-      const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
+      var URI_SAFE_ATTRIBUTES = null;
+      var DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ['alt', 'class', 'for', 'id', 'label', 'name', 'pattern', 'placeholder', 'role', 'summary', 'title', 'value', 'style', 'xmlns']);
+      var MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+      var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+      var HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
       /* Document namespace */
 
-      let NAMESPACE = HTML_NAMESPACE;
-      let IS_EMPTY_INPUT = false;
+      var NAMESPACE = HTML_NAMESPACE;
+      var IS_EMPTY_INPUT = false;
       /* Allowed XHTML+XML namespaces */
 
-      let ALLOWED_NAMESPACES = null;
-      const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
+      var ALLOWED_NAMESPACES = null;
+      var DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
       /* Parsing of strict XHTML documents */
 
-      let PARSER_MEDIA_TYPE;
-      const SUPPORTED_PARSER_MEDIA_TYPES = ['application/xhtml+xml', 'text/html'];
-      const DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
-      let transformCaseFunc;
+      var PARSER_MEDIA_TYPE;
+      var SUPPORTED_PARSER_MEDIA_TYPES = ['application/xhtml+xml', 'text/html'];
+      var DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
+      var transformCaseFunc;
       /* Keep a reference to config to pass to hooks */
 
-      let CONFIG = null;
+      var CONFIG = null;
       /* Ideally, do not touch anything below this line */
 
       /* ______________________________________________ */
 
-      const formElement = document.createElement('form');
-      const isRegexOrFunction = function isRegexOrFunction(testValue) {
+      var formElement = document.createElement('form');
+      var isRegexOrFunction = function isRegexOrFunction(testValue) {
         return testValue instanceof RegExp || testValue instanceof Function;
       };
       /**
@@ -11909,13 +15434,13 @@
        */
       // eslint-disable-next-line complexity
 
-      const _parseConfig = function _parseConfig(cfg) {
+      var _parseConfig = function _parseConfig(cfg) {
         if (CONFIG && CONFIG === cfg) {
           return;
         }
         /* Shield configuration object from tampering */
 
-        if (!cfg || typeof cfg !== 'object') {
+        if (!cfg || _typeof(cfg) !== 'object') {
           cfg = {};
         }
         /* Shield configuration object from prototype pollution */
@@ -11977,7 +15502,7 @@
 
         IN_PLACE = cfg.IN_PLACE || false; // Default false
 
-        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI;
+        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$1;
         NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
         CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
         if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
@@ -11998,7 +15523,7 @@
         /* Parse profile info */
 
         if (USE_PROFILES) {
-          ALLOWED_TAGS = addToSet({}, [...text]);
+          ALLOWED_TAGS = addToSet({}, _toConsumableArray(text));
           ALLOWED_ATTR = [];
           if (USE_PROFILES.html === true) {
             addToSet(ALLOWED_TAGS, html$1);
@@ -12058,27 +15583,6 @@
         if (ALLOWED_TAGS.table) {
           addToSet(ALLOWED_TAGS, ['tbody']);
           delete FORBID_TAGS.tbody;
-        }
-        if (cfg.TRUSTED_TYPES_POLICY) {
-          if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== 'function') {
-            throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
-          }
-          if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== 'function') {
-            throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
-          } // Overwrite existing TrustedTypes policy.
-
-          trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY; // Sign local variables required by `sanitize`.
-
-          emptyHTML = trustedTypesPolicy.createHTML('');
-        } else {
-          // Uninitialized policy, attempt to initialize the internal dompurify policy.
-          if (trustedTypesPolicy === undefined) {
-            trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
-          } // If creating the internal policy succeeded sign internal variables.
-
-          if (trustedTypesPolicy !== null && typeof emptyHTML === 'string') {
-            emptyHTML = trustedTypesPolicy.createHTML('');
-          }
         } // Prevent further manipulation of configuration.
         // Not available in IE8, Safari 5, etc.
 
@@ -12087,21 +15591,21 @@
         }
         CONFIG = cfg;
       };
-      const MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
-      const HTML_INTEGRATION_POINTS = addToSet({}, ['foreignobject', 'desc', 'title', 'annotation-xml']); // Certain elements are allowed in both SVG and HTML
+      var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
+      var HTML_INTEGRATION_POINTS = addToSet({}, ['foreignobject', 'desc', 'title', 'annotation-xml']); // Certain elements are allowed in both SVG and HTML
       // namespace. We need to specify them explicitly
       // so that they don't get erroneously deleted from
       // HTML namespace.
 
-      const COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ['title', 'style', 'font', 'a', 'script']);
+      var COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ['title', 'style', 'font', 'a', 'script']);
       /* Keep track of all possible SVG and MathML tags
        * so that we can perform the namespace checks
        * correctly. */
 
-      const ALL_SVG_TAGS = addToSet({}, svg$1);
+      var ALL_SVG_TAGS = addToSet({}, svg$1);
       addToSet(ALL_SVG_TAGS, svgFilters);
       addToSet(ALL_SVG_TAGS, svgDisallowed);
-      const ALL_MATHML_TAGS = addToSet({}, mathMl$1);
+      var ALL_MATHML_TAGS = addToSet({}, mathMl$1);
       addToSet(ALL_MATHML_TAGS, mathMlDisallowed);
       /**
        *
@@ -12112,8 +15616,8 @@
        *  return. Return true otherwise.
        */
 
-      const _checkValidNamespace = function _checkValidNamespace(element) {
-        let parent = getParentNode(element); // In JSDOM, if we're inside shadow DOM, then parentNode
+      var _checkValidNamespace = function _checkValidNamespace(element) {
+        var parent = getParentNode(element); // In JSDOM, if we're inside shadow DOM, then parentNode
         // can be null. We just simulate parent in this case.
 
         if (!parent || !parent.tagName) {
@@ -12122,8 +15626,8 @@
             tagName: 'template'
           };
         }
-        const tagName = stringToLowerCase(element.tagName);
-        const parentTagName = stringToLowerCase(parent.tagName);
+        var tagName = stringToLowerCase(element.tagName);
+        var parentTagName = stringToLowerCase(parent.tagName);
         if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
           return false;
         }
@@ -12190,7 +15694,7 @@
        * @param  {Node} node a DOM node
        */
 
-      const _forceRemove = function _forceRemove(node) {
+      var _forceRemove = function _forceRemove(node) {
         arrayPush(DOMPurify.removed, {
           element: node
         });
@@ -12198,7 +15702,11 @@
           // eslint-disable-next-line unicorn/prefer-dom-node-remove
           node.parentNode.removeChild(node);
         } catch (_) {
-          node.remove();
+          try {
+            node.outerHTML = emptyHTML;
+          } catch (_) {
+            node.remove();
+          }
         }
       };
       /**
@@ -12208,7 +15716,7 @@
        * @param  {Node} node a DOM node
        */
 
-      const _removeAttribute = function _removeAttribute(name, node) {
+      var _removeAttribute = function _removeAttribute(name, node) {
         try {
           arrayPush(DOMPurify.removed, {
             attribute: node.getAttributeNode(name),
@@ -12241,22 +15749,22 @@
        * @return {Document} a DOM, filled with the dirty markup
        */
 
-      const _initDocument = function _initDocument(dirty) {
+      var _initDocument = function _initDocument(dirty) {
         /* Create a HTML document */
-        let doc;
-        let leadingWhitespace;
+        var doc;
+        var leadingWhitespace;
         if (FORCE_BODY) {
           dirty = '<remove></remove>' + dirty;
         } else {
           /* If FORCE_BODY isn't used, leading whitespace needs to be preserved manually */
-          const matches = stringMatch(dirty, /^[\r\n\t ]+/);
+          var matches = stringMatch(dirty, /^[\r\n\t ]+/);
           leadingWhitespace = matches && matches[0];
         }
         if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && NAMESPACE === HTML_NAMESPACE) {
           // Root of XHTML doc must contain xmlns declaration (see https://www.w3.org/TR/xhtml1/normative.html#strict)
           dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
         }
-        const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+        var dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
         /*
          * Use the DOMParser API by default, fallback later if needs be
          * DOMParser not work for svg when has multiple root element.
@@ -12276,7 +15784,7 @@
           } catch (_) {// Syntax error if dirtyPayload is invalid xml
           }
         }
-        const body = doc.body || doc.documentElement;
+        var body = doc.body || doc.documentElement;
         if (dirty && leadingWhitespace) {
           body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
         }
@@ -12294,7 +15802,7 @@
        * @return {Iterator} iterator instance
        */
 
-      const _createIterator = function _createIterator(root) {
+      var _createIterator = function _createIterator(root) {
         return createNodeIterator.call(root.ownerDocument || root, root,
         // eslint-disable-next-line no-bitwise
         NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT, null, false);
@@ -12306,7 +15814,7 @@
        * @return {Boolean} true if clobbered, false if safe
        */
 
-      const _isClobbered = function _isClobbered(elm) {
+      var _isClobbered = function _isClobbered(elm) {
         return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function' || typeof elm.hasChildNodes !== 'function');
       };
       /**
@@ -12316,8 +15824,8 @@
        * @return {Boolean} true is object is a DOM node
        */
 
-      const _isNode = function _isNode(object) {
-        return typeof Node === 'object' ? object instanceof Node : object && typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
+      var _isNode = function _isNode(object) {
+        return _typeof(Node) === 'object' ? object instanceof Node : object && _typeof(object) === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
       };
       /**
        * _executeHook
@@ -12328,11 +15836,11 @@
        * @param  {Object} data additional hook parameters
        */
 
-      const _executeHook = function _executeHook(entryPoint, currentNode, data) {
+      var _executeHook = function _executeHook(entryPoint, currentNode, data) {
         if (!hooks[entryPoint]) {
           return;
         }
-        arrayForEach(hooks[entryPoint], hook => {
+        arrayForEach(hooks[entryPoint], function (hook) {
           hook.call(DOMPurify, currentNode, data, CONFIG);
         });
       };
@@ -12347,8 +15855,8 @@
        * @return  {Boolean} true if node was killed, false if left alive
        */
 
-      const _sanitizeElements = function _sanitizeElements(currentNode) {
-        let content;
+      var _sanitizeElements = function _sanitizeElements(currentNode) {
+        var content;
         /* Execute a hook if present */
 
         _executeHook('beforeSanitizeElements', currentNode, null);
@@ -12358,18 +15866,30 @@
           _forceRemove(currentNode);
           return true;
         }
+        /* Check if tagname contains Unicode */
+
+        if (regExpTest(/[\u0080-\uFFFF]/, currentNode.nodeName)) {
+          _forceRemove(currentNode);
+          return true;
+        }
         /* Now let's check the element's type and name */
 
-        const tagName = transformCaseFunc(currentNode.nodeName);
+        var tagName = transformCaseFunc(currentNode.nodeName);
         /* Execute a hook if present */
 
         _executeHook('uponSanitizeElement', currentNode, {
-          tagName,
+          tagName: tagName,
           allowedTags: ALLOWED_TAGS
         });
         /* Detect mXSS attempts abusing namespace confusion */
 
         if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && (!_isNode(currentNode.content) || !_isNode(currentNode.content.firstElementChild)) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        /* Mitigate a problem with templates inside select */
+
+        if (tagName === 'select' && regExpTest(/<template/i, currentNode.innerHTML)) {
           _forceRemove(currentNode);
           return true;
         }
@@ -12384,11 +15904,11 @@
           /* Keep content except for bad-listed elements */
 
           if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
-            const parentNode = getParentNode(currentNode) || currentNode.parentNode;
-            const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+            var parentNode = getParentNode(currentNode) || currentNode.parentNode;
+            var childNodes = getChildNodes(currentNode) || currentNode.childNodes;
             if (childNodes && parentNode) {
-              const childCount = childNodes.length;
-              for (let i = childCount - 1; i >= 0; --i) {
+              var childCount = childNodes.length;
+              for (var i = childCount - 1; i >= 0; --i) {
                 parentNode.insertBefore(cloneNode(childNodes[i], true), getNextSibling(currentNode));
               }
             }
@@ -12402,9 +15922,7 @@
           _forceRemove(currentNode);
           return true;
         }
-        /* Make sure that older browsers don't get fallback-tag mXSS */
-
-        if ((tagName === 'noscript' || tagName === 'noembed' || tagName === 'noframes') && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
+        if ((tagName === 'noscript' || tagName === 'noembed') && regExpTest(/<\/no(script|embed)/i, currentNode.innerHTML)) {
           _forceRemove(currentNode);
           return true;
         }
@@ -12413,9 +15931,9 @@
         if (SAFE_FOR_TEMPLATES && currentNode.nodeType === 3) {
           /* Get the element's text content */
           content = currentNode.textContent;
-          content = stringReplace(content, MUSTACHE_EXPR, ' ');
-          content = stringReplace(content, ERB_EXPR, ' ');
-          content = stringReplace(content, TMPLIT_EXPR, ' ');
+          content = stringReplace(content, MUSTACHE_EXPR$1, ' ');
+          content = stringReplace(content, ERB_EXPR$1, ' ');
+          content = stringReplace(content, TMPLIT_EXPR$1, ' ');
           if (currentNode.textContent !== content) {
             arrayPush(DOMPurify.removed, {
               element: currentNode.cloneNode()
@@ -12438,7 +15956,7 @@
        */
       // eslint-disable-next-line complexity
 
-      const _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
+      var _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
         /* Make sure attribute cannot clobber */
         if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
           return false;
@@ -12448,7 +15966,7 @@
             XML-compatible (https://html.spec.whatwg.org/multipage/infrastructure.html#xml-compatible and http://www.w3.org/TR/xml/#d0e804)
             We don't need to check the value; it's always URI safe. */
 
-        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR, lcName)) ;else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR, lcName)) ;else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$1, lcName)) ;else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName)) ;else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
           if (
           // First condition does a very basic check if a) it's basically a valid custom element tagname AND
           // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
@@ -12460,9 +15978,9 @@
             return false;
           }
           /* Check value is safe. First, is attr inert? If so, is safe */
-        } else if (URI_SAFE_ATTRIBUTES[lcName]) ;else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, ''))) ;else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$1(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ;else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, ''))) ;else if (value) {
+        } else if (URI_SAFE_ATTRIBUTES[lcName]) ;else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ;else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$1(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ;else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ;else if (!value) ;else {
           return false;
-        } else ;
+        }
         return true;
       };
       /**
@@ -12472,7 +15990,7 @@
        * @param {string} tagName name of the tag of the node to sanitize
        */
 
-      const _basicCustomElementTest = function _basicCustomElementTest(tagName) {
+      var _basicCustomElementTest = function _basicCustomElementTest(tagName) {
         return tagName.indexOf('-') > 0;
       };
       /**
@@ -12486,23 +16004,21 @@
        * @param  {Node} currentNode to sanitize
        */
 
-      const _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
-        let attr;
-        let value;
-        let lcName;
-        let l;
+      var _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
+        var attr;
+        var value;
+        var lcName;
+        var l;
         /* Execute a hook if present */
 
         _executeHook('beforeSanitizeAttributes', currentNode, null);
-        const {
-          attributes
-        } = currentNode;
+        var attributes = currentNode.attributes;
         /* Check if we have attributes; if not we might have a text node */
 
         if (!attributes) {
           return;
         }
-        const hookEvent = {
+        var hookEvent = {
           attrName: '',
           attrValue: '',
           keepAttr: true,
@@ -12513,10 +16029,9 @@
 
         while (l--) {
           attr = attributes[l];
-          const {
-            name,
-            namespaceURI
-          } = attr;
+          var _attr = attr,
+            name = _attr.name,
+            namespaceURI = _attr.namespaceURI;
           value = name === 'value' ? attr.value : stringTrim$1(attr.value);
           lcName = transformCaseFunc(name);
           /* Execute a hook if present */
@@ -12550,13 +16065,13 @@
           /* Sanitize attribute content to be template-safe */
 
           if (SAFE_FOR_TEMPLATES) {
-            value = stringReplace(value, MUSTACHE_EXPR, ' ');
-            value = stringReplace(value, ERB_EXPR, ' ');
-            value = stringReplace(value, TMPLIT_EXPR, ' ');
+            value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
+            value = stringReplace(value, ERB_EXPR$1, ' ');
+            value = stringReplace(value, TMPLIT_EXPR$1, ' ');
           }
           /* Is `value` valid for this attribute? */
 
-          const lcTag = transformCaseFunc(currentNode.nodeName);
+          var lcTag = transformCaseFunc(currentNode.nodeName);
           if (!_isValidAttribute(lcTag, lcName, value)) {
             continue;
           }
@@ -12572,19 +16087,15 @@
           }
           /* Handle attributes that require Trusted Types */
 
-          if (trustedTypesPolicy && typeof trustedTypes === 'object' && typeof trustedTypes.getAttributeType === 'function') {
+          if (trustedTypesPolicy && _typeof(trustedTypes) === 'object' && typeof trustedTypes.getAttributeType === 'function') {
             if (namespaceURI) ;else {
               switch (trustedTypes.getAttributeType(lcTag, lcName)) {
                 case 'TrustedHTML':
-                  {
-                    value = trustedTypesPolicy.createHTML(value);
-                    break;
-                  }
+                  value = trustedTypesPolicy.createHTML(value);
+                  break;
                 case 'TrustedScriptURL':
-                  {
-                    value = trustedTypesPolicy.createScriptURL(value);
-                    break;
-                  }
+                  value = trustedTypesPolicy.createScriptURL(value);
+                  break;
               }
             }
           }
@@ -12610,9 +16121,9 @@
        * @param  {DocumentFragment} fragment to iterate over recursively
        */
 
-      const _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
-        let shadowNode;
-        const shadowIterator = _createIterator(fragment);
+      var _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
+        var shadowNode;
+        var shadowIterator = _createIterator(fragment);
         /* Execute a hook if present */
 
         _executeHook('beforeSanitizeShadowDOM', fragment, null);
@@ -12647,11 +16158,12 @@
       // eslint-disable-next-line complexity
 
       DOMPurify.sanitize = function (dirty) {
-        let cfg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        let body;
-        let importedNode;
-        let currentNode;
-        let returnNode;
+        var cfg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var body;
+        var importedNode;
+        var currentNode;
+        var oldNode;
+        var returnNode;
         /* Make sure we have a string to sanitize.
           DO NOT return early, as this will return the wrong type if
           the user has requested a DOM object rather than a string */
@@ -12663,18 +16175,27 @@
         /* Stringify, in case dirty is an object */
 
         if (typeof dirty !== 'string' && !_isNode(dirty)) {
-          if (typeof dirty.toString === 'function') {
+          // eslint-disable-next-line no-negated-condition
+          if (typeof dirty.toString !== 'function') {
+            throw typeErrorCreate('toString is not a function');
+          } else {
             dirty = dirty.toString();
             if (typeof dirty !== 'string') {
               throw typeErrorCreate('dirty is not a string, aborting');
             }
-          } else {
-            throw typeErrorCreate('toString is not a function');
           }
         }
-        /* Return dirty HTML if DOMPurify cannot run */
+        /* Check we can run. Otherwise fall back or ignore */
 
         if (!DOMPurify.isSupported) {
+          if (_typeof(window.toStaticHTML) === 'object' || typeof window.toStaticHTML === 'function') {
+            if (typeof dirty === 'string') {
+              return window.toStaticHTML(dirty);
+            }
+            if (_isNode(dirty)) {
+              return window.toStaticHTML(dirty.outerHTML);
+            }
+          }
           return dirty;
         }
         /* Assign config vars */
@@ -12693,7 +16214,7 @@
         if (IN_PLACE) {
           /* Do some early pre-sanitization to avoid unsafe root nodes */
           if (dirty.nodeName) {
-            const tagName = transformCaseFunc(dirty.nodeName);
+            var tagName = transformCaseFunc(dirty.nodeName);
             if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
               throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
             }
@@ -12735,11 +16256,16 @@
         }
         /* Get node iterator */
 
-        const nodeIterator = _createIterator(IN_PLACE ? dirty : body);
+        var nodeIterator = _createIterator(IN_PLACE ? dirty : body);
         /* Now start iterating over the created document */
 
         while (currentNode = nodeIterator.nextNode()) {
+          /* Fix IE's strange behavior with manipulated textNodes #89 */
+          if (currentNode.nodeType === 3 && currentNode === oldNode) {
+            continue;
+          }
           /* Sanitize tags and elements */
+
           if (_sanitizeElements(currentNode)) {
             continue;
           }
@@ -12751,7 +16277,9 @@
           /* Check attributes, sanitize if necessary */
 
           _sanitizeAttributes(currentNode);
+          oldNode = currentNode;
         }
+        oldNode = null;
         /* If we sanitized `dirty` in-place, return it. */
 
         if (IN_PLACE) {
@@ -12769,7 +16297,7 @@
           } else {
             returnNode = body;
           }
-          if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmode) {
+          if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmod) {
             /*
               AdoptNode() is not used because internal state is not reset
               (e.g. the past names map of a HTMLFormElement), this is safe
@@ -12781,7 +16309,7 @@
           }
           return returnNode;
         }
-        let serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+        var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
         /* Serialize doctype if allowed */
 
         if (WHOLE_DOCUMENT && ALLOWED_TAGS['!doctype'] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
@@ -12790,9 +16318,9 @@
         /* Sanitize final string template-safe */
 
         if (SAFE_FOR_TEMPLATES) {
-          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR, ' ');
-          serializedHTML = stringReplace(serializedHTML, ERB_EXPR, ' ');
-          serializedHTML = stringReplace(serializedHTML, TMPLIT_EXPR, ' ');
+          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$1, ' ');
+          serializedHTML = stringReplace(serializedHTML, ERB_EXPR$1, ' ');
+          serializedHTML = stringReplace(serializedHTML, TMPLIT_EXPR$1, ' ');
         }
         return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
       };
@@ -12833,8 +16361,8 @@
         if (!CONFIG) {
           _parseConfig({});
         }
-        const lcTag = transformCaseFunc(tag);
-        const lcName = transformCaseFunc(attr);
+        var lcTag = transformCaseFunc(tag);
+        var lcName = transformCaseFunc(attr);
         return _isValidAttribute(lcTag, lcName, value);
       };
       /**
@@ -12956,26 +16484,6 @@
       return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
     }
 
-    /// <reference types="@nextcloud/typings" />
-    /**
-     * Get the first day of the week
-     *
-     * @return {number}
-     */
-    function getFirstDay() {
-      if (typeof window.firstDay === 'undefined') {
-        console.warn('No firstDay found');
-        return 1;
-      }
-      return window.firstDay;
-    }
-
-    /**
-     * Returns the user's locale
-     */
-    function getLocale() {
-      return document.documentElement.dataset.locale || 'en';
-    }
     /**
      * Get translations bundle for given app and current locale
      *
@@ -12990,6 +16498,12 @@
       };
     }
 
+    /**
+     * Returns the user's locale
+     */
+    function getLocale() {
+      return document.documentElement.dataset.locale || 'en';
+    }
     /**
      * Translate a string
      *
@@ -13034,6 +16548,20 @@
         return optSanitize(translation);
       }
     }
+
+    /// <reference types="@nextcloud/typings" />
+    /**
+     * Get the first day of the week
+     *
+     * @return {number}
+     */
+    function getFirstDay() {
+      if (typeof window.firstDay === 'undefined') {
+        console.warn('No firstDay found');
+        return 1;
+      }
+      return window.firstDay;
+    }
     var getFirstDay_1 = getFirstDay;
     var getLocale_1 = getLocale;
     var translate_1 = translate;
@@ -13051,6 +16579,22 @@
     }, {
       join: function join(separator) {
         return nativeJoin(toIndexedObject(this), separator === undefined ? ',' : separator);
+      }
+    });
+
+    var FAILS_ON_PRIMITIVES = fails(function () {
+      objectKeys(1);
+    });
+
+    // `Object.keys` method
+    // https://tc39.es/ecma262/#sec-object.keys
+    _export({
+      target: 'Object',
+      stat: true,
+      forced: FAILS_ON_PRIMITIVES
+    }, {
+      keys: function keys(it) {
+        return objectKeys(toObject(it));
       }
     });
 
@@ -13399,19 +16943,17 @@
       narrow: ['1', '2', '3', '4'],
       abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
       wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
-    };
-
-    // Note: in German, the names of days of the week and months are capitalized.
+    }; // Note: in German, the names of days of the week and months are capitalized.
     // If you are making a new locale based on this one, check if the same is true for the language you're working on.
     // Generally, formatted dates should look like they are in the middle of a sentence,
     // e.g. in Spanish language the weekdays and months should be in the lowercase.
+
     var monthValues$2 = {
       narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
       abbreviated: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
       wide: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
-    };
+    }; // https://st.unicode.org/cldr-apps/v#/de/Gregorian/
 
-    // https://st.unicode.org/cldr-apps/v#/de/Gregorian/
     var formattingMonthValues = {
       narrow: monthValues$2.narrow,
       abbreviated: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'],
@@ -13422,9 +16964,8 @@
       short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
       abbreviated: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
       wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
-    };
+    }; // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
 
-    // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
     var dayPeriodValues$2 = {
       narrow: {
         am: 'vm.',
@@ -13643,7 +17184,9 @@
       localize: localize$5,
       match: match$5,
       options: {
-        weekStartsOn: 1 /* Monday */,
+        weekStartsOn: 1
+        /* Monday */,
+
         firstWeekContainsDate: 4
       }
     };
@@ -13980,6 +17523,7 @@
      * @author Jean Dupouy [@izeau]{@link https://github.com/izeau}
      * @author François B [@fbonzon]{@link https://github.com/fbonzon}
      */
+
     var locale$1 = {
       code: 'fr',
       formatDistance: formatDistance$3,
@@ -13988,7 +17532,9 @@
       localize: localize$3,
       match: match$3,
       options: {
-        weekStartsOn: 1 /* Monday */,
+        weekStartsOn: 1
+        /* Monday */,
+
         firstWeekContainsDate: 4
       }
     };
@@ -14359,6 +17905,7 @@
      * @author Dário Freire [@dfreire]{@link https://github.com/dfreire}
      * @author Adrián de la Rosa [@adrm]{@link https://github.com/adrm}
      */
+
     var locale = {
       code: 'pt',
       formatDistance: formatDistance$1,
@@ -14367,7 +17914,9 @@
       localize: localize$1,
       match: match$1,
       options: {
-        weekStartsOn: 1 /* Monday */,
+        weekStartsOn: 1
+        /* Monday */,
+
         firstWeekContainsDate: 4
       }
     };
@@ -14375,9 +17924,9 @@
 
     var Helpers = /*#__PURE__*/function () {
       function Helpers() {
-        _classCallCheck$1(this, Helpers);
+        _classCallCheck$x(this, Helpers);
       }
-      _createClass$1(Helpers, null, [{
+      _createClass$x(Helpers, null, [{
         key: "replaceNode",
         value:
         // Helps replacing a SSR node with a Svelte component
@@ -14410,7 +17959,7 @@
             queryStringParts.forEach(function (part) {
               var partParts = part.split("=");
               if (partParts && partParts.length > 1 && typeof partParts[1] !== "undefined") {
-                queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty$1({}, partParts[0], partParts[1]));
+                queryStringVariables = _objectSpread2(_objectSpread2({}, queryStringVariables), {}, _defineProperty$w({}, partParts[0], partParts[1]));
               }
             });
             queryStringVariables[field] = value;
@@ -14443,8 +17992,8 @@
       }, {
         key: "calculateDuration",
         value: function calculateDuration(startTime, endTime) {
-          var start = parse$2(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
-          var end = parse$2(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+          var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+          var end = parse$3(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
           var duration = Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
           if (isNaN(duration)) {
             return 0;
@@ -14483,7 +18032,7 @@
           if (!startTime || !duration) {
             return undefined;
           }
-          var start = parse$2(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+          var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
           return addMinutes(start, Math.round(duration * 60)).toTimeString().substring(0, 5);
         }
       }, {
@@ -14819,10 +18368,10 @@
       var t5;
       var span0;
       var t6;
-      var t7_value = format$2(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
+      var t7_value = format$3(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
       var t7;
       var t8;
-      var t9_value = format$2(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
+      var t9_value = format$3(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
       var t9;
       var t10;
       var t11;
@@ -14888,8 +18437,8 @@
         },
         p: function p(ctx, dirty) {
           if (dirty & /*currentWeek*/128) set_data(t4, /*currentWeek*/ctx[7]);
-          if (dirty & /*startCursor*/2 && t7_value !== (t7_value = format$2(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t7, t7_value);
-          if (dirty & /*startCursor*/2 && t9_value !== (t9_value = format$2(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t9, t9_value);
+          if (dirty & /*startCursor*/2 && t7_value !== (t7_value = format$3(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t7, t7_value);
+          if (dirty & /*startCursor*/2 && t9_value !== (t9_value = format$3(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t9, t9_value);
           if (dirty & /*startCursor*/2) show_if = !isSameDay(startOfWeek(startOfToday(), /*localeOptions*/ctx[9]), /*startCursor*/ctx[1]);
           if (show_if) {
             if (if_block) {
@@ -15090,9 +18639,9 @@
       var simpleRounding = Helpers.simpleRounding;
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
-        start = _$$props$start === void 0 ? format$2(startOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$start;
+        start = _$$props$start === void 0 ? format$3(startOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$start;
       var _$$props$end = $$props.end,
-        end = _$$props$end === void 0 ? format$2(endOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$end;
+        end = _$$props$end === void 0 ? format$3(endOfWeek(new Date(), localeOptions), dateFormat$4, new Date()) : _$$props$end;
       var updateWeek = function updateWeek() {
         $$invalidate(5, weekTotal = 0);
         $$invalidate(4, todayTotal = 0);
@@ -15167,7 +18716,7 @@
                 // Extract points from grouped array
                 $$invalidate(3, points = points.map(function (point) {
                   // Get total from API response
-                  var total = grouped[format$2(point.date, js_date_format)];
+                  var total = grouped[format$3(point.date, js_date_format)];
                   point.stats = {
                     total: total ? simpleRounding(total) : 0
                   };
@@ -15206,8 +18755,8 @@
           return _regeneratorRuntime().wrap(function _callee3$(_context3) {
             while (1) switch (_context3.prev = _context3.next) {
               case 0:
-                start = format$2(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
-                end = format$2(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
+                start = format$3(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
+                end = format$3(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
                 statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
                 urlParts = document.location.href.split("?");
                 if (urlParts.length > 1) {
@@ -15279,27 +18828,27 @@
       var formatDateForScale = function formatDateForScale(date, type) {
         if (type === "primary") {
           if (scale === "year") {
-            return format$2(date, "yyyy", localeOptions);
+            return format$3(date, "yyyy", localeOptions);
           }
           if (scale === "month") {
-            return format$2(date, "LLL", localeOptions);
+            return format$3(date, "LLL", localeOptions);
           }
           if (scale === "week") {
-            return "".concat(translate_1("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
+            return "".concat(translate_1("timemanager", "Week"), " ").concat(format$3(date, "w", localeOptions));
           }
-          return format$2(date, "iii", localeOptions);
+          return format$3(date, "iii", localeOptions);
         }
         if (type === "secondary") {
           if (scale === "year") {
             return "";
           }
           if (scale === "month") {
-            return format$2(date, "yyyy", localeOptions);
+            return format$3(date, "yyyy", localeOptions);
           }
           if (scale === "week") {
-            return "".concat(format$2(startOfWeek(date, localeOptions), "d.M.", localeOptions), " - ").concat(format$2(endOfWeek(date, localeOptions), "d.M.", localeOptions));
+            return "".concat(format$3(startOfWeek(date, localeOptions), "d.M.", localeOptions), " - ").concat(format$3(endOfWeek(date, localeOptions), "d.M.", localeOptions));
           }
-          return format$2(date, "d.M.", localeOptions);
+          return format$3(date, "d.M.", localeOptions);
         }
       };
       var click_handler = function click_handler() {
@@ -15321,10 +18870,10 @@
       };
       $$self.$$.update = function () {
         if ($$self.$$.dirty & /*start*/32768) {
-          $$invalidate(1, startCursor = isDate$1(parse$2(start, dateFormat$4, new Date())) ? parse$2(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
+          $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
         if ($$self.$$.dirty & /*end*/65536) {
-          endCursor = isDate$1(parse$2(end, dateFormat$4, new Date())) ? parse$2(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
+          endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
       $$invalidate(2, loading = false);
@@ -15337,13 +18886,13 @@
       return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
     }
     var Statistics = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Statistics, _SvelteComponent);
-      var _super = _createSuper$1(Statistics);
+      _inherits$w(Statistics, _SvelteComponent);
+      var _super = _createSuper$w(Statistics);
       function Statistics(options) {
         var _this;
-        _classCallCheck$1(this, Statistics);
+        _classCallCheck$x(this, Statistics);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$r, create_fragment$s, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$r, create_fragment$s, safe_not_equal, {
           statsApiUrl: 12,
           requestToken: 13,
           controls: 0,
@@ -15353,7 +18902,7 @@
         });
         return _this;
       }
-      return _createClass$1(Statistics);
+      return _createClass$x(Statistics);
     }(SvelteComponent);
 
     function create_fragment$r(ctx) {
@@ -15425,18 +18974,18 @@
       return [loading, $$scope, slots];
     }
     var Overlay = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Overlay, _SvelteComponent);
-      var _super = _createSuper$1(Overlay);
+      _inherits$w(Overlay, _SvelteComponent);
+      var _super = _createSuper$w(Overlay);
       function Overlay(options) {
         var _this;
-        _classCallCheck$1(this, Overlay);
+        _classCallCheck$x(this, Overlay);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$q, create_fragment$r, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$q, create_fragment$r, safe_not_equal, {
           loading: 0
         });
         return _this;
       }
-      return _createClass$1(Overlay);
+      return _createClass$x(Overlay);
     }(SvelteComponent);
 
     function create_if_block$i(ctx) {
@@ -15663,13 +19212,13 @@
       return [action, requestToken, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, submit, onSubmit, editClientData, input0_input_handler, input_handler];
     }
     var ClientEditor = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ClientEditor, _SvelteComponent);
-      var _super = _createSuper$1(ClientEditor);
+      _inherits$w(ClientEditor, _SvelteComponent);
+      var _super = _createSuper$w(ClientEditor);
       function ClientEditor(options) {
         var _this;
-        _classCallCheck$1(this, ClientEditor);
+        _classCallCheck$x(this, ClientEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$p, create_fragment$q, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$p, create_fragment$q, safe_not_equal, {
           action: 0,
           requestToken: 1,
           isServer: 2,
@@ -15681,7 +19230,7 @@
         });
         return _this;
       }
-      return _createClass$1(ClientEditor);
+      return _createClass$x(ClientEditor);
     }(SvelteComponent);
 
     function create_if_block$h(ctx) {
@@ -15947,13 +19496,13 @@
       return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editClientData, loading, show, save, editAction, clientUuid, click_handler, func];
     }
     var ClientEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ClientEditorDialog, _SvelteComponent);
-      var _super = _createSuper$1(ClientEditorDialog);
+      _inherits$w(ClientEditorDialog, _SvelteComponent);
+      var _super = _createSuper$w(ClientEditorDialog);
       function ClientEditorDialog(options) {
         var _this;
-        _classCallCheck$1(this, ClientEditorDialog);
+        _classCallCheck$x(this, ClientEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$o, create_fragment$p, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$o, create_fragment$p, safe_not_equal, {
           action: 0,
           editAction: 8,
           requestToken: 1,
@@ -15964,7 +19513,7 @@
         });
         return _this;
       }
-      return _createClass$1(ClientEditorDialog);
+      return _createClass$x(ClientEditorDialog);
     }(SvelteComponent);
 
     function create_if_block$g(ctx) {
@@ -16190,13 +19739,13 @@
       return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editProjectData, input0_input_handler];
     }
     var ProjectEditor = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ProjectEditor, _SvelteComponent);
-      var _super = _createSuper$1(ProjectEditor);
+      _inherits$w(ProjectEditor, _SvelteComponent);
+      var _super = _createSuper$w(ProjectEditor);
       function ProjectEditor(options) {
         var _this;
-        _classCallCheck$1(this, ProjectEditor);
+        _classCallCheck$x(this, ProjectEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$n, create_fragment$o, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -16209,7 +19758,7 @@
         });
         return _this;
       }
-      return _createClass$1(ProjectEditor);
+      return _createClass$x(ProjectEditor);
     }(SvelteComponent);
 
     function create_if_block$f(ctx) {
@@ -16477,13 +20026,13 @@
       return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, loading, show, save, editAction, projectUuid, click_handler, func];
     }
     var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ProjectEditorDialog, _SvelteComponent);
-      var _super = _createSuper$1(ProjectEditorDialog);
+      _inherits$w(ProjectEditorDialog, _SvelteComponent);
+      var _super = _createSuper$w(ProjectEditorDialog);
       function ProjectEditorDialog(options) {
         var _this;
-        _classCallCheck$1(this, ProjectEditorDialog);
+        _classCallCheck$x(this, ProjectEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$m, create_fragment$n, safe_not_equal, {
           action: 0,
           editAction: 10,
           requestToken: 1,
@@ -16496,7 +20045,7 @@
         });
         return _this;
       }
-      return _createClass$1(ProjectEditorDialog);
+      return _createClass$x(ProjectEditorDialog);
     }(SvelteComponent);
 
     function create_if_block$e(ctx) {
@@ -16751,13 +20300,13 @@
       return [action, requestToken, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, submit, onSubmit, editTaskData, input0_input_handler];
     }
     var TaskEditor = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(TaskEditor, _SvelteComponent);
-      var _super = _createSuper$1(TaskEditor);
+      _inherits$w(TaskEditor, _SvelteComponent);
+      var _super = _createSuper$w(TaskEditor);
       function TaskEditor(options) {
         var _this;
-        _classCallCheck$1(this, TaskEditor);
+        _classCallCheck$x(this, TaskEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$l, create_fragment$m, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -16771,7 +20320,7 @@
         });
         return _this;
       }
-      return _createClass$1(TaskEditor);
+      return _createClass$x(TaskEditor);
     }(SvelteComponent);
 
     function create_if_block$d(ctx) {
@@ -17043,13 +20592,13 @@
       return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, loading, show, save, editAction, taskUuid, click_handler, func];
     }
     var TaskEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(TaskEditorDialog, _SvelteComponent);
-      var _super = _createSuper$1(TaskEditorDialog);
+      _inherits$w(TaskEditorDialog, _SvelteComponent);
+      var _super = _createSuper$w(TaskEditorDialog);
       function TaskEditorDialog(options) {
         var _this;
-        _classCallCheck$1(this, TaskEditorDialog);
+        _classCallCheck$x(this, TaskEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$k, create_fragment$l, safe_not_equal, {
           action: 0,
           editAction: 11,
           requestToken: 1,
@@ -17063,7 +20612,7 @@
         });
         return _this;
       }
-      return _createClass$1(TaskEditorDialog);
+      return _createClass$x(TaskEditorDialog);
     }(SvelteComponent);
 
     // a string of all valid unicode whitespaces
@@ -17532,9 +21081,9 @@
       var localeOptions = Helpers.getDateLocaleOptions();
       var hasDate = Boolean(editTimeEntryData.date);
       var startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
-      var date = format$2(startDate, dateFormat$3, localeOptions);
+      var date = format$3(startDate, dateFormat$3, localeOptions);
       var duration = editTimeEntryData.duration;
-      var startTime = format$2(startDate, timeFormat, localeOptions);
+      var startTime = format$3(startDate, timeFormat, localeOptions);
       var endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
       var note = editTimeEntryData.note || "";
       var submit = function submit() {
@@ -17589,13 +21138,13 @@
       return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, submit, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(TimeEditor, _SvelteComponent);
-      var _super = _createSuper$1(TimeEditor);
+      _inherits$w(TimeEditor, _SvelteComponent);
+      var _super = _createSuper$w(TimeEditor);
       function TimeEditor(options) {
         var _this;
-        _classCallCheck$1(this, TimeEditor);
+        _classCallCheck$x(this, TimeEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$j, create_fragment$k, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -17610,7 +21159,7 @@
         });
         return _this;
       }
-      return _createClass$1(TimeEditor);
+      return _createClass$x(TimeEditor);
     }(SvelteComponent);
 
     function create_else_block$3(ctx) {
@@ -17895,7 +21444,7 @@
                   _context.prev = 1;
                   entry = {
                     duration: duration,
-                    date: format$2(Helpers.toUTC(parseISO(date)), dateFormat$2, localeOptions),
+                    date: format$3(Helpers.toUTC(parseISO(date)), dateFormat$2, localeOptions),
                     note: note
                   };
                   if (timeUuid) {
@@ -17962,13 +21511,13 @@
       return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
     }
     var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(TimeEditorDialog, _SvelteComponent);
-      var _super = _createSuper$1(TimeEditorDialog);
+      _inherits$w(TimeEditorDialog, _SvelteComponent);
+      var _super = _createSuper$w(TimeEditorDialog);
       function TimeEditorDialog(options) {
         var _this;
-        _classCallCheck$1(this, TimeEditorDialog);
+        _classCallCheck$x(this, TimeEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$i, create_fragment$j, safe_not_equal, {
           action: 0,
           editTimeEntryAction: 13,
           timeUuid: 1,
@@ -17983,7 +21532,7 @@
         });
         return _this;
       }
-      return _createClass$1(TimeEditorDialog);
+      return _createClass$x(TimeEditorDialog);
     }(SvelteComponent);
 
     function create_if_block$a(ctx) {
@@ -18223,13 +21772,13 @@
       return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, requestToken, form, confirmation, doDelete, cancelDelete, form_1_binding];
     }
     var DeleteButton = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(DeleteButton, _SvelteComponent);
-      var _super = _createSuper$1(DeleteButton);
+      _inherits$w(DeleteButton, _SvelteComponent);
+      var _super = _createSuper$w(DeleteButton);
       function DeleteButton(options) {
         var _this;
-        _classCallCheck$1(this, DeleteButton);
+        _classCallCheck$x(this, DeleteButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$h, create_fragment$i, safe_not_equal, {
           deleteAction: 0,
           deleteUuid: 1,
           deleteButtonCaption: 2,
@@ -18238,7 +21787,7 @@
         });
         return _this;
       }
-      return _createClass$1(DeleteButton);
+      return _createClass$x(DeleteButton);
     }(SvelteComponent);
 
     var $filter = arrayIteration.filter;
@@ -22275,7 +25824,7 @@
                 existing = sharees.map(function (share) {
                   return share.recipient_user_id;
                 });
-                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)).filter(function (user) {
+                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)).filter(function (user) {
                   return !existing.includes(user.value.shareWith) && user.value.shareWith !== userId;
                 }));
               case 15:
@@ -22313,13 +25862,13 @@
       return [shareAction, deleteShareAction, sharees, clientUuid, requestToken, form, selectedSharee, dialogVisible, loading, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
     }
     var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ShareDialog, _SvelteComponent);
-      var _super = _createSuper$1(ShareDialog);
+      _inherits$w(ShareDialog, _SvelteComponent);
+      var _super = _createSuper$w(ShareDialog);
       function ShareDialog(options) {
         var _this;
-        _classCallCheck$1(this, ShareDialog);
+        _classCallCheck$x(this, ShareDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$a, create_fragment$a, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$a, create_fragment$a, safe_not_equal, {
           shareAction: 0,
           deleteShareAction: 1,
           sharees: 2,
@@ -22329,7 +25878,7 @@
         });
         return _this;
       }
-      return _createClass$1(ShareDialog);
+      return _createClass$x(ShareDialog);
     }(SvelteComponent);
 
     function get_each_context$2(ctx, list, i) {
@@ -22565,19 +26114,19 @@
       return [sharees, sharedBy];
     }
     var ShareStatus = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(ShareStatus, _SvelteComponent);
-      var _super = _createSuper$1(ShareStatus);
+      _inherits$w(ShareStatus, _SvelteComponent);
+      var _super = _createSuper$w(ShareStatus);
       function ShareStatus(options) {
         var _this;
-        _classCallCheck$1(this, ShareStatus);
+        _classCallCheck$x(this, ShareStatus);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$9, create_fragment$9, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$9, create_fragment$9, safe_not_equal, {
           sharees: 0,
           sharedBy: 1
         });
         return _this;
       }
-      return _createClass$1(ShareStatus);
+      return _createClass$x(ShareStatus);
     }(SvelteComponent);
 
     function create_if_block$4(ctx) {
@@ -22846,48 +26395,38 @@
       return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
     }
     var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(DeleteTimeEntryButton, _SvelteComponent);
-      var _super = _createSuper$1(DeleteTimeEntryButton);
+      _inherits$w(DeleteTimeEntryButton, _SvelteComponent);
+      var _super = _createSuper$w(DeleteTimeEntryButton);
       function DeleteTimeEntryButton(options) {
         var _this;
-        _classCallCheck$1(this, DeleteTimeEntryButton);
+        _classCallCheck$x(this, DeleteTimeEntryButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$8, create_fragment$8, safe_not_equal, {
           deleteTimeEntryAction: 0,
           deleteTimeEntryUuid: 1,
           requestToken: 2
         });
         return _this;
       }
-      return _createClass$1(DeleteTimeEntryButton);
+      return _createClass$x(DeleteTimeEntryButton);
     }(SvelteComponent);
 
     var $propertyIsEnumerable = objectPropertyIsEnumerable.f;
     var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable);
     var push$1 = functionUncurryThis([].push);
 
-    // in some IE versions, `propertyIsEnumerable` returns incorrect result on integer keys
-    // of `null` prototype objects
-    var IE_BUG = descriptors && fails(function () {
-      // eslint-disable-next-line es/no-object-create -- safe
-      var O = Object.create(null);
-      O[2] = 2;
-      return !propertyIsEnumerable(O, 2);
-    });
-
     // `Object.{ entries, values }` methods implementation
     var createMethod = function (TO_ENTRIES) {
       return function (it) {
         var O = toIndexedObject(it);
         var keys = objectKeys(O);
-        var IE_WORKAROUND = IE_BUG && objectGetPrototypeOf(O) === null;
         var length = keys.length;
         var i = 0;
         var result = [];
         var key;
         while (length > i) {
           key = keys[i++];
-          if (!descriptors || (IE_WORKAROUND ? key in O : propertyIsEnumerable(O, key))) {
+          if (!descriptors || propertyIsEnumerable(O, key)) {
             push$1(result, TO_ENTRIES ? [key, O[key]] : O[key]);
           }
         }
@@ -23532,7 +27071,15 @@
           return;
         }
       }
+      if (process.env.NODE_ENV !== "production") {
+        if (!isHTMLElement(arrowElement)) {
+          console.error(['Popper: "arrow" element must be an HTMLElement (not an SVGElement).', 'To use an SVG arrow, wrap it in an HTMLElement that will be used as', 'the arrow.'].join(' '));
+        }
+      }
       if (!contains$1(state.elements.popper, arrowElement)) {
+        if (process.env.NODE_ENV !== "production") {
+          console.error(['Popper: "arrow" modifier\'s `element` must be a child of the popper', 'element.'].join(' '));
+        }
         return;
       }
       state.elements.arrow = arrowElement;
@@ -23657,6 +27204,14 @@
         adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
         _options$roundOffsets = options.roundOffsets,
         roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
+      if (process.env.NODE_ENV !== "production") {
+        var transitionProperty = getComputedStyle$1(state.elements.popper).transitionProperty || '';
+        if (adaptive && ['transform', 'top', 'right', 'bottom', 'left'].some(function (property) {
+          return transitionProperty.indexOf(property) >= 0;
+        })) {
+          console.warn(['Popper: Detected CSS transitions on at least one of the following', 'CSS properties: "transform", "top", "right", "bottom", "left".', '\n\n', 'Disable the "computeStyles" modifier\'s `adaptive` option to allow', 'for smooth transitions, or remove these properties from the CSS', 'transition declaration on the popper element if only transitioning', 'opacity or background-color for example.', '\n\n', 'We recommend using the popper element as a wrapper around an inner', 'element that can have any CSS property transitioned for animations.'].join(' '));
+        }
+      }
       var commonStyles = {
         placement: getBasePlacement(state.placement),
         variation: getVariation(state.placement),
@@ -24058,6 +27613,9 @@
       });
       if (allowedPlacements.length === 0) {
         allowedPlacements = placements$1;
+        if (process.env.NODE_ENV !== "production") {
+          console.error(['Popper: The `allowedAutoPlacements` option did not allow any', 'placements. Ensure the `placement` option matches the variation', 'of the allowed placements.', 'For example, "auto" cannot be used to allow "bottom-start".', 'Use "auto-start" instead.'].join(' '));
+        }
       } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
 
       var overflows = allowedPlacements.reduce(function (acc, placement) {
@@ -24550,6 +28108,90 @@
       };
     }
 
+    function format$2(str) {
+      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+      return [].concat(args).reduce(function (p, c) {
+        return p.replace(/%s/, c);
+      }, str);
+    }
+
+    var INVALID_MODIFIER_ERROR = 'Popper: modifier "%s" provided an invalid %s property, expected %s but got %s';
+    var MISSING_DEPENDENCY_ERROR = 'Popper: modifier "%s" requires "%s", but "%s" modifier is not available';
+    var VALID_PROPERTIES = ['name', 'enabled', 'phase', 'fn', 'effect', 'requires', 'options'];
+    function validateModifiers(modifiers) {
+      modifiers.forEach(function (modifier) {
+        [].concat(Object.keys(modifier), VALID_PROPERTIES) // IE11-compatible replacement for `new Set(iterable)`
+        .filter(function (value, index, self) {
+          return self.indexOf(value) === index;
+        }).forEach(function (key) {
+          switch (key) {
+            case 'name':
+              if (typeof modifier.name !== 'string') {
+                console.error(format$2(INVALID_MODIFIER_ERROR, String(modifier.name), '"name"', '"string"', "\"" + String(modifier.name) + "\""));
+              }
+              break;
+            case 'enabled':
+              if (typeof modifier.enabled !== 'boolean') {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"enabled"', '"boolean"', "\"" + String(modifier.enabled) + "\""));
+              }
+              break;
+            case 'phase':
+              if (modifierPhases.indexOf(modifier.phase) < 0) {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"phase"', "either " + modifierPhases.join(', '), "\"" + String(modifier.phase) + "\""));
+              }
+              break;
+            case 'fn':
+              if (typeof modifier.fn !== 'function') {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"fn"', '"function"', "\"" + String(modifier.fn) + "\""));
+              }
+              break;
+            case 'effect':
+              if (modifier.effect != null && typeof modifier.effect !== 'function') {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"effect"', '"function"', "\"" + String(modifier.fn) + "\""));
+              }
+              break;
+            case 'requires':
+              if (modifier.requires != null && !Array.isArray(modifier.requires)) {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"requires"', '"array"', "\"" + String(modifier.requires) + "\""));
+              }
+              break;
+            case 'requiresIfExists':
+              if (!Array.isArray(modifier.requiresIfExists)) {
+                console.error(format$2(INVALID_MODIFIER_ERROR, modifier.name, '"requiresIfExists"', '"array"', "\"" + String(modifier.requiresIfExists) + "\""));
+              }
+              break;
+            case 'options':
+            case 'data':
+              break;
+            default:
+              console.error("PopperJS: an invalid property has been provided to the \"" + modifier.name + "\" modifier, valid properties are " + VALID_PROPERTIES.map(function (s) {
+                return "\"" + s + "\"";
+              }).join(', ') + "; but \"" + key + "\" was provided.");
+          }
+          modifier.requires && modifier.requires.forEach(function (requirement) {
+            if (modifiers.find(function (mod) {
+              return mod.name === requirement;
+            }) == null) {
+              console.error(format$2(MISSING_DEPENDENCY_ERROR, String(modifier.name), requirement, requirement));
+            }
+          });
+        });
+      });
+    }
+
+    function uniqueBy(arr, fn) {
+      var identifiers = new Set();
+      return arr.filter(function (item) {
+        var identifier = fn(item);
+        if (!identifiers.has(identifier)) {
+          identifiers.add(identifier);
+          return true;
+        }
+      });
+    }
+
     function mergeByName(modifiers) {
       var merged = modifiers.reduce(function (merged, current) {
         var existing = merged[current.name];
@@ -24565,6 +28207,8 @@
       });
     }
 
+    var INVALID_ELEMENT_ERROR = 'Popper: Invalid reference or popper argument provided. They must be either a DOM element or virtual element.';
+    var INFINITE_LOOP_ERROR = 'Popper: An infinite loop in the modifiers cycle has been detected! The cycle has been interrupted to prevent a browser crash.';
     var DEFAULT_OPTIONS = {
       placement: 'bottom',
       modifiers: [],
@@ -24621,7 +28265,37 @@
 
             state.orderedModifiers = orderedModifiers.filter(function (m) {
               return m.enabled;
-            });
+            }); // Validate the provided modifiers so that the consumer will get warned
+            // if one of the modifiers is invalid for any reason
+
+            if (process.env.NODE_ENV !== "production") {
+              var modifiers = uniqueBy([].concat(orderedModifiers, state.options.modifiers), function (_ref) {
+                var name = _ref.name;
+                return name;
+              });
+              validateModifiers(modifiers);
+              if (getBasePlacement(state.options.placement) === auto) {
+                var flipModifier = state.orderedModifiers.find(function (_ref2) {
+                  var name = _ref2.name;
+                  return name === 'flip';
+                });
+                if (!flipModifier) {
+                  console.error(['Popper: "auto" placements require the "flip" modifier be', 'present and enabled to work.'].join(' '));
+                }
+              }
+              var _getComputedStyle = getComputedStyle$1(popper),
+                marginTop = _getComputedStyle.marginTop,
+                marginRight = _getComputedStyle.marginRight,
+                marginBottom = _getComputedStyle.marginBottom,
+                marginLeft = _getComputedStyle.marginLeft; // We no longer take into account `margins` on the popper, and it can
+              // cause bugs with positioning, so we'll warn the consumer
+
+              if ([marginTop, marginRight, marginBottom, marginLeft].some(function (margin) {
+                return parseFloat(margin);
+              })) {
+                console.warn(['Popper: CSS "margin" styles cannot be used to apply padding', 'between the popper and its reference element or boundary.', 'To replicate margin, use the `offset` modifier, as well as', 'the `padding` option in the `preventOverflow` and `flip`', 'modifiers.'].join(' '));
+              }
+            }
             runModifierEffects();
             return instance.update();
           },
@@ -24640,6 +28314,9 @@
             // anymore
 
             if (!areValidElements(reference, popper)) {
+              if (process.env.NODE_ENV !== "production") {
+                console.error(INVALID_ELEMENT_ERROR);
+              }
               return;
             } // Store the reference and popper rects to be read by modifiers
 
@@ -24661,7 +28338,15 @@
             state.orderedModifiers.forEach(function (modifier) {
               return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
             });
+            var __debug_loops__ = 0;
             for (var index = 0; index < state.orderedModifiers.length; index++) {
+              if (process.env.NODE_ENV !== "production") {
+                __debug_loops__ += 1;
+                if (__debug_loops__ > 100) {
+                  console.error(INFINITE_LOOP_ERROR);
+                  break;
+                }
+              }
               if (state.reset === true) {
                 state.reset = false;
                 index = -1;
@@ -24696,6 +28381,9 @@
           }
         };
         if (!areValidElements(reference, popper)) {
+          if (process.env.NODE_ENV !== "production") {
+            console.error(INVALID_ELEMENT_ERROR);
+          }
           return instance;
         }
         instance.setOptions(options).then(function (state) {
@@ -24709,11 +28397,11 @@
         // one.
 
         function runModifierEffects() {
-          state.orderedModifiers.forEach(function (_ref) {
-            var name = _ref.name,
-              _ref$options = _ref.options,
-              options = _ref$options === void 0 ? {} : _ref$options,
-              effect = _ref.effect;
+          state.orderedModifiers.forEach(function (_ref3) {
+            var name = _ref3.name,
+              _ref3$options = _ref3.options,
+              options = _ref3$options === void 0 ? {} : _ref3$options,
+              effect = _ref3.effect;
             if (typeof effect === 'function') {
               var cleanupFn = effect({
                 state: state,
@@ -26007,7 +29695,7 @@
 
     // When `auto` is `true`, the parse function will infer and initialize and add
     // the appropriate `Searcher` instance
-    function parse$1(query, options, {
+    function parse$2(query, options, {
       auto = true
     } = {}) {
       const next = query => {
@@ -26232,7 +29920,7 @@
         return results;
       }
       _searchLogical(query) {
-        const expression = parse$1(query, this.options);
+        const expression = parse$2(query, this.options);
         const evaluate = (node, item, idx) => {
           if (!node.children) {
             const {
@@ -26392,7 +30080,7 @@
     Fuse.parseIndex = parseIndex;
     Fuse.config = Config;
     {
-      Fuse.parseQuery = parse$1;
+      Fuse.parseQuery = parse$2;
     }
     {
       register(ExtendedSearch);
@@ -26495,19 +30183,19 @@
 
     // (432:5) {#each noteAutosuggestList as suggestion, index}
     function create_each_block_4(ctx) {
-      var _ctx$95$time$note, _ctx$, _ctx$95$client$name, _ctx$2, _ctx$95$project$name, _ctx$3, _ctx$95$task$name, _ctx$4;
+      var _ctx$95$time$note, _ctx$, _ctx$$time, _ctx$95$client$name, _ctx$2, _ctx$2$client, _ctx$95$project$name, _ctx$3, _ctx$3$project, _ctx$95$task$name, _ctx$4, _ctx$4$task;
       var li;
       var a;
-      var t0_value = ( /*suggestion*/(_ctx$95$time$note = (_ctx$ = ctx[95]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$95$time$note !== void 0 ? _ctx$95$time$note : "") + "";
+      var t0_value = ( /*suggestion*/(_ctx$95$time$note = (_ctx$ = ctx[95]) === null || _ctx$ === void 0 ? void 0 : (_ctx$$time = _ctx$.time) === null || _ctx$$time === void 0 ? void 0 : _ctx$$time.note) !== null && _ctx$95$time$note !== void 0 ? _ctx$95$time$note : "") + "";
       var t0;
       var t1;
-      var t2_value = ( /*suggestion*/(_ctx$95$client$name = (_ctx$2 = ctx[95]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$95$client$name !== void 0 ? _ctx$95$client$name : "") + "";
+      var t2_value = ( /*suggestion*/(_ctx$95$client$name = (_ctx$2 = ctx[95]) === null || _ctx$2 === void 0 ? void 0 : (_ctx$2$client = _ctx$2.client) === null || _ctx$2$client === void 0 ? void 0 : _ctx$2$client.name) !== null && _ctx$95$client$name !== void 0 ? _ctx$95$client$name : "") + "";
       var t2;
       var t3;
-      var t4_value = ( /*suggestion*/(_ctx$95$project$name = (_ctx$3 = ctx[95]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$95$project$name !== void 0 ? _ctx$95$project$name : "") + "";
+      var t4_value = ( /*suggestion*/(_ctx$95$project$name = (_ctx$3 = ctx[95]) === null || _ctx$3 === void 0 ? void 0 : (_ctx$3$project = _ctx$3.project) === null || _ctx$3$project === void 0 ? void 0 : _ctx$3$project.name) !== null && _ctx$95$project$name !== void 0 ? _ctx$95$project$name : "") + "";
       var t4;
       var t5;
-      var t6_value = ( /*suggestion*/(_ctx$95$task$name = (_ctx$4 = ctx[95]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$95$task$name !== void 0 ? _ctx$95$task$name : "") + "";
+      var t6_value = ( /*suggestion*/(_ctx$95$task$name = (_ctx$4 = ctx[95]) === null || _ctx$4 === void 0 ? void 0 : (_ctx$4$task = _ctx$4.task) === null || _ctx$4$task === void 0 ? void 0 : _ctx$4$task.name) !== null && _ctx$95$task$name !== void 0 ? _ctx$95$task$name : "") + "";
       var t6;
       var t7;
       var index = /*index*/ctx[94];
@@ -26570,12 +30258,12 @@
           }
         },
         p: function p(new_ctx, dirty) {
-          var _ctx$95$time$note2, _ctx$5, _ctx$95$client$name2, _ctx$6, _ctx$95$project$name2, _ctx$7, _ctx$95$task$name2, _ctx$8;
+          var _ctx$95$time$note2, _ctx$5, _ctx$5$time, _ctx$95$client$name2, _ctx$6, _ctx$6$client, _ctx$95$project$name2, _ctx$7, _ctx$7$project, _ctx$95$task$name2, _ctx$8, _ctx$8$task;
           ctx = new_ctx;
-          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$95$time$note2 = (_ctx$5 = ctx[95]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$95$time$note2 !== void 0 ? _ctx$95$time$note2 : "") + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$95$client$name2 = (_ctx$6 = ctx[95]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$95$client$name2 !== void 0 ? _ctx$95$client$name2 : "") + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$95$project$name2 = (_ctx$7 = ctx[95]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$95$project$name2 !== void 0 ? _ctx$95$project$name2 : "") + "")) set_data(t4, t4_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$95$task$name2 = (_ctx$8 = ctx[95]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$95$task$name2 !== void 0 ? _ctx$95$task$name2 : "") + "")) set_data(t6, t6_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$95$time$note2 = (_ctx$5 = ctx[95]) === null || _ctx$5 === void 0 ? void 0 : (_ctx$5$time = _ctx$5.time) === null || _ctx$5$time === void 0 ? void 0 : _ctx$5$time.note) !== null && _ctx$95$time$note2 !== void 0 ? _ctx$95$time$note2 : "") + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$95$client$name2 = (_ctx$6 = ctx[95]) === null || _ctx$6 === void 0 ? void 0 : (_ctx$6$client = _ctx$6.client) === null || _ctx$6$client === void 0 ? void 0 : _ctx$6$client.name) !== null && _ctx$95$client$name2 !== void 0 ? _ctx$95$client$name2 : "") + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$95$project$name2 = (_ctx$7 = ctx[95]) === null || _ctx$7 === void 0 ? void 0 : (_ctx$7$project = _ctx$7.project) === null || _ctx$7$project === void 0 ? void 0 : _ctx$7$project.name) !== null && _ctx$95$project$name2 !== void 0 ? _ctx$95$project$name2 : "") + "")) set_data(t4, t4_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$95$task$name2 = (_ctx$8 = ctx[95]) === null || _ctx$8 === void 0 ? void 0 : (_ctx$8$task = _ctx$8.task) === null || _ctx$8$task === void 0 ? void 0 : _ctx$8$task.name) !== null && _ctx$95$task$name2 !== void 0 ? _ctx$95$task$name2 : "") + "")) set_data(t6, t6_value);
           if (index !== /*index*/ctx[94]) {
             unassign_a();
             index = /*index*/ctx[94];
@@ -27584,7 +31272,7 @@
           attr(input1, "type", "text");
           input1.value = input1_value_value = translate_1("timemanager", "{duration} hrs. on {date}", {
             duration: /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0,
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$2( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$2( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$3(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
           });
           input1.disabled = /*showDurationSelector*/ctx[2];
           attr(input1, "data-cy", "quick-add-duration");
@@ -27654,7 +31342,7 @@
           }
           if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate_1("timemanager", "{duration} hrs. on {date}", {
             duration: /*duration*/(_ctx$16 = ctx[7]) !== null && _ctx$16 !== void 0 ? _ctx$16 : 0,
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$2( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$2( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$3(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
           })) && input1.value !== input1_value_value) {
             input1.value = input1_value_value;
           }
@@ -27731,7 +31419,7 @@
     var click_handler_2 = function click_handler_2(event) {
       var _event$target, _event$target$getAttr;
       // Fix inputs triggering the hide event
-      if ((event === null || event === void 0 || (_event$target = event.target) === null || _event$target === void 0 || (_event$target$getAttr = _event$target.getAttribute) === null || _event$target$getAttr === void 0 ? void 0 : _event$target$getAttr.call(_event$target, "data-hideEvent")) === "skip") {
+      if ((event === null || event === void 0 ? void 0 : (_event$target = event.target) === null || _event$target === void 0 ? void 0 : (_event$target$getAttr = _event$target.getAttribute) === null || _event$target$getAttr === void 0 ? void 0 : _event$target$getAttr.call(_event$target, "data-hideEvent")) === "skip") {
         return;
       }
       event.stopPropagation();
@@ -27760,7 +31448,7 @@
       var tasks = $$props.tasks;
       var latestSearchEntries = $$props.latestSearchEntries;
       var localeOptions = Helpers.getDateLocaleOptions();
-      var initialDate = format$2(new Date(), dateFormat$1, localeOptions);
+      var initialDate = format$3(new Date(), dateFormat$1, localeOptions);
       var extraOpts = {
         modifiers: [{
           name: "offset",
@@ -27810,14 +31498,14 @@
       var latestEntriesByTask = {};
       latestSearchEntries.map(function (entry) {
         var _entry$task;
-        latestEntriesByTask[entry === null || entry === void 0 || (_entry$task = entry.task) === null || _entry$task === void 0 ? void 0 : _entry$task.uuid] = entry;
+        latestEntriesByTask[entry === null || entry === void 0 ? void 0 : (_entry$task = entry.task) === null || _entry$task === void 0 ? void 0 : _entry$task.uuid] = entry;
       });
       var lastUsed = ((_Object$values = Object.values(latestEntriesByTask)) !== null && _Object$values !== void 0 ? _Object$values : []).slice(0, 3);
       var latestTimeEntries = latestSearchEntries.map(function (entry) {
         var _entry$time, _entry$time2;
         return _objectSpread2(_objectSpread2({}, entry), {}, {
-          label: entry === null || entry === void 0 || (_entry$time = entry.time) === null || _entry$time === void 0 ? void 0 : _entry$time.note,
-          value: entry === null || entry === void 0 || (_entry$time2 = entry.time) === null || _entry$time2 === void 0 ? void 0 : _entry$time2.uuid
+          label: entry === null || entry === void 0 ? void 0 : (_entry$time = entry.time) === null || _entry$time === void 0 ? void 0 : _entry$time.note,
+          value: entry === null || entry === void 0 ? void 0 : (_entry$time2 = entry.time) === null || _entry$time2 === void 0 ? void 0 : _entry$time2.uuid
         });
       });
       var groupedData = clients.map(function (client) {
@@ -27947,7 +31635,7 @@
         var projectsResults = projectsFuse.search(q);
         var tasksResults = tasksFuse.search(q);
         var taskIndex = -1;
-        $$invalidate(23, searchResults = _toConsumableArray(groupedData).map(function (client) {
+        $$invalidate(23, searchResults = _toConsumableArray$1(groupedData).map(function (client) {
           var _clientFound$score;
           if (!client) {
             return {
@@ -27969,7 +31657,7 @@
             });
             projectsScore = Math.min(projectsScore, parseFloat((_projectFound$score = projectFound === null || projectFound === void 0 ? void 0 : projectFound.score) !== null && _projectFound$score !== void 0 ? _projectFound$score : 1));
             var tasksPerProjectScore = 1;
-            var tasks = project === null || project === void 0 || (_project$tasks = project.tasks) === null || _project$tasks === void 0 ? void 0 : _project$tasks.map(function (task) {
+            var tasks = project === null || project === void 0 ? void 0 : (_project$tasks = project.tasks) === null || _project$tasks === void 0 ? void 0 : _project$tasks.map(function (task) {
               var _taskFound$score;
               var taskFound = tasksResults.find(function (result) {
                 return result.item.value === (task === null || task === void 0 ? void 0 : task.value);
@@ -28032,7 +31720,7 @@
       var handleHidePopovers = function handleHidePopovers(event) {
         var _event$target2, _event$target2$getAtt;
         // Fix inputs triggering the hide event
-        if ((event === null || event === void 0 || (_event$target2 = event.target) === null || _event$target2 === void 0 || (_event$target2$getAtt = _event$target2.getAttribute) === null || _event$target2$getAtt === void 0 ? void 0 : _event$target2$getAtt.call(_event$target2, "data-hideEvent")) === "skip") {
+        if ((event === null || event === void 0 ? void 0 : (_event$target2 = event.target) === null || _event$target2 === void 0 ? void 0 : (_event$target2$getAtt = _event$target2.getAttribute) === null || _event$target2$getAtt === void 0 ? void 0 : _event$target2$getAtt.call(_event$target2, "data-hideEvent")) === "skip") {
           return;
         }
         $$invalidate(0, showTaskSelector = false);
@@ -28080,14 +31768,14 @@
       });
       var save = /*#__PURE__*/function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-          var _selected;
+          var _selected, _selected$task;
           var startDateFormat, startDate, entry, response;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 $$invalidate(17, loading = true);
                 $$invalidate(19, taskError = false);
-                if ((_selected = selected) !== null && _selected !== void 0 && (_selected = _selected.task) !== null && _selected !== void 0 && _selected.value) {
+                if ((_selected = selected) !== null && _selected !== void 0 && (_selected$task = _selected.task) !== null && _selected$task !== void 0 && _selected$task.value) {
                   _context.next = 6;
                   break;
                 }
@@ -28100,7 +31788,7 @@
                 _context.prev = 8;
                 entry = {
                   duration: duration,
-                  date: format$2(Helpers.toUTC(parseISO(startDate)), startDateFormat, localeOptions),
+                  date: format$3(Helpers.toUTC(parseISO(startDate)), startDateFormat, localeOptions),
                   note: note,
                   task: selected.task.value
                 };
@@ -28148,7 +31836,7 @@
       }
       var input_handler = function input_handler(event) {
         var _event$target$value, _event$target3;
-        var filterText = (_event$target$value = event === null || event === void 0 || (_event$target3 = event.target) === null || _event$target3 === void 0 ? void 0 : _event$target3.value) !== null && _event$target$value !== void 0 ? _event$target$value : "";
+        var filterText = (_event$target$value = event === null || event === void 0 ? void 0 : (_event$target3 = event.target) === null || _event$target3 === void 0 ? void 0 : _event$target3.value) !== null && _event$target$value !== void 0 ? _event$target$value : "";
         if (filterText.length > 2) {
           $$invalidate(1, showNoteAutosuggest = true);
           var searchResult = latestEntriesFuse.search(filterText);
@@ -28164,7 +31852,7 @@
         var _event$target$value2, _event$target4;
         event.preventDefault();
         event.stopPropagation();
-        var filterText = (_event$target$value2 = event === null || event === void 0 || (_event$target4 = event.target) === null || _event$target4 === void 0 ? void 0 : _event$target4.value) !== null && _event$target$value2 !== void 0 ? _event$target$value2 : "";
+        var filterText = (_event$target$value2 = event === null || event === void 0 ? void 0 : (_event$target4 = event.target) === null || _event$target4 === void 0 ? void 0 : _event$target4.value) !== null && _event$target$value2 !== void 0 ? _event$target$value2 : "";
         if (filterText.length > 2) {
           var searchResult = latestEntriesFuse.search(filterText);
           $$invalidate(5, noteAutosuggestList = searchResult.slice(0, 10).map(function (result) {
@@ -28194,19 +31882,19 @@
         $$invalidate(11, note = (_time$note = time.note) !== null && _time$note !== void 0 ? _time$note : note);
         var startDate = parseISO(time.start);
         var endDate = parseISO(time.end);
-        $$invalidate(7, duration = Helpers.calculateDuration(format$2(startDate, "HH:mm", startDate), format$2(endDate, "HH:mm", endDate)));
+        $$invalidate(7, duration = Helpers.calculateDuration(format$3(startDate, "HH:mm", startDate), format$3(endDate, "HH:mm", endDate)));
         $$invalidate(18, selected = {
           task: {
-            label: suggestion === null || suggestion === void 0 || (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
-            value: suggestion === null || suggestion === void 0 || (_suggestion$task2 = suggestion.task) === null || _suggestion$task2 === void 0 ? void 0 : _suggestion$task2.uuid
+            label: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
+            value: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$task2 = suggestion.task) === null || _suggestion$task2 === void 0 ? void 0 : _suggestion$task2.uuid
           },
           project: {
-            label: suggestion === null || suggestion === void 0 || (_suggestion$project = suggestion.project) === null || _suggestion$project === void 0 ? void 0 : _suggestion$project.name,
-            value: suggestion === null || suggestion === void 0 || (_suggestion$project2 = suggestion.project) === null || _suggestion$project2 === void 0 ? void 0 : _suggestion$project2.uuid
+            label: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$project = suggestion.project) === null || _suggestion$project === void 0 ? void 0 : _suggestion$project.name,
+            value: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$project2 = suggestion.project) === null || _suggestion$project2 === void 0 ? void 0 : _suggestion$project2.uuid
           },
           client: {
-            label: suggestion === null || suggestion === void 0 || (_suggestion$client = suggestion.client) === null || _suggestion$client === void 0 ? void 0 : _suggestion$client.name,
-            value: suggestion === null || suggestion === void 0 || (_suggestion$client2 = suggestion.client) === null || _suggestion$client2 === void 0 ? void 0 : _suggestion$client2.uuid
+            label: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$client = suggestion.client) === null || _suggestion$client === void 0 ? void 0 : _suggestion$client.name,
+            value: suggestion === null || suggestion === void 0 ? void 0 : (_suggestion$client2 = suggestion.client) === null || _suggestion$client2 === void 0 ? void 0 : _suggestion$client2.uuid
           }
         });
         $$invalidate(1, showNoteAutosuggest = false);
@@ -28254,8 +31942,8 @@
         $$invalidate(10, date);
       }
       var blur_handler = function blur_handler() {
-        if (!date || !isDate$1(parse$2(date, dateFormat$1, new Date()))) {
-          $$invalidate(10, date = format$2(startOfDay(new Date(), localeOptions), dateFormat$1, new Date()));
+        if (!date || !isDate$1(parse$3(date, dateFormat$1, new Date()))) {
+          $$invalidate(10, date = format$3(startOfDay(new Date(), localeOptions), dateFormat$1, new Date()));
         }
       };
       function input_binding($$value) {
@@ -28283,16 +31971,16 @@
         event.preventDefault();
         $$invalidate(18, selected = {
           task: {
-            label: entry === null || entry === void 0 || (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
-            value: entry === null || entry === void 0 || (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
+            label: entry === null || entry === void 0 ? void 0 : (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
           },
           project: {
-            label: entry === null || entry === void 0 || (_entry$project = entry.project) === null || _entry$project === void 0 ? void 0 : _entry$project.name,
-            value: entry === null || entry === void 0 || (_entry$project2 = entry.project) === null || _entry$project2 === void 0 ? void 0 : _entry$project2.uuid
+            label: entry === null || entry === void 0 ? void 0 : (_entry$project = entry.project) === null || _entry$project === void 0 ? void 0 : _entry$project.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$project2 = entry.project) === null || _entry$project2 === void 0 ? void 0 : _entry$project2.uuid
           },
           client: {
-            label: entry === null || entry === void 0 || (_entry$client = entry.client) === null || _entry$client === void 0 ? void 0 : _entry$client.name,
-            value: entry === null || entry === void 0 || (_entry$client2 = entry.client) === null || _entry$client2 === void 0 ? void 0 : _entry$client2.uuid
+            label: entry === null || entry === void 0 ? void 0 : (_entry$client = entry.client) === null || _entry$client === void 0 ? void 0 : _entry$client.name,
+            value: entry === null || entry === void 0 ? void 0 : (_entry$client2 = entry.client) === null || _entry$client2 === void 0 ? void 0 : _entry$client2.uuid
           }
         });
         $$invalidate(0, showTaskSelector = false);
@@ -28349,13 +32037,13 @@
       return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, action, requestToken, clients, projects, tasks, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input0_input_handler_1, input_handler_1, input0_binding_1, input1_input_handler, input_handler_2, input2_input_handler, input_handler_3, input3_input_handler, blur_handler, input_binding, input_input_handler, input_handler_4, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(QuickAdd, _SvelteComponent);
-      var _super = _createSuper$1(QuickAdd);
+      _inherits$w(QuickAdd, _SvelteComponent);
+      var _super = _createSuper$w(QuickAdd);
       function QuickAdd(options) {
         var _this;
-        _classCallCheck$1(this, QuickAdd);
+        _classCallCheck$x(this, QuickAdd);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$7, create_fragment$7, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$7, create_fragment$7, safe_not_equal, {
           action: 39,
           requestToken: 40,
           clients: 41,
@@ -28365,7 +32053,7 @@
         }, null, [-1, -1, -1, -1]);
         return _this;
       }
-      return _createClass$1(QuickAdd);
+      return _createClass$x(QuickAdd);
     }(SvelteComponent);
 
     function create_fragment$6(ctx) {
@@ -28507,13 +32195,13 @@
       return [uuid, initialState, state, loading, save, action, requestToken, change_handler];
     }
     var Checkmark = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Checkmark, _SvelteComponent);
-      var _super = _createSuper$1(Checkmark);
+      _inherits$w(Checkmark, _SvelteComponent);
+      var _super = _createSuper$w(Checkmark);
       function Checkmark(options) {
         var _this;
-        _classCallCheck$1(this, Checkmark);
+        _classCallCheck$x(this, Checkmark);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$6, create_fragment$6, safe_not_equal, {
           uuid: 0,
           initialState: 1,
           action: 5,
@@ -28521,7 +32209,7 @@
         });
         return _this;
       }
-      return _createClass$1(Checkmark);
+      return _createClass$x(Checkmark);
     }(SvelteComponent);
 
     function create_fragment$5(ctx) {
@@ -28892,20 +32580,20 @@
       return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Filters, _SvelteComponent);
-      var _super = _createSuper$1(Filters);
+      _inherits$w(Filters, _SvelteComponent);
+      var _super = _createSuper$w(Filters);
       function Filters(options) {
         var _this;
-        _classCallCheck$1(this, Filters);
+        _classCallCheck$x(this, Filters);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$5, create_fragment$5, safe_not_equal, {
           clients: 0,
           projects: 15,
           tasks: 16
         });
         return _this;
       }
-      return _createClass$1(Filters);
+      return _createClass$x(Filters);
     }(SvelteComponent);
 
     const subscriber_queue = [];
@@ -29138,7 +32826,7 @@
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
-                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)));
+                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)));
               case 14:
               case "end":
                 return _context.stop();
@@ -29214,19 +32902,19 @@
       return [isVisible, selectedSharee, loading, handleSelectSharee, handleClearSharee, search, requestToken];
     }
     var UserFilterSelect = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(UserFilterSelect, _SvelteComponent);
-      var _super = _createSuper$1(UserFilterSelect);
+      _inherits$w(UserFilterSelect, _SvelteComponent);
+      var _super = _createSuper$w(UserFilterSelect);
       function UserFilterSelect(options) {
         var _this;
-        _classCallCheck$1(this, UserFilterSelect);
+        _classCallCheck$x(this, UserFilterSelect);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           requestToken: 6,
           isVisible: 0
         });
         return _this;
       }
-      return _createClass$1(UserFilterSelect);
+      return _createClass$x(UserFilterSelect);
     }(SvelteComponent);
 
     function create_fragment$3(ctx) {
@@ -29439,54 +33127,54 @@
         var preset = selectedValue.detail.value;
         switch (preset) {
           case "today":
-            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
+            $$invalidate(2, start = format$3(startOfToday(), dateFormat));
+            $$invalidate(1, end = format$3(startOfToday(), dateFormat));
             break;
           case "yesterday":
-            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(2, start = format$3(startOfYesterday(), dateFormat));
+            $$invalidate(1, end = format$3(startOfYesterday(), dateFormat));
             break;
           case "week":
-            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay_1()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay_1()
             }), dateFormat));
             break;
           case "week-1":
-            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay_1()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay_1()
             }), dateFormat));
             break;
           case "month":
-            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$3(startOfMonth(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$3(endOfMonth(startOfToday()), dateFormat));
             break;
           case "month-1":
-            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
             break;
           case "year":
-            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$3(startOfYear(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$3(endOfYear(startOfToday()), dateFormat));
             break;
           case "year-1":
-            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
+            $$invalidate(2, start = format$3(startOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
+            $$invalidate(1, end = format$3(endOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
             break;
@@ -29542,20 +33230,20 @@
       return [requestToken, end, start, loading, presets, applyRange, handleSelectPreset, startOfMonth$1, endOfMonth$1, input0_input_handler, input1_input_handler];
     }
     var Timerange = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Timerange, _SvelteComponent);
-      var _super = _createSuper$1(Timerange);
+      _inherits$w(Timerange, _SvelteComponent);
+      var _super = _createSuper$w(Timerange);
       function Timerange(options) {
         var _this;
-        _classCallCheck$1(this, Timerange);
+        _classCallCheck$x(this, Timerange);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$3, create_fragment$3, safe_not_equal, {
           requestToken: 0,
           startOfMonth: 7,
           endOfMonth: 8
         });
         return _this;
       }
-      return _createClass$1(Timerange);
+      return _createClass$x(Timerange);
     }(SvelteComponent);
 
     function create_fragment$2(ctx) {
@@ -29617,16 +33305,16 @@
       return [click_handler];
     }
     var PrintButton = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(PrintButton, _SvelteComponent);
-      var _super = _createSuper$1(PrintButton);
+      _inherits$w(PrintButton, _SvelteComponent);
+      var _super = _createSuper$w(PrintButton);
       function PrintButton(options) {
         var _this;
-        _classCallCheck$1(this, PrintButton);
+        _classCallCheck$x(this, PrintButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$2, create_fragment$2, safe_not_equal, {});
+        init$2(_assertThisInitialized$w(_this), options, instance$2, create_fragment$2, safe_not_equal, {});
         return _this;
       }
-      return _createClass$1(PrintButton);
+      return _createClass$x(PrintButton);
     }(SvelteComponent);
 
     var $entries = objectToArray.entries;
@@ -31813,7 +35501,7 @@
     var off = noop$1;
     var removeListener = noop$1;
     var removeAllListeners = noop$1;
-    var emit$1 = noop$1;
+    var emit = noop$1;
     function binding(name) {
       throw new Error('process.binding is not supported');
     }
@@ -31869,7 +35557,7 @@
       off: off,
       removeListener: removeListener,
       removeAllListeners: removeAllListeners,
-      emit: emit$1,
+      emit: emit,
       binding: binding,
       cwd: cwd,
       chdir: chdir,
@@ -32574,7 +36262,7 @@
       this.charLength = this.charReceived ? 3 : 0;
     }
     Readable.ReadableState = ReadableState;
-    var debug = debuglog('stream');
+    var debug$1 = debuglog('stream');
     inherits$1(Readable, EventEmitter);
     function prependListener(emitter, event, fn) {
       // Sadly this is not cacheable as some libraries bundle their own
@@ -32792,7 +36480,7 @@
 
     // you can override either this method, or the async _read(n) below.
     Readable.prototype.read = function (n) {
-      debug('read', n);
+      debug$1('read', n);
       n = parseInt(n, 10);
       var state = this._readableState;
       var nOrig = n;
@@ -32802,7 +36490,7 @@
       // already have a bunch of data in the buffer, then just trigger
       // the 'readable' event and move on.
       if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {
-        debug('read: emitReadable', state.length, state.ended);
+        debug$1('read: emitReadable', state.length, state.ended);
         if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
         return null;
       }
@@ -32838,21 +36526,21 @@
 
       // if we need a readable event, then we need to do some reading.
       var doRead = state.needReadable;
-      debug('need readable', doRead);
+      debug$1('need readable', doRead);
 
       // if we currently have less than the highWaterMark, then also read some
       if (state.length === 0 || state.length - n < state.highWaterMark) {
         doRead = true;
-        debug('length less than watermark', doRead);
+        debug$1('length less than watermark', doRead);
       }
 
       // however, if we've ended, then there's no point, and if we're already
       // reading, then it's unnecessary.
       if (state.ended || state.reading) {
         doRead = false;
-        debug('reading or ended', doRead);
+        debug$1('reading or ended', doRead);
       } else if (doRead) {
-        debug('do read');
+        debug$1('do read');
         state.reading = true;
         state.sync = true;
         // if the length is currently zero, then we *need* a readable event.
@@ -32912,13 +36600,13 @@
       var state = stream._readableState;
       state.needReadable = false;
       if (!state.emittedReadable) {
-        debug('emitReadable', state.flowing);
+        debug$1('emitReadable', state.flowing);
         state.emittedReadable = true;
         if (state.sync) nextTick(emitReadable_, stream);else emitReadable_(stream);
       }
     }
     function emitReadable_(stream) {
-      debug('emit readable');
+      debug$1('emit readable');
       stream.emit('readable');
       flow(stream);
     }
@@ -32938,7 +36626,7 @@
     function maybeReadMore_(stream, state) {
       var len = state.length;
       while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
-        debug('maybeReadMore read 0');
+        debug$1('maybeReadMore read 0');
         stream.read(0);
         if (len === state.length)
           // didn't get any data, stop spinning.
@@ -32969,19 +36657,19 @@
           break;
       }
       state.pipesCount += 1;
-      debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
+      debug$1('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
       var doEnd = !pipeOpts || pipeOpts.end !== false;
       var endFn = doEnd ? onend : cleanup;
       if (state.endEmitted) nextTick(endFn);else src.once('end', endFn);
       dest.on('unpipe', onunpipe);
       function onunpipe(readable) {
-        debug('onunpipe');
+        debug$1('onunpipe');
         if (readable === src) {
           cleanup();
         }
       }
       function onend() {
-        debug('onend');
+        debug$1('onend');
         dest.end();
       }
 
@@ -32993,7 +36681,7 @@
       dest.on('drain', ondrain);
       var cleanedUp = false;
       function cleanup() {
-        debug('cleanup');
+        debug$1('cleanup');
         // cleanup event handlers once the pipe is broken
         dest.removeListener('close', onclose);
         dest.removeListener('finish', onfinish);
@@ -33020,7 +36708,7 @@
       var increasedAwaitDrain = false;
       src.on('data', ondata);
       function ondata(chunk) {
-        debug('ondata');
+        debug$1('ondata');
         increasedAwaitDrain = false;
         var ret = dest.write(chunk);
         if (false === ret && !increasedAwaitDrain) {
@@ -33029,7 +36717,7 @@
           // also returned false.
           // => Check whether `dest` is still a piping destination.
           if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
-            debug('false write response, pause', src._readableState.awaitDrain);
+            debug$1('false write response, pause', src._readableState.awaitDrain);
             src._readableState.awaitDrain++;
             increasedAwaitDrain = true;
           }
@@ -33040,7 +36728,7 @@
       // if the dest has an error, then stop piping into it.
       // however, don't suppress the throwing behavior for this.
       function onerror(er) {
-        debug('onerror', er);
+        debug$1('onerror', er);
         unpipe();
         dest.removeListener('error', onerror);
         if (listenerCount(dest, 'error') === 0) dest.emit('error', er);
@@ -33056,13 +36744,13 @@
       }
       dest.once('close', onclose);
       function onfinish() {
-        debug('onfinish');
+        debug$1('onfinish');
         dest.removeListener('close', onclose);
         unpipe();
       }
       dest.once('finish', onfinish);
       function unpipe() {
-        debug('unpipe');
+        debug$1('unpipe');
         src.unpipe(dest);
       }
 
@@ -33071,7 +36759,7 @@
 
       // start the flow if it hasn't been started already.
       if (!state.flowing) {
-        debug('pipe resume');
+        debug$1('pipe resume');
         src.resume();
       }
       return dest;
@@ -33079,7 +36767,7 @@
     function pipeOnDrain(src) {
       return function () {
         var state = src._readableState;
-        debug('pipeOnDrain', state.awaitDrain);
+        debug$1('pipeOnDrain', state.awaitDrain);
         if (state.awaitDrain) state.awaitDrain--;
         if (state.awaitDrain === 0 && src.listeners('data').length) {
           state.flowing = true;
@@ -33155,7 +36843,7 @@
     };
     Readable.prototype.addListener = Readable.prototype.on;
     function nReadingNextTick(self) {
-      debug('readable nexttick read 0');
+      debug$1('readable nexttick read 0');
       self.read(0);
     }
 
@@ -33164,7 +36852,7 @@
     Readable.prototype.resume = function () {
       var state = this._readableState;
       if (!state.flowing) {
-        debug('resume');
+        debug$1('resume');
         state.flowing = true;
         resume(this, state);
       }
@@ -33178,7 +36866,7 @@
     }
     function resume_(stream, state) {
       if (!state.reading) {
-        debug('resume read 0');
+        debug$1('resume read 0');
         stream.read(0);
       }
       state.resumeScheduled = false;
@@ -33188,9 +36876,9 @@
       if (state.flowing && !state.reading) stream.read(0);
     }
     Readable.prototype.pause = function () {
-      debug('call pause flowing=%j', this._readableState.flowing);
+      debug$1('call pause flowing=%j', this._readableState.flowing);
       if (false !== this._readableState.flowing) {
-        debug('pause');
+        debug$1('pause');
         this._readableState.flowing = false;
         this.emit('pause');
       }
@@ -33198,7 +36886,7 @@
     };
     function flow(stream) {
       var state = stream._readableState;
-      debug('flow', state.flowing);
+      debug$1('flow', state.flowing);
       while (state.flowing && stream.read() !== null) {}
     }
 
@@ -33210,7 +36898,7 @@
       var paused = false;
       var self = this;
       stream.on('end', function () {
-        debug('wrapped end');
+        debug$1('wrapped end');
         if (state.decoder && !state.ended) {
           var chunk = state.decoder.end();
           if (chunk && chunk.length) self.push(chunk);
@@ -33218,7 +36906,7 @@
         self.push(null);
       });
       stream.on('data', function (chunk) {
-        debug('wrapped data');
+        debug$1('wrapped data');
         if (state.decoder) chunk = state.decoder.write(chunk);
 
         // don't skip over falsy values in objectMode
@@ -33251,7 +36939,7 @@
       // when we try to consume some more bytes, simply unpause the
       // underlying stream.
       self._read = function (n) {
-        debug('wrapped _read', n);
+        debug$1('wrapped _read', n);
         if (paused) {
           paused = false;
           stream.resume();
@@ -35325,7 +39013,7 @@
         callback(err);
       }
     }
-    const parse = function () {
+    const parse$1 = function () {
       let data, options, callback;
       for (const i in arguments) {
         const argument = arguments[i];
@@ -36582,7 +40270,7 @@
                 _context.prev = 9;
                 _context.next = 12;
                 return new Promise(function (resolve, reject) {
-                  return parse(fileReader.result, {
+                  return parse$1(fileReader.result, {
                     delimiter: delimiterInput && delimiterInput.value ? delimiterInput.value : ",",
                     // @TODO: Make encoding configurable
                     encoding: "utf-8",
@@ -36805,19 +40493,19 @@
       return [fileInput, delimiterInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, requestToken, select_binding, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
     }
     var Import = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Import, _SvelteComponent);
-      var _super = _createSuper$1(Import);
+      _inherits$w(Import, _SvelteComponent);
+      var _super = _createSuper$w(Import);
       function Import(options) {
         var _this;
-        _classCallCheck$1(this, Import);
+        _classCallCheck$x(this, Import);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance$1, create_fragment$1, safe_not_equal, {
           syncApiUrl: 13,
           requestToken: 14
         }, null, [-1, -1]);
         return _this;
       }
-      return _createClass$1(Import);
+      return _createClass$x(Import);
     }(SvelteComponent);
 
     function create_if_block(ctx) {
@@ -37021,18 +40709,18 @@
       return [requestToken, showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
     }
     var UserFilterButton = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(UserFilterButton, _SvelteComponent);
-      var _super = _createSuper$1(UserFilterButton);
+      _inherits$w(UserFilterButton, _SvelteComponent);
+      var _super = _createSuper$w(UserFilterButton);
       function UserFilterButton(options) {
         var _this;
-        _classCallCheck$1(this, UserFilterButton);
+        _classCallCheck$x(this, UserFilterButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance, create_fragment, safe_not_equal, {
+        init$2(_assertThisInitialized$w(_this), options, instance, create_fragment, safe_not_equal, {
           requestToken: 0
         });
         return _this;
       }
-      return _createClass$1(UserFilterButton);
+      return _createClass$x(UserFilterButton);
     }(SvelteComponent);
 
     /* global HTMLCollection: true */
@@ -37224,7 +40912,7 @@
     /* global _gaq: true, ga: true */
 
 
-    var parseOptions = function (options) {
+    var parseOptions$1 = function (options) {
       options = options || {};
       options.elements = options.elements || "a[href], form[action]";
       options.selectors = options.selectors || ["title", ".js-Pjax"];
@@ -37737,7 +41425,7 @@
         href: null,
         options: null
       };
-      this.options = parseOptions(options);
+      this.options = parseOptions$1(options);
       this.log("Pjax options", this.options);
       if (this.options.scrollRestoration && "scrollRestoration" in history) {
         history.scrollRestoration = "manual";
@@ -37954,8 +41642,8 @@
     }
     });
 
-    var PagePjax = /*#__PURE__*/_createClass$1(function PagePjax(reload) {
-      _classCallCheck$1(this, PagePjax);
+    var PagePjax = /*#__PURE__*/_createClass$x(function PagePjax(reload) {
+      _classCallCheck$x(this, PagePjax);
       /**
        * Enable seamless page navigation with pjax.
        */
@@ -37986,93 +41674,552 @@
       });
     });
 
-    Object.defineProperty(exports, '__esModule', { value: true });
+    // Note: this is the semver.org version of the spec that it implements
+    // Not necessarily the package version of this code.
+    const SEMVER_SPEC_VERSION = '2.0.0';
+    const MAX_LENGTH$2 = 256;
+    const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */9007199254740991;
 
-    var valid = require('semver/functions/valid.js');
-    var major = require('semver/functions/major.js');
+    // Max safe segment length for coercion.
+    const MAX_SAFE_COMPONENT_LENGTH = 16;
+    var constants = {
+      SEMVER_SPEC_VERSION,
+      MAX_LENGTH: MAX_LENGTH$2,
+      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
+      MAX_SAFE_COMPONENT_LENGTH
+    };
 
-    function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+    const debug = typeof process === 'object' && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
+    var debug_1 = debug;
 
-    var valid__default = /*#__PURE__*/_interopDefaultLegacy$1(valid);
-    var major__default = /*#__PURE__*/_interopDefaultLegacy$1(major);
+    var re_1 = createCommonjsModule(function (module, exports) {
+    const {
+      MAX_SAFE_COMPONENT_LENGTH
+    } = constants;
 
-    var ProxyBus = /** @class */ (function () {
-        function ProxyBus(bus) {
-            if (typeof bus.getVersion !== 'function' || !valid__default["default"](bus.getVersion())) {
-                console.warn('Proxying an event bus with an unknown or invalid version');
+    exports = module.exports = {};
+
+    // The actual regexps go on exports.re
+    const re = exports.re = [];
+    const src = exports.src = [];
+    const t = exports.t = {};
+    let R = 0;
+    const createToken = (name, value, isGlobal) => {
+      const index = R++;
+      debug_1(name, index, value);
+      t[name] = index;
+      src[index] = value;
+      re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
+    };
+
+    // The following Regular Expressions can be used for tokenizing,
+    // validating, and parsing SemVer version strings.
+
+    // ## Numeric Identifier
+    // A single `0`, or a non-zero digit followed by zero or more digits.
+
+    createToken('NUMERICIDENTIFIER', '0|[1-9]\\d*');
+    createToken('NUMERICIDENTIFIERLOOSE', '[0-9]+');
+
+    // ## Non-numeric Identifier
+    // Zero or more digits, followed by a letter or hyphen, and then zero or
+    // more letters, digits, or hyphens.
+
+    createToken('NONNUMERICIDENTIFIER', '\\d*[a-zA-Z-][a-zA-Z0-9-]*');
+
+    // ## Main Version
+    // Three dot-separated numeric identifiers.
+
+    createToken('MAINVERSION', `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})`);
+    createToken('MAINVERSIONLOOSE', `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})`);
+
+    // ## Pre-release Version Identifier
+    // A numeric identifier, or a non-numeric identifier.
+
+    createToken('PRERELEASEIDENTIFIER', `(?:${src[t.NUMERICIDENTIFIER]}|${src[t.NONNUMERICIDENTIFIER]})`);
+    createToken('PRERELEASEIDENTIFIERLOOSE', `(?:${src[t.NUMERICIDENTIFIERLOOSE]}|${src[t.NONNUMERICIDENTIFIER]})`);
+
+    // ## Pre-release Version
+    // Hyphen, followed by one or more dot-separated pre-release version
+    // identifiers.
+
+    createToken('PRERELEASE', `(?:-(${src[t.PRERELEASEIDENTIFIER]}(?:\\.${src[t.PRERELEASEIDENTIFIER]})*))`);
+    createToken('PRERELEASELOOSE', `(?:-?(${src[t.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src[t.PRERELEASEIDENTIFIERLOOSE]})*))`);
+
+    // ## Build Metadata Identifier
+    // Any combination of digits, letters, or hyphens.
+
+    createToken('BUILDIDENTIFIER', '[0-9A-Za-z-]+');
+
+    // ## Build Metadata
+    // Plus sign, followed by one or more period-separated build metadata
+    // identifiers.
+
+    createToken('BUILD', `(?:\\+(${src[t.BUILDIDENTIFIER]}(?:\\.${src[t.BUILDIDENTIFIER]})*))`);
+
+    // ## Full Version String
+    // A main version, followed optionally by a pre-release version and
+    // build metadata.
+
+    // Note that the only major, minor, patch, and pre-release sections of
+    // the version string are capturing groups.  The build metadata is not a
+    // capturing group, because it should not ever be used in version
+    // comparison.
+
+    createToken('FULLPLAIN', `v?${src[t.MAINVERSION]}${src[t.PRERELEASE]}?${src[t.BUILD]}?`);
+    createToken('FULL', `^${src[t.FULLPLAIN]}$`);
+
+    // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
+    // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
+    // common in the npm registry.
+    createToken('LOOSEPLAIN', `[v=\\s]*${src[t.MAINVERSIONLOOSE]}${src[t.PRERELEASELOOSE]}?${src[t.BUILD]}?`);
+    createToken('LOOSE', `^${src[t.LOOSEPLAIN]}$`);
+    createToken('GTLT', '((?:<|>)?=?)');
+
+    // Something like "2.*" or "1.2.x".
+    // Note that "x.x" is a valid xRange identifer, meaning "any version"
+    // Only the first item is strictly required.
+    createToken('XRANGEIDENTIFIERLOOSE', `${src[t.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
+    createToken('XRANGEIDENTIFIER', `${src[t.NUMERICIDENTIFIER]}|x|X|\\*`);
+    createToken('XRANGEPLAIN', `[v=\\s]*(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:${src[t.PRERELEASE]})?${src[t.BUILD]}?` + `)?)?`);
+    createToken('XRANGEPLAINLOOSE', `[v=\\s]*(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:${src[t.PRERELEASELOOSE]})?${src[t.BUILD]}?` + `)?)?`);
+    createToken('XRANGE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAIN]}$`);
+    createToken('XRANGELOOSE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // Coercion.
+    // Extract anything that could conceivably be a part of a valid semver
+    createToken('COERCE', `${'(^|[^\\d])' + '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:$|[^\\d])`);
+    createToken('COERCERTL', src[t.COERCE], true);
+
+    // Tilde ranges.
+    // Meaning is "reasonably at or greater than"
+    createToken('LONETILDE', '(?:~>?)');
+    createToken('TILDETRIM', `(\\s*)${src[t.LONETILDE]}\\s+`, true);
+    exports.tildeTrimReplace = '$1~';
+    createToken('TILDE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
+    createToken('TILDELOOSE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // Caret ranges.
+    // Meaning is "at least and backwards compatible with"
+    createToken('LONECARET', '(?:\\^)');
+    createToken('CARETTRIM', `(\\s*)${src[t.LONECARET]}\\s+`, true);
+    exports.caretTrimReplace = '$1^';
+    createToken('CARET', `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
+    createToken('CARETLOOSE', `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // A simple gt/lt/eq thing, or just "" to indicate "any version"
+    createToken('COMPARATORLOOSE', `^${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]})$|^$`);
+    createToken('COMPARATOR', `^${src[t.GTLT]}\\s*(${src[t.FULLPLAIN]})$|^$`);
+
+    // An expression to strip any whitespace between the gtlt and the thing
+    // it modifies, so that `> 1.2.3` ==> `>1.2.3`
+    createToken('COMPARATORTRIM', `(\\s*)${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
+    exports.comparatorTrimReplace = '$1$2$3';
+
+    // Something like `1.2.3 - 1.2.4`
+    // Note that these all use the loose form, because they'll be
+    // checked against either the strict or loose comparator form
+    // later.
+    createToken('HYPHENRANGE', `^\\s*(${src[t.XRANGEPLAIN]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAIN]})` + `\\s*$`);
+    createToken('HYPHENRANGELOOSE', `^\\s*(${src[t.XRANGEPLAINLOOSE]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAINLOOSE]})` + `\\s*$`);
+
+    // Star ranges basically just allow anything at all.
+    createToken('STAR', '(<|>)?=?\\s*\\*');
+    // >=0.0.0 is like a star
+    createToken('GTE0', '^\\s*>=\\s*0\\.0\\.0\\s*$');
+    createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$');
+    });
+    re_1.re;
+    re_1.src;
+    re_1.t;
+    re_1.tildeTrimReplace;
+    re_1.caretTrimReplace;
+    re_1.comparatorTrimReplace;
+
+    // parse out just the options we care about so we always get a consistent
+    // obj with keys in a consistent order.
+    const opts = ['includePrerelease', 'loose', 'rtl'];
+    const parseOptions = options => !options ? {} : typeof options !== 'object' ? {
+      loose: true
+    } : opts.filter(k => options[k]).reduce((o, k) => {
+      o[k] = true;
+      return o;
+    }, {});
+    var parseOptions_1 = parseOptions;
+
+    const numeric = /^[0-9]+$/;
+    const compareIdentifiers$1 = (a, b) => {
+      const anum = numeric.test(a);
+      const bnum = numeric.test(b);
+      if (anum && bnum) {
+        a = +a;
+        b = +b;
+      }
+      return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
+    };
+    const rcompareIdentifiers = (a, b) => compareIdentifiers$1(b, a);
+    var identifiers = {
+      compareIdentifiers: compareIdentifiers$1,
+      rcompareIdentifiers
+    };
+
+    const {
+      MAX_LENGTH: MAX_LENGTH$1,
+      MAX_SAFE_INTEGER
+    } = constants;
+    const {
+      re: re$1,
+      t: t$1
+    } = re_1;
+
+    const {
+      compareIdentifiers
+    } = identifiers;
+    class SemVer {
+      constructor(version, options) {
+        options = parseOptions_1(options);
+        if (version instanceof SemVer) {
+          if (version.loose === !!options.loose && version.includePrerelease === !!options.includePrerelease) {
+            return version;
+          } else {
+            version = version.version;
+          }
+        } else if (typeof version !== 'string') {
+          throw new TypeError(`Invalid Version: ${version}`);
+        }
+        if (version.length > MAX_LENGTH$1) {
+          throw new TypeError(`version is longer than ${MAX_LENGTH$1} characters`);
+        }
+        debug_1('SemVer', version, options);
+        this.options = options;
+        this.loose = !!options.loose;
+        // this isn't actually relevant for versions, but keep it so that we
+        // don't run into trouble passing this.options around.
+        this.includePrerelease = !!options.includePrerelease;
+        const m = version.trim().match(options.loose ? re$1[t$1.LOOSE] : re$1[t$1.FULL]);
+        if (!m) {
+          throw new TypeError(`Invalid Version: ${version}`);
+        }
+        this.raw = version;
+
+        // these are actually numbers
+        this.major = +m[1];
+        this.minor = +m[2];
+        this.patch = +m[3];
+        if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
+          throw new TypeError('Invalid major version');
+        }
+        if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
+          throw new TypeError('Invalid minor version');
+        }
+        if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
+          throw new TypeError('Invalid patch version');
+        }
+
+        // numberify any prerelease numeric ids
+        if (!m[4]) {
+          this.prerelease = [];
+        } else {
+          this.prerelease = m[4].split('.').map(id => {
+            if (/^[0-9]+$/.test(id)) {
+              const num = +id;
+              if (num >= 0 && num < MAX_SAFE_INTEGER) {
+                return num;
+              }
             }
-            else if (major__default["default"](bus.getVersion()) !== major__default["default"](this.getVersion())) {
-                console.warn('Proxying an event bus of version ' + bus.getVersion() + ' with ' + this.getVersion());
+            return id;
+          });
+        }
+        this.build = m[5] ? m[5].split('.') : [];
+        this.format();
+      }
+      format() {
+        this.version = `${this.major}.${this.minor}.${this.patch}`;
+        if (this.prerelease.length) {
+          this.version += `-${this.prerelease.join('.')}`;
+        }
+        return this.version;
+      }
+      toString() {
+        return this.version;
+      }
+      compare(other) {
+        debug_1('SemVer.compare', this.version, this.options, other);
+        if (!(other instanceof SemVer)) {
+          if (typeof other === 'string' && other === this.version) {
+            return 0;
+          }
+          other = new SemVer(other, this.options);
+        }
+        if (other.version === this.version) {
+          return 0;
+        }
+        return this.compareMain(other) || this.comparePre(other);
+      }
+      compareMain(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+        return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
+      }
+      comparePre(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+
+        // NOT having a prerelease is > having one
+        if (this.prerelease.length && !other.prerelease.length) {
+          return -1;
+        } else if (!this.prerelease.length && other.prerelease.length) {
+          return 1;
+        } else if (!this.prerelease.length && !other.prerelease.length) {
+          return 0;
+        }
+        let i = 0;
+        do {
+          const a = this.prerelease[i];
+          const b = other.prerelease[i];
+          debug_1('prerelease compare', i, a, b);
+          if (a === undefined && b === undefined) {
+            return 0;
+          } else if (b === undefined) {
+            return 1;
+          } else if (a === undefined) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i);
+      }
+      compareBuild(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+        let i = 0;
+        do {
+          const a = this.build[i];
+          const b = other.build[i];
+          debug_1('prerelease compare', i, a, b);
+          if (a === undefined && b === undefined) {
+            return 0;
+          } else if (b === undefined) {
+            return 1;
+          } else if (a === undefined) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i);
+      }
+
+      // preminor will bump the version up to the next minor release, and immediately
+      // down to pre-release. premajor and prepatch work the same way.
+      inc(release, identifier) {
+        switch (release) {
+          case 'premajor':
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor = 0;
+            this.major++;
+            this.inc('pre', identifier);
+            break;
+          case 'preminor':
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor++;
+            this.inc('pre', identifier);
+            break;
+          case 'prepatch':
+            // If this is already a prerelease, it will bump to the next version
+            // drop any prereleases that might already exist, since they are not
+            // relevant at this point.
+            this.prerelease.length = 0;
+            this.inc('patch', identifier);
+            this.inc('pre', identifier);
+            break;
+          // If the input is a non-prerelease version, this acts the same as
+          // prepatch.
+          case 'prerelease':
+            if (this.prerelease.length === 0) {
+              this.inc('patch', identifier);
             }
-            this.bus = bus;
-        }
-        ProxyBus.prototype.getVersion = function () {
-            return "3.1.0";
-        };
-        ProxyBus.prototype.subscribe = function (name, handler) {
-            this.bus.subscribe(name, handler);
-        };
-        ProxyBus.prototype.unsubscribe = function (name, handler) {
-            this.bus.unsubscribe(name, handler);
-        };
-        ProxyBus.prototype.emit = function (name, event) {
-            this.bus.emit(name, event);
-        };
-        return ProxyBus;
-    }());
-
-    var SimpleBus = /** @class */ (function () {
-        function SimpleBus() {
-            this.handlers = new Map();
-        }
-        SimpleBus.prototype.getVersion = function () {
-            return "3.1.0";
-        };
-        SimpleBus.prototype.subscribe = function (name, handler) {
-            this.handlers.set(name, (this.handlers.get(name) || []).concat(handler));
-        };
-        SimpleBus.prototype.unsubscribe = function (name, handler) {
-            this.handlers.set(name, (this.handlers.get(name) || []).filter(function (h) { return h != handler; }));
-        };
-        SimpleBus.prototype.emit = function (name, event) {
-            (this.handlers.get(name) || []).forEach(function (h) {
-                try {
-                    h(event);
+            this.inc('pre', identifier);
+            break;
+          case 'major':
+            // If this is a pre-major version, bump up to the same major version.
+            // Otherwise increment major.
+            // 1.0.0-5 bumps to 1.0.0
+            // 1.1.0 bumps to 2.0.0
+            if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) {
+              this.major++;
+            }
+            this.minor = 0;
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case 'minor':
+            // If this is a pre-minor version, bump up to the same minor version.
+            // Otherwise increment minor.
+            // 1.2.0-5 bumps to 1.2.0
+            // 1.2.1 bumps to 1.3.0
+            if (this.patch !== 0 || this.prerelease.length === 0) {
+              this.minor++;
+            }
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case 'patch':
+            // If this is not a pre-release version, it will increment the patch.
+            // If it is a pre-release it will bump up to the same patch version.
+            // 1.2.0-5 patches to 1.2.0
+            // 1.2.0 patches to 1.2.1
+            if (this.prerelease.length === 0) {
+              this.patch++;
+            }
+            this.prerelease = [];
+            break;
+          // This probably shouldn't be used publicly.
+          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
+          case 'pre':
+            if (this.prerelease.length === 0) {
+              this.prerelease = [0];
+            } else {
+              let i = this.prerelease.length;
+              while (--i >= 0) {
+                if (typeof this.prerelease[i] === 'number') {
+                  this.prerelease[i]++;
+                  i = -2;
                 }
-                catch (e) {
-                    console.error('could not invoke event listener', e);
+              }
+              if (i === -1) {
+                // didn't increment anything
+                this.prerelease.push(0);
+              }
+            }
+            if (identifier) {
+              // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
+              // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
+              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
+                if (isNaN(this.prerelease[1])) {
+                  this.prerelease = [identifier, 0];
                 }
-            });
-        };
-        return SimpleBus;
-    }());
-
-    var bus = null;
-    function getBus() {
-        if (bus !== null) {
-            return bus;
+              } else {
+                this.prerelease = [identifier, 0];
+              }
+            }
+            break;
+          default:
+            throw new Error(`invalid increment argument: ${release}`);
         }
-        if (typeof window === 'undefined') {
-            // testing or SSR
-            return new Proxy({}, {
-                get: function () {
-                    return function () { return console.error('Window not available, EventBus can not be established!'); };
-                }
-            });
-        }
-        if (typeof window.OC !== 'undefined' && window.OC._eventBus && typeof window._nc_event_bus === 'undefined') {
-            console.warn('found old event bus instance at OC._eventBus. Update your version!');
-            window._nc_event_bus = window.OC._eventBus;
-        }
-        // Either use an existing event bus instance or create one
-        if (typeof (window === null || window === void 0 ? void 0 : window._nc_event_bus) !== 'undefined') {
-            bus = new ProxyBus(window._nc_event_bus);
-        }
-        else {
-            bus = window._nc_event_bus = new SimpleBus();
-        }
-        return bus;
+        this.format();
+        this.raw = this.version;
+        return this;
+      }
     }
+    var semver = SemVer;
+
+    const {
+      MAX_LENGTH
+    } = constants;
+    const {
+      re,
+      t
+    } = re_1;
+
+
+    const parse = (version, options) => {
+      options = parseOptions_1(options);
+      if (version instanceof semver) {
+        return version;
+      }
+      if (typeof version !== 'string') {
+        return null;
+      }
+      if (version.length > MAX_LENGTH) {
+        return null;
+      }
+      const r = options.loose ? re[t.LOOSE] : re[t.FULL];
+      if (!r.test(version)) {
+        return null;
+      }
+      try {
+        return new semver(version, options);
+      } catch (er) {
+        return null;
+      }
+    };
+    var parse_1 = parse;
+
+    const valid = (version, options) => {
+      const v = parse_1(version, options);
+      return v ? v.version : null;
+    };
+    var valid_1 = valid;
+
+    const major = (a, loose) => new semver(a, loose).major;
+    var major_1 = major;
+
+    class ProxyBus {
+      bus;
+      constructor(bus) {
+        if (typeof bus.getVersion !== 'function' || !valid_1(bus.getVersion())) {
+          console.warn('Proxying an event bus with an unknown or invalid version');
+        } else if (major_1(bus.getVersion()) !== major_1(this.getVersion())) {
+          console.warn('Proxying an event bus of version ' + bus.getVersion() + ' with ' + this.getVersion());
+        }
+        this.bus = bus;
+      }
+      getVersion() {
+        return "3.0.2";
+      }
+      subscribe(name, handler) {
+        this.bus.subscribe(name, handler);
+      }
+      unsubscribe(name, handler) {
+        this.bus.unsubscribe(name, handler);
+      }
+      emit(name, event) {
+        this.bus.emit(name, event);
+      }
+    }
+    class SimpleBus {
+      handlers = new Map();
+      getVersion() {
+        return "3.0.2";
+      }
+      subscribe(name, handler) {
+        this.handlers.set(name, (this.handlers.get(name) || []).concat(handler));
+      }
+      unsubscribe(name, handler) {
+        this.handlers.set(name, (this.handlers.get(name) || []).filter(h => h != handler));
+      }
+      emit(name, event) {
+        (this.handlers.get(name) || []).forEach(h => {
+          try {
+            h(event);
+          } catch (e) {
+            console.error('could not invoke event listener', e);
+          }
+        });
+      }
+    }
+    function getBus() {
+      if (typeof window.OC !== 'undefined' && window.OC._eventBus && typeof window._nc_event_bus === 'undefined') {
+        console.warn('found old event bus instance at OC._eventBus. Update your version!');
+        window._nc_event_bus = window.OC._eventBus;
+      }
+      // Either use an existing event bus instance or create one
+      if (typeof window._nc_event_bus !== 'undefined') {
+        return new ProxyBus(window._nc_event_bus);
+      } else {
+        return window._nc_event_bus = new SimpleBus();
+      }
+    }
+    const bus = getBus();
     /**
      * Register an event listener
      *
@@ -38080,60 +42227,19 @@
      * @param handler callback invoked for every matching event emitted on the bus
      */
     function subscribe(name, handler) {
-        getBus().subscribe(name, handler);
-    }
-    /**
-     * Unregister a previously registered event listener
-     *
-     * Note: doesn't work with anonymous functions (closures). Use method of an object or store listener function in variable.
-     *
-     * @param name name of the event
-     * @param handler callback passed to `subscribed`
-     */
-    function unsubscribe(name, handler) {
-        getBus().unsubscribe(name, handler);
-    }
-    /**
-     * Emit an event
-     *
-     * @param name name of the event
-     * @param event event payload
-     */
-    function emit(name, event) {
-        getBus().emit(name, event);
+      bus.subscribe(name, handler);
     }
 
-    exports.ProxyBus = ProxyBus;
-    exports.SimpleBus = SimpleBus;
-    exports.emit = emit;
-    exports.subscribe = subscribe;
-    exports.unsubscribe = unsubscribe;
-
-    var dist = /*#__PURE__*/Object.freeze({
-        __proto__: null
-    });
-
-    var eventBus = getCjsExportFromNamespace(dist);
-
-    var token$1 = undefined;
-    var observers = [];
-    /**
-     * Get current request token
-     *
-     * @return {string|null} Current request token or null if not set
-     */
+    const tokenElement = document.getElementsByTagName('head')[0];
+    let token$1 = tokenElement ? tokenElement.getAttribute('data-requesttoken') : null;
+    const observers = [];
     function getRequestToken() {
-      if (token$1 === undefined) {
-        // Only on first load, try to get token from document
-        var tokenElement = document === null || document === void 0 ? void 0 : document.getElementsByTagName('head')[0];
-        token$1 = tokenElement ? tokenElement.getAttribute('data-requesttoken') : null;
-      }
       return token$1;
     }
     // Listen to server event and keep token in sync
-    eventBus.subscribe('csrf-token-update', function (e) {
+    subscribe('csrf-token-update', e => {
       token$1 = e.token;
-      observers.forEach(function (observer) {
+      observers.forEach(observer => {
         try {
           observer(e.token);
         } catch (e) {
@@ -38141,9 +42247,20 @@
         }
       });
     });
-    var getRequestToken_1 = getRequestToken;
 
-    var token = getRequestToken_1();
+    /// <reference types="@nextcloud/typings" />
+    const getAttribute = (el, attribute) => {
+      if (el) {
+        return el.getAttribute(attribute);
+      }
+      return null;
+    };
+    const head = document.getElementsByTagName('head')[0];
+    getAttribute(head, 'data-user');
+    getAttribute(head, 'data-user-displayname');
+    typeof OC === 'undefined' ? false : OC.isUserAdmin();
+
+    var token = getRequestToken();
     var components = [];
     var pjax = [];
     var defaultDateFormat = "EEEE, MMMM d, y";
@@ -38333,12 +42450,12 @@
       var dateTimeElements = document.querySelectorAll("[data-datetime]");
       if (dateTimeElements && dateTimeElements.length > 0) {
         dateTimeElements.forEach(function (element) {
-          var _store$settings$fullD, _store;
+          var _store$settings$fullD, _store, _store$settings;
           var datetime = element.getAttribute("data-datetime");
           if (!datetime) {
             return;
           }
-          element.innerText = format$2(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 || (_store = _store.settings) === null || _store === void 0 ? void 0 : _store.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
+          element.innerText = format$3(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 ? void 0 : (_store$settings = _store.settings) === null || _store$settings === void 0 ? void 0 : _store$settings.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
         });
       }
       document.body.classList.add("tm_ready");
