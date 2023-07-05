@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.8 Beta, 5. July 2023
+
+- Update to comply with Autoloader requirements (by @SpaceCafe, #130)
+- Update JS dependencies
+
 ## 0.3.7 Beta, 9. April 2023
 
 ### Added
