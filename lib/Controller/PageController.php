@@ -13,7 +13,7 @@ use OCA\TimeManager\Db\TimeMapper;
 use OCA\TimeManager\Db\CommitMapper;
 use OCA\TimeManager\Db\Share;
 use OCA\TimeManager\Db\ShareMapper;
-use OCA\TimeManager\Db\storageHelper;
+use OCA\TimeManager\Db\StorageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
