@@ -599,9 +599,11 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains(".list-title", "Time entries");
 
 		const firstTimeEntry = timeEntries[0];
-		cy.contains("div.tm_item-row", firstTimeEntry.note).get('input[type="checkbox"]').click({ force: true });
-
 		cy.contains("div.tm_item-row", firstTimeEntry.note).scrollIntoView().should("be.visible");
+		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
+			cy.get('input[type="checkbox"]').click({ force: true });
+		});
+
 		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
 			cy.get('input[type="checkbox"]:checked').should(should);
 		});
