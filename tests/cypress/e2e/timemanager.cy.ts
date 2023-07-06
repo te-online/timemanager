@@ -598,6 +598,8 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("div.tm_item-row", firstTask.Name).click();
 		cy.contains(".list-title", "Time entries");
 
+		cy.wait(4000);
+
 		const firstTimeEntry = timeEntries[0];
 		cy.contains("div.tm_item-row", firstTimeEntry.note).scrollIntoView().should("be.visible");
 		cy.contains("div.tm_item-row", firstTimeEntry.note).within(() => {
