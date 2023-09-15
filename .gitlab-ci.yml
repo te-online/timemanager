@@ -65,3 +65,10 @@ app_test_nc_27:
     - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:27-fpm-alpine#g" tests/docker-compose.yml
     - export NC_VERSION=27
     - *before_script
+
+app_test_nc_28:
+  extends: .app_tests
+  before_script:
+    - sed -i "s#nextcloud:25-fpm-alpine#nextcloud:28-fpm-alpine#g" tests/docker-compose.yml
+    - export NC_VERSION=28
+    - *before_script

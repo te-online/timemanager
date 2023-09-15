@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.9 Beta, tba
+
+- Run tests for Nextcloud 28 and dump compatibility
+
 ## 0.3.8 Beta, 5. July 2023
 
 - Update to comply with Autoloader requirements (by @SpaceCafe, #130)
