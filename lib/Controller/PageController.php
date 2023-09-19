@@ -19,6 +19,7 @@ use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\IUserManager;
@@ -44,6 +45,8 @@ class PageController extends Controller {
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
 	/** @var string  */
 	private $fullDateFormat;
 
@@ -68,6 +71,7 @@ class PageController extends Controller {
 		ShareMapper $shareMapper,
 		IConfig $config,
 		IUserManager $userManager,
+		IGroupManager $groupManager,
 		$userId
 	) {
 		parent::__construct($appName, $request);
@@ -80,6 +84,7 @@ class PageController extends Controller {
 		$this->userId = $userId;
 		$this->config = $config;
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
@@ -361,7 +366,7 @@ class PageController extends Controller {
 				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
 				// Get sharees, if user has shared this client
 				$clients[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client->getUuid()));
@@ -369,7 +374,7 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($client->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$clients[$index]->sharedBy = $sharedBy;
 			}
@@ -463,7 +468,7 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function addClientShare($client_uuid, $user_id) {
+	function addClientShare($client_uuid, $user_id, $group_id) {
 		$client = $this->clientMapper->getActiveObjectById($client_uuid);
 		// User must be author if we can get the client
 		if ($client) {
@@ -474,9 +479,17 @@ class PageController extends Controller {
 			$share->setChanged($today);
 			$share->setObjectUuid($client_uuid);
 			$share->setEntityType("client");
-			$share->setRecipientUserId($user_id);
 			$share->setAuthorUserId($this->userId);
-			$this->shareMapper->insert($share);
+
+			if ($user_id) {
+				$share->setRecipientId($user_id);
+				$share->setRecipientType("user");
+				$this->shareMapper->insert($share);
+			} elseif ($group_id) {
+				$share->setRecipientId($group_id);
+				$share->setRecipientType("group");
+				$this->shareMapper->insert($share);
+			}
 		}
 
 		$urlGenerator = \OC::$server->getURLGenerator();
@@ -534,7 +547,7 @@ class PageController extends Controller {
 				$projects[$index]->client = $parentClient;
 				// Get sharees, if user has shared this client
 				$projects[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($parentClient->getUuid()));
@@ -542,7 +555,7 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($parentClient->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$projects[$index]->sharedBy = $sharedBy;
 			}
@@ -556,7 +569,7 @@ class PageController extends Controller {
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
 
 		$sharees = array_map(function ($share) {
-			$shareArray = $share->toArray($this->userManager);
+			$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 			return $shareArray;
 		}, $this->shareMapper->findShareesForClient($client_uuid));
@@ -564,7 +577,7 @@ class PageController extends Controller {
 		$sharedByList = $this->shareMapper->findSharerForClient($client_uuid);
 		$sharedBy = null;
 		if (count($sharedByList) > 0) {
-			$sharedBy = $sharedByList[0]->toArray($this->userManager);
+			$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 		}
 
 		$form_props = [
@@ -714,11 +727,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
@@ -750,7 +763,7 @@ class PageController extends Controller {
 				}
 				// Get sharees, if user has shared this client
 				$tasks[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($parentClient->getUuid()));
@@ -758,7 +771,7 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($parentClient->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$tasks[$index]->sharedBy = $sharedBy;
 			}
@@ -924,11 +937,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
