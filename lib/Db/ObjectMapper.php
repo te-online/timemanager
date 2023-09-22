@@ -72,7 +72,6 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
@@ -99,7 +98,6 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -127,7 +125,6 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -151,7 +148,6 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -164,8 +160,9 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters([$this->userId, "deleted", $value]);
 
-			return $this->findEntities($sql);
 		}
+
+		return $this->findEntities($sql);
 	}
 
 	/**
@@ -174,7 +171,7 @@ class ObjectMapper extends QBMapper {
 	 *
 	 * @param string $date_start the range start
 	 * @param string $date_end the range end
-	 * @param string $status the status
+	 * @param ?string $status the status
 	 * @return Object[] list if matching items
 	 */
 	function getActiveObjectsByDateRangeAndFilters(
@@ -302,97 +299,65 @@ class ObjectMapper extends QBMapper {
 	}
 
 	function getObjectsAfterCommit($commit): array {
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+				->where("current.`user_id` = :userid")
+				->andWhere("task.`user_id` = :userid");
+		} else {
+			$sql->where("current.`user_id` = :userid");
+		}
+
+		$sql->andWhere('current.`commit` IN (:commits)');
+		$sql->orderBy("current.changed", "ASC");
+
 		return [
-			"created" => $this->getCreatedObjectsAfterCommit($commit),
-			"updated" => $this->getUpdatedObjectsAfterCommit($commit),
-			"deleted" => $this->getDeletedObjectsAfterCommit($commit),
+			"created" => $this->getCreatedObjectsAfterCommit($commit, $sql),
+			"updated" => $this->getUpdatedObjectsAfterCommit($commit, $sql),
+			"deleted" => $this->getDeletedObjectsAfterCommit($commit, $sql),
 		];
 	}
 
-	function getCreatedObjectsAfterCommit($commit) {
+	function getCreatedObjectsAfterCommit($commit, $sql) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
 
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = :userid")
-				->andWhere("task.`user_id` = :status");
-		} else {
-			$sql->where("current.`user_id` = :userid");
-		}
-
-		$sql->andWhere('current.`commit` IN (:commits)');
 		$sql->andWhere("current.`created` = current.`changed`");
 		$sql->andWhere("current.`status` != :status");
-		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
 
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
-	function getUpdatedObjectsAfterCommit($commit) {
+	function getUpdatedObjectsAfterCommit($commit, $sql) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
 
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = :userid")
-				->andWhere("task.`user_id` = :userid");
-		} else {
-			$sql->where("current.`user_id` = :userid");
-		}
-
-		$sql->andWhere('current.`commit` IN (:commits)');
 		$sql->andWhere("current.`created` != current.`changed`");
 		$sql->andWhere("current.`status` != :status");
-		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
 
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
-	function getDeletedObjectsAfterCommit($commit) {
+	function getDeletedObjectsAfterCommit($commit, $sql) {
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
 
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = :userid")
-				->andWhere("task.`user_id` = :userid");
-		} else {
-			$sql->where("current.`user_id` = :userid");
-		}
-
-		$sql->andWhere('current.`commit` IN (:commits)');
 		$sql->andWhere("current.`status` = :status");
-		$sql->orderBy("current.changed", "ASC");
 
 		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
 
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
 	/**
@@ -420,7 +385,6 @@ class ObjectMapper extends QBMapper {
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
@@ -438,7 +402,6 @@ class ObjectMapper extends QBMapper {
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -462,7 +425,6 @@ class ObjectMapper extends QBMapper {
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -482,7 +444,6 @@ class ObjectMapper extends QBMapper {
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -494,7 +455,8 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters([$this->userId, "deleted"]);
 
-			return $this->findEntities($sql);
 		}
+
+		return $this->findEntities($sql);
 	}
 }
