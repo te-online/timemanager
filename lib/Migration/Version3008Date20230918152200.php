@@ -14,7 +14,7 @@ use OCP\Migration\SimpleMigrationStep;
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version3100Date20230918152200 extends SimpleMigrationStep
+class Version3008Date20230918152200 extends SimpleMigrationStep
 {
 	/** @var IDBConnection */
 	private $db;
@@ -54,6 +54,11 @@ class Version3100Date20230918152200 extends SimpleMigrationStep
 			"notnull" => true,
 			"length"  => 64,
 		]);
+		$table->addColumn('permission', 'smallint', [
+			"notnull" => true,
+			"unsigned" => false,
+			"default" => -1,
+		]);
 
 		return $schema;
 	}
@@ -68,7 +73,8 @@ class Version3100Date20230918152200 extends SimpleMigrationStep
 		$query = $this->db->getQueryBuilder();
 		$query->update("timemanager_share")
 			  ->set("recipient_id", "recipient_user_id")
-			  ->set("recipient_type", $query->expr()->literal("user"));
+			  ->set("recipient_type", $query->expr()->literal("user"))
+			  ->set("permission", -1);
 		$query->executeStatement();
 	}
 }

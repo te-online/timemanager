@@ -54,9 +54,10 @@ class CommitMapper extends QBMapper {
 		$sql->setParameters([$this->userId, $commit]);
 		$givenCommit = $this->findEntities($sql);
 
+		$sql = $this->connection->getQueryBuilder();
+
 		// The given commit is found, all fine.
 		if (count($givenCommit) > 0) {
-			$sql = $this->connection->getQueryBuilder();
 			$sql
 				->select("*")
 				->from($this->tableName)
@@ -65,23 +66,18 @@ class CommitMapper extends QBMapper {
 				->orderBy("created");
 			$sql->setParameters([$this->userId, $givenCommit[0]->getCreated()]);
 
-			$commits = array_map(function ($commit) {
-				return $commit->toString();
-			}, $this->findEntities($sql));
 		} else {
 			// The given commit is unknown. All commits are applicable.
-			$sql = $this->connection->getQueryBuilder();
 			$sql
 				->select("*")
 				->from($this->tableName)
 				->where("`user_id` = ?")
 				->orderBy("created");
 			$sql->setParameters([$this->userId]);
-			$commits = array_map(function ($commit) {
-				return $commit->toString();
-			}, $this->findEntities($sql));
 		}
 
-		return $commits;
+		return array_map(function ($commit) {
+			return $commit->toString();
+		}, $this->findEntities($sql));
 	}
 }

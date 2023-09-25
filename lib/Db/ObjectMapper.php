@@ -312,48 +312,39 @@ class ObjectMapper extends QBMapper {
 			$sql->where("current.`user_id` = :userid");
 		}
 
-		$sql->andWhere('current.`commit` IN (:commits)');
+		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
+		$sql->andWhere("current.`commit` IN (:commits)");
 		$sql->orderBy("current.changed", "ASC");
 
+		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => array_values($applicable_commits)]);
+
 		return [
-			"created" => $this->getCreatedObjectsAfterCommit($commit, $sql),
-			"updated" => $this->getUpdatedObjectsAfterCommit($commit, $sql),
-			"deleted" => $this->getDeletedObjectsAfterCommit($commit, $sql),
+			"created" => $this->getCreatedObjectsAfterCommit($sql),
+			"updated" => $this->getUpdatedObjectsAfterCommit($sql),
+			"deleted" => $this->getDeletedObjectsAfterCommit($sql),
 		];
 	}
 
-	function getCreatedObjectsAfterCommit($commit, $sql) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-
+	function getCreatedObjectsAfterCommit($sql) {
 		$sql->andWhere("current.`created` = current.`changed`");
 		$sql->andWhere("current.`status` != :status");
 
-		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
-
 		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
 	}
 
-	function getUpdatedObjectsAfterCommit($commit, $sql) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-
+	function getUpdatedObjectsAfterCommit($sql) {
 		$sql->andWhere("current.`created` != current.`changed`");
 		$sql->andWhere("current.`status` != :status");
 
-		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
-
 		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
 	}
 
-	function getDeletedObjectsAfterCommit($commit, $sql) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-
+	function getDeletedObjectsAfterCommit($sql) {
 		$sql->andWhere("current.`status` = :status");
-
-		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => $applicable_commits]);
 
 		return array_map(function ($object) {
 			return $object->toArray();
