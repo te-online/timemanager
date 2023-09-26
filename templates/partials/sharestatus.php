@@ -20,13 +20,17 @@ $l = Util::getL10N('timemanager');
 		<ul class="existing-sharees compact">
 			<?php foreach($_['entity']->sharees as $sharee) { ?>
 				<li>
-					<img
-						src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/16'); ?>"
-						srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/16'); ?> 1x,
-						<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/32'); ?> 2x,
-						<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/64'); ?> 4x"
-						alt=""
-					/>
+					<?php if ($sharee['recipient_type'] == "group") { ?>
+						<img src="<?php echo $urlGenerator->imagePath('core', 'places/contacts.svg') ?>" alt="group" class="sharee-group" />
+					<?php } else { ?>
+						<img
+							src="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/16'); ?>"
+							srcset="<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/16'); ?> 1x,
+							<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/32'); ?> 2x,
+							<?php echo $urlGenerator->getAbsoluteURL('avatar/' . $sharee['recipient_id'] . '/64'); ?> 4x"
+							alt=""
+						/>
+					<?php } ?>
 					<?php p($sharee['recipient_display_name']); ?>
 				</li>
 			<?php } ?>

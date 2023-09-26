@@ -21905,6 +21905,7 @@
           img = element("img");
           if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
           attr(img, "alt", "");
+          attr(img, "class", "sharee-group");
         },
         m: function m(target, anchor) {
           insert(target, img, anchor);
@@ -22567,6 +22568,7 @@
           img = element("img");
           if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
           attr(img, "alt", "");
+          attr(img, "class", "sharee-group");
         },
         m: function m(target, anchor) {
           insert(target, img, anchor);

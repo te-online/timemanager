@@ -18,7 +18,7 @@
 		{#each sharees as sharee, index}
 			<li>
 				{#if sharee.recipient_type == "group"}
-					<img src={imagePath('core', 'places/contacts.svg')} alt="" />
+					<img src={imagePath('core', 'places/contacts.svg')} alt="" class="sharee-group" />
 				{:else}
 				<img
 					src={generateUrl(`avatar/${sharee.recipient_id}/32`)}
