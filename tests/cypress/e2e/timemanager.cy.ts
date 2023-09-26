@@ -41,6 +41,12 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.login(Cypress.env("NEXTCLOUD_ADMIN_USER"), Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
 	});
 
+	it("can create test group", () => {
+		cy.visit("/settings/users");
+		cy.get('a[title="Add group"]').click({ timeout: 3000 });
+		cy.get('input[placeholder="Enter group name"]').type("testgroup-1{enter}");
+	});
+
 	it("can create test users", () => {
 		cy.visit("/settings/users");
 		for (const username of testusers) {
@@ -48,6 +54,11 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get("button#new-user-button").click({ timeout: 30000 });
 			cy.get('input[name="username"]').type(username);
 			cy.get('input[name="password"]').type(`${username}-password`);
+
+			if (username == "testuser-1") {
+				cy.get("div.groups.modal__item input").type("testgroup-1{enter}");
+			}
+
 			cy.contains("button", "Add a new user").click();
 		}
 	});
@@ -219,6 +230,14 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.contains("button", "Add").click();
 			cy.contains("span.tm_label", "Shared with").parent().contains(username).scrollIntoView().should("be.visible");
 		}
+
+		// share with group
+		cy.contains("button", "Share client").click();
+		cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
+		cy.get("input#sharee-select").type("testgroup-1");
+		cy.get("label.sharees .item.first").click();
+		cy.contains("button", "Add").click();
+		cy.contains("span.tm_label", "Shared with").parent().contains("testgroup-1").scrollIntoView().should("be.visible");
 
 		cy.get("a").contains("Clients").click();
 		const thirdClient = clients[2];
