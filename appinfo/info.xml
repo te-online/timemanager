@@ -43,4 +43,8 @@ _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.m
 			<order>4</order>
 		</navigation>
 	</navigations>
+	<settings>
+		<admin>OCA\TimeManager\Settings\TimeManagerAdmin</admin>
+		<admin-section>OCA\TimeManager\Sections\TimeManagerAdmin</admin-section>
+	</settings>
 </info>

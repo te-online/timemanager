@@ -315,10 +315,16 @@ class StorageHelper {
 		string $clients = null,
 		string $projects = null,
 		string $tasks = null,
-		$shared = false
+		bool $shared = false,
+        bool $isReporterOrAdmin = false,
 	): array {
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
+        if ($isReporterOrAdmin) {
+            $all_projects = $this->projectMapper->findActiveForReporter("name");
+            $all_tasks = $this->taskMapper->findActiveForReporter("name");
+        } else {
+            $all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
+            $all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
+        }
 
 		// Get task uuids related to filters.
 		// Filters are exclusive from finer to coarse.
@@ -353,9 +359,8 @@ class StorageHelper {
 				}
 			}
 		}
-		$filter_tasks = array_unique($filter_tasks);
 
-		return $filter_tasks;
+        return array_unique($filter_tasks);
 	}
 
 	/**

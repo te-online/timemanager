@@ -34,8 +34,9 @@ class TimeMapper extends ObjectMapper {
 		string $end,
 		string $status = null,
 		array $filter_tasks = [],
-		$shared = false
+		bool $shared = false,
+        bool $isReporterOrAdmin = false,
 	) {
-		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared);
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared, $isReporterOrAdmin);
 	}
 }

@@ -14555,12 +14555,12 @@
 
     function get_each_context$8(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[25] = list[i];
-      child_ctx[27] = i;
+      child_ctx[26] = list[i];
+      child_ctx[28] = i;
       return child_ctx;
     }
 
-    // (227:0) {#if controls}
+    // (228:0) {#if controls}
     function create_if_block_7$2(ctx) {
       var h2;
       return {
@@ -14578,7 +14578,7 @@
       };
     }
 
-    // (231:1) {#if controls}
+    // (232:1) {#if controls}
     function create_if_block_6$3(ctx) {
       var div;
       var figure0;
@@ -14646,7 +14646,7 @@
       };
     }
 
-    // (247:3) {#if !loading && weekTotal > 0}
+    // (248:3) {#if !loading && weekTotal > 0}
     function create_if_block_3$3(ctx) {
       var each_1_anchor;
       var each_value = /*points*/ctx[3];
@@ -14696,18 +14696,18 @@
       };
     }
 
-    // (250:6) {#if point && point.stats}
+    // (251:6) {#if point && point.stats}
     function create_if_block_4$3(ctx) {
       var t0;
       var div;
       var span0;
-      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "";
+      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[26].date, "primary") + "";
       var t1;
       var t2;
       var span1;
-      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "";
+      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[26].date, "secondary") + "";
       var t3;
-      var if_block = /*point*/ctx[25].stats.total > 0 && create_if_block_5$3(ctx);
+      var if_block = /*point*/ctx[26].stats.total > 0 && create_if_block_5$3(ctx);
       return {
         c: function c() {
           if (if_block) if_block.c();
@@ -14733,7 +14733,7 @@
           append(span1, t3);
         },
         p: function p(ctx, dirty) {
-          if ( /*point*/ctx[25].stats.total > 0) {
+          if ( /*point*/ctx[26].stats.total > 0) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -14745,8 +14745,8 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "")) set_data(t1, t1_value);
-          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "")) set_data(t3, t3_value);
+          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[26].date, "primary") + "")) set_data(t1, t1_value);
+          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[26].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d: function d(detaching) {
           if (if_block) if_block.d(detaching);
@@ -14756,10 +14756,10 @@
       };
     }
 
-    // (251:7) {#if point.stats.total > 0}
+    // (252:7) {#if point.stats.total > 0}
     function create_if_block_5$3(ctx) {
       var span;
-      var t0_value = /*point*/ctx[25].stats.total + "";
+      var t0_value = /*point*/ctx[26].stats.total + "";
       var t0;
       var t1;
       var t2_value = translate_1("timemanager", "hrs.") + "";
@@ -14777,7 +14777,7 @@
           div = element("div");
           attr(span, "class", "hours-label");
           attr(div, "class", "column-inner");
-          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"));
+          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[26].stats.total / /*highest*/ctx[6] * 100, "%"));
         },
         m: function m(target, anchor) {
           insert(target, span, anchor);
@@ -14788,8 +14788,8 @@
           insert(target, div, anchor);
         },
         p: function p(ctx, dirty) {
-          if (dirty & /*points*/8 && t0_value !== (t0_value = /*point*/ctx[25].stats.total + "")) set_data(t0, t0_value);
-          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"))) {
+          if (dirty & /*points*/8 && t0_value !== (t0_value = /*point*/ctx[26].stats.total + "")) set_data(t0, t0_value);
+          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[26].stats.total / /*highest*/ctx[6] * 100, "%"))) {
             attr(div, "style", div_style_value);
           }
         },
@@ -14801,11 +14801,11 @@
       };
     }
 
-    // (248:4) {#each points as point, index}
+    // (249:4) {#each points as point, index}
     function create_each_block$8(ctx) {
       var div;
       var t;
-      var if_block = /*point*/ctx[25] && /*point*/ctx[25].stats && create_if_block_4$3(ctx);
+      var if_block = /*point*/ctx[26] && /*point*/ctx[26].stats && create_if_block_4$3(ctx);
       return {
         c: function c() {
           div = element("div");
@@ -14819,7 +14819,7 @@
           append(div, t);
         },
         p: function p(ctx, dirty) {
-          if ( /*point*/ctx[25] && /*point*/ctx[25].stats) {
+          if ( /*point*/ctx[26] && /*point*/ctx[26].stats) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -14839,7 +14839,7 @@
       };
     }
 
-    // (263:3) {#if controls && !loading && weekTotal === 0}
+    // (264:3) {#if controls && !loading && weekTotal === 0}
     function create_if_block_2$6(ctx) {
       var p;
       return {
@@ -14858,7 +14858,7 @@
       };
     }
 
-    // (267:2) {#if controls}
+    // (268:2) {#if controls}
     function create_if_block$j(ctx) {
       var nav;
       var button0;
@@ -14934,7 +14934,7 @@
           append(span2, t12);
           append(span2, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[17])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[19]))];
+            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[18])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[20]))];
             mounted = true;
           }
         },
@@ -14965,7 +14965,7 @@
       };
     }
 
-    // (284:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    // (285:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
     function create_if_block_1$7(ctx) {
       var button;
       var mounted;
@@ -14979,7 +14979,7 @@
         m: function m(target, anchor) {
           insert(target, button, anchor);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[18]));
+            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[19]));
             mounted = true;
           }
         },
@@ -15139,6 +15139,8 @@
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
       var _$$props$includeShare = $$props.includeShared,
         includeShared = _$$props$includeShare === void 0 ? false : _$$props$includeShare;
+      var _$$props$includeRepor = $$props.includeReporter,
+        includeReporter = _$$props$includeRepor === void 0 ? false : _$$props$includeRepor;
       var simpleRounding = Helpers.simpleRounding;
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
@@ -15260,7 +15262,7 @@
               case 0:
                 start = format$2(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
                 end = format$2(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
-                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0); // Parse current URL for filters
+                statUrl = "".concat(statsApiUrl, "?start=").concat(start, "&end=").concat(end, "&group_by=").concat(scale, "&shared=").concat(includeShared ? 1 : 0, "&reporter=").concat(includeReporter ? 1 : 0); // Parse current URL for filters
                 urlParts = document.location.href.split("?");
                 if (urlParts.length > 1) {
                   queryString = urlParts[1];
@@ -15368,14 +15370,15 @@
         if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
         if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
         if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
-        if ('start' in $$props) $$invalidate(15, start = $$props.start);
-        if ('end' in $$props) $$invalidate(16, end = $$props.end);
+        if ('includeReporter' in $$props) $$invalidate(15, includeReporter = $$props.includeReporter);
+        if ('start' in $$props) $$invalidate(16, start = $$props.start);
+        if ('end' in $$props) $$invalidate(17, end = $$props.end);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*start*/32768) {
+        if ($$self.$$.dirty & /*start*/65536) {
           $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
-        if ($$self.$$.dirty & /*end*/65536) {
+        if ($$self.$$.dirty & /*end*/131072) {
           endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
@@ -15386,7 +15389,7 @@
       $$invalidate(4, todayTotal = 0);
       $$invalidate(6, highest = 0);
       $$invalidate(7, currentWeek = null);
-      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
+      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, includeReporter, start, end, click_handler, click_handler_1, click_handler_2];
     }
     var Statistics = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Statistics, _SvelteComponent);
@@ -15400,8 +15403,9 @@
           requestToken: 13,
           controls: 0,
           includeShared: 14,
-          start: 15,
-          end: 16
+          includeReporter: 15,
+          start: 16,
+          end: 17
         });
         return _this;
       }
@@ -38933,17 +38937,6 @@
           requestToken: token
         })
       }));
-
-      // components.push(
-      // 	new Settings({
-      // 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
-      // 		props: {
-      // 			...store,
-      // 			requestToken: token,
-      // 		},
-      // 	})
-      // );
-
       var dateTimeElements = document.querySelectorAll("[data-datetime]");
       if (dateTimeElements && dateTimeElements.length > 0) {
         dateTimeElements.forEach(function (element) {

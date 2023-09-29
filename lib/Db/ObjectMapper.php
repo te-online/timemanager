@@ -11,7 +11,7 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  * @method Client insert(Client $entity)
  */
-class ObjectMapper extends QBMapper {
+abstract class ObjectMapper extends QBMapper {
 	protected $userId;
 	protected $db;
 	protected $commitMapper;
@@ -49,8 +49,11 @@ class ObjectMapper extends QBMapper {
 	 * @param string $value the attribute value
 	 * @return Object[] list if matching items
 	 */
-	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false): array {
+	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false, $isReporterOrAdmin = false): array {
 		$sql = $this->db->getQueryBuilder();
+        if ($isReporterOrAdmin) {
+            $shared = false;
+        }
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql
 				->selectDistinct("client.*")
@@ -153,13 +156,15 @@ class ObjectMapper extends QBMapper {
 			$sql
 				->select("*")
 				->from($this->tableName)
-				->where("`user_id` = ?")
-				->andWhere("`status` != ?")
-				->andWhere("`$attr` = ?")
-				->orderBy(\strtolower($orderby), "ASC");
+				->andWhere("`status` != :status")
+				->andWhere("`$attr` = :attr")
+				->orderBy(\strtolower($orderby), "ASC")
+                ->setParameters(["status" => "deleted", "attr" => $value]);
 
-			$sql->setParameters([$this->userId, "deleted", $value]);
-
+            if (!$isReporterOrAdmin) {
+				$sql->where("`user_id` = :userid")
+                ->setParameter("userid", $this->userId);
+            }
 		}
 
 		return $this->findEntities($sql);
@@ -180,7 +185,8 @@ class ObjectMapper extends QBMapper {
 		string $status = null,
 		array $filter_tasks = [],
 		string $orderby = "start",
-		$shared = false
+		bool $shared = false,
+        bool $isReporterOrAdmin = false,
 	): array {
 		$params = [
             "userid" => $this->userId,
@@ -189,6 +195,9 @@ class ObjectMapper extends QBMapper {
             "date_end" => $date_end,
         ];
 		$sql = $this->db->getQueryBuilder();
+        if ($isReporterOrAdmin) {
+            $shared = false;
+        }
 		// Range can be one day as well
 		if ($date_start === $date_end) {
 			array_pop($params);
@@ -216,9 +225,12 @@ class ObjectMapper extends QBMapper {
 				$sql
 					->select("*")
 					->from($this->tableName)
-					->where("`user_id` = :userid")
-					->andWhere("`status` != :deleted")
+					->where("`status` != :deleted")
 					->andWhere("date(start) = :date_start");
+
+                if (!$isReporterOrAdmin) {
+                    $sql->andWhere("`user_id` = :userid");
+                }
 			}
 		} else {
 			if ($shared) {
@@ -246,10 +258,13 @@ class ObjectMapper extends QBMapper {
 				$sql
 					->select("*")
 					->from($this->tableName)
-					->where("`user_id` = :userid")
-					->andWhere("`status` != :deleted")
+					->where("`status` != :deleted")
 					->andWhere("date(start) >= :date_start")
 					->andWhere("date(start) <= :date_end");
+
+                if (!$isReporterOrAdmin) {
+                    $sql->andWhere("`user_id` = :userid");
+                }
 			}
 		}
 		if (isset($status) && $status) {
@@ -289,8 +304,8 @@ class ObjectMapper extends QBMapper {
 		}
 	}
 
-	function getActiveObjectById(string $uuid, $shared = false): ?\OCP\AppFramework\Db\Entity {
-		$objects = $this->getActiveObjectsByAttributeValue("uuid", $uuid, "created", $shared);
+	function getActiveObjectById(string $uuid, bool $shared = false, bool $isReporterOrAdmin = false): ?\OCP\AppFramework\Db\Entity {
+		$objects = $this->getActiveObjectsByAttributeValue("uuid", $uuid, "created", $shared, $isReporterOrAdmin);
 		if (count($objects) > 0) {
 			return $objects[0];
 		} else {
@@ -450,4 +465,23 @@ class ObjectMapper extends QBMapper {
 
 		return $this->findEntities($sql);
 	}
+
+    /**
+	 * Fetch all items that are not deleted
+	 *
+	 * @return Object[] list if matching items
+	 */
+    function findActiveForReporter($orderby = "created", $sort = "ASC"): array
+    {
+        $sql = $this->db->getQueryBuilder();
+
+        $sql
+            ->selectDistinct("base.*")
+            ->from($this->tableName, "base")
+            ->andWhere("base.status != :status")
+            ->orderBy(\strtolower($orderby), $sort)
+            ->setParameter("status", "deleted");
+
+        return $this->findEntities($sql);
+    }
 }
