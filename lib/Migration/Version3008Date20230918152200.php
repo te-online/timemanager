@@ -74,7 +74,7 @@ class Version3008Date20230918152200 extends SimpleMigrationStep
 		$query->update("timemanager_share")
 			  ->set("recipient_id", "recipient_user_id")
 			  ->set("recipient_type", $query->expr()->literal("user"))
-			  ->set("permission", -1);
+			  ->set("permission", $query->expr()->literal(-1));
 		$query->executeStatement();
 	}
 }
