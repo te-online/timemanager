@@ -222,7 +222,7 @@ class PageController extends Controller {
         }
 
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true, $isReporterOrAdmin);
 
 		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true, $isReporterOrAdmin);
 
