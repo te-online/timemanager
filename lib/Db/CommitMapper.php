@@ -11,21 +11,20 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  * @method Commit insert(Commit $entity)
  */
-class CommitMapper extends QBMapper {
-	protected $userId;
-	protected IDBConnection $connection;
+class CommitMapper extends QBMapper implements ICurrentUser {
+	protected string $userId;
 
-	public function __construct(IDBConnection $connection) {
-		$this->connection = $connection;
-		parent::__construct($connection, "timemanager_commit");
+	public function __construct(IDBConnection $db) {
+		parent::__construct($db, "timemanager_commit");
 	}
 
-	function setCurrentUser($userId) {
+	function setCurrentUser(string $userId): void
+    {
 		$this->userId = $userId;
 	}
 
 	function getLatestCommit() {
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
 		$sql
 			->select("*")
 			->from($this->tableName)
@@ -44,7 +43,7 @@ class CommitMapper extends QBMapper {
 
 	function getCommitsAfter($commit) {
 		// Find the given commit first, see if we have it.
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
 		$sql
 			->select("commit")
 			->from($this->tableName)
@@ -54,7 +53,7 @@ class CommitMapper extends QBMapper {
 		$sql->setParameters([$this->userId, $commit]);
 		$givenCommit = $this->findEntities($sql);
 
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
 
 		// The given commit is found, all fine.
 		if (count($givenCommit) > 0) {

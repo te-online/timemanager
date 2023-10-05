@@ -11,18 +11,19 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  * @method Client insert(Client $entity)
  */
-abstract class ObjectMapper extends QBMapper {
-	protected $userId;
-	protected $db;
-	protected $commitMapper;
+abstract class ObjectMapper extends QBMapper implements ICurrentUser {
+	protected string $userId;
+	protected CommitMapper $commitMapper;
+
+    abstract public function deleteChildrenForEntityById(string $uuid, string $commit): void;
 
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper, $dbname) {
-		$this->db = $db;
 		$this->commitMapper = $commitMapper;
 		parent::__construct($db, $dbname);
 	}
 
-	function setCurrentUser($userId) {
+	function setCurrentUser(string $userId): void
+    {
 		$this->userId = $userId;
 		$this->commitMapper->setCurrentUser($this->userId);
 	}

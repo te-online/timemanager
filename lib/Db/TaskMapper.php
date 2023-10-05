@@ -11,14 +11,15 @@ use OCP\IDBConnection;
  * @method Task insert(Task $entity)
  */
 class TaskMapper extends ObjectMapper {
-	private $timeMapper;
+	private TimeMapper $timeMapper;
 
 	public function __construct(IDBConnection $db, CommitMapper $commitMapper, TimeMapper $timeMapper) {
 		parent::__construct($db, $commitMapper, "timemanager_task");
 		$this->timeMapper = $timeMapper;
 	}
 
-	public function deleteWithChildrenByProjectId($uuid, $commit) {
+	public function deleteWithChildrenByProjectId($uuid, $commit): void
+    {
 		$tasks = $this->getActiveObjectsByAttributeValue("project_uuid", $uuid);
 		foreach ($tasks as $task) {
 			$task->setChanged(date("Y-m-d H:i:s"));
@@ -29,7 +30,8 @@ class TaskMapper extends ObjectMapper {
 		}
 	}
 
-	public function deleteChildrenForEntityById($uuid, $commit) {
+	public function deleteChildrenForEntityById(string $uuid, string $commit): void
+    {
 		$this->timeMapper->deleteByTaskId($uuid, $commit);
 	}
 

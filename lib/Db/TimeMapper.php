@@ -28,7 +28,7 @@ class TimeMapper extends ObjectMapper
         }
     }
 
-    public function deleteChildrenForEntityById($uuid, $commit)
+    public function deleteChildrenForEntityById($uuid, $commit): void
     {
         // Do nothing here, because times have no children.
     }
@@ -91,7 +91,6 @@ class TimeMapper extends ObjectMapper
 
         // Range can be one day as well
         if ($date_start === $date_end) {
-            array_pop($params);
             $sql->andWhere("date(current.`start`) = :date_start");
         } else {
             $sql->andWhere("date(current.`start`) >= :date_start")
