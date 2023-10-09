@@ -2,7 +2,10 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class ItemMapper
@@ -11,8 +14,8 @@ use OCP\IDBConnection;
  */
 class ShareMapper extends ObjectMapper {
 
-	public function __construct(IDBConnection $connection, CommitMapper $commitMapper) {
-		parent::__construct($connection, $commitMapper, "timemanager_share");
+	public function __construct(IDBConnection $db, IConfig $config, IUserManager $userManager, IGroupManager $groupManager, CommitMapper $commitMapper) {
+		parent::__construct($db, $config, $userManager, $groupManager, $commitMapper, "timemanager_share");
 	}
 
 	public function findShareesForClient($client_uuid): array {

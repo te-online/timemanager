@@ -547,8 +547,10 @@ class PageController extends Controller {
 			}
 		}
 
-		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
-		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
+
+        $client_uuid = $client_data[0]->getUuid() ?? "";
+        $client_name = $client_data[0]->getName() ?? "";
+        $canEdit = ($client_data[0]->getUserId() ?? "") === $this->userId;
 
 		$sharees = array_map(function ($share) {
 			$shareArray = $share->toArray($this->userManager, $this->groupManager);
@@ -587,7 +589,7 @@ class PageController extends Controller {
 			"deleteShareAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
 			"sharees" => $sharees,
 			"sharedBy" => $sharedBy,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"userId" => $this->userId,
 			"isServer" => true,
 		];
@@ -605,7 +607,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "projects",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 		]);
 	}
 
@@ -750,8 +752,9 @@ class PageController extends Controller {
 			}
 		}
 
-		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : "";
-		$project_name = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "";
+        $project_uuid = $project_data[0]->getUuid() ?? "";
+        $project_name = $project_data[0]->getName() ?? "";
+        $canEdit = ($project_data[0]->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
@@ -775,7 +778,7 @@ class PageController extends Controller {
 			],
 			"sharedBy" => $sharedBy,
 			"sharees" => $sharees,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"isServer" => true,
 		];
 
@@ -793,7 +796,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "tasks",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 		]);
 	}
 
@@ -921,8 +924,9 @@ class PageController extends Controller {
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
-		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : "";
-		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "";
+		$task_uuid = $task_data[0]->getUuid() ?? "";
+		$task_name = $task_data[0]->getName() ?? "";
+        $canEdit = ($task_data[0]->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
@@ -947,7 +951,7 @@ class PageController extends Controller {
 			"editTimeEntryAction" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"sharedBy" => $sharedBy,
 			"sharees" => $sharees,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"isServer" => true,
 		];
 
@@ -967,7 +971,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "times",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"latestEntries" => $latestEntries,
 			"hasSharedTimeEntries" => $hasSharedTimeEntries,
 		]);

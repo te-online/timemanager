@@ -2,7 +2,10 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class ProjectMapper
@@ -13,8 +16,8 @@ use OCP\IDBConnection;
 class ProjectMapper extends ObjectMapper {
 	private TaskMapper $taskMapper;
 
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper, TaskMapper $taskMapper) {
-		parent::__construct($db, $commitMapper, "timemanager_project");
+	public function __construct(IDBConnection $db, IConfig $config, IUserManager $userManager, IGroupManager $groupManager, CommitMapper $commitMapper, TaskMapper $taskMapper) {
+		parent::__construct($db, $config, $userManager, $groupManager, $commitMapper, "timemanager_project");
 		$this->taskMapper = $taskMapper;
 	}
 

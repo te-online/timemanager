@@ -2,6 +2,7 @@
 
 namespace OCA\TimeManager\Settings;
 
+use OCA\TimeManager\AppInfo\Application;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IGroupManager;
@@ -10,7 +11,6 @@ use OCP\Util;
 
 class TimeManagerAdmin implements ISettings
 {
-    private string $appName = 'timemanager';
 
     public function __construct(
         private IConfig $config,
@@ -26,19 +26,19 @@ class TimeManagerAdmin implements ISettings
         }
 
         $parameters = [
-            'groups' => $groups,
-            'reporter_group' => $this->config->getAppValue($this->appName, 'reporter_group'),
-            'sync_mode' => $this->config->getAppValue($this->appName, 'sync_mode', 'force_skip_conflict_handling'),
+            'groups' => array_unique($groups),
+            'reporter_group' => $this->config->getAppValue(Application::APP_ID, 'reporter_group'),
+            'sync_mode' => $this->config->getAppValue(Application::APP_ID, 'sync_mode', 'force_skip_conflict_handling'),
         ];
 
-        Util::addScript($this->appName, 'settings');
+        Util::addScript(Application::APP_ID, 'settings');
 
-        return new TemplateResponse($this->appName, 'settings/admin', $parameters);
+        return new TemplateResponse(Application::APP_ID, 'settings/admin', $parameters);
     }
 
     public function getSection(): string
     {
-        return $this->appName;
+        return Application::APP_ID;
     }
 
     public function getPriority(): int

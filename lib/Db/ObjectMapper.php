@@ -2,8 +2,13 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCA\TimeManager\AppInfo\Application;
 use OCP\AppFramework\Db\QBMapper;
+use OCP\DB\Exception;
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class ItemMapper
@@ -13,12 +18,16 @@ use OCP\IDBConnection;
  */
 abstract class ObjectMapper extends QBMapper implements ICurrentUser {
 	protected string $userId;
-	protected CommitMapper $commitMapper;
 
     abstract public function deleteChildrenForEntityById(string $uuid, string $commit): void;
 
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper, $dbname) {
-		$this->commitMapper = $commitMapper;
+	public function __construct(
+        IDBConnection $db,
+        protected IConfig $config,
+        protected IUserManager $userManager,
+        protected IGroupManager $groupManager,
+        protected CommitMapper $commitMapper,
+        $dbname) {
 		parent::__construct($db, $dbname);
 	}
 
@@ -28,143 +37,89 @@ abstract class ObjectMapper extends QBMapper implements ICurrentUser {
 		$this->commitMapper->setCurrentUser($this->userId);
 	}
 
-	function getActiveObjects($orderby = "created", $sort = "ASC"): array {
-		$sql = $this->db->getQueryBuilder();
-		$sql
-			->select("*")
-			->from($this->tableName)
-			->where("`user_id` = ?")
-			->andWhere("`status` != ?")
-			->orderBy(\strtolower($orderby), $sort);
+    /**
+     * Get all groups of user
+     *
+     * @return string[]
+     */
+    function getUserGroups(): array
+    {
+        $user = $this->userManager->get($this->userId);
+        return array_unique($this->groupManager->getUserGroupIds($user));
+    }
 
-		$sql->setParameters([$this->userId, "deleted"]);
+    function userIsAdminOrReporter(): bool
+    {
+        return $this->groupManager->isAdmin($this->userId)
+            || $this->groupManager->isInGroup($this->userId, $this->config->getAppValue(Application::APP_ID, 'reporter_group'));
+    }
 
-		return $this->findEntities($sql);
-	}
-
-	/**
-	 * Fetch all items that are associated to the current user
-	 * with a given attribute-value-combination and not deleted
-	 *
-	 * @param string $attr the attribute name
-	 * @param string $value the attribute value
-	 * @return Object[] list if matching items
-	 */
-	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false, $isReporterOrAdmin = false): array {
+    /**
+     * Fetch all items that are associated to the current user
+     * with a given attribute-value-combination and not deleted
+     *
+     * @param string $attr    the attribute name
+     * @param string $value   the attribute value
+     * @return Object[] list if matching items
+     * @throws Exception
+     */
+	function getActiveObjectsByAttributeValue(
+        string $attr,
+        string $value,
+        string $orderBy = "created",
+        bool $shared = false,
+        bool $isReporterOrAdmin = false,
+    ): array {
 		$sql = $this->db->getQueryBuilder();
         if ($isReporterOrAdmin) {
             $shared = false;
         }
-		if ($shared && strpos($this->tableName, "_client") > -1) {
-			$sql
-				->selectDistinct("client.*")
-				->from($this->tableName, "client")
-				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.`uuid` = share.`object_uuid`")
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX(
+        $sql->selectDistinct("base.*")
+            ->from($this->tableName, "base")
+            ->where("base.`status` != :status")
+            ->andWhere("base.`$attr` = :attr")
+            ->orderBy(\strtolower($orderBy), "ASC")
+            ->setParameters([
+                "userid" => $this->userId,
+                "status" => "deleted",
+                "attr" => $value,
+                "reporter_or_admin" => $isReporterOrAdmin,
+            ]);
+
+        if ($shared) {
+            $expr = [
                 "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "client.`user_id` = :userid",
-            );
+                "share.`recipient_id` IN ('".implode("','", $this->getUserGroups())."') AND share.`recipient_type` = 'group'",
+                "base.`user_id` = :userid",
+                ":admin_or_reporter",
+            ];
 
-			$sql
-				->where($expr)
-				->andWhere("client.`status` != :status")
-				->andWhere("client.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
+            $sql->setParameter("admin_or_reporter", $this->userIsAdminOrReporter());
 
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
+            if (strpos($this->tableName, "_client") > -1) {
+                $sql->leftJoin("base", "*PREFIX*timemanager_share", "share", "base.`uuid` = share.`object_uuid`");
+            } elseif (strpos($this->tableName, "_project") > -1) {
+                $sql->leftJoin("base", "*PREFIX*timemanager_share", "share", "base.`client_uuid` = share.`object_uuid`");
+            } elseif (strpos($this->tableName, "_task") > -1) {
+                $sql->innerJoin("base", "*PREFIX*timemanager_project", "project", "base.`project_uuid` = project.`uuid`")
+                    ->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.`client_uuid` = share.`object_uuid`");
+            } elseif (strpos($this->tableName, "_time") > -1) {
+                $sql->innerJoin("base", "*PREFIX*timemanager_task", "task", "base.`task_uuid` = task.`uuid`")
+                    ->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+                    ->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.`client_uuid` = share.`object_uuid`");
 
-		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
-			$sql
-				->selectDistinct("project.*")
-				->from($this->tableName, "project")
-				->leftJoin(
-					"project",
-					"*PREFIX*timemanager_share",
-					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != :userid"
-				)
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
+                $expr = [
+                    "share.`author_user_id` = :userid",
+                    "base.`user_id` = :userid",
+                    ":admin_or_reporter",
+                ];
+            }
 
-			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "project.`user_id` = :userid"
-                );
-
-			$sql
-				->where($expr)
-				->andWhere("project.`status` != :status")
-				->andWhere("project.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
-
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
-		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
-			$sql
-				->selectDistinct("task.*")
-				->from($this->tableName, "task")
-				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
-				->leftJoin(
-					"project",
-					"*PREFIX*timemanager_share",
-					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != :userid"
-				)
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
-
-			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "task.`user_id` = :userid"
-            );
-
-			$sql
-				->where($expr)
-				->andWhere("task.`status` != :status")
-				->andWhere("task.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
-
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
-		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
-			$sql
-				->selectDistinct("time.*")
-				->from($this->tableName, "time")
-				->innerJoin("time", "*PREFIX*timemanager_task", "task", "time.`task_uuid` = task.`uuid`")
-				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
-				->leftJoin(
-					"project",
-					"*PREFIX*timemanager_share",
-					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
-				);
-
-			$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "time.`user_id` = :userid");
-
-			$sql
-				->where($expr)
-				->andWhere("time.`status` != :status")
-				->andWhere("time.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
-
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
-		} else {
-			$sql = $this->db->getQueryBuilder();
-			$sql
-				->select("*")
-				->from($this->tableName)
-				->andWhere("`status` != :status")
-				->andWhere("`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC")
-                ->setParameters(["status" => "deleted", "attr" => $value]);
-
+            $sql->andWhere($sql->expr()->orX(...$expr));
+        } else {
             if (!$isReporterOrAdmin) {
-				$sql->where("`user_id` = :userid")
-                ->setParameter("userid", $this->userId);
+				$sql->where("base.`user_id` = :userid");
             }
 		}
 
@@ -256,95 +211,57 @@ abstract class ObjectMapper extends QBMapper implements ICurrentUser {
 	 *
 	 * @return Object[] list if matching items
 	 */
-	function findActiveForCurrentUser($orderby = "created", $shared = false, $sort = "ASC") {
+	function findActiveForCurrentUser($orderBy = "created", $shared = false, $sort = "ASC"): array
+    {
 		$sql = $this->db->getQueryBuilder();
-		if ($shared && strpos($this->tableName, "_client") > -1) {
-			$sql
-				->selectDistinct("client.*")
-				->from($this->tableName, "client")
-				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.uuid = share.object_uuid")
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
+        $sql->selectDistinct("base.*")
+            ->from($this->tableName, "base");
 
-			$expr = $sql->expr()->orX(
+        $sql->where("base.status != :status")
+            ->orderBy(\strtolower($orderBy), $sort);;
+
+        $sql->setParameters([
+            "userid" => $this->userId,
+            "status" => "deleted",
+        ]);
+
+        if ($shared) {
+            $expr = [
                 "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "client.user_id = :userid",
-            );
-			$sql->where($expr)->andWhere("client.status != :status");
+                "share.`recipient_id` IN ('".implode("','", $this->getUserGroups())."') AND share.`recipient_type` = 'group'",
+                "base.user_id = :userid",
+                ":admin_or_reporter"
+            ];
 
-			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
+            $sql->setParameter("admin_or_reporter", $this->userIsAdminOrReporter());
 
-		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
-			$sql
-				->selectDistinct("project.*")
-				->from($this->tableName, "project")
-				->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.client_uuid = share.object_uuid")
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
+            if (strpos($this->tableName, "_client") > -1) {
+                $sql->leftJoin("base", "*PREFIX*timemanager_share", "share", "base.uuid = share.object_uuid");
+            } elseif (strpos($this->tableName, "_project") > -1) {
+                $sql->leftJoin("base", "*PREFIX*timemanager_share", "share", "base.client_uuid = share.object_uuid");
+            } elseif (strpos($this->tableName, "_task") > -1) {
+                $sql->innerJoin("base", "*PREFIX*timemanager_project", "project", "base.project_uuid = project.uuid")
+                    ->leftJoin("project", "*PREFIX*timemanager_share","share","project.client_uuid = share.object_uuid");
+            } elseif (strpos($this->tableName, "_time") > -1) {
+                $sql->innerJoin("base", "*PREFIX*timemanager_task", "task", "base.task_uuid = task.uuid")
+                    ->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.project_uuid = project.uuid")
+                    ->leftJoin(
+                        "project",
+                        "*PREFIX*timemanager_share",
+                        "share",
+                        "project.client_uuid = share.object_uuid"
+                    );
 
-            $expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "project.user_id = :userid",
-            );
-			$sql->where($expr)->andWhere("project.status != :status");
+                $expr = [
+                    "share.author_user_id = :userid",
+                    "base.user_id = :userid",
+                    ":admin_or_reporter",
+                ];
+            }
 
-			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
-		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
-			$sql
-				->selectDistinct("task.*")
-				->from($this->tableName, "task")
-				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.project_uuid = project.uuid")
-				->leftJoin(
-					"project",
-					"*PREFIX*timemanager_share",
-					"share",
-					"project.client_uuid = share.object_uuid AND share.author_user_id != :userid"
-				)
-				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
-
-			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "task.user_id = :userid",
-            );
-			$sql->where($expr)->andWhere("task.status != :status");
-
-			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
-		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
-			$sql
-				->selectDistinct("time.*")
-				->from($this->tableName, "time")
-				->innerJoin("time", "*PREFIX*timemanager_task", "task", "time.task_uuid = task.uuid")
-				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.project_uuid = project.uuid")
-				->leftJoin(
-					"project",
-					"*PREFIX*timemanager_share",
-					"share",
-					"project.client_uuid = share.object_uuid AND share.author_user_id = :userid"
-				);
-
-			$expr = $sql->expr()->orX("share.author_user_id = :userid", "time.user_id = :userid");
-			$sql->where($expr)->andWhere("time.status != :status");
-
-			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
+            $sql->andWhere($sql->expr()->orX(...$expr));
 		} else {
-			$sql = $this->db->getQueryBuilder();
-			$sql
-				->select("*")
-				->from($this->tableName)
-				->where("user_id = ?")
-				->andWhere("status != ?")
-				->orderBy(\strtolower($orderby), $sort);
-
-			$sql->setParameters([$this->userId, "deleted"]);
-
+			$sql->andWhere("base.user_id = :userid");
 		}
 
 		return $this->findEntities($sql);

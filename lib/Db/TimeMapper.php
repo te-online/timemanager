@@ -2,7 +2,10 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class TimeMapper
@@ -12,9 +15,9 @@ use OCP\IDBConnection;
  */
 class TimeMapper extends ObjectMapper
 {
-    public function __construct(IDBConnection $db, CommitMapper $commitMapper)
+    public function __construct(IDBConnection $db, IConfig $config, IUserManager $userManager, IGroupManager $groupManager, CommitMapper $commitMapper)
     {
-        parent::__construct($db, $commitMapper, "timemanager_time");
+        parent::__construct($db, $config, $userManager, $groupManager, $commitMapper, "timemanager_time");
     }
 
     public function deleteByTaskId($uuid, $commit): void
