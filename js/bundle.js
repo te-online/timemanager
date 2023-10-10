@@ -18314,6 +18314,155 @@
       }
     });
 
+    var $TypeError = TypeError;
+    var deletePropertyOrThrow = function (O, P) {
+      if (!delete O[P]) throw $TypeError('Cannot delete property ' + tryToString(P) + ' of ' + tryToString(O));
+    };
+
+    var $Array = Array;
+    var max$1 = Math.max;
+    var arraySliceSimple = function (O, start, end) {
+      var length = lengthOfArrayLike(O);
+      var k = toAbsoluteIndex(start, length);
+      var fin = toAbsoluteIndex(end === undefined ? length : end, length);
+      var result = $Array(max$1(fin - k, 0));
+      for (var n = 0; k < fin; k++, n++) createProperty(result, n, O[k]);
+      result.length = n;
+      return result;
+    };
+
+    var floor = Math.floor;
+    var mergeSort = function (array, comparefn) {
+      var length = array.length;
+      var middle = floor(length / 2);
+      return length < 8 ? insertionSort(array, comparefn) : merge(array, mergeSort(arraySliceSimple(array, 0, middle), comparefn), mergeSort(arraySliceSimple(array, middle), comparefn), comparefn);
+    };
+    var insertionSort = function (array, comparefn) {
+      var length = array.length;
+      var i = 1;
+      var element, j;
+      while (i < length) {
+        j = i;
+        element = array[i];
+        while (j && comparefn(array[j - 1], element) > 0) {
+          array[j] = array[--j];
+        }
+        if (j !== i++) array[j] = element;
+      }
+      return array;
+    };
+    var merge = function (array, left, right, comparefn) {
+      var llength = left.length;
+      var rlength = right.length;
+      var lindex = 0;
+      var rindex = 0;
+      while (lindex < llength || rindex < rlength) {
+        array[lindex + rindex] = lindex < llength && rindex < rlength ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++] : lindex < llength ? left[lindex++] : right[rindex++];
+      }
+      return array;
+    };
+    var arraySort = mergeSort;
+
+    var firefox = engineUserAgent.match(/firefox\/(\d+)/i);
+    var engineFfVersion = !!firefox && +firefox[1];
+
+    var engineIsIeOrEdge = /MSIE|Trident/.test(engineUserAgent);
+
+    var webkit = engineUserAgent.match(/AppleWebKit\/(\d+)\./);
+    var engineWebkitVersion = !!webkit && +webkit[1];
+
+    var test = [];
+    var nativeSort = functionUncurryThis(test.sort);
+    var push$1 = functionUncurryThis(test.push);
+
+    // IE8-
+    var FAILS_ON_UNDEFINED = fails(function () {
+      test.sort(undefined);
+    });
+    // V8 bug
+    var FAILS_ON_NULL = fails(function () {
+      test.sort(null);
+    });
+    // Old WebKit
+    var STRICT_METHOD = arrayMethodIsStrict('sort');
+    var STABLE_SORT = !fails(function () {
+      // feature detection can be too slow, so check engines versions
+      if (engineV8Version) return engineV8Version < 70;
+      if (engineFfVersion && engineFfVersion > 3) return;
+      if (engineIsIeOrEdge) return true;
+      if (engineWebkitVersion) return engineWebkitVersion < 603;
+      var result = '';
+      var code, chr, value, index;
+
+      // generate an array with more 512 elements (Chakra and old V8 fails only in this case)
+      for (code = 65; code < 76; code++) {
+        chr = String.fromCharCode(code);
+        switch (code) {
+          case 66:
+          case 69:
+          case 70:
+          case 72:
+            value = 3;
+            break;
+          case 68:
+          case 71:
+            value = 4;
+            break;
+          default:
+            value = 2;
+        }
+        for (index = 0; index < 47; index++) {
+          test.push({
+            k: chr + index,
+            v: value
+          });
+        }
+      }
+      test.sort(function (a, b) {
+        return b.v - a.v;
+      });
+      for (index = 0; index < test.length; index++) {
+        chr = test[index].k.charAt(0);
+        if (result.charAt(result.length - 1) !== chr) result += chr;
+      }
+      return result !== 'DGBEFHACIJK';
+    });
+    var FORCED = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD || !STABLE_SORT;
+    var getSortCompare = function (comparefn) {
+      return function (x, y) {
+        if (y === undefined) return -1;
+        if (x === undefined) return 1;
+        if (comparefn !== undefined) return +comparefn(x, y) || 0;
+        return toString_1(x) > toString_1(y) ? 1 : -1;
+      };
+    };
+
+    // `Array.prototype.sort` method
+    // https://tc39.es/ecma262/#sec-array.prototype.sort
+    _export({
+      target: 'Array',
+      proto: true,
+      forced: FORCED
+    }, {
+      sort: function sort(comparefn) {
+        if (comparefn !== undefined) aCallable(comparefn);
+        var array = toObject(this);
+        if (STABLE_SORT) return comparefn === undefined ? nativeSort(array) : nativeSort(array, comparefn);
+        var items = [];
+        var arrayLength = lengthOfArrayLike(array);
+        var itemsLength, index;
+        for (index = 0; index < arrayLength; index++) {
+          if (index in array) push$1(items, array[index]);
+        }
+        arraySort(items, getSortCompare(comparefn));
+        itemsLength = lengthOfArrayLike(items);
+        index = 0;
+        while (index < itemsLength) array[index] = items[index++];
+        while (index < arrayLength) deletePropertyOrThrow(array, index++);
+        return array;
+      }
+    });
+
     function isOutOfViewport (parent, container) {
       const parentBounding = parent.getBoundingClientRect();
       const boundingContainer = container.getBoundingClientRect();
@@ -21803,7 +21952,7 @@
       return child_ctx;
     }
 
-    // (81:0) {#if dialogVisible}
+    // (83:0) {#if dialogVisible}
     function create_if_block$6(ctx) {
       var overlay;
       var current;
@@ -21850,7 +21999,7 @@
       };
     }
 
-    // (97:4) {#if !sharees || !sharees.length}
+    // (99:4) {#if !sharees || !sharees.length}
     function create_if_block_2$3(ctx) {
       var p;
       var em;
@@ -21871,7 +22020,7 @@
       };
     }
 
-    // (108:8) {:else}
+    // (110:8) {:else}
     function create_else_block$2(ctx) {
       var img;
       var img_src_value;
@@ -21900,7 +22049,7 @@
       };
     }
 
-    // (106:8) {#if sharee.recipient_type == "group"}
+    // (108:8) {#if sharee.recipient_type == "group"}
     function create_if_block_1$3(ctx) {
       var img;
       var img_src_value;
@@ -21921,7 +22070,7 @@
       };
     }
 
-    // (103:5) {#each sharees as sharee}
+    // (105:5) {#each sharees as sharee}
     function create_each_block$3(ctx) {
       var li;
       var figure;
@@ -22031,7 +22180,7 @@
       };
     }
 
-    // (82:1) <Overlay>
+    // (84:1) <Overlay>
     function create_default_slot$2(ctx) {
       var div2;
       var label;
@@ -22398,12 +22547,12 @@
                 exact = _yield$response$json$.exact;
                 groups = _yield$response$json$.groups;
                 existing_users = sharees.filter(function (s) {
-                  return s.recipient_type == 'user';
+                  return s.recipient_type === 'user';
                 }).map(function (share) {
                   return share.recipient_id;
                 });
                 existing_groups = sharees.filter(function (s) {
-                  return s.recipient_type == 'group';
+                  return s.recipient_type === 'group';
                 }).map(function (share) {
                   return share.recipient_id;
                 });
@@ -22411,6 +22560,8 @@
                   return !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId;
                 }).filter(function (group) {
                   return !existing_groups.includes(group.value.shareWith);
+                }).sort(function (a, b) {
+                  return a.label.localeCompare(b.label);
                 }));
               case 17:
               case "end":
@@ -23053,7 +23204,7 @@
 
     var $propertyIsEnumerable = objectPropertyIsEnumerable.f;
     var propertyIsEnumerable = functionUncurryThis($propertyIsEnumerable);
-    var push$1 = functionUncurryThis([].push);
+    var push = functionUncurryThis([].push);
 
     // in some IE versions, `propertyIsEnumerable` returns incorrect result on integer keys
     // of `null` prototype objects
@@ -23077,7 +23228,7 @@
         while (length > i) {
           key = keys[i++];
           if (!descriptors || (IE_WORKAROUND ? key in O : propertyIsEnumerable(O, key))) {
-            push$1(result, TO_ENTRIES ? [key, O[key]] : O[key]);
+            push(result, TO_ENTRIES ? [key, O[key]] : O[key]);
           }
         }
         return result;
@@ -23136,155 +23287,6 @@
         if (!sameValue(rx.lastIndex, previousLastIndex)) rx.lastIndex = previousLastIndex;
         return result === null ? -1 : result.index;
       }];
-    });
-
-    var $TypeError = TypeError;
-    var deletePropertyOrThrow = function (O, P) {
-      if (!delete O[P]) throw $TypeError('Cannot delete property ' + tryToString(P) + ' of ' + tryToString(O));
-    };
-
-    var $Array = Array;
-    var max$1 = Math.max;
-    var arraySliceSimple = function (O, start, end) {
-      var length = lengthOfArrayLike(O);
-      var k = toAbsoluteIndex(start, length);
-      var fin = toAbsoluteIndex(end === undefined ? length : end, length);
-      var result = $Array(max$1(fin - k, 0));
-      for (var n = 0; k < fin; k++, n++) createProperty(result, n, O[k]);
-      result.length = n;
-      return result;
-    };
-
-    var floor = Math.floor;
-    var mergeSort = function (array, comparefn) {
-      var length = array.length;
-      var middle = floor(length / 2);
-      return length < 8 ? insertionSort(array, comparefn) : merge(array, mergeSort(arraySliceSimple(array, 0, middle), comparefn), mergeSort(arraySliceSimple(array, middle), comparefn), comparefn);
-    };
-    var insertionSort = function (array, comparefn) {
-      var length = array.length;
-      var i = 1;
-      var element, j;
-      while (i < length) {
-        j = i;
-        element = array[i];
-        while (j && comparefn(array[j - 1], element) > 0) {
-          array[j] = array[--j];
-        }
-        if (j !== i++) array[j] = element;
-      }
-      return array;
-    };
-    var merge = function (array, left, right, comparefn) {
-      var llength = left.length;
-      var rlength = right.length;
-      var lindex = 0;
-      var rindex = 0;
-      while (lindex < llength || rindex < rlength) {
-        array[lindex + rindex] = lindex < llength && rindex < rlength ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++] : lindex < llength ? left[lindex++] : right[rindex++];
-      }
-      return array;
-    };
-    var arraySort = mergeSort;
-
-    var firefox = engineUserAgent.match(/firefox\/(\d+)/i);
-    var engineFfVersion = !!firefox && +firefox[1];
-
-    var engineIsIeOrEdge = /MSIE|Trident/.test(engineUserAgent);
-
-    var webkit = engineUserAgent.match(/AppleWebKit\/(\d+)\./);
-    var engineWebkitVersion = !!webkit && +webkit[1];
-
-    var test = [];
-    var nativeSort = functionUncurryThis(test.sort);
-    var push = functionUncurryThis(test.push);
-
-    // IE8-
-    var FAILS_ON_UNDEFINED = fails(function () {
-      test.sort(undefined);
-    });
-    // V8 bug
-    var FAILS_ON_NULL = fails(function () {
-      test.sort(null);
-    });
-    // Old WebKit
-    var STRICT_METHOD = arrayMethodIsStrict('sort');
-    var STABLE_SORT = !fails(function () {
-      // feature detection can be too slow, so check engines versions
-      if (engineV8Version) return engineV8Version < 70;
-      if (engineFfVersion && engineFfVersion > 3) return;
-      if (engineIsIeOrEdge) return true;
-      if (engineWebkitVersion) return engineWebkitVersion < 603;
-      var result = '';
-      var code, chr, value, index;
-
-      // generate an array with more 512 elements (Chakra and old V8 fails only in this case)
-      for (code = 65; code < 76; code++) {
-        chr = String.fromCharCode(code);
-        switch (code) {
-          case 66:
-          case 69:
-          case 70:
-          case 72:
-            value = 3;
-            break;
-          case 68:
-          case 71:
-            value = 4;
-            break;
-          default:
-            value = 2;
-        }
-        for (index = 0; index < 47; index++) {
-          test.push({
-            k: chr + index,
-            v: value
-          });
-        }
-      }
-      test.sort(function (a, b) {
-        return b.v - a.v;
-      });
-      for (index = 0; index < test.length; index++) {
-        chr = test[index].k.charAt(0);
-        if (result.charAt(result.length - 1) !== chr) result += chr;
-      }
-      return result !== 'DGBEFHACIJK';
-    });
-    var FORCED = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD || !STABLE_SORT;
-    var getSortCompare = function (comparefn) {
-      return function (x, y) {
-        if (y === undefined) return -1;
-        if (x === undefined) return 1;
-        if (comparefn !== undefined) return +comparefn(x, y) || 0;
-        return toString_1(x) > toString_1(y) ? 1 : -1;
-      };
-    };
-
-    // `Array.prototype.sort` method
-    // https://tc39.es/ecma262/#sec-array.prototype.sort
-    _export({
-      target: 'Array',
-      proto: true,
-      forced: FORCED
-    }, {
-      sort: function sort(comparefn) {
-        if (comparefn !== undefined) aCallable(comparefn);
-        var array = toObject(this);
-        if (STABLE_SORT) return comparefn === undefined ? nativeSort(array) : nativeSort(array, comparefn);
-        var items = [];
-        var arrayLength = lengthOfArrayLike(array);
-        var itemsLength, index;
-        for (index = 0; index < arrayLength; index++) {
-          if (index in array) push(items, array[index]);
-        }
-        arraySort(items, getSortCompare(comparefn));
-        itemsLength = lengthOfArrayLike(items);
-        index = 0;
-        while (index < itemsLength) array[index] = items[index++];
-        while (index < arrayLength) deletePropertyOrThrow(array, index++);
-        return array;
-      }
     });
 
     var $find = arrayIteration.find;

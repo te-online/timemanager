@@ -59,12 +59,14 @@
 
 		if (response.ok) {
 			const { users, exact, groups } = (await response.json()).ocs.data;
-			const existing_users = sharees.filter(s => s.recipient_type == 'user').map((share) => share.recipient_id);
-			const existing_groups = sharees.filter(s => s.recipient_type == 'group').map((share) => share.recipient_id);
+			const existing_users = sharees.filter(s => s.recipient_type === 'user').map((share) => share.recipient_id);
+			const existing_groups = sharees.filter(s => s.recipient_type === 'group').map((share) => share.recipient_id);
 			return [...users, ...exact.users, ...groups, ...exact.groups].filter(
 				(user) => !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId
 			).filter(
 				(group) => !existing_groups.includes(group.value.shareWith)
+			).sort(
+				(a, b) => a.label.localeCompare(b.label)
 			);
 		}
 	};
