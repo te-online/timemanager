@@ -54,7 +54,7 @@
 
 		const current = getCurrentUser();
 		let currentUser = [];
-		if (current.uid.includes(query) || current.displayName.includes(query)) {
+		if (current.uid.toLowerCase().includes(query.toLowerCase()) || current.displayName.toLowerCase().includes(query.toLowerCase())) {
 			currentUser = [{ value: { shareWith: current.uid }, label: current.displayName }];
 		}
 
