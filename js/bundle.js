@@ -907,13 +907,13 @@
     var id = 0;
     var postfix = Math.random();
     var toString$2 = functionUncurryThis(1.0.toString);
-    var uid = function (key) {
+    var uid$1 = function (key) {
       return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString$2(++id + postfix, 36);
     };
 
     var Symbol$2 = global_1.Symbol;
     var WellKnownSymbolsStore = shared('wks');
-    var createWellKnownSymbol = useSymbolAsUid ? Symbol$2['for'] || Symbol$2 : Symbol$2 && Symbol$2.withoutSetter || uid;
+    var createWellKnownSymbol = useSymbolAsUid ? Symbol$2['for'] || Symbol$2 : Symbol$2 && Symbol$2.withoutSetter || uid$1;
     var wellKnownSymbol = function (name) {
       if (!hasOwnProperty_1(WellKnownSymbolsStore, name)) {
         WellKnownSymbolsStore[name] = symbolConstructorDetection && hasOwnProperty_1(Symbol$2, name) ? Symbol$2[name] : createWellKnownSymbol('Symbol.' + name);
@@ -1079,7 +1079,7 @@
 
     var keys$1 = shared('keys');
     var sharedKey = function (key) {
-      return keys$1[key] || (keys$1[key] = uid(key));
+      return keys$1[key] || (keys$1[key] = uid$1(key));
     };
 
     var hiddenKeys$1 = {};
@@ -29097,6 +29097,602 @@
       return _createClass$1(Filters);
     }(SvelteComponent);
 
+    // Note: this is the semver.org version of the spec that it implements
+    // Not necessarily the package version of this code.
+    const SEMVER_SPEC_VERSION = '2.0.0';
+    const MAX_LENGTH$2 = 256;
+    const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */9007199254740991;
+
+    // Max safe segment length for coercion.
+    const MAX_SAFE_COMPONENT_LENGTH = 16;
+    var constants = {
+      SEMVER_SPEC_VERSION,
+      MAX_LENGTH: MAX_LENGTH$2,
+      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
+      MAX_SAFE_COMPONENT_LENGTH
+    };
+
+    const debug$1 = typeof process === 'object' && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
+    var debug_1 = debug$1;
+
+    var re_1 = createCommonjsModule(function (module, exports) {
+    const {
+      MAX_SAFE_COMPONENT_LENGTH
+    } = constants;
+
+    exports = module.exports = {};
+
+    // The actual regexps go on exports.re
+    const re = exports.re = [];
+    const src = exports.src = [];
+    const t = exports.t = {};
+    let R = 0;
+    const createToken = (name, value, isGlobal) => {
+      const index = R++;
+      debug_1(name, index, value);
+      t[name] = index;
+      src[index] = value;
+      re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
+    };
+
+    // The following Regular Expressions can be used for tokenizing,
+    // validating, and parsing SemVer version strings.
+
+    // ## Numeric Identifier
+    // A single `0`, or a non-zero digit followed by zero or more digits.
+
+    createToken('NUMERICIDENTIFIER', '0|[1-9]\\d*');
+    createToken('NUMERICIDENTIFIERLOOSE', '[0-9]+');
+
+    // ## Non-numeric Identifier
+    // Zero or more digits, followed by a letter or hyphen, and then zero or
+    // more letters, digits, or hyphens.
+
+    createToken('NONNUMERICIDENTIFIER', '\\d*[a-zA-Z-][a-zA-Z0-9-]*');
+
+    // ## Main Version
+    // Three dot-separated numeric identifiers.
+
+    createToken('MAINVERSION', `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})`);
+    createToken('MAINVERSIONLOOSE', `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})`);
+
+    // ## Pre-release Version Identifier
+    // A numeric identifier, or a non-numeric identifier.
+
+    createToken('PRERELEASEIDENTIFIER', `(?:${src[t.NUMERICIDENTIFIER]}|${src[t.NONNUMERICIDENTIFIER]})`);
+    createToken('PRERELEASEIDENTIFIERLOOSE', `(?:${src[t.NUMERICIDENTIFIERLOOSE]}|${src[t.NONNUMERICIDENTIFIER]})`);
+
+    // ## Pre-release Version
+    // Hyphen, followed by one or more dot-separated pre-release version
+    // identifiers.
+
+    createToken('PRERELEASE', `(?:-(${src[t.PRERELEASEIDENTIFIER]}(?:\\.${src[t.PRERELEASEIDENTIFIER]})*))`);
+    createToken('PRERELEASELOOSE', `(?:-?(${src[t.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src[t.PRERELEASEIDENTIFIERLOOSE]})*))`);
+
+    // ## Build Metadata Identifier
+    // Any combination of digits, letters, or hyphens.
+
+    createToken('BUILDIDENTIFIER', '[0-9A-Za-z-]+');
+
+    // ## Build Metadata
+    // Plus sign, followed by one or more period-separated build metadata
+    // identifiers.
+
+    createToken('BUILD', `(?:\\+(${src[t.BUILDIDENTIFIER]}(?:\\.${src[t.BUILDIDENTIFIER]})*))`);
+
+    // ## Full Version String
+    // A main version, followed optionally by a pre-release version and
+    // build metadata.
+
+    // Note that the only major, minor, patch, and pre-release sections of
+    // the version string are capturing groups.  The build metadata is not a
+    // capturing group, because it should not ever be used in version
+    // comparison.
+
+    createToken('FULLPLAIN', `v?${src[t.MAINVERSION]}${src[t.PRERELEASE]}?${src[t.BUILD]}?`);
+    createToken('FULL', `^${src[t.FULLPLAIN]}$`);
+
+    // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
+    // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
+    // common in the npm registry.
+    createToken('LOOSEPLAIN', `[v=\\s]*${src[t.MAINVERSIONLOOSE]}${src[t.PRERELEASELOOSE]}?${src[t.BUILD]}?`);
+    createToken('LOOSE', `^${src[t.LOOSEPLAIN]}$`);
+    createToken('GTLT', '((?:<|>)?=?)');
+
+    // Something like "2.*" or "1.2.x".
+    // Note that "x.x" is a valid xRange identifer, meaning "any version"
+    // Only the first item is strictly required.
+    createToken('XRANGEIDENTIFIERLOOSE', `${src[t.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
+    createToken('XRANGEIDENTIFIER', `${src[t.NUMERICIDENTIFIER]}|x|X|\\*`);
+    createToken('XRANGEPLAIN', `[v=\\s]*(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:${src[t.PRERELEASE]})?${src[t.BUILD]}?` + `)?)?`);
+    createToken('XRANGEPLAINLOOSE', `[v=\\s]*(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:${src[t.PRERELEASELOOSE]})?${src[t.BUILD]}?` + `)?)?`);
+    createToken('XRANGE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAIN]}$`);
+    createToken('XRANGELOOSE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // Coercion.
+    // Extract anything that could conceivably be a part of a valid semver
+    createToken('COERCE', `${'(^|[^\\d])' + '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:$|[^\\d])`);
+    createToken('COERCERTL', src[t.COERCE], true);
+
+    // Tilde ranges.
+    // Meaning is "reasonably at or greater than"
+    createToken('LONETILDE', '(?:~>?)');
+    createToken('TILDETRIM', `(\\s*)${src[t.LONETILDE]}\\s+`, true);
+    exports.tildeTrimReplace = '$1~';
+    createToken('TILDE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
+    createToken('TILDELOOSE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // Caret ranges.
+    // Meaning is "at least and backwards compatible with"
+    createToken('LONECARET', '(?:\\^)');
+    createToken('CARETTRIM', `(\\s*)${src[t.LONECARET]}\\s+`, true);
+    exports.caretTrimReplace = '$1^';
+    createToken('CARET', `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
+    createToken('CARETLOOSE', `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+    // A simple gt/lt/eq thing, or just "" to indicate "any version"
+    createToken('COMPARATORLOOSE', `^${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]})$|^$`);
+    createToken('COMPARATOR', `^${src[t.GTLT]}\\s*(${src[t.FULLPLAIN]})$|^$`);
+
+    // An expression to strip any whitespace between the gtlt and the thing
+    // it modifies, so that `> 1.2.3` ==> `>1.2.3`
+    createToken('COMPARATORTRIM', `(\\s*)${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
+    exports.comparatorTrimReplace = '$1$2$3';
+
+    // Something like `1.2.3 - 1.2.4`
+    // Note that these all use the loose form, because they'll be
+    // checked against either the strict or loose comparator form
+    // later.
+    createToken('HYPHENRANGE', `^\\s*(${src[t.XRANGEPLAIN]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAIN]})` + `\\s*$`);
+    createToken('HYPHENRANGELOOSE', `^\\s*(${src[t.XRANGEPLAINLOOSE]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAINLOOSE]})` + `\\s*$`);
+
+    // Star ranges basically just allow anything at all.
+    createToken('STAR', '(<|>)?=?\\s*\\*');
+    // >=0.0.0 is like a star
+    createToken('GTE0', '^\\s*>=\\s*0\\.0\\.0\\s*$');
+    createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$');
+    });
+    re_1.re;
+    re_1.src;
+    re_1.t;
+    re_1.tildeTrimReplace;
+    re_1.caretTrimReplace;
+    re_1.comparatorTrimReplace;
+
+    // parse out just the options we care about so we always get a consistent
+    // obj with keys in a consistent order.
+    const opts = ['includePrerelease', 'loose', 'rtl'];
+    const parseOptions$1 = options => !options ? {} : typeof options !== 'object' ? {
+      loose: true
+    } : opts.filter(k => options[k]).reduce((o, k) => {
+      o[k] = true;
+      return o;
+    }, {});
+    var parseOptions_1 = parseOptions$1;
+
+    const numeric = /^[0-9]+$/;
+    const compareIdentifiers$1 = (a, b) => {
+      const anum = numeric.test(a);
+      const bnum = numeric.test(b);
+      if (anum && bnum) {
+        a = +a;
+        b = +b;
+      }
+      return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
+    };
+    const rcompareIdentifiers = (a, b) => compareIdentifiers$1(b, a);
+    var identifiers = {
+      compareIdentifiers: compareIdentifiers$1,
+      rcompareIdentifiers
+    };
+
+    const {
+      MAX_LENGTH: MAX_LENGTH$1,
+      MAX_SAFE_INTEGER
+    } = constants;
+    const {
+      re: re$1,
+      t: t$1
+    } = re_1;
+
+    const {
+      compareIdentifiers
+    } = identifiers;
+    class SemVer {
+      constructor(version, options) {
+        options = parseOptions_1(options);
+        if (version instanceof SemVer) {
+          if (version.loose === !!options.loose && version.includePrerelease === !!options.includePrerelease) {
+            return version;
+          } else {
+            version = version.version;
+          }
+        } else if (typeof version !== 'string') {
+          throw new TypeError(`Invalid Version: ${version}`);
+        }
+        if (version.length > MAX_LENGTH$1) {
+          throw new TypeError(`version is longer than ${MAX_LENGTH$1} characters`);
+        }
+        debug_1('SemVer', version, options);
+        this.options = options;
+        this.loose = !!options.loose;
+        // this isn't actually relevant for versions, but keep it so that we
+        // don't run into trouble passing this.options around.
+        this.includePrerelease = !!options.includePrerelease;
+        const m = version.trim().match(options.loose ? re$1[t$1.LOOSE] : re$1[t$1.FULL]);
+        if (!m) {
+          throw new TypeError(`Invalid Version: ${version}`);
+        }
+        this.raw = version;
+
+        // these are actually numbers
+        this.major = +m[1];
+        this.minor = +m[2];
+        this.patch = +m[3];
+        if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
+          throw new TypeError('Invalid major version');
+        }
+        if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
+          throw new TypeError('Invalid minor version');
+        }
+        if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
+          throw new TypeError('Invalid patch version');
+        }
+
+        // numberify any prerelease numeric ids
+        if (!m[4]) {
+          this.prerelease = [];
+        } else {
+          this.prerelease = m[4].split('.').map(id => {
+            if (/^[0-9]+$/.test(id)) {
+              const num = +id;
+              if (num >= 0 && num < MAX_SAFE_INTEGER) {
+                return num;
+              }
+            }
+            return id;
+          });
+        }
+        this.build = m[5] ? m[5].split('.') : [];
+        this.format();
+      }
+      format() {
+        this.version = `${this.major}.${this.minor}.${this.patch}`;
+        if (this.prerelease.length) {
+          this.version += `-${this.prerelease.join('.')}`;
+        }
+        return this.version;
+      }
+      toString() {
+        return this.version;
+      }
+      compare(other) {
+        debug_1('SemVer.compare', this.version, this.options, other);
+        if (!(other instanceof SemVer)) {
+          if (typeof other === 'string' && other === this.version) {
+            return 0;
+          }
+          other = new SemVer(other, this.options);
+        }
+        if (other.version === this.version) {
+          return 0;
+        }
+        return this.compareMain(other) || this.comparePre(other);
+      }
+      compareMain(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+        return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
+      }
+      comparePre(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+
+        // NOT having a prerelease is > having one
+        if (this.prerelease.length && !other.prerelease.length) {
+          return -1;
+        } else if (!this.prerelease.length && other.prerelease.length) {
+          return 1;
+        } else if (!this.prerelease.length && !other.prerelease.length) {
+          return 0;
+        }
+        let i = 0;
+        do {
+          const a = this.prerelease[i];
+          const b = other.prerelease[i];
+          debug_1('prerelease compare', i, a, b);
+          if (a === undefined && b === undefined) {
+            return 0;
+          } else if (b === undefined) {
+            return 1;
+          } else if (a === undefined) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i);
+      }
+      compareBuild(other) {
+        if (!(other instanceof SemVer)) {
+          other = new SemVer(other, this.options);
+        }
+        let i = 0;
+        do {
+          const a = this.build[i];
+          const b = other.build[i];
+          debug_1('prerelease compare', i, a, b);
+          if (a === undefined && b === undefined) {
+            return 0;
+          } else if (b === undefined) {
+            return 1;
+          } else if (a === undefined) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i);
+      }
+
+      // preminor will bump the version up to the next minor release, and immediately
+      // down to pre-release. premajor and prepatch work the same way.
+      inc(release, identifier) {
+        switch (release) {
+          case 'premajor':
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor = 0;
+            this.major++;
+            this.inc('pre', identifier);
+            break;
+          case 'preminor':
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor++;
+            this.inc('pre', identifier);
+            break;
+          case 'prepatch':
+            // If this is already a prerelease, it will bump to the next version
+            // drop any prereleases that might already exist, since they are not
+            // relevant at this point.
+            this.prerelease.length = 0;
+            this.inc('patch', identifier);
+            this.inc('pre', identifier);
+            break;
+          // If the input is a non-prerelease version, this acts the same as
+          // prepatch.
+          case 'prerelease':
+            if (this.prerelease.length === 0) {
+              this.inc('patch', identifier);
+            }
+            this.inc('pre', identifier);
+            break;
+          case 'major':
+            // If this is a pre-major version, bump up to the same major version.
+            // Otherwise increment major.
+            // 1.0.0-5 bumps to 1.0.0
+            // 1.1.0 bumps to 2.0.0
+            if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) {
+              this.major++;
+            }
+            this.minor = 0;
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case 'minor':
+            // If this is a pre-minor version, bump up to the same minor version.
+            // Otherwise increment minor.
+            // 1.2.0-5 bumps to 1.2.0
+            // 1.2.1 bumps to 1.3.0
+            if (this.patch !== 0 || this.prerelease.length === 0) {
+              this.minor++;
+            }
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case 'patch':
+            // If this is not a pre-release version, it will increment the patch.
+            // If it is a pre-release it will bump up to the same patch version.
+            // 1.2.0-5 patches to 1.2.0
+            // 1.2.0 patches to 1.2.1
+            if (this.prerelease.length === 0) {
+              this.patch++;
+            }
+            this.prerelease = [];
+            break;
+          // This probably shouldn't be used publicly.
+          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
+          case 'pre':
+            if (this.prerelease.length === 0) {
+              this.prerelease = [0];
+            } else {
+              let i = this.prerelease.length;
+              while (--i >= 0) {
+                if (typeof this.prerelease[i] === 'number') {
+                  this.prerelease[i]++;
+                  i = -2;
+                }
+              }
+              if (i === -1) {
+                // didn't increment anything
+                this.prerelease.push(0);
+              }
+            }
+            if (identifier) {
+              // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
+              // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
+              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
+                if (isNaN(this.prerelease[1])) {
+                  this.prerelease = [identifier, 0];
+                }
+              } else {
+                this.prerelease = [identifier, 0];
+              }
+            }
+            break;
+          default:
+            throw new Error(`invalid increment argument: ${release}`);
+        }
+        this.format();
+        this.raw = this.version;
+        return this;
+      }
+    }
+    var semver = SemVer;
+
+    const {
+      MAX_LENGTH
+    } = constants;
+    const {
+      re,
+      t
+    } = re_1;
+
+
+    const parse$1 = (version, options) => {
+      options = parseOptions_1(options);
+      if (version instanceof semver) {
+        return version;
+      }
+      if (typeof version !== 'string') {
+        return null;
+      }
+      if (version.length > MAX_LENGTH) {
+        return null;
+      }
+      const r = options.loose ? re[t.LOOSE] : re[t.FULL];
+      if (!r.test(version)) {
+        return null;
+      }
+      try {
+        return new semver(version, options);
+      } catch (er) {
+        return null;
+      }
+    };
+    var parse_1 = parse$1;
+
+    const valid = (version, options) => {
+      const v = parse_1(version, options);
+      return v ? v.version : null;
+    };
+    var valid_1 = valid;
+
+    const major = (a, loose) => new semver(a, loose).major;
+    var major_1 = major;
+
+    class ProxyBus {
+      bus;
+      constructor(bus) {
+        if (typeof bus.getVersion !== 'function' || !valid_1(bus.getVersion())) {
+          console.warn('Proxying an event bus with an unknown or invalid version');
+        } else if (major_1(bus.getVersion()) !== major_1(this.getVersion())) {
+          console.warn('Proxying an event bus of version ' + bus.getVersion() + ' with ' + this.getVersion());
+        }
+        this.bus = bus;
+      }
+      getVersion() {
+        return "3.0.2";
+      }
+      subscribe(name, handler) {
+        this.bus.subscribe(name, handler);
+      }
+      unsubscribe(name, handler) {
+        this.bus.unsubscribe(name, handler);
+      }
+      emit(name, event) {
+        this.bus.emit(name, event);
+      }
+    }
+    class SimpleBus {
+      handlers = new Map();
+      getVersion() {
+        return "3.0.2";
+      }
+      subscribe(name, handler) {
+        this.handlers.set(name, (this.handlers.get(name) || []).concat(handler));
+      }
+      unsubscribe(name, handler) {
+        this.handlers.set(name, (this.handlers.get(name) || []).filter(h => h != handler));
+      }
+      emit(name, event) {
+        (this.handlers.get(name) || []).forEach(h => {
+          try {
+            h(event);
+          } catch (e) {
+            console.error('could not invoke event listener', e);
+          }
+        });
+      }
+    }
+    function getBus() {
+      if (typeof window.OC !== 'undefined' && window.OC._eventBus && typeof window._nc_event_bus === 'undefined') {
+        console.warn('found old event bus instance at OC._eventBus. Update your version!');
+        window._nc_event_bus = window.OC._eventBus;
+      }
+      // Either use an existing event bus instance or create one
+      if (typeof window._nc_event_bus !== 'undefined') {
+        return new ProxyBus(window._nc_event_bus);
+      } else {
+        return window._nc_event_bus = new SimpleBus();
+      }
+    }
+    const bus = getBus();
+    /**
+     * Register an event listener
+     *
+     * @param name name of the event
+     * @param handler callback invoked for every matching event emitted on the bus
+     */
+    function subscribe(name, handler) {
+      bus.subscribe(name, handler);
+    }
+
+    const tokenElement = document.getElementsByTagName('head')[0];
+    let token$1 = tokenElement ? tokenElement.getAttribute('data-requesttoken') : null;
+    const observers = [];
+    function getRequestToken() {
+      return token$1;
+    }
+    // Listen to server event and keep token in sync
+    subscribe('csrf-token-update', e => {
+      token$1 = e.token;
+      observers.forEach(observer => {
+        try {
+          observer(e.token);
+        } catch (e) {
+          console.error('error updating CSRF token observer', e);
+        }
+      });
+    });
+
+    /// <reference types="@nextcloud/typings" />
+    const getAttribute = (el, attribute) => {
+      if (el) {
+        return el.getAttribute(attribute);
+      }
+      return null;
+    };
+    const head = document.getElementsByTagName('head')[0];
+    const uid = getAttribute(head, 'data-user');
+    const displayName = getAttribute(head, 'data-user-displayname');
+    const isAdmin = typeof OC === 'undefined' ? false : OC.isUserAdmin();
+    function getCurrentUser() {
+      if (uid === null) {
+        return null;
+      }
+      return {
+        uid,
+        displayName,
+        isAdmin
+      };
+    }
+
     const subscriber_queue = [];
     /**
      * Create a `Writable` store that allows both updating and reading by subscription.
@@ -29296,7 +29892,7 @@
       };
       var search = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-          var response, _yield$response$json$, users, exact;
+          var response, current, currentUser, _yield$response$json$, users, exact;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
@@ -29316,19 +29912,31 @@
                 });
               case 5:
                 response = _context.sent;
+                current = getCurrentUser();
+                currentUser = [];
+                if (current.uid.includes(query) || current.displayName.includes(query)) {
+                  currentUser = [{
+                    value: {
+                      shareWith: current.uid
+                    },
+                    label: current.displayName
+                  }];
+                }
                 $$invalidate(2, loading = false);
                 if (!response.ok) {
-                  _context.next = 14;
+                  _context.next = 17;
                   break;
                 }
-                _context.next = 10;
+                _context.next = 13;
                 return response.json();
-              case 10:
+              case 13:
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
-                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)));
-              case 14:
+                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users), _toConsumableArray$1(currentUser)).sort(function (a, b) {
+                  return a.label.localeCompare(b.label);
+                }));
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -32763,7 +33371,7 @@
       this.charLength = this.charReceived ? 3 : 0;
     }
     Readable.ReadableState = ReadableState;
-    var debug$1 = debuglog('stream');
+    var debug = debuglog('stream');
     inherits$1(Readable, EventEmitter);
     function prependListener(emitter, event, fn) {
       // Sadly this is not cacheable as some libraries bundle their own
@@ -32981,7 +33589,7 @@
 
     // you can override either this method, or the async _read(n) below.
     Readable.prototype.read = function (n) {
-      debug$1('read', n);
+      debug('read', n);
       n = parseInt(n, 10);
       var state = this._readableState;
       var nOrig = n;
@@ -32991,7 +33599,7 @@
       // already have a bunch of data in the buffer, then just trigger
       // the 'readable' event and move on.
       if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {
-        debug$1('read: emitReadable', state.length, state.ended);
+        debug('read: emitReadable', state.length, state.ended);
         if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
         return null;
       }
@@ -33027,21 +33635,21 @@
 
       // if we need a readable event, then we need to do some reading.
       var doRead = state.needReadable;
-      debug$1('need readable', doRead);
+      debug('need readable', doRead);
 
       // if we currently have less than the highWaterMark, then also read some
       if (state.length === 0 || state.length - n < state.highWaterMark) {
         doRead = true;
-        debug$1('length less than watermark', doRead);
+        debug('length less than watermark', doRead);
       }
 
       // however, if we've ended, then there's no point, and if we're already
       // reading, then it's unnecessary.
       if (state.ended || state.reading) {
         doRead = false;
-        debug$1('reading or ended', doRead);
+        debug('reading or ended', doRead);
       } else if (doRead) {
-        debug$1('do read');
+        debug('do read');
         state.reading = true;
         state.sync = true;
         // if the length is currently zero, then we *need* a readable event.
@@ -33101,13 +33709,13 @@
       var state = stream._readableState;
       state.needReadable = false;
       if (!state.emittedReadable) {
-        debug$1('emitReadable', state.flowing);
+        debug('emitReadable', state.flowing);
         state.emittedReadable = true;
         if (state.sync) nextTick(emitReadable_, stream);else emitReadable_(stream);
       }
     }
     function emitReadable_(stream) {
-      debug$1('emit readable');
+      debug('emit readable');
       stream.emit('readable');
       flow(stream);
     }
@@ -33127,7 +33735,7 @@
     function maybeReadMore_(stream, state) {
       var len = state.length;
       while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
-        debug$1('maybeReadMore read 0');
+        debug('maybeReadMore read 0');
         stream.read(0);
         if (len === state.length)
           // didn't get any data, stop spinning.
@@ -33158,19 +33766,19 @@
           break;
       }
       state.pipesCount += 1;
-      debug$1('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
+      debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
       var doEnd = !pipeOpts || pipeOpts.end !== false;
       var endFn = doEnd ? onend : cleanup;
       if (state.endEmitted) nextTick(endFn);else src.once('end', endFn);
       dest.on('unpipe', onunpipe);
       function onunpipe(readable) {
-        debug$1('onunpipe');
+        debug('onunpipe');
         if (readable === src) {
           cleanup();
         }
       }
       function onend() {
-        debug$1('onend');
+        debug('onend');
         dest.end();
       }
 
@@ -33182,7 +33790,7 @@
       dest.on('drain', ondrain);
       var cleanedUp = false;
       function cleanup() {
-        debug$1('cleanup');
+        debug('cleanup');
         // cleanup event handlers once the pipe is broken
         dest.removeListener('close', onclose);
         dest.removeListener('finish', onfinish);
@@ -33209,7 +33817,7 @@
       var increasedAwaitDrain = false;
       src.on('data', ondata);
       function ondata(chunk) {
-        debug$1('ondata');
+        debug('ondata');
         increasedAwaitDrain = false;
         var ret = dest.write(chunk);
         if (false === ret && !increasedAwaitDrain) {
@@ -33218,7 +33826,7 @@
           // also returned false.
           // => Check whether `dest` is still a piping destination.
           if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {
-            debug$1('false write response, pause', src._readableState.awaitDrain);
+            debug('false write response, pause', src._readableState.awaitDrain);
             src._readableState.awaitDrain++;
             increasedAwaitDrain = true;
           }
@@ -33229,7 +33837,7 @@
       // if the dest has an error, then stop piping into it.
       // however, don't suppress the throwing behavior for this.
       function onerror(er) {
-        debug$1('onerror', er);
+        debug('onerror', er);
         unpipe();
         dest.removeListener('error', onerror);
         if (listenerCount(dest, 'error') === 0) dest.emit('error', er);
@@ -33245,13 +33853,13 @@
       }
       dest.once('close', onclose);
       function onfinish() {
-        debug$1('onfinish');
+        debug('onfinish');
         dest.removeListener('close', onclose);
         unpipe();
       }
       dest.once('finish', onfinish);
       function unpipe() {
-        debug$1('unpipe');
+        debug('unpipe');
         src.unpipe(dest);
       }
 
@@ -33260,7 +33868,7 @@
 
       // start the flow if it hasn't been started already.
       if (!state.flowing) {
-        debug$1('pipe resume');
+        debug('pipe resume');
         src.resume();
       }
       return dest;
@@ -33268,7 +33876,7 @@
     function pipeOnDrain(src) {
       return function () {
         var state = src._readableState;
-        debug$1('pipeOnDrain', state.awaitDrain);
+        debug('pipeOnDrain', state.awaitDrain);
         if (state.awaitDrain) state.awaitDrain--;
         if (state.awaitDrain === 0 && src.listeners('data').length) {
           state.flowing = true;
@@ -33344,7 +33952,7 @@
     };
     Readable.prototype.addListener = Readable.prototype.on;
     function nReadingNextTick(self) {
-      debug$1('readable nexttick read 0');
+      debug('readable nexttick read 0');
       self.read(0);
     }
 
@@ -33353,7 +33961,7 @@
     Readable.prototype.resume = function () {
       var state = this._readableState;
       if (!state.flowing) {
-        debug$1('resume');
+        debug('resume');
         state.flowing = true;
         resume(this, state);
       }
@@ -33367,7 +33975,7 @@
     }
     function resume_(stream, state) {
       if (!state.reading) {
-        debug$1('resume read 0');
+        debug('resume read 0');
         stream.read(0);
       }
       state.resumeScheduled = false;
@@ -33377,9 +33985,9 @@
       if (state.flowing && !state.reading) stream.read(0);
     }
     Readable.prototype.pause = function () {
-      debug$1('call pause flowing=%j', this._readableState.flowing);
+      debug('call pause flowing=%j', this._readableState.flowing);
       if (false !== this._readableState.flowing) {
-        debug$1('pause');
+        debug('pause');
         this._readableState.flowing = false;
         this.emit('pause');
       }
@@ -33387,7 +33995,7 @@
     };
     function flow(stream) {
       var state = stream._readableState;
-      debug$1('flow', state.flowing);
+      debug('flow', state.flowing);
       while (state.flowing && stream.read() !== null) {}
     }
 
@@ -33399,7 +34007,7 @@
       var paused = false;
       var self = this;
       stream.on('end', function () {
-        debug$1('wrapped end');
+        debug('wrapped end');
         if (state.decoder && !state.ended) {
           var chunk = state.decoder.end();
           if (chunk && chunk.length) self.push(chunk);
@@ -33407,7 +34015,7 @@
         self.push(null);
       });
       stream.on('data', function (chunk) {
-        debug$1('wrapped data');
+        debug('wrapped data');
         if (state.decoder) chunk = state.decoder.write(chunk);
 
         // don't skip over falsy values in objectMode
@@ -33440,7 +34048,7 @@
       // when we try to consume some more bytes, simply unpause the
       // underlying stream.
       self._read = function (n) {
-        debug$1('wrapped _read', n);
+        debug('wrapped _read', n);
         if (paused) {
           paused = false;
           stream.resume();
@@ -35514,7 +36122,7 @@
         callback(err);
       }
     }
-    const parse$1 = function () {
+    const parse = function () {
       let data, options, callback;
       for (const i in arguments) {
         const argument = arguments[i];
@@ -36771,7 +37379,7 @@
                 _context.prev = 9;
                 _context.next = 12;
                 return new Promise(function (resolve, reject) {
-                  return parse$1(fileReader.result, {
+                  return parse(fileReader.result, {
                     delimiter: delimiterInput && delimiterInput.value ? delimiterInput.value : ",",
                     // @TODO: Make encoding configurable
                     encoding: "utf-8",
@@ -37413,7 +38021,7 @@
     /* global _gaq: true, ga: true */
 
 
-    var parseOptions$1 = function (options) {
+    var parseOptions = function (options) {
       options = options || {};
       options.elements = options.elements || "a[href], form[action]";
       options.selectors = options.selectors || ["title", ".js-Pjax"];
@@ -37926,7 +38534,7 @@
         href: null,
         options: null
       };
-      this.options = parseOptions$1(options);
+      this.options = parseOptions(options);
       this.log("Pjax options", this.options);
       if (this.options.scrollRestoration && "scrollRestoration" in history) {
         history.scrollRestoration = "manual";
@@ -38174,592 +38782,6 @@
         document.body.classList.add("loading-error");
       });
     });
-
-    // Note: this is the semver.org version of the spec that it implements
-    // Not necessarily the package version of this code.
-    const SEMVER_SPEC_VERSION = '2.0.0';
-    const MAX_LENGTH$2 = 256;
-    const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */9007199254740991;
-
-    // Max safe segment length for coercion.
-    const MAX_SAFE_COMPONENT_LENGTH = 16;
-    var constants = {
-      SEMVER_SPEC_VERSION,
-      MAX_LENGTH: MAX_LENGTH$2,
-      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
-      MAX_SAFE_COMPONENT_LENGTH
-    };
-
-    const debug = typeof process === 'object' && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
-    var debug_1 = debug;
-
-    var re_1 = createCommonjsModule(function (module, exports) {
-    const {
-      MAX_SAFE_COMPONENT_LENGTH
-    } = constants;
-
-    exports = module.exports = {};
-
-    // The actual regexps go on exports.re
-    const re = exports.re = [];
-    const src = exports.src = [];
-    const t = exports.t = {};
-    let R = 0;
-    const createToken = (name, value, isGlobal) => {
-      const index = R++;
-      debug_1(name, index, value);
-      t[name] = index;
-      src[index] = value;
-      re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
-    };
-
-    // The following Regular Expressions can be used for tokenizing,
-    // validating, and parsing SemVer version strings.
-
-    // ## Numeric Identifier
-    // A single `0`, or a non-zero digit followed by zero or more digits.
-
-    createToken('NUMERICIDENTIFIER', '0|[1-9]\\d*');
-    createToken('NUMERICIDENTIFIERLOOSE', '[0-9]+');
-
-    // ## Non-numeric Identifier
-    // Zero or more digits, followed by a letter or hyphen, and then zero or
-    // more letters, digits, or hyphens.
-
-    createToken('NONNUMERICIDENTIFIER', '\\d*[a-zA-Z-][a-zA-Z0-9-]*');
-
-    // ## Main Version
-    // Three dot-separated numeric identifiers.
-
-    createToken('MAINVERSION', `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})\\.` + `(${src[t.NUMERICIDENTIFIER]})`);
-    createToken('MAINVERSIONLOOSE', `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` + `(${src[t.NUMERICIDENTIFIERLOOSE]})`);
-
-    // ## Pre-release Version Identifier
-    // A numeric identifier, or a non-numeric identifier.
-
-    createToken('PRERELEASEIDENTIFIER', `(?:${src[t.NUMERICIDENTIFIER]}|${src[t.NONNUMERICIDENTIFIER]})`);
-    createToken('PRERELEASEIDENTIFIERLOOSE', `(?:${src[t.NUMERICIDENTIFIERLOOSE]}|${src[t.NONNUMERICIDENTIFIER]})`);
-
-    // ## Pre-release Version
-    // Hyphen, followed by one or more dot-separated pre-release version
-    // identifiers.
-
-    createToken('PRERELEASE', `(?:-(${src[t.PRERELEASEIDENTIFIER]}(?:\\.${src[t.PRERELEASEIDENTIFIER]})*))`);
-    createToken('PRERELEASELOOSE', `(?:-?(${src[t.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src[t.PRERELEASEIDENTIFIERLOOSE]})*))`);
-
-    // ## Build Metadata Identifier
-    // Any combination of digits, letters, or hyphens.
-
-    createToken('BUILDIDENTIFIER', '[0-9A-Za-z-]+');
-
-    // ## Build Metadata
-    // Plus sign, followed by one or more period-separated build metadata
-    // identifiers.
-
-    createToken('BUILD', `(?:\\+(${src[t.BUILDIDENTIFIER]}(?:\\.${src[t.BUILDIDENTIFIER]})*))`);
-
-    // ## Full Version String
-    // A main version, followed optionally by a pre-release version and
-    // build metadata.
-
-    // Note that the only major, minor, patch, and pre-release sections of
-    // the version string are capturing groups.  The build metadata is not a
-    // capturing group, because it should not ever be used in version
-    // comparison.
-
-    createToken('FULLPLAIN', `v?${src[t.MAINVERSION]}${src[t.PRERELEASE]}?${src[t.BUILD]}?`);
-    createToken('FULL', `^${src[t.FULLPLAIN]}$`);
-
-    // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
-    // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
-    // common in the npm registry.
-    createToken('LOOSEPLAIN', `[v=\\s]*${src[t.MAINVERSIONLOOSE]}${src[t.PRERELEASELOOSE]}?${src[t.BUILD]}?`);
-    createToken('LOOSE', `^${src[t.LOOSEPLAIN]}$`);
-    createToken('GTLT', '((?:<|>)?=?)');
-
-    // Something like "2.*" or "1.2.x".
-    // Note that "x.x" is a valid xRange identifer, meaning "any version"
-    // Only the first item is strictly required.
-    createToken('XRANGEIDENTIFIERLOOSE', `${src[t.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
-    createToken('XRANGEIDENTIFIER', `${src[t.NUMERICIDENTIFIER]}|x|X|\\*`);
-    createToken('XRANGEPLAIN', `[v=\\s]*(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:\\.(${src[t.XRANGEIDENTIFIER]})` + `(?:${src[t.PRERELEASE]})?${src[t.BUILD]}?` + `)?)?`);
-    createToken('XRANGEPLAINLOOSE', `[v=\\s]*(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` + `(?:${src[t.PRERELEASELOOSE]})?${src[t.BUILD]}?` + `)?)?`);
-    createToken('XRANGE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAIN]}$`);
-    createToken('XRANGELOOSE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAINLOOSE]}$`);
-
-    // Coercion.
-    // Extract anything that could conceivably be a part of a valid semver
-    createToken('COERCE', `${'(^|[^\\d])' + '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:$|[^\\d])`);
-    createToken('COERCERTL', src[t.COERCE], true);
-
-    // Tilde ranges.
-    // Meaning is "reasonably at or greater than"
-    createToken('LONETILDE', '(?:~>?)');
-    createToken('TILDETRIM', `(\\s*)${src[t.LONETILDE]}\\s+`, true);
-    exports.tildeTrimReplace = '$1~';
-    createToken('TILDE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
-    createToken('TILDELOOSE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
-
-    // Caret ranges.
-    // Meaning is "at least and backwards compatible with"
-    createToken('LONECARET', '(?:\\^)');
-    createToken('CARETTRIM', `(\\s*)${src[t.LONECARET]}\\s+`, true);
-    exports.caretTrimReplace = '$1^';
-    createToken('CARET', `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
-    createToken('CARETLOOSE', `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
-
-    // A simple gt/lt/eq thing, or just "" to indicate "any version"
-    createToken('COMPARATORLOOSE', `^${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]})$|^$`);
-    createToken('COMPARATOR', `^${src[t.GTLT]}\\s*(${src[t.FULLPLAIN]})$|^$`);
-
-    // An expression to strip any whitespace between the gtlt and the thing
-    // it modifies, so that `> 1.2.3` ==> `>1.2.3`
-    createToken('COMPARATORTRIM', `(\\s*)${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
-    exports.comparatorTrimReplace = '$1$2$3';
-
-    // Something like `1.2.3 - 1.2.4`
-    // Note that these all use the loose form, because they'll be
-    // checked against either the strict or loose comparator form
-    // later.
-    createToken('HYPHENRANGE', `^\\s*(${src[t.XRANGEPLAIN]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAIN]})` + `\\s*$`);
-    createToken('HYPHENRANGELOOSE', `^\\s*(${src[t.XRANGEPLAINLOOSE]})` + `\\s+-\\s+` + `(${src[t.XRANGEPLAINLOOSE]})` + `\\s*$`);
-
-    // Star ranges basically just allow anything at all.
-    createToken('STAR', '(<|>)?=?\\s*\\*');
-    // >=0.0.0 is like a star
-    createToken('GTE0', '^\\s*>=\\s*0\\.0\\.0\\s*$');
-    createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$');
-    });
-    re_1.re;
-    re_1.src;
-    re_1.t;
-    re_1.tildeTrimReplace;
-    re_1.caretTrimReplace;
-    re_1.comparatorTrimReplace;
-
-    // parse out just the options we care about so we always get a consistent
-    // obj with keys in a consistent order.
-    const opts = ['includePrerelease', 'loose', 'rtl'];
-    const parseOptions = options => !options ? {} : typeof options !== 'object' ? {
-      loose: true
-    } : opts.filter(k => options[k]).reduce((o, k) => {
-      o[k] = true;
-      return o;
-    }, {});
-    var parseOptions_1 = parseOptions;
-
-    const numeric = /^[0-9]+$/;
-    const compareIdentifiers$1 = (a, b) => {
-      const anum = numeric.test(a);
-      const bnum = numeric.test(b);
-      if (anum && bnum) {
-        a = +a;
-        b = +b;
-      }
-      return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
-    };
-    const rcompareIdentifiers = (a, b) => compareIdentifiers$1(b, a);
-    var identifiers = {
-      compareIdentifiers: compareIdentifiers$1,
-      rcompareIdentifiers
-    };
-
-    const {
-      MAX_LENGTH: MAX_LENGTH$1,
-      MAX_SAFE_INTEGER
-    } = constants;
-    const {
-      re: re$1,
-      t: t$1
-    } = re_1;
-
-    const {
-      compareIdentifiers
-    } = identifiers;
-    class SemVer {
-      constructor(version, options) {
-        options = parseOptions_1(options);
-        if (version instanceof SemVer) {
-          if (version.loose === !!options.loose && version.includePrerelease === !!options.includePrerelease) {
-            return version;
-          } else {
-            version = version.version;
-          }
-        } else if (typeof version !== 'string') {
-          throw new TypeError(`Invalid Version: ${version}`);
-        }
-        if (version.length > MAX_LENGTH$1) {
-          throw new TypeError(`version is longer than ${MAX_LENGTH$1} characters`);
-        }
-        debug_1('SemVer', version, options);
-        this.options = options;
-        this.loose = !!options.loose;
-        // this isn't actually relevant for versions, but keep it so that we
-        // don't run into trouble passing this.options around.
-        this.includePrerelease = !!options.includePrerelease;
-        const m = version.trim().match(options.loose ? re$1[t$1.LOOSE] : re$1[t$1.FULL]);
-        if (!m) {
-          throw new TypeError(`Invalid Version: ${version}`);
-        }
-        this.raw = version;
-
-        // these are actually numbers
-        this.major = +m[1];
-        this.minor = +m[2];
-        this.patch = +m[3];
-        if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
-          throw new TypeError('Invalid major version');
-        }
-        if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
-          throw new TypeError('Invalid minor version');
-        }
-        if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
-          throw new TypeError('Invalid patch version');
-        }
-
-        // numberify any prerelease numeric ids
-        if (!m[4]) {
-          this.prerelease = [];
-        } else {
-          this.prerelease = m[4].split('.').map(id => {
-            if (/^[0-9]+$/.test(id)) {
-              const num = +id;
-              if (num >= 0 && num < MAX_SAFE_INTEGER) {
-                return num;
-              }
-            }
-            return id;
-          });
-        }
-        this.build = m[5] ? m[5].split('.') : [];
-        this.format();
-      }
-      format() {
-        this.version = `${this.major}.${this.minor}.${this.patch}`;
-        if (this.prerelease.length) {
-          this.version += `-${this.prerelease.join('.')}`;
-        }
-        return this.version;
-      }
-      toString() {
-        return this.version;
-      }
-      compare(other) {
-        debug_1('SemVer.compare', this.version, this.options, other);
-        if (!(other instanceof SemVer)) {
-          if (typeof other === 'string' && other === this.version) {
-            return 0;
-          }
-          other = new SemVer(other, this.options);
-        }
-        if (other.version === this.version) {
-          return 0;
-        }
-        return this.compareMain(other) || this.comparePre(other);
-      }
-      compareMain(other) {
-        if (!(other instanceof SemVer)) {
-          other = new SemVer(other, this.options);
-        }
-        return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
-      }
-      comparePre(other) {
-        if (!(other instanceof SemVer)) {
-          other = new SemVer(other, this.options);
-        }
-
-        // NOT having a prerelease is > having one
-        if (this.prerelease.length && !other.prerelease.length) {
-          return -1;
-        } else if (!this.prerelease.length && other.prerelease.length) {
-          return 1;
-        } else if (!this.prerelease.length && !other.prerelease.length) {
-          return 0;
-        }
-        let i = 0;
-        do {
-          const a = this.prerelease[i];
-          const b = other.prerelease[i];
-          debug_1('prerelease compare', i, a, b);
-          if (a === undefined && b === undefined) {
-            return 0;
-          } else if (b === undefined) {
-            return 1;
-          } else if (a === undefined) {
-            return -1;
-          } else if (a === b) {
-            continue;
-          } else {
-            return compareIdentifiers(a, b);
-          }
-        } while (++i);
-      }
-      compareBuild(other) {
-        if (!(other instanceof SemVer)) {
-          other = new SemVer(other, this.options);
-        }
-        let i = 0;
-        do {
-          const a = this.build[i];
-          const b = other.build[i];
-          debug_1('prerelease compare', i, a, b);
-          if (a === undefined && b === undefined) {
-            return 0;
-          } else if (b === undefined) {
-            return 1;
-          } else if (a === undefined) {
-            return -1;
-          } else if (a === b) {
-            continue;
-          } else {
-            return compareIdentifiers(a, b);
-          }
-        } while (++i);
-      }
-
-      // preminor will bump the version up to the next minor release, and immediately
-      // down to pre-release. premajor and prepatch work the same way.
-      inc(release, identifier) {
-        switch (release) {
-          case 'premajor':
-            this.prerelease.length = 0;
-            this.patch = 0;
-            this.minor = 0;
-            this.major++;
-            this.inc('pre', identifier);
-            break;
-          case 'preminor':
-            this.prerelease.length = 0;
-            this.patch = 0;
-            this.minor++;
-            this.inc('pre', identifier);
-            break;
-          case 'prepatch':
-            // If this is already a prerelease, it will bump to the next version
-            // drop any prereleases that might already exist, since they are not
-            // relevant at this point.
-            this.prerelease.length = 0;
-            this.inc('patch', identifier);
-            this.inc('pre', identifier);
-            break;
-          // If the input is a non-prerelease version, this acts the same as
-          // prepatch.
-          case 'prerelease':
-            if (this.prerelease.length === 0) {
-              this.inc('patch', identifier);
-            }
-            this.inc('pre', identifier);
-            break;
-          case 'major':
-            // If this is a pre-major version, bump up to the same major version.
-            // Otherwise increment major.
-            // 1.0.0-5 bumps to 1.0.0
-            // 1.1.0 bumps to 2.0.0
-            if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) {
-              this.major++;
-            }
-            this.minor = 0;
-            this.patch = 0;
-            this.prerelease = [];
-            break;
-          case 'minor':
-            // If this is a pre-minor version, bump up to the same minor version.
-            // Otherwise increment minor.
-            // 1.2.0-5 bumps to 1.2.0
-            // 1.2.1 bumps to 1.3.0
-            if (this.patch !== 0 || this.prerelease.length === 0) {
-              this.minor++;
-            }
-            this.patch = 0;
-            this.prerelease = [];
-            break;
-          case 'patch':
-            // If this is not a pre-release version, it will increment the patch.
-            // If it is a pre-release it will bump up to the same patch version.
-            // 1.2.0-5 patches to 1.2.0
-            // 1.2.0 patches to 1.2.1
-            if (this.prerelease.length === 0) {
-              this.patch++;
-            }
-            this.prerelease = [];
-            break;
-          // This probably shouldn't be used publicly.
-          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
-          case 'pre':
-            if (this.prerelease.length === 0) {
-              this.prerelease = [0];
-            } else {
-              let i = this.prerelease.length;
-              while (--i >= 0) {
-                if (typeof this.prerelease[i] === 'number') {
-                  this.prerelease[i]++;
-                  i = -2;
-                }
-              }
-              if (i === -1) {
-                // didn't increment anything
-                this.prerelease.push(0);
-              }
-            }
-            if (identifier) {
-              // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
-              // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
-              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
-                if (isNaN(this.prerelease[1])) {
-                  this.prerelease = [identifier, 0];
-                }
-              } else {
-                this.prerelease = [identifier, 0];
-              }
-            }
-            break;
-          default:
-            throw new Error(`invalid increment argument: ${release}`);
-        }
-        this.format();
-        this.raw = this.version;
-        return this;
-      }
-    }
-    var semver = SemVer;
-
-    const {
-      MAX_LENGTH
-    } = constants;
-    const {
-      re,
-      t
-    } = re_1;
-
-
-    const parse = (version, options) => {
-      options = parseOptions_1(options);
-      if (version instanceof semver) {
-        return version;
-      }
-      if (typeof version !== 'string') {
-        return null;
-      }
-      if (version.length > MAX_LENGTH) {
-        return null;
-      }
-      const r = options.loose ? re[t.LOOSE] : re[t.FULL];
-      if (!r.test(version)) {
-        return null;
-      }
-      try {
-        return new semver(version, options);
-      } catch (er) {
-        return null;
-      }
-    };
-    var parse_1 = parse;
-
-    const valid = (version, options) => {
-      const v = parse_1(version, options);
-      return v ? v.version : null;
-    };
-    var valid_1 = valid;
-
-    const major = (a, loose) => new semver(a, loose).major;
-    var major_1 = major;
-
-    class ProxyBus {
-      bus;
-      constructor(bus) {
-        if (typeof bus.getVersion !== 'function' || !valid_1(bus.getVersion())) {
-          console.warn('Proxying an event bus with an unknown or invalid version');
-        } else if (major_1(bus.getVersion()) !== major_1(this.getVersion())) {
-          console.warn('Proxying an event bus of version ' + bus.getVersion() + ' with ' + this.getVersion());
-        }
-        this.bus = bus;
-      }
-      getVersion() {
-        return "3.0.2";
-      }
-      subscribe(name, handler) {
-        this.bus.subscribe(name, handler);
-      }
-      unsubscribe(name, handler) {
-        this.bus.unsubscribe(name, handler);
-      }
-      emit(name, event) {
-        this.bus.emit(name, event);
-      }
-    }
-    class SimpleBus {
-      handlers = new Map();
-      getVersion() {
-        return "3.0.2";
-      }
-      subscribe(name, handler) {
-        this.handlers.set(name, (this.handlers.get(name) || []).concat(handler));
-      }
-      unsubscribe(name, handler) {
-        this.handlers.set(name, (this.handlers.get(name) || []).filter(h => h != handler));
-      }
-      emit(name, event) {
-        (this.handlers.get(name) || []).forEach(h => {
-          try {
-            h(event);
-          } catch (e) {
-            console.error('could not invoke event listener', e);
-          }
-        });
-      }
-    }
-    function getBus() {
-      if (typeof window.OC !== 'undefined' && window.OC._eventBus && typeof window._nc_event_bus === 'undefined') {
-        console.warn('found old event bus instance at OC._eventBus. Update your version!');
-        window._nc_event_bus = window.OC._eventBus;
-      }
-      // Either use an existing event bus instance or create one
-      if (typeof window._nc_event_bus !== 'undefined') {
-        return new ProxyBus(window._nc_event_bus);
-      } else {
-        return window._nc_event_bus = new SimpleBus();
-      }
-    }
-    const bus = getBus();
-    /**
-     * Register an event listener
-     *
-     * @param name name of the event
-     * @param handler callback invoked for every matching event emitted on the bus
-     */
-    function subscribe(name, handler) {
-      bus.subscribe(name, handler);
-    }
-
-    const tokenElement = document.getElementsByTagName('head')[0];
-    let token$1 = tokenElement ? tokenElement.getAttribute('data-requesttoken') : null;
-    const observers = [];
-    function getRequestToken() {
-      return token$1;
-    }
-    // Listen to server event and keep token in sync
-    subscribe('csrf-token-update', e => {
-      token$1 = e.token;
-      observers.forEach(observer => {
-        try {
-          observer(e.token);
-        } catch (e) {
-          console.error('error updating CSRF token observer', e);
-        }
-      });
-    });
-
-    /// <reference types="@nextcloud/typings" />
-    const getAttribute = (el, attribute) => {
-      if (el) {
-        return el.getAttribute(attribute);
-      }
-      return null;
-    };
-    const head = document.getElementsByTagName('head')[0];
-    getAttribute(head, 'data-user');
-    getAttribute(head, 'data-user-displayname');
-    typeof OC === 'undefined' ? false : OC.isUserAdmin();
 
     var token = getRequestToken();
     var components = [];

@@ -3,6 +3,7 @@
 	export let isVisible = true;
 
 	import Select from "svelte-select";
+	import { getCurrentUser } from "@nextcloud/auth"
 	import { translate } from "@nextcloud/l10n";
 	import { generateOcsUrl } from "@nextcloud/router";
 	import { onMount } from "svelte";
@@ -51,11 +52,17 @@
 			}
 		);
 
+		const current = getCurrentUser();
+		let currentUser = [];
+		if (current.uid.includes(query) || current.displayName.includes(query)) {
+			currentUser = [{ value: { shareWith: current.uid }, label: current.displayName }];
+		}
+
 		loading = false;
 
 		if (response.ok) {
 			const { users, exact } = (await response.json()).ocs.data;
-			return [...users, ...exact.users];
+			return [...users, ...exact.users, ...currentUser].sort((a, b) => a.label.localeCompare(b.label));
 		}
 	};
 
