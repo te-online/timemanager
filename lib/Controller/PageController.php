@@ -548,9 +548,9 @@ class PageController extends Controller {
 		}
 
 
-        $client_uuid = $client_data[0]->getUuid() ?? "";
-        $client_name = $client_data[0]->getName() ?? "";
-        $canEdit = ($client_data[0]->getUserId() ?? "") === $this->userId;
+        $client_uuid = $client_data[0]?->getUuid() ?? "";
+        $client_name = $client_data[0]?->getName() ?? "";
+        $canEdit = ($client_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$sharees = array_map(function ($share) {
 			$shareArray = $share->toArray($this->userManager, $this->groupManager);
@@ -752,9 +752,9 @@ class PageController extends Controller {
 			}
 		}
 
-        $project_uuid = $project_data[0]->getUuid() ?? "";
-        $project_name = $project_data[0]->getName() ?? "";
-        $canEdit = ($project_data[0]->getUserId() ?? "") === $this->userId;
+        $project_uuid = $project_data[0]?->getUuid() ?? "";
+        $project_name = $project_data[0]?->getName() ?? "";
+        $canEdit = ($project_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
@@ -924,9 +924,9 @@ class PageController extends Controller {
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
-		$task_uuid = $task_data[0]->getUuid() ?? "";
-		$task_name = $task_data[0]->getName() ?? "";
-        $canEdit = ($task_data[0]->getUserId() ?? "") === $this->userId;
+		$task_uuid = $task_data[0]?->getUuid() ?? "";
+		$task_name = $task_data[0]?->getName() ?? "";
+        $canEdit = ($task_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
