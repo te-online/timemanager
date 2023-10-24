@@ -55,19 +55,23 @@ class ObjectMapper extends QBMapper {
 			$sql
 				->selectDistinct("client.*")
 				->from($this->tableName, "client")
-				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.`uuid` = share.`object_uuid`");
+				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.`uuid` = share.`object_uuid`")
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "client.`user_id` = ?");
+			$expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "client.`user_id` = :userid",
+            );
 
 			$sql
 				->where($expr)
-				->andWhere("client.`status` != ?")
-				->andWhere("client.`$attr` = ?")
+				->andWhere("client.`status` != :status")
+				->andWhere("client.`$attr` = :attr")
 				->orderBy(\strtolower($orderby), "ASC");
 
-			$sql->setParameters([$this->userId, $this->userId, "deleted", $value]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
@@ -76,20 +80,24 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?"
-				);
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != :userid"
+				)
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "project.`user_id` = ?");
+			$expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "project.`user_id` = :userid"
+                );
 
 			$sql
 				->where($expr)
-				->andWhere("project.`status` != ?")
-				->andWhere("project.`$attr` = ?")
+				->andWhere("project.`status` != :status")
+				->andWhere("project.`$attr` = :attr")
 				->orderBy(\strtolower($orderby), "ASC");
 
-			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -99,20 +107,24 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != ?"
-				);
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` != :userid"
+				)
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.`recipient_user_id` = ?", "task.`user_id` = ?");
+			$expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "task.`user_id` = :userid"
+            );
 
 			$sql
 				->where($expr)
-				->andWhere("task.`status` != ?")
-				->andWhere("task.`$attr` = ?")
+				->andWhere("task.`status` != :status")
+				->andWhere("task.`$attr` = :attr")
 				->orderBy(\strtolower($orderby), "ASC");
 
-			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -123,20 +135,19 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
 				);
 
-			$expr = $sql->expr()->orX("share.`author_user_id` = ?", "time.`user_id` = ?");
+			$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "time.`user_id` = :userid");
 
 			$sql
 				->where($expr)
-				->andWhere("time.`status` != ?")
-				->andWhere("time.`$attr` = ?")
+				->andWhere("time.`status` != :status")
+				->andWhere("time.`$attr` = :attr")
 				->orderBy(\strtolower($orderby), "ASC");
 
-			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted", $value]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 
-			return $this->findEntities($sql);
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -149,8 +160,9 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters([$this->userId, "deleted", $value]);
 
-			return $this->findEntities($sql);
 		}
+
+		return $this->findEntities($sql);
 	}
 
 	/**
@@ -159,7 +171,7 @@ class ObjectMapper extends QBMapper {
 	 *
 	 * @param string $date_start the range start
 	 * @param string $date_end the range end
-	 * @param string $status the status
+	 * @param ?string $status the status
 	 * @return Object[] list if matching items
 	 */
 	function getActiveObjectsByDateRangeAndFilters(
@@ -170,7 +182,12 @@ class ObjectMapper extends QBMapper {
 		string $orderby = "start",
 		$shared = false
 	): array {
-		$params = [$this->userId, "deleted", $date_start, $date_end];
+		$params = [
+            "userid" => $this->userId,
+            "deleted" => "deleted",
+            "date_start" =>$date_start,
+            "date_end" => $date_end,
+        ];
 		$sql = $this->db->getQueryBuilder();
 		// Range can be one day as well
 		if ($date_start === $date_end) {
@@ -185,24 +202,23 @@ class ObjectMapper extends QBMapper {
 						"project",
 						"*PREFIX*timemanager_share",
 						"share",
-						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
-					);
+						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
+					)
+				    ->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-				$expr = $sql->expr()->orX("share.`author_user_id` = ?", "current.`user_id` = ?");
+				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
 
 				$sql
 					->where($expr)
-					->andWhere("current.`status` != ?")
-					->andWhere("date(current.`start`) = ?");
-
-				$params = array_merge([$this->userId, $this->userId], $params);
+					->andWhere("current.`status` != :deleted")
+					->andWhere("date(current.`start`) = :date_start");
 			} else {
 				$sql
 					->select("*")
 					->from($this->tableName)
-					->where("`user_id` = ?")
-					->andWhere("`status` != ?")
-					->andWhere("date(start) = ?");
+					->where("`user_id` = :userid")
+					->andWhere("`status` != :deleted")
+					->andWhere("date(start) = :date_start");
 			}
 		} else {
 			if ($shared) {
@@ -215,36 +231,35 @@ class ObjectMapper extends QBMapper {
 						"project",
 						"*PREFIX*timemanager_share",
 						"share",
-						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = ?"
-					);
+						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
+					)
+				    ->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-				$expr = $sql->expr()->orX("share.`author_user_id` = ?", "current.`user_id` = ?");
+				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
 
 				$sql
 					->where($expr)
-					->andWhere("current.`status` != ?")
-					->andWhere("date(current.`start`) >= ?")
-					->andWhere("date(current.`start`) <= ?");
-
-				$params = array_merge([$this->userId, $this->userId], $params);
+					->andWhere("current.`status` != :deleted")
+					->andWhere("date(current.`start`) >= :date_start")
+					->andWhere("date(current.`start`) <= :date_end");
 			} else {
 				$sql
 					->select("*")
 					->from($this->tableName)
-					->where("`user_id` = ?")
-					->andWhere("`status` != ?")
-					->andWhere("date(start) >= ?")
-					->andWhere("date(start) <= ?");
+					->where("`user_id` = :userid")
+					->andWhere("`status` != :deleted")
+					->andWhere("date(start) >= :date_start")
+					->andWhere("date(start) <= :date_end");
 			}
 		}
 		if (isset($status) && $status) {
 			if ($status === "paid") {
-				$sql->andWhere("LOWER(`payment_status`) = ?");
-				$params[] = strtolower($status);
+				$sql->andWhere("LOWER(`payment_status`) = :status");
+				$params["status"] = strtolower($status);
 			} else {
-				$expr = $sql->expr()->orX("`payment_status` IS NULL", "LOWER(`payment_status`) <> ?");
+				$expr = $sql->expr()->orX("`payment_status` IS NULL", "LOWER(`payment_status`) <> :status");
 				$sql->andWhere($expr);
-				$params[] = "paid";
+				$params["status"] = "paid";
 			}
 		}
 		if (count($filter_tasks) > 0) {
@@ -284,103 +299,56 @@ class ObjectMapper extends QBMapper {
 	}
 
 	function getObjectsAfterCommit($commit): array {
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+				->where("current.`user_id` = :userid")
+				->andWhere("task.`user_id` = :userid");
+		} else {
+			$sql->where("current.`user_id` = :userid");
+		}
+
+		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
+		$sql->andWhere("current.`commit` IN (:commits)");
+		$sql->orderBy("current.changed", "ASC");
+
+		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => array_values($applicable_commits)]);
+
 		return [
-			"created" => $this->getCreatedObjectsAfterCommit($commit),
-			"updated" => $this->getUpdatedObjectsAfterCommit($commit),
-			"deleted" => $this->getDeletedObjectsAfterCommit($commit),
+			"created" => $this->getCreatedObjectsAfterCommit($sql),
+			"updated" => $this->getUpdatedObjectsAfterCommit($sql),
+			"deleted" => $this->getDeletedObjectsAfterCommit($sql),
 		];
 	}
 
-	function getCreatedObjectsAfterCommit($commit) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
-		$params = [$this->userId, "deleted"];
-
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = ?")
-				->andWhere("task.`user_id` = ?");
-			$params = [$this->userId, $this->userId, "deleted"];
-		} else {
-			$sql->where("current.`user_id` = ?");
-		}
-
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+	function getCreatedObjectsAfterCommit($sql) {
 		$sql->andWhere("current.`created` = current.`changed`");
-		$sql->andWhere("current.`status` != ?");
-		$sql->orderBy("current.changed", "ASC");
+		$sql->andWhere("current.`status` != :status");
 
-		$sql->setParameters($params);
-
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
-	function getUpdatedObjectsAfterCommit($commit) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
-		$params = [$this->userId, "deleted"];
-
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = ?")
-				->andWhere("task.`user_id` = ?");
-			$params = [$this->userId, $this->userId, "deleted"];
-		} else {
-			$sql->where("current.`user_id` = ?");
-		}
-
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+	function getUpdatedObjectsAfterCommit($sql) {
 		$sql->andWhere("current.`created` != current.`changed`");
-		$sql->andWhere("current.`status` != ?");
-		$sql->orderBy("current.changed", "ASC");
+		$sql->andWhere("current.`status` != :status");
 
-		$sql->setParameters($params);
-
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
-	function getDeletedObjectsAfterCommit($commit) {
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql = $this->db->getQueryBuilder();
-		$sql->select("current.*");
-		$sql->from($this->tableName, "current");
-		$params = [$this->userId, "deleted"];
+	function getDeletedObjectsAfterCommit($sql) {
+		$sql->andWhere("current.`status` = :status");
 
-		if (strpos($this->tableName, "_time") > -1) {
-			$sql
-				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = ?")
-				->andWhere("task.`user_id` = ?");
-			$params = [$this->userId, $this->userId, "deleted"];
-		} else {
-			$sql->where("current.`user_id` = ?");
-		}
-
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
-		$sql->andWhere("current.`status` = ?");
-		$sql->orderBy("current.changed", "ASC");
-
-		$sql->setParameters($params);
-
-		$objects = array_map(function ($object) {
+		return array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
-
-		return $objects;
 	}
 
 	/**
@@ -395,28 +363,36 @@ class ObjectMapper extends QBMapper {
 			$sql
 				->selectDistinct("client.*")
 				->from($this->tableName, "client")
-				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.uuid = share.object_uuid");
+				->leftJoin("client", "*PREFIX*timemanager_share", "share", "client.uuid = share.object_uuid")
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "client.user_id = ?");
-			$sql->where($expr)->andWhere("client.status != ?");
+			$expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "client.user_id = :userid",
+            );
+			$sql->where($expr)->andWhere("client.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters([$this->userId, $this->userId, "deleted"]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
 				->from($this->tableName, "project")
-				->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.client_uuid = share.object_uuid");
+				->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.client_uuid = share.object_uuid")
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "project.user_id = ?");
-			$sql->where($expr)->andWhere("project.status != ?");
+            $expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "project.user_id = :userid",
+            );
+			$sql->where($expr)->andWhere("project.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters([$this->userId, $this->userId, "deleted"]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -426,16 +402,20 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.client_uuid = share.object_uuid AND share.author_user_id != ?"
-				);
+					"project.client_uuid = share.object_uuid AND share.author_user_id != :userid"
+				)
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-			$expr = $sql->expr()->orX("share.recipient_user_id = ?", "task.user_id = ?");
-			$sql->where($expr)->andWhere("task.status != ?");
+			$expr = $sql->expr()->orX(
+                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+                "task.user_id = :userid",
+            );
+			$sql->where($expr)->andWhere("task.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted"]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -446,16 +426,15 @@ class ObjectMapper extends QBMapper {
 					"project",
 					"*PREFIX*timemanager_share",
 					"share",
-					"project.client_uuid = share.object_uuid AND share.author_user_id = ?"
+					"project.client_uuid = share.object_uuid AND share.author_user_id = :userid"
 				);
 
-			$expr = $sql->expr()->orX("share.author_user_id = ?", "time.user_id = ?");
-			$sql->where($expr)->andWhere("time.status != ?");
+			$expr = $sql->expr()->orX("share.author_user_id = :userid", "time.user_id = :userid");
+			$sql->where($expr)->andWhere("time.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
-			$sql->setParameters([$this->userId, $this->userId, $this->userId, "deleted"]);
+			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
-			return $this->findEntities($sql);
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -467,7 +446,8 @@ class ObjectMapper extends QBMapper {
 
 			$sql->setParameters([$this->userId, "deleted"]);
 
-			return $this->findEntities($sql);
 		}
+
+		return $this->findEntities($sql);
 	}
 }

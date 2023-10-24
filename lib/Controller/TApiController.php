@@ -17,6 +17,7 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
 use OCP\IRequest;
 use OCP\IConfig;
+use Psr\Log\LoggerInterface;
 
 class TApiController extends ApiController {
 	/** @var ClientMapper mapper for client entity */
@@ -37,6 +38,8 @@ class TApiController extends ApiController {
 	protected $userId;
 	/** @var IConfig */
 	private $config;
+	/** @var LoggerInterface logger */
+	private $logger;
 
 	/**
 	 * constructor of the controller
@@ -51,6 +54,7 @@ class TApiController extends ApiController {
 	 */
 	function __construct(
 		$appName,
+		$userId,
 		IRequest $request,
 		ClientMapper $clientMapper,
 		ProjectMapper $projectMapper,
@@ -59,7 +63,7 @@ class TApiController extends ApiController {
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
 		IConfig $config,
-		$userId
+		LoggerInterface $logger,
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
@@ -70,6 +74,7 @@ class TApiController extends ApiController {
 		$this->shareMapper = $shareMapper;
 		$this->config = $config;
 		$this->userId = $userId;
+		$this->logger = $logger;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
@@ -118,10 +123,9 @@ class TApiController extends ApiController {
 	 * @return DataResponse
 	 */
 	function updateObjects($data, $lastCommit) {
-		$logger = \OC::$server->getLogger();
-		$logger->debug("New API request:", ["app" => "timemanager"]);
-		$logger->debug(json_encode($data), ["app" => "timemanager"]);
-		$logger->info("API Request with commit: " . $lastCommit, ["app" => "timemanager"]);
+		$this->logger->debug("New API request:", ["app" => "timemanager"]);
+		$this->logger->debug(json_encode($data), ["app" => "timemanager"]);
+		$this->logger->info("API Request with commit: " . $lastCommit, ["app" => "timemanager"]);
 		$entities = ["clients", "projects", "tasks", "times"];
 
 		if (!$data && !$lastCommit) {
@@ -211,14 +215,14 @@ class TApiController extends ApiController {
 		if (!$noData) {
 			$response["commit"] = $commit;
 			$this->storageHelper->insertCommit($commit);
-			$logger->info("Sending response [omitted] and commit " . $commit, ["app" => "timemanager"]);
+			$this->logger->info("Sending response [omitted] and commit " . $commit, ["app" => "timemanager"]);
 		} else {
 			$lastCommit = $this->storageHelper->getLatestCommit();
 			$response["commit"] = $lastCommit;
-			$logger->info("Sending response [omitted] and commit " . $lastCommit, ["app" => "timemanager"]);
+			$this->logger->info("Sending response [omitted] and commit " . $lastCommit, ["app" => "timemanager"]);
 		}
 
-		$logger->debug("Sending response... " . json_encode($response), ["app" => "timemanager"]);
+		$this->logger->debug("Sending response... " . json_encode($response), ["app" => "timemanager"]);
 
 		return new JSONResponse($response);
 	}

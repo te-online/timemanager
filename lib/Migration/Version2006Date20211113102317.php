@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\Timemanager\Migration;
+namespace OCA\TimeManager\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;

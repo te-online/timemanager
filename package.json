@@ -49,6 +49,7 @@
     "svelte": "^3.58.0"
   },
   "dependencies": {
+    "@nextcloud/browserslist-config": "^2.0.0",
     "@nextcloud/l10n": "^2.1.0",
     "@popperjs/core": "^2.11.8",
     "csv-parse": "^5.4.0",

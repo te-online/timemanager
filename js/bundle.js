@@ -11440,7 +11440,7 @@
 
     unwrapExports(dist);
     dist.linkTo;
-    dist.imagePath;
+    var dist_2 = dist.imagePath;
     dist.getRootUrl;
     var dist_4 = dist.generateUrl;
     dist.generateRemoteUrl;
@@ -14840,7 +14840,7 @@
     }
 
     // (263:3) {#if controls && !loading && weekTotal === 0}
-    function create_if_block_2$4(ctx) {
+    function create_if_block_2$6(ctx) {
       var p;
       return {
         c: function c() {
@@ -15004,7 +15004,7 @@
       var if_block0 = /*controls*/ctx[0] && create_if_block_7$2();
       var if_block1 = /*controls*/ctx[0] && create_if_block_6$3(ctx);
       var if_block2 = ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] > 0 && create_if_block_3$3(ctx);
-      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$4();
+      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$6();
       var if_block4 = /*controls*/ctx[0] && create_if_block$j(ctx);
       return {
         c: function c() {
@@ -15081,7 +15081,7 @@
             if (if_block3) {
               if_block3.p(ctx, dirty);
             } else {
-              if_block3 = create_if_block_2$4();
+              if_block3 = create_if_block_2$6();
               if_block3.c();
               if_block3.m(div0, null);
             }
@@ -17665,7 +17665,7 @@
       return _createClass$1(TimeEditor);
     }(SvelteComponent);
 
-    function create_else_block$3(ctx) {
+    function create_else_block$5(ctx) {
       var div;
       var button;
       var t;
@@ -17845,7 +17845,7 @@
       var current;
       function select_block_type(ctx, dirty) {
         if (! /*timeUuid*/ctx[1]) return create_if_block_1$6;
-        return create_else_block$3;
+        return create_else_block$5;
       }
       var current_block_type = select_block_type(ctx);
       var if_block0 = current_block_type(ctx);
@@ -18437,7 +18437,7 @@
     }
 
     // (309:4) {:else}
-    function create_else_block$2(ctx) {
+    function create_else_block$4(ctx) {
       let each_1_anchor;
       let current;
       let each_value = /*items*/ctx[1];
@@ -18621,7 +18621,7 @@
     // (331:8) {:else}
     function create_else_block_2(ctx) {
       let if_block_anchor;
-      let if_block = ! /*hideEmptyState*/ctx[11] && create_if_block_2$3(ctx);
+      let if_block = ! /*hideEmptyState*/ctx[11] && create_if_block_2$5(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -18636,7 +18636,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_2$3(ctx);
+              if_block = create_if_block_2$5(ctx);
               if_block.c();
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
             }
@@ -18653,7 +18653,7 @@
     }
 
     // (332:12) {#if !hideEmptyState}
-    function create_if_block_2$3(ctx) {
+    function create_if_block_2$5(ctx) {
       let div;
       let t;
       return {
@@ -18972,7 +18972,7 @@
       let current;
       let mounted;
       let dispose;
-      const if_block_creators = [create_if_block$9, create_else_block$2];
+      const if_block_creators = [create_if_block$9, create_else_block$4];
       const if_blocks = [];
       function select_block_type(ctx, dirty) {
         if ( /*isVirtualList*/ctx[5]) return 0;
@@ -20322,7 +20322,7 @@
       let div;
       function select_block_type(ctx, dirty) {
         if ( /*indicatorSvg*/ctx[22]) return create_if_block_5$2;
-        return create_else_block$1;
+        return create_else_block$3;
       }
       let current_block_type = select_block_type(ctx);
       let if_block = current_block_type(ctx);
@@ -20357,7 +20357,7 @@
     }
 
     // (932:12) {:else}
-    function create_else_block$1(ctx) {
+    function create_else_block$3(ctx) {
       let svg;
       let path;
       return {
@@ -20426,7 +20426,7 @@
     }
 
     // (966:4) {#if listOpen}
-    function create_if_block_2$2(ctx) {
+    function create_if_block_2$4(ctx) {
       let switch_instance;
       let updating_hoverItemIndex;
       let switch_instance_anchor;
@@ -20661,7 +20661,7 @@
       let if_block4 = /*showClearIcon*/ctx[37] && create_if_block_6$2(ctx);
       let if_block5 = ! /*showClearIcon*/ctx[37] && ( /*showIndicator*/ctx[20] || /*showChevron*/ctx[19] && ! /*value*/ctx[2] || ! /*isSearchable*/ctx[13] && ! /*isDisabled*/ctx[9] && ! /*isWaiting*/ctx[4] && ( /*showSelectedItem*/ctx[29] && ! /*isClearable*/ctx[15] || ! /*showSelectedItem*/ctx[29])) && create_if_block_4$2(ctx);
       let if_block6 = /*isWaiting*/ctx[4] && create_if_block_3$2();
-      let if_block7 = /*listOpen*/ctx[5] && create_if_block_2$2(ctx);
+      let if_block7 = /*listOpen*/ctx[5] && create_if_block_2$4(ctx);
       let if_block8 = (! /*isMulti*/ctx[7] || /*isMulti*/ctx[7] && ! /*showMultiSelect*/ctx[35]) && create_if_block_1$4(ctx);
       let if_block9 = /*isMulti*/ctx[7] && /*showMultiSelect*/ctx[35] && create_if_block$7(ctx);
       return {
@@ -20869,7 +20869,7 @@
                 transition_in(if_block7, 1);
               }
             } else {
-              if_block7 = create_if_block_2$2(ctx);
+              if_block7 = create_if_block_2$4(ctx);
               if_block7.c();
               transition_in(if_block7, 1);
               if_block7.m(div, t8);
@@ -21799,7 +21799,7 @@
       return child_ctx;
     }
 
-    // (78:0) {#if dialogVisible}
+    // (81:0) {#if dialogVisible}
     function create_if_block$6(ctx) {
       var overlay;
       var current;
@@ -21846,8 +21846,8 @@
       };
     }
 
-    // (94:4) {#if !sharees || !sharees.length}
-    function create_if_block_1$3(ctx) {
+    // (97:4) {#if !sharees || !sharees.length}
+    function create_if_block_2$3(ctx) {
       var p;
       var em;
       return {
@@ -21867,16 +21867,63 @@
       };
     }
 
-    // (100:5) {#each sharees as sharee}
-    function create_each_block$3(ctx) {
-      var li;
-      var figure;
+    // (108:8) {:else}
+    function create_else_block$2(ctx) {
       var img;
       var img_src_value;
       var img_srcset_value;
+      return {
+        c: function c() {
+          img = element("img");
+          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"));
+          attr(img, "alt", "");
+        },
+        m: function m(target, anchor) {
+          insert(target, img, anchor);
+        },
+        p: function p(ctx, dirty) {
+          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) {
+            attr(img, "src", img_src_value);
+          }
+          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) {
+            attr(img, "srcset", img_srcset_value);
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(img);
+        }
+      };
+    }
+
+    // (106:8) {#if sharee.recipient_type == "group"}
+    function create_if_block_1$3(ctx) {
+      var img;
+      var img_src_value;
+      return {
+        c: function c() {
+          img = element("img");
+          if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
+          attr(img, "alt", "");
+          attr(img, "class", "sharee-group");
+        },
+        m: function m(target, anchor) {
+          insert(target, img, anchor);
+        },
+        p: noop$2,
+        d: function d(detaching) {
+          if (detaching) detach(img);
+        }
+      };
+    }
+
+    // (103:5) {#each sharees as sharee}
+    function create_each_block$3(ctx) {
+      var li;
+      var figure;
       var t0;
       var figcaption;
-      var t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_user_id) + "";
+      var t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "";
       var t1;
       var t2;
       var form_1;
@@ -21889,11 +21936,17 @@
       var t5;
       var button;
       var t7;
+      function select_block_type(ctx, dirty) {
+        if ( /*sharee*/ctx[16].recipient_type == "group") return create_if_block_1$3;
+        return create_else_block$2;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
       return {
         c: function c() {
           li = element("li");
           figure = element("figure");
-          img = element("img");
+          if_block.c();
           t0 = space$1();
           figcaption = element("figcaption");
           t1 = text$1(t1_value);
@@ -21908,9 +21961,6 @@
           button = element("button");
           button.textContent = "".concat(translate_1("timemanager", "Delete"));
           t7 = space$1();
-          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
-          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/128")), " 4x"));
-          attr(img, "alt", "");
           attr(input0, "type", "hidden");
           attr(input0, "name", "client_uuid");
           input0.value = /*clientUuid*/ctx[3];
@@ -21930,7 +21980,7 @@
         m: function m(target, anchor) {
           insert(target, li, anchor);
           append(li, figure);
-          append(figure, img);
+          if_block.m(figure, null);
           append(figure, t0);
           append(figure, figcaption);
           append(figcaption, t1);
@@ -21946,13 +21996,17 @@
           append(li, t7);
         },
         p: function p(ctx, dirty) {
-          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/32")))) {
-            attr(img, "src", img_src_value);
+          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block.d(1);
+            if_block = current_block_type(ctx);
+            if (if_block) {
+              if_block.c();
+              if_block.m(figure, t0);
+            }
           }
-          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_user_id, "/128")), " 4x"))) {
-            attr(img, "srcset", img_srcset_value);
-          }
-          if (dirty & /*sharees*/4 && t1_value !== (t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_user_id) + "")) set_data(t1, t1_value);
+          if (dirty & /*sharees*/4 && t1_value !== (t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "")) set_data(t1, t1_value);
           if (dirty & /*clientUuid*/8) {
             input0.value = /*clientUuid*/ctx[3];
           }
@@ -21968,11 +22022,12 @@
         },
         d: function d(detaching) {
           if (detaching) detach(li);
+          if_block.d();
         }
       };
     }
 
-    // (79:1) <Overlay>
+    // (82:1) <Overlay>
     function create_default_slot$2(ctx) {
       var div2;
       var label;
@@ -22013,7 +22068,7 @@
         }
       });
       select.$on("select", /*handleSelectSharee*/ctx[12]);
-      var if_block = (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) && create_if_block_1$3();
+      var if_block = (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) && create_if_block_2$3();
       var each_value = /*sharees*/ctx[2];
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
@@ -22108,7 +22163,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_1$3();
+              if_block = create_if_block_2$3();
               if_block.c();
               if_block.m(div0, t5);
             }
@@ -22116,7 +22171,7 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*deleteShareAction, translate, requestToken, sharees, clientUuid, generateUrl*/30) {
+          if (dirty & /*deleteShareAction, translate, requestToken, sharees, clientUuid, imagePath, generateUrl*/30) {
             each_value = /*sharees*/ctx[2];
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -22163,7 +22218,10 @@
       var input1_value_value;
       var t2;
       var input2;
+      var input2_value_value;
       var t3;
+      var input3;
+      var t4;
       var button;
       var current;
       var if_block = /*dialogVisible*/ctx[7] && create_if_block$6(ctx);
@@ -22178,6 +22236,8 @@
           t2 = space$1();
           input2 = element("input");
           t3 = space$1();
+          input3 = element("input");
+          t4 = space$1();
           button = element("button");
           button.textContent = "".concat(translate_1("timemanager", "Share client"));
           attr(input0, "type", "hidden");
@@ -22185,10 +22245,13 @@
           input0.value = /*clientUuid*/ctx[3];
           attr(input1, "type", "hidden");
           attr(input1, "name", "user_id");
-          input1.value = input1_value_value = /*selectedSharee*/ctx[6] ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          input1.value = input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 0 ? /*selectedSharee*/ctx[6].value.shareWith : "";
           attr(input2, "type", "hidden");
-          attr(input2, "name", "requesttoken");
-          input2.value = /*requestToken*/ctx[4];
+          attr(input2, "name", "group_id");
+          input2.value = input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 1 ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          attr(input3, "type", "hidden");
+          attr(input3, "name", "requesttoken");
+          input3.value = /*requestToken*/ctx[4];
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "share";
@@ -22206,6 +22269,8 @@
           append(form_1, t2);
           append(form_1, input2);
           append(form_1, t3);
+          append(form_1, input3);
+          append(form_1, t4);
           append(form_1, button);
           /*form_1_binding*/
           ctx[14](form_1);
@@ -22236,11 +22301,14 @@
           if (!current || dirty & /*clientUuid*/8) {
             input0.value = /*clientUuid*/ctx[3];
           }
-          if (!current || dirty & /*selectedSharee*/64 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[6] ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+          if (!current || dirty & /*selectedSharee*/64 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 0 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
             input1.value = input1_value_value;
           }
+          if (!current || dirty & /*selectedSharee*/64 && input2_value_value !== (input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 1 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+            input2.value = input2_value_value;
+          }
           if (!current || dirty & /*requestToken*/16) {
-            input2.value = /*requestToken*/ctx[4];
+            input3.value = /*requestToken*/ctx[4];
           }
           if (!current || dirty & /*shareAction*/1) {
             attr(form_1, "action", /*shareAction*/ctx[0]);
@@ -22293,7 +22361,7 @@
       };
       var search = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-          var response, _yield$response$json$, users, exact, existing;
+          var response, _yield$response$json$, users, exact, groups, existing_users, existing_groups;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
@@ -22315,7 +22383,7 @@
                 response = _context.sent;
                 $$invalidate(8, loading = false);
                 if (!response.ok) {
-                  _context.next = 15;
+                  _context.next = 17;
                   break;
                 }
                 _context.next = 10;
@@ -22324,13 +22392,23 @@
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
-                existing = sharees.map(function (share) {
-                  return share.recipient_user_id;
+                groups = _yield$response$json$.groups;
+                existing_users = sharees.filter(function (s) {
+                  return s.recipient_type == 'user';
+                }).map(function (share) {
+                  return share.recipient_id;
                 });
-                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)).filter(function (user) {
-                  return !existing.includes(user.value.shareWith) && user.value.shareWith !== userId;
+                existing_groups = sharees.filter(function (s) {
+                  return s.recipient_type == 'group';
+                }).map(function (share) {
+                  return share.recipient_id;
+                });
+                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users), _toConsumableArray$1(groups), _toConsumableArray$1(exact.groups)).filter(function (user) {
+                  return !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId;
+                }).filter(function (group) {
+                  return !existing_groups.includes(group.value.shareWith);
                 }));
-              case 15:
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -22424,7 +22502,7 @@
           }
         },
         p: function p(ctx, dirty) {
-          if (dirty & /*sharees, generateUrl*/1) {
+          if (dirty & /*sharees, imagePath, generateUrl*/1) {
             each_value = /*sharees*/ctx[0];
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -22452,50 +22530,105 @@
       };
     }
 
-    // (18:2) {#each sharees as sharee, index}
-    function create_each_block$2(ctx) {
-      var li;
+    // (22:4) {:else}
+    function create_else_block$1(ctx) {
       var img;
       var img_src_value;
       var img_srcset_value;
-      var t0;
-      var t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_user_id) + "";
-      var t1;
-      var t2;
       return {
         c: function c() {
-          li = element("li");
           img = element("img");
-          t0 = space$1();
-          t1 = text$1(t1_value);
-          t2 = space$1();
-          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/32")))) attr(img, "src", img_src_value);
-          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/128")), " 4x"));
+          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"));
           attr(img, "alt", "");
         },
         m: function m(target, anchor) {
+          insert(target, img, anchor);
+        },
+        p: function p(ctx, dirty) {
+          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) {
+            attr(img, "src", img_src_value);
+          }
+          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) {
+            attr(img, "srcset", img_srcset_value);
+          }
+        },
+        d: function d(detaching) {
+          if (detaching) detach(img);
+        }
+      };
+    }
+
+    // (20:4) {#if sharee.recipient_type == "group"}
+    function create_if_block_2$2(ctx) {
+      var img;
+      var img_src_value;
+      return {
+        c: function c() {
+          img = element("img");
+          if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
+          attr(img, "alt", "");
+          attr(img, "class", "sharee-group");
+        },
+        m: function m(target, anchor) {
+          insert(target, img, anchor);
+        },
+        p: noop$2,
+        d: function d(detaching) {
+          if (detaching) detach(img);
+        }
+      };
+    }
+
+    // (18:2) {#each sharees as sharee, index}
+    function create_each_block$2(ctx) {
+      var li;
+      var t0;
+      var t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "";
+      var t1;
+      var t2;
+      function select_block_type(ctx, dirty) {
+        if ( /*sharee*/ctx[2].recipient_type == "group") return create_if_block_2$2;
+        return create_else_block$1;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
+      return {
+        c: function c() {
+          li = element("li");
+          if_block.c();
+          t0 = space$1();
+          t1 = text$1(t1_value);
+          t2 = space$1();
+        },
+        m: function m(target, anchor) {
           insert(target, li, anchor);
-          append(li, img);
+          if_block.m(li, null);
           append(li, t0);
           append(li, t1);
           append(li, t2);
         },
         p: function p(ctx, dirty) {
-          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/32")))) {
-            attr(img, "src", img_src_value);
+          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block.d(1);
+            if_block = current_block_type(ctx);
+            if (if_block) {
+              if_block.c();
+              if_block.m(li, t0);
+            }
           }
-          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_user_id, "/128")), " 4x"))) {
-            attr(img, "srcset", img_srcset_value);
-          }
-          if (dirty & /*sharees*/1 && t1_value !== (t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_user_id) + "")) set_data(t1, t1_value);
+          if (dirty & /*sharees*/1 && t1_value !== (t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "")) set_data(t1, t1_value);
         },
         d: function d(detaching) {
           if (detaching) detach(li);
+          if_block.d();
         }
       };
     }
 
-    // (34:0) {#if sharedBy}
+    // (38:0) {#if sharedBy}
     function create_if_block$5(ctx) {
       var span;
       var t1;

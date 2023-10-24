@@ -19,8 +19,12 @@ use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\IGroupManager;
+use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IConfig;
+use OCP\ISession;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
 
 class PageController extends Controller {
@@ -44,8 +48,16 @@ class PageController extends Controller {
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
+	/** @var IGroupManager */
+	private $groupManager;
 	/** @var string  */
 	private $fullDateFormat;
+	/** @var IURLGenerator */
+	private $urlGenerator;
+	/** @var IL10N */
+    private $l;
+	/** @var string */
+	private $requestToken;
 
 	/**
 	 * constructor of the controller
@@ -55,10 +67,14 @@ class PageController extends Controller {
 	 * @param ProjectMapper $projectMapper mapper for project entity
 	 * @param TaskMapper $taskMapper mapper for task entity
 	 * @param TimeMapper $timeMapper mapper for time entity
+	 * @param IURLGenerator $urlGenerator url generator
+	 * @param IL10N $l translation
+	 * @param ISession $session session
 	 * @param string $userId user id
 	 */
 	function __construct(
 		$appName,
+		$userId,
 		IRequest $request,
 		ClientMapper $clientMapper,
 		ProjectMapper $projectMapper,
@@ -68,7 +84,10 @@ class PageController extends Controller {
 		ShareMapper $shareMapper,
 		IConfig $config,
 		IUserManager $userManager,
-		$userId
+		IGroupManager $groupManager,
+		IURLGenerator $urlGenerator,
+		IL10N $l,
+		ISession $session,
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
@@ -80,6 +99,7 @@ class PageController extends Controller {
 		$this->userId = $userId;
 		$this->config = $config;
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
@@ -90,6 +110,9 @@ class PageController extends Controller {
 			$this->config,
 			(string) $userId
 		);
+		$this->urlGenerator = $urlGenerator;
+		$this->l = $l;
+		$this->requestToken = $session ? \OCP\Util::callRegister() : "";
 
 		$this->fullDateFormat = \Punic\Calendar::getDateFormat(
 			"full",
@@ -107,9 +130,6 @@ class PageController extends Controller {
 		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
-
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
 
 		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 		$latestEntries = $this->storageHelper->getLatestTimeEntriesFromAllTimeEntries(
@@ -148,16 +168,16 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"action" => $urlGenerator->linkToRoute("timemanager.page.times"),
-				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
-				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+				"action" => $this->urlGenerator->linkToRoute("timemanager.page.times"),
+				"statsApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
+				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 				"settings" => [
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
 					"fullDateFormat" => $this->fullDateFormat,
 				],
-				"requestToken" => $requestToken,
+				"requestToken" => $this->requestToken,
 				"isServer" => true,
 				"latestSearchEntries" => array_map(function ($latestSearchEntry) {
 					return [
@@ -271,14 +291,10 @@ class PageController extends Controller {
 
 		if ($format === "csv") {
 			// Prepare filename with daterange
-			$l = \OC::$server->getL10N("timemanager");
-			$filename = $start === $end ? $l->t("report_%s.csv", [$start]) : $l->t("report_%s_%s.csv", [$start, $end]);
+			$filename = $start === $end ? $this->l->t("report_%s.csv", [$start]) : $this->l->t("report_%s_%s.csv", [$start, $end]);
 			// Download as CSV
 			return new DataDownloadResponse(ArrayToCSV::convert($all_time_entries), $filename, "text/csv");
 		} else {
-			$urlGenerator = \OC::$server->getURLGenerator();
-			$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-
 			$store = [
 				"clients" => array_map(function ($oneClient) {
 					$oneClient = $oneClient->toArray();
@@ -296,16 +312,16 @@ class PageController extends Controller {
 					$oneTask = $oneTask->toArray();
 					return ["value" => $oneTask["uuid"], "label" => $oneTask["name"], "projectUuid" => $oneTask["project_uuid"]];
 				}, $all_tasks),
-				"action" => $urlGenerator->linkToRoute("timemanager.page.reports"),
-				"statsApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
-				"requestToken" => $requestToken,
+				"action" => $this->urlGenerator->linkToRoute("timemanager.page.reports"),
+				"statsApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
+				"requestToken" => $this->requestToken,
 				"isServer" => true,
 				"startOfMonth" => $start_of_month->format("Y-m-d"),
 				"endOfMonth" => $end_of_month->format("Y-m-d"),
 				"start" => $start,
 				"end" => $end,
 				"controls" => false,
-				"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 				"settings" => [
 					"handle_conflicts" =>
 						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
@@ -342,16 +358,6 @@ class PageController extends Controller {
 	function clients() {
 		$clients = $this->clientMapper->findActiveForCurrentUser("name", true);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-		$l = \OC::$server->getL10N("timemanager");
-
-		$form_props = [
-			"action" => $urlGenerator->linkToRoute("timemanager.page.clients"),
-			"requestToken" => $requestToken,
-			"isServer" => true,
-		];
-
 		// Enhance clients with additional information.
 		if (count($clients) > 0) {
 			foreach ($clients as $index => $client) {
@@ -361,7 +367,7 @@ class PageController extends Controller {
 				$clients[$index]->hours = $this->clientMapper->getHours($client->getUuid());
 				// Get sharees, if user has shared this client
 				$clients[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client->getUuid()));
@@ -369,27 +375,27 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($client->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$clients[$index]->sharedBy = $sharedBy;
 			}
 		}
 
 		$form_props = [
-			"action" => $urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"action" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
+			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
-			"clientEditorButtonCaption" => $l->t("Add client"),
-			"clientEditorCaption" => $l->t("New client"),
+			"clientEditorButtonCaption" => $this->l->t("Add client"),
+			"clientEditorCaption" => $this->l->t("New client"),
 		];
 
 		return new TemplateResponse("timemanager", "clients", [
 			"clients" => $clients,
-			"requesttoken" => $requestToken,
+			"requesttoken" => $this->requestToken,
 			"templates" => [
 				"ClientEditor.svelte" => PHP_Svelte::render_template("ClientEditor.svelte", $form_props),
 			],
@@ -412,8 +418,7 @@ class PageController extends Controller {
 			],
 			"clients"
 		);
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.clients"));
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.clients"));
 	}
 
 	/**
@@ -433,8 +438,7 @@ class PageController extends Controller {
 		// Delete children
 		$this->clientMapper->deleteChildrenForEntityById($uuid, $commit);
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.clients"));
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.clients"));
 	}
 
 	/**
@@ -456,14 +460,13 @@ class PageController extends Controller {
 				"clients"
 			);
 		}
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $uuid);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $uuid);
 	}
 
 	/**
 	 * @NoAdminRequired
 	 */
-	function addClientShare($client_uuid, $user_id) {
+	function addClientShare($client_uuid, $user_id, $group_id) {
 		$client = $this->clientMapper->getActiveObjectById($client_uuid);
 		// User must be author if we can get the client
 		if ($client) {
@@ -474,13 +477,20 @@ class PageController extends Controller {
 			$share->setChanged($today);
 			$share->setObjectUuid($client_uuid);
 			$share->setEntityType("client");
-			$share->setRecipientUserId($user_id);
 			$share->setAuthorUserId($this->userId);
-			$this->shareMapper->insert($share);
+
+			if ($user_id) {
+				$share->setRecipientId($user_id);
+				$share->setRecipientType("user");
+				$this->shareMapper->insert($share);
+			} elseif ($group_id) {
+				$share->setRecipientId($group_id);
+				$share->setRecipientType("group");
+				$this->shareMapper->insert($share);
+			}
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
 	}
 
 	/**
@@ -492,8 +502,7 @@ class PageController extends Controller {
 			$this->shareMapper->delete($shares[0]);
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid);
 	}
 
 	/**
@@ -534,7 +543,7 @@ class PageController extends Controller {
 				$projects[$index]->client = $parentClient;
 				// Get sharees, if user has shared this client
 				$projects[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($parentClient->getUuid()));
@@ -542,21 +551,17 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($parentClient->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$projects[$index]->sharedBy = $sharedBy;
 			}
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-		$l = \OC::$server->getL10N("timemanager");
-
 		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
 		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
 
 		$sharees = array_map(function ($share) {
-			$shareArray = $share->toArray($this->userManager);
+			$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 			return $shareArray;
 		}, $this->shareMapper->findShareesForClient($client_uuid));
@@ -564,38 +569,38 @@ class PageController extends Controller {
 		$sharedByList = $this->shareMapper->findSharerForClient($client_uuid);
 		$sharedBy = null;
 		if (count($sharedByList) > 0) {
-			$sharedBy = $sharedByList[0]->toArray($this->userManager);
+			$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 		}
 
 		$form_props = [
-			"action" => $urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
-			"editAction" => $urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"action" => $this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
+			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
+			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
-			"requestToken" => $requestToken,
+			"requestToken" => $this->requestToken,
 			"clientName" => $client_name,
-			"clientEditorButtonCaption" => $l->t("Edit client"),
-			"clientEditorCaption" => $l->t("Edit client"),
+			"clientEditorButtonCaption" => $this->l->t("Edit client"),
+			"clientEditorCaption" => $this->l->t("Edit client"),
 			"clientUuid" => $client_uuid,
-			"projectEditorButtonCaption" => $l->t("Add project"),
-			"projectEditorCaption" => $l->t("New project"),
+			"projectEditorButtonCaption" => $this->l->t("Add project"),
+			"projectEditorCaption" => $this->l->t("New project"),
 			"editClientData" => [
 				"name" => $client_name,
 				"note" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getNote() : "",
 			],
-			"deleteAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/delete",
+			"deleteAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients") . "/delete",
 			"deleteUuid" => $client_uuid,
-			"deleteButtonCaption" => $l->t("Delete client"),
-			"deleteQuestion" => $l->t(
+			"deleteButtonCaption" => $this->l->t("Delete client"),
+			"deleteQuestion" => $this->l->t(
 				"Do you want to delete the client %s and all associated projects, tasks and time entries?",
 				[$client_name]
 			),
-			"shareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
-			"deleteShareAction" => $urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
+			"shareAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients") . "/share",
+			"deleteShareAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
 			"sharees" => $sharees,
 			"sharedBy" => $sharedBy,
 			"canEdit" => $sharedBy === null,
@@ -607,7 +612,7 @@ class PageController extends Controller {
 			"projects" => $projects,
 			"client" => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			"clients" => $clients,
-			"requesttoken" => $requestToken,
+			"requesttoken" => $this->requestToken,
 			"store" => json_encode(array_merge($form_props, ["isServer" => false])),
 			"templates" => [
 				"ProjectEditor.svelte" => PHP_Svelte::render_template("ProjectEditor.svelte", $form_props),
@@ -634,8 +639,7 @@ class PageController extends Controller {
 			],
 			"projects"
 		);
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client);
 	}
 
 	/**
@@ -658,8 +662,7 @@ class PageController extends Controller {
 			$this->projectMapper->deleteChildrenForEntityById($uuid, $commit);
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client);
 	}
 
 	/**
@@ -680,8 +683,7 @@ class PageController extends Controller {
 				"projects"
 			);
 		}
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $uuid);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $uuid);
 	}
 
 	/**
@@ -714,11 +716,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
@@ -750,7 +752,7 @@ class PageController extends Controller {
 				}
 				// Get sharees, if user has shared this client
 				$tasks[$index]->sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($parentClient->getUuid()));
@@ -758,40 +760,36 @@ class PageController extends Controller {
 				$sharedByList = $this->shareMapper->findSharerForClient($parentClient->getUuid());
 				$sharedBy = null;
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 				$tasks[$index]->sharedBy = $sharedBy;
 			}
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-		$l = \OC::$server->getL10N("timemanager");
-
 		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : "";
 		$project_name = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "";
 
 		$form_props = [
-			"action" => $urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
-			"editAction" => $urlGenerator->linkToRoute("timemanager.page.projects"),
-			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
+			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.projects"),
+			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
-			"requestToken" => $requestToken,
+			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => $project_name,
-			"projectEditorButtonCaption" => $l->t("Edit project"),
-			"projectEditorCaption" => $l->t("Edit project"),
+			"projectEditorButtonCaption" => $this->l->t("Edit project"),
+			"projectEditorCaption" => $this->l->t("Edit project"),
 			"projectUuid" => $project_uuid,
-			"taskEditorButtonCaption" => $l->t("Add task"),
-			"taskEditorCaption" => $l->t("New task"),
-			"deleteAction" => $urlGenerator->linkToRoute("timemanager.page.projects") . "/delete",
+			"taskEditorButtonCaption" => $this->l->t("Add task"),
+			"taskEditorCaption" => $this->l->t("New task"),
+			"deleteAction" => $this->urlGenerator->linkToRoute("timemanager.page.projects") . "/delete",
 			"deleteUuid" => $project_uuid,
-			"deleteButtonCaption" => $l->t("Delete project"),
-			"deleteQuestion" => $l->t("Do you want to delete the project %s and all associated tasks and time entries?", [
+			"deleteButtonCaption" => $this->l->t("Delete project"),
+			"deleteQuestion" => $this->l->t("Do you want to delete the project %s and all associated tasks and time entries?", [
 				$project_name,
 			]),
 			"editProjectData" => [
@@ -809,7 +807,7 @@ class PageController extends Controller {
 			"client" => isset($client_data) && count($client_data) > 0 ? $client_data[0] : null,
 			"projects" => $projects,
 			"clients" => $clients,
-			"requesttoken" => $requestToken,
+			"requesttoken" => $this->requestToken,
 			"store" => json_encode(array_merge($form_props, ["isServer" => false])),
 			"templates" => [
 				"TaskEditor.svelte" => PHP_Svelte::render_template("TaskEditor.svelte", $form_props),
@@ -835,8 +833,7 @@ class PageController extends Controller {
 			],
 			"tasks"
 		);
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project);
 	}
 
 	/**
@@ -859,8 +856,7 @@ class PageController extends Controller {
 			$this->taskMapper->deleteChildrenForEntityById($uuid, $commit);
 		}
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project);
 	}
 
 	/**
@@ -881,8 +877,7 @@ class PageController extends Controller {
 				"tasks"
 			);
 		}
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $uuid);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $uuid);
 	}
 
 	/**
@@ -924,11 +919,11 @@ class PageController extends Controller {
 
 				$sharedByList = $this->shareMapper->findSharerForClient($client_data[0]->getUuid());
 				if (count($sharedByList) > 0) {
-					$sharedBy = $sharedByList[0]->toArray($this->userManager);
+					$sharedBy = $sharedByList[0]->toArray($this->userManager, $this->groupManager);
 				}
 
 				$sharees = array_map(function ($share) {
-					$shareArray = $share->toArray($this->userManager);
+					$shareArray = $share->toArray($this->userManager, $this->groupManager);
 
 					return $shareArray;
 				}, $this->shareMapper->findShareesForClient($client_data[0]->getUuid()));
@@ -948,40 +943,36 @@ class PageController extends Controller {
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-		$l = \OC::$server->getL10N("timemanager");
-
 		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : "";
 		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "";
 
 		$form_props = [
-			"action" => $urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
-			"editAction" => $urlGenerator->linkToRoute("timemanager.page.tasks"),
-			"settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
+			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.tasks"),
+			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
 					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
-			"requestToken" => $requestToken,
+			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
 			"taskName" => isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "",
-			"taskEditorButtonCaption" => $l->t("Edit task"),
-			"taskEditorCaption" => $l->t("Edit task"),
+			"taskEditorButtonCaption" => $this->l->t("Edit task"),
+			"taskEditorCaption" => $this->l->t("Edit task"),
 			"taskUuid" => $task_uuid,
 			"editTaskData" => [
 				"name" => $task_name,
 			],
-			"deleteAction" => $urlGenerator->linkToRoute("timemanager.page.tasks") . "/delete",
+			"deleteAction" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "/delete",
 			"deleteUuid" => $task_uuid,
-			"deleteButtonCaption" => $l->t("Delete task"),
-			"deleteQuestion" => $l->t("Do you want to delete the task %s and all associated time entries?", [$task_name]),
-			"deleteTimeEntryAction" => $urlGenerator->linkToRoute("timemanager.page.times") . "/delete",
-			"timeEditorButtonCaption" => $l->t("Add time entry"),
-			"timeEditorCaption" => $l->t("New time entry"),
-			"editTimeEntryAction" => $urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
+			"deleteButtonCaption" => $this->l->t("Delete task"),
+			"deleteQuestion" => $this->l->t("Do you want to delete the task %s and all associated time entries?", [$task_name]),
+			"deleteTimeEntryAction" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "/delete",
+			"timeEditorButtonCaption" => $this->l->t("Add time entry"),
+			"timeEditorCaption" => $this->l->t("New time entry"),
+			"editTimeEntryAction" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"sharedBy" => $sharedBy,
 			"sharees" => $sharees,
 			"canEdit" => $sharedBy === null,
@@ -996,7 +987,7 @@ class PageController extends Controller {
 			"tasks" => $tasks,
 			"projects" => $projects,
 			"clients" => $clients,
-			"requesttoken" => $requestToken,
+			"requesttoken" => $this->requestToken,
 			"store" => json_encode(array_merge($form_props, ["isServer" => false])),
 			"templates" => [
 				"TimeEditor.svelte" => PHP_Svelte::render_template("TimeEditor.svelte", $form_props),
@@ -1035,8 +1026,7 @@ class PageController extends Controller {
 			],
 			"times"
 		);
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task);
 	}
 
 	/**
@@ -1056,9 +1046,8 @@ class PageController extends Controller {
 			// Delete children
 			$this->timeMapper->deleteChildrenForEntityById($uuid, $commit);
 
-			$urlGenerator = \OC::$server->getURLGenerator();
 			return new RedirectResponse(
-				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
 
@@ -1092,9 +1081,8 @@ class PageController extends Controller {
 			$time->setNote($note);
 			$this->timeMapper->update($time);
 
-			$urlGenerator = \OC::$server->getURLGenerator();
 			return new RedirectResponse(
-				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
 
@@ -1115,9 +1103,8 @@ class PageController extends Controller {
 			$time->setPaymentStatus("paid");
 			$this->timeMapper->update($time);
 
-			$urlGenerator = \OC::$server->getURLGenerator();
 			return new RedirectResponse(
-				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
 
@@ -1138,9 +1125,8 @@ class PageController extends Controller {
 			$time->setPaymentStatus("");
 			$this->timeMapper->update($time);
 
-			$urlGenerator = \OC::$server->getURLGenerator();
 			return new RedirectResponse(
-				$urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
+				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
 			);
 		}
 
@@ -1156,8 +1142,7 @@ class PageController extends Controller {
 			"sync_mode",
 			(bool) $handle_conflicts ? "handle_conflicts" : "force_skip_conflict_handling"
 		);
-		$urlGenerator = \OC::$server->getURLGenerator();
-		return new RedirectResponse($urlGenerator->linkToRoute("timemanager.page.index"));
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.index"));
 	}
 
 	/**
@@ -1170,19 +1155,16 @@ class PageController extends Controller {
 		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
 		$all_times = $this->timeMapper->findActiveForCurrentUser();
 
-		$urlGenerator = \OC::$server->getURLGenerator();
-		$requestToken = \OC::$server->getSession() ? \OCP\Util::callRegister() : "";
-
 		$store = [
 			"clients" => $all_clients,
 			"projects" => $all_projects,
 			"tasks" => $all_tasks,
 			"times" => $all_times,
-			"action" => $urlGenerator->linkToRoute("timemanager.page.tools"),
-			"syncApiUrl" => $urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
-			"requestToken" => $requestToken,
+			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tools"),
+			"syncApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
+			"requestToken" => $this->requestToken,
 			"isServer" => true,
-			// "settingsAction" => $urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+			// "settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			// "settings" => [
 			// 	"handle_conflicts" =>
 			// 		$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===

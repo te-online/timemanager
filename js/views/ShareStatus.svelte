@@ -5,7 +5,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { translate } from "@nextcloud/l10n";
-	import { generateUrl } from "@nextcloud/router";
+	import { generateFilePath, generateUrl, imagePath } from "@nextcloud/router";
 
 	onMount(() => {
 		Helpers.hideFallbacks("ShareDialog.svelte");
@@ -17,15 +17,19 @@
 	<ul class="existing-sharees">
 		{#each sharees as sharee, index}
 			<li>
+				{#if sharee.recipient_type == "group"}
+					<img src={imagePath('core', 'places/contacts.svg')} alt="" class="sharee-group" />
+				{:else}
 				<img
-					src={generateUrl(`avatar/${sharee.recipient_user_id}/32`)}
-					srcset={`${generateUrl(`avatar/${sharee.recipient_user_id}/32`)} 1x, ${generateUrl(
-						`avatar/${sharee.recipient_user_id}/64`
+					src={generateUrl(`avatar/${sharee.recipient_id}/32`)}
+					srcset={`${generateUrl(`avatar/${sharee.recipient_id}/32`)} 1x, ${generateUrl(
+						`avatar/${sharee.recipient_id}/64`
 					)} 2x,
-					${generateUrl(`avatar/${sharee.recipient_user_id}/128`)} 4x`}
+					${generateUrl(`avatar/${sharee.recipient_id}/128`)} 4x`}
 					alt=""
 				/>
-				{sharee.recipient_display_name || sharee.recipient_user_id}
+				{/if}
+				{sharee.recipient_display_name || sharee.recipient_id}
 			</li>
 		{/each}
 	</ul>
