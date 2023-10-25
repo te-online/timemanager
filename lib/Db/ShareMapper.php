@@ -2,7 +2,10 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class ItemMapper
@@ -10,15 +13,14 @@ use OCP\IDBConnection;
  * @package OCA\TimeManager\Db
  */
 class ShareMapper extends ObjectMapper {
-	protected IDBConnection $connection;
 
-	public function __construct(IDBConnection $connection, CommitMapper $commitMapper) {
-		$this->connection = $connection;
-		parent::__construct($connection, $commitMapper, "timemanager_share");
+	public function __construct(IDBConnection $db, IConfig $config, IUserManager $userManager, IGroupManager $groupManager, CommitMapper $commitMapper) {
+		parent::__construct($db, $config, $userManager, $groupManager, $commitMapper, "timemanager_share");
 	}
 
 	public function findShareesForClient($client_uuid): array {
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
+
 		$sql
 			->select("*")
 			->from($this->tableName)
@@ -26,11 +28,12 @@ class ShareMapper extends ObjectMapper {
 			->andWhere("`object_uuid` = ?")
 			->andWhere("`entity_type` = 'client'");
 		$sql->setParameters([$this->userId, $client_uuid]);
+
 		return $this->findEntities($sql);
 	}
 
 	public function findSharerForClient($client_uuid): array {
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
 
         $expr = $sql->expr()->orX(
                 "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
@@ -45,11 +48,12 @@ class ShareMapper extends ObjectMapper {
 			->andWhere("`object_uuid` = :client_uuid")
 			->andWhere("`entity_type` = 'client'");
 		$sql->setParameters(["userid" => $this->userId, "client_uuid" => $client_uuid]);
+
 		return $this->findEntities($sql);
 	}
 
 	public function findByUuid($uuid): array {
-		$sql = $this->connection->getQueryBuilder();
+		$sql = $this->db->getQueryBuilder();
 		$sql
 			->select("*")
 			->from($this->tableName)
@@ -57,6 +61,12 @@ class ShareMapper extends ObjectMapper {
 			->andWhere("`uuid` = ?")
 			->andWhere("`entity_type` = 'client'");
 		$sql->setParameters([$this->userId, $uuid]);
+
 		return $this->findEntities($sql);
 	}
+
+    public function deleteChildrenForEntityById(string $uuid, string $commit): void
+    {
+         // Do nothing here, because shares have no children.
+    }
 }

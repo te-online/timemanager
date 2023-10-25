@@ -15,6 +15,7 @@ use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IConfig;
 use Psr\Log\LoggerInterface;
@@ -40,6 +41,8 @@ class TApiController extends ApiController {
 	private $config;
 	/** @var LoggerInterface logger */
 	private $logger;
+    /** @var IGroupManager */
+    private $groupManager;
 
 	/**
 	 * constructor of the controller
@@ -64,6 +67,7 @@ class TApiController extends ApiController {
 		ShareMapper $shareMapper,
 		IConfig $config,
 		LoggerInterface $logger,
+        IGroupManager $groupManager,
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
@@ -75,6 +79,7 @@ class TApiController extends ApiController {
 		$this->config = $config;
 		$this->userId = $userId;
 		$this->logger = $logger;
+        $this->groupManager = $groupManager;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
@@ -238,19 +243,24 @@ class TApiController extends ApiController {
 		string $projects = null,
 		string $tasks = null,
 		string $status = null,
-		$shared = false,
-		string $userFilter = ""
+        string $userFilter = "",
+        bool $shared = false,
+        bool $reporter = false,
 	) {
+        // check if user is reporter or admin
+        $reporterGroup = $this->config->getAppValue('timemanager', 'reporter_group');
+        $isReporterOrAdmin = $reporter && ($this->groupManager->isAdmin($this->userId) || $this->groupManager->isInGroup($this->userId, $reporterGroup));
+
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, $shared, $isReporterOrAdmin);
 
 		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
 
 		// Get all time entries for time period
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared);
-		$times = array_filter($times, function ($time) use ($includedAuthors) {
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, $shared, $isReporterOrAdmin);
+		$times = array_filter($times, function ($time) use ($includedAuthors, $isReporterOrAdmin) {
 			// Find details for parents of time entry. If it doesn't exist, we should filter out time entry
-			$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+			$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true, $isReporterOrAdmin);
 
 			if (!$task) {
 				return false;

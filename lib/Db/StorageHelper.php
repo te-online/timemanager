@@ -309,20 +309,27 @@ class StorageHelper {
 	 * @param string|null $clients A comma-separated list of client uuids
 	 * @param string|null $projects A comma-separated list of project uuids
 	 * @param string|null $tasks A comma-separated list of task uuids
-	 * @return array A comma-separated list of task uuids
+	 * @return ?array A comma-separated list of task uuids
 	 */
 	function getTaskListFromFilters(
 		string $clients = null,
 		string $projects = null,
 		string $tasks = null,
-		$shared = false
-	): array {
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
+		bool $shared = false,
+        bool $isReporterOrAdmin = false,
+	): ?array {
+        if ($isReporterOrAdmin) {
+            $all_projects = $this->projectMapper->findActiveForReporter("name");
+            $all_tasks = $this->taskMapper->findActiveForReporter("name");
+        } else {
+            $all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);
+            $all_tasks = $this->taskMapper->findActiveForCurrentUser("name", $shared);
+        }
 
 		// Get task uuids related to filters.
 		// Filters are exclusive from finer to coarse.
 		// That is, finer filters override more coarse filters.
+        // If this filter_tasks array stays empty, there is no entry shown
 		// Example: If a task filter is set, project and client filters will be ignored
 		$filter_tasks = [];
 		if (isset($tasks) && strlen($tasks) > 0) {
@@ -352,10 +359,12 @@ class StorageHelper {
 					}
 				}
 			}
-		}
-		$filter_tasks = array_unique($filter_tasks);
+		} else {
+            // in case there is no task filtered use null
+            return null;
+        }
 
-		return $filter_tasks;
+        return array_unique($filter_tasks);
 	}
 
 	/**

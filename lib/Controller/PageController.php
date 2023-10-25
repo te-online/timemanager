@@ -170,13 +170,6 @@ class PageController extends Controller {
 				}, $all_tasks),
 				"action" => $this->urlGenerator->linkToRoute("timemanager.page.times"),
 				"statsApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
-				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-				"settings" => [
-					"handle_conflicts" =>
-						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-						"handle_conflicts",
-					"fullDateFormat" => $this->fullDateFormat,
-				],
 				"requestToken" => $this->requestToken,
 				"isServer" => true,
 				"latestSearchEntries" => array_map(function ($latestSearchEntry) {
@@ -215,14 +208,23 @@ class PageController extends Controller {
 			$end = $end_of_month->format("Y-m-d");
 		}
 
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
+        // check if user is reporter or admin
+        $reporterGroup = $this->config->getAppValue('timemanager', 'reporter_group');
+        $isReporterOrAdmin = $this->groupManager->isAdmin($this->userId) || $this->groupManager->isInGroup($this->userId, $reporterGroup);
+        if ($isReporterOrAdmin) {
+            $all_clients = $this->clientMapper->findActiveForReporter("name");
+            $all_projects = $this->projectMapper->findActiveForReporter("name");
+            $all_tasks = $this->taskMapper->findActiveForReporter("name");
+        } else {
+            $all_clients = $this->clientMapper->findActiveForCurrentUser("name", true);
+            $all_projects = $this->projectMapper->findActiveForCurrentUser("name", true);
+            $all_tasks = $this->taskMapper->findActiveForCurrentUser("name", true);
+        }
 
 		// Get possible task ids to filters for
-		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true);
+		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true, $isReporterOrAdmin);
 
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true, $isReporterOrAdmin);
 
 		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
 
@@ -234,15 +236,15 @@ class PageController extends Controller {
 			$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
 			foreach ($times as $time) {
 				// Find details for parents of time entry
-				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true);
+				$task = $this->taskMapper->getActiveObjectById($time->getTaskUuid(), true, $isReporterOrAdmin);
 				if (!$task) {
 					continue;
 				}
-				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+				$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true, $isReporterOrAdmin);
 				if (!$project) {
 					continue;
 				}
-				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+				$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true, $isReporterOrAdmin);
 				if (!$client) {
 					continue;
 				}
@@ -321,14 +323,8 @@ class PageController extends Controller {
 				"start" => $start,
 				"end" => $end,
 				"controls" => false,
-				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-				"settings" => [
-					"handle_conflicts" =>
-						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-						"handle_conflicts",
-					"fullDateFormat" => $this->fullDateFormat,
-				],
 				"includeShared" => true,
+                "includeReporter" => true,
 			];
 
 			return new TemplateResponse("timemanager", "reports", [
@@ -383,12 +379,6 @@ class PageController extends Controller {
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
 			"clientEditorButtonCaption" => $this->l->t("Add client"),
 			"clientEditorCaption" => $this->l->t("New client"),
 		];
@@ -557,8 +547,10 @@ class PageController extends Controller {
 			}
 		}
 
-		$client_uuid = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getUuid() : "";
-		$client_name = isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "";
+
+        $client_uuid = $client_data[0]?->getUuid() ?? "";
+        $client_name = $client_data[0]?->getName() ?? "";
+        $canEdit = ($client_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$sharees = array_map(function ($share) {
 			$shareArray = $share->toArray($this->userManager, $this->groupManager);
@@ -575,12 +567,6 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
 			"requestToken" => $this->requestToken,
 			"clientName" => $client_name,
 			"clientEditorButtonCaption" => $this->l->t("Edit client"),
@@ -603,7 +589,7 @@ class PageController extends Controller {
 			"deleteShareAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients") . "/share/delete",
 			"sharees" => $sharees,
 			"sharedBy" => $sharedBy,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"userId" => $this->userId,
 			"isServer" => true,
 		];
@@ -621,7 +607,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "projects",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 		]);
 	}
 
@@ -766,18 +752,13 @@ class PageController extends Controller {
 			}
 		}
 
-		$project_uuid = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getUuid() : "";
-		$project_name = isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "";
+        $project_uuid = $project_data[0]?->getUuid() ?? "";
+        $project_name = $project_data[0]?->getName() ?? "";
+        $canEdit = ($project_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.projects"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
 			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => $project_name,
@@ -797,7 +778,7 @@ class PageController extends Controller {
 			],
 			"sharedBy" => $sharedBy,
 			"sharees" => $sharees,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"isServer" => true,
 		];
 
@@ -815,7 +796,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "tasks",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 		]);
 	}
 
@@ -943,18 +924,13 @@ class PageController extends Controller {
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
-		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : "";
-		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "";
+		$task_uuid = $task_data[0]?->getUuid() ?? "";
+		$task_name = $task_data[0]?->getName() ?? "";
+        $canEdit = ($task_data[0]?->getUserId() ?? "") === $this->userId;
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.tasks"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
 			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
@@ -975,7 +951,7 @@ class PageController extends Controller {
 			"editTimeEntryAction" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"sharedBy" => $sharedBy,
 			"sharees" => $sharees,
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"isServer" => true,
 		];
 
@@ -995,7 +971,7 @@ class PageController extends Controller {
 				"ShareStatus.svelte" => PHP_Svelte::render_template("ShareStatus.svelte", $form_props),
 			],
 			"page" => "times",
-			"canEdit" => $sharedBy === null,
+			"canEdit" => $canEdit,
 			"latestEntries" => $latestEntries,
 			"hasSharedTimeEntries" => $hasSharedTimeEntries,
 		]);
@@ -1135,18 +1111,6 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
-	 */
-	function updateSettings($handle_conflicts) {
-		$this->config->setAppValue(
-			"timemanager",
-			"sync_mode",
-			(bool) $handle_conflicts ? "handle_conflicts" : "force_skip_conflict_handling"
-		);
-		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.index"));
-	}
-
-	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
 	function tools() {
@@ -1164,12 +1128,6 @@ class PageController extends Controller {
 			"syncApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
 			"requestToken" => $this->requestToken,
 			"isServer" => true,
-			// "settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			// "settings" => [
-			// 	"handle_conflicts" =>
-			// 		$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-			// 		"handle_conflicts",
-			// ],
 		];
 
 		return new TemplateResponse("timemanager", "tools", [

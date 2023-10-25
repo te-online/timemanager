@@ -2,7 +2,10 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 
 /**
  * Class ProjectMapper
@@ -11,14 +14,14 @@ use OCP\IDBConnection;
  * @method Project insert(Project $entity)
  */
 class ProjectMapper extends ObjectMapper {
-	private $taskMapper;
+	private TaskMapper $taskMapper;
 
-	public function __construct(IDBConnection $db, CommitMapper $commitMapper, TaskMapper $taskMapper) {
-		parent::__construct($db, $commitMapper, "timemanager_project");
+	public function __construct(IDBConnection $db, IConfig $config, IUserManager $userManager, IGroupManager $groupManager, CommitMapper $commitMapper, TaskMapper $taskMapper) {
+		parent::__construct($db, $config, $userManager, $groupManager, $commitMapper, "timemanager_project");
 		$this->taskMapper = $taskMapper;
 	}
 
-	public function deleteWithChildrenByClientId($uuid, $commit) {
+	public function deleteWithChildrenByClientId(string $uuid, string $commit): void {
 		$projects = $this->getActiveObjectsByAttributeValue("client_uuid", $uuid);
 		foreach ($projects as $project) {
 			$project->setCommit($commit);
@@ -29,17 +32,19 @@ class ProjectMapper extends ObjectMapper {
 		}
 	}
 
-	public function deleteChildrenForEntityById($uuid, $commit) {
+	public function deleteChildrenForEntityById(string $uuid, string $commit): void
+    {
 		$this->taskMapper->deleteWithChildrenByProjectId($uuid, $commit);
 	}
 
-	/**
-	 * Gets the number of tasks for a given object.
-	 *
-	 * @param string $userId the user id to filter
-	 * @return Client[] list if matching items
-	 */
-	public function countTasks($uuid) {
+    /**
+     * Gets the number of tasks for a given object.
+     *
+     * @param string $uuid
+     * @return int list if matching items
+     */
+	public function countTasks(string $uuid): int
+    {
 		$tasks = $this->taskMapper->getActiveObjectsByAttributeValue("project_uuid", $uuid, "created", true);
 		return count($tasks);
 	}

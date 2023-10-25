@@ -3,6 +3,7 @@
 	export let requestToken;
 	export let controls = true;
 	export let includeShared = false;
+	export let includeReporter = false;
 
 	import { onMount } from "svelte";
 	import {
@@ -136,7 +137,7 @@
 	const loadStats = async () => {
 		const start = format(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
 		const end = format(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
-		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}`;
+		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}&reporter=${includeReporter ? 1 : 0}`;
 
 		// Parse current URL for filters
 		const urlParts = document.location.href.split("?");

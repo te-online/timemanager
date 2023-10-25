@@ -14,7 +14,6 @@ import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
 import UserFilterButton from "./views/UserFilterButton.svelte";
-// import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
@@ -264,16 +263,6 @@ const init = () => {
 			},
 		})
 	);
-
-	// components.push(
-	// 	new Settings({
-	// 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
-	// 		props: {
-	// 			...store,
-	// 			requestToken: token,
-	// 		},
-	// 	})
-	// );
 
 	const dateTimeElements = document.querySelectorAll("[data-datetime]");
 	if (dateTimeElements && dateTimeElements.length > 0) {
