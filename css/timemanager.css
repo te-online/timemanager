@@ -108,7 +108,7 @@
 .tm_new-item label {
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--color-text-light);
+  color: var(--color-main-text);
   display: block;
   font-size: 9pt; }
 
@@ -368,7 +368,7 @@ label {
     #content.app-timemanager .task-selector-popover .last-used .project {
       padding-left: 12px;
       padding-top: 4px;
-      color: var(--color-text-lighter); }
+      color: var(--color-text-maxcontrast); }
       #content.app-timemanager .task-selector-popover .search-results .project ~ ul li,
       #content.app-timemanager .task-selector-popover .last-used .project ~ ul li {
         padding: 0; }
@@ -384,7 +384,7 @@ label {
     #content.app-timemanager .task-selector-popover .search-results .no-result,
     #content.app-timemanager .task-selector-popover .last-used .no-result {
       padding: 12px 6px;
-      color: var(--color-text-lighter); }
+      color: var(--color-text-maxcontrast); }
     #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper,
     #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper {
       padding: 3px 8px; }
@@ -401,7 +401,7 @@ label {
           flex: 70%; }
         #content.app-timemanager .task-selector-popover .search-results .last-used-wrapper li .muted,
         #content.app-timemanager .task-selector-popover .last-used .last-used-wrapper li .muted {
-          color: var(--color-text-lighter); }
+          color: var(--color-text-maxcontrast); }
     #content.app-timemanager .task-selector-popover .search-results {
       max-height: calc(80vh - 250px);
       overflow-y: auto; }
@@ -421,7 +421,7 @@ label {
         overflow: hidden;
         white-space: nowrap; }
       #content.app-timemanager .combo-entry-wrapper li .muted {
-        color: var(--color-text-lighter); }
+        color: var(--color-text-maxcontrast); }
   #content.app-timemanager .reports-filters {
     grid-template-columns: repeat(auto-fill, minmax(calc(20% - 10px), 100px)); }
   #content.app-timemanager .reports-timerange {
@@ -439,12 +439,12 @@ label {
     min-height: 40vh; }
     #content.app-timemanager .statistics .week-navigation {
       margin-top: 24px;
-      color: var(--color-text-light);
+      color: var(--color-main-text);
       display: flex;
       justify-content: space-between;
       align-items: center; }
       #content.app-timemanager .statistics .week-navigation .dates {
-        color: var(--color-text-lighter); }
+        color: var(--color-text-maxcontrast); }
     #content.app-timemanager .statistics .top-stats {
       display: flex;
       justify-content: space-around;
@@ -461,7 +461,7 @@ label {
       width: 100%;
       margin-top: 12px; }
       #content.app-timemanager .statistics .hours-per-week .empty {
-        color: var(--color-text-lighter);
+        color: var(--color-text-maxcontrast);
         grid-column-start: 1;
         grid-column-end: 8;
         text-align: center;
@@ -491,14 +491,14 @@ label {
               opacity: 0;
               animation: scale 0.4s cubic-bezier(0.33, 1, 0.68, 1) forwards; } }
       #content.app-timemanager .statistics .hours-per-week .date-label {
-        color: var(--color-text-lighter);
+        color: var(--color-text-maxcontrast);
         position: relative;
         text-align: center;
         transition: opacity 0.3s ease; }
         #content.app-timemanager .statistics .hours-per-week .date-label span {
           display: block; }
         #content.app-timemanager .statistics .hours-per-week .date-label .day {
-          color: var(--color-text-light); }
+          color: var(--color-main-text); }
         #content.app-timemanager .statistics .hours-per-week .date-label .date {
           margin-top: -6px; }
         #content.app-timemanager .statistics .hours-per-week .date-label:before {
@@ -510,7 +510,7 @@ label {
           width: 0;
           border-left: 1px solid var(--color-background-darker); }
       #content.app-timemanager .statistics .hours-per-week .hours-label {
-        color: var(--color-text-light);
+        color: var(--color-main-text);
         margin-bottom: 4px;
         text-align: center;
         transform-origin: bottom center; }
@@ -538,10 +538,10 @@ label {
     padding-left: 12px;
     padding-bottom: 12px;
     padding-top: 6px;
-    color: var(--color-text-lighter);
+    color: var(--color-text-maxcontrast);
     cursor: pointer; }
     #content.app-timemanager .reports details .tm_item-note {
-      color: var(--color-text-light); }
+      color: var(--color-main-text); }
   #content.app-timemanager .reports .statistics {
     width: 100%;
     margin-left: 0;
@@ -685,7 +685,7 @@ label {
   margin-top: 24px; }
   .sharing-dialog aside p {
     font-size: 14px;
-    color: var(--color-text-lighter);
+    color: var(--color-text-maxcontrast);
     line-height: 24px;
     margin-top: 12px; }
 
@@ -711,7 +711,7 @@ label {
   .existing-sharees.compact li {
     margin-bottom: 0;
     min-height: 16px;
-    color: var(--color-text-lighter); }
+    color: var(--color-text-maxcontrast); }
   .existing-sharees.compact img,
   .existing-sharees.compact .material-design-icon {
     width: 16px;
@@ -807,4 +807,4 @@ input.duration-input {
   .tm_item-row {
     break-inside: avoid; }
   .statistics .column-inner {
-    border: 1px solid var(--color-text-light); } }
+    border: 1px solid var(--color-main-text); } }
