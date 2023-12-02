@@ -2,8 +2,11 @@
 
 ## 0.3.9 Beta, 2. December 2023
 
-- Add sharing with Nextcloud user groups (#141) (contributed by @DavidProdinger)
+### Added
+
+- Add sharing with Nextcloud user groups (#93 and #141) (contributed by @DavidProdinger)
 - Run (manual) tests for Nextcloud 28 (RC2) and bump compatibility (autotest pending docker-container release)
+- Add Italian localization (thanks to @Fabiettus)
 
 ## 0.3.8 Beta, 5. July 2023
 
