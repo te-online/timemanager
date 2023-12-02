@@ -11440,7 +11440,7 @@
 
     unwrapExports(dist);
     dist.linkTo;
-    var dist_2 = dist.imagePath;
+    dist.imagePath;
     dist.getRootUrl;
     var dist_4 = dist.generateUrl;
     dist.generateRemoteUrl;
@@ -21799,7 +21799,7 @@
       return child_ctx;
     }
 
-    // (81:0) {#if dialogVisible}
+    // (79:0) {#if dialogVisible}
     function create_if_block$6(ctx) {
       var overlay;
       var current;
@@ -21846,7 +21846,7 @@
       };
     }
 
-    // (97:4) {#if !sharees || !sharees.length}
+    // (95:4) {#if !sharees || !sharees.length}
     function create_if_block_2$3(ctx) {
       var p;
       var em;
@@ -21867,7 +21867,7 @@
       };
     }
 
-    // (108:8) {:else}
+    // (117:8) {:else}
     function create_else_block$2(ctx) {
       var img;
       var img_src_value;
@@ -21896,28 +21896,28 @@
       };
     }
 
-    // (106:8) {#if sharee.recipient_type == "group"}
+    // (104:8) {#if sharee.recipient_type == "group"}
     function create_if_block_1$3(ctx) {
-      var img;
-      var img_src_value;
+      var span;
       return {
         c: function c() {
-          img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
-          attr(img, "alt", "");
-          attr(img, "class", "sharee-group");
+          span = element("span");
+          span.innerHTML = "<svg fill=\"currentColor\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" class=\"material-design-icon__svg\"><path d=\"M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z\"></path></svg>";
+          attr(span, "aria-hidden", "true");
+          attr(span, "role", "img");
+          attr(span, "class", "material-design-icon account-group-icon");
         },
         m: function m(target, anchor) {
-          insert(target, img, anchor);
+          insert(target, span, anchor);
         },
         p: noop$2,
         d: function d(detaching) {
-          if (detaching) detach(img);
+          if (detaching) detach(span);
         }
       };
     }
 
-    // (103:5) {#each sharees as sharee}
+    // (101:5) {#each sharees as sharee}
     function create_each_block$3(ctx) {
       var li;
       var figure;
@@ -22027,7 +22027,7 @@
       };
     }
 
-    // (82:1) <Overlay>
+    // (80:1) <Overlay>
     function create_default_slot$2(ctx) {
       var div2;
       var label;
@@ -22171,7 +22171,7 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*deleteShareAction, translate, requestToken, sharees, clientUuid, imagePath, generateUrl*/30) {
+          if (dirty & /*deleteShareAction, translate, requestToken, sharees, clientUuid, generateUrl*/30) {
             each_value = /*sharees*/ctx[2];
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -22394,12 +22394,12 @@
                 exact = _yield$response$json$.exact;
                 groups = _yield$response$json$.groups;
                 existing_users = sharees.filter(function (s) {
-                  return s.recipient_type == 'user';
+                  return s.recipient_type == "user";
                 }).map(function (share) {
                   return share.recipient_id;
                 });
                 existing_groups = sharees.filter(function (s) {
-                  return s.recipient_type == 'group';
+                  return s.recipient_type == "group";
                 }).map(function (share) {
                   return share.recipient_id;
                 });
@@ -22465,7 +22465,6 @@
     function get_each_context$2(ctx, list, i) {
       var child_ctx = ctx.slice();
       child_ctx[2] = list[i];
-      child_ctx[4] = i;
       return child_ctx;
     }
 
@@ -22502,7 +22501,7 @@
           }
         },
         p: function p(ctx, dirty) {
-          if (dirty & /*sharees, imagePath, generateUrl*/1) {
+          if (dirty & /*sharees, generateUrl*/1) {
             each_value = /*sharees*/ctx[0];
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -22530,7 +22529,7 @@
       };
     }
 
-    // (22:4) {:else}
+    // (28:4) {:else}
     function create_else_block$1(ctx) {
       var img;
       var img_src_value;
@@ -22561,26 +22560,26 @@
 
     // (20:4) {#if sharee.recipient_type == "group"}
     function create_if_block_2$2(ctx) {
-      var img;
-      var img_src_value;
+      var span;
       return {
         c: function c() {
-          img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_2('core', 'places/contacts.svg'))) attr(img, "src", img_src_value);
-          attr(img, "alt", "");
-          attr(img, "class", "sharee-group");
+          span = element("span");
+          span.innerHTML = "<svg fill=\"currentColor\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" class=\"material-design-icon__svg\"><path d=\"M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z\"></path></svg>";
+          attr(span, "aria-hidden", "true");
+          attr(span, "role", "img");
+          attr(span, "class", "material-design-icon account-group-icon");
         },
         m: function m(target, anchor) {
-          insert(target, img, anchor);
+          insert(target, span, anchor);
         },
         p: noop$2,
         d: function d(detaching) {
-          if (detaching) detach(img);
+          if (detaching) detach(span);
         }
       };
     }
 
-    // (18:2) {#each sharees as sharee, index}
+    // (18:2) {#each sharees as sharee}
     function create_each_block$2(ctx) {
       var li;
       var t0;
@@ -22628,7 +22627,7 @@
       };
     }
 
-    // (38:0) {#if sharedBy}
+    // (44:0) {#if sharedBy}
     function create_if_block$5(ctx) {
       var span;
       var t1;

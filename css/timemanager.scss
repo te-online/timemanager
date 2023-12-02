@@ -921,7 +921,8 @@ label {
 				align-items: center;
 			}
 
-			img {
+			img,
+			.material-design-icon {
 				margin: auto 5px auto 0;
 				border-radius: 100%;
 				width: 32px;
@@ -955,7 +956,8 @@ label {
 		align-items: center;
 		min-height: 32px;
 
-		img {
+		img,
+		.material-design-icon {
 			margin: auto 5px;
 			border-radius: 100%;
 			width: 32px;
@@ -974,7 +976,8 @@ label {
 			color: var(--color-text-lighter);
 		}
 
-		img {
+		img,
+		.material-design-icon {
 			width: 16px;
 			height: 16px;
 		}
