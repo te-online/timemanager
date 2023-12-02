@@ -7,14 +7,23 @@ namespace OCA\TimeManager\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
+use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
 
 /**
  * Auto-generated migration step: Please modify to your needs!
  */
-class Version3008Date20230918152300 extends SimpleMigrationStep
+class Version3009Date20231202211500 extends SimpleMigrationStep
 {
+	/** @var IDBConnection */
+	private $db;
+
+	public function __construct(IDBConnection $db)
+	{
+		$this->db = $db;
+	}
+
 	/**
 	 * @param IOutput $output
 	 * @param Closure $schemaClosure The `\Closure` returns a `ISchemaWrapper`
@@ -36,14 +45,6 @@ class Version3008Date20230918152300 extends SimpleMigrationStep
 		$schema = $schemaClosure();
 
 		$table = $schema->getTable("timemanager_share");
-
-		$table->dropIndex("timemanager_share_with_index");
-		$table->addIndex(["recipient_id", "recipient_type"], "timemanager_share_with_index");
-		$table->dropIndex("timemanager_share_unique_index");
-		$table->addUniqueIndex(
-			["object_uuid", "entity_type", "author_user_id", "recipient_id", "recipient_type"],
-			"timemanager_share_unique_index"
-		);
 
 		$table->dropColumn("recipient_user_id");
 

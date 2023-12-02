@@ -23,7 +23,6 @@ class Share extends Entity {
 	protected $authorUserId;
 	protected $recipientId;
 	protected $recipientType;
-	protected $permission;
 
 	/**
 	 * Creates an array that represents the item in array format
@@ -42,7 +41,6 @@ class Share extends Entity {
 			"recipient_id" => $this->getRecipientId(),
 			"recipient_type" => $this->getRecipientType(),
 			"recipient_display_name" => $this->getRecipientDisplayName($userManager, $groupManager),
-			"permission" => $this->getPermission(),
 			"id" => $this->getId(),
 		];
 	}
