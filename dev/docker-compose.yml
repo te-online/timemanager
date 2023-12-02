@@ -18,6 +18,8 @@ services:
     volumes:
       - /tmp/server:/var/www/html
       - ../:/var/www/html/apps-extra/timemanager
+    environment:
+      - SERVER_BRANCH=${SERVER_BRANCH}
 #
 # Useful commands:
 # - docker-compose up
