@@ -1,0 +1,28 @@
+version: "3.4"
+
+x-restart-policy: &restart_policy
+  restart: unless-stopped
+x-logging-config: &logging_config
+  logging:
+    driver: "json-file"
+    options:
+      max-file: "10"
+      max-size: "50m"
+
+services:
+  dev:
+    <<: [*restart_policy, *logging_config]
+    image: ghcr.io/juliushaertl/nextcloud-dev-php80:latest
+    ports:
+      - 8080:80
+    volumes:
+      - /tmp/server:/var/www/html
+      - ../:/var/www/html/apps-extra/timemanager
+#
+# Useful commands:
+# - docker-compose up
+# - docker-compose down -v
+# - rm -rf /tmp/server
+# Create an .env file with version:
+# - SERVER_BRANCH=v28.0.0rc2
+
