@@ -5,7 +5,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { translate } from "@nextcloud/l10n";
-	import { generateFilePath, generateUrl, imagePath } from "@nextcloud/router";
+	import { generateUrl } from "@nextcloud/router";
 
 	onMount(() => {
 		Helpers.hideFallbacks("ShareDialog.svelte");

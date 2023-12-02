@@ -11,7 +11,7 @@
 	import { Helpers } from "../lib/helpers";
 	import Overlay from "./Overlay.svelte";
 	import { translate } from "@nextcloud/l10n";
-	import { generateOcsUrl, generateUrl, imagePath } from "@nextcloud/router";
+	import { generateOcsUrl, generateUrl } from "@nextcloud/router";
 
 	$: dialogVisible = false;
 	$: loading = false;
