@@ -216,7 +216,7 @@
 body.loading #content.app-timemanager:before {
 	content: "";
 	position: absolute;
-	top: 50px;
+	top: 0;
 	left: -150px;
 	opacity: 0.5;
 	width: 150px;
