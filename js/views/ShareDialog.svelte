@@ -59,8 +59,8 @@
 
 		if (response.ok) {
 			const { users, exact, groups } = (await response.json()).ocs.data;
-			const existing_users = sharees.filter((s) => s.recipient_type == "user").map((share) => share.recipient_id);
-			const existing_groups = sharees.filter((s) => s.recipient_type == "group").map((share) => share.recipient_id);
+			const existing_users = sharees.filter((s) => s.recipient_type === "user").map((share) => share.recipient_id);
+			const existing_groups = sharees.filter((s) => s.recipient_type === "group").map((share) => share.recipient_id);
 			return [...users, ...exact.users, ...groups, ...exact.groups]
 				.filter((user) => !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId)
 				.filter((group) => !existing_groups.includes(group.value.shareWith));
@@ -101,7 +101,7 @@
 					{#each sharees as sharee}
 						<li>
 							<figure>
-								{#if sharee.recipient_type == "group"}
+								{#if sharee.recipient_type === "group"}
 									<span aria-hidden="true" role="img" class="material-design-icon account-group-icon"
 										><svg
 											fill="currentColor"
@@ -163,12 +163,12 @@
 	<input
 		type="hidden"
 		name="user_id"
-		value={selectedSharee && selectedSharee.value.shareType == 0 ? selectedSharee.value.shareWith : ""}
+		value={selectedSharee && selectedSharee.value.shareType === 0 ? selectedSharee.value.shareWith : ""}
 	/>
 	<input
 		type="hidden"
 		name="group_id"
-		value={selectedSharee && selectedSharee.value.shareType == 1 ? selectedSharee.value.shareWith : ""}
+		value={selectedSharee && selectedSharee.value.shareType === 1 ? selectedSharee.value.shareWith : ""}
 	/>
 	<input type="hidden" name="requesttoken" value={requestToken} />
 	<button type="submit" name="action" value="share" class="btn">{translate("timemanager", "Share client")}</button>

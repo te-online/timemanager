@@ -17,7 +17,7 @@
 	<ul class="existing-sharees">
 		{#each sharees as sharee}
 			<li>
-				{#if sharee.recipient_type == "group"}
+				{#if sharee.recipient_type === "group"}
 					<span aria-hidden="true" role="img" class="material-design-icon account-group-icon"
 						><svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg"
 							><path

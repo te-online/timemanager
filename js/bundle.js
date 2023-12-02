@@ -21896,7 +21896,7 @@
       };
     }
 
-    // (104:8) {#if sharee.recipient_type == "group"}
+    // (104:8) {#if sharee.recipient_type === "group"}
     function create_if_block_1$3(ctx) {
       var span;
       return {
@@ -21937,7 +21937,7 @@
       var button;
       var t7;
       function select_block_type(ctx, dirty) {
-        if ( /*sharee*/ctx[16].recipient_type == "group") return create_if_block_1$3;
+        if ( /*sharee*/ctx[16].recipient_type === "group") return create_if_block_1$3;
         return create_else_block$2;
       }
       var current_block_type = select_block_type(ctx);
@@ -22245,10 +22245,10 @@
           input0.value = /*clientUuid*/ctx[3];
           attr(input1, "type", "hidden");
           attr(input1, "name", "user_id");
-          input1.value = input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 0 ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          input1.value = input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 0 ? /*selectedSharee*/ctx[6].value.shareWith : "";
           attr(input2, "type", "hidden");
           attr(input2, "name", "group_id");
-          input2.value = input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 1 ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          input2.value = input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 1 ? /*selectedSharee*/ctx[6].value.shareWith : "";
           attr(input3, "type", "hidden");
           attr(input3, "name", "requesttoken");
           input3.value = /*requestToken*/ctx[4];
@@ -22301,10 +22301,10 @@
           if (!current || dirty & /*clientUuid*/8) {
             input0.value = /*clientUuid*/ctx[3];
           }
-          if (!current || dirty & /*selectedSharee*/64 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 0 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+          if (!current || dirty & /*selectedSharee*/64 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 0 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
             input1.value = input1_value_value;
           }
-          if (!current || dirty & /*selectedSharee*/64 && input2_value_value !== (input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType == 1 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+          if (!current || dirty & /*selectedSharee*/64 && input2_value_value !== (input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 1 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
             input2.value = input2_value_value;
           }
           if (!current || dirty & /*requestToken*/16) {
@@ -22394,12 +22394,12 @@
                 exact = _yield$response$json$.exact;
                 groups = _yield$response$json$.groups;
                 existing_users = sharees.filter(function (s) {
-                  return s.recipient_type == "user";
+                  return s.recipient_type === "user";
                 }).map(function (share) {
                   return share.recipient_id;
                 });
                 existing_groups = sharees.filter(function (s) {
-                  return s.recipient_type == "group";
+                  return s.recipient_type === "group";
                 }).map(function (share) {
                   return share.recipient_id;
                 });
@@ -22558,7 +22558,7 @@
       };
     }
 
-    // (20:4) {#if sharee.recipient_type == "group"}
+    // (20:4) {#if sharee.recipient_type === "group"}
     function create_if_block_2$2(ctx) {
       var span;
       return {
@@ -22587,7 +22587,7 @@
       var t1;
       var t2;
       function select_block_type(ctx, dirty) {
-        if ( /*sharee*/ctx[2].recipient_type == "group") return create_if_block_2$2;
+        if ( /*sharee*/ctx[2].recipient_type === "group") return create_if_block_2$2;
         return create_else_block$1;
       }
       var current_block_type = select_block_type(ctx);
