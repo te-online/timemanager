@@ -59,10 +59,10 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "client.`user_id` = :userid",
-            );
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"client.`user_id` = :userid",
+			);
 
 			$sql
 				->where($expr)
@@ -71,7 +71,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), "ASC");
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
@@ -85,10 +84,10 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "project.`user_id` = :userid"
-                );
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"project.`user_id` = :userid"
+			);
 
 			$sql
 				->where($expr)
@@ -97,7 +96,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), "ASC");
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -112,10 +110,10 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "task.`user_id` = :userid"
-            );
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"task.`user_id` = :userid"
+			);
 
 			$sql
 				->where($expr)
@@ -124,7 +122,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), "ASC");
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -147,7 +144,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), "ASC");
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
-
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -159,7 +155,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), "ASC");
 
 			$sql->setParameters([$this->userId, "deleted", $value]);
-
 		}
 
 		return $this->findEntities($sql);
@@ -183,11 +178,11 @@ class ObjectMapper extends QBMapper {
 		$shared = false
 	): array {
 		$params = [
-            "userid" => $this->userId,
-            "deleted" => "deleted",
-            "date_start" =>$date_start,
-            "date_end" => $date_end,
-        ];
+			"userid" => $this->userId,
+			"deleted" => "deleted",
+			"date_start" => $date_start,
+			"date_end" => $date_end,
+		];
 		$sql = $this->db->getQueryBuilder();
 		// Range can be one day as well
 		if ($date_start === $date_end) {
@@ -204,7 +199,7 @@ class ObjectMapper extends QBMapper {
 						"share",
 						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
 					)
-				    ->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
+					->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
 
@@ -233,7 +228,7 @@ class ObjectMapper extends QBMapper {
 						"share",
 						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
 					)
-				    ->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
+					->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
 
@@ -367,15 +362,14 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "client.user_id = :userid",
-            );
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"client.user_id = :userid",
+			);
 			$sql->where($expr)->andWhere("client.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
 			$sql
 				->selectDistinct("project.*")
@@ -383,16 +377,15 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("project", "*PREFIX*timemanager_share", "share", "project.client_uuid = share.object_uuid")
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-            $expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "project.user_id = :userid",
-            );
+			$expr = $sql->expr()->orX(
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"project.user_id = :userid",
+			);
 			$sql->where($expr)->andWhere("project.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
 			$sql
 				->selectDistinct("task.*")
@@ -407,15 +400,14 @@ class ObjectMapper extends QBMapper {
 				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
 			$expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-                "task.user_id = :userid",
-            );
+				"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+				"group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+				"task.user_id = :userid",
+			);
 			$sql->where($expr)->andWhere("task.status != :status");
 
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
 			$sql
 				->selectDistinct("time.*")
@@ -434,7 +426,6 @@ class ObjectMapper extends QBMapper {
 
 			$sql->orderBy(\strtolower($orderby), $sort);
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
-
 		} else {
 			$sql = $this->db->getQueryBuilder();
 			$sql
@@ -445,7 +436,6 @@ class ObjectMapper extends QBMapper {
 				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters([$this->userId, "deleted"]);
-
 		}
 
 		return $this->findEntities($sql);
