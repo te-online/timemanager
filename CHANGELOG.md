@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.10 Beta, 8. December 2023
+
+### Fixed
+
+- Fix Android app stops loading data: Revert use of named parameter for providing list of applicable commits to SQL for the legacy sync API (#148)
+
 ## 0.3.9 Beta, 2. December 2023
 
 ### Added
