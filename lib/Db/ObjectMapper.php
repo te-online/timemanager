@@ -308,10 +308,10 @@ class ObjectMapper extends QBMapper {
 		}
 
 		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
-		$sql->andWhere("current.`commit` IN (:commits)");
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
 		$sql->orderBy("current.changed", "ASC");
 
-		$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "commits" => array_values($applicable_commits)]);
+		$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
 
 		return [
 			"created" => $this->getCreatedObjectsAfterCommit($sql),
