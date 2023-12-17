@@ -294,56 +294,102 @@ class ObjectMapper extends QBMapper {
 	}
 
 	function getObjectsAfterCommit($commit): array {
+		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
+
+		return [
+			"created" => $this->getCreatedObjectsAfterCommit($applicable_commits),
+			"updated" => $this->getUpdatedObjectsAfterCommit($applicable_commits),
+			"deleted" => $this->getDeletedObjectsAfterCommit($applicable_commits),
+		];
+	}
+
+	function getCreatedObjectsAfterCommit(array $applicable_commits) {
 		$sql = $this->db->getQueryBuilder();
 		$sql->select("current.*");
 		$sql->from($this->tableName, "current");
+		$params = [$this->userId, "deleted"];
 
 		if (strpos($this->tableName, "_time") > -1) {
 			$sql
 				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-				->where("current.`user_id` = :userid")
-				->andWhere("task.`user_id` = :userid");
+				->where("current.`user_id` = ?")
+				->andWhere("task.`user_id` = ?");
+			$params = [$this->userId, $this->userId, "deleted"];
 		} else {
-			$sql->where("current.`user_id` = :userid");
+			$sql->where("current.`user_id` = ?");
 		}
 
-		$applicable_commits = $this->commitMapper->getCommitsAfter($commit);
 		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("current.`created` = current.`changed`");
+		$sql->andWhere("current.`status` != ?");
 		$sql->orderBy("current.changed", "ASC");
 
-		$sql->setParameters(["userid" => $this->userId, "status" => "deleted"]);
+		$sql->setParameters($params);
 
-		return [
-			"created" => $this->getCreatedObjectsAfterCommit($sql),
-			"updated" => $this->getUpdatedObjectsAfterCommit($sql),
-			"deleted" => $this->getDeletedObjectsAfterCommit($sql),
-		];
-	}
-
-	function getCreatedObjectsAfterCommit($sql) {
-		$sql->andWhere("current.`created` = current.`changed`");
-		$sql->andWhere("current.`status` != :status");
-
-		return array_map(function ($object) {
+		$objects = array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
+
+		return $objects;
 	}
 
-	function getUpdatedObjectsAfterCommit($sql) {
+	function getUpdatedObjectsAfterCommit(array $applicable_commits) {
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
+		$params = [$this->userId, "deleted"];
+
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+				->where("current.`user_id` = ?")
+				->andWhere("task.`user_id` = ?");
+			$params = [$this->userId, $this->userId, "deleted"];
+		} else {
+			$sql->where("current.`user_id` = ?");
+		}
+
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
 		$sql->andWhere("current.`created` != current.`changed`");
-		$sql->andWhere("current.`status` != :status");
+		$sql->andWhere("current.`status` != ?");
+		$sql->orderBy("current.changed", "ASC");
 
-		return array_map(function ($object) {
+		$sql->setParameters($params);
+
+		$objects = array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
+
+		return $objects;
 	}
 
-	function getDeletedObjectsAfterCommit($sql) {
-		$sql->andWhere("current.`status` = :status");
+	function getDeletedObjectsAfterCommit(array $applicable_commits) {
+		$sql = $this->db->getQueryBuilder();
+		$sql->select("current.*");
+		$sql->from($this->tableName, "current");
+		$params = [$this->userId, "deleted"];
 
-		return array_map(function ($object) {
+		if (strpos($this->tableName, "_time") > -1) {
+			$sql
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+				->where("current.`user_id` = ?")
+				->andWhere("task.`user_id` = ?");
+			$params = [$this->userId, $this->userId, "deleted"];
+		} else {
+			$sql->where("current.`user_id` = ?");
+		}
+
+		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$sql->andWhere("current.`status` = ?");
+		$sql->orderBy("current.changed", "ASC");
+
+		$sql->setParameters($params);
+
+		$objects = array_map(function ($object) {
 			return $object->toArray();
 		}, $this->findEntities($sql));
+
+		return $objects;
 	}
 
 	/**
