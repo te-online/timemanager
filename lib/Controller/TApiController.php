@@ -63,7 +63,7 @@ class TApiController extends ApiController {
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
 		IConfig $config,
-		LoggerInterface $logger,
+		LoggerInterface $logger
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;

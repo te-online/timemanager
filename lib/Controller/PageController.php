@@ -55,7 +55,7 @@ class PageController extends Controller {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 	/** @var IL10N */
-    private $l;
+	private $l;
 	/** @var string */
 	private $requestToken;
 
@@ -87,7 +87,7 @@ class PageController extends Controller {
 		IGroupManager $groupManager,
 		IURLGenerator $urlGenerator,
 		IL10N $l,
-		ISession $session,
+		ISession $session
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
@@ -173,7 +173,7 @@ class PageController extends Controller {
 				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 				"settings" => [
 					"handle_conflicts" =>
-						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
 					"fullDateFormat" => $this->fullDateFormat,
 				],
@@ -324,7 +324,7 @@ class PageController extends Controller {
 				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 				"settings" => [
 					"handle_conflicts" =>
-						$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
+					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
 						"handle_conflicts",
 					"fullDateFormat" => $this->fullDateFormat,
 				],
@@ -386,7 +386,7 @@ class PageController extends Controller {
 			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"clientEditorButtonCaption" => $this->l->t("Add client"),
@@ -578,7 +578,7 @@ class PageController extends Controller {
 			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $this->requestToken,
@@ -775,7 +775,7 @@ class PageController extends Controller {
 			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $this->requestToken,
@@ -952,7 +952,7 @@ class PageController extends Controller {
 			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
 			"settings" => [
 				"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
+				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
 				"fullDateFormat" => $this->fullDateFormat,
 			],
 			"requestToken" => $this->requestToken,
