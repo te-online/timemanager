@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.11 Beta, 17. December 2023
+
+**I'm really sorry about these frequent, tiny releases. They are important bugfixes and I hope this to be the last one for now. Thanks for your patience**
+
+### Fixed
+
+- Another fix for the Sync API used by the Android app: Some objects may not be present in the sync response due to erroneuos re-use of a single QueryBuilder instance, unintentionally producing conflicting query conditions (#150)
+
 ## 0.3.10 Beta, 8. December 2023
 
 ### Fixed
