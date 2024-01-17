@@ -25,7 +25,7 @@ OC.L10N.register(
 		"Week": "Semaine",
 		"When you add entries for this week graphs will appear here.":
 			"Lorsque vous ajoutez des saisies de temps pour cette semaine, elle apparaîtront dans en graphique ici.",
-		"hrs.": "hrs.",
+		"hrs.": "h",
 		"Today": "Aujourd’hui",
 		"Statistics": "Statistiques",
 		"Duration (in hrs.)": "Durée (en heures)",
