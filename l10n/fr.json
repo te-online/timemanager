@@ -22,8 +22,7 @@
 		"Next week": "Semaine prochaine",
 		"Previous week": "Semaine précédente",
 		"Week": "Semaine",
-		"When you add entries for this week graphs will appear here.":
-			"Lorsque vous ajoutez des saisies de temps pour cette semaine, elle apparaîtront dans en graphique ici.",
+		"When you add entries for this week graphs will appear here.": "Lorsque vous ajoutez des saisies de temps pour cette semaine, elle apparaîtront dans en graphique ici.",
 		"hrs.": "h",
 		"Today": "Aujourd’hui",
 		"Statistics": "Statistiques",
@@ -38,18 +37,15 @@
 		"Add project": "Ajouter un projet",
 		"New project": "Nouveau projet",
 		"Delete client": "Supprimer le client",
-		"Do you want to delete the client %s and all associated projects, tasks and time entries?":
-			"Voulez-vous supprimer le client %s et tous ses projets, tâches et saisies de temps associés ?",
+		"Do you want to delete the client %s and all associated projects, tasks and time entries?": "Voulez-vous supprimer le client %s et tous ses projets, tâches et saisies de temps associés ?",
 		"Edit project": "Éditer le projet",
 		"Add task": "Ajouter une tâche",
 		"New task": "Nouvelle tâche",
 		"Delete project": "Supprimer le projet",
-		"Do you want to delete the project %s and all associated tasks and time entries?":
-			"Voulez-vous supprimer le projet %s et toutes les tâches et saisies de temps associées ?",
+		"Do you want to delete the project %s and all associated tasks and time entries?": "Voulez-vous supprimer le projet %s et toutes les tâches et saisies de temps associées ?",
 		"Edit task": "Éditez la tâche",
 		"Delete task": "Supprimer la tâche",
-		"Do you want to delete the task %s and all associated time entries?":
-			"Voulez-vous supprimer la tâche %s et toutes les saisies de temps associées ?",
+		"Do you want to delete the task %s and all associated time entries?": "Voulez-vous supprimer la tâche %s et toutes les saisies de temps associées\u202f?",
 		"Add time entry": "Ajoutez une saisie de temps",
 		"New time entry": "Nouvelle saisie de temps",
 		"Latest time entries": "Dernières saisies de temps",
@@ -62,32 +58,25 @@
 		"Time entries": "Saisies de temps",
 		"%s projects": "%s projets",
 		"since %s": "depuis %s",
-		"You don't have any clients, yet. Get started by clicking “Add client”.":
-			"Aucun client n'a été créé. Commencez par 'Ajouter un client'.",
+		"You don't have any clients, yet. Get started by clicking “Add client”.": "Aucun client n'a été créé. Commencez par 'Ajouter un client'.",
 		"Client since": "Client depuis",
 		"Address": "Adresse",
 		"Select a client to show projects for": "Sélectionnez le client dont vous souhaitez afficher les projets",
 		"Show": "Afficher",
 		"No clients created yet. Go ahead and create one.": "Aucun client n’a encore été créé. Commencez par 'Ajouter un client'.",
-		"Select a client first to show projects for this client.":
-			"Sélectionnez un client pour afficher les projets de ce client.",
+		"Select a client first to show projects for this client.": "Sélectionnez un client pour afficher les projets de ce client.",
 		"%s tasks": "%s tâches",
-		"You don't have any projects, yet. Try adding one by clicking “Add project”.":
-			"Aucun projet n'a été créé. Commencez par 'Ajouter un projet'.",
+		"You don't have any projects, yet. Try adding one by clicking “Add project”.": "Aucun projet n'a été créé. Commencez par 'Ajouter un projet'.",
 		"Client total": "Total des clients",
 		"Created": "Créé(e) le",
 		"Select a project to show tasks for": "Sélectionnez le projet dont vous souhaitez afficher les tâches",
-		"Select a project first to show the tasks for this project.":
-			"Sélectionnez un projet pour afficher les tâches de ce projet.",
-		"You don't have any tasks, yet. Try adding one by clicking “Add task”.":
-			"Aucune tâche n'a encore été créée. Commencez par 'Ajouter une tâche'.",
+		"Select a project first to show the tasks for this project.": "Sélectionnez un projet pour afficher les tâches de ce projet.",
+		"You don't have any tasks, yet. Try adding one by clicking “Add task”.": "Aucune tâche n'a encore été créée. Commencez par 'Ajouter une tâche'.",
 		"Project total": "Total des projets",
 		"Select a task to show time entries for": "Sélectionnez la tâche pour laquelle vous souhaitez afficher les saisies de temps",
 		"No tasks created yet. Go ahead and create one.": "Aucune tâche n’a encore été créée. Commencez par 'Ajouter une tâche'.",
-		"Select a task first to show the times for this task.":
-			"Sélectionnez une tâche pour afficher les saisies de temps associées à cette tâche.",
-		"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.":
-			"Aucune saisie de temps n'a encore été créée. Commencer par 'Ajouter une saisie de temps'.",
+		"Select a task first to show the times for this task.": "Sélectionnez une tâche pour afficher les saisies de temps associées à cette tâche.",
+		"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.": "Aucune saisie de temps n'a encore été créée. Commencer par 'Ajouter une saisie de temps'.",
 		"Task total": "Total des tâches",
 		"No projects created yet. Go ahead and create one.": "Aucun projet n’a encore été créé. Commencez par 'Ajouter un projet'.",
 		"entry": "saisie",

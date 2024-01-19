@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.12 Beta, tba
+
+- Improve French translation (#155) (contributed by @punkyard)
+
 ## 0.3.11 Beta, 17. December 2023
 
 **I'm really sorry about these frequent, tiny releases. They are important bugfixes and I hope this to be the last one for now. Thanks for your patience**
