@@ -258,7 +258,8 @@ class ObjectMapper extends QBMapper {
 			}
 		}
 		if (count($filter_tasks) > 0) {
-			$sql->andWhere("`task_uuid` IN ('" . implode("','", $filter_tasks) . "')");
+			$filterTasksList = implode("','", $filter_tasks);
+			$sql->andWhere("`task_uuid` IN ('" . $filterTasksList . "')");
 		}
 
 		$sql->orderBy(\strtolower($orderby), "ASC");
@@ -319,7 +320,8 @@ class ObjectMapper extends QBMapper {
 			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$commitList = implode("','", $applicable_commits);
+		$sql->andWhere("current.`commit` IN ( '" . $commitList . "' )");
 		$sql->andWhere("current.`created` = current.`changed`");
 		$sql->andWhere("current.`status` != ?");
 		$sql->orderBy("current.changed", "ASC");
@@ -349,7 +351,8 @@ class ObjectMapper extends QBMapper {
 			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$commitList = implode("','", $applicable_commits);
+		$sql->andWhere("current.`commit` IN ( '" . $commitList . "' )");
 		$sql->andWhere("current.`created` != current.`changed`");
 		$sql->andWhere("current.`status` != ?");
 		$sql->orderBy("current.changed", "ASC");
@@ -379,7 +382,8 @@ class ObjectMapper extends QBMapper {
 			$sql->where("current.`user_id` = ?");
 		}
 
-		$sql->andWhere('current.`commit` IN ( "' . implode('","', $applicable_commits) . '" )');
+		$commitList = implode("','", $applicable_commits);
+		$sql->andWhere("current.`commit` IN ( '" . $commitList . "' )");
 		$sql->andWhere("current.`status` = ?");
 		$sql->orderBy("current.changed", "ASC");
 

@@ -2,6 +2,12 @@
 
 ## 0.3.12 Beta, tba
 
+### Fixed
+
+- Legacy Sync API did not work when using PostgreSQL (#150)
+
+### Changed
+
 - Improve French translation (#155) (contributed by @punkyard)
 
 ## 0.3.11 Beta, 17. December 2023
