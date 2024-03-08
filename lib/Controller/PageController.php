@@ -36,7 +36,7 @@ class PageController extends Controller {
 	protected $taskMapper;
 	/** @var TimeMapper mapper for time entity */
 	protected $timeMapper;
-	/** @var ClientMapper mapper for client entity */
+	/** @var CommitMapper mapper for client entity */
 	protected $commitMapper;
 	/** @var ShareMapper mapper for share entity */
 	protected $shareMapper;
