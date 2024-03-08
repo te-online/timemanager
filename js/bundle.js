@@ -21799,7 +21799,7 @@
       return child_ctx;
     }
 
-    // (79:0) {#if dialogVisible}
+    // (88:0) {#if dialogVisible}
     function create_if_block$6(ctx) {
       var overlay;
       var current;
@@ -21846,7 +21846,7 @@
       };
     }
 
-    // (95:4) {#if !sharees || !sharees.length}
+    // (104:4) {#if !sharees || !sharees.length}
     function create_if_block_2$3(ctx) {
       var p;
       var em;
@@ -21867,7 +21867,7 @@
       };
     }
 
-    // (117:8) {:else}
+    // (126:8) {:else}
     function create_else_block$2(ctx) {
       var img;
       var img_src_value;
@@ -21896,7 +21896,7 @@
       };
     }
 
-    // (104:8) {#if sharee.recipient_type === "group"}
+    // (113:8) {#if sharee.recipient_type === "group"}
     function create_if_block_1$3(ctx) {
       var span;
       return {
@@ -21917,7 +21917,7 @@
       };
     }
 
-    // (101:5) {#each sharees as sharee}
+    // (110:5) {#each sharees as sharee}
     function create_each_block$3(ctx) {
       var li;
       var figure;
@@ -22027,7 +22027,7 @@
       };
     }
 
-    // (80:1) <Overlay>
+    // (89:1) <Overlay>
     function create_default_slot$2(ctx) {
       var div2;
       var label;
@@ -22361,7 +22361,7 @@
       };
       var search = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-          var response, _yield$response$json$, users, exact, groups, existing_users, existing_groups;
+          var response, _yield$response$json$, users, exact, groups, existing_users, existing_groups, adjustGroupLabel, result;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
@@ -22383,7 +22383,7 @@
                 response = _context.sent;
                 $$invalidate(8, loading = false);
                 if (!response.ok) {
-                  _context.next = 17;
+                  _context.next = 19;
                   break;
                 }
                 _context.next = 10;
@@ -22403,12 +22403,19 @@
                 }).map(function (share) {
                   return share.recipient_id;
                 });
-                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users), _toConsumableArray$1(groups), _toConsumableArray$1(exact.groups)).filter(function (user) {
+                adjustGroupLabel = function adjustGroupLabel(userOrGroup) {
+                  var _userOrGroup$value;
+                  return ((_userOrGroup$value = userOrGroup.value) === null || _userOrGroup$value === void 0 ? void 0 : _userOrGroup$value.shareType) === 1 ? _objectSpread2(_objectSpread2({}, userOrGroup), {}, {
+                    label: "".concat(userOrGroup.label, " ").concat(translate_1("timemanager", "(Group)"))
+                  }) : userOrGroup;
+                };
+                result = [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users), _toConsumableArray$1(groups), _toConsumableArray$1(exact.groups)).filter(function (user) {
                   return !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId;
                 }).filter(function (group) {
                   return !existing_groups.includes(group.value.shareWith);
-                }));
-              case 17:
+                }).map(adjustGroupLabel);
+                return _context.abrupt("return", result);
+              case 19:
               case "end":
                 return _context.stop();
             }

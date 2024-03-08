@@ -155,7 +155,8 @@
 		"Filter by person": "Filtern nach Person",
 		"Start time": "Startzeit",
 		"End time": "Endzeit",
-		"{duration} hrs. on {date}": "{duration} Std. am {date}"
+		"{duration} hrs. on {date}": "{duration} Std. am {date}",
+		"(Group)": "(Gruppe)"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

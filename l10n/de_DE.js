@@ -183,6 +183,7 @@ OC.L10N.register(
 		"Start time": "Startzeit",
 		"End time": "Endzeit",
 		"{duration} hrs. on {date}": "{duration} Std. am {date}",
+		"(Group)": "(Gruppe)",
 	},
-	"nplurals=2; plural=(n != 1);"
+	"nplurals=2; plural=(n != 1);",
 );
