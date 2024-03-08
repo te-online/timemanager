@@ -50,7 +50,7 @@ services:
 
   app:
     <<: [*restart_policy, *logging_config]
-    image: nextcloud:25-fpm-alpine
+    image: nextcloud:26-fpm-alpine
     ports:
       - 9000:9000
     links:
