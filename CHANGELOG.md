@@ -11,6 +11,10 @@
 
 - Improve French translation (#155) (contributed by @punkyard)
 
+### Added
+
+- Sharing Dialog: Show "(Group)" behind search results that are groups to make it easier to discern them from users
+
 ## 0.3.11 Beta, 17. December 2023
 
 **I'm really sorry about these frequent, tiny releases. They are important bugfixes and I hope this to be the last one for now. Thanks for your patience**
