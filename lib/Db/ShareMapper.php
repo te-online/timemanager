@@ -32,19 +32,20 @@ class ShareMapper extends ObjectMapper {
 	public function findSharerForClient($client_uuid): array {
 		$sql = $this->connection->getQueryBuilder();
 
-        $expr = $sql->expr()->orX(
-                "share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
-                "group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
-            );
+		$expr = $sql->expr()->orX(
+			"share.`recipient_id` = :userid AND share.`recipient_type` = 'user'",
+			"share.`author_user_id` != :userid AND group_user.`uid` = :userid AND share.`recipient_type` = 'group'",
+		);
 
 		$sql
 			->select("share.*")
 			->from($this->tableName, 'share')
-            ->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid")
+			->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid")
 			->where($expr)
 			->andWhere("`object_uuid` = :client_uuid")
 			->andWhere("`entity_type` = 'client'");
 		$sql->setParameters(["userid" => $this->userId, "client_uuid" => $client_uuid]);
+
 		return $this->findEntities($sql);
 	}
 
