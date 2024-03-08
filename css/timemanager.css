@@ -315,7 +315,8 @@ label {
     #content.app-timemanager .quick-add .selectContainer,
     #content.app-timemanager .reports-filters .selectContainer,
     #content.app-timemanager .reports-timerange .selectContainer {
-      margin: 3px 3px 3px 0; }
+      margin: 3px 3px 3px 0;
+      --border: none; }
       #content.app-timemanager .quick-add .selectContainer input,
       #content.app-timemanager .reports-filters .selectContainer input,
       #content.app-timemanager .reports-timerange .selectContainer input {
