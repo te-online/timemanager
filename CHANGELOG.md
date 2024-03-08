@@ -5,6 +5,7 @@
 ### Fixed
 
 - Legacy Sync API did not work when using PostgreSQL (#150)
+- Clients could not be edited after being shared with a group the author was a member of (#152)
 
 ### Changed
 
