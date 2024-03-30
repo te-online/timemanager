@@ -2,7 +2,7 @@
 
 use \OCP\Util;
 
-Util::addScript('timemanager', 'timemanager');
+Util::addScript('timemanager', 'bundle');
 style('timemanager', 'timemanager');
 
 $l = Util::getL10N('timemanager');
