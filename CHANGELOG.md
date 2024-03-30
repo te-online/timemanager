@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.13 Beta, 30. March 2024
+
+### Fixed
+
+- Nextcloud 28.0.4 dependency manager could not find JS file referenced via JSON file. It is unclear why this stopped working in a minor version update (#163)
+
 ## 0.3.12 Beta, 8. March 2024
 
 ### Fixed
