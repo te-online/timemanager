@@ -2,6 +2,7 @@
 	export let clients;
 	export let projects;
 	export let tasks;
+	export let requestToken;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
@@ -182,4 +183,4 @@
 		/>
 	</label>
 </form>
-<Timerange {updateUrlWithTimerange} />
+<Timerange {updateUrlWithTimerange} {requestToken} />

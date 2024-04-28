@@ -28973,17 +28973,17 @@
               // Parse current URL
               urlParts = document.location.href.split("?");
               if (!(urlParts.length > 1)) {
-                _context2.next = 27;
+                _context2.next = 26;
                 break;
               }
               queryString = urlParts[1];
-              queryStringParts = queryString.split("&");
+              queryStringParts = queryString.split("&"); // Map over all query params
               _iterator = _createForOfIteratorHelper$1(queryStringParts);
-              _context2.prev = 6;
+              _context2.prev = 5;
               _iterator.s();
-            case 8:
+            case 7:
               if ((_step = _iterator.n()).done) {
-                _context2.next = 19;
+                _context2.next = 18;
                 break;
               }
               part = _step.value;
@@ -28991,36 +28991,36 @@
               partParts = part.split("=");
               _partParts = _slicedToArray(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
               if (!(name === "userFilter" && value)) {
-                _context2.next = 17;
+                _context2.next = 16;
                 break;
               }
-              _context2.next = 15;
+              _context2.next = 14;
               return search(value);
-            case 15:
+            case 14:
               result = _context2.sent;
               if (result && result.length) {
                 $$invalidate(2, selectedSharee = result[0]);
                 isFilterSet.set(true);
               }
-            case 17:
-              _context2.next = 8;
+            case 16:
+              _context2.next = 7;
               break;
-            case 19:
-              _context2.next = 24;
+            case 18:
+              _context2.next = 23;
               break;
-            case 21:
-              _context2.prev = 21;
-              _context2.t0 = _context2["catch"](6);
+            case 20:
+              _context2.prev = 20;
+              _context2.t0 = _context2["catch"](5);
               _iterator.e(_context2.t0);
-            case 24:
-              _context2.prev = 24;
+            case 23:
+              _context2.prev = 23;
               _iterator.f();
-              return _context2.finish(24);
-            case 27:
+              return _context2.finish(23);
+            case 26:
             case "end":
               return _context2.stop();
           }
-        }, _callee2, null, [[6, 21, 24, 27]]);
+        }, _callee2, null, [[5, 20, 23, 26]]);
       })));
       $$self.$$set = function ($$props) {
         if ('requestToken' in $$props) $$invalidate(7, requestToken = $$props.requestToken);
@@ -29416,11 +29416,11 @@
             id: "client-select"
           },
           items: /*clients*/ctx[0],
-          value: /*selectedClients*/ctx[1],
+          value: /*selectedClients*/ctx[2],
           isMulti: true
         }
       });
-      select0.$on("select", /*handleSelectClients*/ctx[11]);
+      select0.$on("select", /*handleSelectClients*/ctx[12]);
       select1 = new Select({
         props: {
           noOptionsMessage: translate_1("timemanager", "No options"),
@@ -29428,12 +29428,12 @@
           inputAttributes: {
             id: "projects-select"
           },
-          items: /*availableProjects*/ctx[6],
-          value: /*selectedProjects*/ctx[2],
+          items: /*availableProjects*/ctx[7],
+          value: /*selectedProjects*/ctx[3],
           isMulti: true
         }
       });
-      select1.$on("select", /*handleSelectProjects*/ctx[12]);
+      select1.$on("select", /*handleSelectProjects*/ctx[13]);
       select2 = new Select({
         props: {
           noOptionsMessage: translate_1("timemanager", "No options"),
@@ -29441,12 +29441,12 @@
           inputAttributes: {
             id: "tasks-select"
           },
-          items: /*availableTasks*/ctx[5],
-          value: /*selectedTasks*/ctx[3],
+          items: /*availableTasks*/ctx[6],
+          value: /*selectedTasks*/ctx[4],
           isMulti: true
         }
       });
-      select2.$on("select", /*handleSelectTasks*/ctx[13]);
+      select2.$on("select", /*handleSelectTasks*/ctx[14]);
       select3 = new Select({
         props: {
           noOptionsMessage: translate_1("timemanager", "No options"),
@@ -29454,15 +29454,16 @@
           inputAttributes: {
             id: "status-select"
           },
-          items: /*availableStatus*/ctx[9],
-          value: /*selectedStatus*/ctx[4]
+          items: /*availableStatus*/ctx[10],
+          value: /*selectedStatus*/ctx[5]
         }
       });
-      select3.$on("select", /*handleSelectStatus*/ctx[14]);
-      select3.$on("clear", /*handleClearStatus*/ctx[15]);
+      select3.$on("select", /*handleSelectStatus*/ctx[15]);
+      select3.$on("clear", /*handleClearStatus*/ctx[16]);
       timerange = new Timerange({
         props: {
-          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[8]
+          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[9],
+          requestToken: /*requestToken*/ctx[1]
         }
       });
       return {
@@ -29497,7 +29498,7 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          attr(form, "class", form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "reports-filters".concat( /*loading*/ctx[8] ? " icon-loading" : ""));
           attr(form, "id", "filters-form");
         },
         m(target, anchor) {
@@ -29525,7 +29526,7 @@
           mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default( /*apply*/ctx[10]));
+            dispose = listen(form, "submit", prevent_default( /*apply*/ctx[11]));
             mounted = true;
           }
         },
@@ -29534,22 +29535,25 @@
             dirty = _ref2[0];
           var select0_changes = {};
           if (dirty & /*clients*/1) select0_changes.items = /*clients*/ctx[0];
-          if (dirty & /*selectedClients*/2) select0_changes.value = /*selectedClients*/ctx[1];
+          if (dirty & /*selectedClients*/4) select0_changes.value = /*selectedClients*/ctx[2];
           select0.$set(select0_changes);
           var select1_changes = {};
-          if (dirty & /*availableProjects*/64) select1_changes.items = /*availableProjects*/ctx[6];
-          if (dirty & /*selectedProjects*/4) select1_changes.value = /*selectedProjects*/ctx[2];
+          if (dirty & /*availableProjects*/128) select1_changes.items = /*availableProjects*/ctx[7];
+          if (dirty & /*selectedProjects*/8) select1_changes.value = /*selectedProjects*/ctx[3];
           select1.$set(select1_changes);
           var select2_changes = {};
-          if (dirty & /*availableTasks*/32) select2_changes.items = /*availableTasks*/ctx[5];
-          if (dirty & /*selectedTasks*/8) select2_changes.value = /*selectedTasks*/ctx[3];
+          if (dirty & /*availableTasks*/64) select2_changes.items = /*availableTasks*/ctx[6];
+          if (dirty & /*selectedTasks*/16) select2_changes.value = /*selectedTasks*/ctx[4];
           select2.$set(select2_changes);
           var select3_changes = {};
-          if (dirty & /*selectedStatus*/16) select3_changes.value = /*selectedStatus*/ctx[4];
+          if (dirty & /*selectedStatus*/32) select3_changes.value = /*selectedStatus*/ctx[5];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/128 && form_class_value !== (form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat( /*loading*/ctx[8] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
+          var timerange_changes = {};
+          if (dirty & /*requestToken*/2) timerange_changes.requestToken = /*requestToken*/ctx[1];
+          timerange.$set(timerange_changes);
         },
         i(local) {
           if (current) return;
@@ -29588,6 +29592,7 @@
       var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
+      var requestToken = $$props.requestToken;
       var selectedClients;
       var selectedProjects;
       var selectedTasks;
@@ -29629,55 +29634,55 @@
         filterLinkElement.click();
       };
       var handleSelectClients = function handleSelectClients(event) {
-        $$invalidate(1, selectedClients = event.detail);
+        $$invalidate(2, selectedClients = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(6, availableProjects = projects.filter(function (project) {
+          $$invalidate(7, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(6, availableProjects = projects);
+          $$invalidate(7, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(5, availableTasks = tasks.filter(function (task) {
+          $$invalidate(6, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(5, availableTasks = tasks);
+          $$invalidate(6, availableTasks = tasks);
         }
       };
       var handleSelectProjects = function handleSelectProjects(event) {
-        $$invalidate(2, selectedProjects = event.detail);
+        $$invalidate(3, selectedProjects = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(6, availableProjects = projects.filter(function (project) {
+          $$invalidate(7, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(6, availableProjects = projects);
+          $$invalidate(7, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(5, availableTasks = tasks.filter(function (task) {
+          $$invalidate(6, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(5, availableTasks = tasks);
+          $$invalidate(6, availableTasks = tasks);
         }
       };
       var handleSelectTasks = function handleSelectTasks(event) {
-        $$invalidate(3, selectedTasks = event.detail);
+        $$invalidate(4, selectedTasks = event.detail);
       };
       var handleSelectStatus = function handleSelectStatus(event) {
-        $$invalidate(4, selectedStatus = event.detail);
+        $$invalidate(5, selectedStatus = event.detail);
       };
       var handleClearStatus = function handleClearStatus() {
-        $$invalidate(4, selectedStatus = "");
+        $$invalidate(5, selectedStatus = "");
       };
       onMount(function () {
         // Parse current URL
@@ -29696,12 +29701,12 @@
 
             // Apply filters from query params
             if (name === "status" && value) {
-              $$invalidate(4, selectedStatus = availableStatus.find(function (status) {
+              $$invalidate(5, selectedStatus = availableStatus.find(function (status) {
                 return status.value === value;
               }));
             }
             if (name === "tasks" && value && value.length) {
-              $$invalidate(3, selectedTasks = value.split(",").map(function (taskId) {
+              $$invalidate(4, selectedTasks = value.split(",").map(function (taskId) {
                 return tasks.find(function (task) {
                   return task.value === taskId;
                 });
@@ -29730,19 +29735,20 @@
       });
       $$self.$$set = function ($$props) {
         if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
+        if ('projects' in $$props) $$invalidate(17, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(18, tasks = $$props.tasks);
+        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*projects*/65536) {
-          $$invalidate(6, availableProjects = projects);
+        if ($$self.$$.dirty & /*projects*/131072) {
+          $$invalidate(7, availableProjects = projects);
         }
-        if ($$self.$$.dirty & /*tasks*/131072) {
-          $$invalidate(5, availableTasks = tasks);
+        if ($$self.$$.dirty & /*tasks*/262144) {
+          $$invalidate(6, availableTasks = tasks);
         }
       };
-      $$invalidate(7, loading = false);
-      return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+      $$invalidate(8, loading = false);
+      return [clients, requestToken, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Filters, _SvelteComponent);
@@ -29753,8 +29759,9 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {
           clients: 0,
-          projects: 16,
-          tasks: 17
+          projects: 17,
+          tasks: 18,
+          requestToken: 1
         });
         return _this;
       }

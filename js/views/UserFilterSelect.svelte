@@ -66,7 +66,6 @@
 		if (urlParts.length > 1) {
 			const queryString = urlParts[1];
 			const queryStringParts = queryString.split("&");
-			let queryStringVariables = {};
 			// Map over all query params
 			for (const part of queryStringParts) {
 				// Split query params
