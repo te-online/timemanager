@@ -626,7 +626,7 @@ label {
   #content.app-timemanager #app-navigation:not(.vue) > ul > li a.selected > a,
   #content.app-timemanager #app-navigation:not(.vue) > ul > li a.active,
   #content.app-timemanager #app-navigation:not(.vue) > ul > li a.active > a {
-    background-color: var(--color-primary-light); }
+    background-color: var(--color-primary-element-light-hover); }
   #content.app-timemanager #app-navigation:not(.vue) > ul > li > a,
   #content.app-timemanager #app-navigation:not(.vue) > ul > li > ul > li > a {
     background-size: 16px 16px;
