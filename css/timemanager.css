@@ -749,7 +749,7 @@ input.duration-input {
   color: var(--color-primary-light-text) !important;
   background-color: var(--color-primary-element-light) !important;
   border-color: var(--color-primary-element-light-hover) !important;
-  padding: 12px 22px; }
+  padding: 10px 20px; }
 
 @keyframes fallback {
   0% {
