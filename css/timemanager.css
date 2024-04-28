@@ -316,12 +316,14 @@ label {
     #content.app-timemanager .reports-filters .selectContainer,
     #content.app-timemanager .reports-timerange .selectContainer {
       margin: 3px 3px 3px 0;
-      --border: none; }
+      --border: 2px solid var(--color-border-maxcontrast);
+      border-radius: var(--border-radius-large); }
       #content.app-timemanager .quick-add .selectContainer input,
       #content.app-timemanager .reports-filters .selectContainer input,
       #content.app-timemanager .reports-timerange .selectContainer input {
         border: 0;
-        background: none; }
+        background: none;
+        box-shadow: none; }
   #content.app-timemanager .quick-add-section {
     min-height: 156px; }
   #content.app-timemanager .quick-add {

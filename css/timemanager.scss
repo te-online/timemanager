@@ -377,11 +377,13 @@ label {
 
 		.selectContainer {
 			margin: 3px 3px 3px 0;
-			--border: none;
+			--border: 2px solid var(--color-border-maxcontrast);
+			border-radius: var(--border-radius-large);
 
 			input {
 				border: 0;
 				background: none;
+				box-shadow: none;
 			}
 		}
 	}
