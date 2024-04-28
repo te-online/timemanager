@@ -858,7 +858,12 @@ label {
 	#app-navigation:not(.vue) > ul > li a.selected > a,
 	#app-navigation:not(.vue) > ul > li a.active,
 	#app-navigation:not(.vue) > ul > li a.active > a {
-		background-color: var(--color-primary-element-light-hover);
+		background-color: var(--color-primary-element);
+		color: var(--color-text-light);
+
+		img {
+			filter: invert(100%);
+		}
 	}
 
 	#app-navigation:not(.vue) > ul > li > a,
