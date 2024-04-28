@@ -261,7 +261,7 @@ label {
         #content.app-timemanager .quick-add > .actions button.button-w-icon,
         #content.app-timemanager .reports-filters > .actions button.button-w-icon,
         #content.app-timemanager .reports-timerange > .actions button.button-w-icon {
-          padding-left: 34px; }
+          padding-left: 38px; }
     #content.app-timemanager .quick-add .parents,
     #content.app-timemanager .reports-filters .parents,
     #content.app-timemanager .reports-timerange .parents {
@@ -729,11 +729,17 @@ label {
   padding: 0 12px 12px; }
 
 .button-w-icon {
-  background-position: 12px center; }
+  background-position: 16px center; }
 
 input.time-input,
 input.duration-input {
   width: 100px; }
+
+.button.primary {
+  color: var(--color-primary-light-text) !important;
+  background-color: var(--color-primary-element-light) !important;
+  border-color: var(--color-primary-element-light-hover) !important;
+  padding: 12px 22px; }
 
 @keyframes fallback {
   0% {
