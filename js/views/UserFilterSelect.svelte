@@ -1,6 +1,7 @@
 <script>
 	export let requestToken;
 	export let isVisible = true;
+	export let form = undefined;
 
 	import Select from "svelte-select";
 	import { translate } from "@nextcloud/l10n";
@@ -48,7 +49,7 @@
 					requesttoken: requestToken,
 					"content-type": "application/json",
 				},
-			}
+			},
 		);
 
 		loading = false;
@@ -90,7 +91,7 @@
 		<Select
 			noOptionsMessage={loading ? translate("timemanager", "Loading...") : translate("timemanager", "No options")}
 			placeholder={translate("timemanager", "Search...")}
-			inputAttributes={{ id: "sharee-filter-select" }}
+			inputAttributes={{ id: "sharee-filter-select", form }}
 			on:select={handleSelectSharee}
 			on:clear={handleClearSharee}
 			loadOptions={search}

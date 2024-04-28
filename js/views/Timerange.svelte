@@ -2,6 +2,7 @@
 	export let requestToken;
 	export let startOfMonth;
 	export let endOfMonth;
+	export let updateUrlWithTimerange;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
@@ -32,24 +33,20 @@
 		{ label: translate("timemanager", "This month"), value: "month" },
 		{ label: translate("timemanager", "Last month"), value: "month-1" },
 		{ label: translate("timemanager", "This year"), value: "year" },
-		{ label: translate("timemanager", "Last year"), value: "year-1" }
+		{ label: translate("timemanager", "Last year"), value: "year-1" },
 	];
 
-	const applyRange = () => {
-		// Prepare a link with get attributes
-		const filterLinkElement = Helpers.getLinkEl();
+	const setUrlWithTimerange = () => {
 		// Base off current url
 		let newUrl = document.location.href;
 		// Add filter attributes to url
 		newUrl = Helpers.getUpdatedFilterUrl("start", start ? start : "", newUrl);
 		newUrl = Helpers.getUpdatedFilterUrl("end", end ? end : "", newUrl);
-		// Attach url to hidden pjax link
-		filterLinkElement.href = newUrl;
-		// Navigate
-		filterLinkElement.click();
+
+		updateUrlWithTimerange(newUrl);
 	};
 
-	const handleSelectPreset = selectedValue => {
+	const handleSelectPreset = (selectedValue) => {
 		const preset = selectedValue.detail.value;
 		switch (preset) {
 			case "today":
@@ -85,6 +82,7 @@
 				end = format(endOfYear(sub(startOfToday(), { years: 1 })), dateFormat);
 				break;
 		}
+		setUrlWithTimerange();
 	};
 
 	onMount(() => {
@@ -93,9 +91,8 @@
 		if (urlParts.length > 1) {
 			const queryString = urlParts[1];
 			const queryStringParts = queryString.split("&");
-			let queryStringVariables = {};
 			// Map over all query params
-			queryStringParts.map(part => {
+			queryStringParts.map((part) => {
 				// Split query params
 				const partParts = part.split("=");
 				const [name, value] = partParts;
@@ -111,31 +108,40 @@
 	});
 </script>
 
-<form class={`reports-timerange${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={applyRange}>
-	<UserFilterSelect {requestToken} />
+<div class={`reports-timerange${loading ? " icon-loading" : ""}`}>
+	<UserFilterSelect {requestToken} form="filters-form" />
 
 	<label for="start" class="start">
-		{translate('timemanager', 'From')}
-		<input id="start" type="date" pattern="Y-m-d" bind:value={start} />
+		{translate("timemanager", "From")}
+		<input
+			id="start"
+			type="date"
+			pattern="Y-m-d"
+			bind:value={start}
+			on:change={setUrlWithTimerange}
+			form="filters-form"
+		/>
 	</label>
 
 	<label for="end" class="end">
-		{translate('timemanager', 'To')}
-		<input id="end" type="date" pattern="Y-m-d" bind:value={end} />
+		{translate("timemanager", "To")}
+		<input id="end" type="date" pattern="Y-m-d" bind:value={end} on:change={setUrlWithTimerange} form="filters-form" />
 	</label>
 
 	<label for="preset-select" class="status">
-		{translate('timemanager', 'Presets')}
+		{translate("timemanager", "Presets")}
 		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			inputAttributes={{ id: 'preset-select' }}
+			noOptionsMessage={translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Select...")}
+			inputAttributes={{ id: "preset-select", form: "filters-form" }}
 			items={presets}
-			on:select={handleSelectPreset} />
+			on:select={handleSelectPreset}
+		/>
 	</label>
 
 	<span class="actions">
-		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Apply range')}</button>
+		<button disabled={loading} type="submit" class="button primary" form="filters-form"
+			>{translate("timemanager", "Apply")}</button
+		>
 	</span>
-
-</form>
+</div>

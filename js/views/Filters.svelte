@@ -7,6 +7,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { translate } from "@nextcloud/l10n";
+	import Timerange from "./Timerange.svelte";
 
 	$: loading = false;
 	$: availableProjects = projects;
@@ -16,32 +17,35 @@
 	let selectedProjects;
 	let selectedTasks;
 	let selectedStatus;
+	let urlWithTimerange = "";
+
+	const updateUrlWithTimerange = (url) => (urlWithTimerange = url);
 
 	const availableStatus = [
 		{ value: "unpaid", label: translate("timemanager", "Unresolved") },
-		{ value: "paid", label: translate("timemanager", "Resolved") }
+		{ value: "paid", label: translate("timemanager", "Resolved") },
 	];
 
-	const apply = e => {
+	const apply = (e) => {
 		// Prepare a link with get attributes
 		const filterLinkElement = Helpers.getLinkEl();
 		// Base off current url
-		let newUrl = document.location.href;
+		let newUrl = urlWithTimerange || document.location.href;
 		// Add filter attributes to url
 		newUrl = Helpers.getUpdatedFilterUrl(
 			"clients",
-			selectedClients ? selectedClients.map(c => c.value).join(",") : "",
-			newUrl
+			selectedClients ? selectedClients.map((c) => c.value).join(",") : "",
+			newUrl,
 		);
 		newUrl = Helpers.getUpdatedFilterUrl(
 			"projects",
-			selectedProjects ? selectedProjects.map(p => p.value).join(",") : "",
-			newUrl
+			selectedProjects ? selectedProjects.map((p) => p.value).join(",") : "",
+			newUrl,
 		);
 		newUrl = Helpers.getUpdatedFilterUrl(
 			"tasks",
-			selectedTasks ? selectedTasks.map(t => t.value).join(",") : "",
-			newUrl
+			selectedTasks ? selectedTasks.map((t) => t.value).join(",") : "",
+			newUrl,
 		);
 		newUrl = Helpers.getUpdatedFilterUrl("status", selectedStatus ? selectedStatus.value : "", newUrl);
 		// Attach url to hidden pjax link
@@ -50,41 +54,41 @@
 		filterLinkElement.click();
 	};
 
-	const handleSelectClients = event => {
+	const handleSelectClients = (event) => {
 		selectedClients = event.detail;
 		if (selectedClients && selectedClients.length) {
-			availableProjects = projects.filter(project =>
-				selectedClients.find(client => project.clientUuid === client.value)
+			availableProjects = projects.filter((project) =>
+				selectedClients.find((client) => project.clientUuid === client.value),
 			);
 		} else {
 			availableProjects = projects;
 		}
 		if (selectedProjects && selectedProjects.length) {
-			availableTasks = tasks.filter(task => selectedProjects.find(project => task.projectUuid === project.value));
+			availableTasks = tasks.filter((task) => selectedProjects.find((project) => task.projectUuid === project.value));
 		} else {
 			availableTasks = tasks;
 		}
 	};
 
-	const handleSelectProjects = event => {
+	const handleSelectProjects = (event) => {
 		selectedProjects = event.detail;
 		if (selectedClients && selectedClients.length) {
-			availableProjects = projects.filter(project =>
-				selectedClients.find(client => project.clientUuid === client.value)
+			availableProjects = projects.filter((project) =>
+				selectedClients.find((client) => project.clientUuid === client.value),
 			);
 		} else {
 			availableProjects = projects;
 		}
 		if (selectedProjects && selectedProjects.length) {
-			availableTasks = tasks.filter(task => selectedProjects.find(project => task.projectUuid === project.value));
+			availableTasks = tasks.filter((task) => selectedProjects.find((project) => task.projectUuid === project.value));
 		} else {
 			availableTasks = tasks;
 		}
 	};
-	const handleSelectTasks = event => {
+	const handleSelectTasks = (event) => {
 		selectedTasks = event.detail;
 	};
-	const handleSelectStatus = event => {
+	const handleSelectStatus = (event) => {
 		selectedStatus = event.detail;
 	};
 	const handleClearStatus = () => {
@@ -99,25 +103,25 @@
 			const queryStringParts = queryString.split("&");
 			let queryStringVariables = {};
 			// Map over all query params
-			queryStringParts.map(part => {
+			queryStringParts.map((part) => {
 				// Split query params
 				const partParts = part.split("=");
 				const [name, value] = partParts;
 				// Apply filters from query params
 				if (name === "status" && value) {
-					selectedStatus = availableStatus.find(status => status.value === value);
+					selectedStatus = availableStatus.find((status) => status.value === value);
 				}
 				if (name === "tasks" && value && value.length) {
-					selectedTasks = value.split(",").map(taskId => tasks.find(task => task.value === taskId));
+					selectedTasks = value.split(",").map((taskId) => tasks.find((task) => task.value === taskId));
 				}
 				if (name === "projects" && value && value.length) {
 					handleSelectProjects({
-						detail: value.split(",").map(projectId => projects.find(project => project.value === projectId))
+						detail: value.split(",").map((projectId) => projects.find((project) => project.value === projectId)),
 					});
 				}
 				if (name === "clients" && value && value.length) {
 					handleSelectClients({
-						detail: value.split(",").map(clientId => clients.find(client => client.value === clientId))
+						detail: value.split(",").map((clientId) => clients.find((client) => client.value === clientId)),
 					});
 				}
 			});
@@ -125,56 +129,57 @@
 	});
 </script>
 
-<form class={`reports-filters${loading ? ' icon-loading' : ''}`} on:submit|preventDefault={apply}>
+<form class={`reports-filters${loading ? " icon-loading" : ""}`} on:submit|preventDefault={apply} id="filters-form">
 	<label for="client-select" class="clients">
-		{translate('timemanager', 'Clients')}
+		{translate("timemanager", "Clients")}
 		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			inputAttributes={{ id: 'client-select' }}
+			noOptionsMessage={translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Select...")}
+			inputAttributes={{ id: "client-select" }}
 			items={clients}
 			on:select={handleSelectClients}
 			value={selectedClients}
-			isMulti={true} />
+			isMulti={true}
+		/>
 	</label>
 
 	<label for="projects-select" class="projects">
-		{translate('timemanager', 'Projects')}
+		{translate("timemanager", "Projects")}
 		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			inputAttributes={{ id: 'projects-select' }}
+			noOptionsMessage={translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Select...")}
+			inputAttributes={{ id: "projects-select" }}
 			items={availableProjects}
 			on:select={handleSelectProjects}
 			value={selectedProjects}
-			isMulti={true} />
+			isMulti={true}
+		/>
 	</label>
 
 	<label for="tasks-select" class="tasks">
-		{translate('timemanager', 'Tasks')}
+		{translate("timemanager", "Tasks")}
 		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			inputAttributes={{ id: 'tasks-select' }}
+			noOptionsMessage={translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Select...")}
+			inputAttributes={{ id: "tasks-select" }}
 			items={availableTasks}
 			on:select={handleSelectTasks}
 			value={selectedTasks}
-			isMulti={true} />
+			isMulti={true}
+		/>
 	</label>
 
 	<label for="status-select" class="status">
-		{translate('timemanager', 'Status')}
+		{translate("timemanager", "Status")}
 		<Select
-			noOptionsMessage={translate('timemanager', 'No options')}
-			placeholder={translate('timemanager', 'Select...')}
-			inputAttributes={{ id: 'status-select' }}
+			noOptionsMessage={translate("timemanager", "No options")}
+			placeholder={translate("timemanager", "Select...")}
+			inputAttributes={{ id: "status-select" }}
 			items={availableStatus}
 			value={selectedStatus}
 			on:select={handleSelectStatus}
-			on:clear={handleClearStatus} />
+			on:clear={handleClearStatus}
+		/>
 	</label>
-
-	<span class="actions">
-		<button disabled={loading} type="submit" class="button primary">{translate('timemanager', 'Apply filters')}</button>
-	</span>
 </form>
+<Timerange {updateUrlWithTimerange} />

@@ -10,7 +10,6 @@ import DeleteTimeEntryButton from "./views/DeleteTimeEntryButton.svelte";
 import QuickAdd from "./views/QuickAdd.svelte";
 import Checkmark from "./views/Checkmark.svelte";
 import Filters from "./views/Filters.svelte";
-import Timerange from "./views/Timerange.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
 import UserFilterButton from "./views/UserFilterButton.svelte";
@@ -71,7 +70,7 @@ const init = () => {
 			component: Statistics,
 			selector: "#content.app-timemanager [data-svelte='Statistics.svelte']",
 			props: { ...store },
-		})
+		}),
 	);
 
 	components.push(
@@ -79,15 +78,7 @@ const init = () => {
 			component: Filters,
 			selector: "#content.app-timemanager [data-svelte='Filters.svelte']",
 			props: { ...store },
-		})
-	);
-
-	components.push(
-		safelyCreateComponent({
-			component: Timerange,
-			selector: "#content.app-timemanager [data-svelte='Timerange.svelte']",
-			props: { ...store },
-		})
+		}),
 	);
 
 	components.push(
@@ -99,7 +90,7 @@ const init = () => {
 				action: "",
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -110,7 +101,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -121,7 +112,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -132,7 +123,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -143,7 +134,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -154,7 +145,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -165,11 +156,11 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	const deleteTimeEntryButtons = document.querySelectorAll(
-		"#content.app-timemanager [data-svelte='DeleteTimeEntryButton.svelte']"
+		"#content.app-timemanager [data-svelte='DeleteTimeEntryButton.svelte']",
 	);
 	if (deleteTimeEntryButtons && deleteTimeEntryButtons.length > 0) {
 		deleteTimeEntryButtons.forEach((button) => {
@@ -181,13 +172,13 @@ const init = () => {
 						deleteTimeEntryUuid: button.getAttribute("data-uuid"),
 						requestToken: token,
 					},
-				})
+				}),
 			);
 		});
 	}
 
 	const editTimeEntryButtons = document.querySelectorAll(
-		"#content.app-timemanager [data-svelte='EditTimeEntryButton.svelte']"
+		"#content.app-timemanager [data-svelte='EditTimeEntryButton.svelte']",
 	);
 	if (editTimeEntryButtons && editTimeEntryButtons.length > 0) {
 		editTimeEntryButtons.forEach((button) => {
@@ -202,7 +193,7 @@ const init = () => {
 						timeEditorCaption: translate("timemanager", "Edit time entry"),
 						requestToken: token,
 					},
-				})
+				}),
 			);
 		});
 	}
@@ -215,7 +206,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	const checkmarkButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='Checkmark.svelte']");
@@ -231,7 +222,7 @@ const init = () => {
 						initialState: button.getAttribute("data-initialState"),
 						requestToken: token,
 					},
-				})
+				}),
 			);
 		});
 	}
@@ -240,7 +231,7 @@ const init = () => {
 		safelyCreateComponent({
 			component: PrintButton,
 			selector: "#content.app-timemanager [data-svelte='PrintButton.svelte']",
-		})
+		}),
 	);
 
 	components.push(
@@ -251,7 +242,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	components.push(
@@ -262,7 +253,7 @@ const init = () => {
 				...store,
 				requestToken: token,
 			},
-		})
+		}),
 	);
 
 	// components.push(
@@ -285,7 +276,7 @@ const init = () => {
 			element.innerText = format(
 				parseISO(datetime),
 				store?.settings?.fullDateFormat ?? defaultDateFormat,
-				localeOptions
+				localeOptions,
 			);
 		});
 	}

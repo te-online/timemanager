@@ -28717,92 +28717,754 @@
       return _createClass$1(Checkmark);
     }(SvelteComponent);
 
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop$2) {
+        let stop;
+        const subscribers = new Set();
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (const subscriber of subscribers) {
+                        subscriber[1]();
+                        subscriber_queue.push(subscriber, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop$2) {
+            const subscriber = [run, invalidate];
+            subscribers.add(subscriber);
+            if (subscribers.size === 1) {
+                stop = start(set) || noop$2;
+            }
+            run(value);
+            return () => {
+                subscribers.delete(subscriber);
+                if (subscribers.size === 0 && stop) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+
+    var isFilterSet = writable(false);
+
+    function create_if_block$2(ctx) {
+      var label;
+      var t0_value = translate_1("timemanager", "Created by") + "";
+      var t0;
+      var t1;
+      var select;
+      var current;
+      select = new Select({
+        props: {
+          noOptionsMessage: /*loading*/ctx[3] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Search..."),
+          inputAttributes: {
+            id: "sharee-filter-select",
+            form: /*form*/ctx[1]
+          },
+          loadOptions: /*search*/ctx[6],
+          value: /*selectedSharee*/ctx[2]
+        }
+      });
+      select.$on("select", /*handleSelectSharee*/ctx[4]);
+      select.$on("clear", /*handleClearSharee*/ctx[5]);
+      return {
+        c() {
+          label = element("label");
+          t0 = text$1(t0_value);
+          t1 = space$1();
+          create_component(select.$$.fragment);
+          attr(label, "for", "sharee-filter-select");
+          attr(label, "class", "sharee-filter-label");
+        },
+        m(target, anchor) {
+          insert(target, label, anchor);
+          append(label, t0);
+          append(label, t1);
+          mount_component(select, label, null);
+          current = true;
+        },
+        p(ctx, dirty) {
+          var select_changes = {};
+          if (dirty & /*loading*/8) select_changes.noOptionsMessage = /*loading*/ctx[3] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options");
+          if (dirty & /*form*/2) select_changes.inputAttributes = {
+            id: "sharee-filter-select",
+            form: /*form*/ctx[1]
+          };
+          if (dirty & /*selectedSharee*/4) select_changes.value = /*selectedSharee*/ctx[2];
+          select.$set(select_changes);
+        },
+        i(local) {
+          if (current) return;
+          transition_in(select.$$.fragment, local);
+          current = true;
+        },
+        o(local) {
+          transition_out(select.$$.fragment, local);
+          current = false;
+        },
+        d(detaching) {
+          if (detaching) detach(label);
+          destroy_component(select);
+        }
+      };
+    }
     function create_fragment$5(ctx) {
+      var if_block_anchor;
+      var current;
+      var if_block = /*isVisible*/ctx[0] && create_if_block$2(ctx);
+      return {
+        c() {
+          if (if_block) if_block.c();
+          if_block_anchor = empty();
+        },
+        m(target, anchor) {
+          if (if_block) if_block.m(target, anchor);
+          insert(target, if_block_anchor, anchor);
+          current = true;
+        },
+        p(ctx, _ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+          if ( /*isVisible*/ctx[0]) {
+            if (if_block) {
+              if_block.p(ctx, dirty);
+              if (dirty & /*isVisible*/1) {
+                transition_in(if_block, 1);
+              }
+            } else {
+              if_block = create_if_block$2(ctx);
+              if_block.c();
+              transition_in(if_block, 1);
+              if_block.m(if_block_anchor.parentNode, if_block_anchor);
+            }
+          } else if (if_block) {
+            group_outros();
+            transition_out(if_block, 1, 1, function () {
+              if_block = null;
+            });
+            check_outros();
+          }
+        },
+        i(local) {
+          if (current) return;
+          transition_in(if_block);
+          current = true;
+        },
+        o(local) {
+          transition_out(if_block);
+          current = false;
+        },
+        d(detaching) {
+          if (if_block) if_block.d(detaching);
+          if (detaching) detach(if_block_anchor);
+        }
+      };
+    }
+    function instance$5($$self, $$props, $$invalidate) {
+      var loading;
+      var requestToken = $$props.requestToken;
+      var _$$props$isVisible = $$props.isVisible,
+        isVisible = _$$props$isVisible === void 0 ? true : _$$props$isVisible;
+      var _$$props$form = $$props.form,
+        form = _$$props$form === void 0 ? undefined : _$$props$form;
+      var selectedSharee;
+      var handleSelectSharee = function handleSelectSharee(event) {
+        if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
+          return;
+        }
+        $$invalidate(2, selectedSharee = event.detail);
+
+        // Prepare a link with get attributes
+        var filterLinkElement = Helpers.getLinkEl();
+
+        // Base off current url
+        var newUrl = document.location.href;
+
+        // Add filter attributes to url
+        newUrl = Helpers.getUpdatedFilterUrl("userFilter", selectedSharee ? selectedSharee.value.shareWith : "", newUrl);
+
+        // Attach url to hidden pjax link
+        filterLinkElement.href = newUrl;
+
+        // Navigate
+        filterLinkElement.click();
+      };
+      var handleClearSharee = function handleClearSharee() {
+        handleSelectSharee({
+          detail: {
+            value: {
+              shareWith: ""
+            },
+            label: ""
+          }
+        });
+        isFilterSet.set(false);
+      };
+      var search = /*#__PURE__*/function () {
+        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
+          var response, _yield$response$json$, users, exact;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                if (!(typeof query === "undefined")) {
+                  _context.next = 2;
+                  break;
+                }
+                return _context.abrupt("return");
+              case 2:
+                $$invalidate(3, loading = true);
+                _context.next = 5;
+                return fetch(dist_6("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+              case 5:
+                response = _context.sent;
+                $$invalidate(3, loading = false);
+                if (!response.ok) {
+                  _context.next = 14;
+                  break;
+                }
+                _context.next = 10;
+                return response.json();
+              case 10:
+                _yield$response$json$ = _context.sent.ocs.data;
+                users = _yield$response$json$.users;
+                exact = _yield$response$json$.exact;
+                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)));
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        }));
+        return function search(_x) {
+          return _ref3.apply(this, arguments);
+        };
+      }();
+      onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var urlParts, queryString, queryStringParts, _iterator, _step, part, partParts, _partParts, name, value, result;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              // Parse current URL
+              urlParts = document.location.href.split("?");
+              if (!(urlParts.length > 1)) {
+                _context2.next = 27;
+                break;
+              }
+              queryString = urlParts[1];
+              queryStringParts = queryString.split("&");
+              _iterator = _createForOfIteratorHelper$1(queryStringParts);
+              _context2.prev = 6;
+              _iterator.s();
+            case 8:
+              if ((_step = _iterator.n()).done) {
+                _context2.next = 19;
+                break;
+              }
+              part = _step.value;
+              // Split query params
+              partParts = part.split("=");
+              _partParts = _slicedToArray(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
+              if (!(name === "userFilter" && value)) {
+                _context2.next = 17;
+                break;
+              }
+              _context2.next = 15;
+              return search(value);
+            case 15:
+              result = _context2.sent;
+              if (result && result.length) {
+                $$invalidate(2, selectedSharee = result[0]);
+                isFilterSet.set(true);
+              }
+            case 17:
+              _context2.next = 8;
+              break;
+            case 19:
+              _context2.next = 24;
+              break;
+            case 21:
+              _context2.prev = 21;
+              _context2.t0 = _context2["catch"](6);
+              _iterator.e(_context2.t0);
+            case 24:
+              _context2.prev = 24;
+              _iterator.f();
+              return _context2.finish(24);
+            case 27:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, null, [[6, 21, 24, 27]]);
+      })));
+      $$self.$$set = function ($$props) {
+        if ('requestToken' in $$props) $$invalidate(7, requestToken = $$props.requestToken);
+        if ('isVisible' in $$props) $$invalidate(0, isVisible = $$props.isVisible);
+        if ('form' in $$props) $$invalidate(1, form = $$props.form);
+      };
+      $$invalidate(3, loading = false);
+      return [isVisible, form, selectedSharee, loading, handleSelectSharee, handleClearSharee, search, requestToken];
+    }
+    var UserFilterSelect = /*#__PURE__*/function (_SvelteComponent) {
+      _inherits$1(UserFilterSelect, _SvelteComponent);
+      var _super = _createSuper$1(UserFilterSelect);
+      function UserFilterSelect(options) {
+        var _this;
+        _classCallCheck$1(this, UserFilterSelect);
+        _this = _super.call(this);
+        init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+          requestToken: 7,
+          isVisible: 0,
+          form: 1
+        });
+        return _this;
+      }
+      return _createClass$1(UserFilterSelect);
+    }(SvelteComponent);
+
+    function create_fragment$4(ctx) {
+      var div;
+      var userfilterselect;
+      var t0;
+      var label0;
+      var t1_value = translate_1("timemanager", "From") + "";
+      var t1;
+      var t2;
+      var input0;
+      var t3;
+      var label1;
+      var t4_value = translate_1("timemanager", "To") + "";
+      var t4;
+      var t5;
+      var input1;
+      var t6;
+      var label2;
+      var t7_value = translate_1("timemanager", "Presets") + "";
+      var t7;
+      var t8;
+      var select;
+      var t9;
+      var span;
+      var button;
+      var t10_value = translate_1("timemanager", "Apply") + "";
+      var t10;
+      var div_class_value;
+      var current;
+      var mounted;
+      var dispose;
+      userfilterselect = new UserFilterSelect({
+        props: {
+          requestToken: /*requestToken*/ctx[0],
+          form: "filters-form"
+        }
+      });
+      select = new Select({
+        props: {
+          noOptionsMessage: translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Select..."),
+          inputAttributes: {
+            id: "preset-select",
+            form: "filters-form"
+          },
+          items: /*presets*/ctx[4]
+        }
+      });
+      select.$on("select", /*handleSelectPreset*/ctx[6]);
+      return {
+        c() {
+          div = element("div");
+          create_component(userfilterselect.$$.fragment);
+          t0 = space$1();
+          label0 = element("label");
+          t1 = text$1(t1_value);
+          t2 = space$1();
+          input0 = element("input");
+          t3 = space$1();
+          label1 = element("label");
+          t4 = text$1(t4_value);
+          t5 = space$1();
+          input1 = element("input");
+          t6 = space$1();
+          label2 = element("label");
+          t7 = text$1(t7_value);
+          t8 = space$1();
+          create_component(select.$$.fragment);
+          t9 = space$1();
+          span = element("span");
+          button = element("button");
+          t10 = text$1(t10_value);
+          attr(input0, "id", "start");
+          attr(input0, "type", "date");
+          attr(input0, "pattern", "Y-m-d");
+          attr(input0, "form", "filters-form");
+          attr(label0, "for", "start");
+          attr(label0, "class", "start");
+          attr(input1, "id", "end");
+          attr(input1, "type", "date");
+          attr(input1, "pattern", "Y-m-d");
+          attr(input1, "form", "filters-form");
+          attr(label1, "for", "end");
+          attr(label1, "class", "end");
+          attr(label2, "for", "preset-select");
+          attr(label2, "class", "status");
+          button.disabled = /*loading*/ctx[3];
+          attr(button, "type", "submit");
+          attr(button, "class", "button primary");
+          attr(button, "form", "filters-form");
+          attr(span, "class", "actions");
+          attr(div, "class", div_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? " icon-loading" : ""));
+        },
+        m(target, anchor) {
+          insert(target, div, anchor);
+          mount_component(userfilterselect, div, null);
+          append(div, t0);
+          append(div, label0);
+          append(label0, t1);
+          append(label0, t2);
+          append(label0, input0);
+          set_input_value(input0, /*start*/ctx[2]);
+          append(div, t3);
+          append(div, label1);
+          append(label1, t4);
+          append(label1, t5);
+          append(label1, input1);
+          set_input_value(input1, /*end*/ctx[1]);
+          append(div, t6);
+          append(div, label2);
+          append(label2, t7);
+          append(label2, t8);
+          mount_component(select, label2, null);
+          append(div, t9);
+          append(div, span);
+          append(span, button);
+          append(button, t10);
+          current = true;
+          if (!mounted) {
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[10]), listen(input0, "change", /*setUrlWithTimerange*/ctx[5]), listen(input1, "input", /*input1_input_handler*/ctx[11]), listen(input1, "change", /*setUrlWithTimerange*/ctx[5])];
+            mounted = true;
+          }
+        },
+        p(ctx, _ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+          var userfilterselect_changes = {};
+          if (dirty & /*requestToken*/1) userfilterselect_changes.requestToken = /*requestToken*/ctx[0];
+          userfilterselect.$set(userfilterselect_changes);
+          if (dirty & /*start*/4) {
+            set_input_value(input0, /*start*/ctx[2]);
+          }
+          if (dirty & /*end*/2) {
+            set_input_value(input1, /*end*/ctx[1]);
+          }
+          if (!current || dirty & /*loading*/8) {
+            button.disabled = /*loading*/ctx[3];
+          }
+          if (!current || dirty & /*loading*/8 && div_class_value !== (div_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? " icon-loading" : ""))) {
+            attr(div, "class", div_class_value);
+          }
+        },
+        i(local) {
+          if (current) return;
+          transition_in(userfilterselect.$$.fragment, local);
+          transition_in(select.$$.fragment, local);
+          current = true;
+        },
+        o(local) {
+          transition_out(userfilterselect.$$.fragment, local);
+          transition_out(select.$$.fragment, local);
+          current = false;
+        },
+        d(detaching) {
+          if (detaching) detach(div);
+          destroy_component(userfilterselect);
+          destroy_component(select);
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+    var dateFormat = "yyyy-MM-dd";
+    function instance$4($$self, $$props, $$invalidate) {
+      var loading;
+      var start;
+      var end;
+      var requestToken = $$props.requestToken;
+      var startOfMonth$1 = $$props.startOfMonth;
+      var endOfMonth$1 = $$props.endOfMonth;
+      var updateUrlWithTimerange = $$props.updateUrlWithTimerange;
+      var presets = [{
+        label: translate_1("timemanager", "Today"),
+        value: "today"
+      }, {
+        label: translate_1("timemanager", "Yesterday"),
+        value: "yesterday"
+      }, {
+        label: translate_1("timemanager", "This Week"),
+        value: "week"
+      }, {
+        label: translate_1("timemanager", "Last week"),
+        value: "week-1"
+      }, {
+        label: translate_1("timemanager", "This month"),
+        value: "month"
+      }, {
+        label: translate_1("timemanager", "Last month"),
+        value: "month-1"
+      }, {
+        label: translate_1("timemanager", "This year"),
+        value: "year"
+      }, {
+        label: translate_1("timemanager", "Last year"),
+        value: "year-1"
+      }];
+      var setUrlWithTimerange = function setUrlWithTimerange() {
+        // Base off current url
+        var newUrl = document.location.href;
+
+        // Add filter attributes to url
+        newUrl = Helpers.getUpdatedFilterUrl("start", start ? start : "", newUrl);
+        newUrl = Helpers.getUpdatedFilterUrl("end", end ? end : "", newUrl);
+        updateUrlWithTimerange(newUrl);
+      };
+      var handleSelectPreset = function handleSelectPreset(selectedValue) {
+        var preset = selectedValue.detail.value;
+        switch (preset) {
+          case "today":
+            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
+            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
+            break;
+          case "yesterday":
+            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
+            break;
+          case "week":
+            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
+              weekStartsOn: getFirstDay_1()
+            }), dateFormat));
+            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
+              weekStartsOn: getFirstDay_1()
+            }), dateFormat));
+            break;
+          case "week-1":
+            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
+              weeks: 1
+            }), {
+              weekStartsOn: getFirstDay_1()
+            }), dateFormat));
+            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
+              weeks: 1
+            }), {
+              weekStartsOn: getFirstDay_1()
+            }), dateFormat));
+            break;
+          case "month":
+            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
+            break;
+          case "month-1":
+            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
+              months: 1
+            })), dateFormat));
+            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
+              months: 1
+            })), dateFormat));
+            break;
+          case "year":
+            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
+            break;
+          case "year-1":
+            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
+              years: 1
+            })), dateFormat));
+            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
+              years: 1
+            })), dateFormat));
+            break;
+        }
+        setUrlWithTimerange();
+      };
+      onMount(function () {
+        // Parse current URL
+        var urlParts = document.location.href.split("?");
+        if (urlParts.length > 1) {
+          var queryString = urlParts[1];
+          var queryStringParts = queryString.split("&");
+
+          // Map over all query params
+          queryStringParts.map(function (part) {
+            // Split query params
+            var partParts = part.split("=");
+            var _partParts = _slicedToArray(partParts, 2),
+              name = _partParts[0],
+              value = _partParts[1];
+
+            // Apply filters from query params
+            if (name === "start" && value) {
+              $$invalidate(2, start = value);
+            }
+            if (name === "end" && value) {
+              $$invalidate(1, end = value);
+            }
+          });
+        }
+      });
+      function input0_input_handler() {
+        start = this.value;
+        $$invalidate(2, start), $$invalidate(7, startOfMonth$1);
+      }
+      function input1_input_handler() {
+        end = this.value;
+        $$invalidate(1, end), $$invalidate(8, endOfMonth$1);
+      }
+      $$self.$$set = function ($$props) {
+        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
+        if ('startOfMonth' in $$props) $$invalidate(7, startOfMonth$1 = $$props.startOfMonth);
+        if ('endOfMonth' in $$props) $$invalidate(8, endOfMonth$1 = $$props.endOfMonth);
+        if ('updateUrlWithTimerange' in $$props) $$invalidate(9, updateUrlWithTimerange = $$props.updateUrlWithTimerange);
+      };
+      $$self.$$.update = function () {
+        if ($$self.$$.dirty & /*startOfMonth*/128) {
+          $$invalidate(2, start = startOfMonth$1);
+        }
+        if ($$self.$$.dirty & /*endOfMonth*/256) {
+          $$invalidate(1, end = endOfMonth$1);
+        }
+      };
+      $$invalidate(3, loading = false);
+      return [requestToken, end, start, loading, presets, setUrlWithTimerange, handleSelectPreset, startOfMonth$1, endOfMonth$1, updateUrlWithTimerange, input0_input_handler, input1_input_handler];
+    }
+    var Timerange = /*#__PURE__*/function (_SvelteComponent) {
+      _inherits$1(Timerange, _SvelteComponent);
+      var _super = _createSuper$1(Timerange);
+      function Timerange(options) {
+        var _this;
+        _classCallCheck$1(this, Timerange);
+        _this = _super.call(this);
+        init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+          requestToken: 0,
+          startOfMonth: 7,
+          endOfMonth: 8,
+          updateUrlWithTimerange: 9
+        });
+        return _this;
+      }
+      return _createClass$1(Timerange);
+    }(SvelteComponent);
+
+    function create_fragment$3(ctx) {
       var form;
       var label0;
-      var t0_value = translate_1('timemanager', 'Clients') + "";
+      var t0_value = translate_1("timemanager", "Clients") + "";
       var t0;
       var t1;
       var select0;
       var t2;
       var label1;
-      var t3_value = translate_1('timemanager', 'Projects') + "";
+      var t3_value = translate_1("timemanager", "Projects") + "";
       var t3;
       var t4;
       var select1;
       var t5;
       var label2;
-      var t6_value = translate_1('timemanager', 'Tasks') + "";
+      var t6_value = translate_1("timemanager", "Tasks") + "";
       var t6;
       var t7;
       var select2;
       var t8;
       var label3;
-      var t9_value = translate_1('timemanager', 'Status') + "";
+      var t9_value = translate_1("timemanager", "Status") + "";
       var t9;
       var t10;
       var select3;
-      var t11;
-      var span;
-      var button;
-      var t12_value = translate_1('timemanager', 'Apply filters') + "";
-      var t12;
       var form_class_value;
+      var t11;
+      var timerange;
       var current;
       var mounted;
       var dispose;
       select0 = new Select({
         props: {
-          noOptionsMessage: translate_1('timemanager', 'No options'),
-          placeholder: translate_1('timemanager', 'Select...'),
+          noOptionsMessage: translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Select..."),
           inputAttributes: {
-            id: 'client-select'
+            id: "client-select"
           },
           items: /*clients*/ctx[0],
           value: /*selectedClients*/ctx[1],
           isMulti: true
         }
       });
-      select0.$on("select", /*handleSelectClients*/ctx[10]);
+      select0.$on("select", /*handleSelectClients*/ctx[11]);
       select1 = new Select({
         props: {
-          noOptionsMessage: translate_1('timemanager', 'No options'),
-          placeholder: translate_1('timemanager', 'Select...'),
+          noOptionsMessage: translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Select..."),
           inputAttributes: {
-            id: 'projects-select'
+            id: "projects-select"
           },
           items: /*availableProjects*/ctx[6],
           value: /*selectedProjects*/ctx[2],
           isMulti: true
         }
       });
-      select1.$on("select", /*handleSelectProjects*/ctx[11]);
+      select1.$on("select", /*handleSelectProjects*/ctx[12]);
       select2 = new Select({
         props: {
-          noOptionsMessage: translate_1('timemanager', 'No options'),
-          placeholder: translate_1('timemanager', 'Select...'),
+          noOptionsMessage: translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Select..."),
           inputAttributes: {
-            id: 'tasks-select'
+            id: "tasks-select"
           },
           items: /*availableTasks*/ctx[5],
           value: /*selectedTasks*/ctx[3],
           isMulti: true
         }
       });
-      select2.$on("select", /*handleSelectTasks*/ctx[12]);
+      select2.$on("select", /*handleSelectTasks*/ctx[13]);
       select3 = new Select({
         props: {
-          noOptionsMessage: translate_1('timemanager', 'No options'),
-          placeholder: translate_1('timemanager', 'Select...'),
+          noOptionsMessage: translate_1("timemanager", "No options"),
+          placeholder: translate_1("timemanager", "Select..."),
           inputAttributes: {
-            id: 'status-select'
+            id: "status-select"
           },
-          items: /*availableStatus*/ctx[8],
+          items: /*availableStatus*/ctx[9],
           value: /*selectedStatus*/ctx[4]
         }
       });
-      select3.$on("select", /*handleSelectStatus*/ctx[13]);
-      select3.$on("clear", /*handleClearStatus*/ctx[14]);
+      select3.$on("select", /*handleSelectStatus*/ctx[14]);
+      select3.$on("clear", /*handleClearStatus*/ctx[15]);
+      timerange = new Timerange({
+        props: {
+          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[8]
+        }
+      });
       return {
         c() {
           form = element("form");
@@ -28826,9 +29488,7 @@
           t10 = space$1();
           create_component(select3.$$.fragment);
           t11 = space$1();
-          span = element("span");
-          button = element("button");
-          t12 = text$1(t12_value);
+          create_component(timerange.$$.fragment);
           attr(label0, "for", "client-select");
           attr(label0, "class", "clients");
           attr(label1, "for", "projects-select");
@@ -28837,11 +29497,8 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          button.disabled = /*loading*/ctx[7];
-          attr(button, "type", "submit");
-          attr(button, "class", "button primary");
-          attr(span, "class", "actions");
-          attr(form, "class", form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? ' icon-loading' : ''));
+          attr(form, "class", form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? " icon-loading" : ""));
+          attr(form, "id", "filters-form");
         },
         m(target, anchor) {
           insert(target, form, anchor);
@@ -28864,13 +29521,11 @@
           append(label3, t9);
           append(label3, t10);
           mount_component(select3, label3, null);
-          append(form, t11);
-          append(form, span);
-          append(span, button);
-          append(button, t12);
+          insert(target, t11, anchor);
+          mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default( /*apply*/ctx[9]));
+            dispose = listen(form, "submit", prevent_default( /*apply*/ctx[10]));
             mounted = true;
           }
         },
@@ -28892,10 +29547,7 @@
           var select3_changes = {};
           if (dirty & /*selectedStatus*/16) select3_changes.value = /*selectedStatus*/ctx[4];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/128) {
-            button.disabled = /*loading*/ctx[7];
-          }
-          if (!current || dirty & /*loading*/128 && form_class_value !== (form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? ' icon-loading' : ''))) {
+          if (!current || dirty & /*loading*/128 && form_class_value !== (form_class_value = "reports-filters".concat( /*loading*/ctx[7] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -28905,6 +29557,7 @@
           transition_in(select1.$$.fragment, local);
           transition_in(select2.$$.fragment, local);
           transition_in(select3.$$.fragment, local);
+          transition_in(timerange.$$.fragment, local);
           current = true;
         },
         o(local) {
@@ -28912,6 +29565,7 @@
           transition_out(select1.$$.fragment, local);
           transition_out(select2.$$.fragment, local);
           transition_out(select3.$$.fragment, local);
+          transition_out(timerange.$$.fragment, local);
           current = false;
         },
         d(detaching) {
@@ -28920,12 +29574,14 @@
           destroy_component(select1);
           destroy_component(select2);
           destroy_component(select3);
+          if (detaching) detach(t11);
+          destroy_component(timerange, detaching);
           mounted = false;
           dispose();
         }
       };
     }
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$3($$self, $$props, $$invalidate) {
       var loading;
       var availableProjects;
       var availableTasks;
@@ -28936,6 +29592,10 @@
       var selectedProjects;
       var selectedTasks;
       var selectedStatus;
+      var urlWithTimerange = "";
+      var updateUrlWithTimerange = function updateUrlWithTimerange(url) {
+        return urlWithTimerange = url;
+      };
       var availableStatus = [{
         value: "unpaid",
         label: translate_1("timemanager", "Unresolved")
@@ -28948,7 +29608,7 @@
         var filterLinkElement = Helpers.getLinkEl();
 
         // Base off current url
-        var newUrl = document.location.href;
+        var newUrl = urlWithTimerange || document.location.href;
 
         // Add filter attributes to url
         newUrl = Helpers.getUpdatedFilterUrl("clients", selectedClients ? selectedClients.map(function (c) {
@@ -29070,19 +29730,19 @@
       });
       $$self.$$set = function ($$props) {
         if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(15, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(16, tasks = $$props.tasks);
+        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*projects*/32768) {
+        if ($$self.$$.dirty & /*projects*/65536) {
           $$invalidate(6, availableProjects = projects);
         }
-        if ($$self.$$.dirty & /*tasks*/65536) {
+        if ($$self.$$.dirty & /*tasks*/131072) {
           $$invalidate(5, availableTasks = tasks);
         }
       };
       $$invalidate(7, loading = false);
-      return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+      return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Filters, _SvelteComponent);
@@ -29091,664 +29751,14 @@
         var _this;
         _classCallCheck$1(this, Filters);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {
           clients: 0,
-          projects: 15,
-          tasks: 16
+          projects: 16,
+          tasks: 17
         });
         return _this;
       }
       return _createClass$1(Filters);
-    }(SvelteComponent);
-
-    const subscriber_queue = [];
-    /**
-     * Create a `Writable` store that allows both updating and reading by subscription.
-     * @param {*=}value initial value
-     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
-     */
-    function writable(value, start = noop$2) {
-        let stop;
-        const subscribers = new Set();
-        function set(new_value) {
-            if (safe_not_equal(value, new_value)) {
-                value = new_value;
-                if (stop) { // store is ready
-                    const run_queue = !subscriber_queue.length;
-                    for (const subscriber of subscribers) {
-                        subscriber[1]();
-                        subscriber_queue.push(subscriber, value);
-                    }
-                    if (run_queue) {
-                        for (let i = 0; i < subscriber_queue.length; i += 2) {
-                            subscriber_queue[i][0](subscriber_queue[i + 1]);
-                        }
-                        subscriber_queue.length = 0;
-                    }
-                }
-            }
-        }
-        function update(fn) {
-            set(fn(value));
-        }
-        function subscribe(run, invalidate = noop$2) {
-            const subscriber = [run, invalidate];
-            subscribers.add(subscriber);
-            if (subscribers.size === 1) {
-                stop = start(set) || noop$2;
-            }
-            run(value);
-            return () => {
-                subscribers.delete(subscriber);
-                if (subscribers.size === 0 && stop) {
-                    stop();
-                    stop = null;
-                }
-            };
-        }
-        return { set, update, subscribe };
-    }
-
-    var isFilterSet = writable(false);
-
-    function create_if_block$2(ctx) {
-      var label;
-      var t0_value = translate_1("timemanager", "Created by") + "";
-      var t0;
-      var t1;
-      var select;
-      var current;
-      select = new Select({
-        props: {
-          noOptionsMessage: /*loading*/ctx[2] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Search..."),
-          inputAttributes: {
-            id: "sharee-filter-select"
-          },
-          loadOptions: /*search*/ctx[5],
-          value: /*selectedSharee*/ctx[1]
-        }
-      });
-      select.$on("select", /*handleSelectSharee*/ctx[3]);
-      select.$on("clear", /*handleClearSharee*/ctx[4]);
-      return {
-        c() {
-          label = element("label");
-          t0 = text$1(t0_value);
-          t1 = space$1();
-          create_component(select.$$.fragment);
-          attr(label, "for", "sharee-filter-select");
-          attr(label, "class", "sharee-filter-label");
-        },
-        m(target, anchor) {
-          insert(target, label, anchor);
-          append(label, t0);
-          append(label, t1);
-          mount_component(select, label, null);
-          current = true;
-        },
-        p(ctx, dirty) {
-          var select_changes = {};
-          if (dirty & /*loading*/4) select_changes.noOptionsMessage = /*loading*/ctx[2] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options");
-          if (dirty & /*selectedSharee*/2) select_changes.value = /*selectedSharee*/ctx[1];
-          select.$set(select_changes);
-        },
-        i(local) {
-          if (current) return;
-          transition_in(select.$$.fragment, local);
-          current = true;
-        },
-        o(local) {
-          transition_out(select.$$.fragment, local);
-          current = false;
-        },
-        d(detaching) {
-          if (detaching) detach(label);
-          destroy_component(select);
-        }
-      };
-    }
-    function create_fragment$4(ctx) {
-      var if_block_anchor;
-      var current;
-      var if_block = /*isVisible*/ctx[0] && create_if_block$2(ctx);
-      return {
-        c() {
-          if (if_block) if_block.c();
-          if_block_anchor = empty();
-        },
-        m(target, anchor) {
-          if (if_block) if_block.m(target, anchor);
-          insert(target, if_block_anchor, anchor);
-          current = true;
-        },
-        p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-          if ( /*isVisible*/ctx[0]) {
-            if (if_block) {
-              if_block.p(ctx, dirty);
-              if (dirty & /*isVisible*/1) {
-                transition_in(if_block, 1);
-              }
-            } else {
-              if_block = create_if_block$2(ctx);
-              if_block.c();
-              transition_in(if_block, 1);
-              if_block.m(if_block_anchor.parentNode, if_block_anchor);
-            }
-          } else if (if_block) {
-            group_outros();
-            transition_out(if_block, 1, 1, function () {
-              if_block = null;
-            });
-            check_outros();
-          }
-        },
-        i(local) {
-          if (current) return;
-          transition_in(if_block);
-          current = true;
-        },
-        o(local) {
-          transition_out(if_block);
-          current = false;
-        },
-        d(detaching) {
-          if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
-        }
-      };
-    }
-    function instance$4($$self, $$props, $$invalidate) {
-      var loading;
-      var requestToken = $$props.requestToken;
-      var _$$props$isVisible = $$props.isVisible,
-        isVisible = _$$props$isVisible === void 0 ? true : _$$props$isVisible;
-      var selectedSharee;
-      var handleSelectSharee = function handleSelectSharee(event) {
-        if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
-          return;
-        }
-        $$invalidate(1, selectedSharee = event.detail);
-
-        // Prepare a link with get attributes
-        var filterLinkElement = Helpers.getLinkEl();
-
-        // Base off current url
-        var newUrl = document.location.href;
-
-        // Add filter attributes to url
-        newUrl = Helpers.getUpdatedFilterUrl("userFilter", selectedSharee ? selectedSharee.value.shareWith : "", newUrl);
-
-        // Attach url to hidden pjax link
-        filterLinkElement.href = newUrl;
-
-        // Navigate
-        filterLinkElement.click();
-      };
-      var handleClearSharee = function handleClearSharee() {
-        handleSelectSharee({
-          detail: {
-            value: {
-              shareWith: ""
-            },
-            label: ""
-          }
-        });
-        isFilterSet.set(false);
-      };
-      var search = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-          var response, _yield$response$json$, users, exact;
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) switch (_context.prev = _context.next) {
-              case 0:
-                if (!(typeof query === "undefined")) {
-                  _context.next = 2;
-                  break;
-                }
-                return _context.abrupt("return");
-              case 2:
-                $$invalidate(2, loading = true);
-                _context.next = 5;
-                return fetch(dist_6("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
-                  headers: {
-                    requesttoken: requestToken,
-                    "content-type": "application/json"
-                  }
-                });
-              case 5:
-                response = _context.sent;
-                $$invalidate(2, loading = false);
-                if (!response.ok) {
-                  _context.next = 14;
-                  break;
-                }
-                _context.next = 10;
-                return response.json();
-              case 10:
-                _yield$response$json$ = _context.sent.ocs.data;
-                users = _yield$response$json$.users;
-                exact = _yield$response$json$.exact;
-                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)));
-              case 14:
-              case "end":
-                return _context.stop();
-            }
-          }, _callee);
-        }));
-        return function search(_x) {
-          return _ref3.apply(this, arguments);
-        };
-      }();
-      onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var urlParts, queryString, queryStringParts, _iterator, _step, part, partParts, _partParts, name, value, result;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              // Parse current URL
-              urlParts = document.location.href.split("?");
-              if (!(urlParts.length > 1)) {
-                _context2.next = 27;
-                break;
-              }
-              queryString = urlParts[1];
-              queryStringParts = queryString.split("&");
-              _iterator = _createForOfIteratorHelper$1(queryStringParts);
-              _context2.prev = 6;
-              _iterator.s();
-            case 8:
-              if ((_step = _iterator.n()).done) {
-                _context2.next = 19;
-                break;
-              }
-              part = _step.value;
-              // Split query params
-              partParts = part.split("=");
-              _partParts = _slicedToArray(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
-              if (!(name === "userFilter" && value)) {
-                _context2.next = 17;
-                break;
-              }
-              _context2.next = 15;
-              return search(value);
-            case 15:
-              result = _context2.sent;
-              if (result && result.length) {
-                $$invalidate(1, selectedSharee = result[0]);
-                isFilterSet.set(true);
-              }
-            case 17:
-              _context2.next = 8;
-              break;
-            case 19:
-              _context2.next = 24;
-              break;
-            case 21:
-              _context2.prev = 21;
-              _context2.t0 = _context2["catch"](6);
-              _iterator.e(_context2.t0);
-            case 24:
-              _context2.prev = 24;
-              _iterator.f();
-              return _context2.finish(24);
-            case 27:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2, null, [[6, 21, 24, 27]]);
-      })));
-      $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(6, requestToken = $$props.requestToken);
-        if ('isVisible' in $$props) $$invalidate(0, isVisible = $$props.isVisible);
-      };
-      $$invalidate(2, loading = false);
-      return [isVisible, selectedSharee, loading, handleSelectSharee, handleClearSharee, search, requestToken];
-    }
-    var UserFilterSelect = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(UserFilterSelect, _SvelteComponent);
-      var _super = _createSuper$1(UserFilterSelect);
-      function UserFilterSelect(options) {
-        var _this;
-        _classCallCheck$1(this, UserFilterSelect);
-        _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
-          requestToken: 6,
-          isVisible: 0
-        });
-        return _this;
-      }
-      return _createClass$1(UserFilterSelect);
-    }(SvelteComponent);
-
-    function create_fragment$3(ctx) {
-      var form;
-      var userfilterselect;
-      var t0;
-      var label0;
-      var t1_value = translate_1('timemanager', 'From') + "";
-      var t1;
-      var t2;
-      var input0;
-      var t3;
-      var label1;
-      var t4_value = translate_1('timemanager', 'To') + "";
-      var t4;
-      var t5;
-      var input1;
-      var t6;
-      var label2;
-      var t7_value = translate_1('timemanager', 'Presets') + "";
-      var t7;
-      var t8;
-      var select;
-      var t9;
-      var span;
-      var button;
-      var t10_value = translate_1('timemanager', 'Apply range') + "";
-      var t10;
-      var form_class_value;
-      var current;
-      var mounted;
-      var dispose;
-      userfilterselect = new UserFilterSelect({
-        props: {
-          requestToken: /*requestToken*/ctx[0]
-        }
-      });
-      select = new Select({
-        props: {
-          noOptionsMessage: translate_1('timemanager', 'No options'),
-          placeholder: translate_1('timemanager', 'Select...'),
-          inputAttributes: {
-            id: 'preset-select'
-          },
-          items: /*presets*/ctx[4]
-        }
-      });
-      select.$on("select", /*handleSelectPreset*/ctx[6]);
-      return {
-        c() {
-          form = element("form");
-          create_component(userfilterselect.$$.fragment);
-          t0 = space$1();
-          label0 = element("label");
-          t1 = text$1(t1_value);
-          t2 = space$1();
-          input0 = element("input");
-          t3 = space$1();
-          label1 = element("label");
-          t4 = text$1(t4_value);
-          t5 = space$1();
-          input1 = element("input");
-          t6 = space$1();
-          label2 = element("label");
-          t7 = text$1(t7_value);
-          t8 = space$1();
-          create_component(select.$$.fragment);
-          t9 = space$1();
-          span = element("span");
-          button = element("button");
-          t10 = text$1(t10_value);
-          attr(input0, "id", "start");
-          attr(input0, "type", "date");
-          attr(input0, "pattern", "Y-m-d");
-          attr(label0, "for", "start");
-          attr(label0, "class", "start");
-          attr(input1, "id", "end");
-          attr(input1, "type", "date");
-          attr(input1, "pattern", "Y-m-d");
-          attr(label1, "for", "end");
-          attr(label1, "class", "end");
-          attr(label2, "for", "preset-select");
-          attr(label2, "class", "status");
-          button.disabled = /*loading*/ctx[3];
-          attr(button, "type", "submit");
-          attr(button, "class", "button primary");
-          attr(span, "class", "actions");
-          attr(form, "class", form_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? ' icon-loading' : ''));
-        },
-        m(target, anchor) {
-          insert(target, form, anchor);
-          mount_component(userfilterselect, form, null);
-          append(form, t0);
-          append(form, label0);
-          append(label0, t1);
-          append(label0, t2);
-          append(label0, input0);
-          set_input_value(input0, /*start*/ctx[2]);
-          append(form, t3);
-          append(form, label1);
-          append(label1, t4);
-          append(label1, t5);
-          append(label1, input1);
-          set_input_value(input1, /*end*/ctx[1]);
-          append(form, t6);
-          append(form, label2);
-          append(label2, t7);
-          append(label2, t8);
-          mount_component(select, label2, null);
-          append(form, t9);
-          append(form, span);
-          append(span, button);
-          append(button, t10);
-          current = true;
-          if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[9]), listen(input1, "input", /*input1_input_handler*/ctx[10]), listen(form, "submit", prevent_default( /*applyRange*/ctx[5]))];
-            mounted = true;
-          }
-        },
-        p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-          var userfilterselect_changes = {};
-          if (dirty & /*requestToken*/1) userfilterselect_changes.requestToken = /*requestToken*/ctx[0];
-          userfilterselect.$set(userfilterselect_changes);
-          if (dirty & /*start*/4) {
-            set_input_value(input0, /*start*/ctx[2]);
-          }
-          if (dirty & /*end*/2) {
-            set_input_value(input1, /*end*/ctx[1]);
-          }
-          if (!current || dirty & /*loading*/8) {
-            button.disabled = /*loading*/ctx[3];
-          }
-          if (!current || dirty & /*loading*/8 && form_class_value !== (form_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? ' icon-loading' : ''))) {
-            attr(form, "class", form_class_value);
-          }
-        },
-        i(local) {
-          if (current) return;
-          transition_in(userfilterselect.$$.fragment, local);
-          transition_in(select.$$.fragment, local);
-          current = true;
-        },
-        o(local) {
-          transition_out(userfilterselect.$$.fragment, local);
-          transition_out(select.$$.fragment, local);
-          current = false;
-        },
-        d(detaching) {
-          if (detaching) detach(form);
-          destroy_component(userfilterselect);
-          destroy_component(select);
-          mounted = false;
-          run_all(dispose);
-        }
-      };
-    }
-    var dateFormat = "yyyy-MM-dd";
-    function instance$3($$self, $$props, $$invalidate) {
-      var loading;
-      var start;
-      var end;
-      var requestToken = $$props.requestToken;
-      var startOfMonth$1 = $$props.startOfMonth;
-      var endOfMonth$1 = $$props.endOfMonth;
-      var presets = [{
-        label: translate_1("timemanager", "Today"),
-        value: "today"
-      }, {
-        label: translate_1("timemanager", "Yesterday"),
-        value: "yesterday"
-      }, {
-        label: translate_1("timemanager", "This Week"),
-        value: "week"
-      }, {
-        label: translate_1("timemanager", "Last week"),
-        value: "week-1"
-      }, {
-        label: translate_1("timemanager", "This month"),
-        value: "month"
-      }, {
-        label: translate_1("timemanager", "Last month"),
-        value: "month-1"
-      }, {
-        label: translate_1("timemanager", "This year"),
-        value: "year"
-      }, {
-        label: translate_1("timemanager", "Last year"),
-        value: "year-1"
-      }];
-      var applyRange = function applyRange() {
-        // Prepare a link with get attributes
-        var filterLinkElement = Helpers.getLinkEl();
-
-        // Base off current url
-        var newUrl = document.location.href;
-
-        // Add filter attributes to url
-        newUrl = Helpers.getUpdatedFilterUrl("start", start ? start : "", newUrl);
-        newUrl = Helpers.getUpdatedFilterUrl("end", end ? end : "", newUrl);
-
-        // Attach url to hidden pjax link
-        filterLinkElement.href = newUrl;
-
-        // Navigate
-        filterLinkElement.click();
-      };
-      var handleSelectPreset = function handleSelectPreset(selectedValue) {
-        var preset = selectedValue.detail.value;
-        switch (preset) {
-          case "today":
-            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
-            break;
-          case "yesterday":
-            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
-            break;
-          case "week":
-            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
-              weekStartsOn: getFirstDay_1()
-            }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
-              weekStartsOn: getFirstDay_1()
-            }), dateFormat));
-            break;
-          case "week-1":
-            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
-              weeks: 1
-            }), {
-              weekStartsOn: getFirstDay_1()
-            }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
-              weeks: 1
-            }), {
-              weekStartsOn: getFirstDay_1()
-            }), dateFormat));
-            break;
-          case "month":
-            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
-            break;
-          case "month-1":
-            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
-              months: 1
-            })), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
-              months: 1
-            })), dateFormat));
-            break;
-          case "year":
-            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
-            break;
-          case "year-1":
-            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
-              years: 1
-            })), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
-              years: 1
-            })), dateFormat));
-            break;
-        }
-      };
-      onMount(function () {
-        // Parse current URL
-        var urlParts = document.location.href.split("?");
-        if (urlParts.length > 1) {
-          var queryString = urlParts[1];
-          var queryStringParts = queryString.split("&");
-
-          // Map over all query params
-          queryStringParts.map(function (part) {
-            // Split query params
-            var partParts = part.split("=");
-            var _partParts = _slicedToArray(partParts, 2),
-              name = _partParts[0],
-              value = _partParts[1];
-
-            // Apply filters from query params
-            if (name === "start" && value) {
-              $$invalidate(2, start = value);
-            }
-            if (name === "end" && value) {
-              $$invalidate(1, end = value);
-            }
-          });
-        }
-      });
-      function input0_input_handler() {
-        start = this.value;
-        $$invalidate(2, start), $$invalidate(7, startOfMonth$1);
-      }
-      function input1_input_handler() {
-        end = this.value;
-        $$invalidate(1, end), $$invalidate(8, endOfMonth$1);
-      }
-      $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
-        if ('startOfMonth' in $$props) $$invalidate(7, startOfMonth$1 = $$props.startOfMonth);
-        if ('endOfMonth' in $$props) $$invalidate(8, endOfMonth$1 = $$props.endOfMonth);
-      };
-      $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*startOfMonth*/128) {
-          $$invalidate(2, start = startOfMonth$1);
-        }
-        if ($$self.$$.dirty & /*endOfMonth*/256) {
-          $$invalidate(1, end = endOfMonth$1);
-        }
-      };
-      $$invalidate(3, loading = false);
-      return [requestToken, end, start, loading, presets, applyRange, handleSelectPreset, startOfMonth$1, endOfMonth$1, input0_input_handler, input1_input_handler];
-    }
-    var Timerange = /*#__PURE__*/function (_SvelteComponent) {
-      _inherits$1(Timerange, _SvelteComponent);
-      var _super = _createSuper$1(Timerange);
-      function Timerange(options) {
-        var _this;
-        _classCallCheck$1(this, Timerange);
-        _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {
-          requestToken: 0,
-          startOfMonth: 7,
-          endOfMonth: 8
-        });
-        return _this;
-      }
-      return _createClass$1(Timerange);
     }(SvelteComponent);
 
     function create_fragment$2(ctx) {
@@ -38818,11 +38828,6 @@
       components.push(safelyCreateComponent({
         component: Filters,
         selector: "#content.app-timemanager [data-svelte='Filters.svelte']",
-        props: _objectSpread2({}, store)
-      }));
-      components.push(safelyCreateComponent({
-        component: Timerange,
-        selector: "#content.app-timemanager [data-svelte='Timerange.svelte']",
         props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
