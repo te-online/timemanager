@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.14 Beta, 28. April 2024
+
+### Added
+
+- Basic support for Nextcloud 29, manually checked
+
+### Changed
+
+- Styling updates, matching Nextcloud 29
+- Reports: Minor UX improvements
+
 ## 0.3.13 Beta, 30. March 2024
 
 ### Fixed
