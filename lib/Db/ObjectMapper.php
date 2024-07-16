@@ -180,73 +180,43 @@ class ObjectMapper extends QBMapper {
 		$params = [
 			"userid" => $this->userId,
 			"deleted" => "deleted",
-			"date_start" => $date_start,
-			"date_end" => $date_end,
+			"date_start" => strlen($date_start) <= 10 ? $date_start . " 00:00:00" : $date_start,
+			"date_end" => strlen($date_end) <= 10 ? $date_end . " 23:59:59" : $date_end,
 		];
+
 		$sql = $this->db->getQueryBuilder();
-		// Range can be one day as well
-		if ($date_start === $date_end) {
-			array_pop($params);
-			if ($shared) {
-				$sql
-					->selectDistinct("current.*")
-					->from($this->tableName, "current")
-					->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-					->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
-					->leftJoin(
-						"project",
-						"*PREFIX*timemanager_share",
-						"share",
-						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
-					)
-					->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
+		if ($shared) {
+			$sql
+				->selectDistinct("current.*")
+				->from($this->tableName, "current")
+				->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
+				->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
+				->leftJoin(
+					"project",
+					"*PREFIX*timemanager_share",
+					"share",
+					"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
+				)
+				->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
 
-				$sql
-					->where($expr)
-					->andWhere("current.`status` != :deleted")
-					->andWhere("date(current.`start`) = :date_start");
-			} else {
-				$sql
-					->select("*")
-					->from($this->tableName)
-					->where("`user_id` = :userid")
-					->andWhere("`status` != :deleted")
-					->andWhere("date(start) = :date_start");
-			}
+			$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
+
+			$sql
+				->where($expr)
+				->andWhere("current.`status` != :deleted")
+				->andWhere("current.`start` >= :date_start")
+				->andWhere("current.`start` <= :date_end");
 		} else {
-			if ($shared) {
-				$sql
-					->selectDistinct("current.*")
-					->from($this->tableName, "current")
-					->innerJoin("current", "*PREFIX*timemanager_task", "task", "current.`task_uuid` = task.`uuid`")
-					->innerJoin("task", "*PREFIX*timemanager_project", "project", "task.`project_uuid` = project.`uuid`")
-					->leftJoin(
-						"project",
-						"*PREFIX*timemanager_share",
-						"share",
-						"project.`client_uuid` = share.`object_uuid` AND share.`author_user_id` = :userid"
-					)
-					->leftJoin("share", "*PREFIX*group_user", "group_user", "share.recipient_id = group_user.gid");
-
-				$expr = $sql->expr()->orX("share.`author_user_id` = :userid", "current.`user_id` = :userid");
-
-				$sql
-					->where($expr)
-					->andWhere("current.`status` != :deleted")
-					->andWhere("date(current.`start`) >= :date_start")
-					->andWhere("date(current.`start`) <= :date_end");
-			} else {
-				$sql
-					->select("*")
-					->from($this->tableName)
-					->where("`user_id` = :userid")
-					->andWhere("`status` != :deleted")
-					->andWhere("date(start) >= :date_start")
-					->andWhere("date(start) <= :date_end");
-			}
+			$sql
+				->select("*")
+				->from($this->tableName)
+				->where("`user_id` = :userid")
+				->andWhere("`status` != :deleted")
+				->andWhere("start >= :date_start")
+				->andWhere("start <= :date_end");
 		}
+
 		if (isset($status) && $status) {
 			if ($status === "paid") {
 				$sql->andWhere("LOWER(`payment_status`) = :status");
@@ -257,6 +227,7 @@ class ObjectMapper extends QBMapper {
 				$params["status"] = "paid";
 			}
 		}
+
 		if (count($filter_tasks) > 0) {
 			$filterTasksList = implode("','", $filter_tasks);
 			$sql->andWhere("`task_uuid` IN ('" . $filterTasksList . "')");
