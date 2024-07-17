@@ -10,7 +10,11 @@ class ISODate {
 	 */
 	public static function convert($date) {
 		$datetime = new \DateTime($date);
-		return $datetime->format("Y-m-d\TH:i:s");
+		return ISODate::formatISO($datetime);
+	}
+
+	public static function formatISO(\DateTime $date) {
+		return $date->format("Y-m-d\TH:i:s");
 	}
 
 	/**
