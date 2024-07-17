@@ -34,8 +34,9 @@ class TimeMapper extends ObjectMapper {
 		string $end,
 		string $status = null,
 		array $filter_tasks = [],
-		$shared = false
+		$shared = false,
+		string $timezone = "UTC"
 	) {
-		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared);
+		return $this->getActiveObjectsByDateRangeAndFilters($start, $end, $status, $filter_tasks, "start", $shared, $timezone);
 	}
 }

@@ -203,7 +203,8 @@ class PageController extends Controller {
 		string $start = "",
 		string $end = "",
 		string $format = "none",
-		string $userFilter = ""
+		string $userFilter = "",
+		string $timezone = "UTC"
 	) {
 		$start_of_month = new \DateTime("first day of this month");
 		$end_of_month = new \DateTime("last day of this month");
@@ -222,7 +223,7 @@ class PageController extends Controller {
 		// Get possible task ids to filters for
 		$filter_tasks = $this->storageHelper->getTaskListFromFilters($clients, $projects, $tasks, true);
 
-		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true);
+		$times = $this->timeMapper->findForReport($start, $end, $status, $filter_tasks, true, $timezone);
 
 		$includedAuthors = $userFilter && strlen($userFilter) > 0 ? explode(",", $userFilter) : [];
 
