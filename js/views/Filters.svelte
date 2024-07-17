@@ -102,7 +102,6 @@
 		if (urlParts.length > 1) {
 			const queryString = urlParts[1];
 			const queryStringParts = queryString.split("&");
-			let queryStringVariables = {};
 			// Map over all query params
 			queryStringParts.map((part) => {
 				// Split query params
@@ -126,6 +125,10 @@
 					});
 				}
 			});
+		} else {
+			// Apply timezone and empty filters when a user
+			// happens to land on /reports without params
+			apply();
 		}
 	});
 </script>
