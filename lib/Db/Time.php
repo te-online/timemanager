@@ -55,8 +55,10 @@ class Time extends Entity {
 	 *
 	 * @return string
 	 */
-	function getStartFormatted($format = "D, j. F Y") {
+	function getStartFormatted($format = "D, j. F Y", string $timezone = "UTC") {
+		$date_timezone = new \DateTimeZone($timezone);
 		$start = date_create($this->getStart());
+		$start->setTimezone($date_timezone);
 		return date_format($start, $format);
 	}
 
@@ -76,8 +78,10 @@ class Time extends Entity {
 	 *
 	 * @return string
 	 */
-	function getEndFormatted($format = "D, j. F Y") {
+	function getEndFormatted($format = "D, j. F Y", string $timezone = "UTC") {
+		$date_timezone = new \DateTimeZone($timezone);
 		$end = date_create($this->getEnd());
+		$end->setTimezone($date_timezone);
 		return date_format($end, $format);
 	}
 
