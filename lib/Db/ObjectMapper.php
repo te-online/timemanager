@@ -2,6 +2,7 @@
 
 namespace OCA\TimeManager\Db;
 
+use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\IDBConnection;
 
@@ -175,13 +176,32 @@ class ObjectMapper extends QBMapper {
 		string $status = null,
 		array $filter_tasks = [],
 		string $orderby = "start",
-		$shared = false
+		$shared = false,
+		string $timezone = "UTC",
 	): array {
+		$date_timezone = new \DateTimeZone($timezone);
+
+		$start_is_day_only = strlen($date_start) <= 10;
+		if ($start_is_day_only) {
+			// Day-only dates need a time to convert between timezones, set start-of-day as the time
+			$date_start = $date_start . " 00:00:00";
+		}
+		$date_start_instance = \DateTime::createFromFormat("Y-m-d H:i:s", $date_start, $date_timezone);
+		$date_start_instance->setTimezone(new \DateTimeZone("UTC"));
+
+		$end_is_day_only = strlen($date_end) <= 10;
+		if ($end_is_day_only) {
+			// Day-only dates need a time to convert between timezones, set end-of-day as the time
+			$date_end = $date_end . " 23:59:59";
+		}
+		$date_end_instance = \DateTime::createFromFormat("Y-m-d H:i:s", $date_end, $date_timezone);
+		$date_end_instance->setTimezone(new \DateTimeZone("UTC"));
+
 		$params = [
 			"userid" => $this->userId,
 			"deleted" => "deleted",
-			"date_start" => strlen($date_start) <= 10 ? $date_start . " 00:00:00" : $date_start,
-			"date_end" => strlen($date_end) <= 10 ? $date_end . " 23:59:59" : $date_end,
+			"date_start" => ISODate::formatISO($date_start_instance),
+			"date_end" => ISODate::formatISO($date_end_instance),
 		];
 
 		$sql = $this->db->getQueryBuilder();
