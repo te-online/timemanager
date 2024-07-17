@@ -269,30 +269,31 @@ class TApiController extends ApiController {
 		// Calculate sum
 		$grouped = [];
 		$js_date_format = "";
+
 		foreach ($times as $time) {
 			$duration = $time->getDurationInHours();
 
 			// Group by date
 			if ($group_by === "day") {
-				$day = $time->getStartFormatted("Y-m-d");
+				$day = $time->getStartFormatted("Y-m-d", $timezone);
 				if (!isset($grouped[$day])) {
 					$grouped[$day] = 0;
 				}
 				$grouped[$day] += $duration;
 			} elseif ($group_by === "week") {
-				$week = $time->getStartFormatted("Y-W");
+				$week = $time->getStartFormatted("Y-W", $timezone);
 				if (!isset($grouped[$week])) {
 					$grouped[$week] = 0;
 				}
 				$grouped[$week] += $duration;
 			} elseif ($group_by === "month") {
-				$month = $time->getStartFormatted("Y-m");
+				$month = $time->getStartFormatted("Y-m", $timezone);
 				if (!isset($grouped[$month])) {
 					$grouped[$month] = 0;
 				}
 				$grouped[$month] += $duration;
 			} elseif ($group_by === "year") {
-				$year = $time->getStartFormatted("Y");
+				$year = $time->getStartFormatted("Y", $timezone);
 				if (!isset($grouped[$year])) {
 					$grouped[$year] = 0;
 				}
