@@ -134,9 +134,10 @@
 	};
 
 	const loadStats = async () => {
-		const start = format(Helpers.toUTC(startOfDay(startCursor)), apiDateFormat);
-		const end = format(Helpers.toUTC(endOfDay(endCursor)), apiDateFormat);
+		const start = format(startOfDay(startCursor), apiDateFormat);
+		const end = format(endOfDay(endCursor), apiDateFormat);
 		let statUrl = `${statsApiUrl}?start=${start}&end=${end}&group_by=${scale}&shared=${includeShared ? 1 : 0}`;
+		statUrl += `&timezone=${Helpers.getTimezone()}`;
 
 		// Parse current URL for filters
 		const urlParts = document.location.href.split("?");
@@ -216,7 +217,7 @@
 				return `${format(startOfWeek(date, localeOptions), "d.M.", localeOptions)} - ${format(
 					endOfWeek(date, localeOptions),
 					"d.M.",
-					localeOptions
+					localeOptions,
 				)}`;
 			}
 			return format(date, "d.M.", localeOptions);
@@ -276,7 +277,7 @@
 						({format(startOfWeek(startCursor, localeOptions), "iiiiii d.MM.Y", localeOptions)} &ndash; {format(
 							endOfWeek(startCursor, localeOptions),
 							"iiiiii d.MM.Y",
-							localeOptions
+							localeOptions,
 						)})
 					</span>
 				</span>

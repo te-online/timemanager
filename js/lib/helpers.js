@@ -35,12 +35,17 @@ export class Helpers {
 				}
 			});
 			queryStringVariables[field] = value;
+			queryStringVariables.timezone = Helpers.getTimezone();
 
 			return `${urlParts[0]}?${Object.keys(queryStringVariables)
 				.map((key) => `${key}=${queryStringVariables[key]}`)
 				.join("&")}`;
 		} else {
-			return `${baseUrl}?${field}=${value}`;
+			if (field === "timezone") {
+				return `${baseUrl}?${field}=${value}`;
+			} else {
+				return `${baseUrl}?${field}=${value}&timezone=${Helpers.getTimezone()}`;
+			}
 		}
 	}
 
