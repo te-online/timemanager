@@ -110,4 +110,8 @@ export class Helpers {
 	static simpleRounding(number) {
 		return Math.round(number * 100) / 100;
 	}
+
+	static getTimezone() {
+		return Intl.DateTimeFormat().resolvedOptions().timeZone;
+	}
 }
