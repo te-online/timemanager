@@ -20,6 +20,7 @@ $l = Util::getL10N('timemanager');
     <li>
     	<a
 				class="timemanager-pjax-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>"
+				data-add-timezone-link=""
 				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>"
 			>
 				<img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/details.svg')); ?>">

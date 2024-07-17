@@ -281,6 +281,17 @@ const init = () => {
 		});
 	}
 
+	const addTimezoneLinkElements = document.querySelectorAll("[data-add-timezone-link]");
+	if (addTimezoneLinkElements && addTimezoneLinkElements.length > 0) {
+		addTimezoneLinkElements.forEach((element) => {
+			if (element.href.includes("?")) {
+				element.href += `&timezone=${Helpers.getTimezone()}`;
+			} else {
+				element.href += `?timezone=${Helpers.getTimezone()}`;
+			}
+		});
+	}
+
 	document.body.classList.add("tm_ready");
 };
 
