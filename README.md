@@ -58,9 +58,14 @@ Some end-to-end testing is done using [Cypress](https://www.cypress.io/). Tests 
 
 To run tests locally, change into the `tests` directory. Before running or working on tests, run `npm install` to install dependencies. Make sure to create a `.env` file based on `.env.example` and a `cypress.env.json` based on `cypress.env.example.json`; values can be chosen freely, only make sure they align between the two files.
 
-To run the app install docker and docker-compose on your machine. Then run `docker-compose up`, followed by `docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'`. Wait for the app to be ready, then run `docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'`.
+To run the app, install docker and docker-compose on your machine.
 
-Finally, run `npm start` and use Cypress' UI to start running the tests included in the spec file.
+- Then run `docker-compose up`,
+- followed by `docker exec $(docker ps -qf "name=app") sh -c 'chown www-data:root custom_apps'`.
+- Wait for the app to be ready,
+- then run `docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'`.
+- Then activate the app by running `docker exec -u www-data $(docker ps -qf "name=app") sh -c 'php -f ./occ app:enable timemanager'`
+- Finally, run `npm start` and use Cypress' UI to start running the tests included in the spec file.
 
 To shut down containers and delete the temporary volumes, run `docker-compose down -v` in a second terminal while you're in the same `tests` directory.
 
