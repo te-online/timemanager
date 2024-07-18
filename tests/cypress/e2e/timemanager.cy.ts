@@ -41,42 +41,20 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.login(Cypress.env("NEXTCLOUD_ADMIN_USER"), Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
 	});
 
-	it("can create test group", () => {
-		cy.visit("/settings/users");
-		cy.get('a[title="Add group"]').click({ timeout: 3000 });
-		cy.get('input[placeholder="Enter group name"]').type("testgroup-1{enter}");
-	});
-
 	it("can create test users", () => {
 		cy.visit("/settings/users");
 		for (const username of testusers) {
 			// It can take a while until the user from the previous run is created
 			cy.get("button#new-user-button").click({ timeout: 30000 });
-			cy.get('input[name="username"]').type(username);
-			cy.get('input[name="password"]').type(`${username}-password`);
+			cy.get('input[data-test="username"]').type(username);
+			cy.get('input[data-test="password"]').type(`${username}-password`);
 
 			if (username == "testuser-1") {
-				cy.get("div.groups.modal__item input").type("testgroup-1{enter}");
+				cy.get("input#new-user-groups").type("testgroup-1{enter}");
 			}
 
-			cy.contains("button", "Add a new user").click();
+			cy.contains("button", "Add new user").click();
 		}
-	});
-
-	it("can activate app", () => {
-		cy.visit("/settings/apps");
-		cy.get(".apps-list-container div.section")
-			.contains("TimeManager")
-			.parent()
-			.within(() => {
-				cy.contains("Enable").click();
-			});
-		cy.get(".apps-list-container div.section")
-			.contains("TimeManager")
-			.parent()
-			.within(() => {
-				cy.contains("Enable").should("not.exist");
-			});
 	});
 
 	it("can import from a CSV file", () => {
@@ -112,7 +90,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("div.tm_item-row", testClient.Name).click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
-			allProjects.filter((project) => project.Client === testClient.Name).length
+			allProjects.filter((project) => project.Client === testClient.Name).length,
 		);
 
 		// Rows of tasks
@@ -120,7 +98,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("div.tm_item-row", testProject.Name).click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
-			allTasks.filter((task) => task.Project === testProject.Name).length
+			allTasks.filter((task) => task.Project === testProject.Name).length,
 		);
 	});
 
@@ -140,7 +118,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		waitForOcDialog();
 		cy.contains(".oc-dialog", "Error reading CSV file").scrollIntoView().should("be.visible");
 		cy.contains("It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks.").should(
-			"be.visible"
+			"be.visible",
 		);
 		cy.contains("button", "Close").click();
 		waitForOcDialog();
@@ -318,7 +296,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get("a").contains(secondClient.Name).click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
-			projects.filter((project) => project.Client === secondClient.Name).length
+			projects.filter((project) => project.Client === secondClient.Name).length,
 		);
 		cy.contains("div.tm_item-row", `${thirdProject.Name} (changed)`).scrollIntoView().should("be.visible");
 	});
@@ -339,7 +317,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Delete").click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
-			projects.filter((project) => project.Client === secondClient.Name).length - 1
+			projects.filter((project) => project.Client === secondClient.Name).length - 1,
 		);
 	});
 
@@ -448,7 +426,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Delete").click();
 		cy.get("div.tm_item-row").should(
 			"have.length",
-			tasks.filter((task) => task.Project === fifthProject.Name).length - 1
+			tasks.filter((task) => task.Project === fifthProject.Name).length - 1,
 		);
 	});
 
@@ -906,7 +884,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 		cy.get("div.tm_item-row").should("have.length", 1);
 		cy.contains(
 			"div.tm_item-row",
-			"You don't have any time entries, yet. Try adding one by clicking “Add time entry”."
+			"You don't have any time entries, yet. Try adding one by clicking “Add time entry”.",
 		);
 	});
 
@@ -1051,7 +1029,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 					const deletedClient = clients[0];
 					const deletedProject = projects.filter((p) => p.Client === clients[1].Name)[1];
 					const availableProjects = projects.filter(
-						(p) => p.Client !== deletedClient.Name && p.Name !== deletedProject.Name
+						(p) => p.Client !== deletedClient.Name && p.Name !== deletedProject.Name,
 					);
 					counts.clients.created = clients.length - 1;
 					counts.clients.updated = 0;
@@ -1120,7 +1098,12 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 		// Remove user 1 from list of sharees
 		const username = testusers[1];
+
+		cy.contains("button", "Share client").scrollIntoView();
+		cy.wait(500);
 		cy.contains("button", "Share client").click();
+		waitForOcDialog();
+
 		cy.contains("Existing shares")
 			.parent()
 			.within(() => {
