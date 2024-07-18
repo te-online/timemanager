@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.15 Beta, 18. July 2024
+
+### Fixed
+
+- Statistics graphs and reports should now respect the current timezone as determined by the user's browser and should not skip any days anymore (#122)
+
 ## 0.3.14 Beta, 28. April 2024
 
 ### Added
