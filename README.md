@@ -15,12 +15,36 @@ _Looking for screenshots, official release packages or a place to leave a rating
 - 🤝 Track your time together with others by sharing a client and its associated projects and tasks (_web app only_).
 - 🕰 Work with start & end of time entry or duration.
 
-## Planned features
+## Update strategy
 
-- _Allow tracking of time in the background._
-- _~~Work with start & end of time entry or duration.~~_ ✅
-- _Allow to organize time entries without assigning them to tasks, projects or clients._
-- _REST API improvements for mobile clients_
+☝️ A few words on the state of this app:
+
+> [!Tip]
+> If you have a **feature request**, please read the following section before opening an issue or to understand why I may have closed your already opened issue.
+
+### Background
+
+- This Nextcloud app was originally developed by [me](https://github.com/te-online) for my own use
+- I've published it at some point to share with whoever could be interested
+- The codebase is by no means in perfect shape (that's why versions continue to be suffixed "Beta")
+- I know that contributing is not easy as it is right now
+
+> [!Important]
+> I consider the app **mostly feature-complete**
+
+### Long-term goals
+
+- I have no interest in adding massive new features to this app, nor do I intend to change it in any big way
+- With new features comes new responsibility to maintain those and I have no interest in that
+
+> [!Important]
+> My **main concern is to support the existing feature set** as best as I can for the foreseeable future. My responses to feature requests should be seen with this goal in mind
+
+### Conclusion
+
+You may have come here with lots of ideas in your head and now you read this. It may be a disappointment to you, and I'm sorry about that.
+
+If you absolutely need these features, you are welcome to fork the repository and make your own version ✨
 
 ## Development
 
