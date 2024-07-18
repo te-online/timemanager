@@ -4,8 +4,6 @@ A Nextcloud app to track time spent on work, life or anything in-between.
 
 _Looking for screenshots, official release packages or a place to leave a rating?_ 👉 [Visit the app on the Nextcloud Appstore](https://apps.nextcloud.com/apps/timemanager)
 
-📱 **Looking for a mobile companion app?** Try the [Android app (currently in beta)](https://play.google.com/store/apps/details?id=de.jbservices.nc_timemanager_app) made by [@joleaf](https://gitlab.com/joleaf/nc-timemanager-mobile-app).
-
 ## Features
 
 - 💅 Organize time entries based on tasks, projects and clients.
