@@ -177,7 +177,7 @@ class ObjectMapper extends QBMapper {
 		array $filter_tasks = [],
 		string $orderby = "start",
 		$shared = false,
-		string $timezone = "UTC",
+		string $timezone = "UTC"
 	): array {
 		$date_timezone = new \DateTimeZone($timezone);
 
