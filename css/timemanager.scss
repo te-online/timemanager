@@ -2,6 +2,20 @@
 	box-sizing: border-box;
 }
 
+h1,
+h2,
+h3 {
+	font-size: 100%;
+}
+
+h2 {
+	font-size: 1.3rem;
+}
+
+body {
+	--default-line-height: 24px;
+}
+
 #new-item input,
 #new-item textarea {
 	display: block;
@@ -146,7 +160,8 @@
 	letter-spacing: 0.09em;
 	color: var(--color-main-text);
 	display: block;
-	font-size: 9pt;
+	font-size: 0.8rem;
+	line-height: 1.8rem;
 }
 
 .tm_object-details-item {
@@ -271,6 +286,7 @@ label {
 	h2.list-title {
 		display: inline-block;
 		margin-right: 5px;
+		font-size: 100%;
 	}
 
 	.new {
