@@ -50,10 +50,10 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('input[data-test="password"]').type(`${username}-password`);
 
 			if (username == "testuser-1") {
-				cy.get("input#new-user-groups").type("testgroup-1{enter}");
+				cy.get("input[placeholder='Set account groups']").type("testgroup-1{enter}");
 			}
 
-			cy.contains("button", "Add new user").click();
+			cy.contains("button", "Add new account").click();
 		}
 	});
 
