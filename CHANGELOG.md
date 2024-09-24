@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.16 Beta, tba
+
+### Added
+
+- Support for Nextcloud 30
+
+### Changed
+
+- Updated JS dependencies
+
 ## 0.3.15 Beta, 18. July 2024
 
 ### Fixed
