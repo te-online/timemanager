@@ -2,8 +2,8 @@
 	export let syncApiUrl;
 	export let requestToken;
 
-	import { parse } from "csv-parse/dist/esm";
-	import { v4 as uuidv4 } from "uuid/dist/esm-browser";
+	import { parse } from "csv-parse";
+	import { v4 as uuidv4 } from "uuid";
 	import { translate } from "@nextcloud/l10n";
 	import Overlay from "./Overlay.svelte";
 

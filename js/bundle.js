@@ -442,7 +442,7 @@
       Object.defineProperty(subClass, "prototype", {
         writable: false
       });
-      if (superClass) _setPrototypeOf$2(subClass, superClass);
+      if (superClass) _setPrototypeOf$1(subClass, superClass);
     }
     function _getPrototypeOf$1(o) {
       _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
@@ -450,14 +450,14 @@
       };
       return _getPrototypeOf$1(o);
     }
-    function _setPrototypeOf$2(o, p) {
-      _setPrototypeOf$2 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    function _setPrototypeOf$1(o, p) {
+      _setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
         o.__proto__ = p;
         return o;
       };
-      return _setPrototypeOf$2(o, p);
+      return _setPrototypeOf$1(o, p);
     }
-    function _isNativeReflectConstruct$2() {
+    function _isNativeReflectConstruct$1() {
       if (typeof Reflect === "undefined" || !Reflect.construct) return false;
       if (Reflect.construct.sham) return false;
       if (typeof Proxy === "function") return true;
@@ -483,7 +483,7 @@
       return _assertThisInitialized$1(self);
     }
     function _createSuper$1(Derived) {
-      var hasNativeReflectConstruct = _isNativeReflectConstruct$2();
+      var hasNativeReflectConstruct = _isNativeReflectConstruct$1();
       return function _createSuperInternal() {
         var Super = _getPrototypeOf$1(Derived),
           result;
@@ -497,34 +497,34 @@
       };
     }
     function _slicedToArray(arr, i) {
-      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$2(arr, i) || _nonIterableRest();
+      return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray$1(arr, i) || _nonIterableRest();
     }
-    function _toConsumableArray$1(arr) {
-      return _arrayWithoutHoles$1(arr) || _iterableToArray$1(arr) || _unsupportedIterableToArray$2(arr) || _nonIterableSpread$1();
+    function _toConsumableArray(arr) {
+      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray$1(arr) || _nonIterableSpread();
     }
-    function _arrayWithoutHoles$1(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray$2(arr);
+    function _arrayWithoutHoles(arr) {
+      if (Array.isArray(arr)) return _arrayLikeToArray$1(arr);
     }
     function _arrayWithHoles(arr) {
       if (Array.isArray(arr)) return arr;
     }
-    function _iterableToArray$1(iter) {
+    function _iterableToArray(iter) {
       if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
     }
-    function _unsupportedIterableToArray$2(o, minLen) {
+    function _unsupportedIterableToArray$1(o, minLen) {
       if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray$2(o, minLen);
+      if (typeof o === "string") return _arrayLikeToArray$1(o, minLen);
       var n = Object.prototype.toString.call(o).slice(8, -1);
       if (n === "Object" && o.constructor) n = o.constructor.name;
       if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$2(o, minLen);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen);
     }
-    function _arrayLikeToArray$2(arr, len) {
+    function _arrayLikeToArray$1(arr, len) {
       if (len == null || len > arr.length) len = arr.length;
       for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
       return arr2;
     }
-    function _nonIterableSpread$1() {
+    function _nonIterableSpread() {
       throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
     }
     function _nonIterableRest() {
@@ -533,7 +533,7 @@
     function _createForOfIteratorHelper$1(o, allowArrayLike) {
       var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
       if (!it) {
-        if (Array.isArray(o) || (it = _unsupportedIterableToArray$2(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike) {
           if (it) o = it;
           var i = 0;
           var F = function () {};
@@ -653,17 +653,17 @@
 
     var $propertyIsEnumerable$1 = {}.propertyIsEnumerable;
     // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
-    var getOwnPropertyDescriptor$4 = Object.getOwnPropertyDescriptor;
+    var getOwnPropertyDescriptor$3 = Object.getOwnPropertyDescriptor;
 
     // Nashorn ~ JDK8 bug
-    var NASHORN_BUG = getOwnPropertyDescriptor$4 && !$propertyIsEnumerable$1.call({
+    var NASHORN_BUG = getOwnPropertyDescriptor$3 && !$propertyIsEnumerable$1.call({
       1: 2
     }, 1);
 
     // `Object.prototype.propertyIsEnumerable` method implementation
     // https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
     var f$6 = NASHORN_BUG ? function propertyIsEnumerable(V) {
-      var descriptor = getOwnPropertyDescriptor$4(this, V);
+      var descriptor = getOwnPropertyDescriptor$3(this, V);
       return !!descriptor && descriptor.enumerable;
     } : $propertyIsEnumerable$1;
 
@@ -767,25 +767,25 @@
 
     var engineUserAgent = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
 
-    var process$5 = global_1.process;
+    var process$4 = global_1.process;
     var Deno$1 = global_1.Deno;
-    var versions$1 = process$5 && process$5.versions || Deno$1 && Deno$1.version;
+    var versions$1 = process$4 && process$4.versions || Deno$1 && Deno$1.version;
     var v8 = versions$1 && versions$1.v8;
-    var match$8, version$1;
+    var match$4, version$1;
     if (v8) {
-      match$8 = v8.split('.');
+      match$4 = v8.split('.');
       // in old Chrome, versions of V8 isn't V8 = Chrome / 10
       // but their correct versions are not interesting for us
-      version$1 = match$8[0] > 0 && match$8[0] < 4 ? 1 : +(match$8[0] + match$8[1]);
+      version$1 = match$4[0] > 0 && match$4[0] < 4 ? 1 : +(match$4[0] + match$4[1]);
     }
 
     // BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
     // so check `userAgent` even if `.v8` exists, but 0
     if (!version$1 && engineUserAgent) {
-      match$8 = engineUserAgent.match(/Edge\/(\d+)/);
-      if (!match$8 || match$8[1] >= 74) {
-        match$8 = engineUserAgent.match(/Chrome\/(\d+)/);
-        if (match$8) version$1 = +match$8[1];
+      match$4 = engineUserAgent.match(/Edge\/(\d+)/);
+      if (!match$4 || match$4[1] >= 74) {
+        match$4 = engineUserAgent.match(/Chrome\/(\d+)/);
+        if (match$4) version$1 = +match$4[1];
       }
     }
     var engineV8Version = version$1;
@@ -850,17 +850,16 @@
     // https://tc39.es/ecma262/#sec-ordinarytoprimitive
     var ordinaryToPrimitive = function (input, pref) {
       var fn, val;
-      if (pref === 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
+      if (isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
       if (isCallable(fn = input.valueOf) && !isObject$2(val = functionCall(fn, input))) return val;
-      if (pref !== 'string' && isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
       throw $TypeError$e("Can't convert object to primitive value");
     };
 
     // eslint-disable-next-line es/no-object-defineproperty -- safe
-    var defineProperty$5 = Object.defineProperty;
+    var defineProperty$3 = Object.defineProperty;
     var defineGlobalProperty = function (key, value) {
       try {
-        defineProperty$5(global_1, key, {
+        defineProperty$3(global_1, key, {
           value: value,
           configurable: true,
           writable: true
@@ -895,13 +894,13 @@
       return $Object$2(requireObjectCoercible(argument));
     };
 
-    var hasOwnProperty$2 = functionUncurryThis({}.hasOwnProperty);
+    var hasOwnProperty$1 = functionUncurryThis({}.hasOwnProperty);
 
     // `HasOwnProperty` abstract operation
     // https://tc39.es/ecma262/#sec-hasownproperty
     // eslint-disable-next-line es/no-object-hasown -- safe
     var hasOwnProperty_1 = Object.hasOwn || function hasOwn(it, key) {
-      return hasOwnProperty$2(toObject(it), key);
+      return hasOwnProperty$1(toObject(it), key);
     };
 
     var id = 0;
@@ -931,13 +930,11 @@
       var exoticToPrim = getMethod(input, TO_PRIMITIVE);
       var result;
       if (exoticToPrim) {
-        if (pref === undefined) pref = 'default';
         result = functionCall(exoticToPrim, input, pref);
         if (!isObject$2(result) || isSymbol(result)) return result;
         throw $TypeError$d("Can't convert object to primitive value");
       }
-      if (pref === undefined) pref = 'number';
-      return ordinaryToPrimitive(input, pref);
+      return ordinaryToPrimitive(input);
     };
 
     // `ToPropertyKey` abstract operation
@@ -1333,13 +1330,13 @@
     	f: f$2
     };
 
-    var concat$2 = functionUncurryThis([].concat);
+    var concat$1 = functionUncurryThis([].concat);
 
     // all object keys, includes non-enumerable and symbols
     var ownKeys = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
       var keys = objectGetOwnPropertyNames.f(anObject(it));
       var getOwnPropertySymbols = objectGetOwnPropertySymbols.f;
-      return getOwnPropertySymbols ? concat$2(keys, getOwnPropertySymbols(it)) : keys;
+      return getOwnPropertySymbols ? concat$1(keys, getOwnPropertySymbols(it)) : keys;
     };
 
     var copyConstructorProperties = function (target, source, exceptions) {
@@ -1348,7 +1345,7 @@
       var getOwnPropertyDescriptor = objectGetOwnPropertyDescriptor.f;
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (!hasOwnProperty_1(target, key) && !(exceptions && hasOwnProperty_1(exceptions, key))) {
+        if (!hasOwnProperty_1(target, key) && !(exceptions)) {
           defineProperty(target, key, getOwnPropertyDescriptor(source, key));
         }
       }
@@ -1367,7 +1364,7 @@
     var POLYFILL = isForced.POLYFILL = 'P';
     var isForced_1 = isForced;
 
-    var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor.f;
+    var getOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
 
 
 
@@ -1404,7 +1401,7 @@
       if (target) for (key in source) {
         sourceProperty = source[key];
         if (options.dontCallGetSet) {
-          descriptor = getOwnPropertyDescriptor$3(target, key);
+          descriptor = getOwnPropertyDescriptor$2(target, key);
           targetProperty = descriptor && descriptor.value;
         } else targetProperty = target[key];
         FORCED = isForced_1(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
@@ -1559,14 +1556,14 @@
 
     var noop$3 = function () {/* empty */};
     var empty$1 = [];
-    var construct$1 = getBuiltIn('Reflect', 'construct');
+    var construct = getBuiltIn('Reflect', 'construct');
     var constructorRegExp = /^\s*(?:class|function)\b/;
     var exec = functionUncurryThis(constructorRegExp.exec);
     var INCORRECT_TO_STRING = !constructorRegExp.exec(noop$3);
     var isConstructorModern = function isConstructor(argument) {
       if (!isCallable(argument)) return false;
       try {
-        construct$1(noop$3, empty$1, argument);
+        construct(noop$3, empty$1, argument);
         return true;
       } catch (error) {
         return false;
@@ -1593,7 +1590,7 @@
 
     // `IsConstructor` abstract operation
     // https://tc39.es/ecma262/#sec-isconstructor
-    var isConstructor = !construct$1 || fails(function () {
+    var isConstructor = !construct || fails(function () {
       var called;
       return isConstructorModern(isConstructorModern.call) || !isConstructorModern(Object) || !isConstructorModern(function () {
         called = true;
@@ -1719,17 +1716,17 @@
 
     // `Array.prototype.forEach` method implementation
     // https://tc39.es/ecma262/#sec-array.prototype.foreach
-    var arrayForEach$1 = !STRICT_METHOD$1 ? function forEach(callbackfn /* , thisArg */) {
+    var arrayForEach = !STRICT_METHOD$1 ? function forEach(callbackfn /* , thisArg */) {
       return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
       // eslint-disable-next-line es/no-array-prototype-foreach -- safe
     } : [].forEach;
 
     var handlePrototype$1 = function (CollectionPrototype) {
       // some Chrome versions have non-configurable methods on DOMTokenList
-      if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach$1) try {
-        createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach$1);
+      if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach) try {
+        createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach);
       } catch (error) {
-        CollectionPrototype.forEach = arrayForEach$1;
+        CollectionPrototype.forEach = arrayForEach;
       }
     };
     for (var COLLECTION_NAME$1 in domIterables) {
@@ -1757,7 +1754,7 @@
     	f: f$1
     };
 
-    var html$2 = getBuiltIn('document', 'documentElement');
+    var html = getBuiltIn('document', 'documentElement');
 
     /* global ActiveXObject -- old IE, WSH */
 
@@ -1793,7 +1790,7 @@
       var JS = 'java' + SCRIPT + ':';
       var iframeDocument;
       iframe.style.display = 'none';
-      html$2.appendChild(iframe);
+      html.appendChild(iframe);
       // https://github.com/zloirock/core-js/issues/475
       iframe.src = String(JS);
       iframeDocument = iframe.contentWindow.document;
@@ -1836,14 +1833,14 @@
       return Properties === undefined ? result : objectDefineProperties.f(result, Properties);
     };
 
-    var defineProperty$4 = objectDefineProperty.f;
+    var defineProperty$2 = objectDefineProperty.f;
     var UNSCOPABLES = wellKnownSymbol('unscopables');
     var ArrayPrototype$1 = Array.prototype;
 
     // Array.prototype[@@unscopables]
     // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
     if (ArrayPrototype$1[UNSCOPABLES] == undefined) {
-      defineProperty$4(ArrayPrototype$1, UNSCOPABLES, {
+      defineProperty$2(ArrayPrototype$1, UNSCOPABLES, {
         configurable: true,
         value: objectCreate(null)
       });
@@ -1916,7 +1913,7 @@
       return false;
     };
 
-    var stringIndexOf$2 = functionUncurryThis(''.indexOf);
+    var stringIndexOf$1 = functionUncurryThis(''.indexOf);
 
     // `String.prototype.includes` method
     // https://tc39.es/ecma262/#sec-string.prototype.includes
@@ -1926,7 +1923,7 @@
       forced: !correctIsRegexpLogic('includes')
     }, {
       includes: function includes(searchString /* , position = 0 */) {
-        return !!~stringIndexOf$2(toString_1(requireObjectCoercible(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
+        return !!~stringIndexOf$1(toString_1(requireObjectCoercible(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
       }
     });
 
@@ -1995,7 +1992,7 @@
     });
 
     var iteratorClose = function (iterator, kind, value) {
-      var innerResult, innerError;
+      var innerResult;
       anObject(iterator);
       try {
         innerResult = getMethod(iterator, 'return');
@@ -2005,13 +2002,9 @@
         }
         innerResult = functionCall(innerResult, iterator);
       } catch (error) {
-        innerError = true;
         innerResult = error;
       }
-      if (kind === 'throw') throw value;
-      if (innerError) throw innerResult;
-      anObject(innerResult);
-      return value;
+      throw value;
     };
 
     // call something on iterator step with safe closing on error
@@ -2103,7 +2096,7 @@
       });
     } catch (error) {/* empty */}
     var checkCorrectnessOfIteration = function (exec, SKIP_CLOSING) {
-      if (!SKIP_CLOSING && !SAFE_CLOSING) return false;
+      if (!SAFE_CLOSING) return false;
       var ITERATION_SUPPORT = false;
       try {
         var object = {};
@@ -2218,14 +2211,14 @@
       BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS$1
     };
 
-    var defineProperty$3 = objectDefineProperty.f;
+    var defineProperty$1 = objectDefineProperty.f;
 
 
     var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
     var setToStringTag = function (target, TAG, STATIC) {
       if (target && !STATIC) target = target.prototype;
       if (target && !hasOwnProperty_1(target, TO_STRING_TAG$1)) {
-        defineProperty$3(target, TO_STRING_TAG$1, {
+        defineProperty$1(target, TO_STRING_TAG$1, {
           configurable: true,
           value: TAG
         });
@@ -2290,7 +2283,7 @@
       };
     }() : undefined);
 
-    var PROPER_FUNCTION_NAME$1 = functionName.PROPER;
+    var PROPER_FUNCTION_NAME = functionName.PROPER;
     var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
     var IteratorPrototype = iteratorsCore.IteratorPrototype;
     var BUGGY_SAFARI_ITERATORS = iteratorsCore.BUGGY_SAFARI_ITERATORS;
@@ -2330,7 +2323,7 @@
       var nativeIterator = IterablePrototype[ITERATOR$2] || IterablePrototype['@@iterator'] || DEFAULT && IterablePrototype[DEFAULT];
       var defaultIterator = !BUGGY_SAFARI_ITERATORS && nativeIterator || getIterationMethod(DEFAULT);
       var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
-      var CurrentIteratorPrototype, methods, KEY;
+      var CurrentIteratorPrototype, methods;
 
       // fix native
       if (anyNativeIterator) {
@@ -2349,7 +2342,7 @@
       }
 
       // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
-      if (PROPER_FUNCTION_NAME$1 && DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
+      if (PROPER_FUNCTION_NAME && DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
         if (CONFIGURABLE_FUNCTION_NAME) {
           createNonEnumerableProperty(IterablePrototype, 'name', VALUES);
         } else {
@@ -2364,14 +2357,10 @@
       if (DEFAULT) {
         methods = {
           values: getIterationMethod(VALUES),
-          keys: IS_SET ? defaultIterator : getIterationMethod(KEYS),
+          keys: getIterationMethod(KEYS),
           entries: getIterationMethod(ENTRIES)
         };
-        if (FORCED) for (KEY in methods) {
-          if (BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
-            defineBuiltIn(IterablePrototype, KEY, methods[KEY]);
-          }
-        } else _export({
+        _export({
           target: NAME,
           proto: true,
           forced: BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME
@@ -2427,7 +2416,7 @@
       return createIterResultObject(point, false);
     });
 
-    var defineProperty$2 = objectDefineProperty.f;
+    var defineProperty = objectDefineProperty.f;
 
 
 
@@ -2483,7 +2472,7 @@
 
     // V8 ~ Chrome 45- bug
     if (descriptors && values.name !== 'values') try {
-      defineProperty$2(values, 'name', {
+      defineProperty(values, 'name', {
         value: 'values'
       });
     } catch (error) {/* empty */}
@@ -2557,7 +2546,7 @@
       var spreadable = O[IS_CONCAT_SPREADABLE];
       return spreadable !== undefined ? !!spreadable : isArray$3(O);
     };
-    var FORCED$4 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
+    var FORCED$3 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
 
     // `Array.prototype.concat` method
     // https://tc39.es/ecma262/#sec-array.prototype.concat
@@ -2566,7 +2555,7 @@
       target: 'Array',
       proto: true,
       arity: 1,
-      forced: FORCED$4
+      forced: FORCED$3
     }, {
       // eslint-disable-next-line no-unused-vars -- required for `.length`
       concat: function concat(arg) {
@@ -2590,7 +2579,233 @@
       }
     });
 
-    var engineIsNode = typeof process != 'undefined' && classofRaw(process) == 'process';
+    var global$1 = (typeof global !== "undefined" ? global :
+      typeof self !== "undefined" ? self :
+      typeof window !== "undefined" ? window : {});
+
+    // shim for using process in browser
+    // based off https://github.com/defunctzombie/node-process/blob/master/browser.js
+
+    function defaultSetTimout() {
+        throw new Error('setTimeout has not been defined');
+    }
+    function defaultClearTimeout () {
+        throw new Error('clearTimeout has not been defined');
+    }
+    var cachedSetTimeout = defaultSetTimout;
+    var cachedClearTimeout = defaultClearTimeout;
+    if (typeof global$1.setTimeout === 'function') {
+        cachedSetTimeout = setTimeout;
+    }
+    if (typeof global$1.clearTimeout === 'function') {
+        cachedClearTimeout = clearTimeout;
+    }
+
+    function runTimeout(fun) {
+        if (cachedSetTimeout === setTimeout) {
+            //normal enviroments in sane situations
+            return setTimeout(fun, 0);
+        }
+        // if setTimeout wasn't available but was latter defined
+        if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+            cachedSetTimeout = setTimeout;
+            return setTimeout(fun, 0);
+        }
+        try {
+            // when when somebody has screwed with setTimeout but no I.E. maddness
+            return cachedSetTimeout(fun, 0);
+        } catch(e){
+            try {
+                // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+                return cachedSetTimeout.call(null, fun, 0);
+            } catch(e){
+                // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+                return cachedSetTimeout.call(this, fun, 0);
+            }
+        }
+
+
+    }
+    function runClearTimeout(marker) {
+        if (cachedClearTimeout === clearTimeout) {
+            //normal enviroments in sane situations
+            return clearTimeout(marker);
+        }
+        // if clearTimeout wasn't available but was latter defined
+        if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+            cachedClearTimeout = clearTimeout;
+            return clearTimeout(marker);
+        }
+        try {
+            // when when somebody has screwed with setTimeout but no I.E. maddness
+            return cachedClearTimeout(marker);
+        } catch (e){
+            try {
+                // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+                return cachedClearTimeout.call(null, marker);
+            } catch (e){
+                // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+                // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+                return cachedClearTimeout.call(this, marker);
+            }
+        }
+
+
+
+    }
+    var queue$3 = [];
+    var draining = false;
+    var currentQueue;
+    var queueIndex = -1;
+
+    function cleanUpNextTick() {
+        if (!draining || !currentQueue) {
+            return;
+        }
+        draining = false;
+        if (currentQueue.length) {
+            queue$3 = currentQueue.concat(queue$3);
+        } else {
+            queueIndex = -1;
+        }
+        if (queue$3.length) {
+            drainQueue();
+        }
+    }
+
+    function drainQueue() {
+        if (draining) {
+            return;
+        }
+        var timeout = runTimeout(cleanUpNextTick);
+        draining = true;
+
+        var len = queue$3.length;
+        while(len) {
+            currentQueue = queue$3;
+            queue$3 = [];
+            while (++queueIndex < len) {
+                if (currentQueue) {
+                    currentQueue[queueIndex].run();
+                }
+            }
+            queueIndex = -1;
+            len = queue$3.length;
+        }
+        currentQueue = null;
+        draining = false;
+        runClearTimeout(timeout);
+    }
+    function nextTick(fun) {
+        var args = new Array(arguments.length - 1);
+        if (arguments.length > 1) {
+            for (var i = 1; i < arguments.length; i++) {
+                args[i - 1] = arguments[i];
+            }
+        }
+        queue$3.push(new Item$1(fun, args));
+        if (queue$3.length === 1 && !draining) {
+            runTimeout(drainQueue);
+        }
+    }
+    // v8 likes predictible objects
+    function Item$1(fun, array) {
+        this.fun = fun;
+        this.array = array;
+    }
+    Item$1.prototype.run = function () {
+        this.fun.apply(null, this.array);
+    };
+    var title = 'browser';
+    var platform = 'browser';
+    var browser = true;
+    var env = {};
+    var argv = [];
+    var version = ''; // empty string to avoid regexp issues
+    var versions = {};
+    var release = {};
+    var config = {};
+
+    function noop$2() {}
+
+    var on$1 = noop$2;
+    var addListener = noop$2;
+    var once = noop$2;
+    var off = noop$2;
+    var removeListener = noop$2;
+    var removeAllListeners = noop$2;
+    var emit = noop$2;
+
+    function binding(name) {
+        throw new Error('process.binding is not supported');
+    }
+
+    function cwd () { return '/' }
+    function chdir (dir) {
+        throw new Error('process.chdir is not supported');
+    }function umask() { return 0; }
+
+    // from https://github.com/kumavis/browser-process-hrtime/blob/master/index.js
+    var performance = global$1.performance || {};
+    var performanceNow =
+      performance.now        ||
+      performance.mozNow     ||
+      performance.msNow      ||
+      performance.oNow       ||
+      performance.webkitNow  ||
+      function(){ return (new Date()).getTime() };
+
+    // generate timestamp or delta
+    // see http://nodejs.org/api/process.html#process_process_hrtime
+    function hrtime(previousTimestamp){
+      var clocktime = performanceNow.call(performance)*1e-3;
+      var seconds = Math.floor(clocktime);
+      var nanoseconds = Math.floor((clocktime%1)*1e9);
+      if (previousTimestamp) {
+        seconds = seconds - previousTimestamp[0];
+        nanoseconds = nanoseconds - previousTimestamp[1];
+        if (nanoseconds<0) {
+          seconds--;
+          nanoseconds += 1e9;
+        }
+      }
+      return [seconds,nanoseconds]
+    }
+
+    var startTime = new Date();
+    function uptime() {
+      var currentTime = new Date();
+      var dif = currentTime - startTime;
+      return dif / 1000;
+    }
+
+    var browser$1 = {
+      nextTick: nextTick,
+      title: title,
+      browser: browser,
+      env: env,
+      argv: argv,
+      version: version,
+      versions: versions,
+      on: on$1,
+      addListener: addListener,
+      once: once,
+      off: off,
+      removeListener: removeListener,
+      removeAllListeners: removeAllListeners,
+      emit: emit,
+      binding: binding,
+      cwd: cwd,
+      chdir: chdir,
+      umask: umask,
+      hrtime: hrtime,
+      platform: platform,
+      release: release,
+      config: config,
+      uptime: uptime
+    };
+
+    var engineIsNode = typeof browser$1 != 'undefined' && classofRaw(browser$1) == 'process';
 
     var defineBuiltInAccessor = function (target, name, descriptor) {
       if (descriptor.get) makeBuiltIn_1(descriptor.get, name, {
@@ -2640,12 +2855,12 @@
     };
 
     var FunctionPrototype = Function.prototype;
-    var apply$1 = FunctionPrototype.apply;
+    var apply = FunctionPrototype.apply;
     var call = FunctionPrototype.call;
 
     // eslint-disable-next-line es/no-reflect -- safe
-    var functionApply = typeof Reflect == 'object' && Reflect.apply || (functionBindNative ? call.bind(apply$1) : function () {
-      return call.apply(apply$1, arguments);
+    var functionApply = typeof Reflect == 'object' && Reflect.apply || (functionBindNative ? call.bind(apply) : function () {
+      return call.apply(apply, arguments);
     });
 
     var $TypeError$4 = TypeError;
@@ -2659,13 +2874,13 @@
 
     var set = global_1.setImmediate;
     var clear = global_1.clearImmediate;
-    var process$4 = global_1.process;
+    var process$3 = global_1.process;
     var Dispatch = global_1.Dispatch;
     var Function$1 = global_1.Function;
     var MessageChannel = global_1.MessageChannel;
     var String$1 = global_1.String;
     var counter = 0;
-    var queue$3 = {};
+    var queue$2 = {};
     var ONREADYSTATECHANGE = 'onreadystatechange';
     var $location, defer, channel, port;
     fails(function () {
@@ -2673,9 +2888,9 @@
       $location = global_1.location;
     });
     var run$1 = function (id) {
-      if (hasOwnProperty_1(queue$3, id)) {
-        var fn = queue$3[id];
-        delete queue$3[id];
+      if (hasOwnProperty_1(queue$2, id)) {
+        var fn = queue$2[id];
+        delete queue$2[id];
         fn();
       }
     };
@@ -2698,19 +2913,19 @@
         validateArgumentsLength(arguments.length, 1);
         var fn = isCallable(handler) ? handler : Function$1(handler);
         var args = arraySlice(arguments, 1);
-        queue$3[++counter] = function () {
+        queue$2[++counter] = function () {
           functionApply(fn, undefined, args);
         };
         defer(counter);
         return counter;
       };
       clear = function clearImmediate(id) {
-        delete queue$3[id];
+        delete queue$2[id];
       };
       // Node.js 0.8-
       if (engineIsNode) {
         defer = function (id) {
-          process$4.nextTick(runner(id));
+          process$3.nextTick(runner(id));
         };
         // Sphere (JS game engine) Dispatch API
       } else if (Dispatch && Dispatch.now) {
@@ -2732,8 +2947,8 @@
         // IE8-
       } else if (ONREADYSTATECHANGE in documentCreateElement('script')) {
         defer = function (id) {
-          html$2.appendChild(documentCreateElement('script'))[ONREADYSTATECHANGE] = function () {
-            html$2.removeChild(this);
+          html.appendChild(documentCreateElement('script'))[ONREADYSTATECHANGE] = function () {
+            html.removeChild(this);
             run$1(id);
           };
         };
@@ -2772,13 +2987,13 @@
         }
       }
     };
-    var queue$2 = Queue;
+    var queue$1 = Queue;
 
     var engineIsIosPebble = /ipad|iphone|ipod/i.test(engineUserAgent) && typeof Pebble != 'undefined';
 
     var engineIsWebosWebkit = /web0s(?!.*chrome)/i.test(engineUserAgent);
 
-    var getOwnPropertyDescriptor$2 = objectGetOwnPropertyDescriptor.f;
+    var getOwnPropertyDescriptor$1 = objectGetOwnPropertyDescriptor.f;
     var macrotask = task$1.set;
 
 
@@ -2787,23 +3002,23 @@
 
     var MutationObserver = global_1.MutationObserver || global_1.WebKitMutationObserver;
     var document$2 = global_1.document;
-    var process$3 = global_1.process;
+    var process$2 = global_1.process;
     var Promise$1 = global_1.Promise;
     // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
-    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$2(global_1, 'queueMicrotask');
+    var queueMicrotaskDescriptor = getOwnPropertyDescriptor$1(global_1, 'queueMicrotask');
     var microtask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
     var notify$1, toggle, node, promise, then;
 
     // modern engines have queueMicrotask method
     if (!microtask) {
-      var queue$1 = new queue$2();
+      var queue = new queue$1();
       var flush$1 = function () {
         var parent, fn;
-        if (engineIsNode && (parent = process$3.domain)) parent.exit();
-        while (fn = queue$1.get()) try {
+        if (engineIsNode && (parent = process$2.domain)) parent.exit();
+        while (fn = queue.get()) try {
           fn();
         } catch (error) {
-          if (queue$1.head) notify$1();
+          if (queue.head) notify$1();
           throw error;
         }
         if (parent) parent.enter();
@@ -2833,7 +3048,7 @@
         // Node.js without promises
       } else if (engineIsNode) {
         notify$1 = function () {
-          process$3.nextTick(flush$1);
+          process$2.nextTick(flush$1);
         };
         // for other environments - macrotask based on:
         // - setImmediate
@@ -2849,8 +3064,8 @@
         };
       }
       microtask = function (fn) {
-        if (!queue$1.head) notify$1();
-        queue$1.add(fn);
+        if (!queue.head) notify$1();
+        queue.add(fn);
       };
     }
     var microtask_1 = microtask;
@@ -2961,7 +3176,7 @@
     var PromisePrototype = NativePromisePrototype$1;
     var TypeError$1 = global_1.TypeError;
     var document$1 = global_1.document;
-    var process$2 = global_1.process;
+    var process$1 = global_1.process;
     var newPromiseCapability = newPromiseCapability$1.f;
     var newGenericPromiseCapability = newPromiseCapability;
     var DISPATCH_EVENT = !!(document$1 && document$1.createEvent && global_1.dispatchEvent);
@@ -3048,7 +3263,7 @@
         if (IS_UNHANDLED) {
           result = perform(function () {
             if (engineIsNode) {
-              process$2.emit('unhandledRejection', value, promise);
+              process$1.emit('unhandledRejection', value, promise);
             } else dispatchEvent(UNHANDLED_REJECTION, promise, value);
           });
           // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
@@ -3064,7 +3279,7 @@
       functionCall(task, global_1, function () {
         var promise = state.facade;
         if (engineIsNode) {
-          process$2.emit('rejectionHandled', promise);
+          process$1.emit('rejectionHandled', promise);
         } else dispatchEvent(REJECTION_HANDLED, promise, state.value);
       });
     };
@@ -3134,7 +3349,7 @@
           done: false,
           notified: false,
           parent: false,
-          reactions: new queue$2(),
+          reactions: new queue$1(),
           rejection: false,
           state: PENDING,
           value: undefined
@@ -3149,7 +3364,7 @@
         state.parent = true;
         reaction.ok = isCallable(onFulfilled) ? onFulfilled : true;
         reaction.fail = isCallable(onRejected) && onRejected;
-        reaction.domain = engineIsNode ? process$2.domain : undefined;
+        reaction.domain = engineIsNode ? process$1.domain : undefined;
         if (state.state == PENDING) state.reactions.add(reaction);else microtask_1(function () {
           callReaction(reaction, state);
         });
@@ -3209,29 +3424,13 @@
     };
     var ResultPrototype = Result.prototype;
     var iterate = function (iterable, unboundFunction, options) {
-      var that = options && options.that;
-      var AS_ENTRIES = !!(options && options.AS_ENTRIES);
-      var IS_RECORD = !!(options && options.IS_RECORD);
-      var IS_ITERATOR = !!(options && options.IS_ITERATOR);
-      var INTERRUPTED = !!(options && options.INTERRUPTED);
+      var that = options;
       var fn = functionBindContext(unboundFunction, that);
       var iterator, iterFn, index, length, result, next, step;
-      var stop = function (condition) {
-        if (iterator) iteratorClose(iterator, 'normal', condition);
-        return new Result(true, condition);
-      };
       var callFn = function (value) {
-        if (AS_ENTRIES) {
-          anObject(value);
-          return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
-        }
-        return INTERRUPTED ? fn(value, stop) : fn(value);
+        return fn(value);
       };
-      if (IS_RECORD) {
-        iterator = iterable.iterator;
-      } else if (IS_ITERATOR) {
-        iterator = iterable;
-      } else {
+      {
         iterFn = getIteratorMethod(iterable);
         if (!iterFn) throw $TypeError$2(tryToString(iterable) + ' is not iterable');
         // optimisation for array iterators
@@ -3244,7 +3443,7 @@
         }
         iterator = getIterator(iterable, iterFn);
       }
-      next = IS_RECORD ? iterable.next : iterator.next;
+      next = iterator.next;
       while (!(step = functionCall(next, iterator)).done) {
         try {
           result = callFn(step.value);
@@ -3389,369 +3588,638 @@
       }
     });
 
-    function noop$2() { }
+    /** @returns {void} */
+    function noop$1() {}
+
+    /**
+     * @template T
+     * @template S
+     * @param {T} tar
+     * @param {S} src
+     * @returns {T & S}
+     */
     function assign$1(tar, src) {
-        // @ts-ignore
-        for (const k in src)
-            tar[k] = src[k];
-        return tar;
+      // @ts-ignore
+      for (const k in src) tar[k] = src[k];
+      return (/** @type {T & S} */tar
+      );
     }
     function run(fn) {
-        return fn();
+      return fn();
     }
     function blank_object() {
-        return Object.create(null);
+      return Object.create(null);
     }
+
+    /**
+     * @param {Function[]} fns
+     * @returns {void}
+     */
     function run_all(fns) {
-        fns.forEach(run);
+      fns.forEach(run);
     }
+
+    /**
+     * @param {any} thing
+     * @returns {thing is Function}
+     */
     function is_function(thing) {
-        return typeof thing === 'function';
+      return typeof thing === 'function';
     }
+
+    /** @returns {boolean} */
     function safe_not_equal(a, b) {
-        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+      return a != a ? b == b : a !== b || a && typeof a === 'object' || typeof a === 'function';
     }
     let src_url_equal_anchor;
+
+    /**
+     * @param {string} element_src
+     * @param {string} url
+     * @returns {boolean}
+     */
     function src_url_equal(element_src, url) {
-        if (!src_url_equal_anchor) {
-            src_url_equal_anchor = document.createElement('a');
-        }
-        src_url_equal_anchor.href = url;
-        return element_src === src_url_equal_anchor.href;
+      if (element_src === url) return true;
+      if (!src_url_equal_anchor) {
+        src_url_equal_anchor = document.createElement('a');
+      }
+      // This is actually faster than doing URL(..).href
+      src_url_equal_anchor.href = url;
+      return element_src === src_url_equal_anchor.href;
     }
+
+    /** @param {string} srcset */
+    function split_srcset(srcset) {
+      return srcset.split(',').map(src => src.trim().split(' ').filter(Boolean));
+    }
+
+    /**
+     * @param {HTMLSourceElement | HTMLImageElement} element_srcset
+     * @param {string | undefined | null} srcset
+     * @returns {boolean}
+     */
+    function srcset_url_equal(element_srcset, srcset) {
+      const element_urls = split_srcset(element_srcset.srcset);
+      const urls = split_srcset(srcset || '');
+      return urls.length === element_urls.length && urls.every(([url, width], i) => width === element_urls[i][1] && (
+      // We need to test both ways because Vite will create an a full URL with
+      // `new URL(asset, import.meta.url).href` for the client when `base: './'`, and the
+      // relative URLs inside srcset are not automatically resolved to absolute URLs by
+      // browsers (in contrast to img.src). This means both SSR and DOM code could
+      // contain relative or absolute URLs.
+      src_url_equal(element_urls[i][0], url) || src_url_equal(url, element_urls[i][0])));
+    }
+
+    /** @returns {boolean} */
     function is_empty(obj) {
-        return Object.keys(obj).length === 0;
+      return Object.keys(obj).length === 0;
     }
     function subscribe$1(store, ...callbacks) {
-        if (store == null) {
-            return noop$2;
+      if (store == null) {
+        for (const callback of callbacks) {
+          callback(undefined);
         }
-        const unsub = store.subscribe(...callbacks);
-        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+        return noop$1;
+      }
+      const unsub = store.subscribe(...callbacks);
+      return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
     }
+
+    /** @returns {void} */
     function component_subscribe(component, store, callback) {
-        component.$$.on_destroy.push(subscribe$1(store, callback));
+      component.$$.on_destroy.push(subscribe$1(store, callback));
     }
     function create_slot(definition, ctx, $$scope, fn) {
-        if (definition) {
-            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
-            return definition[0](slot_ctx);
-        }
+      if (definition) {
+        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+        return definition[0](slot_ctx);
+      }
     }
     function get_slot_context(definition, ctx, $$scope, fn) {
-        return definition[1] && fn
-            ? assign$1($$scope.ctx.slice(), definition[1](fn(ctx)))
-            : $$scope.ctx;
+      return definition[1] && fn ? assign$1($$scope.ctx.slice(), definition[1](fn(ctx))) : $$scope.ctx;
     }
     function get_slot_changes(definition, $$scope, dirty, fn) {
-        if (definition[2] && fn) {
-            const lets = definition[2](fn(dirty));
-            if ($$scope.dirty === undefined) {
-                return lets;
-            }
-            if (typeof lets === 'object') {
-                const merged = [];
-                const len = Math.max($$scope.dirty.length, lets.length);
-                for (let i = 0; i < len; i += 1) {
-                    merged[i] = $$scope.dirty[i] | lets[i];
-                }
-                return merged;
-            }
-            return $$scope.dirty | lets;
+      if (definition[2] && fn) {
+        const lets = definition[2](fn(dirty));
+        if ($$scope.dirty === undefined) {
+          return lets;
         }
-        return $$scope.dirty;
+        if (typeof lets === 'object') {
+          const merged = [];
+          const len = Math.max($$scope.dirty.length, lets.length);
+          for (let i = 0; i < len; i += 1) {
+            merged[i] = $$scope.dirty[i] | lets[i];
+          }
+          return merged;
+        }
+        return $$scope.dirty | lets;
+      }
+      return $$scope.dirty;
     }
+
+    /** @returns {void} */
     function update_slot_base(slot, slot_definition, ctx, $$scope, slot_changes, get_slot_context_fn) {
-        if (slot_changes) {
-            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
-            slot.p(slot_context, slot_changes);
-        }
+      if (slot_changes) {
+        const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+        slot.p(slot_context, slot_changes);
+      }
     }
+
+    /** @returns {any[] | -1} */
     function get_all_dirty_from_scope($$scope) {
-        if ($$scope.ctx.length > 32) {
-            const dirty = [];
-            const length = $$scope.ctx.length / 32;
-            for (let i = 0; i < length; i++) {
-                dirty[i] = -1;
-            }
-            return dirty;
+      if ($$scope.ctx.length > 32) {
+        const dirty = [];
+        const length = $$scope.ctx.length / 32;
+        for (let i = 0; i < length; i++) {
+          dirty[i] = -1;
         }
-        return -1;
+        return dirty;
+      }
+      return -1;
     }
     function action_destroyer(action_result) {
-        return action_result && is_function(action_result.destroy) ? action_result.destroy : noop$2;
+      return action_result && is_function(action_result.destroy) ? action_result.destroy : noop$1;
     }
+
+    /**
+     * @param {Node} target
+     * @param {Node} node
+     * @returns {void}
+     */
     function append(target, node) {
-        target.appendChild(node);
+      target.appendChild(node);
     }
+
+    /**
+     * @param {Node} target
+     * @param {string} style_sheet_id
+     * @param {string} styles
+     * @returns {void}
+     */
     function append_styles(target, style_sheet_id, styles) {
-        const append_styles_to = get_root_for_style(target);
-        if (!append_styles_to.getElementById(style_sheet_id)) {
-            const style = element('style');
-            style.id = style_sheet_id;
-            style.textContent = styles;
-            append_stylesheet(append_styles_to, style);
-        }
+      const append_styles_to = get_root_for_style(target);
+      if (!append_styles_to.getElementById(style_sheet_id)) {
+        const style = element('style');
+        style.id = style_sheet_id;
+        style.textContent = styles;
+        append_stylesheet(append_styles_to, style);
+      }
     }
+
+    /**
+     * @param {Node} node
+     * @returns {ShadowRoot | Document}
+     */
     function get_root_for_style(node) {
-        if (!node)
-            return document;
-        const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
-        if (root && root.host) {
-            return root;
-        }
-        return node.ownerDocument;
+      if (!node) return document;
+      const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
+      if (root && /** @type {ShadowRoot} */root.host) {
+        return (/** @type {ShadowRoot} */root
+        );
+      }
+      return node.ownerDocument;
     }
+
+    /**
+     * @param {ShadowRoot | Document} node
+     * @param {HTMLStyleElement} style
+     * @returns {CSSStyleSheet}
+     */
     function append_stylesheet(node, style) {
-        append(node.head || node, style);
-        return style.sheet;
+      append( /** @type {Document} */node.head || node, style);
+      return style.sheet;
     }
+
+    /**
+     * @param {Node} target
+     * @param {Node} node
+     * @param {Node} [anchor]
+     * @returns {void}
+     */
     function insert(target, node, anchor) {
-        target.insertBefore(node, anchor || null);
+      target.insertBefore(node, anchor || null);
     }
+
+    /**
+     * @param {Node} node
+     * @returns {void}
+     */
     function detach(node) {
-        if (node.parentNode) {
-            node.parentNode.removeChild(node);
-        }
+      if (node.parentNode) {
+        node.parentNode.removeChild(node);
+      }
     }
+
+    /**
+     * @returns {void} */
     function destroy_each(iterations, detaching) {
-        for (let i = 0; i < iterations.length; i += 1) {
-            if (iterations[i])
-                iterations[i].d(detaching);
-        }
+      for (let i = 0; i < iterations.length; i += 1) {
+        if (iterations[i]) iterations[i].d(detaching);
+      }
     }
+
+    /**
+     * @template {keyof HTMLElementTagNameMap} K
+     * @param {K} name
+     * @returns {HTMLElementTagNameMap[K]}
+     */
     function element(name) {
-        return document.createElement(name);
+      return document.createElement(name);
     }
+
+    /**
+     * @template {keyof SVGElementTagNameMap} K
+     * @param {K} name
+     * @returns {SVGElement}
+     */
     function svg_element(name) {
-        return document.createElementNS('http://www.w3.org/2000/svg', name);
+      return document.createElementNS('http://www.w3.org/2000/svg', name);
     }
-    function text$1(data) {
-        return document.createTextNode(data);
+
+    /**
+     * @param {string} data
+     * @returns {Text}
+     */
+    function text(data) {
+      return document.createTextNode(data);
     }
+
+    /**
+     * @returns {Text} */
     function space$1() {
-        return text$1(' ');
+      return text(' ');
     }
+
+    /**
+     * @returns {Text} */
     function empty() {
-        return text$1('');
+      return text('');
     }
+
+    /**
+     * @param {EventTarget} node
+     * @param {string} event
+     * @param {EventListenerOrEventListenerObject} handler
+     * @param {boolean | AddEventListenerOptions | EventListenerOptions} [options]
+     * @returns {() => void}
+     */
     function listen(node, event, handler, options) {
-        node.addEventListener(event, handler, options);
-        return () => node.removeEventListener(event, handler, options);
+      node.addEventListener(event, handler, options);
+      return () => node.removeEventListener(event, handler, options);
     }
+
+    /**
+     * @returns {(event: any) => any} */
     function prevent_default(fn) {
-        return function (event) {
-            event.preventDefault();
-            // @ts-ignore
-            return fn.call(this, event);
-        };
-    }
-    function attr(node, attribute, value) {
-        if (value == null)
-            node.removeAttribute(attribute);
-        else if (node.getAttribute(attribute) !== value)
-            node.setAttribute(attribute, value);
-    }
-    function set_attributes(node, attributes) {
+      return function (event) {
+        event.preventDefault();
         // @ts-ignore
-        const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
-        for (const key in attributes) {
-            if (attributes[key] == null) {
-                node.removeAttribute(key);
-            }
-            else if (key === 'style') {
-                node.style.cssText = attributes[key];
-            }
-            else if (key === '__value') {
-                node.value = node[key] = attributes[key];
-            }
-            else if (descriptors[key] && descriptors[key].set) {
-                node[key] = attributes[key];
-            }
-            else {
-                attr(node, key, attributes[key]);
-            }
-        }
+        return fn.call(this, event);
+      };
     }
+
+    /**
+     * @param {Element} node
+     * @param {string} attribute
+     * @param {string} [value]
+     * @returns {void}
+     */
+    function attr(node, attribute, value) {
+      if (value == null) node.removeAttribute(attribute);else if (node.getAttribute(attribute) !== value) node.setAttribute(attribute, value);
+    }
+    /**
+     * List of attributes that should always be set through the attr method,
+     * because updating them through the property setter doesn't work reliably.
+     * In the example of `width`/`height`, the problem is that the setter only
+     * accepts numeric values, but the attribute can also be set to a string like `50%`.
+     * If this list becomes too big, rethink this approach.
+     */
+    const always_set_through_set_attribute = ['width', 'height'];
+
+    /**
+     * @param {Element & ElementCSSInlineStyle} node
+     * @param {{ [x: string]: string }} attributes
+     * @returns {void}
+     */
+    function set_attributes(node, attributes) {
+      // @ts-ignore
+      const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
+      for (const key in attributes) {
+        if (attributes[key] == null) {
+          node.removeAttribute(key);
+        } else if (key === 'style') {
+          node.style.cssText = attributes[key];
+        } else if (key === '__value') {
+          /** @type {any} */node.value = node[key] = attributes[key];
+        } else if (descriptors[key] && descriptors[key].set && always_set_through_set_attribute.indexOf(key) === -1) {
+          node[key] = attributes[key];
+        } else {
+          attr(node, key, attributes[key]);
+        }
+      }
+    }
+
+    /**
+     * @returns {void} */
     function set_custom_element_data(node, prop, value) {
-        if (prop in node) {
-            node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
-        }
-        else {
-            attr(node, prop, value);
-        }
+      const lower = prop.toLowerCase(); // for backwards compatibility with existing behavior we do lowercase first
+      if (lower in node) {
+        node[lower] = typeof node[lower] === 'boolean' && value === '' ? true : value;
+      } else if (prop in node) {
+        node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
+      } else {
+        attr(node, prop, value);
+      }
     }
+
+    /**
+     * @param {Element} element
+     * @returns {ChildNode[]}
+     */
     function children(element) {
-        return Array.from(element.childNodes);
+      return Array.from(element.childNodes);
     }
+
+    /**
+     * @param {Text} text
+     * @param {unknown} data
+     * @returns {void}
+     */
     function set_data(text, data) {
-        data = '' + data;
-        if (text.data === data)
-            return;
-        text.data = data;
+      data = '' + data;
+      if (text.data === data) return;
+      text.data = /** @type {string} */data;
     }
+
+    /**
+     * @returns {void} */
     function set_input_value(input, value) {
-        input.value = value == null ? '' : value;
+      input.value = value == null ? '' : value;
     }
+
+    /**
+     * @returns {void} */
     function set_style(node, key, value, important) {
-        if (value === null) {
-            node.style.removeProperty(key);
-        }
-        else {
-            node.style.setProperty(key, value, important ? 'important' : '');
-        }
+      if (value == null) {
+        node.style.removeProperty(key);
+      } else {
+        node.style.setProperty(key, value, '');
+      }
     }
     // unfortunately this can't be a constant as that wouldn't be tree-shakeable
     // so we cache the result instead
+
+    /**
+     * @type {boolean} */
     let crossorigin;
+
+    /**
+     * @returns {boolean} */
     function is_crossorigin() {
-        if (crossorigin === undefined) {
-            crossorigin = false;
-            try {
-                if (typeof window !== 'undefined' && window.parent) {
-                    void window.parent.document;
-                }
-            }
-            catch (error) {
-                crossorigin = true;
-            }
+      if (crossorigin === undefined) {
+        crossorigin = false;
+        try {
+          if (typeof window !== 'undefined' && window.parent) {
+            void window.parent.document;
+          }
+        } catch (error) {
+          crossorigin = true;
         }
-        return crossorigin;
-    }
-    function add_resize_listener(node, fn) {
-        const computed_style = getComputedStyle(node);
-        if (computed_style.position === 'static') {
-            node.style.position = 'relative';
-        }
-        const iframe = element('iframe');
-        iframe.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ' +
-            'overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;');
-        iframe.setAttribute('aria-hidden', 'true');
-        iframe.tabIndex = -1;
-        const crossorigin = is_crossorigin();
-        let unsubscribe;
-        if (crossorigin) {
-            iframe.src = "data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>";
-            unsubscribe = listen(window, 'message', (event) => {
-                if (event.source === iframe.contentWindow)
-                    fn();
-            });
-        }
-        else {
-            iframe.src = 'about:blank';
-            iframe.onload = () => {
-                unsubscribe = listen(iframe.contentWindow, 'resize', fn);
-                // make sure an initial resize event is fired _after_ the iframe is loaded (which is asynchronous)
-                // see https://github.com/sveltejs/svelte/issues/4233
-                fn();
-            };
-        }
-        append(node, iframe);
-        return () => {
-            if (crossorigin) {
-                unsubscribe();
-            }
-            else if (unsubscribe && iframe.contentWindow) {
-                unsubscribe();
-            }
-            detach(iframe);
-        };
-    }
-    function toggle_class(element, name, toggle) {
-        element.classList[toggle ? 'add' : 'remove'](name);
-    }
-    function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
-        const e = document.createEvent('CustomEvent');
-        e.initCustomEvent(type, bubbles, cancelable, detail);
-        return e;
-    }
-    class HtmlTag {
-        constructor(is_svg = false) {
-            this.is_svg = false;
-            this.is_svg = is_svg;
-            this.e = this.n = null;
-        }
-        c(html) {
-            this.h(html);
-        }
-        m(html, target, anchor = null) {
-            if (!this.e) {
-                if (this.is_svg)
-                    this.e = svg_element(target.nodeName);
-                /** #7364  target for <template> may be provided as #document-fragment(11) */
-                else
-                    this.e = element((target.nodeType === 11 ? 'TEMPLATE' : target.nodeName));
-                this.t = target.tagName !== 'TEMPLATE' ? target : target.content;
-                this.c(html);
-            }
-            this.i(anchor);
-        }
-        h(html) {
-            this.e.innerHTML = html;
-            this.n = Array.from(this.e.nodeName === 'TEMPLATE' ? this.e.content.childNodes : this.e.childNodes);
-        }
-        i(anchor) {
-            for (let i = 0; i < this.n.length; i += 1) {
-                insert(this.t, this.n[i], anchor);
-            }
-        }
-        p(html) {
-            this.d();
-            this.h(html);
-            this.i(this.a);
-        }
-        d() {
-            this.n.forEach(detach);
-        }
-    }
-    function construct_svelte_component(component, props) {
-        return new component(props);
+      }
+      return crossorigin;
     }
 
+    /**
+     * @param {HTMLElement} node
+     * @param {() => void} fn
+     * @returns {() => void}
+     */
+    function add_iframe_resize_listener(node, fn) {
+      const computed_style = getComputedStyle(node);
+      if (computed_style.position === 'static') {
+        node.style.position = 'relative';
+      }
+      const iframe = element('iframe');
+      iframe.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ' + 'overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: -1;');
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.tabIndex = -1;
+      const crossorigin = is_crossorigin();
+
+      /**
+       * @type {() => void}
+       */
+      let unsubscribe;
+      if (crossorigin) {
+        iframe.src = "data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>";
+        unsubscribe = listen(window, 'message', /** @param {MessageEvent} event */event => {
+          if (event.source === iframe.contentWindow) fn();
+        });
+      } else {
+        iframe.src = 'about:blank';
+        iframe.onload = () => {
+          unsubscribe = listen(iframe.contentWindow, 'resize', fn);
+          // make sure an initial resize event is fired _after_ the iframe is loaded (which is asynchronous)
+          // see https://github.com/sveltejs/svelte/issues/4233
+          fn();
+        };
+      }
+      append(node, iframe);
+      return () => {
+        if (crossorigin) {
+          unsubscribe();
+        } else if (unsubscribe && iframe.contentWindow) {
+          unsubscribe();
+        }
+        detach(iframe);
+      };
+    }
+
+    /**
+     * @returns {void} */
+    function toggle_class(element, name, toggle) {
+      // The `!!` is required because an `undefined` flag means flipping the current state.
+      element.classList.toggle(name, !!toggle);
+    }
+
+    /**
+     * @template T
+     * @param {string} type
+     * @param {T} [detail]
+     * @param {{ bubbles?: boolean, cancelable?: boolean }} [options]
+     * @returns {CustomEvent<T>}
+     */
+    function custom_event(type, detail, {
+      bubbles = false,
+      cancelable = false
+    } = {}) {
+      return new CustomEvent(type, {
+        detail,
+        bubbles,
+        cancelable
+      });
+    }
+    /** */
+    class HtmlTag {
+      /**
+       * @private
+       * @default false
+       */
+      is_svg = false;
+      /** parent for creating node */
+      e = undefined;
+      /** html tag nodes */
+      n = undefined;
+      /** target */
+      t = undefined;
+      /** anchor */
+      a = undefined;
+      constructor(is_svg = false) {
+        this.is_svg = is_svg;
+        this.e = this.n = null;
+      }
+
+      /**
+       * @param {string} html
+       * @returns {void}
+       */
+      c(html) {
+        this.h(html);
+      }
+
+      /**
+       * @param {string} html
+       * @param {HTMLElement | SVGElement} target
+       * @param {HTMLElement | SVGElement} anchor
+       * @returns {void}
+       */
+      m(html, target, anchor = null) {
+        if (!this.e) {
+          if (this.is_svg) this.e = svg_element( /** @type {keyof SVGElementTagNameMap} */target.nodeName);
+          /** #7364  target for <template> may be provided as #document-fragment(11) */else this.e = element( /** @type {keyof HTMLElementTagNameMap} */
+          target.nodeType === 11 ? 'TEMPLATE' : target.nodeName);
+          this.t = target.tagName !== 'TEMPLATE' ? target : /** @type {HTMLTemplateElement} */target.content;
+          this.c(html);
+        }
+        this.i(anchor);
+      }
+
+      /**
+       * @param {string} html
+       * @returns {void}
+       */
+      h(html) {
+        this.e.innerHTML = html;
+        this.n = Array.from(this.e.nodeName === 'TEMPLATE' ? this.e.content.childNodes : this.e.childNodes);
+      }
+
+      /**
+       * @returns {void} */
+      i(anchor) {
+        for (let i = 0; i < this.n.length; i += 1) {
+          insert(this.t, this.n[i], anchor);
+        }
+      }
+
+      /**
+       * @param {string} html
+       * @returns {void}
+       */
+      p(html) {
+        this.d();
+        this.h(html);
+        this.i(this.a);
+      }
+
+      /**
+       * @returns {void} */
+      d() {
+        this.n.forEach(detach);
+      }
+    }
+    function construct_svelte_component(component, props) {
+      return new component(props);
+    }
+
+    /**
+     * @typedef {Node & {
+     * 	claim_order?: number;
+     * 	hydrate_init?: true;
+     * 	actual_end_child?: NodeEx;
+     * 	childNodes: NodeListOf<NodeEx>;
+     * }} NodeEx
+     */
+
+    /** @typedef {ChildNode & NodeEx} ChildNodeEx */
+
+    /** @typedef {NodeEx & { claim_order: number }} NodeEx2 */
+
+    /**
+     * @typedef {ChildNodeEx[] & {
+     * 	claim_info?: {
+     * 		last_index: number;
+     * 		total_claimed: number;
+     * 	};
+     * }} ChildNodeArray
+     */
+
     let current_component;
+
+    /** @returns {void} */
     function set_current_component(component) {
-        current_component = component;
+      current_component = component;
     }
     function get_current_component() {
-        if (!current_component)
-            throw new Error('Function called outside component initialization');
-        return current_component;
+      if (!current_component) throw new Error('Function called outside component initialization');
+      return current_component;
     }
+
     /**
      * Schedules a callback to run immediately before the component is updated after any state change.
      *
      * The first time the callback runs will be before the initial `onMount`
      *
-     * https://svelte.dev/docs#run-time-svelte-beforeupdate
+     * https://svelte.dev/docs/svelte#beforeupdate
+     * @param {() => any} fn
+     * @returns {void}
      */
     function beforeUpdate(fn) {
-        get_current_component().$$.before_update.push(fn);
+      get_current_component().$$.before_update.push(fn);
     }
+
     /**
      * The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM.
      * It must be called during the component's initialisation (but doesn't need to live *inside* the component;
      * it can be called from an external module).
      *
-     * `onMount` does not run inside a [server-side component](/docs#run-time-server-side-component-api).
+     * If a function is returned _synchronously_ from `onMount`, it will be called when the component is unmounted.
      *
-     * https://svelte.dev/docs#run-time-svelte-onmount
+     * `onMount` does not run inside a [server-side component](https://svelte.dev/docs#run-time-server-side-component-api).
+     *
+     * https://svelte.dev/docs/svelte#onmount
+     * @template T
+     * @param {() => import('./private.js').NotFunction<T> | Promise<import('./private.js').NotFunction<T>> | (() => any)} fn
+     * @returns {void}
      */
     function onMount(fn) {
-        get_current_component().$$.on_mount.push(fn);
+      get_current_component().$$.on_mount.push(fn);
     }
+
     /**
      * Schedules a callback to run immediately before the component is unmounted.
      *
      * Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the
      * only one that runs inside a server-side component.
      *
-     * https://svelte.dev/docs#run-time-svelte-ondestroy
+     * https://svelte.dev/docs/svelte#ondestroy
+     * @param {() => any} fn
+     * @returns {void}
      */
     function onDestroy(fn) {
-        get_current_component().$$.on_destroy.push(fn);
+      get_current_component().$$.on_destroy.push(fn);
     }
+
     /**
-     * Creates an event dispatcher that can be used to dispatch [component events](/docs#template-syntax-component-directives-on-eventname).
+     * Creates an event dispatcher that can be used to dispatch [component events](https://svelte.dev/docs#template-syntax-component-directives-on-eventname).
      * Event dispatchers are functions that can take two arguments: `name` and `detail`.
      *
      * Component events created with `createEventDispatcher` create a
@@ -3760,47 +4228,71 @@
      * The `detail` argument corresponds to the [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail)
      * property and can contain any type of data.
      *
-     * https://svelte.dev/docs#run-time-svelte-createeventdispatcher
+     * The event dispatcher can be typed to narrow the allowed event names and the type of the `detail` argument:
+     * ```ts
+     * const dispatch = createEventDispatcher<{
+     *  loaded: never; // does not take a detail argument
+     *  change: string; // takes a detail argument of type string, which is required
+     *  optional: number | null; // takes an optional detail argument of type number
+     * }>();
+     * ```
+     *
+     * https://svelte.dev/docs/svelte#createeventdispatcher
+     * @template {Record<string, any>} [EventMap=any]
+     * @returns {import('./public.js').EventDispatcher<EventMap>}
      */
     function createEventDispatcher() {
-        const component = get_current_component();
-        return (type, detail, { cancelable = false } = {}) => {
-            const callbacks = component.$$.callbacks[type];
-            if (callbacks) {
-                // TODO are there situations where events could be dispatched
-                // in a server (non-DOM) environment?
-                const event = custom_event(type, detail, { cancelable });
-                callbacks.slice().forEach(fn => {
-                    fn.call(component, event);
-                });
-                return !event.defaultPrevented;
-            }
-            return true;
-        };
+      const component = get_current_component();
+      return (type, detail, {
+        cancelable = false
+      } = {}) => {
+        const callbacks = component.$$.callbacks[type];
+        if (callbacks) {
+          // TODO are there situations where events could be dispatched
+          // in a server (non-DOM) environment?
+          const event = custom_event( /** @type {string} */type, detail, {
+            cancelable
+          });
+          callbacks.slice().forEach(fn => {
+            fn.call(component, event);
+          });
+          return !event.defaultPrevented;
+        }
+        return true;
+      };
     }
 
     const dirty_components = [];
     const binding_callbacks = [];
     let render_callbacks = [];
     const flush_callbacks = [];
-    const resolved_promise = /* @__PURE__ */ Promise.resolve();
+    const resolved_promise = /* @__PURE__ */Promise.resolve();
     let update_scheduled = false;
+
+    /** @returns {void} */
     function schedule_update() {
-        if (!update_scheduled) {
-            update_scheduled = true;
-            resolved_promise.then(flush);
-        }
+      if (!update_scheduled) {
+        update_scheduled = true;
+        resolved_promise.then(flush);
+      }
     }
+
+    /** @returns {Promise<void>} */
     function tick() {
-        schedule_update();
-        return resolved_promise;
+      schedule_update();
+      return resolved_promise;
     }
+
+    /** @returns {void} */
     function add_render_callback(fn) {
-        render_callbacks.push(fn);
+      render_callbacks.push(fn);
     }
+
+    /** @returns {void} */
     function add_flush_callback(fn) {
-        flush_callbacks.push(fn);
+      flush_callbacks.push(fn);
     }
+
     // flush() calls callbacks in this order:
     // 1. All beforeUpdate callbacks, in order: parents before children
     // 2. All bind:this callbacks, in reverse order: children before parents.
@@ -3821,388 +4313,511 @@
     //    function, guarantees this behavior.
     const seen_callbacks = new Set();
     let flushidx = 0; // Do *not* move this inside the flush() function
+
+    /** @returns {void} */
     function flush() {
-        // Do not reenter flush while dirty components are updated, as this can
-        // result in an infinite loop. Instead, let the inner flush handle it.
-        // Reentrancy is ok afterwards for bindings etc.
-        if (flushidx !== 0) {
-            return;
+      // Do not reenter flush while dirty components are updated, as this can
+      // result in an infinite loop. Instead, let the inner flush handle it.
+      // Reentrancy is ok afterwards for bindings etc.
+      if (flushidx !== 0) {
+        return;
+      }
+      const saved_component = current_component;
+      do {
+        // first, call beforeUpdate functions
+        // and update components
+        try {
+          while (flushidx < dirty_components.length) {
+            const component = dirty_components[flushidx];
+            flushidx++;
+            set_current_component(component);
+            update(component.$$);
+          }
+        } catch (e) {
+          // reset dirty state to not end up in a deadlocked state and then rethrow
+          dirty_components.length = 0;
+          flushidx = 0;
+          throw e;
         }
-        const saved_component = current_component;
-        do {
-            // first, call beforeUpdate functions
-            // and update components
-            try {
-                while (flushidx < dirty_components.length) {
-                    const component = dirty_components[flushidx];
-                    flushidx++;
-                    set_current_component(component);
-                    update(component.$$);
-                }
-            }
-            catch (e) {
-                // reset dirty state to not end up in a deadlocked state and then rethrow
-                dirty_components.length = 0;
-                flushidx = 0;
-                throw e;
-            }
-            set_current_component(null);
-            dirty_components.length = 0;
-            flushidx = 0;
-            while (binding_callbacks.length)
-                binding_callbacks.pop()();
-            // then, once components are updated, call
-            // afterUpdate functions. This may cause
-            // subsequent updates...
-            for (let i = 0; i < render_callbacks.length; i += 1) {
-                const callback = render_callbacks[i];
-                if (!seen_callbacks.has(callback)) {
-                    // ...so guard against infinite loops
-                    seen_callbacks.add(callback);
-                    callback();
-                }
-            }
-            render_callbacks.length = 0;
-        } while (dirty_components.length);
-        while (flush_callbacks.length) {
-            flush_callbacks.pop()();
+        set_current_component(null);
+        dirty_components.length = 0;
+        flushidx = 0;
+        while (binding_callbacks.length) binding_callbacks.pop()();
+        // then, once components are updated, call
+        // afterUpdate functions. This may cause
+        // subsequent updates...
+        for (let i = 0; i < render_callbacks.length; i += 1) {
+          const callback = render_callbacks[i];
+          if (!seen_callbacks.has(callback)) {
+            // ...so guard against infinite loops
+            seen_callbacks.add(callback);
+            callback();
+          }
         }
-        update_scheduled = false;
-        seen_callbacks.clear();
-        set_current_component(saved_component);
+        render_callbacks.length = 0;
+      } while (dirty_components.length);
+      while (flush_callbacks.length) {
+        flush_callbacks.pop()();
+      }
+      update_scheduled = false;
+      seen_callbacks.clear();
+      set_current_component(saved_component);
     }
+
+    /** @returns {void} */
     function update($$) {
-        if ($$.fragment !== null) {
-            $$.update();
-            run_all($$.before_update);
-            const dirty = $$.dirty;
-            $$.dirty = [-1];
-            $$.fragment && $$.fragment.p($$.ctx, dirty);
-            $$.after_update.forEach(add_render_callback);
-        }
+      if ($$.fragment !== null) {
+        $$.update();
+        run_all($$.before_update);
+        const dirty = $$.dirty;
+        $$.dirty = [-1];
+        $$.fragment && $$.fragment.p($$.ctx, dirty);
+        $$.after_update.forEach(add_render_callback);
+      }
     }
+
     /**
      * Useful for example to execute remaining `afterUpdate` callbacks before executing `destroy`.
+     * @param {Function[]} fns
+     * @returns {void}
      */
     function flush_render_callbacks(fns) {
-        const filtered = [];
-        const targets = [];
-        render_callbacks.forEach((c) => fns.indexOf(c) === -1 ? filtered.push(c) : targets.push(c));
-        targets.forEach((c) => c());
-        render_callbacks = filtered;
-    }
-    const outroing = new Set();
-    let outros;
-    function group_outros() {
-        outros = {
-            r: 0,
-            c: [],
-            p: outros // parent group
-        };
-    }
-    function check_outros() {
-        if (!outros.r) {
-            run_all(outros.c);
-        }
-        outros = outros.p;
-    }
-    function transition_in(block, local) {
-        if (block && block.i) {
-            outroing.delete(block);
-            block.i(local);
-        }
-    }
-    function transition_out(block, local, detach, callback) {
-        if (block && block.o) {
-            if (outroing.has(block))
-                return;
-            outroing.add(block);
-            outros.c.push(() => {
-                outroing.delete(block);
-                if (callback) {
-                    if (detach)
-                        block.d(1);
-                    callback();
-                }
-            });
-            block.o(local);
-        }
-        else if (callback) {
-            callback();
-        }
-    }
-    function outro_and_destroy_block(block, lookup) {
-        transition_out(block, 1, 1, () => {
-            lookup.delete(block.key);
-        });
-    }
-    function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
-        let o = old_blocks.length;
-        let n = list.length;
-        let i = o;
-        const old_indexes = {};
-        while (i--)
-            old_indexes[old_blocks[i].key] = i;
-        const new_blocks = [];
-        const new_lookup = new Map();
-        const deltas = new Map();
-        const updates = [];
-        i = n;
-        while (i--) {
-            const child_ctx = get_context(ctx, list, i);
-            const key = get_key(child_ctx);
-            let block = lookup.get(key);
-            if (!block) {
-                block = create_each_block(key, child_ctx);
-                block.c();
-            }
-            else if (dynamic) {
-                // defer updates until all the DOM shuffling is done
-                updates.push(() => block.p(child_ctx, dirty));
-            }
-            new_lookup.set(key, new_blocks[i] = block);
-            if (key in old_indexes)
-                deltas.set(key, Math.abs(i - old_indexes[key]));
-        }
-        const will_move = new Set();
-        const did_move = new Set();
-        function insert(block) {
-            transition_in(block, 1);
-            block.m(node, next);
-            lookup.set(block.key, block);
-            next = block.first;
-            n--;
-        }
-        while (o && n) {
-            const new_block = new_blocks[n - 1];
-            const old_block = old_blocks[o - 1];
-            const new_key = new_block.key;
-            const old_key = old_block.key;
-            if (new_block === old_block) {
-                // do nothing
-                next = new_block.first;
-                o--;
-                n--;
-            }
-            else if (!new_lookup.has(old_key)) {
-                // remove old block
-                destroy(old_block, lookup);
-                o--;
-            }
-            else if (!lookup.has(new_key) || will_move.has(new_key)) {
-                insert(new_block);
-            }
-            else if (did_move.has(old_key)) {
-                o--;
-            }
-            else if (deltas.get(new_key) > deltas.get(old_key)) {
-                did_move.add(new_key);
-                insert(new_block);
-            }
-            else {
-                will_move.add(old_key);
-                o--;
-            }
-        }
-        while (o--) {
-            const old_block = old_blocks[o];
-            if (!new_lookup.has(old_block.key))
-                destroy(old_block, lookup);
-        }
-        while (n)
-            insert(new_blocks[n - 1]);
-        run_all(updates);
-        return new_blocks;
+      const filtered = [];
+      const targets = [];
+      render_callbacks.forEach(c => fns.indexOf(c) === -1 ? filtered.push(c) : targets.push(c));
+      targets.forEach(c => c());
+      render_callbacks = filtered;
     }
 
+    const outroing = new Set();
+
+    /**
+     * @type {Outro}
+     */
+    let outros;
+
+    /**
+     * @returns {void} */
+    function group_outros() {
+      outros = {
+        r: 0,
+        c: [],
+        p: outros // parent group
+      };
+    }
+
+    /**
+     * @returns {void} */
+    function check_outros() {
+      if (!outros.r) {
+        run_all(outros.c);
+      }
+      outros = outros.p;
+    }
+
+    /**
+     * @param {import('./private.js').Fragment} block
+     * @param {0 | 1} [local]
+     * @returns {void}
+     */
+    function transition_in(block, local) {
+      if (block && block.i) {
+        outroing.delete(block);
+        block.i(local);
+      }
+    }
+
+    /**
+     * @param {import('./private.js').Fragment} block
+     * @param {0 | 1} local
+     * @param {0 | 1} [detach]
+     * @param {() => void} [callback]
+     * @returns {void}
+     */
+    function transition_out(block, local, detach, callback) {
+      if (block && block.o) {
+        if (outroing.has(block)) return;
+        outroing.add(block);
+        outros.c.push(() => {
+          outroing.delete(block);
+          if (callback) {
+            if (detach) block.d(1);
+            callback();
+          }
+        });
+        block.o(local);
+      } else if (callback) {
+        callback();
+      }
+    }
+
+    /** @typedef {1} INTRO */
+    /** @typedef {0} OUTRO */
+    /** @typedef {{ direction: 'in' | 'out' | 'both' }} TransitionOptions */
+    /** @typedef {(node: Element, params: any, options: TransitionOptions) => import('../transition/public.js').TransitionConfig} TransitionFn */
+
+    /**
+     * @typedef {Object} Outro
+     * @property {number} r
+     * @property {Function[]} c
+     * @property {Object} p
+     */
+
+    /**
+     * @typedef {Object} PendingProgram
+     * @property {number} start
+     * @property {INTRO|OUTRO} b
+     * @property {Outro} [group]
+     */
+
+    /**
+     * @typedef {Object} Program
+     * @property {number} a
+     * @property {INTRO|OUTRO} b
+     * @property {1|-1} d
+     * @property {number} duration
+     * @property {number} start
+     * @property {number} end
+     * @property {Outro} [group]
+     */
+
+    // general each functions:
+
+    function ensure_array_like(array_like_or_iterator) {
+      return array_like_or_iterator?.length !== undefined ? array_like_or_iterator : Array.from(array_like_or_iterator);
+    }
+
+    /** @returns {void} */
+    function outro_and_destroy_block(block, lookup) {
+      transition_out(block, 1, 1, () => {
+        lookup.delete(block.key);
+      });
+    }
+
+    /** @returns {any[]} */
+    function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
+      let o = old_blocks.length;
+      let n = list.length;
+      let i = o;
+      const old_indexes = {};
+      while (i--) old_indexes[old_blocks[i].key] = i;
+      const new_blocks = [];
+      const new_lookup = new Map();
+      const deltas = new Map();
+      const updates = [];
+      i = n;
+      while (i--) {
+        const child_ctx = get_context(ctx, list, i);
+        const key = get_key(child_ctx);
+        let block = lookup.get(key);
+        if (!block) {
+          block = create_each_block(key, child_ctx);
+          block.c();
+        } else {
+          // defer updates until all the DOM shuffling is done
+          updates.push(() => block.p(child_ctx, dirty));
+        }
+        new_lookup.set(key, new_blocks[i] = block);
+        if (key in old_indexes) deltas.set(key, Math.abs(i - old_indexes[key]));
+      }
+      const will_move = new Set();
+      const did_move = new Set();
+      /** @returns {void} */
+      function insert(block) {
+        transition_in(block, 1);
+        block.m(node, next);
+        lookup.set(block.key, block);
+        next = block.first;
+        n--;
+      }
+      while (o && n) {
+        const new_block = new_blocks[n - 1];
+        const old_block = old_blocks[o - 1];
+        const new_key = new_block.key;
+        const old_key = old_block.key;
+        if (new_block === old_block) {
+          // do nothing
+          next = new_block.first;
+          o--;
+          n--;
+        } else if (!new_lookup.has(old_key)) {
+          // remove old block
+          destroy(old_block, lookup);
+          o--;
+        } else if (!lookup.has(new_key) || will_move.has(new_key)) {
+          insert(new_block);
+        } else if (did_move.has(old_key)) {
+          o--;
+        } else if (deltas.get(new_key) > deltas.get(old_key)) {
+          did_move.add(new_key);
+          insert(new_block);
+        } else {
+          will_move.add(old_key);
+          o--;
+        }
+      }
+      while (o--) {
+        const old_block = old_blocks[o];
+        if (!new_lookup.has(old_block.key)) destroy(old_block, lookup);
+      }
+      while (n) insert(new_blocks[n - 1]);
+      run_all(updates);
+      return new_blocks;
+    }
+
+    /** @returns {{}} */
     function get_spread_update(levels, updates) {
-        const update = {};
-        const to_null_out = {};
-        const accounted_for = { $$scope: 1 };
-        let i = levels.length;
-        while (i--) {
-            const o = levels[i];
-            const n = updates[i];
-            if (n) {
-                for (const key in o) {
-                    if (!(key in n))
-                        to_null_out[key] = 1;
-                }
-                for (const key in n) {
-                    if (!accounted_for[key]) {
-                        update[key] = n[key];
-                        accounted_for[key] = 1;
-                    }
-                }
-                levels[i] = n;
+      const update = {};
+      const to_null_out = {};
+      const accounted_for = {
+        $$scope: 1
+      };
+      let i = levels.length;
+      while (i--) {
+        const o = levels[i];
+        const n = updates[i];
+        if (n) {
+          for (const key in o) {
+            if (!(key in n)) to_null_out[key] = 1;
+          }
+          for (const key in n) {
+            if (!accounted_for[key]) {
+              update[key] = n[key];
+              accounted_for[key] = 1;
             }
-            else {
-                for (const key in o) {
-                    accounted_for[key] = 1;
-                }
-            }
+          }
+          levels[i] = n;
+        } else {
+          for (const key in o) {
+            accounted_for[key] = 1;
+          }
         }
-        for (const key in to_null_out) {
-            if (!(key in update))
-                update[key] = undefined;
-        }
-        return update;
+      }
+      for (const key in to_null_out) {
+        if (!(key in update)) update[key] = undefined;
+      }
+      return update;
     }
     function get_spread_object(spread_props) {
-        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+      return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
     }
 
+    /** @returns {void} */
     function bind(component, name, callback) {
-        const index = component.$$.props[name];
-        if (index !== undefined) {
-            component.$$.bound[index] = callback;
-            callback(component.$$.ctx[index]);
-        }
+      const index = component.$$.props[name];
+      if (index !== undefined) {
+        component.$$.bound[index] = callback;
+        callback(component.$$.ctx[index]);
+      }
     }
+
+    /** @returns {void} */
     function create_component(block) {
-        block && block.c();
+      block && block.c();
     }
-    function mount_component(component, target, anchor, customElement) {
-        const { fragment, after_update } = component.$$;
-        fragment && fragment.m(target, anchor);
-        if (!customElement) {
-            // onMount happens before the initial afterUpdate
-            add_render_callback(() => {
-                const new_on_destroy = component.$$.on_mount.map(run).filter(is_function);
-                // if the component was destroyed immediately
-                // it will update the `$$.on_destroy` reference to `null`.
-                // the destructured on_destroy may still reference to the old array
-                if (component.$$.on_destroy) {
-                    component.$$.on_destroy.push(...new_on_destroy);
-                }
-                else {
-                    // Edge case - component was destroyed immediately,
-                    // most likely as a result of a binding initialising
-                    run_all(new_on_destroy);
-                }
-                component.$$.on_mount = [];
-            });
+
+    /** @returns {void} */
+    function mount_component(component, target, anchor) {
+      const {
+        fragment,
+        after_update
+      } = component.$$;
+      fragment && fragment.m(target, anchor);
+      // onMount happens before the initial afterUpdate
+      add_render_callback(() => {
+        const new_on_destroy = component.$$.on_mount.map(run).filter(is_function);
+        // if the component was destroyed immediately
+        // it will update the `$$.on_destroy` reference to `null`.
+        // the destructured on_destroy may still reference to the old array
+        if (component.$$.on_destroy) {
+          component.$$.on_destroy.push(...new_on_destroy);
+        } else {
+          // Edge case - component was destroyed immediately,
+          // most likely as a result of a binding initialising
+          run_all(new_on_destroy);
         }
-        after_update.forEach(add_render_callback);
+        component.$$.on_mount = [];
+      });
+      after_update.forEach(add_render_callback);
     }
+
+    /** @returns {void} */
     function destroy_component(component, detaching) {
-        const $$ = component.$$;
-        if ($$.fragment !== null) {
-            flush_render_callbacks($$.after_update);
-            run_all($$.on_destroy);
-            $$.fragment && $$.fragment.d(detaching);
-            // TODO null out other refs, including component.$$ (but need to
-            // preserve final state?)
-            $$.on_destroy = $$.fragment = null;
-            $$.ctx = [];
-        }
+      const $$ = component.$$;
+      if ($$.fragment !== null) {
+        flush_render_callbacks($$.after_update);
+        run_all($$.on_destroy);
+        $$.fragment && $$.fragment.d(detaching);
+        // TODO null out other refs, including component.$$ (but need to
+        // preserve final state?)
+        $$.on_destroy = $$.fragment = null;
+        $$.ctx = [];
+      }
     }
+
+    /** @returns {void} */
     function make_dirty(component, i) {
-        if (component.$$.dirty[0] === -1) {
-            dirty_components.push(component);
-            schedule_update();
-            component.$$.dirty.fill(0);
-        }
-        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+      if (component.$$.dirty[0] === -1) {
+        dirty_components.push(component);
+        schedule_update();
+        component.$$.dirty.fill(0);
+      }
+      component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
     }
-    function init$2(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
-        const parent_component = current_component;
-        set_current_component(component);
-        const $$ = component.$$ = {
-            fragment: null,
-            ctx: [],
-            // state
-            props,
-            update: noop$2,
-            not_equal,
-            bound: blank_object(),
-            // lifecycle
-            on_mount: [],
-            on_destroy: [],
-            on_disconnect: [],
-            before_update: [],
-            after_update: [],
-            context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
-            // everything else
-            callbacks: blank_object(),
-            dirty,
-            skip_bound: false,
-            root: options.target || parent_component.$$.root
-        };
-        append_styles && append_styles($$.root);
-        let ready = false;
-        $$.ctx = instance
-            ? instance(component, options.props || {}, (i, ret, ...rest) => {
-                const value = rest.length ? rest[0] : ret;
-                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-                    if (!$$.skip_bound && $$.bound[i])
-                        $$.bound[i](value);
-                    if (ready)
-                        make_dirty(component, i);
-                }
-                return ret;
-            })
-            : [];
-        $$.update();
-        ready = true;
-        run_all($$.before_update);
-        // `false` as a special case of no DOM component
-        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
-        if (options.target) {
-            if (options.hydrate) {
-                const nodes = children(options.target);
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment && $$.fragment.l(nodes);
-                nodes.forEach(detach);
-            }
-            else {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                $$.fragment && $$.fragment.c();
-            }
-            if (options.intro)
-                transition_in(component.$$.fragment);
-            mount_component(component, options.target, options.anchor, options.customElement);
-            flush();
+
+    // TODO: Document the other params
+    /**
+     * @param {SvelteComponent} component
+     * @param {import('./public.js').ComponentConstructorOptions} options
+     *
+     * @param {import('./utils.js')['not_equal']} not_equal Used to compare props and state values.
+     * @param {(target: Element | ShadowRoot) => void} [append_styles] Function that appends styles to the DOM when the component is first initialised.
+     * This will be the `add_css` function from the compiled component.
+     *
+     * @returns {void}
+     */
+    function init$2(component, options, instance, create_fragment, not_equal, props, append_styles = null, dirty = [-1]) {
+      const parent_component = current_component;
+      set_current_component(component);
+      /** @type {import('./private.js').T$$} */
+      const $$ = component.$$ = {
+        fragment: null,
+        ctx: [],
+        // state
+        props,
+        update: noop$1,
+        not_equal,
+        bound: blank_object(),
+        // lifecycle
+        on_mount: [],
+        on_destroy: [],
+        on_disconnect: [],
+        before_update: [],
+        after_update: [],
+        context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
+        // everything else
+        callbacks: blank_object(),
+        dirty,
+        skip_bound: false,
+        root: options.target || parent_component.$$.root
+      };
+      append_styles && append_styles($$.root);
+      let ready = false;
+      $$.ctx = instance ? instance(component, options.props || {}, (i, ret, ...rest) => {
+        const value = rest.length ? rest[0] : ret;
+        if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+          if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
+          if (ready) make_dirty(component, i);
         }
-        set_current_component(parent_component);
+        return ret;
+      }) : [];
+      $$.update();
+      ready = true;
+      run_all($$.before_update);
+      // `false` as a special case of no DOM component
+      $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+      if (options.target) {
+        if (options.hydrate) {
+          // TODO: what is the correct type here?
+          // @ts-expect-error
+          const nodes = children(options.target);
+          $$.fragment && $$.fragment.l(nodes);
+          nodes.forEach(detach);
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          $$.fragment && $$.fragment.c();
+        }
+        if (options.intro) transition_in(component.$$.fragment);
+        mount_component(component, options.target, options.anchor);
+        flush();
+      }
+      set_current_component(parent_component);
     }
+
     /**
      * Base class for Svelte components. Used when dev=false.
+     *
+     * @template {Record<string, any>} [Props=any]
+     * @template {Record<string, any>} [Events=any]
      */
     class SvelteComponent {
-        $destroy() {
-            destroy_component(this, 1);
-            this.$destroy = noop$2;
+      /**
+       * ### PRIVATE API
+       *
+       * Do not use, may change at any time
+       *
+       * @type {any}
+       */
+      $$ = undefined;
+      /**
+       * ### PRIVATE API
+       *
+       * Do not use, may change at any time
+       *
+       * @type {any}
+       */
+      $$set = undefined;
+
+      /** @returns {void} */
+      $destroy() {
+        destroy_component(this, 1);
+        this.$destroy = noop$1;
+      }
+
+      /**
+       * @template {Extract<keyof Events, string>} K
+       * @param {K} type
+       * @param {((e: Events[K]) => void) | null | undefined} callback
+       * @returns {() => void}
+       */
+      $on(type, callback) {
+        if (!is_function(callback)) {
+          return noop$1;
         }
-        $on(type, callback) {
-            if (!is_function(callback)) {
-                return noop$2;
-            }
-            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-            callbacks.push(callback);
-            return () => {
-                const index = callbacks.indexOf(callback);
-                if (index !== -1)
-                    callbacks.splice(index, 1);
-            };
+        const callbacks = this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
+        callbacks.push(callback);
+        return () => {
+          const index = callbacks.indexOf(callback);
+          if (index !== -1) callbacks.splice(index, 1);
+        };
+      }
+
+      /**
+       * @param {Partial<Props>} props
+       * @returns {void}
+       */
+      $set(props) {
+        if (this.$$set && !is_empty(props)) {
+          this.$$.skip_bound = true;
+          this.$$set(props);
+          this.$$.skip_bound = false;
         }
-        $set($$props) {
-            if (this.$$set && !is_empty($$props)) {
-                this.$$.skip_bound = true;
-                this.$$set($$props);
-                this.$$.skip_bound = false;
-            }
-        }
+      }
     }
 
-    function _typeof$1(obj) {
+    /**
+     * @typedef {Object} CustomElementPropDefinition
+     * @property {string} [attribute]
+     * @property {boolean} [reflect]
+     * @property {'String'|'Boolean'|'Number'|'Array'|'Object'} [type]
+     */
+
+    const PUBLIC_VERSION = '4';
+
+    if (typeof window !== 'undefined')
+      // @ts-ignore
+      (window.__svelte || (window.__svelte = {
+        v: new Set()
+      })).v.add(PUBLIC_VERSION);
+
+    function _typeof(obj) {
       "@babel/helpers - typeof";
 
-      return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
         return typeof obj;
       } : function (obj) {
         return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      }, _typeof$1(obj);
+      }, _typeof(obj);
     }
 
     function toInteger(dirtyNumber) {
@@ -4257,7 +4872,7 @@
       var argStr = Object.prototype.toString.call(argument);
 
       // Clone the date
-      if (argument instanceof Date || _typeof$1(argument) === 'object' && argStr === '[object Date]') {
+      if (argument instanceof Date || _typeof(argument) === 'object' && argStr === '[object Date]') {
         // Prevent the date to lose the milliseconds when passed to new Date() in IE10
         return new Date(argument.getTime());
       } else if (typeof argument === 'number' || argStr === '[object Number]') {
@@ -4748,7 +5363,7 @@
      */
     function isDate$1(value) {
       requiredArgs(1, arguments);
-      return value instanceof Date || _typeof$1(value) === 'object' && Object.prototype.toString.call(value) === '[object Date]';
+      return value instanceof Date || _typeof(value) === 'object' && Object.prototype.toString.call(value) === '[object Date]';
     }
 
     /**
@@ -5004,7 +5619,7 @@
     function differenceInMinutes(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInMilliseconds(dateLeft, dateRight) / millisecondsInMinute;
-      return getRoundingMethod(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
+      return getRoundingMethod(void 0 )(diff);
     }
 
     /**
@@ -5178,7 +5793,7 @@
     function differenceInWeeks(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInDays(dateLeft, dateRight) / 7;
-      return getRoundingMethod(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
+      return getRoundingMethod(void 0 )(diff);
     }
 
     /**
@@ -5527,7 +6142,7 @@
      *
      * Letters marked by * are not implemented but reserved by Unicode standard.
      */
-    var formatters$2 = {
+    var formatters$1 = {
       // Year
       y: function y(date, token) {
         // From http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_tokens
@@ -5593,7 +6208,6 @@
         return addLeadingZeros(fractionalSeconds, token.length);
       }
     };
-    var formatters$3 = formatters$2;
 
     var dayPeriodEnum = {
       am: 'am',
@@ -5687,7 +6301,7 @@
             unit: 'year'
           });
         }
-        return formatters$3.y(date, token);
+        return formatters$1.y(date, token);
       },
       // Local week-numbering year
       Y: function Y(date, token, localize, options) {
@@ -5809,7 +6423,7 @@
         switch (token) {
           case 'M':
           case 'MM':
-            return formatters$3.M(date, token);
+            return formatters$1.M(date, token);
           // 1st, 2nd, ..., 12th
           case 'Mo':
             return localize.ordinalNumber(month + 1, {
@@ -5899,7 +6513,7 @@
             unit: 'date'
           });
         }
-        return formatters$3.d(date, token);
+        return formatters$1.d(date, token);
       },
       // Day of year
       D: function D(date, token, localize) {
@@ -6179,7 +6793,7 @@
             unit: 'hour'
           });
         }
-        return formatters$3.h(date, token);
+        return formatters$1.h(date, token);
       },
       // Hour [0-23]
       H: function H(date, token, localize) {
@@ -6188,7 +6802,7 @@
             unit: 'hour'
           });
         }
-        return formatters$3.H(date, token);
+        return formatters$1.H(date, token);
       },
       // Hour [0-11]
       K: function K(date, token, localize) {
@@ -6218,7 +6832,7 @@
             unit: 'minute'
           });
         }
-        return formatters$3.m(date, token);
+        return formatters$1.m(date, token);
       },
       // Second
       s: function s(date, token, localize) {
@@ -6227,11 +6841,11 @@
             unit: 'second'
           });
         }
-        return formatters$3.s(date, token);
+        return formatters$1.s(date, token);
       },
       // Fraction of second
       S: function S(date, token) {
-        return formatters$3.S(date, token);
+        return formatters$1.S(date, token);
       },
       // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
       X: function X(date, token, _localize, options) {
@@ -6341,7 +6955,7 @@
       if (minutes === 0) {
         return sign + String(hours);
       }
-      var delimiter = dirtyDelimiter || '';
+      var delimiter = dirtyDelimiter;
       return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
     }
     function formatTimezoneWithOptionalMinutes(offset, dirtyDelimiter) {
@@ -6359,7 +6973,6 @@
       var minutes = addLeadingZeros(absOffset % 60, 2);
       return sign + hours + delimiter + minutes;
     }
-    var formatters$1 = formatters;
 
     var dateLongFormatter = function dateLongFormatter(pattern, formatLong) {
       switch (pattern) {
@@ -6440,7 +7053,6 @@
       p: timeLongFormatter,
       P: dateTimeLongFormatter
     };
-    var longFormatters$1 = longFormatters;
 
     var protectedDayOfYearTokens = ['D', 'DD'];
     var protectedWeekYearTokens = ['YY', 'YYYY'];
@@ -6525,7 +7137,7 @@
         other: 'almost {{count}} years'
       }
     };
-    var formatDistance$6 = function formatDistance(token, count, options) {
+    var formatDistance$3 = function formatDistance(token, count, options) {
       var result;
       var tokenValue = formatDistanceLocale$3[token];
       if (typeof tokenValue === 'string') {
@@ -6544,7 +7156,6 @@
       }
       return result;
     };
-    var formatDistance$7 = formatDistance$6;
 
     function buildFormatLongFn(args) {
       return function () {
@@ -6574,7 +7185,7 @@
       medium: '{{date}}, {{time}}',
       short: '{{date}}, {{time}}'
     };
-    var formatLong$6 = {
+    var formatLong$3 = {
       date: buildFormatLongFn({
         formats: dateFormats$3,
         defaultWidth: 'full'
@@ -6588,7 +7199,6 @@
         defaultWidth: 'full'
       })
     };
-    var formatLong$7 = formatLong$6;
 
     var formatRelativeLocale$3 = {
       lastWeek: "'last' eeee 'at' p",
@@ -6598,10 +7208,9 @@
       nextWeek: "eeee 'at' p",
       other: 'P'
     };
-    var formatRelative$6 = function formatRelative(token, _date, _baseDate, _options) {
+    var formatRelative$3 = function formatRelative(token, _date, _baseDate, _options) {
       return formatRelativeLocale$3[token];
     };
-    var formatRelative$7 = formatRelative$6;
 
     function buildLocalizeFn(args) {
       return function (dirtyIndex, options) {
@@ -6735,7 +7344,7 @@
       }
       return number + 'th';
     };
-    var localize$6 = {
+    var localize$3 = {
       ordinalNumber: ordinalNumber$3,
       era: buildLocalizeFn({
         values: eraValues$3,
@@ -6763,7 +7372,6 @@
         defaultFormattingWidth: 'wide'
       })
     };
-    var localize$7 = localize$6;
 
     function buildMatchFn(args) {
       return function (string) {
@@ -6879,7 +7487,7 @@
         night: /night/i
       }
     };
-    var match$6 = {
+    var match$3 = {
       ordinalNumber: buildMatchPatternFn({
         matchPattern: matchOrdinalNumberPattern$3,
         parsePattern: parseOrdinalNumberPattern$3,
@@ -6921,7 +7529,6 @@
         defaultParseWidth: 'any'
       })
     };
-    var match$7 = match$6;
 
     /**
      * @type {Locale}
@@ -6934,17 +7541,16 @@
      */
     var locale$3 = {
       code: 'en-US',
-      formatDistance: formatDistance$7,
-      formatLong: formatLong$7,
-      formatRelative: formatRelative$7,
-      localize: localize$7,
-      match: match$7,
+      formatDistance: formatDistance$3,
+      formatLong: formatLong$3,
+      formatRelative: formatRelative$3,
+      localize: localize$3,
+      match: match$3,
       options: {
         weekStartsOn: 0 /* Sunday */,
         firstWeekContainsDate: 1
       }
     };
-    var defaultLocale = locale$3;
 
     // - [yYQqMLwIdDecihHKkms]o matches any available ordinal number token
     //   (one of the certain letters followed by `o`)
@@ -7262,7 +7868,7 @@
       requiredArgs(2, arguments);
       var formatStr = String(dirtyFormatStr);
       var defaultOptions = getDefaultOptions();
-      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : defaultLocale;
+      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : locale$3;
       var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1);
 
       // Test if weekStartsOn is between 1 and 7 _and_ is not NaN
@@ -7300,7 +7906,7 @@
       var result = formatStr.match(longFormattingTokensRegExp$1).map(function (substring) {
         var firstCharacter = substring[0];
         if (firstCharacter === 'p' || firstCharacter === 'P') {
-          var longFormatter = longFormatters$1[firstCharacter];
+          var longFormatter = longFormatters[firstCharacter];
           return longFormatter(substring, locale.formatLong);
         }
         return substring;
@@ -7313,7 +7919,7 @@
         if (firstCharacter === "'") {
           return cleanEscapedString$1(substring);
         }
-        var formatter = formatters$1[firstCharacter];
+        var formatter = formatters[firstCharacter];
         if (formatter) {
           if (!(options !== null && options !== void 0 && options.useAdditionalWeekYearTokens) && isProtectedWeekYearToken(substring)) {
             throwProtectedError(substring, dirtyFormatStr, String(dirtyDate));
@@ -7522,25 +8128,25 @@
       return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
     }
 
-    function _arrayLikeToArray$1(arr, len) {
+    function _arrayLikeToArray(arr, len) {
       if (len == null || len > arr.length) len = arr.length;
       for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
       return arr2;
     }
 
-    function _unsupportedIterableToArray$1(o, minLen) {
+    function _unsupportedIterableToArray(o, minLen) {
       if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray$1(o, minLen);
+      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
       var n = Object.prototype.toString.call(o).slice(8, -1);
       if (n === "Object" && o.constructor) n = o.constructor.name;
       if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$1(o, minLen);
+      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
     }
 
     function _createForOfIteratorHelper(o, allowArrayLike) {
       var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
       if (!it) {
-        if (Array.isArray(o) || (it = _unsupportedIterableToArray$1(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike) {
           if (it) o = it;
           var i = 0;
           var F = function F() {};
@@ -7596,12 +8202,12 @@
       return self;
     }
 
-    function _setPrototypeOf$1(o, p) {
-      _setPrototypeOf$1 = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    function _setPrototypeOf(o, p) {
+      _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
         o.__proto__ = p;
         return o;
       };
-      return _setPrototypeOf$1(o, p);
+      return _setPrototypeOf(o, p);
     }
 
     function _inherits(subClass, superClass) {
@@ -7618,7 +8224,7 @@
       Object.defineProperty(subClass, "prototype", {
         writable: false
       });
-      if (superClass) _setPrototypeOf$1(subClass, superClass);
+      if (superClass) _setPrototypeOf(subClass, superClass);
     }
 
     function _getPrototypeOf(o) {
@@ -7628,7 +8234,7 @@
       return _getPrototypeOf(o);
     }
 
-    function _isNativeReflectConstruct$1() {
+    function _isNativeReflectConstruct() {
       if (typeof Reflect === "undefined" || !Reflect.construct) return false;
       if (Reflect.construct.sham) return false;
       if (typeof Proxy === "function") return true;
@@ -7641,7 +8247,7 @@
     }
 
     function _possibleConstructorReturn(self, call) {
-      if (call && (_typeof$1(call) === "object" || typeof call === "function")) {
+      if (call && (_typeof(call) === "object" || typeof call === "function")) {
         return call;
       } else if (call !== void 0) {
         throw new TypeError("Derived constructors may only return object or undefined");
@@ -7650,7 +8256,7 @@
     }
 
     function _createSuper(Derived) {
-      var hasNativeReflectConstruct = _isNativeReflectConstruct$1();
+      var hasNativeReflectConstruct = _isNativeReflectConstruct();
       return function _createSuperInternal() {
         var Super = _getPrototypeOf(Derived),
           result;
@@ -7671,11 +8277,11 @@
     }
 
     function _toPrimitive(input, hint) {
-      if (_typeof$1(input) !== "object" || input === null) return input;
+      if (_typeof(input) !== "object" || input === null) return input;
       var prim = input[Symbol.toPrimitive];
       if (prim !== undefined) {
         var res = prim.call(input, hint || "default");
-        if (_typeof$1(res) !== "object") return res;
+        if (_typeof(res) !== "object") return res;
         throw new TypeError("@@toPrimitive must return a primitive value.");
       }
       return (hint === "string" ? String : Number)(input);
@@ -7683,7 +8289,7 @@
 
     function _toPropertyKey(arg) {
       var key = _toPrimitive(arg, "string");
-      return _typeof$1(key) === "symbol" ? key : String(key);
+      return _typeof(key) === "symbol" ? key : String(key);
     }
 
     function _defineProperties(target, props) {
@@ -7697,7 +8303,6 @@
     }
     function _createClass(Constructor, protoProps, staticProps) {
       if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) _defineProperties(Constructor, staticProps);
       Object.defineProperty(Constructor, "prototype", {
         writable: false
       });
@@ -10164,7 +10769,7 @@
       var dateString = String(dirtyDateString);
       var formatString = String(dirtyFormatString);
       var defaultOptions = getDefaultOptions();
-      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : defaultLocale;
+      var locale = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions.locale) !== null && _ref !== void 0 ? _ref : locale$3;
       if (!locale.match) {
         throw new RangeError('locale must contain match property');
       }
@@ -10197,8 +10802,8 @@
       var setters = [new DateToSystemTimezoneSetter()];
       var tokens = formatString.match(longFormattingTokensRegExp).map(function (substring) {
         var firstCharacter = substring[0];
-        if (firstCharacter in longFormatters$1) {
-          var longFormatter = longFormatters$1[firstCharacter];
+        if (firstCharacter in longFormatters) {
+          var longFormatter = longFormatters[firstCharacter];
           return longFormatter(substring, locale.formatLong);
         }
         return substring;
@@ -10265,7 +10870,7 @@
         };
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var _ret = _loop();
-          if (_typeof$1(_ret) === "object") return _ret.v;
+          if (_typeof(_ret) === "object") return _ret.v;
         }
 
         // Check if the remaining input contains something other than whitespace
@@ -10388,7 +10993,7 @@
     function parseISO(argument, options) {
       var _options$additionalDi;
       requiredArgs(1, arguments);
-      var additionalDigits = toInteger((_options$additionalDi = options === null || options === void 0 ? void 0 : options.additionalDigits) !== null && _options$additionalDi !== void 0 ? _options$additionalDi : 2);
+      var additionalDigits = toInteger((_options$additionalDi = void 0 ) !== null && _options$additionalDi !== void 0 ? _options$additionalDi : 2);
       if (additionalDigits !== 2 && additionalDigits !== 1 && additionalDigits !== 0) {
         throw new RangeError('additionalDigits must be 0, 1 or 2');
       }
@@ -10697,7 +11302,7 @@
      */
     function sub(date, duration) {
       requiredArgs(2, arguments);
-      if (!duration || _typeof$1(duration) !== 'object') return new Date(NaN);
+      if (!duration || _typeof(duration) !== 'object') return new Date(NaN);
       var years = duration.years ? toInteger(duration.years) : 0;
       var months = duration.months ? toInteger(duration.months) : 0;
       var weeks = duration.weeks ? toInteger(duration.weeks) : 0;
@@ -10743,87 +11348,6 @@
       var amount = toInteger(dirtyAmount);
       return addWeeks(dirtyDate, -amount);
     }
-
-    var defineProperty$1 = objectDefineProperty.f;
-
-    // `Object.defineProperty` method
-    // https://tc39.es/ecma262/#sec-object.defineproperty
-    // eslint-disable-next-line es/no-object-defineproperty -- safe
-    _export({
-      target: 'Object',
-      stat: true,
-      forced: Object.defineProperty !== defineProperty$1,
-      sham: !descriptors
-    }, {
-      defineProperty: defineProperty$1
-    });
-
-    // eslint-disable-next-line es/no-object-assign -- safe
-    var $assign = Object.assign;
-    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-    var defineProperty = Object.defineProperty;
-    var concat$1 = functionUncurryThis([].concat);
-
-    // `Object.assign` method
-    // https://tc39.es/ecma262/#sec-object.assign
-    var objectAssign = !$assign || fails(function () {
-      // should have correct order of operations (Edge bug)
-      if (descriptors && $assign({
-        b: 1
-      }, $assign(defineProperty({}, 'a', {
-        enumerable: true,
-        get: function () {
-          defineProperty(this, 'b', {
-            value: 3,
-            enumerable: false
-          });
-        }
-      }), {
-        b: 2
-      })).b !== 1) return true;
-      // should work with symbols and should have deterministic property order (V8 bug)
-      var A = {};
-      var B = {};
-      // eslint-disable-next-line es/no-symbol -- safe
-      var symbol = Symbol();
-      var alphabet = 'abcdefghijklmnopqrst';
-      A[symbol] = 7;
-      alphabet.split('').forEach(function (chr) {
-        B[chr] = chr;
-      });
-      return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
-    }) ? function assign(target, source) {
-      // eslint-disable-line no-unused-vars -- required for `.length`
-      var T = toObject(target);
-      var argumentsLength = arguments.length;
-      var index = 1;
-      var getOwnPropertySymbols = objectGetOwnPropertySymbols.f;
-      var propertyIsEnumerable = objectPropertyIsEnumerable.f;
-      while (argumentsLength > index) {
-        var S = indexedObject(arguments[index++]);
-        var keys = getOwnPropertySymbols ? concat$1(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
-        var length = keys.length;
-        var j = 0;
-        var key;
-        while (length > j) {
-          key = keys[j++];
-          if (!descriptors || functionCall(propertyIsEnumerable, S, key)) T[key] = S[key];
-        }
-      }
-      return T;
-    } : $assign;
-
-    // `Object.assign` method
-    // https://tc39.es/ecma262/#sec-object.assign
-    // eslint-disable-next-line es/no-object-assign -- required for testing
-    _export({
-      target: 'Object',
-      stat: true,
-      arity: 2,
-      forced: Object.assign !== objectAssign
-    }, {
-      assign: objectAssign
-    });
 
     // `RegExp.prototype.flags` getter implementation
     // https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
@@ -11001,7 +11525,7 @@
 
 
     var SPECIES = wellKnownSymbol('species');
-    var RegExpPrototype$2 = RegExp.prototype;
+    var RegExpPrototype = RegExp.prototype;
     var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
       var SYMBOL = wellKnownSymbol(KEY);
       var DELEGATES_TO_SYMBOL = !fails(function () {
@@ -11042,7 +11566,7 @@
         var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
           var uncurriedNativeMethod = functionUncurryThisClause(nativeMethod);
           var $exec = regexp.exec;
-          if ($exec === regexpExec || $exec === RegExpPrototype$2.exec) {
+          if ($exec === regexpExec || $exec === RegExpPrototype.exec) {
             if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
               // The native String method already delegates to @@method (this
               // polyfilled function), leasing to infinite recursion.
@@ -11062,9 +11586,8 @@
           };
         });
         defineBuiltIn(String.prototype, KEY, methods[0]);
-        defineBuiltIn(RegExpPrototype$2, SYMBOL, methods[1]);
+        defineBuiltIn(RegExpPrototype, SYMBOL, methods[1]);
       }
-      if (SHAM) createNonEnumerableProperty(RegExpPrototype$2[SYMBOL], 'sham', true);
     };
 
     var charAt$2 = stringMultibyte.charAt;
@@ -11143,7 +11666,7 @@
     var min$2 = Math.min;
     var concat = functionUncurryThis([].concat);
     var push$2 = functionUncurryThis([].push);
-    var stringIndexOf$1 = functionUncurryThis(''.indexOf);
+    var stringIndexOf = functionUncurryThis(''.indexOf);
     var stringSlice = functionUncurryThis(''.slice);
     var maybeToString = function (it) {
       return it === undefined ? it : String(it);
@@ -11192,7 +11715,7 @@
       function (string, replaceValue) {
         var rx = anObject(this);
         var S = toString_1(string);
-        if (typeof replaceValue == 'string' && stringIndexOf$1(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf$1(replaceValue, '$<') === -1) {
+        if (typeof replaceValue == 'string' && stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf(replaceValue, '$<') === -1) {
           var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
           if (res.done) return res.value;
         }
@@ -11242,81 +11765,15 @@
       }];
     }, !REPLACE_SUPPORTS_NAMED_GROUPS || !REPLACE_KEEPS_$0 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
 
-    var RegExpPrototype$1 = RegExp.prototype;
-    var regexpGetFlags = function (R) {
-      var flags = R.flags;
-      return flags === undefined && !('flags' in RegExpPrototype$1) && !hasOwnProperty_1(R, 'flags') && objectIsPrototypeOf(RegExpPrototype$1, R) ? functionCall(regexpFlags, R) : flags;
-    };
-
-    var PROPER_FUNCTION_NAME = functionName.PROPER;
-
-
-
-
-
-    var TO_STRING = 'toString';
-    var RegExpPrototype = RegExp.prototype;
-    var nativeToString = RegExpPrototype[TO_STRING];
-    var NOT_GENERIC = fails(function () {
-      return nativeToString.call({
-        source: 'a',
-        flags: 'b'
-      }) != '/a/b';
-    });
-    // FF44- RegExp#toString has a wrong name
-    var INCORRECT_NAME = PROPER_FUNCTION_NAME && nativeToString.name != TO_STRING;
-
-    // `RegExp.prototype.toString` method
-    // https://tc39.es/ecma262/#sec-regexp.prototype.tostring
-    if (NOT_GENERIC || INCORRECT_NAME) {
-      defineBuiltIn(RegExp.prototype, TO_STRING, function toString() {
-        var R = anObject(this);
-        var pattern = toString_1(R.source);
-        var flags = toString_1(regexpGetFlags(R));
-        return '/' + pattern + '/' + flags;
-      }, {
-        unsafe: true
-      });
-    }
-
-    /* eslint-disable es/no-array-prototype-indexof -- required for testing */
-
-
-    var $indexOf = arrayIncludes.indexOf;
-
-    var nativeIndexOf = functionUncurryThisClause([].indexOf);
-    var NEGATIVE_ZERO = !!nativeIndexOf && 1 / nativeIndexOf([1], 1, -0) < 0;
-    var FORCED$3 = NEGATIVE_ZERO || !arrayMethodIsStrict('indexOf');
-
-    // `Array.prototype.indexOf` method
-    // https://tc39.es/ecma262/#sec-array.prototype.indexof
-    _export({
-      target: 'Array',
-      proto: true,
-      forced: FORCED$3
-    }, {
-      indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
-        var fromIndex = arguments.length > 1 ? arguments[1] : undefined;
-        return NEGATIVE_ZERO
-        // convert -0 to +0
-        ? nativeIndexOf(this, searchElement, fromIndex) || 0 : $indexOf(this, searchElement, fromIndex);
-      }
-    });
-
     var dist = createCommonjsModule(function (module, exports) {
-
 
     Object.defineProperty(exports, "__esModule", {
       value: true
     });
-    exports.linkTo = exports.imagePath = exports.getRootUrl = exports.generateUrl = exports.generateRemoteUrl = exports.generateOcsUrl = exports.generateFilePath = void 0;
-
-
-
-
-
-
-    /// <reference types="@nextcloud/typings" />
+    exports.generateUrl = exports.generateRemoteUrl = exports.generateOcsUrl = exports.generateFilePath = void 0;
+    exports.getAppRootUrl = getAppRootUrl;
+    exports.getRootUrl = getRootUrl;
+    exports.linkTo = exports.imagePath = void 0;
 
     /**
      * Get an url with webroot to a file in an app
@@ -11325,9 +11782,7 @@
      * @param {string} file the file path relative to the app folder
      * @return {string} URL with webroot to a file
      */
-    var linkTo = function linkTo(app, file) {
-      return generateFilePath(app, '', file);
-    };
+    const linkTo = (app, file) => generateFilePath(app, '', file);
 
     /**
      * Creates a relative url for remote use
@@ -11336,18 +11791,14 @@
      * @return {string} the url
      */
     exports.linkTo = linkTo;
-    var linkToRemoteBase = function linkToRemoteBase(service) {
-      return getRootUrl() + '/remote.php/' + service;
-    };
+    const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
 
     /**
      * @brief Creates an absolute url for remote use
      * @param {string} service id
      * @return {string} the url
      */
-    var generateRemoteUrl = function generateRemoteUrl(service) {
-      return window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
-    };
+    const generateRemoteUrl = service => window.location.protocol + '//' + window.location.host + linkToRemoteBase(service);
 
     /**
      * Get the base path for the given OCS API service
@@ -11360,11 +11811,11 @@
      * @return {string} Absolute path for the OCS URL
      */
     exports.generateRemoteUrl = generateRemoteUrl;
-    var generateOcsUrl = function generateOcsUrl(url, params, options) {
-      var allOptions = Object.assign({
+    const generateOcsUrl = (url, params, options) => {
+      const allOptions = Object.assign({
         ocsVersion: 2
       }, options || {});
-      var version = allOptions.ocsVersion === 1 ? 1 : 2;
+      const version = allOptions.ocsVersion === 1 ? 1 : 2;
       return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
     };
     exports.generateOcsUrl = generateOcsUrl;
@@ -11378,11 +11829,11 @@
      * @param {UrlOptions} options options for the parameter replacement
      * @return {string} Path part for the given URL
      */
-    var _generateUrlPath = function _generateUrlPath(url, params, options) {
-      var allOptions = Object.assign({
+    const _generateUrlPath = (url, params, options) => {
+      const allOptions = Object.assign({
         escape: true
       }, options || {});
-      var _build = function _build(text, vars) {
+      const _build = function (text, vars) {
         vars = vars || {};
         return text.replace(/{([^{}]*)}/g, function (a, b) {
           var r = vars[b];
@@ -11411,12 +11862,12 @@
      * @param {boolean} options.escape Set to false if parameters should not be URL encoded (default true)
      * @return {string} URL with webroot for the given relative URL
      */
-    var generateUrl = function generateUrl(url, params, options) {
-      var _window, _window$OC, _window$OC$config;
-      var allOptions = Object.assign({
+    const generateUrl = (url, params, options) => {
+      var _window;
+      const allOptions = Object.assign({
         noRewrite: false
       }, options || {});
-      if (((_window = window) === null || _window === void 0 ? void 0 : (_window$OC = _window.OC) === null || _window$OC === void 0 ? void 0 : (_window$OC$config = _window$OC.config) === null || _window$OC$config === void 0 ? void 0 : _window$OC$config.modRewriteWorking) === true && !allOptions.noRewrite) {
+      if (((_window = window) === null || _window === void 0 || (_window = _window.OC) === null || _window === void 0 || (_window = _window.config) === null || _window === void 0 ? void 0 : _window.modRewriteWorking) === true && !allOptions.noRewrite) {
         return getRootUrl() + _generateUrlPath(url, params, options);
       }
       return getRootUrl() + '/index.php' + _generateUrlPath(url, params, options);
@@ -11432,7 +11883,7 @@
      * @return {string}
      */
     exports.generateUrl = generateUrl;
-    var imagePath = function imagePath(app, file) {
+    const imagePath = (app, file) => {
       if (file.indexOf('.') === -1) {
         //if no extension is given, use svg
         return generateFilePath(app, 'img', file + '.svg');
@@ -11449,10 +11900,10 @@
      * @return {string} URL with webroot for a file in an app
      */
     exports.imagePath = imagePath;
-    var generateFilePath = function generateFilePath(app, type, file) {
-      var _window2, _window2$OC, _window2$OC$coreApps;
-      var isCore = ((_window2 = window) === null || _window2 === void 0 ? void 0 : (_window2$OC = _window2.OC) === null || _window2$OC === void 0 ? void 0 : (_window2$OC$coreApps = _window2$OC.coreApps) === null || _window2$OC$coreApps === void 0 ? void 0 : _window2$OC$coreApps.indexOf(app)) !== -1;
-      var link = getRootUrl();
+    const generateFilePath = (app, type, file) => {
+      var _window2;
+      const isCore = ((_window2 = window) === null || _window2 === void 0 || (_window2 = _window2.OC) === null || _window2 === void 0 || (_window2 = _window2.coreApps) === null || _window2 === void 0 ? void 0 : _window2.indexOf(app)) !== -1;
+      let link = getRootUrl();
       if (file.substring(file.length - 3) === 'php' && !isCore) {
         link += '/index.php/apps/' + app;
         if (file !== 'index.php') {
@@ -11463,8 +11914,7 @@
           link += file;
         }
       } else if (file.substring(file.length - 3) !== 'php' && !isCore) {
-        var _window3, _window3$OC, _window3$OC$appswebro;
-        link = (_window3 = window) === null || _window3 === void 0 ? void 0 : (_window3$OC = _window3.OC) === null || _window3$OC === void 0 ? void 0 : (_window3$OC$appswebro = _window3$OC.appswebroots) === null || _window3$OC$appswebro === void 0 ? void 0 : _window3$OC$appswebro[app];
+        link = getAppRootUrl(app);
         if (type) {
           link += '/' + type + '/';
         }
@@ -11501,1517 +11951,1600 @@
      * @return {string} web root path
      */
     exports.generateFilePath = generateFilePath;
-    var getRootUrl = function getRootUrl() {
-      var _window4, _window4$OC;
-      return ((_window4 = window) === null || _window4 === void 0 ? void 0 : (_window4$OC = _window4.OC) === null || _window4$OC === void 0 ? void 0 : _window4$OC.webroot) || '';
-    };
-    exports.getRootUrl = getRootUrl;
+    function getRootUrl() {
+      let webroot = window._oc_webroot;
+      if (typeof webroot === 'undefined') {
+        webroot = location.pathname;
+        const pos = webroot.indexOf('/index.php/');
+        if (pos !== -1) {
+          webroot = webroot.substr(0, pos);
+        } else {
+          webroot = webroot.substr(0, webroot.lastIndexOf('/'));
+        }
+      }
+      return webroot;
+    }
+
+    /**
+     * Return the web root path for a given app
+     * @param {string} app The ID of the app
+     */
+    function getAppRootUrl(app) {
+      var _window$_oc_appswebro, _webroots$app;
+      const webroots = (_window$_oc_appswebro = window._oc_appswebroots) !== null && _window$_oc_appswebro !== void 0 ? _window$_oc_appswebro : {};
+      return (_webroots$app = webroots[app]) !== null && _webroots$app !== void 0 ? _webroots$app : '';
+    }
     });
 
     unwrapExports(dist);
+    var dist_1 = dist.generateUrl;
+    dist.generateRemoteUrl;
+    var dist_3 = dist.generateOcsUrl;
+    dist.generateFilePath;
+    dist.getAppRootUrl;
+    dist.getRootUrl;
     dist.linkTo;
     dist.imagePath;
-    dist.getRootUrl;
-    var dist_4 = dist.generateUrl;
-    dist.generateRemoteUrl;
-    var dist_6 = dist.generateOcsUrl;
-    dist.generateFilePath;
 
-    /*! @license DOMPurify 2.4.5 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.4.5/LICENSE */
+    var purify = createCommonjsModule(function (module, exports) {
+    /*! @license DOMPurify 3.1.6 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.1.6/LICENSE */
 
-    function _typeof(obj) {
-      "@babel/helpers - typeof";
+    (function (global, factory) {
+      module.exports = factory() ;
+    })(commonjsGlobal, function () {
 
-      return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-        return typeof obj;
-      } : function (obj) {
-        return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      }, _typeof(obj);
-    }
-    function _setPrototypeOf(o, p) {
-      _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-        o.__proto__ = p;
-        return o;
-      };
-      return _setPrototypeOf(o, p);
-    }
-    function _isNativeReflectConstruct() {
-      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-      if (Reflect.construct.sham) return false;
-      if (typeof Proxy === "function") return true;
-      try {
-        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-    function _construct(Parent, args, Class) {
-      if (_isNativeReflectConstruct()) {
-        _construct = Reflect.construct;
-      } else {
-        _construct = function _construct(Parent, args, Class) {
-          var a = [null];
-          a.push.apply(a, args);
-          var Constructor = Function.bind.apply(Parent, a);
-          var instance = new Constructor();
-          if (Class) _setPrototypeOf(instance, Class.prototype);
-          return instance;
+      const {
+        entries,
+        setPrototypeOf,
+        isFrozen,
+        getPrototypeOf,
+        getOwnPropertyDescriptor
+      } = Object;
+      let {
+        freeze,
+        seal,
+        create
+      } = Object; // eslint-disable-line import/no-mutable-exports
+      let {
+        apply,
+        construct
+      } = typeof Reflect !== 'undefined' && Reflect;
+      if (!freeze) {
+        freeze = function freeze(x) {
+          return x;
         };
       }
-      return _construct.apply(null, arguments);
-    }
-    function _toConsumableArray(arr) {
-      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-    function _arrayWithoutHoles(arr) {
-      if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-    }
-    function _iterableToArray(iter) {
-      if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-    }
-    function _unsupportedIterableToArray(o, minLen) {
-      if (!o) return;
-      if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-      var n = Object.prototype.toString.call(o).slice(8, -1);
-      if (n === "Object" && o.constructor) n = o.constructor.name;
-      if (n === "Map" || n === "Set") return Array.from(o);
-      if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-    function _arrayLikeToArray(arr, len) {
-      if (len == null || len > arr.length) len = arr.length;
-      for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-      return arr2;
-    }
-    function _nonIterableSpread() {
-      throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    var hasOwnProperty$1 = Object.hasOwnProperty,
-      setPrototypeOf = Object.setPrototypeOf,
-      isFrozen = Object.isFrozen,
-      getPrototypeOf = Object.getPrototypeOf,
-      getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor;
-    var freeze = Object.freeze,
-      seal = Object.seal,
-      create = Object.create; // eslint-disable-line import/no-mutable-exports
-
-    var _ref = typeof Reflect !== 'undefined' && Reflect,
-      apply = _ref.apply,
-      construct = _ref.construct;
-    if (!apply) {
-      apply = function apply(fun, thisValue, args) {
-        return fun.apply(thisValue, args);
-      };
-    }
-    if (!freeze) {
-      freeze = function freeze(x) {
-        return x;
-      };
-    }
-    if (!seal) {
-      seal = function seal(x) {
-        return x;
-      };
-    }
-    if (!construct) {
-      construct = function construct(Func, args) {
-        return _construct(Func, _toConsumableArray(args));
-      };
-    }
-    var arrayForEach = unapply(Array.prototype.forEach);
-    var arrayPop = unapply(Array.prototype.pop);
-    var arrayPush = unapply(Array.prototype.push);
-    var stringToLowerCase = unapply(String.prototype.toLowerCase);
-    var stringToString = unapply(String.prototype.toString);
-    var stringMatch = unapply(String.prototype.match);
-    var stringReplace = unapply(String.prototype.replace);
-    var stringIndexOf = unapply(String.prototype.indexOf);
-    var stringTrim$1 = unapply(String.prototype.trim);
-    var regExpTest = unapply(RegExp.prototype.test);
-    var typeErrorCreate = unconstruct(TypeError);
-    function unapply(func) {
-      return function (thisArg) {
-        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          args[_key - 1] = arguments[_key];
-        }
-        return apply(func, thisArg, args);
-      };
-    }
-    function unconstruct(func) {
-      return function () {
-        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
-        }
-        return construct(func, args);
-      };
-    }
-    /* Add properties to a lookup table */
-
-    function addToSet(set, array, transformCaseFunc) {
-      transformCaseFunc = transformCaseFunc ? transformCaseFunc : stringToLowerCase;
-      if (setPrototypeOf) {
-        // Make 'in' and truthy checks like Boolean(set.constructor)
-        // independent of any properties defined on Object.prototype.
-        // Prevent prototype setters from intercepting set as a this value.
-        setPrototypeOf(set, null);
+      if (!seal) {
+        seal = function seal(x) {
+          return x;
+        };
       }
-      var l = array.length;
-      while (l--) {
-        var element = array[l];
-        if (typeof element === 'string') {
-          var lcElement = transformCaseFunc(element);
-          if (lcElement !== element) {
-            // Config presets (e.g. tags.js, attrs.js) are immutable.
-            if (!isFrozen(array)) {
-              array[l] = lcElement;
+      if (!apply) {
+        apply = function apply(fun, thisValue, args) {
+          return fun.apply(thisValue, args);
+        };
+      }
+      if (!construct) {
+        construct = function construct(Func, args) {
+          return new Func(...args);
+        };
+      }
+      const arrayForEach = unapply(Array.prototype.forEach);
+      const arrayPop = unapply(Array.prototype.pop);
+      const arrayPush = unapply(Array.prototype.push);
+      const stringToLowerCase = unapply(String.prototype.toLowerCase);
+      const stringToString = unapply(String.prototype.toString);
+      const stringMatch = unapply(String.prototype.match);
+      const stringReplace = unapply(String.prototype.replace);
+      const stringIndexOf = unapply(String.prototype.indexOf);
+      const stringTrim = unapply(String.prototype.trim);
+      const objectHasOwnProperty = unapply(Object.prototype.hasOwnProperty);
+      const regExpTest = unapply(RegExp.prototype.test);
+      const typeErrorCreate = unconstruct(TypeError);
+
+      /**
+       * Creates a new function that calls the given function with a specified thisArg and arguments.
+       *
+       * @param {Function} func - The function to be wrapped and called.
+       * @returns {Function} A new function that calls the given function with a specified thisArg and arguments.
+       */
+      function unapply(func) {
+        return function (thisArg) {
+          for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            args[_key - 1] = arguments[_key];
+          }
+          return apply(func, thisArg, args);
+        };
+      }
+
+      /**
+       * Creates a new function that constructs an instance of the given constructor function with the provided arguments.
+       *
+       * @param {Function} func - The constructor function to be wrapped and called.
+       * @returns {Function} A new function that constructs an instance of the given constructor function with the provided arguments.
+       */
+      function unconstruct(func) {
+        return function () {
+          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            args[_key2] = arguments[_key2];
+          }
+          return construct(func, args);
+        };
+      }
+
+      /**
+       * Add properties to a lookup table
+       *
+       * @param {Object} set - The set to which elements will be added.
+       * @param {Array} array - The array containing elements to be added to the set.
+       * @param {Function} transformCaseFunc - An optional function to transform the case of each element before adding to the set.
+       * @returns {Object} The modified set with added elements.
+       */
+      function addToSet(set, array) {
+        let transformCaseFunc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : stringToLowerCase;
+        if (setPrototypeOf) {
+          // Make 'in' and truthy checks like Boolean(set.constructor)
+          // independent of any properties defined on Object.prototype.
+          // Prevent prototype setters from intercepting set as a this value.
+          setPrototypeOf(set, null);
+        }
+        let l = array.length;
+        while (l--) {
+          let element = array[l];
+          if (typeof element === 'string') {
+            const lcElement = transformCaseFunc(element);
+            if (lcElement !== element) {
+              // Config presets (e.g. tags.js, attrs.js) are immutable.
+              if (!isFrozen(array)) {
+                array[l] = lcElement;
+              }
+              element = lcElement;
             }
-            element = lcElement;
+          }
+          set[element] = true;
+        }
+        return set;
+      }
+
+      /**
+       * Clean up an array to harden against CSPP
+       *
+       * @param {Array} array - The array to be cleaned.
+       * @returns {Array} The cleaned version of the array
+       */
+      function cleanArray(array) {
+        for (let index = 0; index < array.length; index++) {
+          const isPropertyExist = objectHasOwnProperty(array, index);
+          if (!isPropertyExist) {
+            array[index] = null;
           }
         }
-        set[element] = true;
+        return array;
       }
-      return set;
-    }
-    /* Shallow clone an object */
 
-    function clone$1(object) {
-      var newObject = create(null);
-      var property;
-      for (property in object) {
-        if (apply(hasOwnProperty$1, object, [property]) === true) {
-          newObject[property] = object[property];
-        }
-      }
-      return newObject;
-    }
-    /* IE10 doesn't support __lookupGetter__ so lets'
-     * simulate it. It also automatically checks
-     * if the prop is function or getter and behaves
-     * accordingly. */
-
-    function lookupGetter(object, prop) {
-      while (object !== null) {
-        var desc = getOwnPropertyDescriptor$1(object, prop);
-        if (desc) {
-          if (desc.get) {
-            return unapply(desc.get);
-          }
-          if (typeof desc.value === 'function') {
-            return unapply(desc.value);
+      /**
+       * Shallow clone an object
+       *
+       * @param {Object} object - The object to be cloned.
+       * @returns {Object} A new object that copies the original.
+       */
+      function clone(object) {
+        const newObject = create(null);
+        for (const [property, value] of entries(object)) {
+          const isPropertyExist = objectHasOwnProperty(object, property);
+          if (isPropertyExist) {
+            if (Array.isArray(value)) {
+              newObject[property] = cleanArray(value);
+            } else if (value && typeof value === 'object' && value.constructor === Object) {
+              newObject[property] = clone(value);
+            } else {
+              newObject[property] = value;
+            }
           }
         }
-        object = getPrototypeOf(object);
+        return newObject;
       }
-      function fallbackValue(element) {
-        console.warn('fallback value for', element);
-        return null;
-      }
-      return fallbackValue;
-    }
-    var html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'shadow', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']); // SVG
 
-    var svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
-    var svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']); // List of SVG elements that are disallowed by default.
-    // We still need to know them so that we can do namespace
-    // checks properly in case one wants to add them to
-    // allow-list.
-
-    var svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'fedropshadow', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
-    var mathMl$1 = freeze(['math', 'menclose', 'merror', 'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover']); // Similarly to SVG, we want to know all MathML elements,
-    // even those that we disallow by default.
-
-    var mathMlDisallowed = freeze(['maction', 'maligngroup', 'malignmark', 'mlongdiv', 'mscarries', 'mscarry', 'msgroup', 'mstack', 'msline', 'msrow', 'semantics', 'annotation', 'annotation-xml', 'mprescripts', 'none']);
-    var text = freeze(['#text']);
-    var html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'xmlns', 'slot']);
-    var svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
-    var mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
-    var xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
-    var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
-
-    var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-    var TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
-    var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
-
-    var ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
-
-    var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
-    );
-
-    var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
-    var ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g // eslint-disable-line no-control-regex
-    );
-
-    var DOCTYPE_NAME = seal(/^html$/i);
-    var getGlobal = function getGlobal() {
-      return typeof window === 'undefined' ? null : window;
-    };
-    /**
-     * Creates a no-op policy for internal use only.
-     * Don't export this function outside this module!
-     * @param {?TrustedTypePolicyFactory} trustedTypes The policy factory.
-     * @param {Document} document The document object (to determine policy name suffix)
-     * @return {?TrustedTypePolicy} The policy created (or null, if Trusted Types
-     * are not supported).
-     */
-
-    var _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, document) {
-      if (_typeof(trustedTypes) !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
-        return null;
-      } // Allow the callers to control the unique policy name
-      // by adding a data-tt-policy-suffix to the script element with the DOMPurify.
-      // Policy creation with duplicate names throws in Trusted Types.
-
-      var suffix = null;
-      var ATTR_NAME = 'data-tt-policy-suffix';
-      if (document.currentScript && document.currentScript.hasAttribute(ATTR_NAME)) {
-        suffix = document.currentScript.getAttribute(ATTR_NAME);
-      }
-      var policyName = 'dompurify' + (suffix ? '#' + suffix : '');
-      try {
-        return trustedTypes.createPolicy(policyName, {
-          createHTML: function createHTML(html) {
-            return html;
-          },
-          createScriptURL: function createScriptURL(scriptUrl) {
-            return scriptUrl;
+      /**
+       * This method automatically checks if the prop is function or getter and behaves accordingly.
+       *
+       * @param {Object} object - The object to look up the getter function in its prototype chain.
+       * @param {String} prop - The property name for which to find the getter function.
+       * @returns {Function} The getter function found in the prototype chain or a fallback function.
+       */
+      function lookupGetter(object, prop) {
+        while (object !== null) {
+          const desc = getOwnPropertyDescriptor(object, prop);
+          if (desc) {
+            if (desc.get) {
+              return unapply(desc.get);
+            }
+            if (typeof desc.value === 'function') {
+              return unapply(desc.value);
+            }
           }
-        });
-      } catch (_) {
-        // Policy creation failed (most likely another DOMPurify script has
-        // already run). Skip creating the policy, as this will only cause errors
-        // if TT are enforced.
-        console.warn('TrustedTypes policy ' + policyName + ' could not be created.');
-        return null;
+          object = getPrototypeOf(object);
+        }
+        function fallbackValue() {
+          return null;
+        }
+        return fallbackValue;
       }
-    };
-    function createDOMPurify() {
-      var window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
-      var DOMPurify = function DOMPurify(root) {
-        return createDOMPurify(root);
+      const html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'shadow', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']);
+
+      // SVG
+      const svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
+      const svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feDropShadow', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']);
+
+      // List of SVG elements that are disallowed by default.
+      // We still need to know them so that we can do namespace
+      // checks properly in case one wants to add them to
+      // allow-list.
+      const svgDisallowed = freeze(['animate', 'color-profile', 'cursor', 'discard', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'foreignobject', 'hatch', 'hatchpath', 'mesh', 'meshgradient', 'meshpatch', 'meshrow', 'missing-glyph', 'script', 'set', 'solidcolor', 'unknown', 'use']);
+      const mathMl$1 = freeze(['math', 'menclose', 'merror', 'mfenced', 'mfrac', 'mglyph', 'mi', 'mlabeledtr', 'mmultiscripts', 'mn', 'mo', 'mover', 'mpadded', 'mphantom', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle', 'msub', 'msup', 'msubsup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover', 'mprescripts']);
+
+      // Similarly to SVG, we want to know all MathML elements,
+      // even those that we disallow by default.
+      const mathMlDisallowed = freeze(['maction', 'maligngroup', 'malignmark', 'mlongdiv', 'mscarries', 'mscarry', 'msgroup', 'mstack', 'msline', 'msrow', 'semantics', 'annotation', 'annotation-xml', 'mprescripts', 'none']);
+      const text = freeze(['#text']);
+      const html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'pattern', 'placeholder', 'playsinline', 'popover', 'popovertarget', 'popovertargetaction', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'wrap', 'xmlns', 'slot']);
+      const svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
+      const mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
+      const xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
+
+      // eslint-disable-next-line unicorn/better-regex
+      const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
+      const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+      const TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
+      const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
+      const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
+      const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
+      );
+
+      const IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+      const ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g // eslint-disable-line no-control-regex
+      );
+
+      const DOCTYPE_NAME = seal(/^html$/i);
+      const CUSTOM_ELEMENT = seal(/^[a-z][.\w]*(-[.\w]+)+$/i);
+      var EXPRESSIONS = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        MUSTACHE_EXPR: MUSTACHE_EXPR,
+        ERB_EXPR: ERB_EXPR,
+        TMPLIT_EXPR: TMPLIT_EXPR,
+        DATA_ATTR: DATA_ATTR,
+        ARIA_ATTR: ARIA_ATTR,
+        IS_ALLOWED_URI: IS_ALLOWED_URI,
+        IS_SCRIPT_OR_DATA: IS_SCRIPT_OR_DATA,
+        ATTR_WHITESPACE: ATTR_WHITESPACE,
+        DOCTYPE_NAME: DOCTYPE_NAME,
+        CUSTOM_ELEMENT: CUSTOM_ELEMENT
+      });
+
+      // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
+      const NODE_TYPE = {
+        element: 1,
+        attribute: 2,
+        text: 3,
+        cdataSection: 4,
+        entityReference: 5,
+        // Deprecated
+        entityNode: 6,
+        // Deprecated
+        progressingInstruction: 7,
+        comment: 8,
+        document: 9,
+        documentType: 10,
+        documentFragment: 11,
+        notation: 12 // Deprecated
       };
-      /**
-       * Version label, exposed for easier checks
-       * if DOMPurify is up to date or not
-       */
 
-      DOMPurify.version = '2.4.5';
-      /**
-       * Array of elements that DOMPurify removed during sanitation.
-       * Empty if nothing was removed.
-       */
-
-      DOMPurify.removed = [];
-      if (!window || !window.document || window.document.nodeType !== 9) {
-        // Not running in a browser, provide a factory function
-        // so that you can pass your own Window
-        DOMPurify.isSupported = false;
-        return DOMPurify;
-      }
-      var originalDocument = window.document;
-      var document = window.document;
-      var DocumentFragment = window.DocumentFragment,
-        HTMLTemplateElement = window.HTMLTemplateElement,
-        Node = window.Node,
-        Element = window.Element,
-        NodeFilter = window.NodeFilter,
-        _window$NamedNodeMap = window.NamedNodeMap,
-        NamedNodeMap = _window$NamedNodeMap === void 0 ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap,
-        HTMLFormElement = window.HTMLFormElement,
-        DOMParser = window.DOMParser,
-        trustedTypes = window.trustedTypes;
-      var ElementPrototype = Element.prototype;
-      var cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
-      var getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
-      var getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
-      var getParentNode = lookupGetter(ElementPrototype, 'parentNode'); // As per issue #47, the web-components registry is inherited by a
-      // new document created via createHTMLDocument. As per the spec
-      // (http://w3c.github.io/webcomponents/spec/custom/#creating-and-passing-registries)
-      // a new empty registry is used when creating a template contents owner
-      // document, so we use that as our parent document to ensure nothing
-      // is inherited.
-
-      if (typeof HTMLTemplateElement === 'function') {
-        var template = document.createElement('template');
-        if (template.content && template.content.ownerDocument) {
-          document = template.content.ownerDocument;
-        }
-      }
-      var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
-      var emptyHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML('') : '';
-      var _document = document,
-        implementation = _document.implementation,
-        createNodeIterator = _document.createNodeIterator,
-        createDocumentFragment = _document.createDocumentFragment,
-        getElementsByTagName = _document.getElementsByTagName;
-      var importNode = originalDocument.importNode;
-      var documentMode = {};
-      try {
-        documentMode = clone$1(document).documentMode ? document.documentMode : {};
-      } catch (_) {}
-      var hooks = {};
-      /**
-       * Expose whether this browser supports running the full DOMPurify.
-       */
-
-      DOMPurify.isSupported = typeof getParentNode === 'function' && implementation && typeof implementation.createHTMLDocument !== 'undefined' && documentMode !== 9;
-      var MUSTACHE_EXPR$1 = MUSTACHE_EXPR,
-        ERB_EXPR$1 = ERB_EXPR,
-        TMPLIT_EXPR$1 = TMPLIT_EXPR,
-        DATA_ATTR$1 = DATA_ATTR,
-        ARIA_ATTR$1 = ARIA_ATTR,
-        IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA,
-        ATTR_WHITESPACE$1 = ATTR_WHITESPACE;
-      var IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
-      /**
-       * We consider the elements and attributes below to be safe. Ideally
-       * don't add any new ones but feel free to remove unwanted ones.
-       */
-
-      /* allowed element names */
-
-      var ALLOWED_TAGS = null;
-      var DEFAULT_ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray(html$1), _toConsumableArray(svg$1), _toConsumableArray(svgFilters), _toConsumableArray(mathMl$1), _toConsumableArray(text)));
-      /* Allowed attribute names */
-
-      var ALLOWED_ATTR = null;
-      var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray(html), _toConsumableArray(svg), _toConsumableArray(mathMl), _toConsumableArray(xml)));
-      /*
-       * Configure how DOMPUrify should handle custom elements and their attributes as well as customized built-in elements.
-       * @property {RegExp|Function|null} tagNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any custom elements)
-       * @property {RegExp|Function|null} attributeNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any attributes not on the allow list)
-       * @property {boolean} allowCustomizedBuiltInElements allow custom elements derived from built-ins if they pass CUSTOM_ELEMENT_HANDLING.tagNameCheck. Default: `false`.
-       */
-
-      var CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
-        tagNameCheck: {
-          writable: true,
-          configurable: false,
-          enumerable: true,
-          value: null
-        },
-        attributeNameCheck: {
-          writable: true,
-          configurable: false,
-          enumerable: true,
-          value: null
-        },
-        allowCustomizedBuiltInElements: {
-          writable: true,
-          configurable: false,
-          enumerable: true,
-          value: false
-        }
-      }));
-      /* Explicitly forbidden tags (overrides ALLOWED_TAGS/ADD_TAGS) */
-
-      var FORBID_TAGS = null;
-      /* Explicitly forbidden attributes (overrides ALLOWED_ATTR/ADD_ATTR) */
-
-      var FORBID_ATTR = null;
-      /* Decide if ARIA attributes are okay */
-
-      var ALLOW_ARIA_ATTR = true;
-      /* Decide if custom data attributes are okay */
-
-      var ALLOW_DATA_ATTR = true;
-      /* Decide if unknown protocols are okay */
-
-      var ALLOW_UNKNOWN_PROTOCOLS = false;
-      /* Decide if self-closing tags in attributes are allowed.
-       * Usually removed due to a mXSS issue in jQuery 3.0 */
-
-      var ALLOW_SELF_CLOSE_IN_ATTR = true;
-      /* Output should be safe for common template engines.
-       * This means, DOMPurify removes data attributes, mustaches and ERB
-       */
-
-      var SAFE_FOR_TEMPLATES = false;
-      /* Decide if document with <html>... should be returned */
-
-      var WHOLE_DOCUMENT = false;
-      /* Track whether config is already set on this instance of DOMPurify. */
-
-      var SET_CONFIG = false;
-      /* Decide if all elements (e.g. style, script) must be children of
-       * document.body. By default, browsers might move them to document.head */
-
-      var FORCE_BODY = false;
-      /* Decide if a DOM `HTMLBodyElement` should be returned, instead of a html
-       * string (or a TrustedHTML object if Trusted Types are supported).
-       * If `WHOLE_DOCUMENT` is enabled a `HTMLHtmlElement` will be returned instead
-       */
-
-      var RETURN_DOM = false;
-      /* Decide if a DOM `DocumentFragment` should be returned, instead of a html
-       * string  (or a TrustedHTML object if Trusted Types are supported) */
-
-      var RETURN_DOM_FRAGMENT = false;
-      /* Try to return a Trusted Type object instead of a string, return a string in
-       * case Trusted Types are not supported  */
-
-      var RETURN_TRUSTED_TYPE = false;
-      /* Output should be free from DOM clobbering attacks?
-       * This sanitizes markups named with colliding, clobberable built-in DOM APIs.
-       */
-
-      var SANITIZE_DOM = true;
-      /* Achieve full DOM Clobbering protection by isolating the namespace of named
-       * properties and JS variables, mitigating attacks that abuse the HTML/DOM spec rules.
-       *
-       * HTML/DOM spec rules that enable DOM Clobbering:
-       *   - Named Access on Window (§7.3.3)
-       *   - DOM Tree Accessors (§3.1.5)
-       *   - Form Element Parent-Child Relations (§4.10.3)
-       *   - Iframe srcdoc / Nested WindowProxies (§4.8.5)
-       *   - HTMLCollection (§4.2.10.2)
-       *
-       * Namespace isolation is implemented by prefixing `id` and `name` attributes
-       * with a constant string, i.e., `user-content-`
-       */
-
-      var SANITIZE_NAMED_PROPS = false;
-      var SANITIZE_NAMED_PROPS_PREFIX = 'user-content-';
-      /* Keep element content when removing element? */
-
-      var KEEP_CONTENT = true;
-      /* If a `Node` is passed to sanitize(), then performs sanitization in-place instead
-       * of importing it into a new Document and returning a sanitized copy */
-
-      var IN_PLACE = false;
-      /* Allow usage of profiles like html, svg and mathMl */
-
-      var USE_PROFILES = {};
-      /* Tags to ignore content of when KEEP_CONTENT is true */
-
-      var FORBID_CONTENTS = null;
-      var DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
-      /* Tags that are safe for data: URIs */
-
-      var DATA_URI_TAGS = null;
-      var DEFAULT_DATA_URI_TAGS = addToSet({}, ['audio', 'video', 'img', 'source', 'image', 'track']);
-      /* Attributes safe for values like "javascript:" */
-
-      var URI_SAFE_ATTRIBUTES = null;
-      var DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ['alt', 'class', 'for', 'id', 'label', 'name', 'pattern', 'placeholder', 'role', 'summary', 'title', 'value', 'style', 'xmlns']);
-      var MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
-      var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
-      var HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
-      /* Document namespace */
-
-      var NAMESPACE = HTML_NAMESPACE;
-      var IS_EMPTY_INPUT = false;
-      /* Allowed XHTML+XML namespaces */
-
-      var ALLOWED_NAMESPACES = null;
-      var DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
-      /* Parsing of strict XHTML documents */
-
-      var PARSER_MEDIA_TYPE;
-      var SUPPORTED_PARSER_MEDIA_TYPES = ['application/xhtml+xml', 'text/html'];
-      var DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
-      var transformCaseFunc;
-      /* Keep a reference to config to pass to hooks */
-
-      var CONFIG = null;
-      /* Ideally, do not touch anything below this line */
-
-      /* ______________________________________________ */
-
-      var formElement = document.createElement('form');
-      var isRegexOrFunction = function isRegexOrFunction(testValue) {
-        return testValue instanceof RegExp || testValue instanceof Function;
+      const getGlobal = function getGlobal() {
+        return typeof window === 'undefined' ? null : window;
       };
+
       /**
-       * _parseConfig
-       *
-       * @param  {Object} cfg optional config literal
+       * Creates a no-op policy for internal use only.
+       * Don't export this function outside this module!
+       * @param {TrustedTypePolicyFactory} trustedTypes The policy factory.
+       * @param {HTMLScriptElement} purifyHostElement The Script element used to load DOMPurify (to determine policy name suffix).
+       * @return {TrustedTypePolicy} The policy created (or null, if Trusted Types
+       * are not supported or creating the policy failed).
        */
-      // eslint-disable-next-line complexity
-
-      var _parseConfig = function _parseConfig(cfg) {
-        if (CONFIG && CONFIG === cfg) {
-          return;
+      const _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, purifyHostElement) {
+        if (typeof trustedTypes !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
+          return null;
         }
-        /* Shield configuration object from tampering */
 
-        if (!cfg || _typeof(cfg) !== 'object') {
-          cfg = {};
+        // Allow the callers to control the unique policy name
+        // by adding a data-tt-policy-suffix to the script element with the DOMPurify.
+        // Policy creation with duplicate names throws in Trusted Types.
+        let suffix = null;
+        const ATTR_NAME = 'data-tt-policy-suffix';
+        if (purifyHostElement && purifyHostElement.hasAttribute(ATTR_NAME)) {
+          suffix = purifyHostElement.getAttribute(ATTR_NAME);
         }
-        /* Shield configuration object from prototype pollution */
-
-        cfg = clone$1(cfg);
-        PARSER_MEDIA_TYPE =
-        // eslint-disable-next-line unicorn/prefer-includes
-        SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE; // HTML tags and attributes are not case-sensitive, converting to lowercase. Keeping XHTML as is.
-
-        transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? stringToString : stringToLowerCase;
-        /* Set configuration parameters */
-
-        ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
-        ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
-        ALLOWED_NAMESPACES = 'ALLOWED_NAMESPACES' in cfg ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
-        URI_SAFE_ATTRIBUTES = 'ADD_URI_SAFE_ATTR' in cfg ? addToSet(clone$1(DEFAULT_URI_SAFE_ATTRIBUTES),
-        // eslint-disable-line indent
-        cfg.ADD_URI_SAFE_ATTR,
-        // eslint-disable-line indent
-        transformCaseFunc // eslint-disable-line indent
-        ) // eslint-disable-line indent
-        : DEFAULT_URI_SAFE_ATTRIBUTES;
-        DATA_URI_TAGS = 'ADD_DATA_URI_TAGS' in cfg ? addToSet(clone$1(DEFAULT_DATA_URI_TAGS),
-        // eslint-disable-line indent
-        cfg.ADD_DATA_URI_TAGS,
-        // eslint-disable-line indent
-        transformCaseFunc // eslint-disable-line indent
-        ) // eslint-disable-line indent
-        : DEFAULT_DATA_URI_TAGS;
-        FORBID_CONTENTS = 'FORBID_CONTENTS' in cfg ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
-        FORBID_TAGS = 'FORBID_TAGS' in cfg ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : {};
-        FORBID_ATTR = 'FORBID_ATTR' in cfg ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : {};
-        USE_PROFILES = 'USE_PROFILES' in cfg ? cfg.USE_PROFILES : false;
-        ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false; // Default true
-
-        ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false; // Default true
-
-        ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false; // Default false
-
-        ALLOW_SELF_CLOSE_IN_ATTR = cfg.ALLOW_SELF_CLOSE_IN_ATTR !== false; // Default true
-
-        SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false; // Default false
-
-        WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false; // Default false
-
-        RETURN_DOM = cfg.RETURN_DOM || false; // Default false
-
-        RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false; // Default false
-
-        RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false; // Default false
-
-        FORCE_BODY = cfg.FORCE_BODY || false; // Default false
-
-        SANITIZE_DOM = cfg.SANITIZE_DOM !== false; // Default true
-
-        SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false; // Default false
-
-        KEEP_CONTENT = cfg.KEEP_CONTENT !== false; // Default true
-
-        IN_PLACE = cfg.IN_PLACE || false; // Default false
-
-        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$1;
-        NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
-        CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
-        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
-          CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
-        }
-        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
-          CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
-        }
-        if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
-          CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
-        }
-        if (SAFE_FOR_TEMPLATES) {
-          ALLOW_DATA_ATTR = false;
-        }
-        if (RETURN_DOM_FRAGMENT) {
-          RETURN_DOM = true;
-        }
-        /* Parse profile info */
-
-        if (USE_PROFILES) {
-          ALLOWED_TAGS = addToSet({}, _toConsumableArray(text));
-          ALLOWED_ATTR = [];
-          if (USE_PROFILES.html === true) {
-            addToSet(ALLOWED_TAGS, html$1);
-            addToSet(ALLOWED_ATTR, html);
-          }
-          if (USE_PROFILES.svg === true) {
-            addToSet(ALLOWED_TAGS, svg$1);
-            addToSet(ALLOWED_ATTR, svg);
-            addToSet(ALLOWED_ATTR, xml);
-          }
-          if (USE_PROFILES.svgFilters === true) {
-            addToSet(ALLOWED_TAGS, svgFilters);
-            addToSet(ALLOWED_ATTR, svg);
-            addToSet(ALLOWED_ATTR, xml);
-          }
-          if (USE_PROFILES.mathMl === true) {
-            addToSet(ALLOWED_TAGS, mathMl$1);
-            addToSet(ALLOWED_ATTR, mathMl);
-            addToSet(ALLOWED_ATTR, xml);
-          }
-        }
-        /* Merge configuration parameters */
-
-        if (cfg.ADD_TAGS) {
-          if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
-            ALLOWED_TAGS = clone$1(ALLOWED_TAGS);
-          }
-          addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
-        }
-        if (cfg.ADD_ATTR) {
-          if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
-            ALLOWED_ATTR = clone$1(ALLOWED_ATTR);
-          }
-          addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
-        }
-        if (cfg.ADD_URI_SAFE_ATTR) {
-          addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
-        }
-        if (cfg.FORBID_CONTENTS) {
-          if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
-            FORBID_CONTENTS = clone$1(FORBID_CONTENTS);
-          }
-          addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
-        }
-        /* Add #text in case KEEP_CONTENT is set to true */
-
-        if (KEEP_CONTENT) {
-          ALLOWED_TAGS['#text'] = true;
-        }
-        /* Add html, head and body to ALLOWED_TAGS in case WHOLE_DOCUMENT is true */
-
-        if (WHOLE_DOCUMENT) {
-          addToSet(ALLOWED_TAGS, ['html', 'head', 'body']);
-        }
-        /* Add tbody to ALLOWED_TAGS in case tables are permitted, see #286, #365 */
-
-        if (ALLOWED_TAGS.table) {
-          addToSet(ALLOWED_TAGS, ['tbody']);
-          delete FORBID_TAGS.tbody;
-        } // Prevent further manipulation of configuration.
-        // Not available in IE8, Safari 5, etc.
-
-        if (freeze) {
-          freeze(cfg);
-        }
-        CONFIG = cfg;
-      };
-      var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
-      var HTML_INTEGRATION_POINTS = addToSet({}, ['foreignobject', 'desc', 'title', 'annotation-xml']); // Certain elements are allowed in both SVG and HTML
-      // namespace. We need to specify them explicitly
-      // so that they don't get erroneously deleted from
-      // HTML namespace.
-
-      var COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ['title', 'style', 'font', 'a', 'script']);
-      /* Keep track of all possible SVG and MathML tags
-       * so that we can perform the namespace checks
-       * correctly. */
-
-      var ALL_SVG_TAGS = addToSet({}, svg$1);
-      addToSet(ALL_SVG_TAGS, svgFilters);
-      addToSet(ALL_SVG_TAGS, svgDisallowed);
-      var ALL_MATHML_TAGS = addToSet({}, mathMl$1);
-      addToSet(ALL_MATHML_TAGS, mathMlDisallowed);
-      /**
-       *
-       *
-       * @param  {Element} element a DOM element whose namespace is being checked
-       * @returns {boolean} Return false if the element has a
-       *  namespace that a spec-compliant parser would never
-       *  return. Return true otherwise.
-       */
-
-      var _checkValidNamespace = function _checkValidNamespace(element) {
-        var parent = getParentNode(element); // In JSDOM, if we're inside shadow DOM, then parentNode
-        // can be null. We just simulate parent in this case.
-
-        if (!parent || !parent.tagName) {
-          parent = {
-            namespaceURI: NAMESPACE,
-            tagName: 'template'
-          };
-        }
-        var tagName = stringToLowerCase(element.tagName);
-        var parentTagName = stringToLowerCase(parent.tagName);
-        if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
-          return false;
-        }
-        if (element.namespaceURI === SVG_NAMESPACE) {
-          // The only way to switch from HTML namespace to SVG
-          // is via <svg>. If it happens via any other tag, then
-          // it should be killed.
-          if (parent.namespaceURI === HTML_NAMESPACE) {
-            return tagName === 'svg';
-          } // The only way to switch from MathML to SVG is via`
-          // svg if parent is either <annotation-xml> or MathML
-          // text integration points.
-
-          if (parent.namespaceURI === MATHML_NAMESPACE) {
-            return tagName === 'svg' && (parentTagName === 'annotation-xml' || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
-          } // We only allow elements that are defined in SVG
-          // spec. All others are disallowed in SVG namespace.
-
-          return Boolean(ALL_SVG_TAGS[tagName]);
-        }
-        if (element.namespaceURI === MATHML_NAMESPACE) {
-          // The only way to switch from HTML namespace to MathML
-          // is via <math>. If it happens via any other tag, then
-          // it should be killed.
-          if (parent.namespaceURI === HTML_NAMESPACE) {
-            return tagName === 'math';
-          } // The only way to switch from SVG to MathML is via
-          // <math> and HTML integration points
-
-          if (parent.namespaceURI === SVG_NAMESPACE) {
-            return tagName === 'math' && HTML_INTEGRATION_POINTS[parentTagName];
-          } // We only allow elements that are defined in MathML
-          // spec. All others are disallowed in MathML namespace.
-
-          return Boolean(ALL_MATHML_TAGS[tagName]);
-        }
-        if (element.namespaceURI === HTML_NAMESPACE) {
-          // The only way to switch from SVG to HTML is via
-          // HTML integration points, and from MathML to HTML
-          // is via MathML text integration points
-          if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
-            return false;
-          }
-          if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
-            return false;
-          } // We disallow tags that are specific for MathML
-          // or SVG and should never appear in HTML namespace
-
-          return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
-        } // For XHTML and XML documents that support custom namespaces
-
-        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && ALLOWED_NAMESPACES[element.namespaceURI]) {
-          return true;
-        } // The code should never reach this place (this means
-        // that the element somehow got namespace that is not
-        // HTML, SVG, MathML or allowed via ALLOWED_NAMESPACES).
-        // Return false just in case.
-
-        return false;
-      };
-      /**
-       * _forceRemove
-       *
-       * @param  {Node} node a DOM node
-       */
-
-      var _forceRemove = function _forceRemove(node) {
-        arrayPush(DOMPurify.removed, {
-          element: node
-        });
+        const policyName = 'dompurify' + (suffix ? '#' + suffix : '');
         try {
-          // eslint-disable-next-line unicorn/prefer-dom-node-remove
-          node.parentNode.removeChild(node);
-        } catch (_) {
-          try {
-            node.outerHTML = emptyHTML;
-          } catch (_) {
-            node.remove();
-          }
-        }
-      };
-      /**
-       * _removeAttribute
-       *
-       * @param  {String} name an Attribute name
-       * @param  {Node} node a DOM node
-       */
-
-      var _removeAttribute = function _removeAttribute(name, node) {
-        try {
-          arrayPush(DOMPurify.removed, {
-            attribute: node.getAttributeNode(name),
-            from: node
+          return trustedTypes.createPolicy(policyName, {
+            createHTML(html) {
+              return html;
+            },
+            createScriptURL(scriptUrl) {
+              return scriptUrl;
+            }
           });
         } catch (_) {
-          arrayPush(DOMPurify.removed, {
-            attribute: null,
-            from: node
-          });
-        }
-        node.removeAttribute(name); // We void attribute values for unremovable "is"" attributes
-
-        if (name === 'is' && !ALLOWED_ATTR[name]) {
-          if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
-            try {
-              _forceRemove(node);
-            } catch (_) {}
-          } else {
-            try {
-              node.setAttribute(name, '');
-            } catch (_) {}
-          }
+          // Policy creation failed (most likely another DOMPurify script has
+          // already run). Skip creating the policy, as this will only cause errors
+          // if TT are enforced.
+          console.warn('TrustedTypes policy ' + policyName + ' could not be created.');
+          return null;
         }
       };
-      /**
-       * _initDocument
-       *
-       * @param  {String} dirty a string of dirty markup
-       * @return {Document} a DOM, filled with the dirty markup
-       */
+      function createDOMPurify() {
+        let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
+        const DOMPurify = root => createDOMPurify(root);
 
-      var _initDocument = function _initDocument(dirty) {
-        /* Create a HTML document */
-        var doc;
-        var leadingWhitespace;
-        if (FORCE_BODY) {
-          dirty = '<remove></remove>' + dirty;
-        } else {
-          /* If FORCE_BODY isn't used, leading whitespace needs to be preserved manually */
-          var matches = stringMatch(dirty, /^[\r\n\t ]+/);
-          leadingWhitespace = matches && matches[0];
+        /**
+         * Version label, exposed for easier checks
+         * if DOMPurify is up to date or not
+         */
+        DOMPurify.version = '3.1.6';
+
+        /**
+         * Array of elements that DOMPurify removed during sanitation.
+         * Empty if nothing was removed.
+         */
+        DOMPurify.removed = [];
+        if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document) {
+          // Not running in a browser, provide a factory function
+          // so that you can pass your own Window
+          DOMPurify.isSupported = false;
+          return DOMPurify;
         }
-        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && NAMESPACE === HTML_NAMESPACE) {
-          // Root of XHTML doc must contain xmlns declaration (see https://www.w3.org/TR/xhtml1/normative.html#strict)
-          dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
+        let {
+          document
+        } = window;
+        const originalDocument = document;
+        const currentScript = originalDocument.currentScript;
+        const {
+          DocumentFragment,
+          HTMLTemplateElement,
+          Node,
+          Element,
+          NodeFilter,
+          NamedNodeMap = window.NamedNodeMap || window.MozNamedAttrMap,
+          HTMLFormElement,
+          DOMParser,
+          trustedTypes
+        } = window;
+        const ElementPrototype = Element.prototype;
+        const cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
+        const remove = lookupGetter(ElementPrototype, 'remove');
+        const getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
+        const getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
+        const getParentNode = lookupGetter(ElementPrototype, 'parentNode');
+
+        // As per issue #47, the web-components registry is inherited by a
+        // new document created via createHTMLDocument. As per the spec
+        // (http://w3c.github.io/webcomponents/spec/custom/#creating-and-passing-registries)
+        // a new empty registry is used when creating a template contents owner
+        // document, so we use that as our parent document to ensure nothing
+        // is inherited.
+        if (typeof HTMLTemplateElement === 'function') {
+          const template = document.createElement('template');
+          if (template.content && template.content.ownerDocument) {
+            document = template.content.ownerDocument;
+          }
         }
-        var dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
-        /*
-         * Use the DOMParser API by default, fallback later if needs be
-         * DOMParser not work for svg when has multiple root element.
+        let trustedTypesPolicy;
+        let emptyHTML = '';
+        const {
+          implementation,
+          createNodeIterator,
+          createDocumentFragment,
+          getElementsByTagName
+        } = document;
+        const {
+          importNode
+        } = originalDocument;
+        let hooks = {};
+
+        /**
+         * Expose whether this browser supports running the full DOMPurify.
+         */
+        DOMPurify.isSupported = typeof entries === 'function' && typeof getParentNode === 'function' && implementation && implementation.createHTMLDocument !== undefined;
+        const {
+          MUSTACHE_EXPR,
+          ERB_EXPR,
+          TMPLIT_EXPR,
+          DATA_ATTR,
+          ARIA_ATTR,
+          IS_SCRIPT_OR_DATA,
+          ATTR_WHITESPACE,
+          CUSTOM_ELEMENT
+        } = EXPRESSIONS;
+        let {
+          IS_ALLOWED_URI: IS_ALLOWED_URI$1
+        } = EXPRESSIONS;
+
+        /**
+         * We consider the elements and attributes below to be safe. Ideally
+         * don't add any new ones but feel free to remove unwanted ones.
          */
 
-        if (NAMESPACE === HTML_NAMESPACE) {
-          try {
-            doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
-          } catch (_) {}
-        }
-        /* Use createHTMLDocument in case DOMParser is not available */
+        /* allowed element names */
+        let ALLOWED_TAGS = null;
+        const DEFAULT_ALLOWED_TAGS = addToSet({}, [...html$1, ...svg$1, ...svgFilters, ...mathMl$1, ...text]);
 
-        if (!doc || !doc.documentElement) {
-          doc = implementation.createDocument(NAMESPACE, 'template', null);
-          try {
-            doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
-          } catch (_) {// Syntax error if dirtyPayload is invalid xml
+        /* Allowed attribute names */
+        let ALLOWED_ATTR = null;
+        const DEFAULT_ALLOWED_ATTR = addToSet({}, [...html, ...svg, ...mathMl, ...xml]);
+
+        /*
+         * Configure how DOMPUrify should handle custom elements and their attributes as well as customized built-in elements.
+         * @property {RegExp|Function|null} tagNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any custom elements)
+         * @property {RegExp|Function|null} attributeNameCheck one of [null, regexPattern, predicate]. Default: `null` (disallow any attributes not on the allow list)
+         * @property {boolean} allowCustomizedBuiltInElements allow custom elements derived from built-ins if they pass CUSTOM_ELEMENT_HANDLING.tagNameCheck. Default: `false`.
+         */
+        let CUSTOM_ELEMENT_HANDLING = Object.seal(create(null, {
+          tagNameCheck: {
+            writable: true,
+            configurable: false,
+            enumerable: true,
+            value: null
+          },
+          attributeNameCheck: {
+            writable: true,
+            configurable: false,
+            enumerable: true,
+            value: null
+          },
+          allowCustomizedBuiltInElements: {
+            writable: true,
+            configurable: false,
+            enumerable: true,
+            value: false
           }
-        }
-        var body = doc.body || doc.documentElement;
-        if (dirty && leadingWhitespace) {
-          body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
-        }
-        /* Work on whole document or just its body */
+        }));
 
-        if (NAMESPACE === HTML_NAMESPACE) {
-          return getElementsByTagName.call(doc, WHOLE_DOCUMENT ? 'html' : 'body')[0];
-        }
-        return WHOLE_DOCUMENT ? doc.documentElement : body;
-      };
-      /**
-       * _createIterator
-       *
-       * @param  {Document} root document/fragment to create iterator for
-       * @return {Iterator} iterator instance
-       */
+        /* Explicitly forbidden tags (overrides ALLOWED_TAGS/ADD_TAGS) */
+        let FORBID_TAGS = null;
 
-      var _createIterator = function _createIterator(root) {
-        return createNodeIterator.call(root.ownerDocument || root, root,
-        // eslint-disable-next-line no-bitwise
-        NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT, null, false);
-      };
-      /**
-       * _isClobbered
-       *
-       * @param  {Node} elm element to check for clobbering attacks
-       * @return {Boolean} true if clobbered, false if safe
-       */
+        /* Explicitly forbidden attributes (overrides ALLOWED_ATTR/ADD_ATTR) */
+        let FORBID_ATTR = null;
 
-      var _isClobbered = function _isClobbered(elm) {
-        return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function' || typeof elm.hasChildNodes !== 'function');
-      };
-      /**
-       * _isNode
-       *
-       * @param  {Node} obj object to check whether it's a DOM node
-       * @return {Boolean} true is object is a DOM node
-       */
+        /* Decide if ARIA attributes are okay */
+        let ALLOW_ARIA_ATTR = true;
 
-      var _isNode = function _isNode(object) {
-        return _typeof(Node) === 'object' ? object instanceof Node : object && _typeof(object) === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
-      };
-      /**
-       * _executeHook
-       * Execute user configurable hooks
-       *
-       * @param  {String} entryPoint  Name of the hook's entry point
-       * @param  {Node} currentNode node to work on with the hook
-       * @param  {Object} data additional hook parameters
-       */
+        /* Decide if custom data attributes are okay */
+        let ALLOW_DATA_ATTR = true;
 
-      var _executeHook = function _executeHook(entryPoint, currentNode, data) {
-        if (!hooks[entryPoint]) {
-          return;
-        }
-        arrayForEach(hooks[entryPoint], function (hook) {
-          hook.call(DOMPurify, currentNode, data, CONFIG);
-        });
-      };
-      /**
-       * _sanitizeElements
-       *
-       * @protect nodeName
-       * @protect textContent
-       * @protect removeChild
-       *
-       * @param   {Node} currentNode to check for permission to exist
-       * @return  {Boolean} true if node was killed, false if left alive
-       */
+        /* Decide if unknown protocols are okay */
+        let ALLOW_UNKNOWN_PROTOCOLS = false;
 
-      var _sanitizeElements = function _sanitizeElements(currentNode) {
-        var content;
-        /* Execute a hook if present */
+        /* Decide if self-closing tags in attributes are allowed.
+         * Usually removed due to a mXSS issue in jQuery 3.0 */
+        let ALLOW_SELF_CLOSE_IN_ATTR = true;
 
-        _executeHook('beforeSanitizeElements', currentNode, null);
-        /* Check if element is clobbered or can clobber */
+        /* Output should be safe for common template engines.
+         * This means, DOMPurify removes data attributes, mustaches and ERB
+         */
+        let SAFE_FOR_TEMPLATES = false;
 
-        if (_isClobbered(currentNode)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Check if tagname contains Unicode */
+        /* Output should be safe even for XML used within HTML and alike.
+         * This means, DOMPurify removes comments when containing risky content.
+         */
+        let SAFE_FOR_XML = true;
 
-        if (regExpTest(/[\u0080-\uFFFF]/, currentNode.nodeName)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Now let's check the element's type and name */
+        /* Decide if document with <html>... should be returned */
+        let WHOLE_DOCUMENT = false;
 
-        var tagName = transformCaseFunc(currentNode.nodeName);
-        /* Execute a hook if present */
+        /* Track whether config is already set on this instance of DOMPurify. */
+        let SET_CONFIG = false;
 
-        _executeHook('uponSanitizeElement', currentNode, {
-          tagName: tagName,
-          allowedTags: ALLOWED_TAGS
-        });
-        /* Detect mXSS attempts abusing namespace confusion */
+        /* Decide if all elements (e.g. style, script) must be children of
+         * document.body. By default, browsers might move them to document.head */
+        let FORCE_BODY = false;
 
-        if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && (!_isNode(currentNode.content) || !_isNode(currentNode.content.firstElementChild)) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Mitigate a problem with templates inside select */
+        /* Decide if a DOM `HTMLBodyElement` should be returned, instead of a html
+         * string (or a TrustedHTML object if Trusted Types are supported).
+         * If `WHOLE_DOCUMENT` is enabled a `HTMLHtmlElement` will be returned instead
+         */
+        let RETURN_DOM = false;
 
-        if (tagName === 'select' && regExpTest(/<template/i, currentNode.innerHTML)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Remove element if anything forbids its presence */
+        /* Decide if a DOM `DocumentFragment` should be returned, instead of a html
+         * string  (or a TrustedHTML object if Trusted Types are supported) */
+        let RETURN_DOM_FRAGMENT = false;
 
-        if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
-          /* Check if we have a custom element to handle */
-          if (!FORBID_TAGS[tagName] && _basicCustomElementTest(tagName)) {
-            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) return false;
-            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) return false;
+        /* Try to return a Trusted Type object instead of a string, return a string in
+         * case Trusted Types are not supported  */
+        let RETURN_TRUSTED_TYPE = false;
+
+        /* Output should be free from DOM clobbering attacks?
+         * This sanitizes markups named with colliding, clobberable built-in DOM APIs.
+         */
+        let SANITIZE_DOM = true;
+
+        /* Achieve full DOM Clobbering protection by isolating the namespace of named
+         * properties and JS variables, mitigating attacks that abuse the HTML/DOM spec rules.
+         *
+         * HTML/DOM spec rules that enable DOM Clobbering:
+         *   - Named Access on Window (§7.3.3)
+         *   - DOM Tree Accessors (§3.1.5)
+         *   - Form Element Parent-Child Relations (§4.10.3)
+         *   - Iframe srcdoc / Nested WindowProxies (§4.8.5)
+         *   - HTMLCollection (§4.2.10.2)
+         *
+         * Namespace isolation is implemented by prefixing `id` and `name` attributes
+         * with a constant string, i.e., `user-content-`
+         */
+        let SANITIZE_NAMED_PROPS = false;
+        const SANITIZE_NAMED_PROPS_PREFIX = 'user-content-';
+
+        /* Keep element content when removing element? */
+        let KEEP_CONTENT = true;
+
+        /* If a `Node` is passed to sanitize(), then performs sanitization in-place instead
+         * of importing it into a new Document and returning a sanitized copy */
+        let IN_PLACE = false;
+
+        /* Allow usage of profiles like html, svg and mathMl */
+        let USE_PROFILES = {};
+
+        /* Tags to ignore content of when KEEP_CONTENT is true */
+        let FORBID_CONTENTS = null;
+        const DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
+
+        /* Tags that are safe for data: URIs */
+        let DATA_URI_TAGS = null;
+        const DEFAULT_DATA_URI_TAGS = addToSet({}, ['audio', 'video', 'img', 'source', 'image', 'track']);
+
+        /* Attributes safe for values like "javascript:" */
+        let URI_SAFE_ATTRIBUTES = null;
+        const DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, ['alt', 'class', 'for', 'id', 'label', 'name', 'pattern', 'placeholder', 'role', 'summary', 'title', 'value', 'style', 'xmlns']);
+        const MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+        const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+        const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
+        /* Document namespace */
+        let NAMESPACE = HTML_NAMESPACE;
+        let IS_EMPTY_INPUT = false;
+
+        /* Allowed XHTML+XML namespaces */
+        let ALLOWED_NAMESPACES = null;
+        const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
+
+        /* Parsing of strict XHTML documents */
+        let PARSER_MEDIA_TYPE = null;
+        const SUPPORTED_PARSER_MEDIA_TYPES = ['application/xhtml+xml', 'text/html'];
+        const DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
+        let transformCaseFunc = null;
+
+        /* Keep a reference to config to pass to hooks */
+        let CONFIG = null;
+
+        /* Ideally, do not touch anything below this line */
+        /* ______________________________________________ */
+
+        const formElement = document.createElement('form');
+        const isRegexOrFunction = function isRegexOrFunction(testValue) {
+          return testValue instanceof RegExp || testValue instanceof Function;
+        };
+
+        /**
+         * _parseConfig
+         *
+         * @param  {Object} cfg optional config literal
+         */
+        // eslint-disable-next-line complexity
+        const _parseConfig = function _parseConfig() {
+          let cfg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+          if (CONFIG && CONFIG === cfg) {
+            return;
           }
-          /* Keep content except for bad-listed elements */
 
-          if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
-            var parentNode = getParentNode(currentNode) || currentNode.parentNode;
-            var childNodes = getChildNodes(currentNode) || currentNode.childNodes;
-            if (childNodes && parentNode) {
-              var childCount = childNodes.length;
-              for (var i = childCount - 1; i >= 0; --i) {
-                parentNode.insertBefore(cloneNode(childNodes[i], true), getNextSibling(currentNode));
-              }
+          /* Shield configuration object from tampering */
+          if (!cfg || typeof cfg !== 'object') {
+            cfg = {};
+          }
+
+          /* Shield configuration object from prototype pollution */
+          cfg = clone(cfg);
+          PARSER_MEDIA_TYPE =
+          // eslint-disable-next-line unicorn/prefer-includes
+          SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? DEFAULT_PARSER_MEDIA_TYPE : cfg.PARSER_MEDIA_TYPE;
+
+          // HTML tags and attributes are not case-sensitive, converting to lowercase. Keeping XHTML as is.
+          transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? stringToString : stringToLowerCase;
+
+          /* Set configuration parameters */
+          ALLOWED_TAGS = objectHasOwnProperty(cfg, 'ALLOWED_TAGS') ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
+          ALLOWED_ATTR = objectHasOwnProperty(cfg, 'ALLOWED_ATTR') ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
+          ALLOWED_NAMESPACES = objectHasOwnProperty(cfg, 'ALLOWED_NAMESPACES') ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
+          URI_SAFE_ATTRIBUTES = objectHasOwnProperty(cfg, 'ADD_URI_SAFE_ATTR') ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES),
+          // eslint-disable-line indent
+          cfg.ADD_URI_SAFE_ATTR,
+          // eslint-disable-line indent
+          transformCaseFunc // eslint-disable-line indent
+          ) // eslint-disable-line indent
+          : DEFAULT_URI_SAFE_ATTRIBUTES;
+          DATA_URI_TAGS = objectHasOwnProperty(cfg, 'ADD_DATA_URI_TAGS') ? addToSet(clone(DEFAULT_DATA_URI_TAGS),
+          // eslint-disable-line indent
+          cfg.ADD_DATA_URI_TAGS,
+          // eslint-disable-line indent
+          transformCaseFunc // eslint-disable-line indent
+          ) // eslint-disable-line indent
+          : DEFAULT_DATA_URI_TAGS;
+          FORBID_CONTENTS = objectHasOwnProperty(cfg, 'FORBID_CONTENTS') ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
+          FORBID_TAGS = objectHasOwnProperty(cfg, 'FORBID_TAGS') ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : {};
+          FORBID_ATTR = objectHasOwnProperty(cfg, 'FORBID_ATTR') ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : {};
+          USE_PROFILES = objectHasOwnProperty(cfg, 'USE_PROFILES') ? cfg.USE_PROFILES : false;
+          ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false; // Default true
+          ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false; // Default true
+          ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false; // Default false
+          ALLOW_SELF_CLOSE_IN_ATTR = cfg.ALLOW_SELF_CLOSE_IN_ATTR !== false; // Default true
+          SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false; // Default false
+          SAFE_FOR_XML = cfg.SAFE_FOR_XML !== false; // Default true
+          WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false; // Default false
+          RETURN_DOM = cfg.RETURN_DOM || false; // Default false
+          RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false; // Default false
+          RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false; // Default false
+          FORCE_BODY = cfg.FORCE_BODY || false; // Default false
+          SANITIZE_DOM = cfg.SANITIZE_DOM !== false; // Default true
+          SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false; // Default false
+          KEEP_CONTENT = cfg.KEEP_CONTENT !== false; // Default true
+          IN_PLACE = cfg.IN_PLACE || false; // Default false
+          IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI;
+          NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+          CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
+          if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
+            CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
+          }
+          if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
+            CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
+          }
+          if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
+            CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
+          }
+          if (SAFE_FOR_TEMPLATES) {
+            ALLOW_DATA_ATTR = false;
+          }
+          if (RETURN_DOM_FRAGMENT) {
+            RETURN_DOM = true;
+          }
+
+          /* Parse profile info */
+          if (USE_PROFILES) {
+            ALLOWED_TAGS = addToSet({}, text);
+            ALLOWED_ATTR = [];
+            if (USE_PROFILES.html === true) {
+              addToSet(ALLOWED_TAGS, html$1);
+              addToSet(ALLOWED_ATTR, html);
+            }
+            if (USE_PROFILES.svg === true) {
+              addToSet(ALLOWED_TAGS, svg$1);
+              addToSet(ALLOWED_ATTR, svg);
+              addToSet(ALLOWED_ATTR, xml);
+            }
+            if (USE_PROFILES.svgFilters === true) {
+              addToSet(ALLOWED_TAGS, svgFilters);
+              addToSet(ALLOWED_ATTR, svg);
+              addToSet(ALLOWED_ATTR, xml);
+            }
+            if (USE_PROFILES.mathMl === true) {
+              addToSet(ALLOWED_TAGS, mathMl$1);
+              addToSet(ALLOWED_ATTR, mathMl);
+              addToSet(ALLOWED_ATTR, xml);
             }
           }
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Check whether element has a valid namespace */
 
-        if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        if ((tagName === 'noscript' || tagName === 'noembed') && regExpTest(/<\/no(script|embed)/i, currentNode.innerHTML)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Sanitize element content to be template-safe */
-
-        if (SAFE_FOR_TEMPLATES && currentNode.nodeType === 3) {
-          /* Get the element's text content */
-          content = currentNode.textContent;
-          content = stringReplace(content, MUSTACHE_EXPR$1, ' ');
-          content = stringReplace(content, ERB_EXPR$1, ' ');
-          content = stringReplace(content, TMPLIT_EXPR$1, ' ');
-          if (currentNode.textContent !== content) {
-            arrayPush(DOMPurify.removed, {
-              element: currentNode.cloneNode()
-            });
-            currentNode.textContent = content;
+          /* Merge configuration parameters */
+          if (cfg.ADD_TAGS) {
+            if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
+              ALLOWED_TAGS = clone(ALLOWED_TAGS);
+            }
+            addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
           }
-        }
-        /* Execute a hook if present */
+          if (cfg.ADD_ATTR) {
+            if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
+              ALLOWED_ATTR = clone(ALLOWED_ATTR);
+            }
+            addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
+          }
+          if (cfg.ADD_URI_SAFE_ATTR) {
+            addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
+          }
+          if (cfg.FORBID_CONTENTS) {
+            if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+              FORBID_CONTENTS = clone(FORBID_CONTENTS);
+            }
+            addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
+          }
 
-        _executeHook('afterSanitizeElements', currentNode, null);
-        return false;
-      };
-      /**
-       * _isValidAttribute
-       *
-       * @param  {string} lcTag Lowercase tag name of containing element.
-       * @param  {string} lcName Lowercase attribute name.
-       * @param  {string} value Attribute value.
-       * @return {Boolean} Returns true if `value` is valid, otherwise false.
-       */
-      // eslint-disable-next-line complexity
+          /* Add #text in case KEEP_CONTENT is set to true */
+          if (KEEP_CONTENT) {
+            ALLOWED_TAGS['#text'] = true;
+          }
 
-      var _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
-        /* Make sure attribute cannot clobber */
-        if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
-          return false;
-        }
-        /* Allow valid data-* attributes: At least one character after "-"
-            (https://html.spec.whatwg.org/multipage/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes)
-            XML-compatible (https://html.spec.whatwg.org/multipage/infrastructure.html#xml-compatible and http://www.w3.org/TR/xml/#d0e804)
-            We don't need to check the value; it's always URI safe. */
+          /* Add html, head and body to ALLOWED_TAGS in case WHOLE_DOCUMENT is true */
+          if (WHOLE_DOCUMENT) {
+            addToSet(ALLOWED_TAGS, ['html', 'head', 'body']);
+          }
 
-        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$1, lcName)) ;else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName)) ;else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
-          if (
-          // First condition does a very basic check if a) it's basically a valid custom element tagname AND
-          // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
-          // and c) if the attribute name passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.attributeNameCheck
-          _basicCustomElementTest(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) ||
-          // Alternative, second condition checks if it's an `is`-attribute, AND
-          // the value passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
-          lcName === 'is' && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value))) ;else {
+          /* Add tbody to ALLOWED_TAGS in case tables are permitted, see #286, #365 */
+          if (ALLOWED_TAGS.table) {
+            addToSet(ALLOWED_TAGS, ['tbody']);
+            delete FORBID_TAGS.tbody;
+          }
+          if (cfg.TRUSTED_TYPES_POLICY) {
+            if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== 'function') {
+              throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
+            }
+            if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== 'function') {
+              throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
+            }
+
+            // Overwrite existing TrustedTypes policy.
+            trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY;
+
+            // Sign local variables required by `sanitize`.
+            emptyHTML = trustedTypesPolicy.createHTML('');
+          } else {
+            // Uninitialized policy, attempt to initialize the internal dompurify policy.
+            if (trustedTypesPolicy === undefined) {
+              trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+            }
+
+            // If creating the internal policy succeeded sign internal variables.
+            if (trustedTypesPolicy !== null && typeof emptyHTML === 'string') {
+              emptyHTML = trustedTypesPolicy.createHTML('');
+            }
+          }
+
+          // Prevent further manipulation of configuration.
+          // Not available in IE8, Safari 5, etc.
+          if (freeze) {
+            freeze(cfg);
+          }
+          CONFIG = cfg;
+        };
+        const MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
+        const HTML_INTEGRATION_POINTS = addToSet({}, ['foreignobject', 'annotation-xml']);
+
+        // Certain elements are allowed in both SVG and HTML
+        // namespace. We need to specify them explicitly
+        // so that they don't get erroneously deleted from
+        // HTML namespace.
+        const COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, ['title', 'style', 'font', 'a', 'script']);
+
+        /* Keep track of all possible SVG and MathML tags
+         * so that we can perform the namespace checks
+         * correctly. */
+        const ALL_SVG_TAGS = addToSet({}, [...svg$1, ...svgFilters, ...svgDisallowed]);
+        const ALL_MATHML_TAGS = addToSet({}, [...mathMl$1, ...mathMlDisallowed]);
+
+        /**
+         * @param  {Element} element a DOM element whose namespace is being checked
+         * @returns {boolean} Return false if the element has a
+         *  namespace that a spec-compliant parser would never
+         *  return. Return true otherwise.
+         */
+        const _checkValidNamespace = function _checkValidNamespace(element) {
+          let parent = getParentNode(element);
+
+          // In JSDOM, if we're inside shadow DOM, then parentNode
+          // can be null. We just simulate parent in this case.
+          if (!parent || !parent.tagName) {
+            parent = {
+              namespaceURI: NAMESPACE,
+              tagName: 'template'
+            };
+          }
+          const tagName = stringToLowerCase(element.tagName);
+          const parentTagName = stringToLowerCase(parent.tagName);
+          if (!ALLOWED_NAMESPACES[element.namespaceURI]) {
             return false;
           }
-          /* Check value is safe. First, is attr inert? If so, is safe */
-        } else if (URI_SAFE_ATTRIBUTES[lcName]) ;else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ;else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ;else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ;else if (!value) ;else {
+          if (element.namespaceURI === SVG_NAMESPACE) {
+            // The only way to switch from HTML namespace to SVG
+            // is via <svg>. If it happens via any other tag, then
+            // it should be killed.
+            if (parent.namespaceURI === HTML_NAMESPACE) {
+              return tagName === 'svg';
+            }
+
+            // The only way to switch from MathML to SVG is via`
+            // svg if parent is either <annotation-xml> or MathML
+            // text integration points.
+            if (parent.namespaceURI === MATHML_NAMESPACE) {
+              return tagName === 'svg' && (parentTagName === 'annotation-xml' || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+            }
+
+            // We only allow elements that are defined in SVG
+            // spec. All others are disallowed in SVG namespace.
+            return Boolean(ALL_SVG_TAGS[tagName]);
+          }
+          if (element.namespaceURI === MATHML_NAMESPACE) {
+            // The only way to switch from HTML namespace to MathML
+            // is via <math>. If it happens via any other tag, then
+            // it should be killed.
+            if (parent.namespaceURI === HTML_NAMESPACE) {
+              return tagName === 'math';
+            }
+
+            // The only way to switch from SVG to MathML is via
+            // <math> and HTML integration points
+            if (parent.namespaceURI === SVG_NAMESPACE) {
+              return tagName === 'math' && HTML_INTEGRATION_POINTS[parentTagName];
+            }
+
+            // We only allow elements that are defined in MathML
+            // spec. All others are disallowed in MathML namespace.
+            return Boolean(ALL_MATHML_TAGS[tagName]);
+          }
+          if (element.namespaceURI === HTML_NAMESPACE) {
+            // The only way to switch from SVG to HTML is via
+            // HTML integration points, and from MathML to HTML
+            // is via MathML text integration points
+            if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+              return false;
+            }
+            if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+              return false;
+            }
+
+            // We disallow tags that are specific for MathML
+            // or SVG and should never appear in HTML namespace
+            return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+          }
+
+          // For XHTML and XML documents that support custom namespaces
+          if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && ALLOWED_NAMESPACES[element.namespaceURI]) {
+            return true;
+          }
+
+          // The code should never reach this place (this means
+          // that the element somehow got namespace that is not
+          // HTML, SVG, MathML or allowed via ALLOWED_NAMESPACES).
+          // Return false just in case.
           return false;
-        }
-        return true;
-      };
-      /**
-       * _basicCustomElementCheck
-       * checks if at least one dash is included in tagName, and it's not the first char
-       * for more sophisticated checking see https://github.com/sindresorhus/validate-element-name
-       * @param {string} tagName name of the tag of the node to sanitize
-       */
-
-      var _basicCustomElementTest = function _basicCustomElementTest(tagName) {
-        return tagName.indexOf('-') > 0;
-      };
-      /**
-       * _sanitizeAttributes
-       *
-       * @protect attributes
-       * @protect nodeName
-       * @protect removeAttribute
-       * @protect setAttribute
-       *
-       * @param  {Node} currentNode to sanitize
-       */
-
-      var _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
-        var attr;
-        var value;
-        var lcName;
-        var l;
-        /* Execute a hook if present */
-
-        _executeHook('beforeSanitizeAttributes', currentNode, null);
-        var attributes = currentNode.attributes;
-        /* Check if we have attributes; if not we might have a text node */
-
-        if (!attributes) {
-          return;
-        }
-        var hookEvent = {
-          attrName: '',
-          attrValue: '',
-          keepAttr: true,
-          allowedAttributes: ALLOWED_ATTR
         };
-        l = attributes.length;
-        /* Go backwards over all attributes; safely remove bad ones */
 
-        while (l--) {
-          attr = attributes[l];
-          var _attr = attr,
-            name = _attr.name,
-            namespaceURI = _attr.namespaceURI;
-          value = name === 'value' ? attr.value : stringTrim$1(attr.value);
-          lcName = transformCaseFunc(name);
-          /* Execute a hook if present */
-
-          hookEvent.attrName = lcName;
-          hookEvent.attrValue = value;
-          hookEvent.keepAttr = true;
-          hookEvent.forceKeepAttr = undefined; // Allows developers to see this is a property they can set
-
-          _executeHook('uponSanitizeAttribute', currentNode, hookEvent);
-          value = hookEvent.attrValue;
-          /* Did the hooks approve of the attribute? */
-
-          if (hookEvent.forceKeepAttr) {
-            continue;
+        /**
+         * _forceRemove
+         *
+         * @param  {Node} node a DOM node
+         */
+        const _forceRemove = function _forceRemove(node) {
+          arrayPush(DOMPurify.removed, {
+            element: node
+          });
+          try {
+            // eslint-disable-next-line unicorn/prefer-dom-node-remove
+            getParentNode(node).removeChild(node);
+          } catch (_) {
+            remove(node);
           }
-          /* Remove attribute */
+        };
 
-          _removeAttribute(name, currentNode);
-          /* Did the hooks approve of the attribute? */
-
-          if (!hookEvent.keepAttr) {
-            continue;
+        /**
+         * _removeAttribute
+         *
+         * @param  {String} name an Attribute name
+         * @param  {Node} node a DOM node
+         */
+        const _removeAttribute = function _removeAttribute(name, node) {
+          try {
+            arrayPush(DOMPurify.removed, {
+              attribute: node.getAttributeNode(name),
+              from: node
+            });
+          } catch (_) {
+            arrayPush(DOMPurify.removed, {
+              attribute: null,
+              from: node
+            });
           }
-          /* Work around a security issue in jQuery 3.0 */
+          node.removeAttribute(name);
 
-          if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
-            _removeAttribute(name, currentNode);
-            continue;
+          // We void attribute values for unremovable "is"" attributes
+          if (name === 'is' && !ALLOWED_ATTR[name]) {
+            if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
+              try {
+                _forceRemove(node);
+              } catch (_) {}
+            } else {
+              try {
+                node.setAttribute(name, '');
+              } catch (_) {}
+            }
           }
-          /* Sanitize attribute content to be template-safe */
+        };
 
-          if (SAFE_FOR_TEMPLATES) {
-            value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
-            value = stringReplace(value, ERB_EXPR$1, ' ');
-            value = stringReplace(value, TMPLIT_EXPR$1, ' ');
+        /**
+         * _initDocument
+         *
+         * @param  {String} dirty a string of dirty markup
+         * @return {Document} a DOM, filled with the dirty markup
+         */
+        const _initDocument = function _initDocument(dirty) {
+          /* Create a HTML document */
+          let doc = null;
+          let leadingWhitespace = null;
+          if (FORCE_BODY) {
+            dirty = '<remove></remove>' + dirty;
+          } else {
+            /* If FORCE_BODY isn't used, leading whitespace needs to be preserved manually */
+            const matches = stringMatch(dirty, /^[\r\n\t ]+/);
+            leadingWhitespace = matches && matches[0];
           }
-          /* Is `value` valid for this attribute? */
-
-          var lcTag = transformCaseFunc(currentNode.nodeName);
-          if (!_isValidAttribute(lcTag, lcName, value)) {
-            continue;
+          if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && NAMESPACE === HTML_NAMESPACE) {
+            // Root of XHTML doc must contain xmlns declaration (see https://www.w3.org/TR/xhtml1/normative.html#strict)
+            dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
           }
-          /* Full DOM Clobbering protection via namespace isolation,
-           * Prefix id and name attributes with `user-content-`
+          const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+          /*
+           * Use the DOMParser API by default, fallback later if needs be
+           * DOMParser not work for svg when has multiple root element.
            */
-
-          if (SANITIZE_NAMED_PROPS && (lcName === 'id' || lcName === 'name')) {
-            // Remove the attribute with this value
-            _removeAttribute(name, currentNode); // Prefix the value and later re-create the attribute with the sanitized value
-
-            value = SANITIZE_NAMED_PROPS_PREFIX + value;
+          if (NAMESPACE === HTML_NAMESPACE) {
+            try {
+              doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+            } catch (_) {}
           }
-          /* Handle attributes that require Trusted Types */
 
-          if (trustedTypesPolicy && _typeof(trustedTypes) === 'object' && typeof trustedTypes.getAttributeType === 'function') {
-            if (namespaceURI) ;else {
-              switch (trustedTypes.getAttributeType(lcTag, lcName)) {
-                case 'TrustedHTML':
-                  value = trustedTypesPolicy.createHTML(value);
-                  break;
-                case 'TrustedScriptURL':
-                  value = trustedTypesPolicy.createScriptURL(value);
-                  break;
+          /* Use createHTMLDocument in case DOMParser is not available */
+          if (!doc || !doc.documentElement) {
+            doc = implementation.createDocument(NAMESPACE, 'template', null);
+            try {
+              doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
+            } catch (_) {
+              // Syntax error if dirtyPayload is invalid xml
+            }
+          }
+          const body = doc.body || doc.documentElement;
+          if (dirty && leadingWhitespace) {
+            body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
+          }
+
+          /* Work on whole document or just its body */
+          if (NAMESPACE === HTML_NAMESPACE) {
+            return getElementsByTagName.call(doc, WHOLE_DOCUMENT ? 'html' : 'body')[0];
+          }
+          return WHOLE_DOCUMENT ? doc.documentElement : body;
+        };
+
+        /**
+         * Creates a NodeIterator object that you can use to traverse filtered lists of nodes or elements in a document.
+         *
+         * @param  {Node} root The root element or node to start traversing on.
+         * @return {NodeIterator} The created NodeIterator
+         */
+        const _createNodeIterator = function _createNodeIterator(root) {
+          return createNodeIterator.call(root.ownerDocument || root, root,
+          // eslint-disable-next-line no-bitwise
+          NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_PROCESSING_INSTRUCTION | NodeFilter.SHOW_CDATA_SECTION, null);
+        };
+
+        /**
+         * _isClobbered
+         *
+         * @param  {Node} elm element to check for clobbering attacks
+         * @return {Boolean} true if clobbered, false if safe
+         */
+        const _isClobbered = function _isClobbered(elm) {
+          return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function' || typeof elm.hasChildNodes !== 'function');
+        };
+
+        /**
+         * Checks whether the given object is a DOM node.
+         *
+         * @param  {Node} object object to check whether it's a DOM node
+         * @return {Boolean} true is object is a DOM node
+         */
+        const _isNode = function _isNode(object) {
+          return typeof Node === 'function' && object instanceof Node;
+        };
+
+        /**
+         * _executeHook
+         * Execute user configurable hooks
+         *
+         * @param  {String} entryPoint  Name of the hook's entry point
+         * @param  {Node} currentNode node to work on with the hook
+         * @param  {Object} data additional hook parameters
+         */
+        const _executeHook = function _executeHook(entryPoint, currentNode, data) {
+          if (!hooks[entryPoint]) {
+            return;
+          }
+          arrayForEach(hooks[entryPoint], hook => {
+            hook.call(DOMPurify, currentNode, data, CONFIG);
+          });
+        };
+
+        /**
+         * _sanitizeElements
+         *
+         * @protect nodeName
+         * @protect textContent
+         * @protect removeChild
+         *
+         * @param   {Node} currentNode to check for permission to exist
+         * @return  {Boolean} true if node was killed, false if left alive
+         */
+        const _sanitizeElements = function _sanitizeElements(currentNode) {
+          let content = null;
+
+          /* Execute a hook if present */
+          _executeHook('beforeSanitizeElements', currentNode, null);
+
+          /* Check if element is clobbered or can clobber */
+          if (_isClobbered(currentNode)) {
+            _forceRemove(currentNode);
+            return true;
+          }
+
+          /* Now let's check the element's type and name */
+          const tagName = transformCaseFunc(currentNode.nodeName);
+
+          /* Execute a hook if present */
+          _executeHook('uponSanitizeElement', currentNode, {
+            tagName,
+            allowedTags: ALLOWED_TAGS
+          });
+
+          /* Detect mXSS attempts abusing namespace confusion */
+          if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+            _forceRemove(currentNode);
+            return true;
+          }
+
+          /* Remove any occurrence of processing instructions */
+          if (currentNode.nodeType === NODE_TYPE.progressingInstruction) {
+            _forceRemove(currentNode);
+            return true;
+          }
+
+          /* Remove any kind of possibly harmful comments */
+          if (SAFE_FOR_XML && currentNode.nodeType === NODE_TYPE.comment && regExpTest(/<[/\w]/g, currentNode.data)) {
+            _forceRemove(currentNode);
+            return true;
+          }
+
+          /* Remove element if anything forbids its presence */
+          if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+            /* Check if we have a custom element to handle */
+            if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
+              if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
+                return false;
+              }
+              if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) {
+                return false;
               }
             }
-          }
-          /* Handle invalid data-* attribute set by try-catching it */
 
-          try {
-            if (namespaceURI) {
-              currentNode.setAttributeNS(namespaceURI, name, value);
-            } else {
-              /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
-              currentNode.setAttribute(name, value);
+            /* Keep content except for bad-listed elements */
+            if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+              const parentNode = getParentNode(currentNode) || currentNode.parentNode;
+              const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+              if (childNodes && parentNode) {
+                const childCount = childNodes.length;
+                for (let i = childCount - 1; i >= 0; --i) {
+                  const childClone = cloneNode(childNodes[i], true);
+                  childClone.__removalCount = (currentNode.__removalCount || 0) + 1;
+                  parentNode.insertBefore(childClone, getNextSibling(currentNode));
+                }
+              }
             }
-            arrayPop(DOMPurify.removed);
-          } catch (_) {}
-        }
-        /* Execute a hook if present */
+            _forceRemove(currentNode);
+            return true;
+          }
 
-        _executeHook('afterSanitizeAttributes', currentNode, null);
-      };
-      /**
-       * _sanitizeShadowDOM
-       *
-       * @param  {DocumentFragment} fragment to iterate over recursively
-       */
+          /* Check whether element has a valid namespace */
+          if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
+            _forceRemove(currentNode);
+            return true;
+          }
 
-      var _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
-        var shadowNode;
-        var shadowIterator = _createIterator(fragment);
-        /* Execute a hook if present */
+          /* Make sure that older browsers don't get fallback-tag mXSS */
+          if ((tagName === 'noscript' || tagName === 'noembed' || tagName === 'noframes') && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
+            _forceRemove(currentNode);
+            return true;
+          }
 
-        _executeHook('beforeSanitizeShadowDOM', fragment, null);
-        while (shadowNode = shadowIterator.nextNode()) {
+          /* Sanitize element content to be template-safe */
+          if (SAFE_FOR_TEMPLATES && currentNode.nodeType === NODE_TYPE.text) {
+            /* Get the element's text content */
+            content = currentNode.textContent;
+            arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
+              content = stringReplace(content, expr, ' ');
+            });
+            if (currentNode.textContent !== content) {
+              arrayPush(DOMPurify.removed, {
+                element: currentNode.cloneNode()
+              });
+              currentNode.textContent = content;
+            }
+          }
+
           /* Execute a hook if present */
-          _executeHook('uponSanitizeShadowNode', shadowNode, null);
-          /* Sanitize tags and elements */
+          _executeHook('afterSanitizeElements', currentNode, null);
+          return false;
+        };
 
-          if (_sanitizeElements(shadowNode)) {
-            continue;
+        /**
+         * _isValidAttribute
+         *
+         * @param  {string} lcTag Lowercase tag name of containing element.
+         * @param  {string} lcName Lowercase attribute name.
+         * @param  {string} value Attribute value.
+         * @return {Boolean} Returns true if `value` is valid, otherwise false.
+         */
+        // eslint-disable-next-line complexity
+        const _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
+          /* Make sure attribute cannot clobber */
+          if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
+            return false;
           }
-          /* Deep shadow DOM detected */
 
-          if (shadowNode.content instanceof DocumentFragment) {
-            _sanitizeShadowDOM(shadowNode.content);
+          /* Allow valid data-* attributes: At least one character after "-"
+              (https://html.spec.whatwg.org/multipage/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes)
+              XML-compatible (https://html.spec.whatwg.org/multipage/infrastructure.html#xml-compatible and http://www.w3.org/TR/xml/#d0e804)
+              We don't need to check the value; it's always URI safe. */
+          if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR, lcName)) ;else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR, lcName)) ;else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+            if (
+            // First condition does a very basic check if a) it's basically a valid custom element tagname AND
+            // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+            // and c) if the attribute name passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.attributeNameCheck
+            _isBasicCustomElement(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) ||
+            // Alternative, second condition checks if it's an `is`-attribute, AND
+            // the value passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
+            lcName === 'is' && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value))) ;else {
+              return false;
+            }
+            /* Check value is safe. First, is attr inert? If so, is safe */
+          } else if (URI_SAFE_ATTRIBUTES[lcName]) ;else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, ''))) ;else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ;else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, ''))) ;else if (value) {
+            return false;
+          } else ;
+          return true;
+        };
+
+        /**
+         * _isBasicCustomElement
+         * checks if at least one dash is included in tagName, and it's not the first char
+         * for more sophisticated checking see https://github.com/sindresorhus/validate-element-name
+         *
+         * @param {string} tagName name of the tag of the node to sanitize
+         * @returns {boolean} Returns true if the tag name meets the basic criteria for a custom element, otherwise false.
+         */
+        const _isBasicCustomElement = function _isBasicCustomElement(tagName) {
+          return tagName !== 'annotation-xml' && stringMatch(tagName, CUSTOM_ELEMENT);
+        };
+
+        /**
+         * _sanitizeAttributes
+         *
+         * @protect attributes
+         * @protect nodeName
+         * @protect removeAttribute
+         * @protect setAttribute
+         *
+         * @param  {Node} currentNode to sanitize
+         */
+        const _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
+          /* Execute a hook if present */
+          _executeHook('beforeSanitizeAttributes', currentNode, null);
+          const {
+            attributes
+          } = currentNode;
+
+          /* Check if we have attributes; if not we might have a text node */
+          if (!attributes) {
+            return;
           }
-          /* Check attributes, sanitize if necessary */
+          const hookEvent = {
+            attrName: '',
+            attrValue: '',
+            keepAttr: true,
+            allowedAttributes: ALLOWED_ATTR
+          };
+          let l = attributes.length;
 
-          _sanitizeAttributes(shadowNode);
-        }
-        /* Execute a hook if present */
+          /* Go backwards over all attributes; safely remove bad ones */
+          while (l--) {
+            const attr = attributes[l];
+            const {
+              name,
+              namespaceURI,
+              value: attrValue
+            } = attr;
+            const lcName = transformCaseFunc(name);
+            let value = name === 'value' ? attrValue : stringTrim(attrValue);
 
-        _executeHook('afterSanitizeShadowDOM', fragment, null);
-      };
-      /**
-       * Sanitize
-       * Public method providing core sanitation functionality
-       *
-       * @param {String|Node} dirty string or DOM node
-       * @param {Object} configuration object
-       */
-      // eslint-disable-next-line complexity
+            /* Execute a hook if present */
+            hookEvent.attrName = lcName;
+            hookEvent.attrValue = value;
+            hookEvent.keepAttr = true;
+            hookEvent.forceKeepAttr = undefined; // Allows developers to see this is a property they can set
+            _executeHook('uponSanitizeAttribute', currentNode, hookEvent);
+            value = hookEvent.attrValue;
 
-      DOMPurify.sanitize = function (dirty) {
-        var cfg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var body;
-        var importedNode;
-        var currentNode;
-        var oldNode;
-        var returnNode;
-        /* Make sure we have a string to sanitize.
-          DO NOT return early, as this will return the wrong type if
-          the user has requested a DOM object rather than a string */
+            /* Work around a security issue with comments inside attributes */
+            if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|title)/i, value)) {
+              _removeAttribute(name, currentNode);
+              continue;
+            }
 
-        IS_EMPTY_INPUT = !dirty;
-        if (IS_EMPTY_INPUT) {
-          dirty = '<!-->';
-        }
-        /* Stringify, in case dirty is an object */
+            /* Did the hooks approve of the attribute? */
+            if (hookEvent.forceKeepAttr) {
+              continue;
+            }
 
-        if (typeof dirty !== 'string' && !_isNode(dirty)) {
-          // eslint-disable-next-line no-negated-condition
-          if (typeof dirty.toString !== 'function') {
-            throw typeErrorCreate('toString is not a function');
-          } else {
-            dirty = dirty.toString();
-            if (typeof dirty !== 'string') {
-              throw typeErrorCreate('dirty is not a string, aborting');
+            /* Remove attribute */
+            _removeAttribute(name, currentNode);
+
+            /* Did the hooks approve of the attribute? */
+            if (!hookEvent.keepAttr) {
+              continue;
+            }
+
+            /* Work around a security issue in jQuery 3.0 */
+            if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
+              _removeAttribute(name, currentNode);
+              continue;
+            }
+
+            /* Sanitize attribute content to be template-safe */
+            if (SAFE_FOR_TEMPLATES) {
+              arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
+                value = stringReplace(value, expr, ' ');
+              });
+            }
+
+            /* Is `value` valid for this attribute? */
+            const lcTag = transformCaseFunc(currentNode.nodeName);
+            if (!_isValidAttribute(lcTag, lcName, value)) {
+              continue;
+            }
+
+            /* Full DOM Clobbering protection via namespace isolation,
+             * Prefix id and name attributes with `user-content-`
+             */
+            if (SANITIZE_NAMED_PROPS && (lcName === 'id' || lcName === 'name')) {
+              // Remove the attribute with this value
+              _removeAttribute(name, currentNode);
+
+              // Prefix the value and later re-create the attribute with the sanitized value
+              value = SANITIZE_NAMED_PROPS_PREFIX + value;
+            }
+
+            /* Handle attributes that require Trusted Types */
+            if (trustedTypesPolicy && typeof trustedTypes === 'object' && typeof trustedTypes.getAttributeType === 'function') {
+              if (namespaceURI) ;else {
+                switch (trustedTypes.getAttributeType(lcTag, lcName)) {
+                  case 'TrustedHTML':
+                    {
+                      value = trustedTypesPolicy.createHTML(value);
+                      break;
+                    }
+                  case 'TrustedScriptURL':
+                    {
+                      value = trustedTypesPolicy.createScriptURL(value);
+                      break;
+                    }
+                }
+              }
+            }
+
+            /* Handle invalid data-* attribute set by try-catching it */
+            try {
+              if (namespaceURI) {
+                currentNode.setAttributeNS(namespaceURI, name, value);
+              } else {
+                /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
+                currentNode.setAttribute(name, value);
+              }
+              if (_isClobbered(currentNode)) {
+                _forceRemove(currentNode);
+              } else {
+                arrayPop(DOMPurify.removed);
+              }
+            } catch (_) {}
+          }
+
+          /* Execute a hook if present */
+          _executeHook('afterSanitizeAttributes', currentNode, null);
+        };
+
+        /**
+         * _sanitizeShadowDOM
+         *
+         * @param  {DocumentFragment} fragment to iterate over recursively
+         */
+        const _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
+          let shadowNode = null;
+          const shadowIterator = _createNodeIterator(fragment);
+
+          /* Execute a hook if present */
+          _executeHook('beforeSanitizeShadowDOM', fragment, null);
+          while (shadowNode = shadowIterator.nextNode()) {
+            /* Execute a hook if present */
+            _executeHook('uponSanitizeShadowNode', shadowNode, null);
+
+            /* Sanitize tags and elements */
+            if (_sanitizeElements(shadowNode)) {
+              continue;
+            }
+
+            /* Deep shadow DOM detected */
+            if (shadowNode.content instanceof DocumentFragment) {
+              _sanitizeShadowDOM(shadowNode.content);
+            }
+
+            /* Check attributes, sanitize if necessary */
+            _sanitizeAttributes(shadowNode);
+          }
+
+          /* Execute a hook if present */
+          _executeHook('afterSanitizeShadowDOM', fragment, null);
+        };
+
+        /**
+         * Sanitize
+         * Public method providing core sanitation functionality
+         *
+         * @param {String|Node} dirty string or DOM node
+         * @param {Object} cfg object
+         */
+        // eslint-disable-next-line complexity
+        DOMPurify.sanitize = function (dirty) {
+          let cfg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+          let body = null;
+          let importedNode = null;
+          let currentNode = null;
+          let returnNode = null;
+          /* Make sure we have a string to sanitize.
+            DO NOT return early, as this will return the wrong type if
+            the user has requested a DOM object rather than a string */
+          IS_EMPTY_INPUT = !dirty;
+          if (IS_EMPTY_INPUT) {
+            dirty = '<!-->';
+          }
+
+          /* Stringify, in case dirty is an object */
+          if (typeof dirty !== 'string' && !_isNode(dirty)) {
+            if (typeof dirty.toString === 'function') {
+              dirty = dirty.toString();
+              if (typeof dirty !== 'string') {
+                throw typeErrorCreate('dirty is not a string, aborting');
+              }
+            } else {
+              throw typeErrorCreate('toString is not a function');
             }
           }
-        }
-        /* Check we can run. Otherwise fall back or ignore */
 
-        if (!DOMPurify.isSupported) {
-          if (_typeof(window.toStaticHTML) === 'object' || typeof window.toStaticHTML === 'function') {
-            if (typeof dirty === 'string') {
-              return window.toStaticHTML(dirty);
+          /* Return dirty HTML if DOMPurify cannot run */
+          if (!DOMPurify.isSupported) {
+            return dirty;
+          }
+
+          /* Assign config vars */
+          if (!SET_CONFIG) {
+            _parseConfig(cfg);
+          }
+
+          /* Clean up removed elements */
+          DOMPurify.removed = [];
+
+          /* Check if dirty is correctly typed for IN_PLACE */
+          if (typeof dirty === 'string') {
+            IN_PLACE = false;
+          }
+          if (IN_PLACE) {
+            /* Do some early pre-sanitization to avoid unsafe root nodes */
+            if (dirty.nodeName) {
+              const tagName = transformCaseFunc(dirty.nodeName);
+              if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+                throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
+              }
             }
-            if (_isNode(dirty)) {
-              return window.toStaticHTML(dirty.outerHTML);
-            }
-          }
-          return dirty;
-        }
-        /* Assign config vars */
-
-        if (!SET_CONFIG) {
-          _parseConfig(cfg);
-        }
-        /* Clean up removed elements */
-
-        DOMPurify.removed = [];
-        /* Check if dirty is correctly typed for IN_PLACE */
-
-        if (typeof dirty === 'string') {
-          IN_PLACE = false;
-        }
-        if (IN_PLACE) {
-          /* Do some early pre-sanitization to avoid unsafe root nodes */
-          if (dirty.nodeName) {
-            var tagName = transformCaseFunc(dirty.nodeName);
-            if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
-              throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
-            }
-          }
-        } else if (dirty instanceof Node) {
-          /* If dirty is a DOM element, append to an empty document to avoid
-             elements being stripped by the parser */
-          body = _initDocument('<!---->');
-          importedNode = body.ownerDocument.importNode(dirty, true);
-          if (importedNode.nodeType === 1 && importedNode.nodeName === 'BODY') {
-            /* Node is already a body, use as is */
-            body = importedNode;
-          } else if (importedNode.nodeName === 'HTML') {
-            body = importedNode;
-          } else {
-            // eslint-disable-next-line unicorn/prefer-dom-node-append
-            body.appendChild(importedNode);
-          }
-        } else {
-          /* Exit directly if we have nothing to do */
-          if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT &&
-          // eslint-disable-next-line unicorn/prefer-includes
-          dirty.indexOf('<') === -1) {
-            return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
-          }
-          /* Initialize the document to work on */
-
-          body = _initDocument(dirty);
-          /* Check we have a DOM node from the data */
-
-          if (!body) {
-            return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : '';
-          }
-        }
-        /* Remove first element node (ours) if FORCE_BODY is set */
-
-        if (body && FORCE_BODY) {
-          _forceRemove(body.firstChild);
-        }
-        /* Get node iterator */
-
-        var nodeIterator = _createIterator(IN_PLACE ? dirty : body);
-        /* Now start iterating over the created document */
-
-        while (currentNode = nodeIterator.nextNode()) {
-          /* Fix IE's strange behavior with manipulated textNodes #89 */
-          if (currentNode.nodeType === 3 && currentNode === oldNode) {
-            continue;
-          }
-          /* Sanitize tags and elements */
-
-          if (_sanitizeElements(currentNode)) {
-            continue;
-          }
-          /* Shadow DOM detected, sanitize it */
-
-          if (currentNode.content instanceof DocumentFragment) {
-            _sanitizeShadowDOM(currentNode.content);
-          }
-          /* Check attributes, sanitize if necessary */
-
-          _sanitizeAttributes(currentNode);
-          oldNode = currentNode;
-        }
-        oldNode = null;
-        /* If we sanitized `dirty` in-place, return it. */
-
-        if (IN_PLACE) {
-          return dirty;
-        }
-        /* Return sanitized string or DOM */
-
-        if (RETURN_DOM) {
-          if (RETURN_DOM_FRAGMENT) {
-            returnNode = createDocumentFragment.call(body.ownerDocument);
-            while (body.firstChild) {
+          } else if (dirty instanceof Node) {
+            /* If dirty is a DOM element, append to an empty document to avoid
+               elements being stripped by the parser */
+            body = _initDocument('<!---->');
+            importedNode = body.ownerDocument.importNode(dirty, true);
+            if (importedNode.nodeType === NODE_TYPE.element && importedNode.nodeName === 'BODY') {
+              /* Node is already a body, use as is */
+              body = importedNode;
+            } else if (importedNode.nodeName === 'HTML') {
+              body = importedNode;
+            } else {
               // eslint-disable-next-line unicorn/prefer-dom-node-append
-              returnNode.appendChild(body.firstChild);
+              body.appendChild(importedNode);
             }
           } else {
-            returnNode = body;
+            /* Exit directly if we have nothing to do */
+            if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT &&
+            // eslint-disable-next-line unicorn/prefer-includes
+            dirty.indexOf('<') === -1) {
+              return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+            }
+
+            /* Initialize the document to work on */
+            body = _initDocument(dirty);
+
+            /* Check we have a DOM node from the data */
+            if (!body) {
+              return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : '';
+            }
           }
-          if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmod) {
-            /*
-              AdoptNode() is not used because internal state is not reset
-              (e.g. the past names map of a HTMLFormElement), this is safe
-              in theory but we would rather not risk another attack vector.
-              The state that is cloned by importNode() is explicitly defined
-              by the specs.
-            */
-            returnNode = importNode.call(originalDocument, returnNode, true);
+
+          /* Remove first element node (ours) if FORCE_BODY is set */
+          if (body && FORCE_BODY) {
+            _forceRemove(body.firstChild);
           }
-          return returnNode;
-        }
-        var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
-        /* Serialize doctype if allowed */
 
-        if (WHOLE_DOCUMENT && ALLOWED_TAGS['!doctype'] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
-          serializedHTML = '<!DOCTYPE ' + body.ownerDocument.doctype.name + '>\n' + serializedHTML;
-        }
-        /* Sanitize final string template-safe */
+          /* Get node iterator */
+          const nodeIterator = _createNodeIterator(IN_PLACE ? dirty : body);
 
-        if (SAFE_FOR_TEMPLATES) {
-          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$1, ' ');
-          serializedHTML = stringReplace(serializedHTML, ERB_EXPR$1, ' ');
-          serializedHTML = stringReplace(serializedHTML, TMPLIT_EXPR$1, ' ');
-        }
-        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
-      };
-      /**
-       * Public method to set the configuration once
-       * setConfig
-       *
-       * @param {Object} cfg configuration object
-       */
+          /* Now start iterating over the created document */
+          while (currentNode = nodeIterator.nextNode()) {
+            /* Sanitize tags and elements */
+            if (_sanitizeElements(currentNode)) {
+              continue;
+            }
 
-      DOMPurify.setConfig = function (cfg) {
-        _parseConfig(cfg);
-        SET_CONFIG = true;
-      };
-      /**
-       * Public method to remove the configuration
-       * clearConfig
-       *
-       */
+            /* Shadow DOM detected, sanitize it */
+            if (currentNode.content instanceof DocumentFragment) {
+              _sanitizeShadowDOM(currentNode.content);
+            }
 
-      DOMPurify.clearConfig = function () {
-        CONFIG = null;
-        SET_CONFIG = false;
-      };
-      /**
-       * Public method to check if an attribute value is valid.
-       * Uses last set config, if any. Otherwise, uses config defaults.
-       * isValidAttribute
-       *
-       * @param  {string} tag Tag name of containing element.
-       * @param  {string} attr Attribute name.
-       * @param  {string} value Attribute value.
-       * @return {Boolean} Returns true if `value` is valid. Otherwise, returns false.
-       */
+            /* Check attributes, sanitize if necessary */
+            _sanitizeAttributes(currentNode);
+          }
 
-      DOMPurify.isValidAttribute = function (tag, attr, value) {
-        /* Initialize shared config vars if necessary. */
-        if (!CONFIG) {
-          _parseConfig({});
-        }
-        var lcTag = transformCaseFunc(tag);
-        var lcName = transformCaseFunc(attr);
-        return _isValidAttribute(lcTag, lcName, value);
-      };
-      /**
-       * AddHook
-       * Public method to add DOMPurify hooks
-       *
-       * @param {String} entryPoint entry point for the hook to add
-       * @param {Function} hookFunction function to execute
-       */
+          /* If we sanitized `dirty` in-place, return it. */
+          if (IN_PLACE) {
+            return dirty;
+          }
 
-      DOMPurify.addHook = function (entryPoint, hookFunction) {
-        if (typeof hookFunction !== 'function') {
-          return;
-        }
-        hooks[entryPoint] = hooks[entryPoint] || [];
-        arrayPush(hooks[entryPoint], hookFunction);
-      };
-      /**
-       * RemoveHook
-       * Public method to remove a DOMPurify hook at a given entryPoint
-       * (pops it from the stack of hooks if more are present)
-       *
-       * @param {String} entryPoint entry point for the hook to remove
-       * @return {Function} removed(popped) hook
-       */
+          /* Return sanitized string or DOM */
+          if (RETURN_DOM) {
+            if (RETURN_DOM_FRAGMENT) {
+              returnNode = createDocumentFragment.call(body.ownerDocument);
+              while (body.firstChild) {
+                // eslint-disable-next-line unicorn/prefer-dom-node-append
+                returnNode.appendChild(body.firstChild);
+              }
+            } else {
+              returnNode = body;
+            }
+            if (ALLOWED_ATTR.shadowroot || ALLOWED_ATTR.shadowrootmode) {
+              /*
+                AdoptNode() is not used because internal state is not reset
+                (e.g. the past names map of a HTMLFormElement), this is safe
+                in theory but we would rather not risk another attack vector.
+                The state that is cloned by importNode() is explicitly defined
+                by the specs.
+              */
+              returnNode = importNode.call(originalDocument, returnNode, true);
+            }
+            return returnNode;
+          }
+          let serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
 
-      DOMPurify.removeHook = function (entryPoint) {
-        if (hooks[entryPoint]) {
-          return arrayPop(hooks[entryPoint]);
-        }
-      };
-      /**
-       * RemoveHooks
-       * Public method to remove all DOMPurify hooks at a given entryPoint
-       *
-       * @param  {String} entryPoint entry point for the hooks to remove
-       */
+          /* Serialize doctype if allowed */
+          if (WHOLE_DOCUMENT && ALLOWED_TAGS['!doctype'] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
+            serializedHTML = '<!DOCTYPE ' + body.ownerDocument.doctype.name + '>\n' + serializedHTML;
+          }
 
-      DOMPurify.removeHooks = function (entryPoint) {
-        if (hooks[entryPoint]) {
-          hooks[entryPoint] = [];
-        }
-      };
-      /**
-       * RemoveAllHooks
-       * Public method to remove all DOMPurify hooks
-       *
-       */
+          /* Sanitize final string template-safe */
+          if (SAFE_FOR_TEMPLATES) {
+            arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
+              serializedHTML = stringReplace(serializedHTML, expr, ' ');
+            });
+          }
+          return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
+        };
 
-      DOMPurify.removeAllHooks = function () {
-        hooks = {};
-      };
-      return DOMPurify;
-    }
-    var purify = createDOMPurify();
+        /**
+         * Public method to set the configuration once
+         * setConfig
+         *
+         * @param {Object} cfg configuration object
+         */
+        DOMPurify.setConfig = function () {
+          let cfg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+          _parseConfig(cfg);
+          SET_CONFIG = true;
+        };
+
+        /**
+         * Public method to remove the configuration
+         * clearConfig
+         *
+         */
+        DOMPurify.clearConfig = function () {
+          CONFIG = null;
+          SET_CONFIG = false;
+        };
+
+        /**
+         * Public method to check if an attribute value is valid.
+         * Uses last set config, if any. Otherwise, uses config defaults.
+         * isValidAttribute
+         *
+         * @param  {String} tag Tag name of containing element.
+         * @param  {String} attr Attribute name.
+         * @param  {String} value Attribute value.
+         * @return {Boolean} Returns true if `value` is valid. Otherwise, returns false.
+         */
+        DOMPurify.isValidAttribute = function (tag, attr, value) {
+          /* Initialize shared config vars if necessary. */
+          if (!CONFIG) {
+            _parseConfig({});
+          }
+          const lcTag = transformCaseFunc(tag);
+          const lcName = transformCaseFunc(attr);
+          return _isValidAttribute(lcTag, lcName, value);
+        };
+
+        /**
+         * AddHook
+         * Public method to add DOMPurify hooks
+         *
+         * @param {String} entryPoint entry point for the hook to add
+         * @param {Function} hookFunction function to execute
+         */
+        DOMPurify.addHook = function (entryPoint, hookFunction) {
+          if (typeof hookFunction !== 'function') {
+            return;
+          }
+          hooks[entryPoint] = hooks[entryPoint] || [];
+          arrayPush(hooks[entryPoint], hookFunction);
+        };
+
+        /**
+         * RemoveHook
+         * Public method to remove a DOMPurify hook at a given entryPoint
+         * (pops it from the stack of hooks if more are present)
+         *
+         * @param {String} entryPoint entry point for the hook to remove
+         * @return {Function} removed(popped) hook
+         */
+        DOMPurify.removeHook = function (entryPoint) {
+          if (hooks[entryPoint]) {
+            return arrayPop(hooks[entryPoint]);
+          }
+        };
+
+        /**
+         * RemoveHooks
+         * Public method to remove all DOMPurify hooks at a given entryPoint
+         *
+         * @param  {String} entryPoint entry point for the hooks to remove
+         */
+        DOMPurify.removeHooks = function (entryPoint) {
+          if (hooks[entryPoint]) {
+            hooks[entryPoint] = [];
+          }
+        };
+
+        /**
+         * RemoveAllHooks
+         * Public method to remove all DOMPurify hooks
+         */
+        DOMPurify.removeAllHooks = function () {
+          hooks = {};
+        };
+        return DOMPurify;
+      }
+      var purify = createDOMPurify();
+      return purify;
+    });
+    });
 
     /**
      * Module variables.
@@ -13078,6 +13611,26 @@
       return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
     }
 
+    /// <reference types="@nextcloud/typings" />
+    /**
+     * Get the first day of the week
+     *
+     * @return {number}
+     */
+    function getFirstDay() {
+        if (typeof window.firstDay === 'undefined') {
+            console.warn('No firstDay found');
+            return 1;
+        }
+        return window.firstDay;
+    }
+
+    /**
+     * Returns the user's locale
+     */
+    function getLocale() {
+        return document.documentElement.dataset.locale || 'en';
+    }
     /**
      * Get translations bundle for given app and current locale
      *
@@ -13085,19 +13638,13 @@
      * @return {object}
      */
     function getAppTranslations(appId) {
-      var _a, _b, _c, _d;
-      return {
-        translations: (_b = (_a = window._oc_l10n_registry_translations) === null || _a === void 0 ? void 0 : _a[appId]) !== null && _b !== void 0 ? _b : {},
-        pluralFunction: (_d = (_c = window._oc_l10n_registry_plural_functions) === null || _c === void 0 ? void 0 : _c[appId]) !== null && _d !== void 0 ? _d : number => number
-      };
+        var _a, _b, _c, _d;
+        return {
+            translations: (_b = (_a = window._oc_l10n_registry_translations) === null || _a === void 0 ? void 0 : _a[appId]) !== null && _b !== void 0 ? _b : {},
+            pluralFunction: (_d = (_c = window._oc_l10n_registry_plural_functions) === null || _c === void 0 ? void 0 : _c[appId]) !== null && _d !== void 0 ? _d : ((number) => number),
+        };
     }
 
-    /**
-     * Returns the user's locale
-     */
-    function getLocale() {
-      return document.documentElement.dataset.locale || 'en';
-    }
     /**
      * Translate a string
      *
@@ -13109,56 +13656,41 @@
      * @return {string}
      */
     function translate(app, text, vars, number, options) {
-      const defaultOptions = {
-        escape: true,
-        sanitize: true
-      };
-      const allOptions = Object.assign({}, defaultOptions, options || {});
-      const identity = value => value;
-      const optSanitize = allOptions.sanitize ? purify.sanitize : identity;
-      const optEscape = allOptions.escape ? escapeHtml_1 : identity;
-      // TODO: cache this function to avoid inline recreation
-      // of the same function over and over again in case
-      // translate() is used in a loop
-      const _build = (text, vars, number) => {
-        return text.replace(/%n/g, '' + number).replace(/{([^{}]*)}/g, (match, key) => {
-          if (vars === undefined || !(key in vars)) {
-            return optSanitize(match);
-          }
-          const r = vars[key];
-          if (typeof r === 'string' || typeof r === 'number') {
-            return optSanitize(optEscape(r));
-          } else {
-            return optSanitize(match);
-          }
-        });
-      };
-      const bundle = getAppTranslations(app);
-      let translation = bundle.translations[text] || text;
-      translation = Array.isArray(translation) ? translation[0] : translation;
-      if (typeof vars === 'object' || number !== undefined) {
-        return optSanitize(_build(translation, vars, number));
-      } else {
-        return optSanitize(translation);
-      }
+        const defaultOptions = {
+            escape: true,
+            sanitize: true,
+        };
+        const allOptions = Object.assign({}, defaultOptions, {});
+        const identity = (value) => value;
+        const optSanitize = allOptions.sanitize ? purify.sanitize : identity;
+        const optEscape = allOptions.escape ? escapeHtml_1 : identity;
+        // TODO: cache this function to avoid inline recreation
+        // of the same function over and over again in case
+        // translate() is used in a loop
+        const _build = (text, vars, number) => {
+            return text.replace(/%n/g, '' + number).replace(/{([^{}]*)}/g, (match, key) => {
+                if (vars === undefined || !(key in vars)) {
+                    return optSanitize(match);
+                }
+                const r = vars[key];
+                if (typeof r === 'string' || typeof r === 'number') {
+                    return optSanitize(optEscape(r));
+                }
+                else {
+                    return optSanitize(match);
+                }
+            });
+        };
+        const bundle = getAppTranslations(app);
+        let translation = bundle.translations[text] || text;
+        translation = Array.isArray(translation) ? translation[0] : translation;
+        if (typeof vars === 'object' || number !== undefined) {
+            return optSanitize(_build(translation, vars, number));
+        }
+        else {
+            return optSanitize(translation);
+        }
     }
-
-    /// <reference types="@nextcloud/typings" />
-    /**
-     * Get the first day of the week
-     *
-     * @return {number}
-     */
-    function getFirstDay() {
-      if (typeof window.firstDay === 'undefined') {
-        console.warn('No firstDay found');
-        return 1;
-      }
-      return window.firstDay;
-    }
-    var getFirstDay_1 = getFirstDay;
-    var getLocale_1 = getLocale;
-    var translate_1 = translate;
 
     var nativeJoin = functionUncurryThis([].join);
     var ES3_STRINGS = indexedObject != Object;
@@ -13369,7 +13901,7 @@
         }
       }
     };
-    var formatDistance$4 = function formatDistance(token, count, options) {
+    var formatDistance$2 = function formatDistance(token, count, options) {
       var result;
       var tokenValue = options !== null && options !== void 0 && options.addSuffix ? formatDistanceLocale$2[token].withPreposition : formatDistanceLocale$2[token].standalone;
       if (typeof tokenValue === 'string') {
@@ -13388,7 +13920,6 @@
       }
       return result;
     };
-    var formatDistance$5 = formatDistance$4;
 
     // DIN 5008: https://de.wikipedia.org/wiki/Datumsformat#DIN_5008
     var dateFormats$2 = {
@@ -13413,7 +13944,7 @@
       medium: '{{date}} {{time}}',
       short: '{{date}} {{time}}'
     };
-    var formatLong$4 = {
+    var formatLong$2 = {
       date: buildFormatLongFn({
         formats: dateFormats$2,
         defaultWidth: 'full'
@@ -13427,7 +13958,6 @@
         defaultWidth: 'full'
       })
     };
-    var formatLong$5 = formatLong$4;
 
     var formatRelativeLocale$2 = {
       lastWeek: "'letzten' eeee 'um' p",
@@ -13437,10 +13967,9 @@
       nextWeek: "eeee 'um' p",
       other: 'P'
     };
-    var formatRelative$4 = function formatRelative(token, _date, _baseDate, _options) {
+    var formatRelative$2 = function formatRelative(token, _date, _baseDate, _options) {
       return formatRelativeLocale$2[token];
     };
-    var formatRelative$5 = formatRelative$4;
 
     var eraValues$2 = {
       narrow: ['v.Chr.', 'n.Chr.'],
@@ -13545,7 +14074,7 @@
       var number = Number(dirtyNumber);
       return number + '.';
     };
-    var localize$4 = {
+    var localize$2 = {
       ordinalNumber: ordinalNumber$2,
       era: buildLocalizeFn({
         values: eraValues$2,
@@ -13574,7 +14103,6 @@
         defaultFormattingWidth: 'wide'
       })
     };
-    var localize$5 = localize$4;
 
     var matchOrdinalNumberPattern$2 = /^(\d+)(\.)?/i;
     var parseOrdinalNumberPattern$2 = /\d+/i;
@@ -13631,7 +14159,7 @@
       }
     };
 
-    var match$4 = {
+    var match$2 = {
       ordinalNumber: buildMatchPatternFn({
         matchPattern: matchOrdinalNumberPattern$2,
         parsePattern: parseOrdinalNumberPattern$2,
@@ -13673,7 +14201,6 @@
         defaultParseWidth: 'any'
       })
     };
-    var match$5 = match$4;
 
     /**
      * @type {Locale}
@@ -13689,17 +14216,16 @@
      */
     var locale$2 = {
       code: 'de',
-      formatDistance: formatDistance$5,
-      formatLong: formatLong$5,
-      formatRelative: formatRelative$5,
-      localize: localize$5,
-      match: match$5,
+      formatDistance: formatDistance$2,
+      formatLong: formatLong$2,
+      formatRelative: formatRelative$2,
+      localize: localize$2,
+      match: match$2,
       options: {
         weekStartsOn: 1 /* Monday */,
         firstWeekContainsDate: 4
       }
     };
-    var de = locale$2;
 
     var formatDistanceLocale$1 = {
       lessThanXSeconds: {
@@ -13764,7 +14290,7 @@
         other: 'presque {{count}} ans'
       }
     };
-    var formatDistance$2 = function formatDistance(token, count, options) {
+    var formatDistance$1 = function formatDistance(token, count, options) {
       var result;
       var form = formatDistanceLocale$1[token];
       if (typeof form === 'string') {
@@ -13783,7 +14309,6 @@
       }
       return result;
     };
-    var formatDistance$3 = formatDistance$2;
 
     var dateFormats$1 = {
       full: 'EEEE d MMMM y',
@@ -13803,7 +14328,7 @@
       medium: '{{date}}, {{time}}',
       short: '{{date}}, {{time}}'
     };
-    var formatLong$2 = {
+    var formatLong$1 = {
       date: buildFormatLongFn({
         formats: dateFormats$1,
         defaultWidth: 'full'
@@ -13817,7 +14342,6 @@
         defaultWidth: 'full'
       })
     };
-    var formatLong$3 = formatLong$2;
 
     var formatRelativeLocale$1 = {
       lastWeek: "eeee 'dernier à' p",
@@ -13827,10 +14351,9 @@
       nextWeek: "eeee 'prochain à' p",
       other: 'P'
     };
-    var formatRelative$2 = function formatRelative(token, _date, _baseDate, _options) {
+    var formatRelative$1 = function formatRelative(token, _date, _baseDate, _options) {
       return formatRelativeLocale$1[token];
     };
-    var formatRelative$3 = formatRelative$2;
 
     var eraValues$1 = {
       narrow: ['av. J.-C', 'ap. J.-C'],
@@ -13898,7 +14421,7 @@
       }
       return number + suffix;
     };
-    var localize$2 = {
+    var localize$1 = {
       ordinalNumber: ordinalNumber$1,
       era: buildLocalizeFn({
         values: eraValues$1,
@@ -13924,7 +14447,6 @@
         defaultWidth: 'wide'
       })
     };
-    var localize$3 = localize$2;
 
     var matchOrdinalNumberPattern$1 = /^(\d+)(ième|ère|ème|er|e)?/i;
     var parseOrdinalNumberPattern$1 = /\d+/i;
@@ -13979,7 +14501,7 @@
         night: /nuit/i
       }
     };
-    var match$2 = {
+    var match$1 = {
       ordinalNumber: buildMatchPatternFn({
         matchPattern: matchOrdinalNumberPattern$1,
         parsePattern: parseOrdinalNumberPattern$1,
@@ -14021,7 +14543,6 @@
         defaultParseWidth: 'any'
       })
     };
-    var match$3 = match$2;
 
     /**
      * @type {Locale}
@@ -14034,17 +14555,16 @@
      */
     var locale$1 = {
       code: 'fr',
-      formatDistance: formatDistance$3,
-      formatLong: formatLong$3,
-      formatRelative: formatRelative$3,
-      localize: localize$3,
-      match: match$3,
+      formatDistance: formatDistance$1,
+      formatLong: formatLong$1,
+      formatRelative: formatRelative$1,
+      localize: localize$1,
+      match: match$1,
       options: {
         weekStartsOn: 1 /* Monday */,
         firstWeekContainsDate: 4
       }
     };
-    var fr = locale$1;
 
     var formatDistanceLocale = {
       lessThanXSeconds: {
@@ -14128,7 +14648,6 @@
       }
       return result;
     };
-    var formatDistance$1 = formatDistance;
 
     var dateFormats = {
       full: "EEEE, d 'de' MMMM 'de' y",
@@ -14162,7 +14681,6 @@
         defaultWidth: 'full'
       })
     };
-    var formatLong$1 = formatLong;
 
     var formatRelativeLocale = {
       lastWeek: function lastWeek(date) {
@@ -14183,7 +14701,6 @@
       }
       return format;
     };
-    var formatRelative$1 = formatRelative;
 
     var eraValues = {
       narrow: ['aC', 'dC'],
@@ -14302,7 +14819,6 @@
         defaultFormattingWidth: 'wide'
       })
     };
-    var localize$1 = localize;
 
     var matchOrdinalNumberPattern = /^(\d+)(º|ª)?/i;
     var parseOrdinalNumberPattern = /\d+/i;
@@ -14400,7 +14916,6 @@
         defaultParseWidth: 'any'
       })
     };
-    var match$1 = match;
 
     /**
      * @type {Locale}
@@ -14413,17 +14928,16 @@
      */
     var locale = {
       code: 'pt',
-      formatDistance: formatDistance$1,
-      formatLong: formatLong$1,
-      formatRelative: formatRelative$1,
-      localize: localize$1,
-      match: match$1,
+      formatDistance: formatDistance,
+      formatLong: formatLong,
+      formatRelative: formatRelative,
+      localize: localize,
+      match: match,
       options: {
         weekStartsOn: 1 /* Monday */,
         firstWeekContainsDate: 4
       }
     };
-    var pt = locale;
 
     var Helpers = /*#__PURE__*/function () {
       function Helpers() {
@@ -14488,14 +15002,14 @@
       }, {
         key: "getDateLocaleOptions",
         value: function getDateLocaleOptions() {
-          var shortLocale = getLocale_1().split("_")[0];
+          var shortLocale = getLocale().split("_")[0];
           var locales = {
-            de,
-            fr,
-            pt
+            de: locale$2,
+            fr: locale$1,
+            pt: locale
           };
           return {
-            weekStartsOn: getFirstDay_1(),
+            weekStartsOn: getFirstDay(),
             locale: locales[shortLocale]
           };
         }
@@ -14578,14 +15092,15 @@
       return {
         c() {
           h2 = element("h2");
-          h2.textContent = "".concat(translate_1("timemanager", "Statistics"));
+          h2.textContent = "".concat(translate("timemanager", "Statistics"));
         },
         m(target, anchor) {
           insert(target, h2, anchor);
         },
-        p: noop$2,
         d(detaching) {
-          if (detaching) detach(h2);
+          if (detaching) {
+            detach(h2);
+          }
         }
       };
     }
@@ -14599,7 +15114,7 @@
       var t2_value = /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4]) + "";
       var t2;
       var t3;
-      var t4_value = translate_1("timemanager", "hrs.") + "";
+      var t4_value = translate("timemanager", "hrs.") + "";
       var t4;
       var t5;
       var figure1;
@@ -14608,26 +15123,26 @@
       var t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "";
       var t8;
       var t9;
-      var t10_value = translate_1("timemanager", "hrs.") + "";
+      var t10_value = translate("timemanager", "hrs.") + "";
       var t10;
       return {
         c() {
           div = element("div");
           figure0 = element("figure");
           figcaption0 = element("figcaption");
-          figcaption0.textContent = "".concat(translate_1("timemanager", "Today"));
+          figcaption0.textContent = "".concat(translate("timemanager", "Today"));
           t1 = space$1();
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
-          t4 = text$1(t4_value);
+          t4 = text(t4_value);
           t5 = space$1();
           figure1 = element("figure");
           figcaption1 = element("figcaption");
-          figcaption1.textContent = "".concat(translate_1("timemanager", "Week"));
+          figcaption1.textContent = "".concat(translate("timemanager", "Week"));
           t7 = space$1();
-          t8 = text$1(t8_value);
+          t8 = text(t8_value);
           t9 = space$1();
-          t10 = text$1(t10_value);
+          t10 = text(t10_value);
           attr(figcaption0, "class", "tm_label");
           attr(figcaption1, "class", "tm_label");
           attr(div, "class", "top-stats");
@@ -14653,7 +15168,9 @@
           if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "")) set_data(t8, t8_value);
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -14661,7 +15178,7 @@
     // (248:3) {#if !loading && weekTotal > 0}
     function create_if_block_3$3(ctx) {
       var each_1_anchor;
-      var each_value = /*points*/ctx[3];
+      var each_value = ensure_array_like( /*points*/ctx[3]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$8(get_each_context$8(ctx, each_value, i));
@@ -14682,8 +15199,8 @@
           insert(target, each_1_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*formatDateForScale, points, highest, translate*/2120) {
-            each_value = /*points*/ctx[3];
+          if (dirty & /*formatDateForScale, points, highest*/2120) {
+            each_value = ensure_array_like( /*points*/ctx[3]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$8(ctx, each_value, _i3);
@@ -14702,8 +15219,10 @@
           }
         },
         d(detaching) {
+          if (detaching) {
+            detach(each_1_anchor);
+          }
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(each_1_anchor);
         }
       };
     }
@@ -14726,10 +15245,10 @@
           t0 = space$1();
           div = element("div");
           span0 = element("span");
-          t1 = text$1(t1_value);
+          t1 = text(t1_value);
           t2 = space$1();
           span1 = element("span");
-          t3 = text$1(t3_value);
+          t3 = text(t3_value);
           attr(span0, "class", "day");
           attr(span1, "class", "date");
           attr(div, "class", "date-label");
@@ -14761,9 +15280,11 @@
           if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d(detaching) {
+          if (detaching) {
+            detach(t0);
+            detach(div);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(t0);
-          if (detaching) detach(div);
         }
       };
     }
@@ -14774,7 +15295,7 @@
       var t0_value = /*point*/ctx[25].stats.total + "";
       var t0;
       var t1;
-      var t2_value = translate_1("timemanager", "hrs.") + "";
+      var t2_value = translate("timemanager", "hrs.") + "";
       var t2;
       var t3;
       var div;
@@ -14782,9 +15303,9 @@
       return {
         c() {
           span = element("span");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           div = element("div");
           attr(span, "class", "hours-label");
@@ -14806,9 +15327,11 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(span);
-          if (detaching) detach(t3);
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(span);
+            detach(t3);
+            detach(div);
+          }
         }
       };
     }
@@ -14845,7 +15368,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (if_block) if_block.d();
         }
       };
@@ -14857,15 +15382,16 @@
       return {
         c() {
           p = element("p");
-          p.textContent = "".concat(translate_1("timemanager", "When you add entries for this week graphs will appear here."));
+          p.textContent = "".concat(translate("timemanager", "When you add entries for this week graphs will appear here."));
           attr(p, "class", "empty");
         },
         m(target, anchor) {
           insert(target, p, anchor);
         },
-        p: noop$2,
         d(detaching) {
-          if (detaching) detach(p);
+          if (detaching) {
+            detach(p);
+          }
         }
       };
     }
@@ -14876,7 +15402,7 @@
       var button0;
       var t1;
       var span1;
-      var t2_value = translate_1("timemanager", "Week") + "";
+      var t2_value = translate("timemanager", "Week") + "";
       var t2;
       var t3;
       var t4;
@@ -14901,25 +15427,25 @@
         c() {
           nav = element("nav");
           button0 = element("button");
-          button0.textContent = "".concat(translate_1("timemanager", "Previous week"));
+          button0.textContent = "".concat(translate("timemanager", "Previous week"));
           t1 = space$1();
           span1 = element("span");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
-          t4 = text$1( /*currentWeek*/ctx[7]);
+          t4 = text( /*currentWeek*/ctx[7]);
           t5 = space$1();
           span0 = element("span");
-          t6 = text$1("(");
-          t7 = text$1(t7_value);
-          t8 = text$1(" – ");
-          t9 = text$1(t9_value);
-          t10 = text$1(")");
+          t6 = text("(");
+          t7 = text(t7_value);
+          t8 = text(" – ");
+          t9 = text(t9_value);
+          t10 = text(")");
           t11 = space$1();
           span2 = element("span");
           if (if_block) if_block.c();
           t12 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate_1("timemanager", "Next week"));
+          button1.textContent = "".concat(translate("timemanager", "Next week"));
           attr(button0, "class", "previous");
           attr(span0, "class", "dates");
           attr(button1, "class", "next");
@@ -14969,7 +15495,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(nav);
+          if (detaching) {
+            detach(nav);
+          }
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -14985,7 +15513,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1("timemanager", "Current week"));
+          button.textContent = "".concat(translate("timemanager", "Current week"));
           attr(button, "class", "current");
         },
         m(target, anchor) {
@@ -14995,9 +15523,11 @@
             mounted = true;
           }
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -15054,9 +15584,7 @@
           var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
           if ( /*controls*/ctx[0]) {
-            if (if_block0) {
-              if_block0.p(ctx, dirty);
-            } else {
+            if (if_block0) ; else {
               if_block0 = create_if_block_7$2();
               if_block0.c();
               if_block0.m(t0.parentNode, t0);
@@ -15090,9 +15618,7 @@
             if_block2 = null;
           }
           if ( /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0) {
-            if (if_block3) {
-              if_block3.p(ctx, dirty);
-            } else {
+            if (if_block3) ; else {
               if_block3 = create_if_block_2$6();
               if_block3.c();
               if_block3.m(div0, null);
@@ -15120,12 +15646,14 @@
             attr(div2, "class", div2_class_value);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
+          if (detaching) {
+            detach(t0);
+            detach(div2);
+          }
           if (if_block0) if_block0.d(detaching);
-          if (detaching) detach(t0);
-          if (detaching) detach(div2);
           if (if_block1) if_block1.d();
           if (if_block2) if_block2.d();
           if (if_block3) if_block3.d();
@@ -15352,7 +15880,7 @@
             return format$2(date, "LLL", localeOptions);
           }
           if (scale === "week") {
-            return "".concat(translate_1("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
+            return "".concat(translate("timemanager", "Week"), " ").concat(format$2(date, "w", localeOptions));
           }
           return format$2(date, "iii", localeOptions);
         }
@@ -15472,9 +16000,11 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div0);
-          if (detaching) detach(t);
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div0);
+            detach(t);
+            detach(div1);
+          }
           if (default_slot) default_slot.d(detaching);
         }
       };
@@ -15513,7 +16043,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Cancel'));
+          button.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -15530,7 +16060,9 @@
           ctx = new_ctx;
         },
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -15543,7 +16075,7 @@
       var t1;
       var form;
       var label0;
-      var t2_value = translate_1('timemanager', 'Client name') + "";
+      var t2_value = translate('timemanager', 'Client name') + "";
       var t2;
       var t3;
       var br0;
@@ -15551,7 +16083,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = translate_1('timemanager', 'Note') + "";
+      var t6_value = translate('timemanager', 'Note') + "";
       var t6;
       var t7;
       var br1;
@@ -15571,18 +16103,18 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*clientEditorCaption*/ctx[5]);
+          t0 = text( /*clientEditorCaption*/ctx[5]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           br0 = element("br");
           t4 = space$1();
           input0 = element("input");
           t5 = space$1();
           label1 = element("label");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           br1 = element("br");
           t8 = space$1();
@@ -15592,7 +16124,7 @@
           t10 = space$1();
           div0 = element("div");
           button = element("button");
-          t11 = text$1( /*clientEditorButtonCaption*/ctx[4]);
+          t11 = text( /*clientEditorButtonCaption*/ctx[4]);
           t12 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -15600,7 +16132,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", translate_1('timemanager', 'Example Corp.'));
+          attr(input0, "placeholder", translate('timemanager', 'Example Corp.'));
           input0.required = true;
           attr(label0, "class", "space-top");
           set_style(textarea, "width", "100%");
@@ -15683,10 +16215,12 @@
             attr(form, "action", /*action*/ctx[0]);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -15860,7 +16394,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*clientEditorButtonCaption*/ctx[2]);
+          t0 = text( /*clientEditorButtonCaption*/ctx[2]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -15914,10 +16448,12 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(a);
-          if (detaching) detach(t1);
+          if (detaching) {
+            detach(a);
+            detach(t1);
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
           mounted = false;
           dispose();
         }
@@ -16041,7 +16577,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Cancel'));
+          button.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -16058,7 +16594,9 @@
           ctx = new_ctx;
         },
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -16071,7 +16609,7 @@
       var t1;
       var form;
       var label0;
-      var t2_value = translate_1('timemanager', 'Project name') + "";
+      var t2_value = translate('timemanager', 'Project name') + "";
       var t2;
       var t3;
       var br0;
@@ -16079,7 +16617,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = translate_1('timemanager', 'For client') + "";
+      var t6_value = translate('timemanager', 'For client') + "";
       var t6;
       var t7;
       var br1;
@@ -16102,23 +16640,23 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*projectEditorCaption*/ctx[6]);
+          t0 = text( /*projectEditorCaption*/ctx[6]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           br0 = element("br");
           t4 = space$1();
           input0 = element("input");
           t5 = space$1();
           label1 = element("label");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           br1 = element("br");
           t8 = space$1();
           strong = element("strong");
-          t9 = text$1( /*clientName*/ctx[2]);
+          t9 = text( /*clientName*/ctx[2]);
           t10 = space$1();
           br2 = element("br");
           t11 = space$1();
@@ -16126,7 +16664,7 @@
           t12 = space$1();
           div0 = element("div");
           button = element("button");
-          t13 = text$1( /*projectEditorButtonCaption*/ctx[5]);
+          t13 = text( /*projectEditorButtonCaption*/ctx[5]);
           t14 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -16134,7 +16672,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", translate_1('timemanager', 'A project name'));
+          attr(input0, "placeholder", translate('timemanager', 'A project name'));
           input0.required = true;
           attr(label0, "class", "space-top");
           attr(label1, "class", "space-top");
@@ -16213,10 +16751,12 @@
             attr(form, "action", /*action*/ctx[0]);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -16392,7 +16932,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*projectEditorButtonCaption*/ctx[4]);
+          t0 = text( /*projectEditorButtonCaption*/ctx[4]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -16446,10 +16986,12 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(a);
-          if (detaching) detach(t1);
+          if (detaching) {
+            detach(a);
+            detach(t1);
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
           mounted = false;
           dispose();
         }
@@ -16573,7 +17115,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Cancel'));
+          button.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -16590,7 +17132,9 @@
           ctx = new_ctx;
         },
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -16603,7 +17147,7 @@
       var t1;
       var form;
       var label0;
-      var t2_value = translate_1('timemanager', 'Task name') + "";
+      var t2_value = translate('timemanager', 'Task name') + "";
       var t2;
       var t3;
       var br0;
@@ -16611,7 +17155,7 @@
       var input0;
       var t5;
       var label1;
-      var t6_value = translate_1('timemanager', 'For project') + "";
+      var t6_value = translate('timemanager', 'For project') + "";
       var t6;
       var t7;
       var br1;
@@ -16620,7 +17164,7 @@
       var t9;
       var t10;
       var label2;
-      var t11_value = translate_1('timemanager', 'For client') + "";
+      var t11_value = translate('timemanager', 'For client') + "";
       var t11;
       var t12;
       var br2;
@@ -16643,31 +17187,31 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*taskEditorCaption*/ctx[7]);
+          t0 = text( /*taskEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           br0 = element("br");
           t4 = space$1();
           input0 = element("input");
           t5 = space$1();
           label1 = element("label");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           br1 = element("br");
           t8 = space$1();
           strong0 = element("strong");
-          t9 = text$1( /*projectName*/ctx[3]);
+          t9 = text( /*projectName*/ctx[3]);
           t10 = space$1();
           label2 = element("label");
-          t11 = text$1(t11_value);
+          t11 = text(t11_value);
           t12 = space$1();
           br2 = element("br");
           t13 = space$1();
           strong1 = element("strong");
-          t14 = text$1( /*clientName*/ctx[2]);
+          t14 = text( /*clientName*/ctx[2]);
           t15 = space$1();
           br3 = element("br");
           t16 = space$1();
@@ -16675,7 +17219,7 @@
           t17 = space$1();
           div0 = element("div");
           button = element("button");
-          t18 = text$1( /*taskEditorButtonCaption*/ctx[6]);
+          t18 = text( /*taskEditorButtonCaption*/ctx[6]);
           t19 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -16683,7 +17227,7 @@
           set_style(input0, "width", "100%");
           attr(input0, "class", "input-wide");
           attr(input0, "name", "name");
-          attr(input0, "placeholder", translate_1('timemanager', 'A task name'));
+          attr(input0, "placeholder", translate('timemanager', 'A task name'));
           input0.required = true;
           attr(label0, "class", "space-top");
           attr(label1, "class", "space-top");
@@ -16772,10 +17316,12 @@
             attr(form, "action", /*action*/ctx[0]);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -16956,7 +17502,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*taskEditorButtonCaption*/ctx[5]);
+          t0 = text( /*taskEditorButtonCaption*/ctx[5]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -17010,10 +17556,12 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(a);
-          if (detaching) detach(t1);
+          if (detaching) {
+            detach(a);
+            detach(t1);
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
           mounted = false;
           dispose();
         }
@@ -17197,7 +17745,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1("timemanager", "Cancel"));
+          button.textContent = "".concat(translate("timemanager", "Cancel"));
           attr(button, "type", "reset");
           attr(button, "class", "button");
         },
@@ -17214,7 +17762,9 @@
           ctx = new_ctx;
         },
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -17228,7 +17778,7 @@
       var form;
       var span1;
       var label0;
-      var t2_value = translate_1("timemanager", "Duration (in hrs.)") + "";
+      var t2_value = translate("timemanager", "Duration (in hrs.)") + "";
       var t2;
       var t3;
       var br0;
@@ -17237,7 +17787,7 @@
       var t5;
       var span0;
       var label1;
-      var t6_value = translate_1("timemanager", "Start time") + "";
+      var t6_value = translate("timemanager", "Start time") + "";
       var t6;
       var t7;
       var br1;
@@ -17245,7 +17795,7 @@
       var input1;
       var t9;
       var label2;
-      var t10_value = translate_1("timemanager", "End time") + "";
+      var t10_value = translate("timemanager", "End time") + "";
       var t10;
       var t11;
       var br2;
@@ -17255,7 +17805,7 @@
       var br3;
       var t14;
       var label3;
-      var t15_value = translate_1("timemanager", "Date") + "";
+      var t15_value = translate("timemanager", "Date") + "";
       var t15;
       var t16;
       var br4;
@@ -17265,7 +17815,7 @@
       var br5;
       var t19;
       var label4;
-      var t20_value = translate_1("timemanager", "Note") + "";
+      var t20_value = translate("timemanager", "Note") + "";
       var t20;
       var t21;
       var br6;
@@ -17275,7 +17825,7 @@
       var br7;
       var t24;
       var label5;
-      var t25_value = translate_1("timemanager", "For task") + "";
+      var t25_value = translate("timemanager", "For task") + "";
       var t25;
       var t26;
       var br8;
@@ -17284,7 +17834,7 @@
       var t28;
       var t29;
       var label6;
-      var t30_value = translate_1("timemanager", "For project") + "";
+      var t30_value = translate("timemanager", "For project") + "";
       var t30;
       var t31;
       var br9;
@@ -17293,7 +17843,7 @@
       var t33;
       var t34;
       var label7;
-      var t35_value = translate_1("timemanager", "For client") + "";
+      var t35_value = translate("timemanager", "For client") + "";
       var t35;
       var t36;
       var br10;
@@ -17316,12 +17866,12 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*timeEditorCaption*/ctx[7]);
+          t0 = text( /*timeEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
           span1 = element("span");
           label0 = element("label");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           br0 = element("br");
           t4 = space$1();
@@ -17329,14 +17879,14 @@
           t5 = space$1();
           span0 = element("span");
           label1 = element("label");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           br1 = element("br");
           t8 = space$1();
           input1 = element("input");
           t9 = space$1();
           label2 = element("label");
-          t10 = text$1(t10_value);
+          t10 = text(t10_value);
           t11 = space$1();
           br2 = element("br");
           t12 = space$1();
@@ -17345,7 +17895,7 @@
           br3 = element("br");
           t14 = space$1();
           label3 = element("label");
-          t15 = text$1(t15_value);
+          t15 = text(t15_value);
           t16 = space$1();
           br4 = element("br");
           t17 = space$1();
@@ -17354,7 +17904,7 @@
           br5 = element("br");
           t19 = space$1();
           label4 = element("label");
-          t20 = text$1(t20_value);
+          t20 = text(t20_value);
           t21 = space$1();
           br6 = element("br");
           t22 = space$1();
@@ -17363,28 +17913,28 @@
           br7 = element("br");
           t24 = space$1();
           label5 = element("label");
-          t25 = text$1(t25_value);
+          t25 = text(t25_value);
           t26 = space$1();
           br8 = element("br");
           t27 = space$1();
           strong0 = element("strong");
-          t28 = text$1( /*taskName*/ctx[4]);
+          t28 = text( /*taskName*/ctx[4]);
           t29 = space$1();
           label6 = element("label");
-          t30 = text$1(t30_value);
+          t30 = text(t30_value);
           t31 = space$1();
           br9 = element("br");
           t32 = space$1();
           strong1 = element("strong");
-          t33 = text$1( /*projectName*/ctx[3]);
+          t33 = text( /*projectName*/ctx[3]);
           t34 = space$1();
           label7 = element("label");
-          t35 = text$1(t35_value);
+          t35 = text(t35_value);
           t36 = space$1();
           br10 = element("br");
           t37 = space$1();
           strong2 = element("strong");
-          t38 = text$1( /*clientName*/ctx[2]);
+          t38 = text( /*clientName*/ctx[2]);
           t39 = space$1();
           br11 = element("br");
           t40 = space$1();
@@ -17392,7 +17942,7 @@
           t41 = space$1();
           div0 = element("div");
           button = element("button");
-          t42 = text$1( /*timeEditorButtonCaption*/ctx[8]);
+          t42 = text( /*timeEditorButtonCaption*/ctx[8]);
           t43 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -17422,7 +17972,7 @@
           set_style(textarea, "width", "100%");
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
-          attr(textarea, "placeholder", translate_1('timemanager', 'Describe what you did...'));
+          attr(textarea, "placeholder", translate('timemanager', 'Describe what you did...'));
           textarea.value = /*note*/ctx[13];
           attr(label5, "class", "space-top");
           attr(label6, "class", "space-top");
@@ -17571,10 +18121,12 @@
             attr(form, "action", /*action*/ctx[0]);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           if (if_block) if_block.d();
           mounted = false;
           run_all(dispose);
@@ -17690,7 +18242,7 @@
         c() {
           div = element("div");
           button = element("button");
-          t = text$1( /*timeEditorButtonCaption*/ctx[6]);
+          t = text( /*timeEditorButtonCaption*/ctx[6]);
           attr(button, "type", "button");
           attr(button, "class", "btn");
           attr(div, "class", "tm_inline-hover-form");
@@ -17708,7 +18260,9 @@
           if (dirty & /*timeEditorButtonCaption*/64) set_data(t, /*timeEditorButtonCaption*/ctx[6]);
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           mounted = false;
           dispose();
         }
@@ -17726,7 +18280,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t = text$1( /*timeEditorButtonCaption*/ctx[6]);
+          t = text( /*timeEditorButtonCaption*/ctx[6]);
           attr(a, "href", "#/");
           attr(a, "class", "button primary new");
         },
@@ -17743,7 +18297,9 @@
           if (dirty & /*timeEditorButtonCaption*/64) set_data(t, /*timeEditorButtonCaption*/ctx[6]);
         },
         d(detaching) {
-          if (detaching) detach(a);
+          if (detaching) {
+            detach(a);
+          }
           mounted = false;
           dispose();
         }
@@ -17922,10 +18478,12 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(t);
+            detach(if_block1_anchor);
+          }
           if_block0.d(detaching);
-          if (detaching) detach(t);
           if (if_block1) if_block1.d(detaching);
-          if (detaching) detach(if_block1_anchor);
         }
       };
     }
@@ -18113,14 +18671,14 @@
       return {
         c() {
           div1 = element("div");
-          t0 = text$1( /*deleteQuestion*/ctx[3]);
+          t0 = text( /*deleteQuestion*/ctx[3]);
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(translate_1('timemanager', 'Delete'));
+          button0.textContent = "".concat(translate('timemanager', 'Delete'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate_1('timemanager', 'Cancel'));
+          button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -18143,7 +18701,9 @@
           if (dirty & /*deleteQuestion*/8) set_data(t0, /*deleteQuestion*/ctx[3]);
         },
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           mounted = false;
           run_all(dispose);
         }
@@ -18170,7 +18730,7 @@
           input1 = element("input");
           t2 = space$1();
           button = element("button");
-          t3 = text$1( /*deleteButtonCaption*/ctx[2]);
+          t3 = text( /*deleteButtonCaption*/ctx[2]);
           attr(input0, "type", "hidden");
           attr(input0, "name", "uuid");
           input0.value = /*deleteUuid*/ctx[1];
@@ -18241,9 +18801,11 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(t0);
+            detach(form_1);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(t0);
-          if (detaching) detach(form_1);
           /*form_1_binding*/
           ctx[9](null);
         }
@@ -18359,10 +18921,12 @@
             attr(div, "class", div_class_value);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -18426,7 +18990,7 @@
       };
       return [getOptionLabel, item, filterText, itemClasses, isActive, isFirst, isHover, isSelectable];
     }
-    class Item$1 extends SvelteComponent {
+    class Item extends SvelteComponent {
       constructor(options) {
         super();
         init$2(this, options, instance$g, create_fragment$h, safe_not_equal, {
@@ -18455,7 +19019,7 @@
     function create_else_block$4(ctx) {
       let each_1_anchor;
       let current;
-      let each_value = /*items*/ctx[1];
+      let each_value = ensure_array_like( /*items*/ctx[1]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
@@ -18491,7 +19055,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*getGroupHeaderLabel, items, handleHover, handleClick, Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, noOptionsMessage, hideEmptyState*/114390) {
-            each_value = /*items*/ctx[1];
+            each_value = ensure_array_like( /*items*/ctx[1]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$7(ctx, each_value, i);
@@ -18537,8 +19101,10 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(each_1_anchor);
+          }
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(each_1_anchor);
           if (each_1_else) each_1_else.d(detaching);
         }
       };
@@ -18550,7 +19116,7 @@
       let switch_instance_anchor;
       let current;
       var switch_value = /*VirtualList*/ctx[3];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {
           props: {
             items: /*items*/ctx[1],
@@ -18587,15 +19153,6 @@
           current = true;
         },
         p(ctx, dirty) {
-          const switch_instance_changes = {};
-          if (dirty[0] & /*items*/2) switch_instance_changes.items = /*items*/ctx[1];
-          if (dirty[0] & /*itemHeight*/256) switch_instance_changes.itemHeight = /*itemHeight*/ctx[8];
-          if (dirty[0] & /*Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, items*/9814 | dirty[1] & /*$$scope, i, item*/11264) {
-            switch_instance_changes.$$scope = {
-              dirty,
-              ctx
-            };
-          }
           if (dirty[0] & /*VirtualList*/8 && switch_value !== (switch_value = /*VirtualList*/ctx[3])) {
             if (switch_instance) {
               group_outros();
@@ -18614,6 +19171,15 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = {};
+            if (dirty[0] & /*items*/2) switch_instance_changes.items = /*items*/ctx[1];
+            if (dirty[0] & /*itemHeight*/256) switch_instance_changes.itemHeight = /*itemHeight*/ctx[8];
+            if (dirty[0] & /*Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, items*/9814 | dirty[1] & /*$$scope, i, item*/11264) {
+              switch_instance_changes.$$scope = {
+                dirty,
+                ctx
+              };
+            }
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -18627,7 +19193,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(switch_instance_anchor);
+          if (detaching) {
+            detach(switch_instance_anchor);
+          }
           if (switch_instance) destroy_component(switch_instance, detaching);
         }
       };
@@ -18661,8 +19229,10 @@
           }
         },
         d(detaching) {
+          if (detaching) {
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
         }
       };
     }
@@ -18674,7 +19244,7 @@
       return {
         c() {
           div = element("div");
-          t = text$1( /*noOptionsMessage*/ctx[12]);
+          t = text( /*noOptionsMessage*/ctx[12]);
           attr(div, "class", "empty svelte-1uyqfml");
         },
         m(target, anchor) {
@@ -18685,7 +19255,9 @@
           if (dirty[0] & /*noOptionsMessage*/4096) set_data(t, /*noOptionsMessage*/ctx[12]);
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -18699,7 +19271,7 @@
       let mounted;
       let dispose;
       var switch_value = /*Item*/ctx[4];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {
           props: {
             item: /*item*/ctx[41],
@@ -18747,13 +19319,6 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          const switch_instance_changes = {};
-          if (dirty[0] & /*items*/2) switch_instance_changes.item = /*item*/ctx[41];
-          if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
-          if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
-          if (dirty[0] & /*items, value, optionIdentifier*/1538) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
-          if (dirty[0] & /*hoverItemIndex, items*/6) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
-          if (dirty[0] & /*items*/2) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
           if (dirty[0] & /*Item*/16 && switch_value !== (switch_value = /*Item*/ctx[4])) {
             if (switch_instance) {
               group_outros();
@@ -18772,6 +19337,13 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = {};
+            if (dirty[0] & /*items*/2) switch_instance_changes.item = /*item*/ctx[41];
+            if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
+            if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
+            if (dirty[0] & /*items, value, optionIdentifier*/1538) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
+            if (dirty[0] & /*hoverItemIndex, items*/6) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
+            if (dirty[0] & /*items*/2) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -18785,7 +19357,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (switch_instance) destroy_component(switch_instance);
           mounted = false;
           run_all(dispose);
@@ -18801,7 +19375,7 @@
       return {
         c() {
           div = element("div");
-          t = text$1(t_value);
+          t = text(t_value);
           attr(div, "class", "listGroupTitle svelte-1uyqfml");
         },
         m(target, anchor) {
@@ -18811,10 +19385,12 @@
         p(ctx, dirty) {
           if (dirty[0] & /*getGroupHeaderLabel, items*/130 && t_value !== (t_value = /*getGroupHeaderLabel*/ctx[7]( /*item*/ctx[41]) + "")) set_data(t, t_value);
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -18875,8 +19451,10 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(if_block_anchor);
+          }
           if_blocks[current_block_type_index].d(detaching);
-          if (detaching) detach(if_block_anchor);
         }
       };
     }
@@ -18889,7 +19467,7 @@
       let mounted;
       let dispose;
       var switch_value = /*Item*/ctx[4];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {
           props: {
             item: /*item*/ctx[41],
@@ -18934,14 +19512,6 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          const switch_instance_changes = {};
-          if (dirty[1] & /*item*/1024) switch_instance_changes.item = /*item*/ctx[41];
-          if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
-          if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
-          if (dirty[1] & /*i*/2048) switch_instance_changes.isFirst = isItemFirst( /*i*/ctx[42]);
-          if (dirty[0] & /*value, optionIdentifier*/1536 | dirty[1] & /*item*/1024) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
-          if (dirty[0] & /*hoverItemIndex, items*/6 | dirty[1] & /*item, i*/3072) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
-          if (dirty[1] & /*item*/1024) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
           if (dirty[0] & /*Item*/16 && switch_value !== (switch_value = /*Item*/ctx[4])) {
             if (switch_instance) {
               group_outros();
@@ -18960,6 +19530,14 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = {};
+            if (dirty[1] & /*item*/1024) switch_instance_changes.item = /*item*/ctx[41];
+            if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
+            if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
+            if (dirty[1] & /*i*/2048) switch_instance_changes.isFirst = isItemFirst( /*i*/ctx[42]);
+            if (dirty[0] & /*value, optionIdentifier*/1536 | dirty[1] & /*item*/1024) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
+            if (dirty[0] & /*hoverItemIndex, items*/6 | dirty[1] & /*item, i*/3072) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
+            if (dirty[1] & /*item*/1024) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -18973,7 +19551,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (switch_instance) destroy_component(switch_instance);
           mounted = false;
           run_all(dispose);
@@ -19052,7 +19632,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if_blocks[current_block_type_index].d();
           /*div_binding*/
           ctx[32](null);
@@ -19083,7 +19665,7 @@
         VirtualList = null
       } = $$props;
       let {
-        Item = Item$1
+        Item: Item$1 = Item
       } = $$props;
       let {
         isVirtualList = false
@@ -19295,7 +19877,7 @@
       $$self.$$set = $$props => {
         if ('container' in $$props) $$invalidate(0, container = $$props.container);
         if ('VirtualList' in $$props) $$invalidate(3, VirtualList = $$props.VirtualList);
-        if ('Item' in $$props) $$invalidate(4, Item = $$props.Item);
+        if ('Item' in $$props) $$invalidate(4, Item$1 = $$props.Item);
         if ('isVirtualList' in $$props) $$invalidate(5, isVirtualList = $$props.isVirtualList);
         if ('items' in $$props) $$invalidate(1, items = $$props.items);
         if ('labelIdentifier' in $$props) $$invalidate(20, labelIdentifier = $$props.labelIdentifier);
@@ -19322,7 +19904,7 @@
           }
         }
       };
-      return [container, items, hoverItemIndex, VirtualList, Item, isVirtualList, getOptionLabel, getGroupHeaderLabel, itemHeight, value, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, listStyle, handleHover, handleClick, handleKeyDown, computePlacement, activeItemIndex, labelIdentifier, isMulti, parent, listPlacement, listAutoWidth, listOffset, mouseover_handler, focus_handler, click_handler, mouseover_handler_1, focus_handler_1, click_handler_1, div_binding];
+      return [container, items, hoverItemIndex, VirtualList, Item$1, isVirtualList, getOptionLabel, getGroupHeaderLabel, itemHeight, value, optionIdentifier, hideEmptyState, noOptionsMessage, filterText, listStyle, handleHover, handleClick, handleKeyDown, computePlacement, activeItemIndex, labelIdentifier, isMulti, parent, listPlacement, listAutoWidth, listOffset, mouseover_handler, focus_handler, click_handler, mouseover_handler_1, focus_handler_1, click_handler_1, div_binding];
     }
     class List extends SvelteComponent {
       constructor(options) {
@@ -19371,10 +19953,12 @@
         p(ctx, [dirty]) {
           if (dirty & /*getSelectionLabel, item*/3 && raw_value !== (raw_value = /*getSelectionLabel*/ctx[0]( /*item*/ctx[1]) + "")) div.innerHTML = raw_value;
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -19437,7 +20021,9 @@
           ctx = new_ctx;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           mounted = false;
           dispose();
         }
@@ -19501,7 +20087,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           if (if_block) if_block.d();
           mounted = false;
           dispose();
@@ -19510,7 +20098,7 @@
     }
     function create_fragment$e(ctx) {
       let each_1_anchor;
-      let each_value = /*value*/ctx[0];
+      let each_value = ensure_array_like( /*value*/ctx[0]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
@@ -19532,7 +20120,7 @@
         },
         p(ctx, [dirty]) {
           if (dirty & /*activeValue, isDisabled, multiFullItemClearable, handleClear, getSelectionLabel, value*/63) {
-            each_value = /*value*/ctx[0];
+            each_value = ensure_array_like( /*value*/ctx[0]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$6(ctx, each_value, i);
@@ -19550,11 +20138,13 @@
             each_blocks.length = each_value.length;
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
+          if (detaching) {
+            detach(each_1_anchor);
+          }
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(each_1_anchor);
         }
       };
     }
@@ -19629,13 +20219,15 @@
       let t;
       return {
         c() {
-          t = text$1("Missing template");
+          t = text("Missing template");
         },
         m(target, anchor) {
           insert(target, t, anchor);
         },
         d(detaching) {
-          if (detaching) detach(t);
+          if (detaching) {
+            detach(t);
+          }
         }
       };
     }
@@ -19684,7 +20276,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(svelte_virtual_list_row);
+          if (detaching) {
+            detach(svelte_virtual_list_row);
+          }
           if (default_slot_or_fallback) default_slot_or_fallback.d(detaching);
         }
       };
@@ -19698,7 +20292,7 @@
       let current;
       let mounted;
       let dispose;
-      let each_value = /*visible*/ctx[5];
+      let each_value = ensure_array_like( /*visible*/ctx[5]);
       const get_key = ctx => /*row*/ctx[23].index;
       for (let i = 0; i < each_value.length; i += 1) {
         let child_ctx = get_each_context$5(ctx, each_value, i);
@@ -19732,7 +20326,7 @@
           ctx[16](svelte_virtual_list_contents);
           /*svelte_virtual_list_viewport_binding*/
           ctx[17](svelte_virtual_list_viewport);
-          svelte_virtual_list_viewport_resize_listener = add_resize_listener(svelte_virtual_list_viewport, /*svelte_virtual_list_viewport_elementresize_handler*/ctx[18].bind(svelte_virtual_list_viewport));
+          svelte_virtual_list_viewport_resize_listener = add_iframe_resize_listener(svelte_virtual_list_viewport, /*svelte_virtual_list_viewport_elementresize_handler*/ctx[18].bind(svelte_virtual_list_viewport));
           current = true;
           if (!mounted) {
             dispose = listen(svelte_virtual_list_viewport, "scroll", /*handle_scroll*/ctx[8]);
@@ -19741,7 +20335,7 @@
         },
         p(ctx, [dirty]) {
           if (dirty & /*$$scope, visible, hoverItemIndex*/16418) {
-            each_value = /*visible*/ctx[5];
+            each_value = ensure_array_like( /*visible*/ctx[5]);
             group_outros();
             each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$5, null, get_each_context$5);
             check_outros();
@@ -19770,7 +20364,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(svelte_virtual_list_viewport);
+          if (detaching) {
+            detach(svelte_virtual_list_viewport);
+          }
           for (let i = 0; i < each_blocks.length; i += 1) {
             each_blocks[i].d();
           }
@@ -19965,11 +20561,13 @@
           insert(target, svg, anchor);
           append(svg, path);
         },
-        p: noop$2,
-        i: noop$2,
-        o: noop$2,
+        p: noop$1,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(svg);
+          if (detaching) {
+            detach(svg);
+          }
         }
       };
     }
@@ -19987,12 +20585,10 @@
         let args = arguments;
         let later = function () {
           timeout = null;
-          if (!immediate) func.apply(context, args);
+          func.apply(context, args);
         };
-        let callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
       };
     }
 
@@ -20015,10 +20611,10 @@
       return {
         c() {
           span0 = element("span");
-          t0 = text$1( /*ariaSelection*/ctx[33]);
+          t0 = text( /*ariaSelection*/ctx[33]);
           t1 = space$1();
           span1 = element("span");
-          t2 = text$1( /*ariaContext*/ctx[32]);
+          t2 = text( /*ariaContext*/ctx[32]);
           attr(span0, "id", "aria-selection");
           attr(span1, "id", "aria-context");
         },
@@ -20034,9 +20630,11 @@
           if (dirty[1] & /*ariaContext*/2) set_data(t2, /*ariaContext*/ctx[32]);
         },
         d(detaching) {
-          if (detaching) detach(span0);
-          if (detaching) detach(t1);
-          if (detaching) detach(span1);
+          if (detaching) {
+            detach(span0);
+            detach(t1);
+            detach(span1);
+          }
         }
       };
     }
@@ -20048,17 +20646,20 @@
       let current;
       const switch_instance_spread_levels = [/*iconProps*/ctx[18]];
       var switch_value = /*Icon*/ctx[17];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         let switch_instance_props = {};
         for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
           switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
+        }
+        if (dirty !== undefined && dirty[0] & /*iconProps*/262144) {
+          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object( /*iconProps*/ctx[18])]));
         }
         return {
           props: switch_instance_props
         };
       }
       if (switch_value) {
-        switch_instance = construct_svelte_component(switch_value, switch_props());
+        switch_instance = construct_svelte_component(switch_value, switch_props(ctx));
       }
       return {
         c() {
@@ -20071,7 +20672,6 @@
           current = true;
         },
         p(ctx, dirty) {
-          const switch_instance_changes = dirty[0] & /*iconProps*/262144 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*iconProps*/ctx[18])]) : {};
           if (dirty[0] & /*Icon*/131072 && switch_value !== (switch_value = /*Icon*/ctx[17])) {
             if (switch_instance) {
               group_outros();
@@ -20082,7 +20682,7 @@
               check_outros();
             }
             if (switch_value) {
-              switch_instance = construct_svelte_component(switch_value, switch_props());
+              switch_instance = construct_svelte_component(switch_value, switch_props(ctx, dirty));
               create_component(switch_instance.$$.fragment);
               transition_in(switch_instance.$$.fragment, 1);
               mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
@@ -20090,6 +20690,7 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = dirty[0] & /*iconProps*/262144 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*iconProps*/ctx[18])]) : {};
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -20103,7 +20704,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(switch_instance_anchor);
+          if (detaching) {
+            detach(switch_instance_anchor);
+          }
           if (switch_instance) destroy_component(switch_instance, detaching);
         }
       };
@@ -20115,7 +20718,7 @@
       let switch_instance_anchor;
       let current;
       var switch_value = /*MultiSelection*/ctx[26];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {
           props: {
             value: /*value*/ctx[2],
@@ -20142,12 +20745,6 @@
           current = true;
         },
         p(ctx, dirty) {
-          const switch_instance_changes = {};
-          if (dirty[0] & /*value*/4) switch_instance_changes.value = /*value*/ctx[2];
-          if (dirty[0] & /*getSelectionLabel*/4096) switch_instance_changes.getSelectionLabel = /*getSelectionLabel*/ctx[12];
-          if (dirty[0] & /*activeValue*/1073741824) switch_instance_changes.activeValue = /*activeValue*/ctx[30];
-          if (dirty[0] & /*isDisabled*/512) switch_instance_changes.isDisabled = /*isDisabled*/ctx[9];
-          if (dirty[0] & /*multiFullItemClearable*/256) switch_instance_changes.multiFullItemClearable = /*multiFullItemClearable*/ctx[8];
           if (dirty[0] & /*MultiSelection*/67108864 && switch_value !== (switch_value = /*MultiSelection*/ctx[26])) {
             if (switch_instance) {
               group_outros();
@@ -20168,6 +20765,12 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = {};
+            if (dirty[0] & /*value*/4) switch_instance_changes.value = /*value*/ctx[2];
+            if (dirty[0] & /*getSelectionLabel*/4096) switch_instance_changes.getSelectionLabel = /*getSelectionLabel*/ctx[12];
+            if (dirty[0] & /*activeValue*/1073741824) switch_instance_changes.activeValue = /*activeValue*/ctx[30];
+            if (dirty[0] & /*isDisabled*/512) switch_instance_changes.isDisabled = /*isDisabled*/ctx[9];
+            if (dirty[0] & /*multiFullItemClearable*/256) switch_instance_changes.multiFullItemClearable = /*multiFullItemClearable*/ctx[8];
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -20181,7 +20784,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(switch_instance_anchor);
+          if (detaching) {
+            detach(switch_instance_anchor);
+          }
           if (switch_instance) destroy_component(switch_instance, detaching);
         }
       };
@@ -20195,7 +20800,7 @@
       let mounted;
       let dispose;
       var switch_value = /*Selection*/ctx[25];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {
           props: {
             item: /*value*/ctx[2],
@@ -20222,9 +20827,6 @@
           }
         },
         p(ctx, dirty) {
-          const switch_instance_changes = {};
-          if (dirty[0] & /*value*/4) switch_instance_changes.item = /*value*/ctx[2];
-          if (dirty[0] & /*getSelectionLabel*/4096) switch_instance_changes.getSelectionLabel = /*getSelectionLabel*/ctx[12];
           if (dirty[0] & /*Selection*/33554432 && switch_value !== (switch_value = /*Selection*/ctx[25])) {
             if (switch_instance) {
               group_outros();
@@ -20243,6 +20845,9 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = {};
+            if (dirty[0] & /*value*/4) switch_instance_changes.item = /*value*/ctx[2];
+            if (dirty[0] & /*getSelectionLabel*/4096) switch_instance_changes.getSelectionLabel = /*getSelectionLabel*/ctx[12];
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -20256,7 +20861,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (switch_instance) destroy_component(switch_instance);
           mounted = false;
           dispose();
@@ -20272,7 +20879,7 @@
       let mounted;
       let dispose;
       var switch_value = /*ClearIcon*/ctx[23];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         return {};
       }
       if (switch_value) {
@@ -20324,7 +20931,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (switch_instance) destroy_component(switch_instance);
           mounted = false;
           dispose();
@@ -20365,7 +20974,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if_block.d();
         }
       };
@@ -20391,9 +21002,11 @@
           insert(target, svg, anchor);
           append(svg, path);
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(svg);
+          if (detaching) {
+            detach(svg);
+          }
         }
       };
     }
@@ -20416,8 +21029,10 @@
           if (dirty[0] & /*indicatorSvg*/4194304) html_tag.p( /*indicatorSvg*/ctx[22]);
         },
         d(detaching) {
-          if (detaching) detach(html_anchor);
-          if (detaching) html_tag.d();
+          if (detaching) {
+            detach(html_anchor);
+            html_tag.d();
+          }
         }
       };
     }
@@ -20435,7 +21050,9 @@
           insert(target, div, anchor);
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
         }
       };
     }
@@ -20451,10 +21068,13 @@
         /*switch_instance_hoverItemIndex_binding*/ctx[84](value);
       }
       var switch_value = /*List*/ctx[24];
-      function switch_props(ctx) {
+      function switch_props(ctx, dirty) {
         let switch_instance_props = {};
         for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
           switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
+        }
+        if (dirty !== undefined && dirty[1] & /*listProps*/8) {
+          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object( /*listProps*/ctx[34])]));
         }
         if ( /*hoverItemIndex*/ctx[28] !== void 0) {
           switch_instance_props.hoverItemIndex = /*hoverItemIndex*/ctx[28];
@@ -20481,12 +21101,6 @@
           current = true;
         },
         p(ctx, dirty) {
-          const switch_instance_changes = dirty[1] & /*listProps*/8 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*listProps*/ctx[34])]) : {};
-          if (!updating_hoverItemIndex && dirty[0] & /*hoverItemIndex*/268435456) {
-            updating_hoverItemIndex = true;
-            switch_instance_changes.hoverItemIndex = /*hoverItemIndex*/ctx[28];
-            add_flush_callback(() => updating_hoverItemIndex = false);
-          }
           if (dirty[0] & /*List*/16777216 && switch_value !== (switch_value = /*List*/ctx[24])) {
             if (switch_instance) {
               group_outros();
@@ -20497,7 +21111,7 @@
               check_outros();
             }
             if (switch_value) {
-              switch_instance = construct_svelte_component(switch_value, switch_props(ctx));
+              switch_instance = construct_svelte_component(switch_value, switch_props(ctx, dirty));
               binding_callbacks.push(() => bind(switch_instance, 'hoverItemIndex', switch_instance_hoverItemIndex_binding));
               switch_instance.$on("itemSelected", /*itemSelected*/ctx[43]);
               switch_instance.$on("itemCreated", /*itemCreated*/ctx[44]);
@@ -20509,6 +21123,12 @@
               switch_instance = null;
             }
           } else if (switch_value) {
+            const switch_instance_changes = dirty[1] & /*listProps*/8 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*listProps*/ctx[34])]) : {};
+            if (!updating_hoverItemIndex && dirty[0] & /*hoverItemIndex*/268435456) {
+              updating_hoverItemIndex = true;
+              switch_instance_changes.hoverItemIndex = /*hoverItemIndex*/ctx[28];
+              add_flush_callback(() => updating_hoverItemIndex = false);
+            }
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -20522,7 +21142,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(switch_instance_anchor);
+          if (detaching) {
+            detach(switch_instance_anchor);
+          }
           if (switch_instance) destroy_component(switch_instance, detaching);
         }
       };
@@ -20553,7 +21175,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(input_1);
+          if (detaching) {
+            detach(input_1);
+          }
         }
       };
     }
@@ -20561,7 +21185,7 @@
     // (983:4) {#if isMulti && showMultiSelect}
     function create_if_block$7(ctx) {
       let each_1_anchor;
-      let each_value = /*value*/ctx[2];
+      let each_value = ensure_array_like( /*value*/ctx[2]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
@@ -20583,7 +21207,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*inputAttributes, value, getSelectionLabel*/69636) {
-            each_value = /*value*/ctx[2];
+            each_value = ensure_array_like( /*value*/ctx[2]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$4(ctx, each_value, i);
@@ -20602,8 +21226,10 @@
           }
         },
         d(detaching) {
+          if (detaching) {
+            detach(each_1_anchor);
+          }
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(each_1_anchor);
         }
       };
     }
@@ -20633,7 +21259,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(input_1);
+          if (detaching) {
+            detach(input_1);
+          }
         }
       };
     }
@@ -20957,7 +21585,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           if (if_block0) if_block0.d();
           if (if_block1) if_block1.d();
           if (if_block2) if_block2.d();
@@ -21160,7 +21790,7 @@
         ClearIcon: ClearIcon$1 = ClearIcon
       } = $$props;
       let {
-        Item = Item$1
+        Item: Item$1 = Item
       } = $$props;
       let {
         List: List$1 = List
@@ -21609,7 +22239,7 @@
         if ('indicatorSvg' in $$props) $$invalidate(22, indicatorSvg = $$props.indicatorSvg);
         if ('listOffset' in $$props) $$invalidate(70, listOffset = $$props.listOffset);
         if ('ClearIcon' in $$props) $$invalidate(23, ClearIcon$1 = $$props.ClearIcon);
-        if ('Item' in $$props) $$invalidate(71, Item = $$props.Item);
+        if ('Item' in $$props) $$invalidate(71, Item$1 = $$props.Item);
         if ('List' in $$props) $$invalidate(24, List$1 = $$props.List);
         if ('Selection' in $$props) $$invalidate(25, Selection$1 = $$props.Selection);
         if ('MultiSelection' in $$props) $$invalidate(26, MultiSelection$1 = $$props.MultiSelection);
@@ -21707,7 +22337,7 @@
         }
         if ($$self.$$.dirty[0] & /*filterText, value, isMulti, container*/141 | $$self.$$.dirty[1] & /*optionIdentifier, getGroupHeaderLabel, getOptionLabel*/218103808 | $$self.$$.dirty[2] & /*Item, noOptionsMessage, hideEmptyState, isVirtualList, VirtualList, filteredItems, itemHeight, listPlacement, listAutoWidth, listOffset*/526326) {
           $$invalidate(34, listProps = {
-            Item,
+            Item: Item$1,
             filterText,
             optionIdentifier,
             noOptionsMessage,
@@ -21733,7 +22363,7 @@
           $$invalidate(32, ariaContext = handleAriaContent());
         }
       };
-      return [container, isFocused, value, filterText, isWaiting, listOpen, input, isMulti, multiFullItemClearable, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, inputAttributes, Icon, iconProps, showChevron, showIndicator, containerClasses, indicatorSvg, ClearIcon$1, List$1, Selection$1, MultiSelection$1, handleClear, hoverItemIndex, showSelectedItem, activeValue, _inputAttributes, ariaContext, ariaSelection, listProps, showMultiSelect, placeholderText, showClearIcon, handleMultiItemClear, handleKeyDown, handleFocus, handleWindowEvent, handleClick, itemSelected, itemCreated, closeList, id, isCreatable, placeholder, placeholderAlwaysShow, items, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, labelIdentifier, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, getFilteredItems, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, listAutoWidth, itemHeight, listOffset, Item, VirtualList$1, selectedValue, ariaValues, ariaListOpen, ariaFocused, prev_value, prev_filterText, prev_isFocused, prev_isMulti, filteredItems, input_1_binding, input_1_input_handler, switch_instance_hoverItemIndex_binding, div_binding];
+      return [container, isFocused, value, filterText, isWaiting, listOpen, input, isMulti, multiFullItemClearable, isDisabled, hasError, containerStyles, getSelectionLabel, isSearchable, inputStyles, isClearable, inputAttributes, Icon, iconProps, showChevron, showIndicator, containerClasses, indicatorSvg, ClearIcon$1, List$1, Selection$1, MultiSelection$1, handleClear, hoverItemIndex, showSelectedItem, activeValue, _inputAttributes, ariaContext, ariaSelection, listProps, showMultiSelect, placeholderText, showClearIcon, handleMultiItemClear, handleKeyDown, handleFocus, handleWindowEvent, handleClick, itemSelected, itemCreated, closeList, id, isCreatable, placeholder, placeholderAlwaysShow, items, itemFilter, groupBy, groupFilter, isGroupHeaderSelectable, getGroupHeaderLabel, labelIdentifier, getOptionLabel, optionIdentifier, loadOptions, createGroupHeaderItem, createItem, getFilteredItems, listPlacement, isVirtualList, loadOptionsInterval, noOptionsMessage, hideEmptyState, listAutoWidth, itemHeight, listOffset, Item$1, VirtualList$1, selectedValue, ariaValues, ariaListOpen, ariaFocused, prev_value, prev_filterText, prev_isFocused, prev_isMulti, filteredItems, input_1_binding, input_1_input_handler, switch_instance_hoverItemIndex_binding, div_binding];
     }
     class Select extends SvelteComponent {
       constructor(options) {
@@ -21869,15 +22499,16 @@
         c() {
           p = element("p");
           em = element("em");
-          em.textContent = "".concat(translate_1("timemanager", "You haven't shared this client with anyone"));
+          em.textContent = "".concat(translate("timemanager", "You haven't shared this client with anyone"));
         },
         m(target, anchor) {
           insert(target, p, anchor);
           append(p, em);
         },
-        p: noop$2,
         d(detaching) {
-          if (detaching) detach(p);
+          if (detaching) {
+            detach(p);
+          }
         }
       };
     }
@@ -21890,23 +22521,25 @@
       return {
         c() {
           img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) attr(img, "src", img_src_value);
-          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"));
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
         },
         m(target, anchor) {
           insert(target, img, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) {
+          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) {
+          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
         },
         d(detaching) {
-          if (detaching) detach(img);
+          if (detaching) {
+            detach(img);
+          }
         }
       };
     }
@@ -21925,9 +22558,11 @@
         m(target, anchor) {
           insert(target, span, anchor);
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(span);
+          if (detaching) {
+            detach(span);
+          }
         }
       };
     }
@@ -21964,7 +22599,7 @@
           if_block.c();
           t0 = space$1();
           figcaption = element("figcaption");
-          t1 = text$1(t1_value);
+          t1 = text(t1_value);
           t2 = space$1();
           form_1 = element("form");
           input0 = element("input");
@@ -21974,7 +22609,7 @@
           input2 = element("input");
           t5 = space$1();
           button = element("button");
-          button.textContent = "".concat(translate_1("timemanager", "Delete"));
+          button.textContent = "".concat(translate("timemanager", "Delete"));
           t7 = space$1();
           attr(input0, "type", "hidden");
           attr(input0, "name", "client_uuid");
@@ -22036,7 +22671,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(li);
+          if (detaching) {
+            detach(li);
+          }
           if_block.d();
         }
       };
@@ -22046,7 +22683,7 @@
     function create_default_slot$2(ctx) {
       var div2;
       var label;
-      var t0_value = translate_1("timemanager", "Share with") + "";
+      var t0_value = translate("timemanager", "Share with") + "";
       var t0;
       var t1;
       var select;
@@ -22073,8 +22710,8 @@
       var dispose;
       select = new Select({
         props: {
-          noOptionsMessage: /*loading*/ctx[8] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Search..."),
+          noOptionsMessage: /*loading*/ctx[8] ? translate("timemanager", "Loading...") : translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Search..."),
           inputAttributes: {
             id: "sharee-select"
           },
@@ -22084,7 +22721,7 @@
       });
       select.$on("select", /*handleSelectSharee*/ctx[12]);
       var if_block = (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) && create_if_block_2$3();
-      var each_value = /*sharees*/ctx[2];
+      var each_value = ensure_array_like( /*sharees*/ctx[2]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
@@ -22093,13 +22730,13 @@
         c() {
           div2 = element("div");
           label = element("label");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           create_component(select.$$.fragment);
           t2 = space$1();
           div0 = element("div");
           h4 = element("h4");
-          h4.textContent = "".concat(translate_1("timemanager", "Existing shares"));
+          h4.textContent = "".concat(translate("timemanager", "Existing shares"));
           t4 = space$1();
           if (if_block) if_block.c();
           t5 = space$1();
@@ -22110,20 +22747,20 @@
           t6 = space$1();
           aside = element("aside");
           p0 = element("p");
-          p0.textContent = "".concat(translate_1("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
+          p0.textContent = "".concat(translate("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
           t8 = space$1();
           p1 = element("p");
-          p1.textContent = "".concat(translate_1("timemanager", "Users you share with can create time entries."));
+          p1.textContent = "".concat(translate("timemanager", "Users you share with can create time entries."));
           t10 = space$1();
           p2 = element("p");
-          p2.textContent = "".concat(translate_1("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
+          p2.textContent = "".concat(translate("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
           t12 = space$1();
           div1 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(translate_1("timemanager", "Add"));
+          button0.textContent = "".concat(translate("timemanager", "Add"));
           t14 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate_1("timemanager", "Cancel"));
+          button1.textContent = "".concat(translate("timemanager", "Cancel"));
           attr(label, "for", "sharee-select");
           attr(label, "class", "sharees");
           attr(h4, "class", "tm_label");
@@ -22171,13 +22808,11 @@
         },
         p(ctx, dirty) {
           var select_changes = {};
-          if (dirty & /*loading*/256) select_changes.noOptionsMessage = /*loading*/ctx[8] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options");
+          if (dirty & /*loading*/256) select_changes.noOptionsMessage = /*loading*/ctx[8] ? translate("timemanager", "Loading...") : translate("timemanager", "No options");
           if (dirty & /*selectedSharee*/64) select_changes.value = /*selectedSharee*/ctx[6];
           select.$set(select_changes);
           if (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) {
-            if (if_block) {
-              if_block.p(ctx, dirty);
-            } else {
+            if (if_block) ; else {
               if_block = create_if_block_2$3();
               if_block.c();
               if_block.m(div0, t5);
@@ -22186,8 +22821,8 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*deleteShareAction, translate, requestToken, sharees, clientUuid, generateUrl*/30) {
-            each_value = /*sharees*/ctx[2];
+          if (dirty & /*deleteShareAction, requestToken, sharees, clientUuid*/30) {
+            each_value = ensure_array_like( /*sharees*/ctx[2]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$3(ctx, each_value, _i3);
@@ -22215,7 +22850,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           destroy_component(select);
           if (if_block) if_block.d();
           destroy_each(each_blocks, detaching);
@@ -22254,7 +22891,7 @@
           input3 = element("input");
           t4 = space$1();
           button = element("button");
-          button.textContent = "".concat(translate_1("timemanager", "Share client"));
+          button.textContent = "".concat(translate("timemanager", "Share client"));
           attr(input0, "type", "hidden");
           attr(input0, "name", "client_uuid");
           input0.value = /*clientUuid*/ctx[3];
@@ -22339,9 +22976,11 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(t0);
+            detach(form_1);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(t0);
-          if (detaching) detach(form_1);
           /*form_1_binding*/
           ctx[14](null);
         }
@@ -22388,7 +23027,7 @@
               case 2:
                 $$invalidate(8, loading = true);
                 _context.next = 5;
-                return fetch(dist_6("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                return fetch(dist_3("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
                   headers: {
                     requesttoken: requestToken,
                     "content-type": "application/json"
@@ -22421,10 +23060,10 @@
                 adjustGroupLabel = function adjustGroupLabel(userOrGroup) {
                   var _userOrGroup$value;
                   return ((_userOrGroup$value = userOrGroup.value) === null || _userOrGroup$value === void 0 ? void 0 : _userOrGroup$value.shareType) === 1 ? _objectSpread2(_objectSpread2({}, userOrGroup), {}, {
-                    label: "".concat(userOrGroup.label, " ").concat(translate_1("timemanager", "(Group)"))
+                    label: "".concat(userOrGroup.label, " ").concat(translate("timemanager", "(Group)"))
                   }) : userOrGroup;
                 };
-                result = [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users), _toConsumableArray$1(groups), _toConsumableArray$1(exact.groups)).filter(function (user) {
+                result = [].concat(_toConsumableArray(users), _toConsumableArray(exact.users), _toConsumableArray(groups), _toConsumableArray(exact.groups)).filter(function (user) {
                   return !existing_users.includes(user.value.shareWith) && user.value.shareWith !== userId;
                 }).filter(function (group) {
                   return !existing_groups.includes(group.value.shareWith);
@@ -22495,7 +23134,7 @@
       var span;
       var t1;
       var ul;
-      var each_value = /*sharees*/ctx[0];
+      var each_value = ensure_array_like( /*sharees*/ctx[0]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
@@ -22503,7 +23142,7 @@
       return {
         c() {
           span = element("span");
-          span.textContent = "".concat(translate_1("timemanager", "Shared with"));
+          span.textContent = "".concat(translate("timemanager", "Shared with"));
           t1 = space$1();
           ul = element("ul");
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
@@ -22523,8 +23162,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty & /*sharees, generateUrl*/1) {
-            each_value = /*sharees*/ctx[0];
+          if (dirty & /*sharees*/1) {
+            each_value = ensure_array_like( /*sharees*/ctx[0]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$2(ctx, each_value, _i3);
@@ -22543,9 +23182,11 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(span);
-          if (detaching) detach(t1);
-          if (detaching) detach(ul);
+          if (detaching) {
+            detach(span);
+            detach(t1);
+            detach(ul);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -22559,23 +23200,25 @@
       return {
         c() {
           img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) attr(img, "src", img_src_value);
-          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"));
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
         },
         m(target, anchor) {
           insert(target, img, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) {
+          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) {
+          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
         },
         d(detaching) {
-          if (detaching) detach(img);
+          if (detaching) {
+            detach(img);
+          }
         }
       };
     }
@@ -22594,9 +23237,11 @@
         m(target, anchor) {
           insert(target, span, anchor);
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(span);
+          if (detaching) {
+            detach(span);
+          }
         }
       };
     }
@@ -22619,7 +23264,7 @@
           li = element("li");
           if_block.c();
           t0 = space$1();
-          t1 = text$1(t1_value);
+          t1 = text(t1_value);
           t2 = space$1();
         },
         m(target, anchor) {
@@ -22643,7 +23288,9 @@
           if (dirty & /*sharees*/1 && t1_value !== (t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "")) set_data(t1, t1_value);
         },
         d(detaching) {
-          if (detaching) detach(li);
+          if (detaching) {
+            detach(li);
+          }
           if_block.d();
         }
       };
@@ -22664,16 +23311,16 @@
       return {
         c() {
           span = element("span");
-          span.textContent = "".concat(translate_1("timemanager", "Shared with you by"));
+          span.textContent = "".concat(translate("timemanager", "Shared with you by"));
           t1 = space$1();
           ul = element("ul");
           li = element("li");
           img = element("img");
           t2 = space$1();
-          t3 = text$1(t3_value);
+          t3 = text(t3_value);
           attr(span, "class", "tm_label");
-          if (!src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
-          attr(img, "srcset", img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"));
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
           attr(ul, "class", "existing-sharees");
         },
@@ -22687,18 +23334,20 @@
           append(li, t3);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharedBy*/2 && !src_url_equal(img.src, img_src_value = dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) {
+          if (dirty & /*sharedBy*/2 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharedBy*/2 && img_srcset_value !== (img_srcset_value = "".concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_4("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) {
+          if (dirty & /*sharedBy*/2 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
           if (dirty & /*sharedBy*/2 && t3_value !== (t3_value = ( /*sharedBy*/ctx[1].author_display_name || /*sharedBy*/ctx[1].author_user_id) + "")) set_data(t3, t3_value);
         },
         d(detaching) {
-          if (detaching) detach(span);
-          if (detaching) detach(t1);
-          if (detaching) detach(ul);
+          if (detaching) {
+            detach(span);
+            detach(t1);
+            detach(ul);
+          }
         }
       };
     }
@@ -22748,13 +23397,15 @@
             if_block1 = null;
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
+          if (detaching) {
+            detach(t);
+            detach(if_block1_anchor);
+          }
           if (if_block0) if_block0.d(detaching);
-          if (detaching) detach(t);
           if (if_block1) if_block1.d(detaching);
-          if (detaching) detach(if_block1_anchor);
         }
       };
     }
@@ -22835,7 +23486,7 @@
     // (56:1) <Overlay>
     function create_default_slot$1(ctx) {
       var div1;
-      var t0_value = translate_1('timemanager', 'Do you want to delete this time entry?') + "";
+      var t0_value = translate('timemanager', 'Do you want to delete this time entry?') + "";
       var t0;
       var t1;
       var div0;
@@ -22847,14 +23498,14 @@
       return {
         c() {
           div1 = element("div");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(translate_1('timemanager', 'Delete'));
+          button0.textContent = "".concat(translate('timemanager', 'Delete'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate_1('timemanager', 'Cancel'));
+          button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -22873,9 +23524,11 @@
             mounted = true;
           }
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div1);
+          }
           mounted = false;
           run_all(dispose);
         }
@@ -22903,7 +23556,7 @@
           input1 = element("input");
           t2 = space$1();
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Delete'));
+          button.textContent = "".concat(translate('timemanager', 'Delete'));
           attr(input0, "type", "hidden");
           attr(input0, "name", "uuid");
           input0.value = /*deleteTimeEntryUuid*/ctx[1];
@@ -22975,9 +23628,11 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(t0);
+            detach(form);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(t0);
-          if (detaching) detach(form);
           mounted = false;
           dispose();
         }
@@ -26642,7 +27297,7 @@
       var ul;
       var mounted;
       var dispose;
-      var each_value_4 = /*noteAutosuggestList*/ctx[5];
+      var each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
       var each_blocks = [];
       for (var i = 0; i < each_value_4.length; i += 1) {
         each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
@@ -26672,7 +27327,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/4458722) {
-            each_value_4 = /*noteAutosuggestList*/ctx[5];
+            each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
             var _i3;
             for (_i3 = 0; _i3 < each_value_4.length; _i3 += 1) {
               var child_ctx = get_each_context_4(ctx, each_value_4, _i3);
@@ -26691,7 +27346,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           destroy_each(each_blocks, detaching);
           mounted = false;
           dispose();
@@ -26744,14 +27401,14 @@
         c() {
           li = element("li");
           a = element("a");
-          t0 = text$1(t0_value);
-          t1 = text$1(" (");
-          t2 = text$1(t2_value);
-          t3 = text$1(" › ");
-          t4 = text$1(t4_value);
-          t5 = text$1(" › ");
-          t6 = text$1(t6_value);
-          t7 = text$1(")");
+          t0 = text(t0_value);
+          t1 = text(" (");
+          t2 = text(t2_value);
+          t3 = text(" › ");
+          t4 = text(t4_value);
+          t5 = text(" › ");
+          t6 = text(t6_value);
+          t7 = text(")");
           t8 = space$1();
           attr(a, "class", "task");
           attr(a, "href", "?");
@@ -26789,7 +27446,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(li);
+          if (detaching) {
+            detach(li);
+          }
           unassign_a();
           mounted = false;
           run_all(dispose);
@@ -26803,26 +27462,26 @@
       var span1;
       var label0;
       var html_tag;
-      var raw0_value = translate_1("timemanager", "Duration (in hrs.)") + "";
+      var raw0_value = translate("timemanager", "Duration (in hrs.)") + "";
       var t0;
       var input0;
       var t1;
       var span0;
       var label1;
       var html_tag_1;
-      var raw1_value = translate_1("timemanager", "Start time") + "";
+      var raw1_value = translate("timemanager", "Start time") + "";
       var t2;
       var input1;
       var t3;
       var label2;
       var html_tag_2;
-      var raw2_value = translate_1("timemanager", "End time") + "";
+      var raw2_value = translate("timemanager", "End time") + "";
       var t4;
       var input2;
       var t5;
       var label3;
       var html_tag_3;
-      var raw3_value = translate_1("timemanager", "Date") + "";
+      var raw3_value = translate("timemanager", "Date") + "";
       var t6;
       var input3;
       var mounted;
@@ -26931,7 +27590,10 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
+
           /*input0_binding_1*/
           ctx[55](null);
           mounted = false;
@@ -26942,7 +27604,7 @@
 
     // (605:2) {:else}
     function create_else_block(ctx) {
-      var t0_value = translate_1("timemanager", "Client, project or task") + "";
+      var t0_value = translate("timemanager", "Client, project or task") + "";
       var t0;
       var t1;
       var input;
@@ -26952,12 +27614,12 @@
       var dispose;
       return {
         c() {
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           input = element("input");
           attr(input, "data-hideevent", "skip");
           attr(input, "type", "text");
-          attr(input, "placeholder", translate_1("timemanager", "Select..."));
+          attr(input, "placeholder", translate("timemanager", "Select..."));
           input.disabled = /*showTaskSelector*/ctx[0];
           input.value = input_value_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "";
           attr(input, "title", input_title_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "");
@@ -26983,9 +27645,11 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(t0);
-          if (detaching) detach(t1);
-          if (detaching) detach(input);
+          if (detaching) {
+            detach(t0);
+            detach(t1);
+            detach(input);
+          }
           mounted = false;
           run_all(dispose);
         }
@@ -27026,24 +27690,24 @@
           ul = element("ul");
           li0 = element("li");
           span0 = element("span");
-          span0.textContent = "".concat(translate_1("timemanager", "Client"));
+          span0.textContent = "".concat(translate("timemanager", "Client"));
           t1 = space$1();
           span1 = element("span");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           li1 = element("li");
           span2 = element("span");
-          span2.textContent = "".concat(translate_1("timemanager", "Project"));
+          span2.textContent = "".concat(translate("timemanager", "Project"));
           t5 = space$1();
           span3 = element("span");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           li2 = element("li");
           span4 = element("span");
-          span4.textContent = "".concat(translate_1("timemanager", "Task"));
+          span4.textContent = "".concat(translate("timemanager", "Task"));
           t9 = space$1();
           span5 = element("span");
-          t10 = text$1(t10_value);
+          t10 = text(t10_value);
           t11 = space$1();
           input = element("input");
           attr(span0, "class", "label muted");
@@ -27052,7 +27716,7 @@
           attr(span3, "class", "value muted");
           attr(span4, "class", "label");
           attr(span5, "class", "value");
-          attr(a, "href", dist_4("apps/timemanager/404"));
+          attr(a, "href", dist_1("apps/timemanager/404"));
           attr(a, "class", "combo-entry-wrapper");
           attr(input, "class", "hidden-visually");
           attr(input, "name", "show-task-selector");
@@ -27090,9 +27754,11 @@
           if (dirty[0] & /*selected*/262144 && t10_value !== (t10_value = /*selected*/ctx[18].task.label + "")) set_data(t10, t10_value);
         },
         d(detaching) {
-          if (detaching) detach(a);
-          if (detaching) detach(t11);
-          if (detaching) detach(input);
+          if (detaching) {
+            detach(a);
+            detach(t11);
+            detach(input);
+          }
           mounted = false;
           run_all(dispose);
         }
@@ -27128,7 +27794,7 @@
           div3 = element("div");
           label = element("label");
           span = element("span");
-          span.textContent = "".concat(translate_1("timemanager", "Type to search for client, project or task"));
+          span.textContent = "".concat(translate("timemanager", "Type to search for client, project or task"));
           t1 = space$1();
           input = element("input");
           t2 = space$1();
@@ -27142,7 +27808,7 @@
           attr(span, "class", "hidden-visually");
           attr(input, "class", "search-input icon-search button-w-icon");
           attr(input, "type", "text");
-          attr(input, "placeholder", translate_1("timemanager", "Type to search for client, project or task"));
+          attr(input, "placeholder", translate("timemanager", "Type to search for client, project or task"));
           attr(input, "autocapitalize", "none");
           attr(input, "autocomplete", "off");
           attr(input, "autocorrect", "off");
@@ -27209,7 +27875,10 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div3);
+          if (detaching) {
+            detach(div3);
+          }
+
           /*input_binding*/
           ctx[62](null);
           if (if_block0) if_block0.d();
@@ -27225,7 +27894,7 @@
     // (648:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
-      var each_value_3 = /*lastUsed*/ctx[32];
+      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[32]);
       var each_blocks = [];
       for (var i = 0; i < each_value_3.length; i += 1) {
         each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
@@ -27248,7 +27917,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/1310737 | dirty[1] & /*lastUsed*/2) {
-            each_value_3 = /*lastUsed*/ctx[32];
+            each_value_3 = ensure_array_like( /*lastUsed*/ctx[32]);
             var _i6;
             for (_i6 = 0; _i6 < each_value_3.length; _i6 += 1) {
               var child_ctx = get_each_context_3(ctx, each_value_3, _i6);
@@ -27267,7 +27936,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(ul);
+          if (detaching) {
+            detach(ul);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -27279,15 +27950,16 @@
       return {
         c() {
           span = element("span");
-          span.textContent = "".concat(translate_1("timemanager", "Last used"));
+          span.textContent = "".concat(translate("timemanager", "Last used"));
           attr(span, "class", "client");
         },
         m(target, anchor) {
           insert(target, span, anchor);
         },
-        p: noop$2,
         d(detaching) {
-          if (detaching) detach(span);
+          if (detaching) {
+            detach(span);
+          }
         }
       };
     }
@@ -27302,22 +27974,16 @@
       var span0;
       var t2;
       var span1;
-      var t3_value = /*entry*/ctx[92].client.name + "";
-      var t3;
       var t4;
       var li1;
       var span2;
       var t6;
       var span3;
-      var t7_value = /*entry*/ctx[92].project.name + "";
-      var t7;
       var t8;
       var li2;
       var span4;
       var t10;
       var span5;
-      var t11_value = /*entry*/ctx[92].task.name + "";
-      var t11;
       var index = /*index*/ctx[94];
       var t12;
       var mounted;
@@ -27352,24 +28018,24 @@
           ul = element("ul");
           li0 = element("li");
           span0 = element("span");
-          span0.textContent = "".concat(translate_1("timemanager", "Client"));
+          span0.textContent = "".concat(translate("timemanager", "Client"));
           t2 = space$1();
           span1 = element("span");
-          t3 = text$1(t3_value);
+          span1.textContent = "".concat( /*entry*/ctx[92].client.name);
           t4 = space$1();
           li1 = element("li");
           span2 = element("span");
-          span2.textContent = "".concat(translate_1("timemanager", "Project"));
+          span2.textContent = "".concat(translate("timemanager", "Project"));
           t6 = space$1();
           span3 = element("span");
-          t7 = text$1(t7_value);
+          span3.textContent = "".concat( /*entry*/ctx[92].project.name);
           t8 = space$1();
           li2 = element("li");
           span4 = element("span");
-          span4.textContent = "".concat(translate_1("timemanager", "Task"));
+          span4.textContent = "".concat(translate("timemanager", "Task"));
           t10 = space$1();
           span5 = element("span");
-          t11 = text$1(t11_value);
+          span5.textContent = "".concat( /*entry*/ctx[92].task.name);
           t12 = space$1();
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
@@ -27378,7 +28044,7 @@
           attr(span4, "class", "label");
           attr(span5, "class", "value");
           attr(a, "class", "task last-used-wrapper");
-          attr(a, "href", dist_4("apps/timemanager/404"));
+          attr(a, "href", dist_1("apps/timemanager/404"));
           attr(a, "tabindex", -1);
         },
         m(target, anchor) {
@@ -27391,19 +28057,16 @@
           append(li0, span0);
           append(li0, t2);
           append(li0, span1);
-          append(span1, t3);
           append(ul, t4);
           append(ul, li1);
           append(li1, span2);
           append(li1, t6);
           append(li1, span3);
-          append(span3, t7);
           append(ul, t8);
           append(ul, li2);
           append(li2, span4);
           append(li2, t10);
           append(li2, span5);
-          append(span5, t11);
           assign_a();
           append(li3, t12);
           if (!mounted) {
@@ -27413,7 +28076,6 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if ( /*index*/ctx[94] === 0) if_block.p(ctx, dirty);
           if (index !== /*index*/ctx[94]) {
             unassign_a();
             index = /*index*/ctx[94];
@@ -27421,7 +28083,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(li3);
+          if (detaching) {
+            detach(li3);
+          }
           if (if_block) if_block.d();
           unassign_a();
           mounted = false;
@@ -27436,15 +28100,17 @@
       return {
         c() {
           p = element("p");
-          p.textContent = "".concat(translate_1("timemanager", "Nothing found"));
+          p.textContent = "".concat(translate("timemanager", "Nothing found"));
           attr(p, "class", "no-result");
         },
         m(target, anchor) {
           insert(target, p, anchor);
         },
-        p: noop$2,
+        p: noop$1,
         d(detaching) {
-          if (detaching) detach(p);
+          if (detaching) {
+            detach(p);
+          }
         }
       };
     }
@@ -27452,7 +28118,7 @@
     // (695:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
-      var each_value = /*searchResults*/ctx[23];
+      var each_value = ensure_array_like( /*searchResults*/ctx[23]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
@@ -27474,7 +28140,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value = /*searchResults*/ctx[23];
+            each_value = ensure_array_like( /*searchResults*/ctx[23]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context$1(ctx, each_value, _i9);
@@ -27493,8 +28159,10 @@
           }
         },
         d(detaching) {
+          if (detaching) {
+            detach(each_1_anchor);
+          }
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(each_1_anchor);
         }
       };
     }
@@ -27533,9 +28201,9 @@
         c() {
           li = element("li");
           a = element("a");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
-          attr(a, "href", dist_4("apps/timemanager/404"));
+          attr(a, "href", dist_1("apps/timemanager/404"));
           attr(a, "class", "task");
           attr(a, "tabindex", -1);
         },
@@ -27560,7 +28228,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(li);
+          if (detaching) {
+            detach(li);
+          }
           unassign_a();
           mounted = false;
           run_all(dispose);
@@ -27577,7 +28247,7 @@
       var t1;
       var ul;
       var t2;
-      var each_value_2 = /*project*/ctx[86].tasks;
+      var each_value_2 = ensure_array_like( /*project*/ctx[86].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
@@ -27586,7 +28256,7 @@
         c() {
           li = element("li");
           span = element("span");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           ul = element("ul");
           for (var _i10 = 0; _i10 < each_blocks.length; _i10 += 1) {
@@ -27611,7 +28281,7 @@
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults*/8388608 && t0_value !== (t0_value = /*project*/ctx[86].label + "")) set_data(t0, t0_value);
           if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value_2 = /*project*/ctx[86].tasks;
+            each_value_2 = ensure_array_like( /*project*/ctx[86].tasks);
             var _i12;
             for (_i12 = 0; _i12 < each_value_2.length; _i12 += 1) {
               var child_ctx = get_each_context_2$1(ctx, each_value_2, _i12);
@@ -27630,7 +28300,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(li);
+          if (detaching) {
+            detach(li);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -27646,7 +28318,7 @@
       var t1;
       var ul0;
       var t2;
-      var each_value_1 = /*client*/ctx[83].projects;
+      var each_value_1 = ensure_array_like( /*client*/ctx[83].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
@@ -27656,7 +28328,7 @@
           ul1 = element("ul");
           li = element("li");
           span = element("span");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           ul0 = element("ul");
           for (var _i13 = 0; _i13 < each_blocks.length; _i13 += 1) {
@@ -27683,7 +28355,7 @@
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults*/8388608 && t0_value !== (t0_value = /*client*/ctx[83].label + "")) set_data(t0, t0_value);
           if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value_1 = /*client*/ctx[83].projects;
+            each_value_1 = ensure_array_like( /*client*/ctx[83].projects);
             var _i15;
             for (_i15 = 0; _i15 < each_value_1.length; _i15 += 1) {
               var child_ctx = get_each_context_1$1(ctx, each_value_1, _i15);
@@ -27702,7 +28374,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(ul1);
+          if (detaching) {
+            detach(ul1);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -27711,7 +28385,7 @@
       var _ctx$13;
       var form;
       var label0;
-      var t0_value = translate_1("timemanager", "Note") + "";
+      var t0_value = translate("timemanager", "Note") + "";
       var t0;
       var t1;
       var input0;
@@ -27719,7 +28393,7 @@
       var t3;
       var label1;
       var html_tag;
-      var raw_value = translate_1("timemanager", "Duration (in hrs.) & Date") + "";
+      var raw_value = translate("timemanager", "Duration (in hrs.) & Date") + "";
       var t4;
       var input1;
       var input1_value_value;
@@ -27733,7 +28407,7 @@
       var t9;
       var span;
       var button;
-      var t10_value = translate_1("timemanager", "Add") + "";
+      var t10_value = translate("timemanager", "Add") + "";
       var t10;
       var form_class_value;
       var mounted;
@@ -27752,7 +28426,7 @@
           var _ctx$14;
           form = element("form");
           label0 = element("label");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           input0 = element("input");
           t2 = space$1();
@@ -27774,11 +28448,11 @@
           t9 = space$1();
           span = element("span");
           button = element("button");
-          t10 = text$1(t10_value);
+          t10 = text(t10_value);
           attr(input0, "type", "text");
           attr(input0, "name", "note");
           attr(input0, "class", "note");
-          attr(input0, "placeholder", translate_1("timemanager", "Describe what you did..."));
+          attr(input0, "placeholder", translate("timemanager", "Describe what you did..."));
           attr(input0, "autocapitalize", "none");
           attr(input0, "autocomplete", "off");
           attr(input0, "autocorrect", "off");
@@ -27788,7 +28462,7 @@
           html_tag.a = t4;
           attr(input1, "class", "duration-trigger");
           attr(input1, "type", "text");
-          input1.value = input1_value_value = translate_1("timemanager", "{duration} hrs. on {date}", {
+          input1.value = input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
             duration: /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0,
             date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
           });
@@ -27858,7 +28532,7 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate_1("timemanager", "{duration} hrs. on {date}", {
+          if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
             duration: /*duration*/(_ctx$16 = ctx[7]) !== null && _ctx$16 !== void 0 ? _ctx$16 : 0,
             date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
           })) && input1.value !== input1_value_value) {
@@ -27911,10 +28585,13 @@
             attr(form, "class", form_class_value);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(form);
+          if (detaching) {
+            detach(form);
+          }
+
           /*input0_binding*/
           ctx[46](null);
           if (if_block0) if_block0.d();
@@ -28153,7 +28830,7 @@
         var projectsResults = projectsFuse.search(q);
         var tasksResults = tasksFuse.search(q);
         var taskIndex = -1;
-        $$invalidate(23, searchResults = _toConsumableArray$1(groupedData).map(function (client) {
+        $$invalidate(23, searchResults = _toConsumableArray(groupedData).map(function (client) {
           var _clientFound$score;
           if (!client) {
             return {
@@ -28635,12 +29312,14 @@
             attr(span1, "class", span1_class_value);
           }
         },
-        i: noop$2,
-        o: noop$2,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(span0);
-          if (detaching) detach(t1);
-          if (detaching) detach(span1);
+          if (detaching) {
+            detach(span0);
+            detach(t1);
+            detach(span1);
+          }
           mounted = false;
           dispose();
         }
@@ -28731,66 +29410,93 @@
     }(SvelteComponent);
 
     const subscriber_queue = [];
+
     /**
      * Create a `Writable` store that allows both updating and reading by subscription.
-     * @param {*=}value initial value
-     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     *
+     * https://svelte.dev/docs/svelte-store#writable
+     * @template T
+     * @param {T} [value] initial value
+     * @param {import('./public.js').StartStopNotifier<T>} [start]
+     * @returns {import('./public.js').Writable<T>}
      */
-    function writable(value, start = noop$2) {
-        let stop;
-        const subscribers = new Set();
-        function set(new_value) {
-            if (safe_not_equal(value, new_value)) {
-                value = new_value;
-                if (stop) { // store is ready
-                    const run_queue = !subscriber_queue.length;
-                    for (const subscriber of subscribers) {
-                        subscriber[1]();
-                        subscriber_queue.push(subscriber, value);
-                    }
-                    if (run_queue) {
-                        for (let i = 0; i < subscriber_queue.length; i += 2) {
-                            subscriber_queue[i][0](subscriber_queue[i + 1]);
-                        }
-                        subscriber_queue.length = 0;
-                    }
-                }
+    function writable(value, start = noop$1) {
+      /** @type {import('./public.js').Unsubscriber} */
+      let stop;
+      /** @type {Set<import('./private.js').SubscribeInvalidateTuple<T>>} */
+      const subscribers = new Set();
+      /** @param {T} new_value
+       * @returns {void}
+       */
+      function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+          value = new_value;
+          if (stop) {
+            // store is ready
+            const run_queue = !subscriber_queue.length;
+            for (const subscriber of subscribers) {
+              subscriber[1]();
+              subscriber_queue.push(subscriber, value);
             }
-        }
-        function update(fn) {
-            set(fn(value));
-        }
-        function subscribe(run, invalidate = noop$2) {
-            const subscriber = [run, invalidate];
-            subscribers.add(subscriber);
-            if (subscribers.size === 1) {
-                stop = start(set) || noop$2;
+            if (run_queue) {
+              for (let i = 0; i < subscriber_queue.length; i += 2) {
+                subscriber_queue[i][0](subscriber_queue[i + 1]);
+              }
+              subscriber_queue.length = 0;
             }
-            run(value);
-            return () => {
-                subscribers.delete(subscriber);
-                if (subscribers.size === 0 && stop) {
-                    stop();
-                    stop = null;
-                }
-            };
+          }
         }
-        return { set, update, subscribe };
+      }
+
+      /**
+       * @param {import('./public.js').Updater<T>} fn
+       * @returns {void}
+       */
+      function update(fn) {
+        set(fn(value));
+      }
+
+      /**
+       * @param {import('./public.js').Subscriber<T>} run
+       * @param {import('./private.js').Invalidator<T>} [invalidate]
+       * @returns {import('./public.js').Unsubscriber}
+       */
+      function subscribe(run, invalidate = noop$1) {
+        /** @type {import('./private.js').SubscribeInvalidateTuple<T>} */
+        const subscriber = [run, invalidate];
+        subscribers.add(subscriber);
+        if (subscribers.size === 1) {
+          stop = start(set, update) || noop$1;
+        }
+        run(value);
+        return () => {
+          subscribers.delete(subscriber);
+          if (subscribers.size === 0 && stop) {
+            stop();
+            stop = null;
+          }
+        };
+      }
+      return {
+        set,
+        update,
+        subscribe
+      };
     }
 
     var isFilterSet = writable(false);
 
     function create_if_block$2(ctx) {
       var label;
-      var t0_value = translate_1("timemanager", "Created by") + "";
+      var t0_value = translate("timemanager", "Created by") + "";
       var t0;
       var t1;
       var select;
       var current;
       select = new Select({
         props: {
-          noOptionsMessage: /*loading*/ctx[3] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Search..."),
+          noOptionsMessage: /*loading*/ctx[3] ? translate("timemanager", "Loading...") : translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Search..."),
           inputAttributes: {
             id: "sharee-filter-select",
             form: /*form*/ctx[1]
@@ -28804,7 +29510,7 @@
       return {
         c() {
           label = element("label");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           create_component(select.$$.fragment);
           attr(label, "for", "sharee-filter-select");
@@ -28819,7 +29525,7 @@
         },
         p(ctx, dirty) {
           var select_changes = {};
-          if (dirty & /*loading*/8) select_changes.noOptionsMessage = /*loading*/ctx[3] ? translate_1("timemanager", "Loading...") : translate_1("timemanager", "No options");
+          if (dirty & /*loading*/8) select_changes.noOptionsMessage = /*loading*/ctx[3] ? translate("timemanager", "Loading...") : translate("timemanager", "No options");
           if (dirty & /*form*/2) select_changes.inputAttributes = {
             id: "sharee-filter-select",
             form: /*form*/ctx[1]
@@ -28837,7 +29543,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(label);
+          if (detaching) {
+            detach(label);
+          }
           destroy_component(select);
         }
       };
@@ -28889,8 +29597,10 @@
           current = false;
         },
         d(detaching) {
+          if (detaching) {
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
         }
       };
     }
@@ -28948,7 +29658,7 @@
               case 2:
                 $$invalidate(3, loading = true);
                 _context.next = 5;
-                return fetch(dist_6("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
+                return fetch(dist_3("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
                   headers: {
                     requesttoken: requestToken,
                     "content-type": "application/json"
@@ -28967,7 +29677,7 @@
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
-                return _context.abrupt("return", [].concat(_toConsumableArray$1(users), _toConsumableArray$1(exact.users)));
+                return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)));
               case 14:
               case "end":
                 return _context.stop();
@@ -29065,26 +29775,26 @@
       var userfilterselect;
       var t0;
       var label0;
-      var t1_value = translate_1("timemanager", "From") + "";
+      var t1_value = translate("timemanager", "From") + "";
       var t1;
       var t2;
       var input0;
       var t3;
       var label1;
-      var t4_value = translate_1("timemanager", "To") + "";
+      var t4_value = translate("timemanager", "To") + "";
       var t4;
       var t5;
       var input1;
       var t6;
       var label2;
-      var t7_value = translate_1("timemanager", "Presets") + "";
+      var t7_value = translate("timemanager", "Presets") + "";
       var t7;
       var t8;
       var select;
       var t9;
       var span;
       var button;
-      var t10_value = translate_1("timemanager", "Apply") + "";
+      var t10_value = translate("timemanager", "Apply") + "";
       var t10;
       var div_class_value;
       var current;
@@ -29098,8 +29808,8 @@
       });
       select = new Select({
         props: {
-          noOptionsMessage: translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Select..."),
+          noOptionsMessage: translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Select..."),
           inputAttributes: {
             id: "preset-select",
             form: "filters-form"
@@ -29114,23 +29824,23 @@
           create_component(userfilterselect.$$.fragment);
           t0 = space$1();
           label0 = element("label");
-          t1 = text$1(t1_value);
+          t1 = text(t1_value);
           t2 = space$1();
           input0 = element("input");
           t3 = space$1();
           label1 = element("label");
-          t4 = text$1(t4_value);
+          t4 = text(t4_value);
           t5 = space$1();
           input1 = element("input");
           t6 = space$1();
           label2 = element("label");
-          t7 = text$1(t7_value);
+          t7 = text(t7_value);
           t8 = space$1();
           create_component(select.$$.fragment);
           t9 = space$1();
           span = element("span");
           button = element("button");
-          t10 = text$1(t10_value);
+          t10 = text(t10_value);
           attr(input0, "id", "start");
           attr(input0, "type", "date");
           attr(input0, "pattern", "Y-m-d");
@@ -29213,7 +29923,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           destroy_component(userfilterselect);
           destroy_component(select);
           mounted = false;
@@ -29231,28 +29943,28 @@
       var endOfMonth$1 = $$props.endOfMonth;
       var updateUrlWithTimerange = $$props.updateUrlWithTimerange;
       var presets = [{
-        label: translate_1("timemanager", "Today"),
+        label: translate("timemanager", "Today"),
         value: "today"
       }, {
-        label: translate_1("timemanager", "Yesterday"),
+        label: translate("timemanager", "Yesterday"),
         value: "yesterday"
       }, {
-        label: translate_1("timemanager", "This Week"),
+        label: translate("timemanager", "This Week"),
         value: "week"
       }, {
-        label: translate_1("timemanager", "Last week"),
+        label: translate("timemanager", "Last week"),
         value: "week-1"
       }, {
-        label: translate_1("timemanager", "This month"),
+        label: translate("timemanager", "This month"),
         value: "month"
       }, {
-        label: translate_1("timemanager", "Last month"),
+        label: translate("timemanager", "Last month"),
         value: "month-1"
       }, {
-        label: translate_1("timemanager", "This year"),
+        label: translate("timemanager", "This year"),
         value: "year"
       }, {
-        label: translate_1("timemanager", "Last year"),
+        label: translate("timemanager", "Last year"),
         value: "year-1"
       }];
       var setUrlWithTimerange = function setUrlWithTimerange() {
@@ -29277,22 +29989,22 @@
             break;
           case "week":
             $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
-              weekStartsOn: getFirstDay_1()
+              weekStartsOn: getFirstDay()
             }), dateFormat));
             $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
-              weekStartsOn: getFirstDay_1()
+              weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "week-1":
             $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
-              weekStartsOn: getFirstDay_1()
+              weekStartsOn: getFirstDay()
             }), dateFormat));
             $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
-              weekStartsOn: getFirstDay_1()
+              weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "month":
@@ -29393,25 +30105,25 @@
     function create_fragment$3(ctx) {
       var form;
       var label0;
-      var t0_value = translate_1("timemanager", "Clients") + "";
+      var t0_value = translate("timemanager", "Clients") + "";
       var t0;
       var t1;
       var select0;
       var t2;
       var label1;
-      var t3_value = translate_1("timemanager", "Projects") + "";
+      var t3_value = translate("timemanager", "Projects") + "";
       var t3;
       var t4;
       var select1;
       var t5;
       var label2;
-      var t6_value = translate_1("timemanager", "Tasks") + "";
+      var t6_value = translate("timemanager", "Tasks") + "";
       var t6;
       var t7;
       var select2;
       var t8;
       var label3;
-      var t9_value = translate_1("timemanager", "Status") + "";
+      var t9_value = translate("timemanager", "Status") + "";
       var t9;
       var t10;
       var select3;
@@ -29423,8 +30135,8 @@
       var dispose;
       select0 = new Select({
         props: {
-          noOptionsMessage: translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Select..."),
+          noOptionsMessage: translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Select..."),
           inputAttributes: {
             id: "client-select"
           },
@@ -29436,8 +30148,8 @@
       select0.$on("select", /*handleSelectClients*/ctx[12]);
       select1 = new Select({
         props: {
-          noOptionsMessage: translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Select..."),
+          noOptionsMessage: translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Select..."),
           inputAttributes: {
             id: "projects-select"
           },
@@ -29449,8 +30161,8 @@
       select1.$on("select", /*handleSelectProjects*/ctx[13]);
       select2 = new Select({
         props: {
-          noOptionsMessage: translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Select..."),
+          noOptionsMessage: translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Select..."),
           inputAttributes: {
             id: "tasks-select"
           },
@@ -29462,8 +30174,8 @@
       select2.$on("select", /*handleSelectTasks*/ctx[14]);
       select3 = new Select({
         props: {
-          noOptionsMessage: translate_1("timemanager", "No options"),
-          placeholder: translate_1("timemanager", "Select..."),
+          noOptionsMessage: translate("timemanager", "No options"),
+          placeholder: translate("timemanager", "Select..."),
           inputAttributes: {
             id: "status-select"
           },
@@ -29483,22 +30195,22 @@
         c() {
           form = element("form");
           label0 = element("label");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           create_component(select0.$$.fragment);
           t2 = space$1();
           label1 = element("label");
-          t3 = text$1(t3_value);
+          t3 = text(t3_value);
           t4 = space$1();
           create_component(select1.$$.fragment);
           t5 = space$1();
           label2 = element("label");
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           create_component(select2.$$.fragment);
           t8 = space$1();
           label3 = element("label");
-          t9 = text$1(t9_value);
+          t9 = text(t9_value);
           t10 = space$1();
           create_component(select3.$$.fragment);
           t11 = space$1();
@@ -29586,12 +30298,14 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(form);
+          if (detaching) {
+            detach(form);
+            detach(t11);
+          }
           destroy_component(select0);
           destroy_component(select1);
           destroy_component(select2);
           destroy_component(select3);
-          if (detaching) detach(t11);
           destroy_component(timerange, detaching);
           mounted = false;
           dispose();
@@ -29616,10 +30330,10 @@
       };
       var availableStatus = [{
         value: "unpaid",
-        label: translate_1("timemanager", "Unresolved")
+        label: translate("timemanager", "Unresolved")
       }, {
         value: "paid",
-        label: translate_1("timemanager", "Resolved")
+        label: translate("timemanager", "Resolved")
       }];
       var apply = function apply(e) {
         // Prepare a link with get attributes
@@ -29792,7 +30506,7 @@
       return {
         c() {
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Print report'));
+          button.textContent = "".concat(translate('timemanager', 'Print report'));
           attr(button, "type", "button");
           attr(button, "class", "button secondary");
         },
@@ -29803,11 +30517,13 @@
             mounted = true;
           }
         },
-        p: noop$2,
-        i: noop$2,
-        o: noop$2,
+        p: noop$1,
+        i: noop$1,
+        o: noop$1,
         d(detaching) {
-          if (detaching) detach(button);
+          if (detaching) {
+            detach(button);
+          }
           mounted = false;
           dispose();
         }
@@ -29869,29 +30585,31 @@
       }
     });
 
-    var global$1 = typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};
     var lookup = [];
     var revLookup = [];
     var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
     var inited = false;
-    function init$1() {
+    function init$1 () {
       inited = true;
       var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
       for (var i = 0, len = code.length; i < len; ++i) {
         lookup[i] = code[i];
         revLookup[code.charCodeAt(i)] = i;
       }
+
       revLookup['-'.charCodeAt(0)] = 62;
       revLookup['_'.charCodeAt(0)] = 63;
     }
-    function toByteArray(b64) {
+
+    function toByteArray (b64) {
       if (!inited) {
         init$1();
       }
       var i, j, l, tmp, placeHolders, arr;
       var len = b64.length;
+
       if (len % 4 > 0) {
-        throw new Error('Invalid string. Length must be a multiple of 4');
+        throw new Error('Invalid string. Length must be a multiple of 4')
       }
 
       // the number of equal signs (place holders)
@@ -29906,36 +30624,43 @@
 
       // if there are placeholders, only get up to the last complete 4 chars
       l = placeHolders > 0 ? len - 4 : len;
+
       var L = 0;
+
       for (i = 0, j = 0; i < l; i += 4, j += 3) {
-        tmp = revLookup[b64.charCodeAt(i)] << 18 | revLookup[b64.charCodeAt(i + 1)] << 12 | revLookup[b64.charCodeAt(i + 2)] << 6 | revLookup[b64.charCodeAt(i + 3)];
-        arr[L++] = tmp >> 16 & 0xFF;
-        arr[L++] = tmp >> 8 & 0xFF;
+        tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)];
+        arr[L++] = (tmp >> 16) & 0xFF;
+        arr[L++] = (tmp >> 8) & 0xFF;
         arr[L++] = tmp & 0xFF;
       }
+
       if (placeHolders === 2) {
-        tmp = revLookup[b64.charCodeAt(i)] << 2 | revLookup[b64.charCodeAt(i + 1)] >> 4;
+        tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4);
         arr[L++] = tmp & 0xFF;
       } else if (placeHolders === 1) {
-        tmp = revLookup[b64.charCodeAt(i)] << 10 | revLookup[b64.charCodeAt(i + 1)] << 4 | revLookup[b64.charCodeAt(i + 2)] >> 2;
-        arr[L++] = tmp >> 8 & 0xFF;
+        tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2);
+        arr[L++] = (tmp >> 8) & 0xFF;
         arr[L++] = tmp & 0xFF;
       }
-      return arr;
+
+      return arr
     }
-    function tripletToBase64(num) {
-      return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F];
+
+    function tripletToBase64 (num) {
+      return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
     }
-    function encodeChunk(uint8, start, end) {
+
+    function encodeChunk (uint8, start, end) {
       var tmp;
       var output = [];
       for (var i = start; i < end; i += 3) {
-        tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + uint8[i + 2];
+        tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2]);
         output.push(tripletToBase64(tmp));
       }
-      return output.join('');
+      return output.join('')
     }
-    function fromByteArray(uint8) {
+
+    function fromByteArray (uint8) {
       if (!inited) {
         init$1();
       }
@@ -29948,63 +30673,73 @@
 
       // go through the array every three bytes, we'll deal with trailing stuff later
       for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-        parts.push(encodeChunk(uint8, i, i + maxChunkLength > len2 ? len2 : i + maxChunkLength));
+        parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)));
       }
 
       // pad the end with zeros, but make sure to not forget the extra bytes
       if (extraBytes === 1) {
         tmp = uint8[len - 1];
         output += lookup[tmp >> 2];
-        output += lookup[tmp << 4 & 0x3F];
+        output += lookup[(tmp << 4) & 0x3F];
         output += '==';
       } else if (extraBytes === 2) {
-        tmp = (uint8[len - 2] << 8) + uint8[len - 1];
+        tmp = (uint8[len - 2] << 8) + (uint8[len - 1]);
         output += lookup[tmp >> 10];
-        output += lookup[tmp >> 4 & 0x3F];
-        output += lookup[tmp << 2 & 0x3F];
+        output += lookup[(tmp >> 4) & 0x3F];
+        output += lookup[(tmp << 2) & 0x3F];
         output += '=';
       }
+
       parts.push(output);
-      return parts.join('');
+
+      return parts.join('')
     }
-    function read(buffer, offset, isLE, mLen, nBytes) {
+
+    function read (buffer, offset, isLE, mLen, nBytes) {
       var e, m;
       var eLen = nBytes * 8 - mLen - 1;
       var eMax = (1 << eLen) - 1;
       var eBias = eMax >> 1;
       var nBits = -7;
-      var i = isLE ? nBytes - 1 : 0;
+      var i = isLE ? (nBytes - 1) : 0;
       var d = isLE ? -1 : 1;
       var s = buffer[offset + i];
+
       i += d;
-      e = s & (1 << -nBits) - 1;
-      s >>= -nBits;
+
+      e = s & ((1 << (-nBits)) - 1);
+      s >>= (-nBits);
       nBits += eLen;
       for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-      m = e & (1 << -nBits) - 1;
-      e >>= -nBits;
+
+      m = e & ((1 << (-nBits)) - 1);
+      e >>= (-nBits);
       nBits += mLen;
       for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
       if (e === 0) {
         e = 1 - eBias;
       } else if (e === eMax) {
-        return m ? NaN : (s ? -1 : 1) * Infinity;
+        return m ? NaN : ((s ? -1 : 1) * Infinity)
       } else {
         m = m + Math.pow(2, mLen);
         e = e - eBias;
       }
-      return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
+      return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
     }
-    function write(buffer, value, offset, isLE, mLen, nBytes) {
+
+    function write (buffer, value, offset, isLE, mLen, nBytes) {
       var e, m, c;
       var eLen = nBytes * 8 - mLen - 1;
       var eMax = (1 << eLen) - 1;
       var eBias = eMax >> 1;
-      var rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
-      var i = isLE ? 0 : nBytes - 1;
+      var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0);
+      var i = isLE ? 0 : (nBytes - 1);
       var d = isLE ? 1 : -1;
-      var s = value < 0 || value === 0 && 1 / value < 0 ? 1 : 0;
+      var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
+
       value = Math.abs(value);
+
       if (isNaN(value) || value === Infinity) {
         m = isNaN(value) ? 1 : 0;
         e = eMax;
@@ -30023,6 +30758,7 @@
           e++;
           c /= 2;
         }
+
         if (e + eBias >= eMax) {
           m = 0;
           e = eMax;
@@ -30034,16 +30770,31 @@
           e = 0;
         }
       }
+
       for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-      e = e << mLen | m;
+
+      e = (e << mLen) | m;
       eLen += mLen;
       for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
       buffer[offset + i - d] |= s * 128;
     }
+
     var toString = {}.toString;
+
     var isArray$1 = Array.isArray || function (arr) {
       return toString.call(arr) == '[object Array]';
     };
+
+    /*!
+     * The buffer module from node.js, for the browser.
+     *
+     * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+     * @license  MIT
+     */
+    /* eslint-disable no-proto */
+
+
     var INSPECT_MAX_BYTES = 50;
 
     /**
@@ -30070,18 +30821,24 @@
      * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
      * get the Object implementation, which is slower but behaves correctly.
      */
-    Buffer.TYPED_ARRAY_SUPPORT = global$1.TYPED_ARRAY_SUPPORT !== undefined ? global$1.TYPED_ARRAY_SUPPORT : true;
+    Buffer.TYPED_ARRAY_SUPPORT = global$1.TYPED_ARRAY_SUPPORT !== undefined
+      ? global$1.TYPED_ARRAY_SUPPORT
+      : true;
 
     /*
      * Export kMaxLength after typed array support is determined.
      */
     kMaxLength();
-    function kMaxLength() {
-      return Buffer.TYPED_ARRAY_SUPPORT ? 0x7fffffff : 0x3fffffff;
+
+    function kMaxLength () {
+      return Buffer.TYPED_ARRAY_SUPPORT
+        ? 0x7fffffff
+        : 0x3fffffff
     }
-    function createBuffer(that, length) {
+
+    function createBuffer (that, length) {
       if (kMaxLength() < length) {
-        throw new RangeError('Invalid typed array length');
+        throw new RangeError('Invalid typed array length')
       }
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         // Return an augmented `Uint8Array` instance, for best performance
@@ -30094,7 +30851,8 @@
         }
         that.length = length;
       }
-      return that;
+
+      return that
     }
 
     /**
@@ -30107,38 +30865,45 @@
      * The `Uint8Array` prototype remains unmodified.
      */
 
-    function Buffer(arg, encodingOrOffset, length) {
+    function Buffer (arg, encodingOrOffset, length) {
       if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
-        return new Buffer(arg, encodingOrOffset, length);
+        return new Buffer(arg, encodingOrOffset, length)
       }
 
       // Common case.
       if (typeof arg === 'number') {
         if (typeof encodingOrOffset === 'string') {
-          throw new Error('If encoding is specified then the first argument must be a string');
+          throw new Error(
+            'If encoding is specified then the first argument must be a string'
+          )
         }
-        return allocUnsafe(this, arg);
+        return allocUnsafe(this, arg)
       }
-      return from(this, arg, encodingOrOffset, length);
+      return from(this, arg, encodingOrOffset, length)
     }
+
     Buffer.poolSize = 8192; // not used by this implementation
 
     // TODO: Legacy, not needed anymore. Remove in next major version.
     Buffer._augment = function (arr) {
       arr.__proto__ = Buffer.prototype;
-      return arr;
+      return arr
     };
-    function from(that, value, encodingOrOffset, length) {
+
+    function from (that, value, encodingOrOffset, length) {
       if (typeof value === 'number') {
-        throw new TypeError('"value" argument must not be a number');
+        throw new TypeError('"value" argument must not be a number')
       }
+
       if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
-        return fromArrayBuffer(that, value, encodingOrOffset, length);
+        return fromArrayBuffer(that, value, encodingOrOffset, length)
       }
+
       if (typeof value === 'string') {
-        return fromString(that, value, encodingOrOffset);
+        return fromString(that, value, encodingOrOffset)
       }
-      return fromObject(that, value);
+
+      return fromObject(that, value)
     }
 
     /**
@@ -30150,32 +30915,38 @@
      * Buffer.from(arrayBuffer[, byteOffset[, length]])
      **/
     Buffer.from = function (value, encodingOrOffset, length) {
-      return from(null, value, encodingOrOffset, length);
+      return from(null, value, encodingOrOffset, length)
     };
+
     if (Buffer.TYPED_ARRAY_SUPPORT) {
       Buffer.prototype.__proto__ = Uint8Array.prototype;
       Buffer.__proto__ = Uint8Array;
-      if (typeof Symbol !== 'undefined' && Symbol.species && Buffer[Symbol.species] === Buffer) ;
+      if (typeof Symbol !== 'undefined' && Symbol.species &&
+          Buffer[Symbol.species] === Buffer) ;
     }
-    function assertSize(size) {
+
+    function assertSize (size) {
       if (typeof size !== 'number') {
-        throw new TypeError('"size" argument must be a number');
+        throw new TypeError('"size" argument must be a number')
       } else if (size < 0) {
-        throw new RangeError('"size" argument must not be negative');
+        throw new RangeError('"size" argument must not be negative')
       }
     }
-    function alloc(that, size, fill, encoding) {
+
+    function alloc (that, size, fill, encoding) {
       assertSize(size);
       if (size <= 0) {
-        return createBuffer(that, size);
+        return createBuffer(that, size)
       }
       if (fill !== undefined) {
         // Only pay attention to encoding if it's a string. This
         // prevents accidentally sending in a number that would
         // be interpretted as a start offset.
-        return typeof encoding === 'string' ? createBuffer(that, size).fill(fill, encoding) : createBuffer(that, size).fill(fill);
+        return typeof encoding === 'string'
+          ? createBuffer(that, size).fill(fill, encoding)
+          : createBuffer(that, size).fill(fill)
       }
-      return createBuffer(that, size);
+      return createBuffer(that, size)
     }
 
     /**
@@ -30183,9 +30954,10 @@
      * alloc(size[, fill[, encoding]])
      **/
     Buffer.alloc = function (size, fill, encoding) {
-      return alloc(null, size, fill, encoding);
+      return alloc(null, size, fill, encoding)
     };
-    function allocUnsafe(that, size) {
+
+    function allocUnsafe (that, size) {
       assertSize(size);
       that = createBuffer(that, size < 0 ? 0 : checked(size) | 0);
       if (!Buffer.TYPED_ARRAY_SUPPORT) {
@@ -30193,56 +30965,66 @@
           that[i] = 0;
         }
       }
-      return that;
+      return that
     }
 
     /**
      * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
      * */
     Buffer.allocUnsafe = function (size) {
-      return allocUnsafe(null, size);
+      return allocUnsafe(null, size)
     };
     /**
      * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
      */
     Buffer.allocUnsafeSlow = function (size) {
-      return allocUnsafe(null, size);
+      return allocUnsafe(null, size)
     };
-    function fromString(that, string, encoding) {
+
+    function fromString (that, string, encoding) {
       if (typeof encoding !== 'string' || encoding === '') {
         encoding = 'utf8';
       }
+
       if (!Buffer.isEncoding(encoding)) {
-        throw new TypeError('"encoding" must be a valid string encoding');
+        throw new TypeError('"encoding" must be a valid string encoding')
       }
+
       var length = byteLength(string, encoding) | 0;
       that = createBuffer(that, length);
+
       var actual = that.write(string, encoding);
+
       if (actual !== length) {
         // Writing a hex string, for example, that contains invalid characters will
         // cause everything after the first invalid character to be ignored. (e.g.
         // 'abxxcd' will be treated as 'ab')
         that = that.slice(0, actual);
       }
-      return that;
+
+      return that
     }
-    function fromArrayLike(that, array) {
+
+    function fromArrayLike (that, array) {
       var length = array.length < 0 ? 0 : checked(array.length) | 0;
       that = createBuffer(that, length);
       for (var i = 0; i < length; i += 1) {
         that[i] = array[i] & 255;
       }
-      return that;
+      return that
     }
-    function fromArrayBuffer(that, array, byteOffset, length) {
+
+    function fromArrayBuffer (that, array, byteOffset, length) {
       array.byteLength; // this throws if `array` is not a valid ArrayBuffer
 
       if (byteOffset < 0 || array.byteLength < byteOffset) {
-        throw new RangeError('\'offset\' is out of bounds');
+        throw new RangeError('\'offset\' is out of bounds')
       }
+
       if (array.byteLength < byteOffset + (length || 0)) {
-        throw new RangeError('\'length\' is out of bounds');
+        throw new RangeError('\'length\' is out of bounds')
       }
+
       if (byteOffset === undefined && length === undefined) {
         array = new Uint8Array(array);
       } else if (length === undefined) {
@@ -30250,6 +31032,7 @@
       } else {
         array = new Uint8Array(array, byteOffset, length);
       }
+
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         // Return an augmented `Uint8Array` instance, for best performance
         that = array;
@@ -30258,62 +31041,77 @@
         // Fallback: Return an object instance of the Buffer class
         that = fromArrayLike(that, array);
       }
-      return that;
+      return that
     }
-    function fromObject(that, obj) {
+
+    function fromObject (that, obj) {
       if (internalIsBuffer(obj)) {
         var len = checked(obj.length) | 0;
         that = createBuffer(that, len);
+
         if (that.length === 0) {
-          return that;
+          return that
         }
+
         obj.copy(that, 0, 0, len);
-        return that;
+        return that
       }
+
       if (obj) {
-        if (typeof ArrayBuffer !== 'undefined' && obj.buffer instanceof ArrayBuffer || 'length' in obj) {
+        if ((typeof ArrayBuffer !== 'undefined' &&
+            obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
           if (typeof obj.length !== 'number' || isnan(obj.length)) {
-            return createBuffer(that, 0);
+            return createBuffer(that, 0)
           }
-          return fromArrayLike(that, obj);
+          return fromArrayLike(that, obj)
         }
+
         if (obj.type === 'Buffer' && isArray$1(obj.data)) {
-          return fromArrayLike(that, obj.data);
+          return fromArrayLike(that, obj.data)
         }
       }
-      throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.');
+
+      throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
     }
-    function checked(length) {
+
+    function checked (length) {
       // Note: cannot use `length < kMaxLength()` here because that fails when
       // length is NaN (which is otherwise coerced to zero.)
       if (length >= kMaxLength()) {
-        throw new RangeError('Attempt to allocate Buffer larger than maximum ' + 'size: 0x' + kMaxLength().toString(16) + ' bytes');
+        throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                             'size: 0x' + kMaxLength().toString(16) + ' bytes')
       }
-      return length | 0;
+      return length | 0
     }
     Buffer.isBuffer = isBuffer;
-    function internalIsBuffer(b) {
-      return !!(b != null && b._isBuffer);
+    function internalIsBuffer (b) {
+      return !!(b != null && b._isBuffer)
     }
-    Buffer.compare = function compare(a, b) {
+
+    Buffer.compare = function compare (a, b) {
       if (!internalIsBuffer(a) || !internalIsBuffer(b)) {
-        throw new TypeError('Arguments must be Buffers');
+        throw new TypeError('Arguments must be Buffers')
       }
-      if (a === b) return 0;
+
+      if (a === b) return 0
+
       var x = a.length;
       var y = b.length;
+
       for (var i = 0, len = Math.min(x, y); i < len; ++i) {
         if (a[i] !== b[i]) {
           x = a[i];
           y = b[i];
-          break;
+          break
         }
       }
-      if (x < y) return -1;
-      if (y < x) return 1;
-      return 0;
+
+      if (x < y) return -1
+      if (y < x) return 1
+      return 0
     };
-    Buffer.isEncoding = function isEncoding(encoding) {
+
+    Buffer.isEncoding = function isEncoding (encoding) {
       switch (String(encoding).toLowerCase()) {
         case 'hex':
         case 'utf8':
@@ -30326,18 +31124,21 @@
         case 'ucs-2':
         case 'utf16le':
         case 'utf-16le':
-          return true;
+          return true
         default:
-          return false;
+          return false
       }
     };
-    Buffer.concat = function concat(list, length) {
+
+    Buffer.concat = function concat (list, length) {
       if (!isArray$1(list)) {
-        throw new TypeError('"list" argument must be an Array of Buffers');
+        throw new TypeError('"list" argument must be an Array of Buffers')
       }
+
       if (list.length === 0) {
-        return Buffer.alloc(0);
+        return Buffer.alloc(0)
       }
+
       var i;
       if (length === undefined) {
         length = 0;
@@ -30345,30 +31146,34 @@
           length += list[i].length;
         }
       }
+
       var buffer = Buffer.allocUnsafe(length);
       var pos = 0;
       for (i = 0; i < list.length; ++i) {
         var buf = list[i];
         if (!internalIsBuffer(buf)) {
-          throw new TypeError('"list" argument must be an Array of Buffers');
+          throw new TypeError('"list" argument must be an Array of Buffers')
         }
         buf.copy(buffer, pos);
         pos += buf.length;
       }
-      return buffer;
+      return buffer
     };
-    function byteLength(string, encoding) {
+
+    function byteLength (string, encoding) {
       if (internalIsBuffer(string)) {
-        return string.length;
+        return string.length
       }
-      if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' && (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
-        return string.byteLength;
+      if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+          (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+        return string.byteLength
       }
       if (typeof string !== 'string') {
         string = '' + string;
       }
+
       var len = string.length;
-      if (len === 0) return 0;
+      if (len === 0) return 0
 
       // Use a for loop to avoid recursion
       var loweredCase = false;
@@ -30377,29 +31182,30 @@
           case 'ascii':
           case 'latin1':
           case 'binary':
-            return len;
+            return len
           case 'utf8':
           case 'utf-8':
           case undefined:
-            return utf8ToBytes(string).length;
+            return utf8ToBytes(string).length
           case 'ucs2':
           case 'ucs-2':
           case 'utf16le':
           case 'utf-16le':
-            return len * 2;
+            return len * 2
           case 'hex':
-            return len >>> 1;
+            return len >>> 1
           case 'base64':
-            return base64ToBytes(string).length;
+            return base64ToBytes(string).length
           default:
-            if (loweredCase) return utf8ToBytes(string).length; // assume utf8
+            if (loweredCase) return utf8ToBytes(string).length // assume utf8
             encoding = ('' + encoding).toLowerCase();
             loweredCase = true;
         }
       }
     }
     Buffer.byteLength = byteLength;
-    function slowToString(encoding, start, end) {
+
+    function slowToString (encoding, start, end) {
       var loweredCase = false;
 
       // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
@@ -30415,43 +31221,54 @@
       // Return early if start > this.length. Done here to prevent potential uint32
       // coercion fail below.
       if (start > this.length) {
-        return '';
+        return ''
       }
+
       if (end === undefined || end > this.length) {
         end = this.length;
       }
+
       if (end <= 0) {
-        return '';
+        return ''
       }
 
       // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
       end >>>= 0;
       start >>>= 0;
+
       if (end <= start) {
-        return '';
+        return ''
       }
+
       if (!encoding) encoding = 'utf8';
+
       while (true) {
         switch (encoding) {
           case 'hex':
-            return hexSlice(this, start, end);
+            return hexSlice(this, start, end)
+
           case 'utf8':
           case 'utf-8':
-            return utf8Slice(this, start, end);
+            return utf8Slice(this, start, end)
+
           case 'ascii':
-            return asciiSlice(this, start, end);
+            return asciiSlice(this, start, end)
+
           case 'latin1':
           case 'binary':
-            return latin1Slice(this, start, end);
+            return latin1Slice(this, start, end)
+
           case 'base64':
-            return base64Slice(this, start, end);
+            return base64Slice(this, start, end)
+
           case 'ucs2':
           case 'ucs-2':
           case 'utf16le':
           case 'utf-16le':
-            return utf16leSlice(this, start, end);
+            return utf16leSlice(this, start, end)
+
           default:
-            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding);
+            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
             encoding = (encoding + '').toLowerCase();
             loweredCase = true;
         }
@@ -30461,36 +31278,40 @@
     // The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
     // Buffer instances.
     Buffer.prototype._isBuffer = true;
-    function swap(b, n, m) {
+
+    function swap (b, n, m) {
       var i = b[n];
       b[n] = b[m];
       b[m] = i;
     }
-    Buffer.prototype.swap16 = function swap16() {
+
+    Buffer.prototype.swap16 = function swap16 () {
       var len = this.length;
       if (len % 2 !== 0) {
-        throw new RangeError('Buffer size must be a multiple of 16-bits');
+        throw new RangeError('Buffer size must be a multiple of 16-bits')
       }
       for (var i = 0; i < len; i += 2) {
         swap(this, i, i + 1);
       }
-      return this;
+      return this
     };
-    Buffer.prototype.swap32 = function swap32() {
+
+    Buffer.prototype.swap32 = function swap32 () {
       var len = this.length;
       if (len % 4 !== 0) {
-        throw new RangeError('Buffer size must be a multiple of 32-bits');
+        throw new RangeError('Buffer size must be a multiple of 32-bits')
       }
       for (var i = 0; i < len; i += 4) {
         swap(this, i, i + 3);
         swap(this, i + 1, i + 2);
       }
-      return this;
+      return this
     };
-    Buffer.prototype.swap64 = function swap64() {
+
+    Buffer.prototype.swap64 = function swap64 () {
       var len = this.length;
       if (len % 8 !== 0) {
-        throw new RangeError('Buffer size must be a multiple of 64-bits');
+        throw new RangeError('Buffer size must be a multiple of 64-bits')
       }
       for (var i = 0; i < len; i += 8) {
         swap(this, i, i + 7);
@@ -30498,32 +31319,37 @@
         swap(this, i + 2, i + 5);
         swap(this, i + 3, i + 4);
       }
-      return this;
+      return this
     };
-    Buffer.prototype.toString = function toString() {
+
+    Buffer.prototype.toString = function toString () {
       var length = this.length | 0;
-      if (length === 0) return '';
-      if (arguments.length === 0) return utf8Slice(this, 0, length);
-      return slowToString.apply(this, arguments);
+      if (length === 0) return ''
+      if (arguments.length === 0) return utf8Slice(this, 0, length)
+      return slowToString.apply(this, arguments)
     };
-    Buffer.prototype.equals = function equals(b) {
-      if (!internalIsBuffer(b)) throw new TypeError('Argument must be a Buffer');
-      if (this === b) return true;
-      return Buffer.compare(this, b) === 0;
+
+    Buffer.prototype.equals = function equals (b) {
+      if (!internalIsBuffer(b)) throw new TypeError('Argument must be a Buffer')
+      if (this === b) return true
+      return Buffer.compare(this, b) === 0
     };
-    Buffer.prototype.inspect = function inspect() {
+
+    Buffer.prototype.inspect = function inspect () {
       var str = '';
       var max = INSPECT_MAX_BYTES;
       if (this.length > 0) {
         str = this.toString('hex', 0, max).match(/.{2}/g).join(' ');
         if (this.length > max) str += ' ... ';
       }
-      return '<Buffer ' + str + '>';
+      return '<Buffer ' + str + '>'
     };
-    Buffer.prototype.compare = function compare(target, start, end, thisStart, thisEnd) {
+
+    Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
       if (!internalIsBuffer(target)) {
-        throw new TypeError('Argument must be a Buffer');
+        throw new TypeError('Argument must be a Buffer')
       }
+
       if (start === undefined) {
         start = 0;
       }
@@ -30536,38 +31362,46 @@
       if (thisEnd === undefined) {
         thisEnd = this.length;
       }
+
       if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-        throw new RangeError('out of range index');
+        throw new RangeError('out of range index')
       }
+
       if (thisStart >= thisEnd && start >= end) {
-        return 0;
+        return 0
       }
       if (thisStart >= thisEnd) {
-        return -1;
+        return -1
       }
       if (start >= end) {
-        return 1;
+        return 1
       }
+
       start >>>= 0;
       end >>>= 0;
       thisStart >>>= 0;
       thisEnd >>>= 0;
-      if (this === target) return 0;
+
+      if (this === target) return 0
+
       var x = thisEnd - thisStart;
       var y = end - start;
       var len = Math.min(x, y);
+
       var thisCopy = this.slice(thisStart, thisEnd);
       var targetCopy = target.slice(start, end);
+
       for (var i = 0; i < len; ++i) {
         if (thisCopy[i] !== targetCopy[i]) {
           x = thisCopy[i];
           y = targetCopy[i];
-          break;
+          break
         }
       }
-      if (x < y) return -1;
-      if (y < x) return 1;
-      return 0;
+
+      if (x < y) return -1
+      if (y < x) return 1
+      return 0
     };
 
     // Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
@@ -30579,9 +31413,9 @@
     // - byteOffset - an index into `buffer`; will be clamped to an int32
     // - encoding - an optional encoding, relevant is val is a string
     // - dir - true for indexOf, false for lastIndexOf
-    function bidirectionalIndexOf(buffer, val, byteOffset, encoding, dir) {
+    function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
       // Empty buffer means no match
-      if (buffer.length === 0) return -1;
+      if (buffer.length === 0) return -1
 
       // Normalize byteOffset
       if (typeof byteOffset === 'string') {
@@ -30592,18 +31426,20 @@
       } else if (byteOffset < -0x80000000) {
         byteOffset = -0x80000000;
       }
-      byteOffset = +byteOffset; // Coerce to Number.
+      byteOffset = +byteOffset;  // Coerce to Number.
       if (isNaN(byteOffset)) {
         // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
-        byteOffset = dir ? 0 : buffer.length - 1;
+        byteOffset = dir ? 0 : (buffer.length - 1);
       }
 
       // Normalize byteOffset: negative offsets start from the end of the buffer
       if (byteOffset < 0) byteOffset = buffer.length + byteOffset;
       if (byteOffset >= buffer.length) {
-        if (dir) return -1;else byteOffset = buffer.length - 1;
+        if (dir) return -1
+        else byteOffset = buffer.length - 1;
       } else if (byteOffset < 0) {
-        if (dir) byteOffset = 0;else return -1;
+        if (dir) byteOffset = 0;
+        else return -1
       }
 
       // Normalize val
@@ -30615,31 +31451,36 @@
       if (internalIsBuffer(val)) {
         // Special case: looking for empty string/buffer always fails
         if (val.length === 0) {
-          return -1;
+          return -1
         }
-        return arrayIndexOf(buffer, val, byteOffset, encoding, dir);
+        return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
       } else if (typeof val === 'number') {
         val = val & 0xFF; // Search for a byte value [0-255]
-        if (Buffer.TYPED_ARRAY_SUPPORT && typeof Uint8Array.prototype.indexOf === 'function') {
+        if (Buffer.TYPED_ARRAY_SUPPORT &&
+            typeof Uint8Array.prototype.indexOf === 'function') {
           if (dir) {
-            return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset);
+            return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
           } else {
-            return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset);
+            return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
           }
         }
-        return arrayIndexOf(buffer, [val], byteOffset, encoding, dir);
+        return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
       }
-      throw new TypeError('val must be string, number or Buffer');
+
+      throw new TypeError('val must be string, number or Buffer')
     }
-    function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
+
+    function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
       var indexSize = 1;
       var arrLength = arr.length;
       var valLength = val.length;
+
       if (encoding !== undefined) {
         encoding = String(encoding).toLowerCase();
-        if (encoding === 'ucs2' || encoding === 'ucs-2' || encoding === 'utf16le' || encoding === 'utf-16le') {
+        if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+            encoding === 'utf16le' || encoding === 'utf-16le') {
           if (arr.length < 2 || val.length < 2) {
-            return -1;
+            return -1
           }
           indexSize = 2;
           arrLength /= 2;
@@ -30647,20 +31488,22 @@
           byteOffset /= 2;
         }
       }
-      function read(buf, i) {
+
+      function read (buf, i) {
         if (indexSize === 1) {
-          return buf[i];
+          return buf[i]
         } else {
-          return buf.readUInt16BE(i * indexSize);
+          return buf.readUInt16BE(i * indexSize)
         }
       }
+
       var i;
       if (dir) {
         var foundIndex = -1;
         for (i = byteOffset; i < arrLength; i++) {
           if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
             if (foundIndex === -1) foundIndex = i;
-            if (i - foundIndex + 1 === valLength) return foundIndex * indexSize;
+            if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
           } else {
             if (foundIndex !== -1) i -= i - foundIndex;
             foundIndex = -1;
@@ -30673,24 +31516,29 @@
           for (var j = 0; j < valLength; j++) {
             if (read(arr, i + j) !== read(val, j)) {
               found = false;
-              break;
+              break
             }
           }
-          if (found) return i;
+          if (found) return i
         }
       }
-      return -1;
+
+      return -1
     }
-    Buffer.prototype.includes = function includes(val, byteOffset, encoding) {
-      return this.indexOf(val, byteOffset, encoding) !== -1;
+
+    Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+      return this.indexOf(val, byteOffset, encoding) !== -1
     };
-    Buffer.prototype.indexOf = function indexOf(val, byteOffset, encoding) {
-      return bidirectionalIndexOf(this, val, byteOffset, encoding, true);
+
+    Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+      return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
     };
-    Buffer.prototype.lastIndexOf = function lastIndexOf(val, byteOffset, encoding) {
-      return bidirectionalIndexOf(this, val, byteOffset, encoding, false);
+
+    Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+      return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
     };
-    function hexWrite(buf, string, offset, length) {
+
+    function hexWrite (buf, string, offset, length) {
       offset = Number(offset) || 0;
       var remaining = buf.length - offset;
       if (!length) {
@@ -30704,44 +31552,51 @@
 
       // must be an even number of digits
       var strLen = string.length;
-      if (strLen % 2 !== 0) throw new TypeError('Invalid hex string');
+      if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
       if (length > strLen / 2) {
         length = strLen / 2;
       }
       for (var i = 0; i < length; ++i) {
         var parsed = parseInt(string.substr(i * 2, 2), 16);
-        if (isNaN(parsed)) return i;
+        if (isNaN(parsed)) return i
         buf[offset + i] = parsed;
       }
-      return i;
+      return i
     }
-    function utf8Write(buf, string, offset, length) {
-      return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length);
+
+    function utf8Write (buf, string, offset, length) {
+      return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
     }
-    function asciiWrite(buf, string, offset, length) {
-      return blitBuffer(asciiToBytes(string), buf, offset, length);
+
+    function asciiWrite (buf, string, offset, length) {
+      return blitBuffer(asciiToBytes(string), buf, offset, length)
     }
-    function latin1Write(buf, string, offset, length) {
-      return asciiWrite(buf, string, offset, length);
+
+    function latin1Write (buf, string, offset, length) {
+      return asciiWrite(buf, string, offset, length)
     }
-    function base64Write(buf, string, offset, length) {
-      return blitBuffer(base64ToBytes(string), buf, offset, length);
+
+    function base64Write (buf, string, offset, length) {
+      return blitBuffer(base64ToBytes(string), buf, offset, length)
     }
-    function ucs2Write(buf, string, offset, length) {
-      return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length);
+
+    function ucs2Write (buf, string, offset, length) {
+      return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
     }
-    Buffer.prototype.write = function write(string, offset, length, encoding) {
+
+    Buffer.prototype.write = function write (string, offset, length, encoding) {
       // Buffer#write(string)
       if (offset === undefined) {
         encoding = 'utf8';
         length = this.length;
         offset = 0;
-        // Buffer#write(string, encoding)
+      // Buffer#write(string, encoding)
       } else if (length === undefined && typeof offset === 'string') {
         encoding = offset;
         length = this.length;
         offset = 0;
-        // Buffer#write(string, offset[, length][, encoding])
+      // Buffer#write(string, offset[, length][, encoding])
       } else if (isFinite(offset)) {
         offset = offset | 0;
         if (isFinite(length)) {
@@ -30751,104 +31606,126 @@
           encoding = length;
           length = undefined;
         }
-        // legacy write(string, encoding, offset, length) - remove in v0.13
+      // legacy write(string, encoding, offset, length) - remove in v0.13
       } else {
-        throw new Error('Buffer.write(string, encoding, offset[, length]) is no longer supported');
+        throw new Error(
+          'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+        )
       }
+
       var remaining = this.length - offset;
       if (length === undefined || length > remaining) length = remaining;
-      if (string.length > 0 && (length < 0 || offset < 0) || offset > this.length) {
-        throw new RangeError('Attempt to write outside buffer bounds');
+
+      if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+        throw new RangeError('Attempt to write outside buffer bounds')
       }
+
       if (!encoding) encoding = 'utf8';
+
       var loweredCase = false;
       for (;;) {
         switch (encoding) {
           case 'hex':
-            return hexWrite(this, string, offset, length);
+            return hexWrite(this, string, offset, length)
+
           case 'utf8':
           case 'utf-8':
-            return utf8Write(this, string, offset, length);
+            return utf8Write(this, string, offset, length)
+
           case 'ascii':
-            return asciiWrite(this, string, offset, length);
+            return asciiWrite(this, string, offset, length)
+
           case 'latin1':
           case 'binary':
-            return latin1Write(this, string, offset, length);
+            return latin1Write(this, string, offset, length)
+
           case 'base64':
             // Warning: maxLength not taken into account in base64Write
-            return base64Write(this, string, offset, length);
+            return base64Write(this, string, offset, length)
+
           case 'ucs2':
           case 'ucs-2':
           case 'utf16le':
           case 'utf-16le':
-            return ucs2Write(this, string, offset, length);
+            return ucs2Write(this, string, offset, length)
+
           default:
-            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding);
+            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
             encoding = ('' + encoding).toLowerCase();
             loweredCase = true;
         }
       }
     };
-    Buffer.prototype.toJSON = function toJSON() {
+
+    Buffer.prototype.toJSON = function toJSON () {
       return {
         type: 'Buffer',
         data: Array.prototype.slice.call(this._arr || this, 0)
-      };
+      }
     };
-    function base64Slice(buf, start, end) {
+
+    function base64Slice (buf, start, end) {
       if (start === 0 && end === buf.length) {
-        return fromByteArray(buf);
+        return fromByteArray(buf)
       } else {
-        return fromByteArray(buf.slice(start, end));
+        return fromByteArray(buf.slice(start, end))
       }
     }
-    function utf8Slice(buf, start, end) {
+
+    function utf8Slice (buf, start, end) {
       end = Math.min(buf.length, end);
       var res = [];
+
       var i = start;
       while (i < end) {
         var firstByte = buf[i];
         var codePoint = null;
-        var bytesPerSequence = firstByte > 0xEF ? 4 : firstByte > 0xDF ? 3 : firstByte > 0xBF ? 2 : 1;
+        var bytesPerSequence = (firstByte > 0xEF) ? 4
+          : (firstByte > 0xDF) ? 3
+          : (firstByte > 0xBF) ? 2
+          : 1;
+
         if (i + bytesPerSequence <= end) {
           var secondByte, thirdByte, fourthByte, tempCodePoint;
+
           switch (bytesPerSequence) {
             case 1:
               if (firstByte < 0x80) {
                 codePoint = firstByte;
               }
-              break;
+              break
             case 2:
               secondByte = buf[i + 1];
               if ((secondByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0x1F) << 0x6 | secondByte & 0x3F;
+                tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F);
                 if (tempCodePoint > 0x7F) {
                   codePoint = tempCodePoint;
                 }
               }
-              break;
+              break
             case 3:
               secondByte = buf[i + 1];
               thirdByte = buf[i + 2];
               if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | thirdByte & 0x3F;
+                tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F);
                 if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
                   codePoint = tempCodePoint;
                 }
               }
-              break;
+              break
             case 4:
               secondByte = buf[i + 1];
               thirdByte = buf[i + 2];
               fourthByte = buf[i + 3];
               if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | fourthByte & 0x3F;
+                tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F);
                 if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
                   codePoint = tempCodePoint;
                 }
               }
           }
         }
+
         if (codePoint === null) {
           // we did not generate a valid codePoint so insert a
           // replacement char (U+FFFD) and advance only 1 byte
@@ -30860,81 +31737,100 @@
           res.push(codePoint >>> 10 & 0x3FF | 0xD800);
           codePoint = 0xDC00 | codePoint & 0x3FF;
         }
+
         res.push(codePoint);
         i += bytesPerSequence;
       }
-      return decodeCodePointsArray(res);
+
+      return decodeCodePointsArray(res)
     }
 
     // Based on http://stackoverflow.com/a/22747272/680742, the browser with
     // the lowest limit is Chrome, with 0x10000 args.
     // We go 1 magnitude less, for safety
     var MAX_ARGUMENTS_LENGTH = 0x1000;
-    function decodeCodePointsArray(codePoints) {
+
+    function decodeCodePointsArray (codePoints) {
       var len = codePoints.length;
       if (len <= MAX_ARGUMENTS_LENGTH) {
-        return String.fromCharCode.apply(String, codePoints); // avoid extra slice()
+        return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
       }
 
       // Decode in chunks to avoid "call stack size exceeded".
       var res = '';
       var i = 0;
       while (i < len) {
-        res += String.fromCharCode.apply(String, codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH));
+        res += String.fromCharCode.apply(
+          String,
+          codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+        );
       }
-      return res;
+      return res
     }
-    function asciiSlice(buf, start, end) {
+
+    function asciiSlice (buf, start, end) {
       var ret = '';
       end = Math.min(buf.length, end);
+
       for (var i = start; i < end; ++i) {
         ret += String.fromCharCode(buf[i] & 0x7F);
       }
-      return ret;
+      return ret
     }
-    function latin1Slice(buf, start, end) {
+
+    function latin1Slice (buf, start, end) {
       var ret = '';
       end = Math.min(buf.length, end);
+
       for (var i = start; i < end; ++i) {
         ret += String.fromCharCode(buf[i]);
       }
-      return ret;
+      return ret
     }
-    function hexSlice(buf, start, end) {
+
+    function hexSlice (buf, start, end) {
       var len = buf.length;
+
       if (!start || start < 0) start = 0;
       if (!end || end < 0 || end > len) end = len;
+
       var out = '';
       for (var i = start; i < end; ++i) {
         out += toHex(buf[i]);
       }
-      return out;
+      return out
     }
-    function utf16leSlice(buf, start, end) {
+
+    function utf16leSlice (buf, start, end) {
       var bytes = buf.slice(start, end);
       var res = '';
       for (var i = 0; i < bytes.length; i += 2) {
         res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
       }
-      return res;
+      return res
     }
-    Buffer.prototype.slice = function slice(start, end) {
+
+    Buffer.prototype.slice = function slice (start, end) {
       var len = this.length;
       start = ~~start;
       end = end === undefined ? len : ~~end;
+
       if (start < 0) {
         start += len;
         if (start < 0) start = 0;
       } else if (start > len) {
         start = len;
       }
+
       if (end < 0) {
         end += len;
         if (end < 0) end = 0;
       } else if (end > len) {
         end = len;
       }
+
       if (end < start) end = start;
+
       var newBuf;
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         newBuf = this.subarray(start, end);
@@ -30946,65 +31842,87 @@
           newBuf[i] = this[i + start];
         }
       }
-      return newBuf;
+
+      return newBuf
     };
 
     /*
      * Need to make sure that buffer isn't trying to write out of bounds.
      */
-    function checkOffset(offset, ext, length) {
-      if (offset % 1 !== 0 || offset < 0) throw new RangeError('offset is not uint');
-      if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length');
+    function checkOffset (offset, ext, length) {
+      if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+      if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
     }
-    Buffer.prototype.readUIntLE = function readUIntLE(offset, byteLength, noAssert) {
+
+    Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
       offset = offset | 0;
       byteLength = byteLength | 0;
       if (!noAssert) checkOffset(offset, byteLength, this.length);
+
       var val = this[offset];
       var mul = 1;
       var i = 0;
       while (++i < byteLength && (mul *= 0x100)) {
         val += this[offset + i] * mul;
       }
-      return val;
+
+      return val
     };
-    Buffer.prototype.readUIntBE = function readUIntBE(offset, byteLength, noAssert) {
+
+    Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
       offset = offset | 0;
       byteLength = byteLength | 0;
       if (!noAssert) {
         checkOffset(offset, byteLength, this.length);
       }
+
       var val = this[offset + --byteLength];
       var mul = 1;
       while (byteLength > 0 && (mul *= 0x100)) {
         val += this[offset + --byteLength] * mul;
       }
-      return val;
+
+      return val
     };
-    Buffer.prototype.readUInt8 = function readUInt8(offset, noAssert) {
+
+    Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 1, this.length);
-      return this[offset];
+      return this[offset]
     };
-    Buffer.prototype.readUInt16LE = function readUInt16LE(offset, noAssert) {
+
+    Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 2, this.length);
-      return this[offset] | this[offset + 1] << 8;
+      return this[offset] | (this[offset + 1] << 8)
     };
-    Buffer.prototype.readUInt16BE = function readUInt16BE(offset, noAssert) {
+
+    Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 2, this.length);
-      return this[offset] << 8 | this[offset + 1];
+      return (this[offset] << 8) | this[offset + 1]
     };
-    Buffer.prototype.readUInt32LE = function readUInt32LE(offset, noAssert) {
+
+    Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + this[offset + 3] * 0x1000000;
+
+      return ((this[offset]) |
+          (this[offset + 1] << 8) |
+          (this[offset + 2] << 16)) +
+          (this[offset + 3] * 0x1000000)
     };
-    Buffer.prototype.readUInt32BE = function readUInt32BE(offset, noAssert) {
+
+    Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return this[offset] * 0x1000000 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
+
+      return (this[offset] * 0x1000000) +
+        ((this[offset + 1] << 16) |
+        (this[offset + 2] << 8) |
+        this[offset + 3])
     };
-    Buffer.prototype.readIntLE = function readIntLE(offset, byteLength, noAssert) {
+
+    Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
       offset = offset | 0;
       byteLength = byteLength | 0;
       if (!noAssert) checkOffset(offset, byteLength, this.length);
+
       var val = this[offset];
       var mul = 1;
       var i = 0;
@@ -31012,13 +31930,17 @@
         val += this[offset + i] * mul;
       }
       mul *= 0x80;
+
       if (val >= mul) val -= Math.pow(2, 8 * byteLength);
-      return val;
+
+      return val
     };
-    Buffer.prototype.readIntBE = function readIntBE(offset, byteLength, noAssert) {
+
+    Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
       offset = offset | 0;
       byteLength = byteLength | 0;
       if (!noAssert) checkOffset(offset, byteLength, this.length);
+
       var i = byteLength;
       var mul = 1;
       var val = this[offset + --i];
@@ -31026,54 +31948,75 @@
         val += this[offset + --i] * mul;
       }
       mul *= 0x80;
+
       if (val >= mul) val -= Math.pow(2, 8 * byteLength);
-      return val;
+
+      return val
     };
-    Buffer.prototype.readInt8 = function readInt8(offset, noAssert) {
+
+    Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 1, this.length);
-      if (!(this[offset] & 0x80)) return this[offset];
-      return (0xff - this[offset] + 1) * -1;
+      if (!(this[offset] & 0x80)) return (this[offset])
+      return ((0xff - this[offset] + 1) * -1)
     };
-    Buffer.prototype.readInt16LE = function readInt16LE(offset, noAssert) {
+
+    Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 2, this.length);
-      var val = this[offset] | this[offset + 1] << 8;
-      return val & 0x8000 ? val | 0xFFFF0000 : val;
+      var val = this[offset] | (this[offset + 1] << 8);
+      return (val & 0x8000) ? val | 0xFFFF0000 : val
     };
-    Buffer.prototype.readInt16BE = function readInt16BE(offset, noAssert) {
+
+    Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 2, this.length);
-      var val = this[offset + 1] | this[offset] << 8;
-      return val & 0x8000 ? val | 0xFFFF0000 : val;
+      var val = this[offset + 1] | (this[offset] << 8);
+      return (val & 0x8000) ? val | 0xFFFF0000 : val
     };
-    Buffer.prototype.readInt32LE = function readInt32LE(offset, noAssert) {
+
+    Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
+
+      return (this[offset]) |
+        (this[offset + 1] << 8) |
+        (this[offset + 2] << 16) |
+        (this[offset + 3] << 24)
     };
-    Buffer.prototype.readInt32BE = function readInt32BE(offset, noAssert) {
+
+    Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
+
+      return (this[offset] << 24) |
+        (this[offset + 1] << 16) |
+        (this[offset + 2] << 8) |
+        (this[offset + 3])
     };
-    Buffer.prototype.readFloatLE = function readFloatLE(offset, noAssert) {
+
+    Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return read(this, offset, true, 23, 4);
+      return read(this, offset, true, 23, 4)
     };
-    Buffer.prototype.readFloatBE = function readFloatBE(offset, noAssert) {
+
+    Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 4, this.length);
-      return read(this, offset, false, 23, 4);
+      return read(this, offset, false, 23, 4)
     };
-    Buffer.prototype.readDoubleLE = function readDoubleLE(offset, noAssert) {
+
+    Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 8, this.length);
-      return read(this, offset, true, 52, 8);
+      return read(this, offset, true, 52, 8)
     };
-    Buffer.prototype.readDoubleBE = function readDoubleBE(offset, noAssert) {
+
+    Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
       if (!noAssert) checkOffset(offset, 8, this.length);
-      return read(this, offset, false, 52, 8);
+      return read(this, offset, false, 52, 8)
     };
-    function checkInt(buf, value, offset, ext, max, min) {
-      if (!internalIsBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance');
-      if (value > max || value < min) throw new RangeError('"value" argument is out of bounds');
-      if (offset + ext > buf.length) throw new RangeError('Index out of range');
+
+    function checkInt (buf, value, offset, ext, max, min) {
+      if (!internalIsBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+      if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+      if (offset + ext > buf.length) throw new RangeError('Index out of range')
     }
-    Buffer.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength, noAssert) {
+
+    Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
       value = +value;
       offset = offset | 0;
       byteLength = byteLength | 0;
@@ -31081,15 +32024,18 @@
         var maxBytes = Math.pow(2, 8 * byteLength) - 1;
         checkInt(this, value, offset, byteLength, maxBytes, 0);
       }
+
       var mul = 1;
       var i = 0;
       this[offset] = value & 0xFF;
       while (++i < byteLength && (mul *= 0x100)) {
-        this[offset + i] = value / mul & 0xFF;
+        this[offset + i] = (value / mul) & 0xFF;
       }
-      return offset + byteLength;
+
+      return offset + byteLength
     };
-    Buffer.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength, noAssert) {
+
+    Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
       value = +value;
       offset = offset | 0;
       byteLength = byteLength | 0;
@@ -31097,93 +32043,106 @@
         var maxBytes = Math.pow(2, 8 * byteLength) - 1;
         checkInt(this, value, offset, byteLength, maxBytes, 0);
       }
+
       var i = byteLength - 1;
       var mul = 1;
       this[offset + i] = value & 0xFF;
       while (--i >= 0 && (mul *= 0x100)) {
-        this[offset + i] = value / mul & 0xFF;
+        this[offset + i] = (value / mul) & 0xFF;
       }
-      return offset + byteLength;
+
+      return offset + byteLength
     };
-    Buffer.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
+
+    Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0);
       if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value);
-      this[offset] = value & 0xff;
-      return offset + 1;
+      this[offset] = (value & 0xff);
+      return offset + 1
     };
-    function objectWriteUInt16(buf, value, offset, littleEndian) {
+
+    function objectWriteUInt16 (buf, value, offset, littleEndian) {
       if (value < 0) value = 0xffff + value + 1;
       for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
-        buf[offset + i] = (value & 0xff << 8 * (littleEndian ? i : 1 - i)) >>> (littleEndian ? i : 1 - i) * 8;
+        buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+          (littleEndian ? i : 1 - i) * 8;
       }
     }
-    Buffer.prototype.writeUInt16LE = function writeUInt16LE(value, offset, noAssert) {
+
+    Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value & 0xff;
-        this[offset + 1] = value >>> 8;
+        this[offset] = (value & 0xff);
+        this[offset + 1] = (value >>> 8);
       } else {
         objectWriteUInt16(this, value, offset, true);
       }
-      return offset + 2;
+      return offset + 2
     };
-    Buffer.prototype.writeUInt16BE = function writeUInt16BE(value, offset, noAssert) {
+
+    Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value >>> 8;
-        this[offset + 1] = value & 0xff;
+        this[offset] = (value >>> 8);
+        this[offset + 1] = (value & 0xff);
       } else {
         objectWriteUInt16(this, value, offset, false);
       }
-      return offset + 2;
+      return offset + 2
     };
-    function objectWriteUInt32(buf, value, offset, littleEndian) {
+
+    function objectWriteUInt32 (buf, value, offset, littleEndian) {
       if (value < 0) value = 0xffffffff + value + 1;
       for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
-        buf[offset + i] = value >>> (littleEndian ? i : 3 - i) * 8 & 0xff;
+        buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff;
       }
     }
-    Buffer.prototype.writeUInt32LE = function writeUInt32LE(value, offset, noAssert) {
+
+    Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset + 3] = value >>> 24;
-        this[offset + 2] = value >>> 16;
-        this[offset + 1] = value >>> 8;
-        this[offset] = value & 0xff;
+        this[offset + 3] = (value >>> 24);
+        this[offset + 2] = (value >>> 16);
+        this[offset + 1] = (value >>> 8);
+        this[offset] = (value & 0xff);
       } else {
         objectWriteUInt32(this, value, offset, true);
       }
-      return offset + 4;
+      return offset + 4
     };
-    Buffer.prototype.writeUInt32BE = function writeUInt32BE(value, offset, noAssert) {
+
+    Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value >>> 24;
-        this[offset + 1] = value >>> 16;
-        this[offset + 2] = value >>> 8;
-        this[offset + 3] = value & 0xff;
+        this[offset] = (value >>> 24);
+        this[offset + 1] = (value >>> 16);
+        this[offset + 2] = (value >>> 8);
+        this[offset + 3] = (value & 0xff);
       } else {
         objectWriteUInt32(this, value, offset, false);
       }
-      return offset + 4;
+      return offset + 4
     };
-    Buffer.prototype.writeIntLE = function writeIntLE(value, offset, byteLength, noAssert) {
+
+    Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) {
         var limit = Math.pow(2, 8 * byteLength - 1);
+
         checkInt(this, value, offset, byteLength, limit - 1, -limit);
       }
+
       var i = 0;
       var mul = 1;
       var sub = 0;
@@ -31192,17 +32151,21 @@
         if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
           sub = 1;
         }
-        this[offset + i] = (value / mul >> 0) - sub & 0xFF;
+        this[offset + i] = ((value / mul) >> 0) - sub & 0xFF;
       }
-      return offset + byteLength;
+
+      return offset + byteLength
     };
-    Buffer.prototype.writeIntBE = function writeIntBE(value, offset, byteLength, noAssert) {
+
+    Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) {
         var limit = Math.pow(2, 8 * byteLength - 1);
+
         checkInt(this, value, offset, byteLength, limit - 1, -limit);
       }
+
       var i = byteLength - 1;
       var mul = 1;
       var sub = 0;
@@ -31211,105 +32174,118 @@
         if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
           sub = 1;
         }
-        this[offset + i] = (value / mul >> 0) - sub & 0xFF;
+        this[offset + i] = ((value / mul) >> 0) - sub & 0xFF;
       }
-      return offset + byteLength;
+
+      return offset + byteLength
     };
-    Buffer.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
+
+    Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80);
       if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value);
       if (value < 0) value = 0xff + value + 1;
-      this[offset] = value & 0xff;
-      return offset + 1;
+      this[offset] = (value & 0xff);
+      return offset + 1
     };
-    Buffer.prototype.writeInt16LE = function writeInt16LE(value, offset, noAssert) {
+
+    Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value & 0xff;
-        this[offset + 1] = value >>> 8;
+        this[offset] = (value & 0xff);
+        this[offset + 1] = (value >>> 8);
       } else {
         objectWriteUInt16(this, value, offset, true);
       }
-      return offset + 2;
+      return offset + 2
     };
-    Buffer.prototype.writeInt16BE = function writeInt16BE(value, offset, noAssert) {
+
+    Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value >>> 8;
-        this[offset + 1] = value & 0xff;
+        this[offset] = (value >>> 8);
+        this[offset + 1] = (value & 0xff);
       } else {
         objectWriteUInt16(this, value, offset, false);
       }
-      return offset + 2;
+      return offset + 2
     };
-    Buffer.prototype.writeInt32LE = function writeInt32LE(value, offset, noAssert) {
+
+    Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value & 0xff;
-        this[offset + 1] = value >>> 8;
-        this[offset + 2] = value >>> 16;
-        this[offset + 3] = value >>> 24;
+        this[offset] = (value & 0xff);
+        this[offset + 1] = (value >>> 8);
+        this[offset + 2] = (value >>> 16);
+        this[offset + 3] = (value >>> 24);
       } else {
         objectWriteUInt32(this, value, offset, true);
       }
-      return offset + 4;
+      return offset + 4
     };
-    Buffer.prototype.writeInt32BE = function writeInt32BE(value, offset, noAssert) {
+
+    Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
       if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
       if (value < 0) value = 0xffffffff + value + 1;
       if (Buffer.TYPED_ARRAY_SUPPORT) {
-        this[offset] = value >>> 24;
-        this[offset + 1] = value >>> 16;
-        this[offset + 2] = value >>> 8;
-        this[offset + 3] = value & 0xff;
+        this[offset] = (value >>> 24);
+        this[offset + 1] = (value >>> 16);
+        this[offset + 2] = (value >>> 8);
+        this[offset + 3] = (value & 0xff);
       } else {
         objectWriteUInt32(this, value, offset, false);
       }
-      return offset + 4;
+      return offset + 4
     };
-    function checkIEEE754(buf, value, offset, ext, max, min) {
-      if (offset + ext > buf.length) throw new RangeError('Index out of range');
-      if (offset < 0) throw new RangeError('Index out of range');
+
+    function checkIEEE754 (buf, value, offset, ext, max, min) {
+      if (offset + ext > buf.length) throw new RangeError('Index out of range')
+      if (offset < 0) throw new RangeError('Index out of range')
     }
-    function writeFloat(buf, value, offset, littleEndian, noAssert) {
+
+    function writeFloat (buf, value, offset, littleEndian, noAssert) {
       if (!noAssert) {
         checkIEEE754(buf, value, offset, 4);
       }
       write(buf, value, offset, littleEndian, 23, 4);
-      return offset + 4;
+      return offset + 4
     }
-    Buffer.prototype.writeFloatLE = function writeFloatLE(value, offset, noAssert) {
-      return writeFloat(this, value, offset, true, noAssert);
+
+    Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+      return writeFloat(this, value, offset, true, noAssert)
     };
-    Buffer.prototype.writeFloatBE = function writeFloatBE(value, offset, noAssert) {
-      return writeFloat(this, value, offset, false, noAssert);
+
+    Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+      return writeFloat(this, value, offset, false, noAssert)
     };
-    function writeDouble(buf, value, offset, littleEndian, noAssert) {
+
+    function writeDouble (buf, value, offset, littleEndian, noAssert) {
       if (!noAssert) {
         checkIEEE754(buf, value, offset, 8);
       }
       write(buf, value, offset, littleEndian, 52, 8);
-      return offset + 8;
+      return offset + 8
     }
-    Buffer.prototype.writeDoubleLE = function writeDoubleLE(value, offset, noAssert) {
-      return writeDouble(this, value, offset, true, noAssert);
+
+    Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+      return writeDouble(this, value, offset, true, noAssert)
     };
-    Buffer.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
-      return writeDouble(this, value, offset, false, noAssert);
+
+    Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+      return writeDouble(this, value, offset, false, noAssert)
     };
 
     // copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-    Buffer.prototype.copy = function copy(target, targetStart, start, end) {
+    Buffer.prototype.copy = function copy (target, targetStart, start, end) {
       if (!start) start = 0;
       if (!end && end !== 0) end = this.length;
       if (targetStart >= target.length) targetStart = target.length;
@@ -31317,23 +32293,25 @@
       if (end > 0 && end < start) end = start;
 
       // Copy 0 bytes; we're done
-      if (end === start) return 0;
-      if (target.length === 0 || this.length === 0) return 0;
+      if (end === start) return 0
+      if (target.length === 0 || this.length === 0) return 0
 
       // Fatal error conditions
       if (targetStart < 0) {
-        throw new RangeError('targetStart out of bounds');
+        throw new RangeError('targetStart out of bounds')
       }
-      if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds');
-      if (end < 0) throw new RangeError('sourceEnd out of bounds');
+      if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+      if (end < 0) throw new RangeError('sourceEnd out of bounds')
 
       // Are we oob?
       if (end > this.length) end = this.length;
       if (target.length - targetStart < end - start) {
         end = target.length - targetStart + start;
       }
+
       var len = end - start;
       var i;
+
       if (this === target && start < targetStart && targetStart < end) {
         // descending copy from end
         for (i = len - 1; i >= 0; --i) {
@@ -31345,16 +32323,21 @@
           target[i + targetStart] = this[i + start];
         }
       } else {
-        Uint8Array.prototype.set.call(target, this.subarray(start, start + len), targetStart);
+        Uint8Array.prototype.set.call(
+          target,
+          this.subarray(start, start + len),
+          targetStart
+        );
       }
-      return len;
+
+      return len
     };
 
     // Usage:
     //    buffer.fill(number[, offset[, end]])
     //    buffer.fill(buffer[, offset[, end]])
     //    buffer.fill(string[, offset[, end]][, encoding])
-    Buffer.prototype.fill = function fill(val, start, end, encoding) {
+    Buffer.prototype.fill = function fill (val, start, end, encoding) {
       // Handle string cases:
       if (typeof val === 'string') {
         if (typeof start === 'string') {
@@ -31372,10 +32355,10 @@
           }
         }
         if (encoding !== undefined && typeof encoding !== 'string') {
-          throw new TypeError('encoding must be a string');
+          throw new TypeError('encoding must be a string')
         }
         if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
-          throw new TypeError('Unknown encoding: ' + encoding);
+          throw new TypeError('Unknown encoding: ' + encoding)
         }
       } else if (typeof val === 'number') {
         val = val & 255;
@@ -31383,58 +32366,70 @@
 
       // Invalid ranges are not set to a default, so can range check early.
       if (start < 0 || this.length < start || this.length < end) {
-        throw new RangeError('Out of range index');
+        throw new RangeError('Out of range index')
       }
+
       if (end <= start) {
-        return this;
+        return this
       }
+
       start = start >>> 0;
       end = end === undefined ? this.length : end >>> 0;
+
       if (!val) val = 0;
+
       var i;
       if (typeof val === 'number') {
         for (i = start; i < end; ++i) {
           this[i] = val;
         }
       } else {
-        var bytes = internalIsBuffer(val) ? val : utf8ToBytes(new Buffer(val, encoding).toString());
+        var bytes = internalIsBuffer(val)
+          ? val
+          : utf8ToBytes(new Buffer(val, encoding).toString());
         var len = bytes.length;
         for (i = 0; i < end - start; ++i) {
           this[i + start] = bytes[i % len];
         }
       }
-      return this;
+
+      return this
     };
 
     // HELPER FUNCTIONS
     // ================
 
     var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g;
-    function base64clean(str) {
+
+    function base64clean (str) {
       // Node strips out invalid characters like \n and \t from the string, base64-js does not
       str = stringtrim(str).replace(INVALID_BASE64_RE, '');
       // Node converts strings with length < 2 to ''
-      if (str.length < 2) return '';
+      if (str.length < 2) return ''
       // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
       while (str.length % 4 !== 0) {
         str = str + '=';
       }
-      return str;
+      return str
     }
-    function stringtrim(str) {
-      if (str.trim) return str.trim();
-      return str.replace(/^\s+|\s+$/g, '');
+
+    function stringtrim (str) {
+      if (str.trim) return str.trim()
+      return str.replace(/^\s+|\s+$/g, '')
     }
-    function toHex(n) {
-      if (n < 16) return '0' + n.toString(16);
-      return n.toString(16);
+
+    function toHex (n) {
+      if (n < 16) return '0' + n.toString(16)
+      return n.toString(16)
     }
-    function utf8ToBytes(string, units) {
+
+    function utf8ToBytes (string, units) {
       units = units || Infinity;
       var codePoint;
       var length = string.length;
       var leadSurrogate = null;
       var bytes = [];
+
       for (var i = 0; i < length; ++i) {
         codePoint = string.charCodeAt(i);
 
@@ -31446,23 +32441,24 @@
             if (codePoint > 0xDBFF) {
               // unexpected trail
               if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
-              continue;
+              continue
             } else if (i + 1 === length) {
               // unpaired lead
               if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
-              continue;
+              continue
             }
 
             // valid lead
             leadSurrogate = codePoint;
-            continue;
+
+            continue
           }
 
           // 2 leads in a row
           if (codePoint < 0xDC00) {
             if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
             leadSurrogate = codePoint;
-            continue;
+            continue
           }
 
           // valid surrogate pair
@@ -31471,76 +32467,101 @@
           // valid bmp char, but last char was a lead
           if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD);
         }
+
         leadSurrogate = null;
 
         // encode utf8
         if (codePoint < 0x80) {
-          if ((units -= 1) < 0) break;
+          if ((units -= 1) < 0) break
           bytes.push(codePoint);
         } else if (codePoint < 0x800) {
-          if ((units -= 2) < 0) break;
-          bytes.push(codePoint >> 0x6 | 0xC0, codePoint & 0x3F | 0x80);
+          if ((units -= 2) < 0) break
+          bytes.push(
+            codePoint >> 0x6 | 0xC0,
+            codePoint & 0x3F | 0x80
+          );
         } else if (codePoint < 0x10000) {
-          if ((units -= 3) < 0) break;
-          bytes.push(codePoint >> 0xC | 0xE0, codePoint >> 0x6 & 0x3F | 0x80, codePoint & 0x3F | 0x80);
+          if ((units -= 3) < 0) break
+          bytes.push(
+            codePoint >> 0xC | 0xE0,
+            codePoint >> 0x6 & 0x3F | 0x80,
+            codePoint & 0x3F | 0x80
+          );
         } else if (codePoint < 0x110000) {
-          if ((units -= 4) < 0) break;
-          bytes.push(codePoint >> 0x12 | 0xF0, codePoint >> 0xC & 0x3F | 0x80, codePoint >> 0x6 & 0x3F | 0x80, codePoint & 0x3F | 0x80);
+          if ((units -= 4) < 0) break
+          bytes.push(
+            codePoint >> 0x12 | 0xF0,
+            codePoint >> 0xC & 0x3F | 0x80,
+            codePoint >> 0x6 & 0x3F | 0x80,
+            codePoint & 0x3F | 0x80
+          );
         } else {
-          throw new Error('Invalid code point');
+          throw new Error('Invalid code point')
         }
       }
-      return bytes;
+
+      return bytes
     }
-    function asciiToBytes(str) {
+
+    function asciiToBytes (str) {
       var byteArray = [];
       for (var i = 0; i < str.length; ++i) {
         // Node's code seems to be doing this and not & 0x7F..
         byteArray.push(str.charCodeAt(i) & 0xFF);
       }
-      return byteArray;
+      return byteArray
     }
-    function utf16leToBytes(str, units) {
+
+    function utf16leToBytes (str, units) {
       var c, hi, lo;
       var byteArray = [];
       for (var i = 0; i < str.length; ++i) {
-        if ((units -= 2) < 0) break;
+        if ((units -= 2) < 0) break
+
         c = str.charCodeAt(i);
         hi = c >> 8;
         lo = c % 256;
         byteArray.push(lo);
         byteArray.push(hi);
       }
-      return byteArray;
+
+      return byteArray
     }
-    function base64ToBytes(str) {
-      return toByteArray(base64clean(str));
+
+
+    function base64ToBytes (str) {
+      return toByteArray(base64clean(str))
     }
-    function blitBuffer(src, dst, offset, length) {
+
+    function blitBuffer (src, dst, offset, length) {
       for (var i = 0; i < length; ++i) {
-        if (i + offset >= dst.length || i >= src.length) break;
+        if ((i + offset >= dst.length) || (i >= src.length)) break
         dst[i + offset] = src[i];
       }
-      return i;
+      return i
     }
-    function isnan(val) {
-      return val !== val; // eslint-disable-line no-self-compare
+
+    function isnan (val) {
+      return val !== val // eslint-disable-line no-self-compare
     }
+
 
     // the following is from is-buffer, also by Feross Aboukhadijeh and with same lisence
     // The _isBuffer check is for Safari 5-7 support, because it's missing
     // Object.prototype.constructor. Remove this eventually
     function isBuffer(obj) {
-      return obj != null && (!!obj._isBuffer || isFastBuffer(obj) || isSlowBuffer(obj));
+      return obj != null && (!!obj._isBuffer || isFastBuffer(obj) || isSlowBuffer(obj))
     }
-    function isFastBuffer(obj) {
-      return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj);
+
+    function isFastBuffer (obj) {
+      return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
     }
 
     // For Node v0.10 support. Remove this eventually.
-    function isSlowBuffer(obj) {
-      return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0));
+    function isSlowBuffer (obj) {
+      return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0))
     }
+
     var domain;
 
     // This constructor is used to store event handlers. Instantiating this is
@@ -31548,6 +32569,7 @@
     // object (tested with v8 v4.9).
     function EventHandlers() {}
     EventHandlers.prototype = Object.create(null);
+
     function EventEmitter() {
       EventEmitter.init.call(this);
     }
@@ -31555,7 +32577,9 @@
     // nodejs oddity
     // require('events') === require('events').EventEmitter
     EventEmitter.EventEmitter = EventEmitter;
+
     EventEmitter.usingDomains = false;
+
     EventEmitter.prototype.domain = undefined;
     EventEmitter.prototype._events = undefined;
     EventEmitter.prototype._maxListeners = undefined;
@@ -31563,30 +32587,37 @@
     // By default EventEmitters will print a warning if more than 10 listeners are
     // added to it. This is a useful default which helps finding memory leaks.
     EventEmitter.defaultMaxListeners = 10;
-    EventEmitter.init = function () {
+
+    EventEmitter.init = function() {
       this.domain = null;
       if (EventEmitter.usingDomains) {
         // if there is an active domain, then attach to it.
         if (domain.active) ;
       }
+
       if (!this._events || this._events === Object.getPrototypeOf(this)._events) {
         this._events = new EventHandlers();
         this._eventsCount = 0;
       }
+
       this._maxListeners = this._maxListeners || undefined;
     };
 
     // Obviously not all Emitters should be limited to 10. This function allows
     // that to be increased. Set to zero for unlimited.
     EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
-      if (typeof n !== 'number' || n < 0 || isNaN(n)) throw new TypeError('"n" argument must be a positive number');
+      if (typeof n !== 'number' || n < 0 || isNaN(n))
+        throw new TypeError('"n" argument must be a positive number');
       this._maxListeners = n;
       return this;
     };
+
     function $getMaxListeners(that) {
-      if (that._maxListeners === undefined) return EventEmitter.defaultMaxListeners;
+      if (that._maxListeners === undefined)
+        return EventEmitter.defaultMaxListeners;
       return that._maxListeners;
     }
+
     EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
       return $getMaxListeners(this);
     };
@@ -31597,52 +32628,75 @@
     // the same number of arguments and thus do not get deoptimized, so the code
     // inside them can execute faster.
     function emitNone(handler, isFn, self) {
-      if (isFn) handler.call(self);else {
+      if (isFn)
+        handler.call(self);
+      else {
         var len = handler.length;
         var listeners = arrayClone(handler, len);
-        for (var i = 0; i < len; ++i) listeners[i].call(self);
+        for (var i = 0; i < len; ++i)
+          listeners[i].call(self);
       }
     }
     function emitOne(handler, isFn, self, arg1) {
-      if (isFn) handler.call(self, arg1);else {
+      if (isFn)
+        handler.call(self, arg1);
+      else {
         var len = handler.length;
         var listeners = arrayClone(handler, len);
-        for (var i = 0; i < len; ++i) listeners[i].call(self, arg1);
+        for (var i = 0; i < len; ++i)
+          listeners[i].call(self, arg1);
       }
     }
     function emitTwo(handler, isFn, self, arg1, arg2) {
-      if (isFn) handler.call(self, arg1, arg2);else {
+      if (isFn)
+        handler.call(self, arg1, arg2);
+      else {
         var len = handler.length;
         var listeners = arrayClone(handler, len);
-        for (var i = 0; i < len; ++i) listeners[i].call(self, arg1, arg2);
+        for (var i = 0; i < len; ++i)
+          listeners[i].call(self, arg1, arg2);
       }
     }
     function emitThree(handler, isFn, self, arg1, arg2, arg3) {
-      if (isFn) handler.call(self, arg1, arg2, arg3);else {
+      if (isFn)
+        handler.call(self, arg1, arg2, arg3);
+      else {
         var len = handler.length;
         var listeners = arrayClone(handler, len);
-        for (var i = 0; i < len; ++i) listeners[i].call(self, arg1, arg2, arg3);
+        for (var i = 0; i < len; ++i)
+          listeners[i].call(self, arg1, arg2, arg3);
       }
     }
+
     function emitMany(handler, isFn, self, args) {
-      if (isFn) handler.apply(self, args);else {
+      if (isFn)
+        handler.apply(self, args);
+      else {
         var len = handler.length;
         var listeners = arrayClone(handler, len);
-        for (var i = 0; i < len; ++i) listeners[i].apply(self, args);
+        for (var i = 0; i < len; ++i)
+          listeners[i].apply(self, args);
       }
     }
+
     EventEmitter.prototype.emit = function emit(type) {
       var er, handler, len, args, i, events, domain;
-      var doError = type === 'error';
+      var doError = (type === 'error');
+
       events = this._events;
-      if (events) doError = doError && events.error == null;else if (!doError) return false;
+      if (events)
+        doError = (doError && events.error == null);
+      else if (!doError)
+        return false;
+
       domain = this.domain;
 
       // If there is no 'error' event listener then throw.
       if (doError) {
         er = arguments[1];
         if (domain) {
-          if (!er) er = new Error('Uncaught, unspecified "error" event');
+          if (!er)
+            er = new Error('Uncaught, unspecified "error" event');
           er.domainEmitter = this;
           er.domain = domain;
           er.domainThrown = false;
@@ -31657,8 +32711,12 @@
         }
         return false;
       }
+
       handler = events[type];
-      if (!handler) return false;
+
+      if (!handler)
+        return false;
+
       var isFn = typeof handler === 'function';
       len = arguments.length;
       switch (len) {
@@ -31678,16 +32736,22 @@
         // slower
         default:
           args = new Array(len - 1);
-          for (i = 1; i < len; i++) args[i - 1] = arguments[i];
+          for (i = 1; i < len; i++)
+            args[i - 1] = arguments[i];
           emitMany(handler, isFn, this, args);
       }
+
       return true;
     };
+
     function _addListener(target, type, listener, prepend) {
       var m;
       var events;
       var existing;
-      if (typeof listener !== 'function') throw new TypeError('"listener" argument must be a function');
+
+      if (typeof listener !== 'function')
+        throw new TypeError('"listener" argument must be a function');
+
       events = target._events;
       if (!events) {
         events = target._events = new EventHandlers();
@@ -31696,7 +32760,8 @@
         // To avoid recursion in the case that type === "newListener"! Before
         // adding it to the listeners, first emit "newListener".
         if (events.newListener) {
-          target.emit('newListener', type, listener.listener ? listener.listener : listener);
+          target.emit('newListener', type,
+                      listener.listener ? listener.listener : listener);
 
           // Re-assign `events` because a newListener handler could have caused the
           // this._events to be assigned to a new object
@@ -31704,6 +32769,7 @@
         }
         existing = events[type];
       }
+
       if (!existing) {
         // Optimize the case of one listener. Don't need the extra array object.
         existing = events[type] = listener;
@@ -31711,7 +32777,8 @@
       } else {
         if (typeof existing === 'function') {
           // Adding the second element, need to change to array.
-          existing = events[type] = prepend ? [listener, existing] : [existing, listener];
+          existing = events[type] = prepend ? [listener, existing] :
+                                              [existing, listener];
         } else {
           // If we've already got an array, just append.
           if (prepend) {
@@ -31726,7 +32793,9 @@
           m = $getMaxListeners(target);
           if (m && m > 0 && existing.length > m) {
             existing.warned = true;
-            var w = new Error('Possible EventEmitter memory leak detected. ' + existing.length + ' ' + type + ' listeners added. ' + 'Use emitter.setMaxListeners() to increase limit');
+            var w = new Error('Possible EventEmitter memory leak detected. ' +
+                                existing.length + ' ' + type + ' listeners added. ' +
+                                'Use emitter.setMaxListeners() to increase limit');
             w.name = 'MaxListenersExceededWarning';
             w.emitter = target;
             w.type = type;
@@ -31735,6 +32804,7 @@
           }
         }
       }
+
       return target;
     }
     function emitWarning(e) {
@@ -31743,10 +32813,14 @@
     EventEmitter.prototype.addListener = function addListener(type, listener) {
       return _addListener(this, type, listener, false);
     };
+
     EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-    EventEmitter.prototype.prependListener = function prependListener(type, listener) {
-      return _addListener(this, type, listener, true);
-    };
+
+    EventEmitter.prototype.prependListener =
+        function prependListener(type, listener) {
+          return _addListener(this, type, listener, true);
+        };
+
     function _onceWrap(target, type, listener) {
       var fired = false;
       function g() {
@@ -31759,139 +32833,199 @@
       g.listener = listener;
       return g;
     }
+
     EventEmitter.prototype.once = function once(type, listener) {
-      if (typeof listener !== 'function') throw new TypeError('"listener" argument must be a function');
+      if (typeof listener !== 'function')
+        throw new TypeError('"listener" argument must be a function');
       this.on(type, _onceWrap(this, type, listener));
       return this;
     };
-    EventEmitter.prototype.prependOnceListener = function prependOnceListener(type, listener) {
-      if (typeof listener !== 'function') throw new TypeError('"listener" argument must be a function');
-      this.prependListener(type, _onceWrap(this, type, listener));
-      return this;
-    };
+
+    EventEmitter.prototype.prependOnceListener =
+        function prependOnceListener(type, listener) {
+          if (typeof listener !== 'function')
+            throw new TypeError('"listener" argument must be a function');
+          this.prependListener(type, _onceWrap(this, type, listener));
+          return this;
+        };
 
     // emits a 'removeListener' event iff the listener was removed
-    EventEmitter.prototype.removeListener = function removeListener(type, listener) {
-      var list, events, position, i, originalListener;
-      if (typeof listener !== 'function') throw new TypeError('"listener" argument must be a function');
-      events = this._events;
-      if (!events) return this;
-      list = events[type];
-      if (!list) return this;
-      if (list === listener || list.listener && list.listener === listener) {
-        if (--this._eventsCount === 0) this._events = new EventHandlers();else {
-          delete events[type];
-          if (events.removeListener) this.emit('removeListener', type, list.listener || listener);
-        }
-      } else if (typeof list !== 'function') {
-        position = -1;
-        for (i = list.length; i-- > 0;) {
-          if (list[i] === listener || list[i].listener && list[i].listener === listener) {
-            originalListener = list[i].listener;
-            position = i;
-            break;
-          }
-        }
-        if (position < 0) return this;
-        if (list.length === 1) {
-          list[0] = undefined;
-          if (--this._eventsCount === 0) {
-            this._events = new EventHandlers();
+    EventEmitter.prototype.removeListener =
+        function removeListener(type, listener) {
+          var list, events, position, i, originalListener;
+
+          if (typeof listener !== 'function')
+            throw new TypeError('"listener" argument must be a function');
+
+          events = this._events;
+          if (!events)
             return this;
-          } else {
-            delete events[type];
+
+          list = events[type];
+          if (!list)
+            return this;
+
+          if (list === listener || (list.listener && list.listener === listener)) {
+            if (--this._eventsCount === 0)
+              this._events = new EventHandlers();
+            else {
+              delete events[type];
+              if (events.removeListener)
+                this.emit('removeListener', type, list.listener || listener);
+            }
+          } else if (typeof list !== 'function') {
+            position = -1;
+
+            for (i = list.length; i-- > 0;) {
+              if (list[i] === listener ||
+                  (list[i].listener && list[i].listener === listener)) {
+                originalListener = list[i].listener;
+                position = i;
+                break;
+              }
+            }
+
+            if (position < 0)
+              return this;
+
+            if (list.length === 1) {
+              list[0] = undefined;
+              if (--this._eventsCount === 0) {
+                this._events = new EventHandlers();
+                return this;
+              } else {
+                delete events[type];
+              }
+            } else {
+              spliceOne(list, position);
+            }
+
+            if (events.removeListener)
+              this.emit('removeListener', type, originalListener || listener);
           }
-        } else {
-          spliceOne(list, position);
-        }
-        if (events.removeListener) this.emit('removeListener', type, originalListener || listener);
-      }
-      return this;
-    };
-    EventEmitter.prototype.removeAllListeners = function removeAllListeners(type) {
-      var listeners, events;
-      events = this._events;
-      if (!events) return this;
 
-      // not listening for removeListener, no need to emit
-      if (!events.removeListener) {
-        if (arguments.length === 0) {
-          this._events = new EventHandlers();
-          this._eventsCount = 0;
-        } else if (events[type]) {
-          if (--this._eventsCount === 0) this._events = new EventHandlers();else delete events[type];
-        }
-        return this;
-      }
-
-      // emit removeListener for all listeners on all events
-      if (arguments.length === 0) {
-        var keys = Object.keys(events);
-        for (var i = 0, key; i < keys.length; ++i) {
-          key = keys[i];
-          if (key === 'removeListener') continue;
-          this.removeAllListeners(key);
-        }
-        this.removeAllListeners('removeListener');
-        this._events = new EventHandlers();
-        this._eventsCount = 0;
-        return this;
-      }
-      listeners = events[type];
-      if (typeof listeners === 'function') {
-        this.removeListener(type, listeners);
-      } else if (listeners) {
-        // LIFO order
-        do {
-          this.removeListener(type, listeners[listeners.length - 1]);
-        } while (listeners[0]);
-      }
-      return this;
+          return this;
+        };
+        
+    // Alias for removeListener added in NodeJS 10.0
+    // https://nodejs.org/api/events.html#events_emitter_off_eventname_listener
+    EventEmitter.prototype.off = function(type, listener){
+        return this.removeListener(type, listener);
     };
+
+    EventEmitter.prototype.removeAllListeners =
+        function removeAllListeners(type) {
+          var listeners, events;
+
+          events = this._events;
+          if (!events)
+            return this;
+
+          // not listening for removeListener, no need to emit
+          if (!events.removeListener) {
+            if (arguments.length === 0) {
+              this._events = new EventHandlers();
+              this._eventsCount = 0;
+            } else if (events[type]) {
+              if (--this._eventsCount === 0)
+                this._events = new EventHandlers();
+              else
+                delete events[type];
+            }
+            return this;
+          }
+
+          // emit removeListener for all listeners on all events
+          if (arguments.length === 0) {
+            var keys = Object.keys(events);
+            for (var i = 0, key; i < keys.length; ++i) {
+              key = keys[i];
+              if (key === 'removeListener') continue;
+              this.removeAllListeners(key);
+            }
+            this.removeAllListeners('removeListener');
+            this._events = new EventHandlers();
+            this._eventsCount = 0;
+            return this;
+          }
+
+          listeners = events[type];
+
+          if (typeof listeners === 'function') {
+            this.removeListener(type, listeners);
+          } else if (listeners) {
+            // LIFO order
+            do {
+              this.removeListener(type, listeners[listeners.length - 1]);
+            } while (listeners[0]);
+          }
+
+          return this;
+        };
+
     EventEmitter.prototype.listeners = function listeners(type) {
       var evlistener;
       var ret;
       var events = this._events;
-      if (!events) ret = [];else {
+
+      if (!events)
+        ret = [];
+      else {
         evlistener = events[type];
-        if (!evlistener) ret = [];else if (typeof evlistener === 'function') ret = [evlistener.listener || evlistener];else ret = unwrapListeners(evlistener);
+        if (!evlistener)
+          ret = [];
+        else if (typeof evlistener === 'function')
+          ret = [evlistener.listener || evlistener];
+        else
+          ret = unwrapListeners(evlistener);
       }
+
       return ret;
     };
-    EventEmitter.listenerCount = function (emitter, type) {
+
+    EventEmitter.listenerCount = function(emitter, type) {
       if (typeof emitter.listenerCount === 'function') {
         return emitter.listenerCount(type);
       } else {
         return listenerCount$1.call(emitter, type);
       }
     };
+
     EventEmitter.prototype.listenerCount = listenerCount$1;
     function listenerCount$1(type) {
       var events = this._events;
+
       if (events) {
         var evlistener = events[type];
+
         if (typeof evlistener === 'function') {
           return 1;
         } else if (evlistener) {
           return evlistener.length;
         }
       }
+
       return 0;
     }
+
     EventEmitter.prototype.eventNames = function eventNames() {
       return this._eventsCount > 0 ? Reflect.ownKeys(this._events) : [];
     };
 
     // About 1.5x faster than the two-arg version of Array#splice().
     function spliceOne(list, index) {
-      for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1) list[i] = list[k];
+      for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1)
+        list[i] = list[k];
       list.pop();
     }
+
     function arrayClone(arr, i) {
       var copy = new Array(i);
-      while (i--) copy[i] = arr[i];
+      while (i--)
+        copy[i] = arr[i];
       return copy;
     }
+
     function unwrapListeners(arr) {
       var ret = new Array(arr.length);
       for (var i = 0; i < ret.length; ++i) {
@@ -31900,215 +33034,8 @@
       return ret;
     }
 
-    // shim for using process in browser
-    // based off https://github.com/defunctzombie/node-process/blob/master/browser.js
-
-    function defaultSetTimout() {
-      throw new Error('setTimeout has not been defined');
-    }
-    function defaultClearTimeout() {
-      throw new Error('clearTimeout has not been defined');
-    }
-    var cachedSetTimeout = defaultSetTimout;
-    var cachedClearTimeout = defaultClearTimeout;
-    if (typeof global$1.setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    }
-    if (typeof global$1.clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    }
-    function runTimeout(fun) {
-      if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-      }
-      // if setTimeout wasn't available but was latter defined
-      if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-      }
-      try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-      } catch (e) {
-        try {
-          // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-          return cachedSetTimeout.call(null, fun, 0);
-        } catch (e) {
-          // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-          return cachedSetTimeout.call(this, fun, 0);
-        }
-      }
-    }
-    function runClearTimeout(marker) {
-      if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-      }
-      // if clearTimeout wasn't available but was latter defined
-      if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-      }
-      try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-      } catch (e) {
-        try {
-          // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-          return cachedClearTimeout.call(null, marker);
-        } catch (e) {
-          // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-          // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-          return cachedClearTimeout.call(this, marker);
-        }
-      }
-    }
-    var queue = [];
-    var draining = false;
-    var currentQueue;
-    var queueIndex = -1;
-    function cleanUpNextTick() {
-      if (!draining || !currentQueue) {
-        return;
-      }
-      draining = false;
-      if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-      } else {
-        queueIndex = -1;
-      }
-      if (queue.length) {
-        drainQueue();
-      }
-    }
-    function drainQueue() {
-      if (draining) {
-        return;
-      }
-      var timeout = runTimeout(cleanUpNextTick);
-      draining = true;
-      var len = queue.length;
-      while (len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-          if (currentQueue) {
-            currentQueue[queueIndex].run();
-          }
-        }
-        queueIndex = -1;
-        len = queue.length;
-      }
-      currentQueue = null;
-      draining = false;
-      runClearTimeout(timeout);
-    }
-    function nextTick(fun) {
-      var args = new Array(arguments.length - 1);
-      if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-          args[i - 1] = arguments[i];
-        }
-      }
-      queue.push(new Item(fun, args));
-      if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-      }
-    }
-    // v8 likes predictible objects
-    function Item(fun, array) {
-      this.fun = fun;
-      this.array = array;
-    }
-    Item.prototype.run = function () {
-      this.fun.apply(null, this.array);
-    };
-    var title = 'browser';
-    var platform = 'browser';
-    var browser = true;
-    var env = {};
-    var argv = [];
-    var version = ''; // empty string to avoid regexp issues
-    var versions = {};
-    var release = {};
-    var config = {};
-    function noop$1() {}
-    var on$1 = noop$1;
-    var addListener = noop$1;
-    var once = noop$1;
-    var off = noop$1;
-    var removeListener = noop$1;
-    var removeAllListeners = noop$1;
-    var emit = noop$1;
-    function binding(name) {
-      throw new Error('process.binding is not supported');
-    }
-    function cwd() {
-      return '/';
-    }
-    function chdir(dir) {
-      throw new Error('process.chdir is not supported');
-    }
-    function umask() {
-      return 0;
-    }
-
-    // from https://github.com/kumavis/browser-process-hrtime/blob/master/index.js
-    var performance = global$1.performance || {};
-    var performanceNow = performance.now || performance.mozNow || performance.msNow || performance.oNow || performance.webkitNow || function () {
-      return new Date().getTime();
-    };
-
-    // generate timestamp or delta
-    // see http://nodejs.org/api/process.html#process_process_hrtime
-    function hrtime(previousTimestamp) {
-      var clocktime = performanceNow.call(performance) * 1e-3;
-      var seconds = Math.floor(clocktime);
-      var nanoseconds = Math.floor(clocktime % 1 * 1e9);
-      if (previousTimestamp) {
-        seconds = seconds - previousTimestamp[0];
-        nanoseconds = nanoseconds - previousTimestamp[1];
-        if (nanoseconds < 0) {
-          seconds--;
-          nanoseconds += 1e9;
-        }
-      }
-      return [seconds, nanoseconds];
-    }
-    var startTime = new Date();
-    function uptime() {
-      var currentTime = new Date();
-      var dif = currentTime - startTime;
-      return dif / 1000;
-    }
-    var process$1 = {
-      nextTick: nextTick,
-      title: title,
-      browser: browser,
-      env: env,
-      argv: argv,
-      version: version,
-      versions: versions,
-      on: on$1,
-      addListener: addListener,
-      once: once,
-      off: off,
-      removeListener: removeListener,
-      removeAllListeners: removeAllListeners,
-      emit: emit,
-      binding: binding,
-      cwd: cwd,
-      chdir: chdir,
-      umask: umask,
-      hrtime: hrtime,
-      platform: platform,
-      release: release,
-      config: config,
-      uptime: uptime
-    };
     var inherits;
-    if (typeof Object.create === 'function') {
+    if (typeof Object.create === 'function'){
       inherits = function inherits(ctor, superCtor) {
         // implementation from standard node.js 'util' module
         ctor.super_ = superCtor;
@@ -32130,7 +33057,7 @@
         ctor.prototype.constructor = ctor;
       };
     }
-    var inherits$1 = inherits;
+
     var formatRegExp = /%[sdj%]/g;
     function format(f) {
       if (!isString(f)) {
@@ -32140,17 +33067,16 @@
         }
         return objects.join(' ');
       }
+
       var i = 1;
       var args = arguments;
       var len = args.length;
-      var str = String(f).replace(formatRegExp, function (x) {
+      var str = String(f).replace(formatRegExp, function(x) {
         if (x === '%%') return '%';
         if (i >= len) return x;
         switch (x) {
-          case '%s':
-            return String(args[i++]);
-          case '%d':
-            return Number(args[i++]);
+          case '%s': return String(args[i++]);
+          case '%d': return Number(args[i++]);
           case '%j':
             try {
               return JSON.stringify(args[i++]);
@@ -32177,19 +33103,21 @@
     function deprecate(fn, msg) {
       // Allow for deprecating things in the process of starting up.
       if (isUndefined(global$1.process)) {
-        return function () {
+        return function() {
           return deprecate(fn, msg).apply(this, arguments);
         };
       }
-      if (process$1.noDeprecation === true) {
+
+      if (browser$1.noDeprecation === true) {
         return fn;
       }
+
       var warned = false;
       function deprecated() {
         if (!warned) {
-          if (process$1.throwDeprecation) {
+          if (browser$1.throwDeprecation) {
             throw new Error(msg);
-          } else if (process$1.traceDeprecation) {
+          } else if (browser$1.traceDeprecation) {
             console.trace(msg);
           } else {
             console.error(msg);
@@ -32198,22 +33126,25 @@
         }
         return fn.apply(this, arguments);
       }
+
       return deprecated;
     }
+
     var debugs = {};
     var debugEnviron;
     function debuglog(set) {
-      if (isUndefined(debugEnviron)) debugEnviron = process$1.env.NODE_DEBUG || '';
+      if (isUndefined(debugEnviron))
+        debugEnviron = browser$1.env.NODE_DEBUG || '';
       set = set.toUpperCase();
       if (!debugs[set]) {
         if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
           var pid = 0;
-          debugs[set] = function () {
+          debugs[set] = function() {
             var msg = format.apply(null, arguments);
             console.error('%s %d: %s', set, pid, msg);
           };
         } else {
-          debugs[set] = function () {};
+          debugs[set] = function() {};
         }
       }
       return debugs[set];
@@ -32254,19 +33185,19 @@
 
     // http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
     inspect.colors = {
-      'bold': [1, 22],
-      'italic': [3, 23],
-      'underline': [4, 24],
-      'inverse': [7, 27],
-      'white': [37, 39],
-      'grey': [90, 39],
-      'black': [30, 39],
-      'blue': [34, 39],
-      'cyan': [36, 39],
-      'green': [32, 39],
-      'magenta': [35, 39],
-      'red': [31, 39],
-      'yellow': [33, 39]
+      'bold' : [1, 22],
+      'italic' : [3, 23],
+      'underline' : [4, 24],
+      'inverse' : [7, 27],
+      'white' : [37, 39],
+      'grey' : [90, 39],
+      'black' : [30, 39],
+      'blue' : [34, 39],
+      'cyan' : [36, 39],
+      'green' : [32, 39],
+      'magenta' : [35, 39],
+      'red' : [31, 39],
+      'yellow' : [33, 39]
     };
 
     // Don't use 'blue' not visible on cmd.exe
@@ -32281,32 +33212,46 @@
       // "name": intentionally not styling
       'regexp': 'red'
     };
+
+
     function stylizeWithColor(str, styleType) {
       var style = inspect.styles[styleType];
+
       if (style) {
-        return '\u001b[' + inspect.colors[style][0] + 'm' + str + '\u001b[' + inspect.colors[style][1] + 'm';
+        return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+               '\u001b[' + inspect.colors[style][1] + 'm';
       } else {
         return str;
       }
     }
+
+
     function stylizeNoColor(str, styleType) {
       return str;
     }
+
+
     function arrayToHash(array) {
       var hash = {};
-      array.forEach(function (val, idx) {
+
+      array.forEach(function(val, idx) {
         hash[val] = true;
       });
+
       return hash;
     }
+
+
     function formatValue(ctx, value, recurseTimes) {
       // Provide a hook for user-specified inspect functions.
       // Check that value is an object with an inspect function on it
-      if (ctx.customInspect && value && isFunction(value.inspect) &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
+      if (ctx.customInspect &&
+          value &&
+          isFunction(value.inspect) &&
+          // Filter out the util module, it's inspect function is special
+          value.inspect !== inspect &&
+          // Also filter out any prototype objects using the circular check.
+          !(value.constructor && value.constructor.prototype === value)) {
         var ret = value.inspect(recurseTimes, ctx);
         if (!isString(ret)) {
           ret = formatValue(ctx, ret, recurseTimes);
@@ -32323,13 +33268,15 @@
       // Look up the keys of the object.
       var keys = Object.keys(value);
       var visibleKeys = arrayToHash(keys);
+
       if (ctx.showHidden) {
         keys = Object.getOwnPropertyNames(value);
       }
 
       // IE doesn't make error fields non-enumerable
       // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
-      if (isError(value) && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+      if (isError(value)
+          && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
         return formatError(value);
       }
 
@@ -32349,9 +33296,8 @@
           return formatError(value);
         }
       }
-      var base = '',
-        array = false,
-        braces = ['{', '}'];
+
+      var base = '', array = false, braces = ['{', '}'];
 
       // Make Array say that they are Array
       if (isArray(value)) {
@@ -32379,9 +33325,11 @@
       if (isError(value)) {
         base = ' ' + formatError(value);
       }
+
       if (keys.length === 0 && (!array || value.length == 0)) {
         return braces[0] + base + braces[1];
       }
+
       if (recurseTimes < 0) {
         if (isRegExp(value)) {
           return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
@@ -32389,53 +33337,71 @@
           return ctx.stylize('[Object]', 'special');
         }
       }
+
       ctx.seen.push(value);
+
       var output;
       if (array) {
         output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
       } else {
-        output = keys.map(function (key) {
+        output = keys.map(function(key) {
           return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
         });
       }
+
       ctx.seen.pop();
+
       return reduceToSingleString(output, base, braces);
     }
+
+
     function formatPrimitive(ctx, value) {
-      if (isUndefined(value)) return ctx.stylize('undefined', 'undefined');
+      if (isUndefined(value))
+        return ctx.stylize('undefined', 'undefined');
       if (isString(value)) {
-        var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '').replace(/'/g, "\\'").replace(/\\"/g, '"') + '\'';
+        var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                                 .replace(/'/g, "\\'")
+                                                 .replace(/\\"/g, '"') + '\'';
         return ctx.stylize(simple, 'string');
       }
-      if (isNumber(value)) return ctx.stylize('' + value, 'number');
-      if (isBoolean(value)) return ctx.stylize('' + value, 'boolean');
+      if (isNumber(value))
+        return ctx.stylize('' + value, 'number');
+      if (isBoolean(value))
+        return ctx.stylize('' + value, 'boolean');
       // For some reason typeof null is "object", so special case here.
-      if (isNull(value)) return ctx.stylize('null', 'null');
+      if (isNull(value))
+        return ctx.stylize('null', 'null');
     }
+
+
     function formatError(value) {
       return '[' + Error.prototype.toString.call(value) + ']';
     }
+
+
     function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
       var output = [];
       for (var i = 0, l = value.length; i < l; ++i) {
         if (hasOwnProperty(value, String(i))) {
-          output.push(formatProperty(ctx, value, recurseTimes, visibleKeys, String(i), true));
+          output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+              String(i), true));
         } else {
           output.push('');
         }
       }
-      keys.forEach(function (key) {
+      keys.forEach(function(key) {
         if (!key.match(/^\d+$/)) {
-          output.push(formatProperty(ctx, value, recurseTimes, visibleKeys, key, true));
+          output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+              key, true));
         }
       });
       return output;
     }
+
+
     function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
       var name, str, desc;
-      desc = Object.getOwnPropertyDescriptor(value, key) || {
-        value: value[key]
-      };
+      desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
       if (desc.get) {
         if (desc.set) {
           str = ctx.stylize('[Getter/Setter]', 'special');
@@ -32459,11 +33425,11 @@
           }
           if (str.indexOf('\n') > -1) {
             if (array) {
-              str = str.split('\n').map(function (line) {
+              str = str.split('\n').map(function(line) {
                 return '  ' + line;
               }).join('\n').substr(2);
             } else {
-              str = '\n' + str.split('\n').map(function (line) {
+              str = '\n' + str.split('\n').map(function(line) {
                 return '   ' + line;
               }).join('\n');
             }
@@ -32481,64 +33447,91 @@
           name = name.substr(1, name.length - 2);
           name = ctx.stylize(name, 'name');
         } else {
-          name = name.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
+          name = name.replace(/'/g, "\\'")
+                     .replace(/\\"/g, '"')
+                     .replace(/(^"|"$)/g, "'");
           name = ctx.stylize(name, 'string');
         }
       }
+
       return name + ': ' + str;
     }
+
+
     function reduceToSingleString(output, base, braces) {
-      var length = output.reduce(function (prev, cur) {
+      var length = output.reduce(function(prev, cur) {
         if (cur.indexOf('\n') >= 0) ;
         return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
       }, 0);
+
       if (length > 60) {
-        return braces[0] + (base === '' ? '' : base + '\n ') + ' ' + output.join(',\n  ') + ' ' + braces[1];
+        return braces[0] +
+               (base === '' ? '' : base + '\n ') +
+               ' ' +
+               output.join(',\n  ') +
+               ' ' +
+               braces[1];
       }
+
       return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
     }
+
 
     // NOTE: These type checking functions intentionally don't use `instanceof`
     // because it is fragile and can be easily faked with `Object.create()`.
     function isArray(ar) {
       return Array.isArray(ar);
     }
+
     function isBoolean(arg) {
       return typeof arg === 'boolean';
     }
+
     function isNull(arg) {
       return arg === null;
     }
+
     function isNumber(arg) {
       return typeof arg === 'number';
     }
+
     function isString(arg) {
       return typeof arg === 'string';
     }
+
     function isUndefined(arg) {
       return arg === void 0;
     }
+
     function isRegExp(re) {
       return isObject(re) && objectToString(re) === '[object RegExp]';
     }
+
     function isObject(arg) {
       return typeof arg === 'object' && arg !== null;
     }
+
     function isDate(d) {
       return isObject(d) && objectToString(d) === '[object Date]';
     }
+
     function isError(e) {
-      return isObject(e) && (objectToString(e) === '[object Error]' || e instanceof Error);
+      return isObject(e) &&
+          (objectToString(e) === '[object Error]' || e instanceof Error);
     }
+
     function isFunction(arg) {
       return typeof arg === 'function';
     }
+
     function objectToString(o) {
       return Object.prototype.toString.call(o);
     }
+
     function _extend(origin, add) {
       // Don't do anything if add isn't an object
       if (!add || !isObject(add)) return origin;
+
       var keys = Object.keys(add);
       var i = keys.length;
       while (i--) {
@@ -32549,29 +33542,27 @@
     function hasOwnProperty(obj, prop) {
       return Object.prototype.hasOwnProperty.call(obj, prop);
     }
+
     function BufferList() {
       this.head = null;
       this.tail = null;
       this.length = 0;
     }
+
     BufferList.prototype.push = function (v) {
-      var entry = {
-        data: v,
-        next: null
-      };
+      var entry = { data: v, next: null };
       if (this.length > 0) this.tail.next = entry;else this.head = entry;
       this.tail = entry;
       ++this.length;
     };
+
     BufferList.prototype.unshift = function (v) {
-      var entry = {
-        data: v,
-        next: this.head
-      };
+      var entry = { data: v, next: this.head };
       if (this.length === 0) this.tail = entry;
       this.head = entry;
       ++this.length;
     };
+
     BufferList.prototype.shift = function () {
       if (this.length === 0) return;
       var ret = this.head.data;
@@ -32579,19 +33570,21 @@
       --this.length;
       return ret;
     };
+
     BufferList.prototype.clear = function () {
       this.head = this.tail = null;
       this.length = 0;
     };
+
     BufferList.prototype.join = function (s) {
       if (this.length === 0) return '';
       var p = this.head;
       var ret = '' + p.data;
       while (p = p.next) {
         ret += s + p.data;
-      }
-      return ret;
+      }return ret;
     };
+
     BufferList.prototype.concat = function (n) {
       if (this.length === 0) return Buffer.alloc(0);
       if (this.length === 1) return this.head.data;
@@ -32607,24 +33600,35 @@
     };
 
     // Copyright Joyent, Inc. and other Node contributors.
-    var isBufferEncoding = Buffer.isEncoding || function (encoding) {
-      switch (encoding && encoding.toLowerCase()) {
-        case 'hex':
-        case 'utf8':
-        case 'utf-8':
-        case 'ascii':
-        case 'binary':
-        case 'base64':
-        case 'ucs2':
-        case 'ucs-2':
-        case 'utf16le':
-        case 'utf-16le':
-        case 'raw':
-          return true;
-        default:
-          return false;
-      }
-    };
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a
+    // copy of this software and associated documentation files (the
+    // "Software"), to deal in the Software without restriction, including
+    // without limitation the rights to use, copy, modify, merge, publish,
+    // distribute, sublicense, and/or sell copies of the Software, and to permit
+    // persons to whom the Software is furnished to do so, subject to the
+    // following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included
+    // in all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+    // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+    // USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+    var isBufferEncoding = Buffer.isEncoding
+      || function(encoding) {
+           switch (encoding && encoding.toLowerCase()) {
+             case 'hex': case 'utf8': case 'utf-8': case 'ascii': case 'binary': case 'base64': case 'ucs2': case 'ucs-2': case 'utf16le': case 'utf-16le': case 'raw': return true;
+             default: return false;
+           }
+         };
+
+
     function assertEncoding(encoding) {
       if (encoding && !isBufferEncoding(encoding)) {
         throw new Error('Unknown encoding: ' + encoding);
@@ -32681,16 +33685,19 @@
     // currently works, but converting a String to a Buffer (via `new Buffer`, or
     // Buffer#write) will replace incomplete surrogates with the unicode
     // replacement character. See https://codereview.chromium.org/121173009/ .
-    StringDecoder.prototype.write = function (buffer) {
+    StringDecoder.prototype.write = function(buffer) {
       var charStr = '';
       // if our last write ended with an incomplete multibyte character
       while (this.charLength) {
         // determine how many remaining bytes this buffer has to offer for this char
-        var available = buffer.length >= this.charLength - this.charReceived ? this.charLength - this.charReceived : buffer.length;
+        var available = (buffer.length >= this.charLength - this.charReceived) ?
+            this.charLength - this.charReceived :
+            buffer.length;
 
         // add the new bytes to the char buffer
         buffer.copy(this.charBuffer, this.charReceived, 0, available);
         this.charReceived += available;
+
         if (this.charReceived < this.charLength) {
           // still not enough chars in this buffer? wait for more ...
           return '';
@@ -32720,13 +33727,16 @@
 
       // determine and set charLength / charReceived
       this.detectIncompleteChar(buffer);
+
       var end = buffer.length;
       if (this.charLength) {
         // buffer the incomplete character bytes we got
         buffer.copy(this.charBuffer, 0, buffer.length - this.charReceived, end);
         end -= this.charReceived;
       }
+
       charStr += buffer.toString(this.encoding, 0, end);
+
       var end = charStr.length - 1;
       var charCode = charStr.charCodeAt(end);
       // CESU-8: lead surrogate (D800-DBFF) is also the incomplete character
@@ -32747,9 +33757,9 @@
     // the end of the given buffer. If so, it sets this.charLength to the byte
     // length that character, and sets this.charReceived to the number of bytes
     // that are available for this character.
-    StringDecoder.prototype.detectIncompleteChar = function (buffer) {
+    StringDecoder.prototype.detectIncompleteChar = function(buffer) {
       // determine how many bytes we have to check at the end of this buffer
-      var i = buffer.length >= 3 ? 3 : buffer.length;
+      var i = (buffer.length >= 3) ? 3 : buffer.length;
 
       // Figure out if one of the last i bytes of our buffer announces an
       // incomplete char.
@@ -32778,31 +33788,41 @@
       }
       this.charReceived = i;
     };
-    StringDecoder.prototype.end = function (buffer) {
+
+    StringDecoder.prototype.end = function(buffer) {
       var res = '';
-      if (buffer && buffer.length) res = this.write(buffer);
+      if (buffer && buffer.length)
+        res = this.write(buffer);
+
       if (this.charReceived) {
         var cr = this.charReceived;
         var buf = this.charBuffer;
         var enc = this.encoding;
         res += buf.slice(0, cr).toString(enc);
       }
+
       return res;
     };
+
     function passThroughWrite(buffer) {
       return buffer.toString(this.encoding);
     }
+
     function utf16DetectIncompleteChar(buffer) {
       this.charReceived = buffer.length % 2;
       this.charLength = this.charReceived ? 2 : 0;
     }
+
     function base64DetectIncompleteChar(buffer) {
       this.charReceived = buffer.length % 3;
       this.charLength = this.charReceived ? 3 : 0;
     }
+
     Readable.ReadableState = ReadableState;
+
     var debug$1 = debuglog('stream');
-    inherits$1(Readable, EventEmitter);
+    inherits(Readable, EventEmitter);
+
     function prependListener(emitter, event, fn) {
       // Sadly this is not cacheable as some libraries bundle their own
       // event emitter implementation with them.
@@ -32813,18 +33833,25 @@
         // userland ones.  NEVER DO THIS. This is here only because this code needs
         // to continue to work with older versions of Node.js that do not include
         // the prependListener() method. The goal is to eventually remove this hack.
-        if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (Array.isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
+        if (!emitter._events || !emitter._events[event])
+          emitter.on(event, fn);
+        else if (Array.isArray(emitter._events[event]))
+          emitter._events[event].unshift(fn);
+        else
+          emitter._events[event] = [fn, emitter._events[event]];
       }
     }
-    function listenerCount(emitter, type) {
+    function listenerCount (emitter, type) {
       return emitter.listeners(type).length;
     }
     function ReadableState(options, stream) {
+
       options = options || {};
 
       // object stream flag. Used to make read(n) ignore n and to
       // make all the buffer merging and length checks go away
       this.objectMode = !!options.objectMode;
+
       if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
       // the point at which it stops calling _read() to fill the buffer
@@ -32834,7 +33861,7 @@
       this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
       // cast to ints.
-      this.highWaterMark = ~~this.highWaterMark;
+      this.highWaterMark = ~ ~this.highWaterMark;
 
       // A linked list is used to store data chunks instead of an array because the
       // linked list can remove elements from the beginning faster than
@@ -32875,6 +33902,7 @@
 
       // if true, a maybeReadMore has been scheduled
       this.readingMore = false;
+
       this.decoder = null;
       this.encoding = null;
       if (options.encoding) {
@@ -32883,12 +33911,16 @@
       }
     }
     function Readable(options) {
+
       if (!(this instanceof Readable)) return new Readable(options);
+
       this._readableState = new ReadableState(options, this);
 
       // legacy
       this.readable = true;
+
       if (options && typeof options.read === 'function') this._read = options.read;
+
       EventEmitter.call(this);
     }
 
@@ -32898,6 +33930,7 @@
     // write() some more.
     Readable.prototype.push = function (chunk, encoding) {
       var state = this._readableState;
+
       if (!state.objectMode && typeof chunk === 'string') {
         encoding = encoding || state.defaultEncoding;
         if (encoding !== state.encoding) {
@@ -32905,6 +33938,7 @@
           encoding = '';
         }
       }
+
       return readableAddChunk(this, state, chunk, encoding, false);
     };
 
@@ -32913,9 +33947,11 @@
       var state = this._readableState;
       return readableAddChunk(this, state, chunk, '', true);
     };
+
     Readable.prototype.isPaused = function () {
       return this._readableState.flowing === false;
     };
+
     function readableAddChunk(stream, state, chunk, encoding, addToFront) {
       var er = chunkInvalid(state, chunk);
       if (er) {
@@ -32936,6 +33972,7 @@
             chunk = state.decoder.write(chunk);
             skipAdd = !state.objectMode && chunk.length === 0;
           }
+
           if (!addToFront) state.reading = false;
 
           // Don't add to the buffer if we've decoded to an empty string chunk and
@@ -32949,14 +33986,17 @@
               // update the buffer info.
               state.length += state.objectMode ? 1 : chunk.length;
               if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);
+
               if (state.needReadable) emitReadable(stream);
             }
           }
+
           maybeReadMore(stream, state);
         }
       } else if (!addToFront) {
         state.reading = false;
       }
+
       return needMoreData(state);
     }
 
@@ -33023,6 +34063,7 @@
       n = parseInt(n, 10);
       var state = this._readableState;
       var nOrig = n;
+
       if (n !== 0) state.emittedReadable = false;
 
       // if we're doing read(0) to trigger a readable event, but we
@@ -33033,6 +34074,7 @@
         if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);
         return null;
       }
+
       n = howMuchToRead(n, state);
 
       // if we've ended, and we're now clear, then finish it up.
@@ -33091,14 +34133,17 @@
         // and we need to re-evaluate how much data we can return to the user.
         if (!state.reading) n = howMuchToRead(nOrig, state);
       }
+
       var ret;
       if (n > 0) ret = fromList(n, state);else ret = null;
+
       if (ret === null) {
         state.needReadable = true;
         n = 0;
       } else {
         state.length -= n;
       }
+
       if (state.length === 0) {
         // If we have nothing in the buffer, then we want to know
         // as soon as we *do* get something into the buffer.
@@ -33107,16 +34152,20 @@
         // If we tried to read() past the EOF, then emit end on the next tick.
         if (nOrig !== n && state.ended) endReadable(this);
       }
+
       if (ret !== null) this.emit('data', ret);
+
       return ret;
     };
+
     function chunkInvalid(state, chunk) {
       var er = null;
-      if (!isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
+      if (!Buffer.isBuffer(chunk) && typeof chunk !== 'string' && chunk !== null && chunk !== undefined && !state.objectMode) {
         er = new TypeError('Invalid non-string/buffer chunk');
       }
       return er;
     }
+
     function onEofChunk(stream, state) {
       if (state.ended) return;
       if (state.decoder) {
@@ -33144,6 +34193,7 @@
         if (state.sync) nextTick(emitReadable_, stream);else emitReadable_(stream);
       }
     }
+
     function emitReadable_(stream) {
       debug$1('emit readable');
       stream.emit('readable');
@@ -33162,6 +34212,7 @@
         nextTick(maybeReadMore_, stream, state);
       }
     }
+
     function maybeReadMore_(stream, state) {
       var len = state.length;
       while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {
@@ -33181,9 +34232,11 @@
     Readable.prototype._read = function (n) {
       this.emit('error', new Error('not implemented'));
     };
+
     Readable.prototype.pipe = function (dest, pipeOpts) {
       var src = this;
       var state = this._readableState;
+
       switch (state.pipesCount) {
         case 0:
           state.pipes = dest;
@@ -33197,9 +34250,12 @@
       }
       state.pipesCount += 1;
       debug$1('pipe count=%d opts=%j', state.pipesCount, pipeOpts);
-      var doEnd = !pipeOpts || pipeOpts.end !== false;
+
+      var doEnd = (!pipeOpts || pipeOpts.end !== false);
+
       var endFn = doEnd ? onend : cleanup;
       if (state.endEmitted) nextTick(endFn);else src.once('end', endFn);
+
       dest.on('unpipe', onunpipe);
       function onunpipe(readable) {
         debug$1('onunpipe');
@@ -33207,6 +34263,7 @@
           cleanup();
         }
       }
+
       function onend() {
         debug$1('onend');
         dest.end();
@@ -33218,6 +34275,7 @@
       // too slow.
       var ondrain = pipeOnDrain(src);
       dest.on('drain', ondrain);
+
       var cleanedUp = false;
       function cleanup() {
         debug$1('cleanup');
@@ -33230,6 +34288,7 @@
         src.removeListener('end', onend);
         src.removeListener('end', cleanup);
         src.removeListener('data', ondata);
+
         cleanedUp = true;
 
         // if the reader is waiting for a drain event from this
@@ -33288,6 +34347,7 @@
         unpipe();
       }
       dest.once('finish', onfinish);
+
       function unpipe() {
         debug$1('unpipe');
         src.unpipe(dest);
@@ -33301,8 +34361,10 @@
         debug$1('pipe resume');
         src.resume();
       }
+
       return dest;
     };
+
     function pipeOnDrain(src) {
       return function () {
         var state = src._readableState;
@@ -33314,6 +34376,7 @@
         }
       };
     }
+
     Readable.prototype.unpipe = function (dest) {
       var state = this._readableState;
 
@@ -33324,6 +34387,7 @@
       if (state.pipesCount === 1) {
         // passed in one, but it's not the right one.
         if (dest && dest !== state.pipes) return this;
+
         if (!dest) dest = state.pipes;
 
         // got a match.
@@ -33343,19 +34407,22 @@
         state.pipes = null;
         state.pipesCount = 0;
         state.flowing = false;
+
         for (var _i = 0; _i < len; _i++) {
           dests[_i].emit('unpipe', this);
-        }
-        return this;
+        }return this;
       }
 
       // try to find the right one.
       var i = indexOf(state.pipes, dest);
       if (i === -1) return this;
+
       state.pipes.splice(i, 1);
       state.pipesCount -= 1;
       if (state.pipesCount === 1) state.pipes = state.pipes[0];
+
       dest.emit('unpipe', this);
+
       return this;
     };
 
@@ -33363,6 +34430,7 @@
     // Ensure readable listeners eventually get something
     Readable.prototype.on = function (ev, fn) {
       var res = EventEmitter.prototype.on.call(this, ev, fn);
+
       if (ev === 'data') {
         // Start flowing on next tick if stream isn't explicitly paused
         if (this._readableState.flowing !== false) this.resume();
@@ -33378,9 +34446,11 @@
           }
         }
       }
+
       return res;
     };
     Readable.prototype.addListener = Readable.prototype.on;
+
     function nReadingNextTick(self) {
       debug$1('readable nexttick read 0');
       self.read(0);
@@ -33397,23 +34467,27 @@
       }
       return this;
     };
+
     function resume(stream, state) {
       if (!state.resumeScheduled) {
         state.resumeScheduled = true;
         nextTick(resume_, stream, state);
       }
     }
+
     function resume_(stream, state) {
       if (!state.reading) {
         debug$1('resume read 0');
         stream.read(0);
       }
+
       state.resumeScheduled = false;
       state.awaitDrain = 0;
       stream.emit('resume');
       flow(stream);
       if (state.flowing && !state.reading) stream.read(0);
     }
+
     Readable.prototype.pause = function () {
       debug$1('call pause flowing=%j', this._readableState.flowing);
       if (false !== this._readableState.flowing) {
@@ -33423,6 +34497,7 @@
       }
       return this;
     };
+
     function flow(stream) {
       var state = stream._readableState;
       debug$1('flow', state.flowing);
@@ -33435,6 +34510,7 @@
     Readable.prototype.wrap = function (stream) {
       var state = this._readableState;
       var paused = false;
+
       var self = this;
       stream.on('end', function () {
         debug$1('wrapped end');
@@ -33442,14 +34518,17 @@
           var chunk = state.decoder.end();
           if (chunk && chunk.length) self.push(chunk);
         }
+
         self.push(null);
       });
+
       stream.on('data', function (chunk) {
         debug$1('wrapped data');
         if (state.decoder) chunk = state.decoder.write(chunk);
 
         // don't skip over falsy values in objectMode
         if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;
+
         var ret = self.push(chunk);
         if (!ret) {
           paused = true;
@@ -33484,6 +34563,7 @@
           stream.resume();
         }
       };
+
       return self;
     };
 
@@ -33497,6 +34577,7 @@
     function fromList(n, state) {
       // nothing buffered
       if (state.length === 0) return null;
+
       var ret;
       if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {
         // read it all, truncate the list
@@ -33506,6 +34587,7 @@
         // read part of list
         ret = fromListPartial(n, state.buffer, state.decoder);
       }
+
       return ret;
     }
 
@@ -33587,17 +34669,20 @@
       list.length -= c;
       return ret;
     }
+
     function endReadable(stream) {
       var state = stream._readableState;
 
       // If we get here before consuming all the bytes, then that is a
       // bug in node.  Should never happen.
       if (state.length > 0) throw new Error('"endReadable()" called on non-empty stream');
+
       if (!state.endEmitted) {
         state.ended = true;
         nextTick(endReadableNT, state, stream);
       }
     }
+
     function endReadableNT(state, stream) {
       // Check that we didn't get one last unshift.
       if (!state.endEmitted && state.length === 0) {
@@ -33606,11 +34691,13 @@
         stream.emit('end');
       }
     }
+
     function forEach(xs, f) {
       for (var i = 0, l = xs.length; i < l; i++) {
         f(xs[i], i);
       }
     }
+
     function indexOf(xs, x) {
       for (var i = 0, l = xs.length; i < l; i++) {
         if (xs[i] === x) return i;
@@ -33619,15 +34706,21 @@
     }
 
     // A bit simpler than readable streams.
+    // Implement an async ._write(chunk, encoding, cb), and it'll handle all
+    // the drain event emission and buffering.
+
     Writable.WritableState = WritableState;
-    inherits$1(Writable, EventEmitter);
+    inherits(Writable, EventEmitter);
+
     function nop() {}
+
     function WriteReq(chunk, encoding, cb) {
       this.chunk = chunk;
       this.encoding = encoding;
       this.callback = cb;
       this.next = null;
     }
+
     function WritableState(options, stream) {
       Object.defineProperty(this, 'buffer', {
         get: deprecate(function () {
@@ -33639,6 +34732,7 @@
       // object stream flag to indicate whether or not this stream
       // contains buffers or objects.
       this.objectMode = !!options.objectMode;
+
       if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
       // the point at which write() starts returning false
@@ -33649,7 +34743,8 @@
       this.highWaterMark = hwm || hwm === 0 ? hwm : defaultHwm;
 
       // cast to ints.
-      this.highWaterMark = ~~this.highWaterMark;
+      this.highWaterMark = ~ ~this.highWaterMark;
+
       this.needDrain = false;
       // at the start of calling end()
       this.ending = false;
@@ -33701,6 +34796,7 @@
 
       // the amount that is being written when _write is called.
       this.writelen = 0;
+
       this.bufferedRequest = null;
       this.lastBufferedRequest = null;
 
@@ -33722,6 +34818,7 @@
       // one allocated and free to use, and we maintain at most two
       this.corkedRequestsFree = new CorkedRequest(this);
     }
+
     WritableState.prototype.getBuffer = function writableStateGetBuffer() {
       var current = this.bufferedRequest;
       var out = [];
@@ -33732,17 +34829,22 @@
       return out;
     };
     function Writable(options) {
+
       // Writable ctor is applied to Duplexes, though they're not
       // instanceof Writable, they're instanceof Readable.
       if (!(this instanceof Writable) && !(this instanceof Duplex)) return new Writable(options);
+
       this._writableState = new WritableState(options, this);
 
       // legacy.
       this.writable = true;
+
       if (options) {
         if (typeof options.write === 'function') this._write = options.write;
+
         if (typeof options.writev === 'function') this._writev = options.writev;
       }
+
       EventEmitter.call(this);
     }
 
@@ -33750,6 +34852,7 @@
     Writable.prototype.pipe = function () {
       this.emit('error', new Error('Cannot pipe, not readable'));
     };
+
     function writeAfterEnd(stream, cb) {
       var er = new Error('write after end');
       // TODO: defer error events consistently everywhere, not just the cb
@@ -33780,32 +34883,44 @@
       }
       return valid;
     }
+
     Writable.prototype.write = function (chunk, encoding, cb) {
       var state = this._writableState;
       var ret = false;
+
       if (typeof encoding === 'function') {
         cb = encoding;
         encoding = null;
       }
+
       if (Buffer.isBuffer(chunk)) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;
+
       if (typeof cb !== 'function') cb = nop;
+
       if (state.ended) writeAfterEnd(this, cb);else if (validChunk(this, state, chunk, cb)) {
         state.pendingcb++;
         ret = writeOrBuffer(this, state, chunk, encoding, cb);
       }
+
       return ret;
     };
+
     Writable.prototype.cork = function () {
       var state = this._writableState;
+
       state.corked++;
     };
+
     Writable.prototype.uncork = function () {
       var state = this._writableState;
+
       if (state.corked) {
         state.corked--;
+
         if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);
       }
     };
+
     Writable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {
       // node::ParseEncoding() requires lower case.
       if (typeof encoding === 'string') encoding = encoding.toLowerCase();
@@ -33813,6 +34928,7 @@
       this._writableState.defaultEncoding = encoding;
       return this;
     };
+
     function decodeChunk(state, chunk, encoding) {
       if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {
         chunk = Buffer.from(chunk, encoding);
@@ -33825,12 +34941,16 @@
     // If we return false, then we need a drain event, so set that flag.
     function writeOrBuffer(stream, state, chunk, encoding, cb) {
       chunk = decodeChunk(state, chunk, encoding);
+
       if (Buffer.isBuffer(chunk)) encoding = 'buffer';
       var len = state.objectMode ? 1 : chunk.length;
+
       state.length += len;
+
       var ret = state.length < state.highWaterMark;
       // we must ensure that previous needDrain will not be reset to false.
       if (!ret) state.needDrain = true;
+
       if (state.writing || state.corked) {
         var last = state.lastBufferedRequest;
         state.lastBufferedRequest = new WriteReq(chunk, encoding, cb);
@@ -33843,8 +34963,10 @@
       } else {
         doWrite(stream, state, false, len, chunk, encoding, cb);
       }
+
       return ret;
     }
+
     function doWrite(stream, state, writev, len, chunk, encoding, cb) {
       state.writelen = len;
       state.writecb = cb;
@@ -33853,38 +34975,47 @@
       if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);
       state.sync = false;
     }
+
     function onwriteError(stream, state, sync, er, cb) {
       --state.pendingcb;
       if (sync) nextTick(cb, er);else cb(er);
+
       stream._writableState.errorEmitted = true;
       stream.emit('error', er);
     }
+
     function onwriteStateUpdate(state) {
       state.writing = false;
       state.writecb = null;
       state.length -= state.writelen;
       state.writelen = 0;
     }
+
     function onwrite(stream, er) {
       var state = stream._writableState;
       var sync = state.sync;
       var cb = state.writecb;
+
       onwriteStateUpdate(state);
+
       if (er) onwriteError(stream, state, sync, er, cb);else {
         // Check if we're actually ready to finish, but don't emit yet
         var finished = needFinish(state);
+
         if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {
           clearBuffer(stream, state);
         }
+
         if (sync) {
           /*<replacement>*/
-          nextTick(afterWrite, stream, state, finished, cb);
+            nextTick(afterWrite, stream, state, finished, cb);
           /*</replacement>*/
         } else {
-          afterWrite(stream, state, finished, cb);
-        }
+            afterWrite(stream, state, finished, cb);
+          }
       }
     }
+
     function afterWrite(stream, state, finished, cb) {
       if (!finished) onwriteDrain(stream, state);
       state.pendingcb--;
@@ -33906,18 +35037,21 @@
     function clearBuffer(stream, state) {
       state.bufferProcessing = true;
       var entry = state.bufferedRequest;
+
       if (stream._writev && entry && entry.next) {
         // Fast case, write everything using _writev()
         var l = state.bufferedRequestCount;
         var buffer = new Array(l);
         var holder = state.corkedRequestsFree;
         holder.entry = entry;
+
         var count = 0;
         while (entry) {
           buffer[count] = entry;
           entry = entry.next;
           count += 1;
         }
+
         doWrite(stream, state, true, state.length, buffer, '', holder.finish);
 
         // doWrite is almost always async, defer these to save a bit of time
@@ -33937,6 +35071,7 @@
           var encoding = entry.encoding;
           var cb = entry.callback;
           var len = state.objectMode ? 1 : chunk.length;
+
           doWrite(stream, state, false, len, chunk, encoding, cb);
           entry = entry.next;
           // if we didn't call the onwrite immediately, then
@@ -33947,18 +35082,24 @@
             break;
           }
         }
+
         if (entry === null) state.lastBufferedRequest = null;
       }
+
       state.bufferedRequestCount = 0;
       state.bufferedRequest = entry;
       state.bufferProcessing = false;
     }
+
     Writable.prototype._write = function (chunk, encoding, cb) {
       cb(new Error('not implemented'));
     };
+
     Writable.prototype._writev = null;
+
     Writable.prototype.end = function (chunk, encoding, cb) {
       var state = this._writableState;
+
       if (typeof chunk === 'function') {
         cb = chunk;
         chunk = null;
@@ -33967,6 +35108,7 @@
         cb = encoding;
         encoding = null;
       }
+
       if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);
 
       // .end() fully uncorks
@@ -33978,15 +35120,18 @@
       // ignore unnecessary end() calls.
       if (!state.ending && !state.finished) endWritable(this, state, cb);
     };
+
     function needFinish(state) {
       return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;
     }
+
     function prefinish(stream, state) {
       if (!state.prefinished) {
         state.prefinished = true;
         stream.emit('prefinish');
       }
     }
+
     function finishMaybe(stream, state) {
       var need = needFinish(state);
       if (need) {
@@ -34000,6 +35145,7 @@
       }
       return need;
     }
+
     function endWritable(stream, state, cb) {
       state.ending = true;
       finishMaybe(stream, state);
@@ -34014,8 +35160,10 @@
     // there will be only 2 of these for each stream
     function CorkedRequest(state) {
       var _this = this;
+
       this.next = null;
       this.entry = null;
+
       this.finish = function (err) {
         var entry = _this.entry;
         _this.entry = null;
@@ -34032,7 +35180,9 @@
         }
       };
     }
-    inherits$1(Duplex, Readable);
+
+    inherits(Duplex, Readable);
+
     var keys = Object.keys(Writable.prototype);
     for (var v = 0; v < keys.length; v++) {
       var method = keys[v];
@@ -34040,12 +35190,17 @@
     }
     function Duplex(options) {
       if (!(this instanceof Duplex)) return new Duplex(options);
+
       Readable.call(this, options);
       Writable.call(this, options);
+
       if (options && options.readable === false) this.readable = false;
+
       if (options && options.writable === false) this.writable = false;
+
       this.allowHalfOpen = true;
       if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;
+
       this.once('end', onend);
     }
 
@@ -34059,31 +35214,82 @@
       // But allow more writes to happen in this tick.
       nextTick(onEndNT, this);
     }
+
     function onEndNT(self) {
       self.end();
     }
 
     // a transform stream is a readable/writable stream where you do
-    inherits$1(Transform, Duplex);
+    // something with the data.  Sometimes it's called a "filter",
+    // but that's not a great name for it, since that implies a thing where
+    // some bits pass through, and others are simply ignored.  (That would
+    // be a valid example of a transform, of course.)
+    //
+    // While the output is causally related to the input, it's not a
+    // necessarily symmetric or synchronous transformation.  For example,
+    // a zlib stream might take multiple plain-text writes(), and then
+    // emit a single compressed chunk some time in the future.
+    //
+    // Here's how this works:
+    //
+    // The Transform stream has all the aspects of the readable and writable
+    // stream classes.  When you write(chunk), that calls _write(chunk,cb)
+    // internally, and returns false if there's a lot of pending writes
+    // buffered up.  When you call read(), that calls _read(n) until
+    // there's enough pending readable data buffered up.
+    //
+    // In a transform stream, the written data is placed in a buffer.  When
+    // _read(n) is called, it transforms the queued up data, calling the
+    // buffered _write cb's as it consumes chunks.  If consuming a single
+    // written chunk would result in multiple output chunks, then the first
+    // outputted bit calls the readcb, and subsequent chunks just go into
+    // the read buffer, and will cause it to emit 'readable' if necessary.
+    //
+    // This way, back-pressure is actually determined by the reading side,
+    // since _read has to be called to start processing a new chunk.  However,
+    // a pathological inflate type of transform can cause excessive buffering
+    // here.  For example, imagine a stream where every byte of input is
+    // interpreted as an integer from 0-255, and then results in that many
+    // bytes of output.  Writing the 4 bytes {ff,ff,ff,ff} would result in
+    // 1kb of data being output.  In this case, you could write a very small
+    // amount of input, and end up with a very large amount of output.  In
+    // such a pathological inflating mechanism, there'd be no way to tell
+    // the system to stop doing the transform.  A single 4MB write could
+    // cause the system to run out of memory.
+    //
+    // However, even in such a pathological case, only a single written chunk
+    // would be consumed, and then the rest would wait (un-transformed) until
+    // the results of the previous transformed chunk were consumed.
+
+    inherits(Transform, Duplex);
+
     function TransformState(stream) {
       this.afterTransform = function (er, data) {
         return afterTransform(stream, er, data);
       };
+
       this.needTransform = false;
       this.transforming = false;
       this.writecb = null;
       this.writechunk = null;
       this.writeencoding = null;
     }
+
     function afterTransform(stream, er, data) {
       var ts = stream._transformState;
       ts.transforming = false;
+
       var cb = ts.writecb;
+
       if (!cb) return stream.emit('error', new Error('no writecb in Transform class'));
+
       ts.writechunk = null;
       ts.writecb = null;
+
       if (data !== null && data !== undefined) stream.push(data);
+
       cb(er);
+
       var rs = stream._readableState;
       rs.reading = false;
       if (rs.needReadable || rs.length < rs.highWaterMark) {
@@ -34092,7 +35298,9 @@
     }
     function Transform(options) {
       if (!(this instanceof Transform)) return new Transform(options);
+
       Duplex.call(this, options);
+
       this._transformState = new TransformState(this);
 
       // when the writable side finishes, then flush out anything remaining.
@@ -34105,16 +35313,20 @@
       // that Readable wants before the first _read call, so unset the
       // sync guard flag.
       this._readableState.sync = false;
+
       if (options) {
         if (typeof options.transform === 'function') this._transform = options.transform;
+
         if (typeof options.flush === 'function') this._flush = options.flush;
       }
+
       this.once('prefinish', function () {
         if (typeof this._flush === 'function') this._flush(function (er) {
           done(stream, er);
         });else done(stream);
       });
     }
+
     Transform.prototype.push = function (chunk, encoding) {
       this._transformState.needTransform = false;
       return Duplex.prototype.push.call(this, chunk, encoding);
@@ -34133,6 +35345,7 @@
     Transform.prototype._transform = function (chunk, encoding, cb) {
       throw new Error('Not implemented');
     };
+
     Transform.prototype._write = function (chunk, encoding, cb) {
       var ts = this._transformState;
       ts.writecb = cb;
@@ -34149,6 +35362,7 @@
     // That we got here means that the readable side wants more data.
     Transform.prototype._read = function (n) {
       var ts = this._transformState;
+
       if (ts.writechunk !== null && ts.writecb && !ts.transforming) {
         ts.transforming = true;
         this._transform(ts.writechunk, ts.writeencoding, ts.afterTransform);
@@ -34158,6 +35372,7 @@
         ts.needTransform = true;
       }
     };
+
     function done(stream, er) {
       if (er) return stream.emit('error', er);
 
@@ -34165,103 +35380,18 @@
       // that nothing more will ever be provided
       var ws = stream._writableState;
       var ts = stream._transformState;
+
       if (ws.length) throw new Error('Calling transform done when ws.length != 0');
+
       if (ts.transforming) throw new Error('Calling transform done when still transforming');
+
       return stream.push(null);
     }
-    inherits$1(PassThrough, Transform);
-    function PassThrough(options) {
-      if (!(this instanceof PassThrough)) return new PassThrough(options);
-      Transform.call(this, options);
-    }
-    PassThrough.prototype._transform = function (chunk, encoding, cb) {
-      cb(null, chunk);
-    };
-    inherits$1(Stream, EventEmitter);
-    Stream.Readable = Readable;
-    Stream.Writable = Writable;
-    Stream.Duplex = Duplex;
-    Stream.Transform = Transform;
-    Stream.PassThrough = PassThrough;
 
-    // Backwards-compat with node 0.4.x
-    Stream.Stream = Stream;
-
-    // old-style streams.  Note that the pipe method (the only relevant
-    // part of this class) is overridden in the Readable class.
-
-    function Stream() {
-      EventEmitter.call(this);
-    }
-    Stream.prototype.pipe = function (dest, options) {
-      var source = this;
-      function ondata(chunk) {
-        if (dest.writable) {
-          if (false === dest.write(chunk) && source.pause) {
-            source.pause();
-          }
-        }
-      }
-      source.on('data', ondata);
-      function ondrain() {
-        if (source.readable && source.resume) {
-          source.resume();
-        }
-      }
-      dest.on('drain', ondrain);
-
-      // If the 'end' option is not supplied, dest.end() will be called when
-      // source gets the 'end' or 'close' events.  Only dest.end() once.
-      if (!dest._isStdio && (!options || options.end !== false)) {
-        source.on('end', onend);
-        source.on('close', onclose);
-      }
-      var didOnEnd = false;
-      function onend() {
-        if (didOnEnd) return;
-        didOnEnd = true;
-        dest.end();
-      }
-      function onclose() {
-        if (didOnEnd) return;
-        didOnEnd = true;
-        if (typeof dest.destroy === 'function') dest.destroy();
-      }
-
-      // don't leave dangling pipes when there are errors.
-      function onerror(er) {
-        cleanup();
-        if (EventEmitter.listenerCount(this, 'error') === 0) {
-          throw er; // Unhandled stream error in pipe.
-        }
-      }
-
-      source.on('error', onerror);
-      dest.on('error', onerror);
-
-      // remove all the event listeners that were added.
-      function cleanup() {
-        source.removeListener('data', ondata);
-        dest.removeListener('drain', ondrain);
-        source.removeListener('end', onend);
-        source.removeListener('close', onclose);
-        source.removeListener('error', onerror);
-        dest.removeListener('error', onerror);
-        source.removeListener('end', cleanup);
-        source.removeListener('close', cleanup);
-        dest.removeListener('close', cleanup);
-      }
-      source.on('end', cleanup);
-      source.on('close', cleanup);
-      dest.on('close', cleanup);
-      dest.emit('pipe', source);
-
-      // Allow for unix-like usage: A.pipe(B).pipe(C)
-      return dest;
-    };
     const is_object = function (obj) {
       return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
     };
+
     class CsvError extends Error {
       constructor(code, message, options, ...contexts) {
         if (Array.isArray(message)) message = message.join(' ').trim();
@@ -34273,11 +35403,12 @@
         for (const context of contexts) {
           for (const key in context) {
             const value = context[key];
-            this[key] = isBuffer(value) ? value.toString(options.encoding) : value == null ? value : JSON.parse(JSON.stringify(value));
+            this[key] = Buffer.isBuffer(value) ? value.toString(options.encoding) : value == null ? value : JSON.parse(JSON.stringify(value));
           }
         }
       }
     }
+
     const normalize_columns_array = function (columns) {
       const normalizedColumns = [];
       for (let i = 0, l = columns.length; i < l; i++) {
@@ -34301,6 +35432,7 @@
       }
       return normalizedColumns;
     };
+
     class ResizeableBuffer {
       constructor(size = 100) {
         this.size = size;
@@ -34308,7 +35440,7 @@
         this.buf = Buffer.allocUnsafe(size);
       }
       prepend(val) {
-        if (isBuffer(val)) {
+        if (Buffer.isBuffer(val)) {
           const length = this.length + val.length;
           if (length >= this.size) {
             this.resize();
@@ -34382,7 +35514,7 @@
         error: undefined,
         enabled: options.from_line === 1,
         escaping: false,
-        escapeIsQuote: isBuffer(options.escape) && isBuffer(options.quote) && Buffer.compare(options.escape, options.quote) === 0,
+        escapeIsQuote: Buffer.isBuffer(options.escape) && Buffer.isBuffer(options.quote) && Buffer.compare(options.escape, options.quote) === 0,
         // columns can be `false`, `true`, `Array`
         expectedRecordLength: Array.isArray(options.columns) ? options.columns.length : undefined,
         field: new ResizeableBuffer(20),
@@ -34408,11 +35540,13 @@
         timchars: [Buffer.from(Buffer.from([cr$1], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([nl$1], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([np], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([space], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([tab], 'utf8').toString(), options.encoding)]
       };
     };
+
     const underscore = function (str) {
       return str.replace(/([A-Z])/g, function (_, match) {
         return '_' + match.toLowerCase();
       });
     };
+
     const normalize_options = function (opts) {
       const options = {};
       // Merge with user options
@@ -34486,7 +35620,7 @@
         if (typeof options.comment === 'string') {
           options.comment = Buffer.from(options.comment, options.encoding);
         }
-        if (!isBuffer(options.comment)) {
+        if (!Buffer.isBuffer(options.comment)) {
           throw new CsvError('CSV_INVALID_OPTION_COMMENT', ['Invalid option comment:', 'comment must be a buffer or a string,', `got ${JSON.stringify(options.comment)}`], options);
         }
       }
@@ -34503,7 +35637,7 @@
         if (typeof delimiter === 'string') {
           delimiter = Buffer.from(delimiter, options.encoding);
         }
-        if (!isBuffer(delimiter) || delimiter.length === 0) {
+        if (!Buffer.isBuffer(delimiter) || delimiter.length === 0) {
           throw new CsvError('CSV_INVALID_OPTION_DELIMITER', ['Invalid option delimiter:', 'delimiter must be a non empty string or buffer or array of string|buffer,', `got ${delimiter_json}`], options);
         }
         return delimiter;
@@ -34517,7 +35651,7 @@
         options.escape = null;
       }
       if (options.escape !== null) {
-        if (!isBuffer(options.escape)) {
+        if (!Buffer.isBuffer(options.escape)) {
           throw new Error(`Invalid Option: escape must be a buffer, a string or a boolean, got ${JSON.stringify(options.escape)}`);
         }
       }
@@ -34574,7 +35708,7 @@
       // Normalize option `max_record_size`
       if (options.max_record_size === undefined || options.max_record_size === null || options.max_record_size === false) {
         options.max_record_size = 0;
-      } else if (Number.isInteger(options.max_record_size) && options.max_record_size >= 0) ;else if (typeof options.max_record_size === 'string' && /\d+/.test(options.max_record_size)) {
+      } else if (Number.isInteger(options.max_record_size) && options.max_record_size >= 0) ; else if (typeof options.max_record_size === 'string' && /\d+/.test(options.max_record_size)) {
         options.max_record_size = parseInt(options.max_record_size);
       } else {
         throw new Error(`Invalid Option: max_record_size must be a positive integer, got ${JSON.stringify(options.max_record_size)}`);
@@ -34582,11 +35716,11 @@
       // Normalize option `objname`
       if (options.objname === undefined || options.objname === null || options.objname === false) {
         options.objname = undefined;
-      } else if (isBuffer(options.objname)) {
+      } else if (Buffer.isBuffer(options.objname)) {
         if (options.objname.length === 0) {
           throw new Error(`Invalid Option: objname must be a non empty buffer`);
         }
-        if (options.encoding === null) ;else {
+        if (options.encoding === null) ; else {
           options.objname = options.objname.toString(options.encoding);
         }
       } else if (typeof options.objname === 'string') {
@@ -34594,7 +35728,7 @@
           throw new Error(`Invalid Option: objname must be a non empty string`);
         }
         // Great, nothing to do
-      } else if (typeof options.objname === 'number') ;else {
+      } else if (typeof options.objname === 'number') ; else {
         throw new Error(`Invalid Option: objname must be a string or a buffer, got ${options.objname}`);
       }
       if (options.objname !== undefined) {
@@ -34624,7 +35758,7 @@
         } else if (typeof options.quote === 'string') {
           options.quote = Buffer.from(options.quote, options.encoding);
         }
-        if (!isBuffer(options.quote)) {
+        if (!Buffer.isBuffer(options.quote)) {
           throw new Error(`Invalid Option: quote must be a buffer or a string, got ${JSON.stringify(options.quote)}`);
         }
       }
@@ -34637,7 +35771,7 @@
       // Normalize option `record_delimiter`
       if (options.record_delimiter === undefined) {
         options.record_delimiter = [];
-      } else if (typeof options.record_delimiter === 'string' || isBuffer(options.record_delimiter)) {
+      } else if (typeof options.record_delimiter === 'string' || Buffer.isBuffer(options.record_delimiter)) {
         if (options.record_delimiter.length === 0) {
           throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a non empty string or buffer,', `got ${JSON.stringify(options.record_delimiter)}`], options);
         }
@@ -34646,7 +35780,7 @@
         throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a string, a buffer or array of string|buffer,', `got ${JSON.stringify(options.record_delimiter)}`], options);
       }
       options.record_delimiter = options.record_delimiter.map(function (rd, i) {
-        if (typeof rd !== 'string' && !isBuffer(rd)) {
+        if (typeof rd !== 'string' && !Buffer.isBuffer(rd)) {
           throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a string, a buffer or array of string|buffer', `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
         } else if (rd.length === 0) {
           throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a non empty string or buffer', `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
@@ -34657,41 +35791,41 @@
         return rd;
       });
       // Normalize option `relax_column_count`
-      if (typeof options.relax_column_count === 'boolean') ;else if (options.relax_column_count === undefined || options.relax_column_count === null) {
+      if (typeof options.relax_column_count === 'boolean') ; else if (options.relax_column_count === undefined || options.relax_column_count === null) {
         options.relax_column_count = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count must be a boolean, got ${JSON.stringify(options.relax_column_count)}`);
       }
-      if (typeof options.relax_column_count_less === 'boolean') ;else if (options.relax_column_count_less === undefined || options.relax_column_count_less === null) {
+      if (typeof options.relax_column_count_less === 'boolean') ; else if (options.relax_column_count_less === undefined || options.relax_column_count_less === null) {
         options.relax_column_count_less = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count_less must be a boolean, got ${JSON.stringify(options.relax_column_count_less)}`);
       }
-      if (typeof options.relax_column_count_more === 'boolean') ;else if (options.relax_column_count_more === undefined || options.relax_column_count_more === null) {
+      if (typeof options.relax_column_count_more === 'boolean') ; else if (options.relax_column_count_more === undefined || options.relax_column_count_more === null) {
         options.relax_column_count_more = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count_more must be a boolean, got ${JSON.stringify(options.relax_column_count_more)}`);
       }
       // Normalize option `relax_quotes`
-      if (typeof options.relax_quotes === 'boolean') ;else if (options.relax_quotes === undefined || options.relax_quotes === null) {
+      if (typeof options.relax_quotes === 'boolean') ; else if (options.relax_quotes === undefined || options.relax_quotes === null) {
         options.relax_quotes = false;
       } else {
         throw new Error(`Invalid Option: relax_quotes must be a boolean, got ${JSON.stringify(options.relax_quotes)}`);
       }
       // Normalize option `skip_empty_lines`
-      if (typeof options.skip_empty_lines === 'boolean') ;else if (options.skip_empty_lines === undefined || options.skip_empty_lines === null) {
+      if (typeof options.skip_empty_lines === 'boolean') ; else if (options.skip_empty_lines === undefined || options.skip_empty_lines === null) {
         options.skip_empty_lines = false;
       } else {
         throw new Error(`Invalid Option: skip_empty_lines must be a boolean, got ${JSON.stringify(options.skip_empty_lines)}`);
       }
       // Normalize option `skip_records_with_empty_values`
-      if (typeof options.skip_records_with_empty_values === 'boolean') ;else if (options.skip_records_with_empty_values === undefined || options.skip_records_with_empty_values === null) {
+      if (typeof options.skip_records_with_empty_values === 'boolean') ; else if (options.skip_records_with_empty_values === undefined || options.skip_records_with_empty_values === null) {
         options.skip_records_with_empty_values = false;
       } else {
         throw new Error(`Invalid Option: skip_records_with_empty_values must be a boolean, got ${JSON.stringify(options.skip_records_with_empty_values)}`);
       }
       // Normalize option `skip_records_with_error`
-      if (typeof options.skip_records_with_error === 'boolean') ;else if (options.skip_records_with_error === undefined || options.skip_records_with_error === null) {
+      if (typeof options.skip_records_with_error === 'boolean') ; else if (options.skip_records_with_error === undefined || options.skip_records_with_error === null) {
         options.skip_records_with_error = false;
       } else {
         throw new Error(`Invalid Option: skip_records_with_error must be a boolean, got ${JSON.stringify(options.skip_records_with_error)}`);
@@ -34757,6 +35891,7 @@
       }
       return options;
     };
+
     const isRecordEmpty = function (record) {
       return record.every(field => field == null || field.toString && field.toString().trim() === '');
     };
@@ -35504,6 +36639,7 @@
         }
       };
     };
+
     class Parser extends Transform {
       constructor(opts = {}) {
         super({
@@ -35557,7 +36693,7 @@
       for (const i in arguments) {
         const argument = arguments[i];
         const type = typeof argument;
-        if (data === undefined && (typeof argument === 'string' || isBuffer(argument))) {
+        if (data === undefined && (typeof argument === 'string' || Buffer.isBuffer(argument))) {
           data = argument;
         } else if (options === undefined && is_object(argument)) {
           options = argument;
@@ -35648,14 +36784,6 @@
 
       rnds[6] = rnds[6] & 0x0f | 0x40;
       rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
-      if (buf) {
-        offset = offset || 0;
-        for (let i = 0; i < 16; ++i) {
-          buf[offset + i] = rnds[i];
-        }
-        return buf;
-      }
       return unsafeStringify(rnds);
     }
 
@@ -35728,7 +36856,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = translate_1('timemanager', 'CSV parse error:') + "";
+      var t2_value = translate('timemanager', 'CSV parse error:') + "";
       var t2;
       var t3;
       var t4;
@@ -35741,16 +36869,16 @@
         c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(translate_1('timemanager', 'Error reading CSV file'));
+          h3.textContent = "".concat(translate('timemanager', 'Error reading CSV file'));
           t1 = space$1();
           div0 = element("div");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
-          t4 = text$1( /*parseError*/ctx[9]);
+          t4 = text( /*parseError*/ctx[9]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Close'));
+          button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35776,7 +36904,9 @@
           if (dirty[0] & /*parseError*/512) set_data(t4, /*parseError*/ctx[9]);
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           mounted = false;
           dispose();
         }
@@ -35836,7 +36966,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = translate_1('timemanager', 'Import API error:') + "";
+      var t2_value = translate('timemanager', 'Import API error:') + "";
       var t2;
       var t3;
       var t4;
@@ -35849,16 +36979,16 @@
         c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(translate_1('timemanager', 'Error importing entries'));
+          h3.textContent = "".concat(translate('timemanager', 'Error importing entries'));
           t1 = space$1();
           div0 = element("div");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
-          t4 = text$1( /*importError*/ctx[6]);
+          t4 = text( /*importError*/ctx[6]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Close'));
+          button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35884,7 +37014,9 @@
           if (dirty[0] & /*importError*/64) set_data(t4, /*importError*/ctx[6]);
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           mounted = false;
           dispose();
         }
@@ -35944,7 +37076,7 @@
       var h3;
       var t1;
       var div0;
-      var t2_value = translate_1('timemanager', 'Done:') + "";
+      var t2_value = translate('timemanager', 'Done:') + "";
       var t2;
       var t3;
       var t4;
@@ -35957,16 +37089,16 @@
         c() {
           div2 = element("div");
           h3 = element("h3");
-          h3.textContent = "".concat(translate_1('timemanager', 'Import successful'));
+          h3.textContent = "".concat(translate('timemanager', 'Import successful'));
           t1 = space$1();
           div0 = element("div");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
-          t4 = text$1( /*successMessage*/ctx[7]);
+          t4 = text( /*successMessage*/ctx[7]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Close'));
+          button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
           attr(div1, "class", "oc-dialog-buttonrow onebutton");
@@ -35992,7 +37124,9 @@
           if (dirty[0] & /*successMessage*/128) set_data(t4, /*successMessage*/ctx[7]);
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           mounted = false;
           dispose();
         }
@@ -36030,28 +37164,28 @@
           div0 = element("div");
           p = element("p");
           strong = element("strong");
-          strong.textContent = "".concat(translate_1('timemanager', 'Preview'));
+          strong.textContent = "".concat(translate('timemanager', 'Preview'));
           t1 = space$1();
           button0 = element("button");
-          button0.textContent = "".concat(translate_1('timemanager', 'Collapse all'));
+          button0.textContent = "".concat(translate('timemanager', 'Collapse all'));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate_1('timemanager', 'Expand all'));
+          button1.textContent = "".concat(translate('timemanager', 'Expand all'));
           t5 = space$1();
           div1 = element("div");
           dl = element("dl");
           dt0 = element("dt");
-          dt0.textContent = "".concat(translate_1('timemanager', 'Clients'));
+          dt0.textContent = "".concat(translate('timemanager', 'Clients'));
           dd0 = element("dd");
-          t7 = text$1(t7_value);
+          t7 = text(t7_value);
           dt1 = element("dt");
-          dt1.textContent = "".concat(translate_1('timemanager', 'Projects'));
+          dt1.textContent = "".concat(translate('timemanager', 'Projects'));
           dd1 = element("dd");
-          t9 = text$1(t9_value);
+          t9 = text(t9_value);
           dt2 = element("dt");
-          dt2.textContent = "".concat(translate_1('timemanager', 'Tasks'));
+          dt2.textContent = "".concat(translate('timemanager', 'Tasks'));
           dd2 = element("dd");
-          t11 = text$1(t11_value);
+          t11 = text(t11_value);
           attr(button0, "class", "button");
           attr(button1, "class", "button");
           attr(div0, "class", "tm_object-details-item");
@@ -36088,9 +37222,11 @@
           if (dirty[0] & /*preparedTasks*/16 && t11_value !== (t11_value = /*preparedTasks*/ctx[4].length + "")) set_data(t11, t11_value);
         },
         d(detaching) {
-          if (detaching) detach(div0);
-          if (detaching) detach(t5);
-          if (detaching) detach(div1);
+          if (detaching) {
+            detach(div0);
+            detach(t5);
+            detach(div1);
+          }
           mounted = false;
           run_all(dispose);
         }
@@ -36102,7 +37238,7 @@
       var details;
       var summary;
       var t1;
-      var each_value_1 = /*client*/ctx[24].projects;
+      var each_value_1 = ensure_array_like( /*client*/ctx[24].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
@@ -36111,7 +37247,7 @@
         c() {
           details = element("details");
           summary = element("summary");
-          summary.textContent = "".concat(translate_1('timemanager', 'Projects'));
+          summary.textContent = "".concat(translate('timemanager', 'Projects'));
           t1 = space$1();
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
             each_blocks[_i].c();
@@ -36130,7 +37266,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*allOpen, importPreviewData*/1280) {
-            each_value_1 = /*client*/ctx[24].projects;
+            each_value_1 = ensure_array_like( /*client*/ctx[24].projects);
             var _i3;
             for (_i3 = 0; _i3 < each_value_1.length; _i3 += 1) {
               var child_ctx = get_each_context_1(ctx, each_value_1, _i3);
@@ -36152,7 +37288,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(details);
+          if (detaching) {
+            detach(details);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -36163,7 +37301,7 @@
       var details;
       var summary;
       var t1;
-      var each_value_2 = /*project*/ctx[27].tasks;
+      var each_value_2 = ensure_array_like( /*project*/ctx[27].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
@@ -36172,7 +37310,7 @@
         c() {
           details = element("details");
           summary = element("summary");
-          summary.textContent = "".concat(translate_1('timemanager', 'Tasks'));
+          summary.textContent = "".concat(translate('timemanager', 'Tasks'));
           t1 = space$1();
           for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
             each_blocks[_i4].c();
@@ -36191,7 +37329,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*importPreviewData*/256) {
-            each_value_2 = /*project*/ctx[27].tasks;
+            each_value_2 = ensure_array_like( /*project*/ctx[27].tasks);
             var _i6;
             for (_i6 = 0; _i6 < each_value_2.length; _i6 += 1) {
               var child_ctx = get_each_context_2(ctx, each_value_2, _i6);
@@ -36213,7 +37351,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(details);
+          if (detaching) {
+            detach(details);
+          }
           destroy_each(each_blocks, detaching);
         }
       };
@@ -36239,16 +37379,16 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(translate_1('timemanager', 'Task name'));
+          span0.textContent = "".concat(translate('timemanager', 'Task name'));
           t1 = space$1();
           h3 = element("h3");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(translate_1('timemanager', 'Note'));
+          span1.textContent = "".concat(translate('timemanager', 'Note'));
           t5 = space$1();
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           attr(span0, "class", "tm_label");
           attr(span1, "class", "tm_label");
           attr(div2, "class", "tm_item-row");
@@ -36271,7 +37411,9 @@
           if (dirty[0] & /*importPreviewData*/256 && t6_value !== (t6_value = /*task*/ctx[30].note + "")) set_data(t6, t6_value);
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
         }
       };
     }
@@ -36298,16 +37440,16 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(translate_1('timemanager', 'Project name'));
+          span0.textContent = "".concat(translate('timemanager', 'Project name'));
           t1 = space$1();
           h3 = element("h3");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(translate_1('timemanager', 'Note'));
+          span1.textContent = "".concat(translate('timemanager', 'Note'));
           t5 = space$1();
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           if (if_block) if_block.c();
           attr(span0, "class", "tm_label");
@@ -36346,7 +37488,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           if (if_block) if_block.d();
         }
       };
@@ -36374,16 +37518,16 @@
           div2 = element("div");
           div0 = element("div");
           span0 = element("span");
-          span0.textContent = "".concat(translate_1('timemanager', 'Client'));
+          span0.textContent = "".concat(translate('timemanager', 'Client'));
           t1 = space$1();
           h3 = element("h3");
-          t2 = text$1(t2_value);
+          t2 = text(t2_value);
           t3 = space$1();
           div1 = element("div");
           span1 = element("span");
-          span1.textContent = "".concat(translate_1('timemanager', 'Note'));
+          span1.textContent = "".concat(translate('timemanager', 'Note'));
           t5 = space$1();
-          t6 = text$1(t6_value);
+          t6 = text(t6_value);
           t7 = space$1();
           if (if_block) if_block.c();
           attr(span0, "class", "tm_label");
@@ -36422,7 +37566,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(div2);
+          if (detaching) {
+            detach(div2);
+          }
           if (if_block) if_block.d();
         }
       };
@@ -36432,7 +37578,7 @@
     function create_if_block$1(ctx) {
       var form;
       var button;
-      var t_value = translate_1('timemanager', 'Import now') + "";
+      var t_value = translate('timemanager', 'Import now') + "";
       var t;
       var form_class_value;
       var mounted;
@@ -36441,7 +37587,7 @@
         c() {
           form = element("form");
           button = element("button");
-          t = text$1(t_value);
+          t = text(t_value);
           button.disabled = /*loading*/ctx[5];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
@@ -36465,7 +37611,9 @@
           }
         },
         d(detaching) {
-          if (detaching) detach(form);
+          if (detaching) {
+            detach(form);
+          }
           mounted = false;
           dispose();
         }
@@ -36474,7 +37622,7 @@
     function create_fragment$1(ctx) {
       var form;
       var label0;
-      var t0_value = translate_1('timemanager', 'Select delimiter') + "";
+      var t0_value = translate('timemanager', 'Select delimiter') + "";
       var t0;
       var t1;
       var select;
@@ -36482,7 +37630,7 @@
       var option1;
       var t4;
       var label1;
-      var t5_value = translate_1('timemanager', 'Select CSV file') + "";
+      var t5_value = translate('timemanager', 'Select CSV file') + "";
       var t5;
       var t6;
       var br;
@@ -36504,7 +37652,7 @@
       var if_block1 = /*importError*/ctx[6] && create_if_block_5(ctx);
       var if_block2 = /*successMessage*/ctx[7] && create_if_block_4(ctx);
       var if_block3 = /*importPreviewData*/ctx[8].length && create_if_block_3(ctx);
-      var each_value = /*importPreviewData*/ctx[8];
+      var each_value = ensure_array_like( /*importPreviewData*/ctx[8]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
@@ -36514,7 +37662,7 @@
         c() {
           form = element("form");
           label0 = element("label");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           select = element("select");
           option0 = element("option");
@@ -36523,14 +37671,14 @@
           option1.textContent = ";";
           t4 = space$1();
           label1 = element("label");
-          t5 = text$1(t5_value);
+          t5 = text(t5_value);
           t6 = space$1();
           br = element("br");
           t7 = space$1();
           input = element("input");
           t8 = space$1();
           button = element("button");
-          button.textContent = "".concat(translate_1('timemanager', 'Generate preview from file'));
+          button.textContent = "".concat(translate('timemanager', 'Generate preview from file'));
           t10 = space$1();
           if (if_block0) if_block0.c();
           t11 = space$1();
@@ -36548,9 +37696,9 @@
           if_block4_anchor = empty();
           option0.selected = true;
           option0.__value = ",";
-          option0.value = option0.__value;
+          set_input_value(option0, option0.__value);
           option1.__value = ";";
-          option1.value = option1.__value;
+          set_input_value(option1, option1.__value);
           attr(select, "name", "delimiter");
           attr(input, "type", "file");
           attr(button, "type", "submit");
@@ -36670,7 +37818,7 @@
             if_block3 = null;
           }
           if (dirty[0] & /*allOpen, importPreviewData*/1280) {
-            each_value = /*importPreviewData*/ctx[8];
+            each_value = ensure_array_like( /*importPreviewData*/ctx[8]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context(ctx, each_value, _i9);
@@ -36714,24 +37862,27 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(form);
+          if (detaching) {
+            detach(form);
+            detach(t10);
+            detach(t11);
+            detach(t12);
+            detach(t13);
+            detach(t14);
+            detach(t15);
+            detach(if_block4_anchor);
+          }
+
           /*select_binding*/
           ctx[15](null);
           /*input_binding*/
           ctx[16](null);
-          if (detaching) detach(t10);
           if (if_block0) if_block0.d(detaching);
-          if (detaching) detach(t11);
           if (if_block1) if_block1.d(detaching);
-          if (detaching) detach(t12);
           if (if_block2) if_block2.d(detaching);
-          if (detaching) detach(t13);
           if (if_block3) if_block3.d(detaching);
-          if (detaching) detach(t14);
           destroy_each(each_blocks, detaching);
-          if (detaching) detach(t15);
           if (if_block4) if_block4.d(detaching);
-          if (detaching) detach(if_block4_anchor);
           mounted = false;
           dispose();
         }
@@ -36835,7 +37986,7 @@
                   _context.next = 22;
                   break;
                 }
-                $$invalidate(9, parseError = translate_1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                $$invalidate(9, parseError = translate("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
                 return _context.abrupt("return");
               case 22:
                 // Filter by type and assign uuids
@@ -36846,7 +37997,7 @@
                   _context.next = 28;
                   break;
                 }
-                $$invalidate(9, parseError = translate_1("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
+                $$invalidate(9, parseError = translate("timemanager", "It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks."));
                 return _context.abrupt("return");
               case 28:
                 // Empty arrays
@@ -36968,7 +38119,7 @@
                 response = _context2.sent;
                 if (response.ok) {
                   $$invalidate(8, importPreviewData = []);
-                  $$invalidate(7, successMessage = translate_1("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
+                  $$invalidate(7, successMessage = translate("timemanager", "Imported {clientsCount} client(s), {projectsCount} project(s), {tasksCount} task(s)", {
                     clientsCount: preparedClients.length,
                     projectsCount: preparedProjects.length,
                     tasksCount: preparedTasks.length
@@ -37090,7 +38241,9 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(div);
+          if (detaching) {
+            detach(div);
+          }
           destroy_component(userfilterselect);
           mounted = false;
           dispose();
@@ -37099,7 +38252,7 @@
     }
     function create_fragment(ctx) {
       var button;
-      var t0_value = translate_1('timemanager', 'Filter by person') + "";
+      var t0_value = translate('timemanager', 'Filter by person') + "";
       var t0;
       var button_class_value;
       var t1;
@@ -37111,7 +38264,7 @@
       return {
         c() {
           button = element("button");
-          t0 = text$1(t0_value);
+          t0 = text(t0_value);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -37165,10 +38318,12 @@
           current = false;
         },
         d(detaching) {
-          if (detaching) detach(button);
-          if (detaching) detach(t1);
+          if (detaching) {
+            detach(button);
+            detach(t1);
+            detach(if_block_anchor);
+          }
           if (if_block) if_block.d(detaching);
-          if (detaching) detach(if_block_anchor);
           mounted = false;
           run_all(dispose);
         }
@@ -38206,49 +39361,78 @@
       document.addEventListener("pjax:error", function (error) {
         // Catch session timeout and redirect to login
         if (error && error.request && error.request.status === 401) {
-          document.location.href = "".concat(dist_4("login"), "?redirect_url=").concat(dist_4("timemanager", "index"));
+          document.location.href = "".concat(dist_1("login"), "?redirect_url=").concat(dist_1("timemanager", "index"));
         }
         document.body.classList.remove("loading");
         document.body.classList.add("loading-error");
       });
     });
 
+    const debug = typeof browser$1 === 'object' && browser$1.env && browser$1.env.NODE_DEBUG && /\bsemver\b/i.test(browser$1.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
+    var debug_1 = debug;
+
     // Note: this is the semver.org version of the spec that it implements
     // Not necessarily the package version of this code.
     const SEMVER_SPEC_VERSION = '2.0.0';
-    const MAX_LENGTH$2 = 256;
+    const MAX_LENGTH$1 = 256;
     const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */9007199254740991;
 
     // Max safe segment length for coercion.
     const MAX_SAFE_COMPONENT_LENGTH = 16;
-    var constants = {
-      SEMVER_SPEC_VERSION,
-      MAX_LENGTH: MAX_LENGTH$2,
-      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
-      MAX_SAFE_COMPONENT_LENGTH
-    };
 
-    const debug = typeof process === 'object' && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
-    var debug_1 = debug;
+    // Max safe length for a build identifier. The max length minus 6 characters for
+    // the shortest version with a build 0.0.0+BUILD.
+    const MAX_SAFE_BUILD_LENGTH = MAX_LENGTH$1 - 6;
+    const RELEASE_TYPES = ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'];
+    var constants = {
+      MAX_LENGTH: MAX_LENGTH$1,
+      MAX_SAFE_COMPONENT_LENGTH,
+      MAX_SAFE_BUILD_LENGTH,
+      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
+      RELEASE_TYPES,
+      SEMVER_SPEC_VERSION,
+      FLAG_INCLUDE_PRERELEASE: 0b001,
+      FLAG_LOOSE: 0b010
+    };
 
     var re_1 = createCommonjsModule(function (module, exports) {
     const {
-      MAX_SAFE_COMPONENT_LENGTH
+      MAX_SAFE_COMPONENT_LENGTH,
+      MAX_SAFE_BUILD_LENGTH,
+      MAX_LENGTH
     } = constants;
 
     exports = module.exports = {};
 
     // The actual regexps go on exports.re
     const re = exports.re = [];
+    const safeRe = exports.safeRe = [];
     const src = exports.src = [];
     const t = exports.t = {};
     let R = 0;
+    const LETTERDASHNUMBER = '[a-zA-Z0-9-]';
+
+    // Replace some greedy regex tokens to prevent regex dos issues. These regex are
+    // used internally via the safeRe object since all inputs in this library get
+    // normalized first to trim and collapse all extra whitespace. The original
+    // regexes are exported for userland consumption and lower level usage. A
+    // future breaking change could export the safer regex only with a note that
+    // all input should have extra whitespace removed.
+    const safeRegexReplacements = [['\\s', 1], ['\\d', MAX_LENGTH], [LETTERDASHNUMBER, MAX_SAFE_BUILD_LENGTH]];
+    const makeSafeRegex = value => {
+      for (const [token, max] of safeRegexReplacements) {
+        value = value.split(`${token}*`).join(`${token}{0,${max}}`).split(`${token}+`).join(`${token}{1,${max}}`);
+      }
+      return value;
+    };
     const createToken = (name, value, isGlobal) => {
+      const safe = makeSafeRegex(value);
       const index = R++;
       debug_1(name, index, value);
       t[name] = index;
       src[index] = value;
       re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
+      safeRe[index] = new RegExp(safe, isGlobal ? 'g' : undefined);
     };
 
     // The following Regular Expressions can be used for tokenizing,
@@ -38258,13 +39442,13 @@
     // A single `0`, or a non-zero digit followed by zero or more digits.
 
     createToken('NUMERICIDENTIFIER', '0|[1-9]\\d*');
-    createToken('NUMERICIDENTIFIERLOOSE', '[0-9]+');
+    createToken('NUMERICIDENTIFIERLOOSE', '\\d+');
 
     // ## Non-numeric Identifier
     // Zero or more digits, followed by a letter or hyphen, and then zero or
     // more letters, digits, or hyphens.
 
-    createToken('NONNUMERICIDENTIFIER', '\\d*[a-zA-Z-][a-zA-Z0-9-]*');
+    createToken('NONNUMERICIDENTIFIER', `\\d*[a-zA-Z-]${LETTERDASHNUMBER}*`);
 
     // ## Main Version
     // Three dot-separated numeric identifiers.
@@ -38288,7 +39472,7 @@
     // ## Build Metadata Identifier
     // Any combination of digits, letters, or hyphens.
 
-    createToken('BUILDIDENTIFIER', '[0-9A-Za-z-]+');
+    createToken('BUILDIDENTIFIER', `${LETTERDASHNUMBER}+`);
 
     // ## Build Metadata
     // Plus sign, followed by one or more period-separated build metadata
@@ -38327,8 +39511,11 @@
 
     // Coercion.
     // Extract anything that could conceivably be a part of a valid semver
-    createToken('COERCE', `${'(^|[^\\d])' + '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:$|[^\\d])`);
+    createToken('COERCEPLAIN', `${'(^|[^\\d])' + '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` + `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?`);
+    createToken('COERCE', `${src[t.COERCEPLAIN]}(?:$|[^\\d])`);
+    createToken('COERCEFULL', src[t.COERCEPLAIN] + `(?:${src[t.PRERELEASE]})?` + `(?:${src[t.BUILD]})?` + `(?:$|[^\\d])`);
     createToken('COERCERTL', src[t.COERCE], true);
+    createToken('COERCERTLFULL', src[t.COERCEFULL], true);
 
     // Tilde ranges.
     // Meaning is "reasonably at or greater than"
@@ -38369,21 +39556,27 @@
     createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$');
     });
     re_1.re;
+    re_1.safeRe;
     re_1.src;
     re_1.t;
     re_1.tildeTrimReplace;
     re_1.caretTrimReplace;
     re_1.comparatorTrimReplace;
 
-    // parse out just the options we care about so we always get a consistent
-    // obj with keys in a consistent order.
-    const opts = ['includePrerelease', 'loose', 'rtl'];
-    const parseOptions = options => !options ? {} : typeof options !== 'object' ? {
+    // parse out just the options we care about
+    const looseOption = Object.freeze({
       loose: true
-    } : opts.filter(k => options[k]).reduce((o, k) => {
-      o[k] = true;
-      return o;
-    }, {});
+    });
+    const emptyOpts = Object.freeze({});
+    const parseOptions = options => {
+      if (!options) {
+        return emptyOpts;
+      }
+      if (typeof options !== 'object') {
+        return looseOption;
+      }
+      return options;
+    };
     var parseOptions_1 = parseOptions;
 
     const numeric = /^[0-9]+$/;
@@ -38403,12 +39596,12 @@
     };
 
     const {
-      MAX_LENGTH: MAX_LENGTH$1,
+      MAX_LENGTH,
       MAX_SAFE_INTEGER
     } = constants;
     const {
-      re: re$1,
-      t: t$1
+      safeRe: re,
+      t
     } = re_1;
 
     const {
@@ -38424,10 +39617,10 @@
             version = version.version;
           }
         } else if (typeof version !== 'string') {
-          throw new TypeError(`Invalid Version: ${version}`);
+          throw new TypeError(`Invalid version. Must be a string. Got type "${typeof version}".`);
         }
-        if (version.length > MAX_LENGTH$1) {
-          throw new TypeError(`version is longer than ${MAX_LENGTH$1} characters`);
+        if (version.length > MAX_LENGTH) {
+          throw new TypeError(`version is longer than ${MAX_LENGTH} characters`);
         }
         debug_1('SemVer', version, options);
         this.options = options;
@@ -38435,7 +39628,7 @@
         // this isn't actually relevant for versions, but keep it so that we
         // don't run into trouble passing this.options around.
         this.includePrerelease = !!options.includePrerelease;
-        const m = version.trim().match(options.loose ? re$1[t$1.LOOSE] : re$1[t$1.FULL]);
+        const m = version.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
         if (!m) {
           throw new TypeError(`Invalid Version: ${version}`);
         }
@@ -38540,7 +39733,7 @@
         do {
           const a = this.build[i];
           const b = other.build[i];
-          debug_1('prerelease compare', i, a, b);
+          debug_1('build compare', i, a, b);
           if (a === undefined && b === undefined) {
             return 0;
           } else if (b === undefined) {
@@ -38557,36 +39750,36 @@
 
       // preminor will bump the version up to the next minor release, and immediately
       // down to pre-release. premajor and prepatch work the same way.
-      inc(release, identifier) {
+      inc(release, identifier, identifierBase) {
         switch (release) {
           case 'premajor':
             this.prerelease.length = 0;
             this.patch = 0;
             this.minor = 0;
             this.major++;
-            this.inc('pre', identifier);
+            this.inc('pre', identifier, identifierBase);
             break;
           case 'preminor':
             this.prerelease.length = 0;
             this.patch = 0;
             this.minor++;
-            this.inc('pre', identifier);
+            this.inc('pre', identifier, identifierBase);
             break;
           case 'prepatch':
             // If this is already a prerelease, it will bump to the next version
             // drop any prereleases that might already exist, since they are not
             // relevant at this point.
             this.prerelease.length = 0;
-            this.inc('patch', identifier);
-            this.inc('pre', identifier);
+            this.inc('patch', identifier, identifierBase);
+            this.inc('pre', identifier, identifierBase);
             break;
           // If the input is a non-prerelease version, this acts the same as
           // prepatch.
           case 'prerelease':
             if (this.prerelease.length === 0) {
-              this.inc('patch', identifier);
+              this.inc('patch', identifier, identifierBase);
             }
-            this.inc('pre', identifier);
+            this.inc('pre', identifier, identifierBase);
             break;
           case 'major':
             // If this is a pre-major version, bump up to the same major version.
@@ -38624,71 +39817,69 @@
           // This probably shouldn't be used publicly.
           // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
           case 'pre':
-            if (this.prerelease.length === 0) {
-              this.prerelease = [0];
-            } else {
-              let i = this.prerelease.length;
-              while (--i >= 0) {
-                if (typeof this.prerelease[i] === 'number') {
-                  this.prerelease[i]++;
-                  i = -2;
-                }
+            {
+              const base = Number(identifierBase) ? 1 : 0;
+              if (!identifier && identifierBase === false) {
+                throw new Error('invalid increment argument: identifier is empty');
               }
-              if (i === -1) {
-                // didn't increment anything
-                this.prerelease.push(0);
-              }
-            }
-            if (identifier) {
-              // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
-              // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
-              if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
-                if (isNaN(this.prerelease[1])) {
-                  this.prerelease = [identifier, 0];
-                }
+              if (this.prerelease.length === 0) {
+                this.prerelease = [base];
               } else {
-                this.prerelease = [identifier, 0];
+                let i = this.prerelease.length;
+                while (--i >= 0) {
+                  if (typeof this.prerelease[i] === 'number') {
+                    this.prerelease[i]++;
+                    i = -2;
+                  }
+                }
+                if (i === -1) {
+                  // didn't increment anything
+                  if (identifier === this.prerelease.join('.') && identifierBase === false) {
+                    throw new Error('invalid increment argument: identifier already exists');
+                  }
+                  this.prerelease.push(base);
+                }
               }
+              if (identifier) {
+                // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
+                // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
+                let prerelease = [identifier, base];
+                if (identifierBase === false) {
+                  prerelease = [identifier];
+                }
+                if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
+                  if (isNaN(this.prerelease[1])) {
+                    this.prerelease = prerelease;
+                  }
+                } else {
+                  this.prerelease = prerelease;
+                }
+              }
+              break;
             }
-            break;
           default:
             throw new Error(`invalid increment argument: ${release}`);
         }
-        this.format();
-        this.raw = this.version;
+        this.raw = this.format();
+        if (this.build.length) {
+          this.raw += `+${this.build.join('.')}`;
+        }
         return this;
       }
     }
     var semver = SemVer;
 
-    const {
-      MAX_LENGTH
-    } = constants;
-    const {
-      re,
-      t
-    } = re_1;
-
-
-    const parse = (version, options) => {
-      options = parseOptions_1(options);
+    const parse = (version, options, throwErrors = false) => {
       if (version instanceof semver) {
         return version;
-      }
-      if (typeof version !== 'string') {
-        return null;
-      }
-      if (version.length > MAX_LENGTH) {
-        return null;
-      }
-      const r = options.loose ? re[t.LOOSE] : re[t.FULL];
-      if (!r.test(version)) {
-        return null;
       }
       try {
         return new semver(version, options);
       } catch (er) {
-        return null;
+        if (!throwErrors) {
+          return null;
+        }
+        throw er;
       }
     };
     var parse_1 = parse;
@@ -38924,8 +40115,8 @@
             props: _objectSpread2(_objectSpread2({}, store), {}, {
               timeUuid: button.getAttribute("data-uuid"),
               editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
-              timeEditorButtonCaption: translate_1("timemanager", "Edit"),
-              timeEditorCaption: translate_1("timemanager", "Edit time entry"),
+              timeEditorButtonCaption: translate("timemanager", "Edit"),
+              timeEditorCaption: translate("timemanager", "Edit time entry"),
               requestToken: token
             })
           }));
