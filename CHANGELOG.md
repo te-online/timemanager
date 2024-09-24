@@ -8,7 +8,11 @@
 
 ### Changed
 
-- Updated JS dependencies
+- Updated JS dependencies and adjusted build scripts
+
+### Fixed
+
+- Adjustments to global CSS changes in Nextcloud 30
 
 ## 0.3.15 Beta, 18. July 2024
 
