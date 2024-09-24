@@ -51,6 +51,7 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 
 			if (username == "testuser-1") {
 				cy.get("input[placeholder='Set account groups']").type("testgroup-1{enter}");
+				cy.wait(1000);
 			}
 
 			cy.contains("button", "Add new account").click();
