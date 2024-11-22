@@ -147,6 +147,7 @@ OC.L10N.register(
 		"Collapse all": "Alle einklappen",
 		"Expand all": "Alle ausklappen",
 		"Import now": "Importieren",
+		"Generate preview from file": "Vorschau aus Datei erstellen",
 		"shared with you by:": "geteilt von:",
 		"Shared with": "Geteilt mit",
 		"Shared with you by": "Geteilt von",

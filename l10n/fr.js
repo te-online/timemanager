@@ -152,6 +152,7 @@ OC.L10N.register(
 		"Collapse all": "Réduire la vue",
 		"Expand all": "Étendre la vue",
 		"Import now": "Importer maintenant",
+		"Generate preview from file": "Prévisualiser le fichier",
 		"shared with you by:": "partagé par :",
 		"Shared with": "Partagé avec",
 		"Shared with you by": "Partagé par",
