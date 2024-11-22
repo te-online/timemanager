@@ -150,7 +150,7 @@ OC.L10N.register(
 			"{clientsCount} client(s), {projectsCount} projet(s), {tasksCount} tâche(s) importés",
 		Preview: "Prévisualiser",
 		"Collapse all": "Réduire la vue",
-		"Expand all": "Étenre la vue",
+		"Expand all": "Étendre la vue",
 		"Import now": "Importer maintenant",
 		"shared with you by:": "partagé par :",
 		"Shared with": "Partagé avec",
@@ -164,7 +164,7 @@ OC.L10N.register(
 		"Users you share with can create time entries.":
 			"Les utilisateurs avec lesquels vous partagez vos clients pourront seulement ajouter des saisies de temps.",
 		"You can see all time entries, while others can only see and edit their own time entries.":
-			"En tant que propriétaire d'un client, vous pourrez voir toute les saisies de temps. Tandis que les utilisateurs avec lesquels vous partagez ce client, ne pourront voir que leurs propres saisies de temps.",
+			"En tant que propriétaire d'un client, vous pourrez voir toute les saisies de temps le concernant. Tandis que les utilisateurs avec lesquels vous partagez ce client ne pourront voir que leurs propres saisies de temps.",
 		"Share client": "Partage le client",
 		"Loading...": "Chargement...",
 		"Deleted user": "Utilisateur supprimé",
