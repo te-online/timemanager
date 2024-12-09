@@ -181,6 +181,7 @@ OC.L10N.register(
 		"End time": "Endzeit",
 		"{duration} hrs. on {date}": "{duration} Std. am {date}",
 		"(Group)": "(Gruppe)",
+		"Print report": "Report drucken",
 	},
 	"nplurals=2; plural=(n != 1);",
 );

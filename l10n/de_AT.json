@@ -160,7 +160,8 @@
 		"Start time": "Startzeit",
 		"End time": "Endzeit",
 		"{duration} hrs. on {date}": "{duration} Std. am {date}",
-		"(Group)": "(Gruppe)"
+		"(Group)": "(Gruppe)",
+		"Print report": "Report drucken"
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

@@ -102,8 +102,7 @@ OC.L10N.register(
 		Duration: "Durée",
 		"Report total": "Rapport global",
 		"Number of entries": "Nombre de saisies",
-		"Apply filters": "Appliquer les filtres",
-		"Apply range": "Appliquer la période",
+		Apply: "Apply",
 		From: "De",
 		To: "À",
 		Status: "Statut",
@@ -186,6 +185,7 @@ OC.L10N.register(
 		"Start time": "Heure de départ",
 		"End time": "Heure de fin",
 		"{duration} hrs. on {date}": "{duration} heures, le {date}",
+		"Print report": "Print report",
 	},
 	"nplurals=2; plural=(n != 1);",
 );
