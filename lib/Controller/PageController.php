@@ -892,7 +892,7 @@ class PageController extends Controller {
 		$sharedBy = null;
 		$sharees = [];
 		if ($task) {
-			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start", true);
+			$times = $this->timeMapper->getActiveObjectsByAttributeValue("task_uuid", $task, "start", true, "DESC");
 			$task_data = $this->taskMapper->getActiveObjectsByAttributeValue("uuid", $task, "created", true);
 			$project_data = $this->projectMapper->getActiveObjectsByAttributeValue(
 				"uuid",
