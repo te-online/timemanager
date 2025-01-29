@@ -50,7 +50,7 @@ class ObjectMapper extends QBMapper {
 	 * @param string $value the attribute value
 	 * @return Object[] list if matching items
 	 */
-	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false): array {
+	function getActiveObjectsByAttributeValue(string $attr, string $value, $orderby = "created", $shared = false, $sort = "ASC"): array {
 		$sql = $this->db->getQueryBuilder();
 		if ($shared && strpos($this->tableName, "_client") > -1) {
 			$sql
@@ -69,7 +69,7 @@ class ObjectMapper extends QBMapper {
 				->where($expr)
 				->andWhere("client.`status` != :status")
 				->andWhere("client.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
+				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 		} elseif ($shared && strpos($this->tableName, "_project") > -1) {
@@ -94,7 +94,7 @@ class ObjectMapper extends QBMapper {
 				->where($expr)
 				->andWhere("project.`status` != :status")
 				->andWhere("project.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
+				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 		} elseif ($shared && strpos($this->tableName, "_task") > -1) {
@@ -120,7 +120,7 @@ class ObjectMapper extends QBMapper {
 				->where($expr)
 				->andWhere("task.`status` != :status")
 				->andWhere("task.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
+				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 		} elseif ($shared && strpos($this->tableName, "_time") > -1) {
@@ -142,7 +142,7 @@ class ObjectMapper extends QBMapper {
 				->where($expr)
 				->andWhere("time.`status` != :status")
 				->andWhere("time.`$attr` = :attr")
-				->orderBy(\strtolower($orderby), "ASC");
+				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters(["userid" => $this->userId, "status" => "deleted", "attr" => $value]);
 		} else {
@@ -153,7 +153,7 @@ class ObjectMapper extends QBMapper {
 				->where("`user_id` = ?")
 				->andWhere("`status` != ?")
 				->andWhere("`$attr` = ?")
-				->orderBy(\strtolower($orderby), "ASC");
+				->orderBy(\strtolower($orderby), $sort);
 
 			$sql->setParameters([$this->userId, "deleted", $value]);
 		}
