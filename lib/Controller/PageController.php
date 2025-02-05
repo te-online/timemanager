@@ -516,7 +516,7 @@ class PageController extends Controller {
 		if ($client) {
 			$isSingleClient = true;
 			$projects = $this->projectMapper->getActiveObjectsByAttributeValue("client_uuid", $client, "created", true);
-			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "name", "created", true);
+			$client_data = $this->clientMapper->getActiveObjectsByAttributeValue("uuid", $client, "created", true);
 			// Sum up client times
 			if (count($client_data) === 1) {
 				$client_data[0]->hours = $this->clientMapper->getHours($client_data[0]->getUuid());
