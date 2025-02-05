@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.17 Beta, tba
+
+### Added
+
+- Add missing German translation strings
+
+### Changed
+
+- Update French translation (contributed by @punkyard)
+- Docs: Replace docker with podman
+
+### Fixed
+
+- Override NC 30 default headline margin
+- Sort list of time entries descending (#25)
+- Consider timezone when printing start and end into the CSV report (#205)
+
 ## 0.3.16 Beta, 24. September 2024
 
 ### Added
