@@ -270,9 +270,17 @@ class PageController extends Controller {
 				$hours_total += $hours;
 				// Prepare a row for the CSV
 				if ($format === "csv") {
+					$date_time_zone = new \DateTimeZone($timezone);
+
+					$start_date_time = new \DateTime($time->getStart(), new \DateTimeZone("UTC"));
+					$start_date_time->setTimezone($date_time_zone);
+
+					$end_date_time = new \DateTime($time->getEnd(), new \DateTimeZone("UTC"));
+					$end_date_time->setTimezone($date_time_zone);
+
 					$all_time_entries[] = [
-						"start" => $time->getStart(),
-						"end" => $time->getEnd(),
+						"start" => $start_date_time->format("Y-m-d H:i:s"),
+						"end" => $end_date_time->format("Y-m-d H:i:s"),
 						"note" => $time->getNote(),
 						"status" => strtolower($time->getPaymentStatus()) === "paid" ? "resolved" : "unresolved",
 						"duration" => $hours,
