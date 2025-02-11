@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.17 Beta, tba
+## 0.3.17 Beta, 11. February 2025
 
 ### Added
 
