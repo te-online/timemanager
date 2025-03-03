@@ -26,6 +26,7 @@ use OCP\IConfig;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
+use Psr\Log\LoggerInterface;
 
 class PageController extends Controller {
 	/** @var ClientMapper mapper for client entity */
@@ -58,6 +59,8 @@ class PageController extends Controller {
 	private $l;
 	/** @var string */
 	private $requestToken;
+	/** @var LoggerInterface logger */
+	private $logger;
 
 	/**
 	 * constructor of the controller
@@ -87,7 +90,8 @@ class PageController extends Controller {
 		IGroupManager $groupManager,
 		IURLGenerator $urlGenerator,
 		IL10N $l,
-		ISession $session
+		ISession $session,
+		LoggerInterface $logger
 	) {
 		parent::__construct($appName, $request);
 		$this->clientMapper = $clientMapper;
@@ -100,6 +104,7 @@ class PageController extends Controller {
 		$this->config = $config;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
+		$this->logger = $logger;
 		$this->storageHelper = new StorageHelper(
 			$this->clientMapper,
 			$this->projectMapper,
@@ -108,6 +113,7 @@ class PageController extends Controller {
 			$this->commitMapper,
 			$this->shareMapper,
 			$this->config,
+			$this->logger,
 			(string) $userId
 		);
 		$this->urlGenerator = $urlGenerator;

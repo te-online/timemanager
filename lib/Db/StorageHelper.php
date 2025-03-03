@@ -7,6 +7,7 @@ use OCP\AppFramework\Db\Entity;
 use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class StorageHelper
@@ -30,6 +31,8 @@ class StorageHelper {
 	protected $userId;
 	/** @var IConfig */
 	private $config;
+	/** @var LoggerInterface logger */
+	private $logger;
 
 	public function __construct(
 		ClientMapper $clientMapper,
@@ -39,6 +42,7 @@ class StorageHelper {
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
 		IConfig $config,
+		LoggerInterface $logger,
 		string $userId
 	) {
 		$this->clientMapper = $clientMapper;
@@ -55,6 +59,7 @@ class StorageHelper {
 		$this->shareMapper->setCurrentUser($userId);
 		$this->config = $config;
 		$this->userId = $userId;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -213,8 +218,7 @@ class StorageHelper {
 	 * @return array list of matching items
 	 */
 	function getObjectsAfterCommit(string $entity, string $commit): array {
-		$logger = \OC::$server->getLogger();
-		$logger->debug($entity, ["app" => "timemanager"]);
+		$this->logger->debug($entity, ["app" => "timemanager"]);
 		return $this->findEntityMapper($entity)->getObjectsAfterCommit($commit);
 	}
 

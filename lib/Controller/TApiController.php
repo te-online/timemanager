@@ -28,7 +28,7 @@ class TApiController extends ApiController {
 	protected $taskMapper;
 	/** @var TimeMapper mapper for time entity */
 	protected $timeMapper;
-	/** @var ClientMapper mapper for client entity */
+	/** @var CommitMapper mapper for client entity */
 	protected $commitMapper;
 	/** @var ShareMapper mapper for client entity */
 	protected $shareMapper;
@@ -83,6 +83,7 @@ class TApiController extends ApiController {
 			$this->commitMapper,
 			$this->shareMapper,
 			$this->config,
+			$this->logger,
 			$userId
 		);
 	}
