@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@nextcloud/browserslist-config": "^2.0.0",
-    "@nextcloud/l10n": "^2.1.0",
+    "@nextcloud/l10n": "^3.2.0",
     "@popperjs/core": "^2.11.8",
     "csv-parse": "^5.4.0",
     "date-fns": "^2.30.0",
