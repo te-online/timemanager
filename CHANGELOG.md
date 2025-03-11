@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.18 Beta, 11. March 2025
+
+### Added
+
+- Support for Nextcloud 31
+
+### Fixed
+
+- Update JS dependencies with `npm audit`
+- Button styling should be aligned between anchor-element buttons and actual buttons
+- Avoid use of deprecated logger, which caused a crash in Nextcloud 31 (#206)
+
 ## 0.3.17 Beta, 11. February 2025
 
 ### Added
