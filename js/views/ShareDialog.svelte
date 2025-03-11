@@ -180,5 +180,7 @@
 		value={selectedSharee && selectedSharee.value.shareType === 1 ? selectedSharee.value.shareWith : ""}
 	/>
 	<input type="hidden" name="requesttoken" value={requestToken} />
-	<button type="submit" name="action" value="share" class="btn">{translate("timemanager", "Share client")}</button>
+	<button type="submit" name="action" value="share" class="button primary new">
+		{translate("timemanager", "Share client")}
+	</button>
 </form>

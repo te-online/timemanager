@@ -39,8 +39,8 @@
 		<div class="inner tm_new-item">
 			{deleteQuestion}
 			<div class="oc-dialog-buttonrow twobuttons reverse">
-				<button class="button primary" on:click|preventDefault={doDelete}>{translate('timemanager', 'Delete')}</button>
-				<button class="button" on:click|preventDefault={cancelDelete}>{translate('timemanager', 'Cancel')}</button>
+				<button class="button primary" on:click|preventDefault={doDelete}>{translate("timemanager", "Delete")}</button>
+				<button class="button" on:click|preventDefault={cancelDelete}>{translate("timemanager", "Cancel")}</button>
 			</div>
 		</div>
 	</Overlay>
@@ -49,5 +49,5 @@
 <form action={deleteAction} bind:this={form} method="post">
 	<input type="hidden" name="uuid" value={deleteUuid} />
 	<input type="hidden" name="requesttoken" value={requestToken} />
-	<button type="submit" name="action" value="delete" class="btn">{deleteButtonCaption}</button>
+	<button type="submit" name="action" value="delete" class="button primary new">{deleteButtonCaption}</button>
 </form>

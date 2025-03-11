@@ -58,9 +58,9 @@
 </script>
 
 {#if !timeUuid}
-	<a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
+	<button type="button" on:click|preventDefault={() => (show = !show)} class="button primary new">
 		<span>{timeEditorButtonCaption}</span>
-	</a>
+	</button>
 {:else}
 	<div class="tm_inline-hover-form">
 		<button type="button" class="btn" on:click|preventDefault={() => (show = !show)}>{timeEditorButtonCaption}</button>
