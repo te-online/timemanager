@@ -5,7 +5,7 @@ import babel from "rollup-plugin-babel";
 import analyze from "rollup-plugin-analyzer";
 import injectProcessEnv from "rollup-plugin-inject-process-env";
 import scss from "rollup-plugin-scss";
-import sass from "node-sass";
+import sass from "sass";
 import polyfill from "rollup-plugin-polyfill-node";
 
 export default {
