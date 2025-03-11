@@ -279,6 +279,7 @@ label.space-top {
 }
 #content.app-timemanager .new {
   display: inline-block;
+  padding: calc((var(--default-clickable-area) - 1lh) / 2) calc(3 * var(--default-grid-baseline));
 }
 @supports (animation: fallback 0.1s 3s forwards) {
   #content.app-timemanager [data-svelte-hide] {

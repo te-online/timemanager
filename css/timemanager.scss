@@ -291,6 +291,7 @@ label {
 
 	.new {
 		display: inline-block;
+		padding: calc((var(--default-clickable-area) - 1lh) / 2) calc(3 * var(--default-grid-baseline));
 	}
 
 	// Waits 3 seconds for the JS to kick in, otherwise shows
