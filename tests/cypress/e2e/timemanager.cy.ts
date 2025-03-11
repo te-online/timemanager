@@ -35,7 +35,7 @@ const waitForPjax = () => {
 	cy.get("body").should((body) => expect(body).to.have.class("tm_ready"));
 };
 
-describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
+describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 	beforeEach(() => {
 		// Log in
 		cy.login(Cypress.env("NEXTCLOUD_ADMIN_USER"), Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
@@ -728,6 +728,13 @@ describe("TimeManager", { defaultCommandTimeout: 5000 }, () => {
 			.within(() => {
 				cy.contains(timeEntriesTotalFormatted);
 			});
+	});
+});
+
+describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
+	beforeEach(() => {
+		// Log in
+		cy.login(Cypress.env("NEXTCLOUD_ADMIN_USER"), Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
 	});
 
 	it("can see clients, projects, tasks shared with me", () => {
