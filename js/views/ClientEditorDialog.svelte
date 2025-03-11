@@ -49,9 +49,9 @@
 	};
 </script>
 
-<button type="button" on:click|preventDefault={() => (show = !show)} class="button primary new">
+<a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
 	<span>{clientEditorButtonCaption}</span>
-</button>
+</a>
 {#if show}
 	<Overlay {loading}>
 		<ClientEditor
@@ -61,7 +61,6 @@
 			onSubmit={save}
 			{clientEditorButtonCaption}
 			{clientEditorCaption}
-			{editClientData}
-		/>
+			{editClientData} />
 	</Overlay>
 {/if}

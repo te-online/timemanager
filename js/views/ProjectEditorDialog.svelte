@@ -47,9 +47,9 @@
 	};
 </script>
 
-<button type="button" on:click|preventDefault={() => (show = !show)} class="button primary new">
+<a href="#/" on:click|preventDefault={() => (show = !show)} class="button primary new">
 	<span>{projectEditorButtonCaption}</span>
-</button>
+</a>
 {#if show}
 	<Overlay {loading}>
 		<ProjectEditor
@@ -61,7 +61,6 @@
 			{isServer}
 			{projectEditorButtonCaption}
 			{projectEditorCaption}
-			{editProjectData}
-		/>
+			{editProjectData} />
 	</Overlay>
 {/if}
