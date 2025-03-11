@@ -15935,7 +15935,7 @@
       };
     }
     function create_fragment$p(ctx) {
-      var a;
+      var button;
       var span;
       var t0;
       var t1;
@@ -15946,25 +15946,25 @@
       var if_block = /*show*/ctx[6] && create_if_block$h(ctx);
       return {
         c() {
-          a = element("a");
+          button = element("button");
           span = element("span");
           t0 = text$1( /*clientEditorButtonCaption*/ctx[2]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(a, "href", "#/");
-          attr(a, "class", "button primary new");
+          attr(button, "type", "button");
+          attr(button, "class", "button primary new");
         },
         m(target, anchor) {
-          insert(target, a, anchor);
-          append(a, span);
+          insert(target, button, anchor);
+          append(button, span);
           append(span, t0);
           insert(target, t1, anchor);
           if (if_block) if_block.m(target, anchor);
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[10]));
+            dispose = listen(button, "click", prevent_default( /*click_handler*/ctx[10]));
             mounted = true;
           }
         },
@@ -16003,7 +16003,7 @@
         },
         d(detaching) {
           if (detaching) {
-            detach(a);
+            detach(button);
             detach(t1);
             detach(if_block_anchor);
           }
@@ -16473,7 +16473,7 @@
       };
     }
     function create_fragment$n(ctx) {
-      var a;
+      var button;
       var span;
       var t0;
       var t1;
@@ -16484,25 +16484,25 @@
       var if_block = /*show*/ctx[8] && create_if_block$f(ctx);
       return {
         c() {
-          a = element("a");
+          button = element("button");
           span = element("span");
           t0 = text$1( /*projectEditorButtonCaption*/ctx[4]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(a, "href", "#/");
-          attr(a, "class", "button primary new");
+          attr(button, "type", "button");
+          attr(button, "class", "button primary new");
         },
         m(target, anchor) {
-          insert(target, a, anchor);
-          append(a, span);
+          insert(target, button, anchor);
+          append(button, span);
           append(span, t0);
           insert(target, t1, anchor);
           if (if_block) if_block.m(target, anchor);
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[12]));
+            dispose = listen(button, "click", prevent_default( /*click_handler*/ctx[12]));
             mounted = true;
           }
         },
@@ -16541,7 +16541,7 @@
         },
         d(detaching) {
           if (detaching) {
-            detach(a);
+            detach(button);
             detach(t1);
             detach(if_block_anchor);
           }
@@ -17043,7 +17043,7 @@
       };
     }
     function create_fragment$l(ctx) {
-      var a;
+      var button;
       var span;
       var t0;
       var t1;
@@ -17054,25 +17054,25 @@
       var if_block = /*show*/ctx[9] && create_if_block$d(ctx);
       return {
         c() {
-          a = element("a");
+          button = element("button");
           span = element("span");
           t0 = text$1( /*taskEditorButtonCaption*/ctx[5]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(a, "href", "#/");
-          attr(a, "class", "button primary new");
+          attr(button, "type", "button");
+          attr(button, "class", "button primary new");
         },
         m(target, anchor) {
-          insert(target, a, anchor);
-          append(a, span);
+          insert(target, button, anchor);
+          append(button, span);
           append(span, t0);
           insert(target, t1, anchor);
           if (if_block) if_block.m(target, anchor);
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[13]));
+            dispose = listen(button, "click", prevent_default( /*click_handler*/ctx[13]));
             mounted = true;
           }
         },
@@ -17111,7 +17111,7 @@
         },
         d(detaching) {
           if (detaching) {
-            detach(a);
+            detach(button);
             detach(t1);
             detach(if_block_anchor);
           }
@@ -17825,25 +17825,25 @@
 
     // (60:0) {#if !timeUuid}
     function create_if_block_1$6(ctx) {
-      var a;
+      var button;
       var span;
       var t;
       var mounted;
       var dispose;
       return {
         c() {
-          a = element("a");
+          button = element("button");
           span = element("span");
           t = text$1( /*timeEditorButtonCaption*/ctx[6]);
-          attr(a, "href", "#/");
-          attr(a, "class", "button primary new");
+          attr(button, "type", "button");
+          attr(button, "class", "button primary new");
         },
         m(target, anchor) {
-          insert(target, a, anchor);
-          append(a, span);
+          insert(target, button, anchor);
+          append(button, span);
           append(span, t);
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[14]));
+            dispose = listen(button, "click", prevent_default( /*click_handler*/ctx[14]));
             mounted = true;
           }
         },
@@ -17852,7 +17852,7 @@
         },
         d(detaching) {
           if (detaching) {
-            detach(a);
+            detach(button);
           }
           mounted = false;
           dispose();
@@ -18229,10 +18229,10 @@
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
-          button0.textContent = "".concat(translate('timemanager', 'Delete'));
+          button0.textContent = "".concat(translate("timemanager", "Delete"));
           t3 = space$1();
           button1 = element("button");
-          button1.textContent = "".concat(translate('timemanager', 'Cancel'));
+          button1.textContent = "".concat(translate("timemanager", "Cancel"));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -18294,7 +18294,7 @@
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "delete";
-          attr(button, "class", "btn");
+          attr(button, "class", "button primary new");
           attr(form_1, "action", /*deleteAction*/ctx[0]);
           attr(form_1, "method", "post");
         },
@@ -22682,7 +22682,7 @@
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "share";
-          attr(button, "class", "btn");
+          attr(button, "class", "button primary new");
           attr(form_1, "action", /*shareAction*/ctx[0]);
           attr(form_1, "method", "post");
         },
