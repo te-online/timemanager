@@ -301,7 +301,7 @@ class PageController extends Controller {
 		// Apply total to clients
 		foreach ($times_grouped_by_client as $times_group) {
 			$times_grouped_by_client[$times_group->client->getUuid()]->percentageHours =
-				round($times_group->totalHours / $hours_total, 2) * 100;
+				$hours_total > 0 ? round($times_group->totalHours / $hours_total, 2) * 100 : 0;
 		}
 
 		if ($format === "csv") {
