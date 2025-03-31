@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.19 Beta, tba
+
+### Fixed
+
+- A "divided by zero exception" could occur when a report only contained a single 0-duration time entry (#211) (thanks to @calidadi)
+
 ## 0.3.18 Beta, 11. March 2025
 
 ### Added
