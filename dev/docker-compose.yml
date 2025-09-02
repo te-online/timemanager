@@ -12,12 +12,11 @@ x-logging-config: &logging_config
 services:
   dev:
     <<: [*restart_policy, *logging_config]
-    image: ghcr.io/juliushaertl/nextcloud-dev-php80:latest
+    image: ghcr.io/juliusknorr/nextcloud-dev-php84:latest
     ports:
       - 8080:80
     volumes:
-      - /tmp/server:/var/www/html
-      - ../:/var/www/html/apps-extra/timemanager
+      - ${PWD}/../:/var/www/html/apps-extra/timemanager:ro
     environment:
       - SERVER_BRANCH=${SERVER_BRANCH}
 #
