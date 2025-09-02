@@ -4,3 +4,4 @@ node_modules
 tests/cypress/screenshots
 tests/results
 cypress.env.json
+.idea
