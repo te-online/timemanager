@@ -316,9 +316,9 @@ class StorageHelper {
 	 * @return array A comma-separated list of task uuids
 	 */
 	function getTaskListFromFilters(
-		string $clients = null,
-		string $projects = null,
-		string $tasks = null,
+		?string $clients = null,
+		?string $projects = null,
+		?string $tasks = null,
 		$shared = false
 	): array {
 		$all_projects = $this->projectMapper->findActiveForCurrentUser("name", $shared);

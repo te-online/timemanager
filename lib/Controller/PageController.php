@@ -202,10 +202,10 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	function reports(
-		string $clients = null,
-		string $projects = null,
-		string $tasks = null,
-		string $status = null,
+		?string $clients = null,
+		?string $projects = null,
+		?string $tasks = null,
+		?string $status = null,
 		string $start = "",
 		string $end = "",
 		string $format = "none",

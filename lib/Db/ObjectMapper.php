@@ -173,7 +173,7 @@ class ObjectMapper extends QBMapper {
 	function getActiveObjectsByDateRangeAndFilters(
 		string $date_start,
 		string $date_end,
-		string $status = null,
+		?string $status = null,
 		array $filter_tasks = [],
 		string $orderby = "start",
 		$shared = false,

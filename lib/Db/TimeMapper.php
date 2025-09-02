@@ -32,7 +32,7 @@ class TimeMapper extends ObjectMapper {
 	public function findForReport(
 		string $start,
 		string $end,
-		string $status = null,
+		?string $status = null,
 		array $filter_tasks = [],
 		$shared = false,
 		string $timezone = "UTC"
