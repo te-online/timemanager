@@ -33,7 +33,7 @@ _[View changelog](https://github.com/te-online/timemanager/blob/main/CHANGELOG.m
 	<bugs>https://github.com/te-online/timemanager/issues</bugs>
 	<namespace>TimeManager</namespace>
 	<dependencies>
-		<nextcloud min-version="26" max-version="31" />
+		<nextcloud min-version="26" max-version="32" />
 	</dependencies>
 	<navigations>
 		<navigation>
