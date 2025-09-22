@@ -10,7 +10,7 @@ x-logging-config: &logging_config
       max-size: "50m"
 
 services:
-  dev:
+  nextcloud-dev:
     <<: [*restart_policy, *logging_config]
     image: ghcr.io/juliusknorr/nextcloud-dev-php84:latest
     ports:
