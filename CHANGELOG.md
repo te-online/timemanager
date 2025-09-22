@@ -2,9 +2,14 @@
 
 ## 0.3.19 Beta, tba
 
+### Added
+
+- Support for Nextcloud 32; Cypress tests run manually
+
 ### Fixed
 
 - A "divided by zero exception" could occur when a report only contained a single 0-duration time entry (#211) (thanks to @calidadi)
+- Avoid PHP 8.4 warning about "Implicitly nullable parameter" (#218) (thanks to @solonovamax)
 
 ## 0.3.18 Beta, 11. March 2025
 
