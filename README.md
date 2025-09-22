@@ -54,18 +54,17 @@ Before building or development, dependencies need to be installed once by runnin
 
 ## Automated testing
 
-Some end-to-end testing is done using [Cypress](https://www.cypress.io/). Tests currently cover basic features of the app and run in a headless Chrome browser on a containerized Nextcloud instance. For this repository tests run on [a mirror repository on Gitlab](https://gitlab.com/te-online/timemanager).
+Some end-to-end testing is done using [Cypress](https://www.cypress.io/). Tests currently cover basic features of the app and run in a headless Chrome browser on a containerized Nextcloud instance. For this repository tests are run manually before releases.
 
 To run tests locally, change into the `tests` directory. Before running or working on tests, run `npm install` to install dependencies. Make sure to create a `.env` file based on `.env.example` and a `cypress.env.json` based on `cypress.env.example.json`; values can be chosen freely, only make sure they align between the two files.
 
 To run the app, install podman and podman-compose on your machine.
 
-- Then in the `tests` directory run `podman-compose up`,
-- followed by `podman exec $(podman ps -qf "name=app") sh -c 'chown www-data:root custom_apps'`.
-- Wait for the app to be ready,
-- then run `podman exec -u www-data $(podman ps -qf "name=app") sh -c 'php -f ./occ app:disable firstrunwizard'`.
-- Then activate the app by running `podman exec -u www-data $(podman ps -qf "name=app") sh -c 'php -f ./occ app:enable timemanager'`
-- Finally, run `npm start` and use Cypress' UI to start running the tests included in the spec file.
+- Then in the `dev` directory run `podman-compose up`,
+- Wait for the development Nextcloud to be ready,
+- Then activate the app by running `podman exec -u www-data $(podman ps -qf "name=nextcloud-dev") sh -c 'php -f ./occ app:enable timemanager'`,
+- In the UI, you need to add the user "alice" to the group "testgroup-1" (log in with admin/admin),
+- Finally, open a new terminal in the `tests` directory, then run `npm start` and use Cypress' UI to start running the tests included in the spec file.
 
 To shut down containers and **delete** the temporary volumes, run `podman-compose down -v` in a second terminal while you're in the same `tests` directory.
 
