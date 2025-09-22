@@ -33,7 +33,6 @@ Cypress.Commands.add("login", (username, password, route = '/apps/dashboard/') =
 			cy.get("input[name=\"password\"]").type(password, { log: false });
 			cy.get("[type=\"submit\"]").click();
 			cy.url().should("include", route);
-		  cy.contains("#app-dashboard", "Recommended files").scrollIntoView().should("be.visible");
 		},
 		{
 			validate(){

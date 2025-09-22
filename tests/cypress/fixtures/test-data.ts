@@ -939,7 +939,7 @@ export const dataset = [
 	},
 ];
 
-export const testusers = ["import-test", "testuser-1", "testuser-2"];
+export const testusers = ["jane", "alice", "bob"];
 
 export const timeEntries = [
 	{

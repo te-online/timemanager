@@ -41,26 +41,9 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		cy.login(Cypress.env("NEXTCLOUD_ADMIN_USER"), Cypress.env("NEXTCLOUD_ADMIN_PASSWORD"));
 	});
 
-	it("can create test users", () => {
-		cy.visit("/settings/users");
-		for (const username of testusers) {
-			// It can take a while until the user from the previous run is created
-			cy.get("button#new-user-button").click({ timeout: 30000 });
-			cy.get('input[data-test="username"]').type(username);
-			cy.get('input[data-test="password"]').type(`${username}-password`);
-
-			if (username == "testuser-1") {
-				cy.get("input[placeholder='Set account groups']").type("testgroup-1{enter}");
-				cy.wait(1000);
-			}
-
-			cy.contains("button", "Add new account").click();
-		}
-	});
-
 	it("can import from a CSV file", () => {
 		// Log in as import test user
-		cy.login("import-test", "import-test-password");
+		cy.login("jane", "jane");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -105,7 +88,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 
 	it("shows an error message if CSV cannot be parsed", () => {
 		// Log in as import test user
-		cy.login("import-test", "import-test-password");
+		cy.login("jane", "jane");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -128,7 +111,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 
 	it("can import CSV file with semicolon delimiter", () => {
 		// Log in as import test user
-		cy.login("import-test", "import-test-password");
+		cy.login("jane", "jane");
 
 		// Navigate to tools page
 		cy.visit("/apps/timemanager");
@@ -741,7 +724,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 
 		// Log in as sharee test user
-		cy.login(testusers[1], `${testusers[1]}-password`);
+		cy.login(testusers[1], testusers[1]);
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -781,7 +764,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const testuser = testusers[1];
 
 		// Log in as sharee test user
-		cy.login(testuser, `${testuser}-password`);
+		cy.login(testuser, testuser);
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -858,7 +841,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const testuser = testusers[2];
 
 		// Log in as sharee test user
-		cy.login(testuser, `${testuser}-password`);
+		cy.login(testuser, testuser);
 
 		cy.visit("/apps/timemanager");
 		cy.contains("No activity, yet. Check back later.");
@@ -901,7 +884,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const testuser = testusers[1];
 
 		// Log in as sharee test user
-		cy.login(testuser, `${testuser}-password`);
+		cy.login(testuser, testuser);
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();
@@ -930,7 +913,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const testuser = testusers[1];
 
 		// Log in as sharee test user
-		cy.login(testuser, `${testuser}-password`);
+		cy.login(testuser, testuser);
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Projects").click();
@@ -1126,7 +1109,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 		const sharedClient = clients[2];
 
 		// Log in as sharee test user
-		cy.login(testusers[1], `${testusers[1]}-password`);
+		cy.login(testusers[1], testusers[1]);
 
 		cy.visit("/apps/timemanager");
 		cy.get("a").contains("Clients").click();

@@ -5,7 +5,7 @@
 	"main": "timemanager.spec.js",
 	"scripts": {
 		"test": "cypress run --browser chrome",
-		"start": "cypress open --config baseUrl=http://localhost:8000"
+		"start": "cypress open --config baseUrl=http://localhost:8080"
 	},
 	"author": "",
 	"license": "ISC",
