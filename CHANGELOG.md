@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.19 Beta, tba
+## 0.3.19 Beta, 23. September 2025
 
 ### Added
 
