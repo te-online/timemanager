@@ -20,12 +20,18 @@
 	const dateFormat = "yyyy-MM-dd";
 	const hasDate = Boolean(editTimeEntryData.date);
 
+	const inputMethods = {
+		decimal: "decimal",
+		minutes: "minutes"
+	}
+
 	const startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
 	let date = format(startDate, dateFormat, localeOptions);
 	let duration = editTimeEntryData.duration;
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
+	$: inputMethod = inputMethods.decimal;
 
 	const submit = () => {
 		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
@@ -36,23 +42,55 @@
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<span class="flex-fields">
-			<label>
-				{translate("timemanager", "Duration (in hrs.)")}
-				<br />
-				<input
-					autofocus
-					type="text"
-					name="duration"
-					placeholder=""
-					class="duration-input"
-					bind:value={duration}
-					on:input={() => {
-						duration = Helpers.normalizeDuration(duration);
-						endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
-					}}
-					required
-				/>
-			</label>
+			<span>
+				<label>
+					{translate("timemanager", "Duration (in hrs.)")}
+					<br />
+					{#if inputMethod === inputMethods.decimal}
+						<input
+							autofocus
+							type="text"
+							name="duration"
+							placeholder=""
+							class="duration-input"
+							bind:value={duration}
+							on:input={() => {
+								duration = Helpers.normalizeDuration(duration);
+								endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+							}}
+							required
+						/>
+					{:else}
+						<input
+							autofocus
+							type="time"
+							name="duration"
+							placeholder=""
+							class="duration-input"
+							bind:value={duration}
+							on:input={() => {
+								endTime = Helpers.calculateEndTime(
+									startTime, parseFloat(Helpers.convertTimeDurationToDecimals(duration))
+								);
+							}}
+							required
+						/>
+					{/if}
+				</label>
+				<a href="#/" on:click|preventDefault={() => {
+					if(inputMethod === inputMethods.decimal) {
+						inputMethod = inputMethods.minutes;
+						const newDuration = duration.replace('.', ':');
+						const [, minutes] = newDuration.split(':');
+						duration = newDuration.replace(`:${minutes}`, +`0.${minutes}` * 60);
+					} else {
+						inputMethod = inputMethods.decimal;
+						duration = duration.replace(':', '.');
+						const [, minutes] = duration.split('.');
+						duration = duration.replace(`.${minutes}`, minutes/60);
+					}
+				}}>Switch input method</a>
+			</span>
 			<span class="flex-fields">
 				<label>
 					{translate("timemanager", "Start time")}

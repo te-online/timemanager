@@ -14473,8 +14473,25 @@
           }
           return normalizedValue;
         }
+      }, {
+        key: "convertTimeDurationToDecimals",
+        value: function convertTimeDurationToDecimals(duration) {
+          if (!duration) {
+            return duration;
+          }
+          var value = "".concat(duration);
+          var _value$split = value.split(":"),
+            _value$split2 = _slicedToArray(_value$split, 2),
+            hours = _value$split2[0],
+            minutes = _value$split2[1];
+          var decimal = +hours;
+          if (minutes) {
+            decimal += minutes / 60;
+          }
+          return decimal;
+        }
 
-        // NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+        // NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
       }, {
         key: "calculateEndTime",
         value: function calculateEndTime(startTime, duration) {
@@ -14847,7 +14864,7 @@
       var button1;
       var mounted;
       var dispose;
-      var if_block = show_if && create_if_block_1$7(ctx);
+      var if_block = show_if && create_if_block_1$8(ctx);
       return {
         c() {
           nav = element("nav");
@@ -14910,7 +14927,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_1$7(ctx);
+              if_block = create_if_block_1$8(ctx);
               if_block.c();
               if_block.m(span2, t12);
             }
@@ -14931,7 +14948,7 @@
     }
 
     // (285:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
-    function create_if_block_1$7(ctx) {
+    function create_if_block_1$8(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -17163,6 +17180,84 @@
       parseFloat: numberParseFloat
     });
 
+    function create_else_block$6(ctx) {
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          input = element("input");
+          input.autofocus = true;
+          attr(input, "type", "time");
+          attr(input, "name", "duration");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+          input.required = true;
+        },
+        m(target, anchor) {
+          insert(target, input, anchor);
+          set_input_value(input, /*duration*/ctx[10]);
+          input.focus();
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[21]), listen(input, "input", /*input_handler_1*/ctx[22])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*duration*/1024) {
+            set_input_value(input, /*duration*/ctx[10]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(input);
+          }
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    // (49:5) {#if inputMethod === inputMethods.decimal}
+    function create_if_block_1$7(ctx) {
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          input = element("input");
+          input.autofocus = true;
+          attr(input, "type", "text");
+          attr(input, "name", "duration");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+          input.required = true;
+        },
+        m(target, anchor) {
+          insert(target, input, anchor);
+          set_input_value(input, /*duration*/ctx[10]);
+          input.focus();
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[19]), listen(input, "input", /*input_handler*/ctx[20])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*duration*/1024 && input.value !== /*duration*/ctx[10]) {
+            set_input_value(input, /*duration*/ctx[10]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(input);
+          }
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    // (163:3) {#if !isServer}
     function create_if_block$c(ctx) {
       var button;
       var mounted;
@@ -17201,92 +17296,100 @@
       var t0;
       var t1;
       var form;
-      var span1;
+      var span2;
+      var span0;
       var label0;
       var t2_value = translate("timemanager", "Duration (in hrs.)") + "";
       var t2;
       var t3;
       var br0;
       var t4;
-      var input0;
       var t5;
-      var span0;
-      var label1;
-      var t6_value = translate("timemanager", "Start time") + "";
-      var t6;
+      var a;
       var t7;
-      var br1;
+      var span1;
+      var label1;
+      var t8_value = translate("timemanager", "Start time") + "";
       var t8;
-      var input1;
       var t9;
-      var label2;
-      var t10_value = translate("timemanager", "End time") + "";
+      var br1;
       var t10;
+      var input0;
       var t11;
-      var br2;
+      var label2;
+      var t12_value = translate("timemanager", "End time") + "";
       var t12;
-      var input2;
       var t13;
-      var br3;
+      var br2;
       var t14;
-      var label3;
-      var t15_value = translate("timemanager", "Date") + "";
+      var input1;
       var t15;
+      var br3;
       var t16;
-      var br4;
+      var label3;
+      var t17_value = translate("timemanager", "Date") + "";
       var t17;
-      var input3;
       var t18;
-      var br5;
+      var br4;
       var t19;
-      var label4;
-      var t20_value = translate("timemanager", "Note") + "";
+      var input2;
       var t20;
+      var br5;
       var t21;
-      var br6;
+      var label4;
+      var t22_value = translate("timemanager", "Note") + "";
       var t22;
-      var textarea;
       var t23;
-      var br7;
+      var br6;
       var t24;
-      var label5;
-      var t25_value = translate("timemanager", "For task") + "";
+      var textarea;
       var t25;
+      var br7;
       var t26;
-      var br8;
+      var label5;
+      var t27_value = translate("timemanager", "For task") + "";
       var t27;
-      var strong0;
       var t28;
+      var br8;
       var t29;
-      var label6;
-      var t30_value = translate("timemanager", "For project") + "";
+      var strong0;
       var t30;
       var t31;
-      var br9;
+      var label6;
+      var t32_value = translate("timemanager", "For project") + "";
       var t32;
-      var strong1;
       var t33;
+      var br9;
       var t34;
-      var label7;
-      var t35_value = translate("timemanager", "For client") + "";
+      var strong1;
       var t35;
       var t36;
-      var br10;
+      var label7;
+      var t37_value = translate("timemanager", "For client") + "";
       var t37;
-      var strong2;
       var t38;
+      var br10;
       var t39;
-      var br11;
+      var strong2;
       var t40;
-      var input4;
       var t41;
+      var br11;
+      var t42;
+      var input3;
+      var t43;
       var div0;
       var button;
-      var t42;
-      var t43;
+      var t44;
+      var t45;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[5] && create_if_block$c(ctx);
+      function select_block_type(ctx, dirty) {
+        if ( /*inputMethod*/ctx[14] === /*inputMethods*/ctx[15].decimal) return create_if_block_1$7;
+        return create_else_block$6;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block0 = current_block_type(ctx);
+      var if_block1 = ! /*isServer*/ctx[5] && create_if_block$c(ctx);
       return {
         c() {
           div1 = element("div");
@@ -17294,106 +17397,105 @@
           t0 = text$1( /*timeEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
-          span1 = element("span");
+          span2 = element("span");
+          span0 = element("span");
           label0 = element("label");
           t2 = text$1(t2_value);
           t3 = space$1();
           br0 = element("br");
           t4 = space$1();
-          input0 = element("input");
+          if_block0.c();
           t5 = space$1();
-          span0 = element("span");
-          label1 = element("label");
-          t6 = text$1(t6_value);
+          a = element("a");
+          a.textContent = "Switch input method";
           t7 = space$1();
-          br1 = element("br");
-          t8 = space$1();
-          input1 = element("input");
+          span1 = element("span");
+          label1 = element("label");
+          t8 = text$1(t8_value);
           t9 = space$1();
-          label2 = element("label");
-          t10 = text$1(t10_value);
+          br1 = element("br");
+          t10 = space$1();
+          input0 = element("input");
           t11 = space$1();
-          br2 = element("br");
-          t12 = space$1();
-          input2 = element("input");
+          label2 = element("label");
+          t12 = text$1(t12_value);
           t13 = space$1();
-          br3 = element("br");
+          br2 = element("br");
           t14 = space$1();
-          label3 = element("label");
-          t15 = text$1(t15_value);
+          input1 = element("input");
+          t15 = space$1();
+          br3 = element("br");
           t16 = space$1();
-          br4 = element("br");
-          t17 = space$1();
-          input3 = element("input");
+          label3 = element("label");
+          t17 = text$1(t17_value);
           t18 = space$1();
-          br5 = element("br");
+          br4 = element("br");
           t19 = space$1();
-          label4 = element("label");
-          t20 = text$1(t20_value);
+          input2 = element("input");
+          t20 = space$1();
+          br5 = element("br");
           t21 = space$1();
-          br6 = element("br");
-          t22 = space$1();
-          textarea = element("textarea");
+          label4 = element("label");
+          t22 = text$1(t22_value);
           t23 = space$1();
-          br7 = element("br");
+          br6 = element("br");
           t24 = space$1();
-          label5 = element("label");
-          t25 = text$1(t25_value);
+          textarea = element("textarea");
+          t25 = space$1();
+          br7 = element("br");
           t26 = space$1();
+          label5 = element("label");
+          t27 = text$1(t27_value);
+          t28 = space$1();
           br8 = element("br");
-          t27 = space$1();
-          strong0 = element("strong");
-          t28 = text$1( /*taskName*/ctx[4]);
           t29 = space$1();
-          label6 = element("label");
-          t30 = text$1(t30_value);
+          strong0 = element("strong");
+          t30 = text$1( /*taskName*/ctx[4]);
           t31 = space$1();
+          label6 = element("label");
+          t32 = text$1(t32_value);
+          t33 = space$1();
           br9 = element("br");
-          t32 = space$1();
-          strong1 = element("strong");
-          t33 = text$1( /*projectName*/ctx[3]);
           t34 = space$1();
-          label7 = element("label");
-          t35 = text$1(t35_value);
+          strong1 = element("strong");
+          t35 = text$1( /*projectName*/ctx[3]);
           t36 = space$1();
+          label7 = element("label");
+          t37 = text$1(t37_value);
+          t38 = space$1();
           br10 = element("br");
-          t37 = space$1();
-          strong2 = element("strong");
-          t38 = text$1( /*clientName*/ctx[2]);
           t39 = space$1();
-          br11 = element("br");
-          t40 = space$1();
-          input4 = element("input");
+          strong2 = element("strong");
+          t40 = text$1( /*clientName*/ctx[2]);
           t41 = space$1();
+          br11 = element("br");
+          t42 = space$1();
+          input3 = element("input");
+          t43 = space$1();
           div0 = element("div");
           button = element("button");
-          t42 = text$1( /*timeEditorButtonCaption*/ctx[8]);
-          t43 = space$1();
-          if (if_block) if_block.c();
-          input0.autofocus = true;
-          attr(input0, "type", "text");
-          attr(input0, "name", "duration");
-          attr(input0, "placeholder", "");
-          attr(input0, "class", "duration-input");
+          t44 = text$1( /*timeEditorButtonCaption*/ctx[8]);
+          t45 = space$1();
+          if (if_block1) if_block1.c();
+          attr(a, "href", "#/");
+          attr(input0, "type", "time");
+          attr(input0, "name", "startTime");
+          attr(input0, "placeholder", "--:--");
+          attr(input0, "class", "time-input");
+          attr(input0, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input0.required = true;
           attr(input1, "type", "time");
-          attr(input1, "name", "startTime");
+          attr(input1, "name", "endTime");
           attr(input1, "placeholder", "--:--");
           attr(input1, "class", "time-input");
           attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input1.required = true;
-          attr(input2, "type", "time");
-          attr(input2, "name", "endTime");
-          attr(input2, "placeholder", "--:--");
-          attr(input2, "class", "time-input");
-          attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
-          input2.required = true;
-          attr(span0, "class", "flex-fields");
           attr(span1, "class", "flex-fields");
-          attr(input3, "type", "date");
-          attr(input3, "name", "date");
-          set_style(input3, "width", "100%");
-          attr(input3, "class", "input-wide");
+          attr(span2, "class", "flex-fields");
+          attr(input2, "type", "date");
+          attr(input2, "name", "date");
+          set_style(input2, "width", "100%");
+          attr(input2, "class", "input-wide");
           set_style(textarea, "width", "100%");
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
@@ -17402,9 +17504,9 @@
           attr(label5, "class", "space-top");
           attr(label6, "class", "space-top");
           attr(label7, "class", "space-top");
-          attr(input4, "type", "hidden");
-          attr(input4, "name", "requesttoken");
-          input4.value = /*requestToken*/ctx[1];
+          attr(input3, "type", "hidden");
+          attr(input3, "name", "requesttoken");
+          input3.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -17418,131 +17520,137 @@
           append(h3, t0);
           append(div1, t1);
           append(div1, form);
-          append(form, span1);
-          append(span1, label0);
+          append(form, span2);
+          append(span2, span0);
+          append(span0, label0);
           append(label0, t2);
           append(label0, t3);
           append(label0, br0);
           append(label0, t4);
-          append(label0, input0);
-          set_input_value(input0, /*duration*/ctx[10]);
-          append(span1, t5);
-          append(span1, span0);
-          append(span0, label1);
-          append(label1, t6);
-          append(label1, t7);
-          append(label1, br1);
+          if_block0.m(label0, null);
+          append(span0, t5);
+          append(span0, a);
+          append(span2, t7);
+          append(span2, span1);
+          append(span1, label1);
           append(label1, t8);
-          append(label1, input1);
-          set_input_value(input1, /*startTime*/ctx[11]);
-          append(span0, t9);
-          append(span0, label2);
-          append(label2, t10);
-          append(label2, t11);
-          append(label2, br2);
+          append(label1, t9);
+          append(label1, br1);
+          append(label1, t10);
+          append(label1, input0);
+          set_input_value(input0, /*startTime*/ctx[11]);
+          append(span1, t11);
+          append(span1, label2);
           append(label2, t12);
-          append(label2, input2);
-          set_input_value(input2, /*endTime*/ctx[12]);
-          append(form, t13);
+          append(label2, t13);
+          append(label2, br2);
+          append(label2, t14);
+          append(label2, input1);
+          set_input_value(input1, /*endTime*/ctx[12]);
+          append(form, t15);
           append(form, br3);
-          append(form, t14);
+          append(form, t16);
           append(form, label3);
-          append(label3, t15);
-          append(label3, t16);
-          append(label3, br4);
           append(label3, t17);
-          append(label3, input3);
-          set_input_value(input3, /*date*/ctx[9]);
-          append(form, t18);
+          append(label3, t18);
+          append(label3, br4);
+          append(label3, t19);
+          append(label3, input2);
+          set_input_value(input2, /*date*/ctx[9]);
+          append(form, t20);
           append(form, br5);
-          append(form, t19);
+          append(form, t21);
           append(form, label4);
-          append(label4, t20);
-          append(label4, t21);
-          append(label4, br6);
           append(label4, t22);
+          append(label4, t23);
+          append(label4, br6);
+          append(label4, t24);
           append(label4, textarea);
-          append(form, t23);
+          append(form, t25);
           append(form, br7);
-          append(form, t24);
+          append(form, t26);
           append(form, label5);
-          append(label5, t25);
-          append(label5, t26);
-          append(label5, br8);
           append(label5, t27);
+          append(label5, t28);
+          append(label5, br8);
+          append(label5, t29);
           append(label5, strong0);
-          append(strong0, t28);
-          append(form, t29);
+          append(strong0, t30);
+          append(form, t31);
           append(form, label6);
-          append(label6, t30);
-          append(label6, t31);
-          append(label6, br9);
           append(label6, t32);
+          append(label6, t33);
+          append(label6, br9);
+          append(label6, t34);
           append(label6, strong1);
-          append(strong1, t33);
-          append(form, t34);
+          append(strong1, t35);
+          append(form, t36);
           append(form, label7);
-          append(label7, t35);
-          append(label7, t36);
-          append(label7, br10);
           append(label7, t37);
+          append(label7, t38);
+          append(label7, br10);
+          append(label7, t39);
           append(label7, strong2);
-          append(strong2, t38);
-          append(form, t39);
-          append(form, br11);
-          append(form, t40);
-          append(form, input4);
+          append(strong2, t40);
           append(form, t41);
+          append(form, br11);
+          append(form, t42);
+          append(form, input3);
+          append(form, t43);
           append(form, div0);
           append(div0, button);
-          append(button, t42);
-          append(div0, t43);
-          if (if_block) if_block.m(div0, null);
-          input0.focus();
+          append(button, t44);
+          append(div0, t45);
+          if (if_block1) if_block1.m(div0, null);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[17]), listen(input0, "input", /*input_handler*/ctx[18]), listen(input1, "input", /*input1_input_handler*/ctx[19]), listen(input1, "input", /*input_handler_1*/ctx[20]), listen(input2, "input", /*input2_input_handler*/ctx[21]), listen(input2, "input", /*input_handler_2*/ctx[22]), listen(input3, "input", /*input3_input_handler*/ctx[23]), listen(textarea, "input", /*input_handler_3*/ctx[24]), listen(form, "submit", prevent_default( /*submit*/ctx[14]))];
+            dispose = [listen(a, "click", prevent_default( /*click_handler*/ctx[23])), listen(input0, "input", /*input0_input_handler*/ctx[24]), listen(input0, "input", /*input_handler_2*/ctx[25]), listen(input1, "input", /*input1_input_handler*/ctx[26]), listen(input1, "input", /*input_handler_3*/ctx[27]), listen(input2, "input", /*input2_input_handler*/ctx[28]), listen(textarea, "input", /*input_handler_4*/ctx[29]), listen(form, "submit", prevent_default( /*submit*/ctx[16]))];
             mounted = true;
           }
         },
-        p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-          if (dirty & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
-          if (dirty & /*duration*/1024 && input0.value !== /*duration*/ctx[10]) {
-            set_input_value(input0, /*duration*/ctx[10]);
+        p(ctx, dirty) {
+          if (dirty[0] & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
+          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+            if_block0.p(ctx, dirty);
+          } else {
+            if_block0.d(1);
+            if_block0 = current_block_type(ctx);
+            if (if_block0) {
+              if_block0.c();
+              if_block0.m(label0, null);
+            }
           }
-          if (dirty & /*startTime*/2048) {
-            set_input_value(input1, /*startTime*/ctx[11]);
+          if (dirty[0] & /*startTime*/2048) {
+            set_input_value(input0, /*startTime*/ctx[11]);
           }
-          if (dirty & /*endTime*/4096) {
-            set_input_value(input2, /*endTime*/ctx[12]);
+          if (dirty[0] & /*endTime*/4096) {
+            set_input_value(input1, /*endTime*/ctx[12]);
           }
-          if (dirty & /*date*/512) {
-            set_input_value(input3, /*date*/ctx[9]);
+          if (dirty[0] & /*date*/512) {
+            set_input_value(input2, /*date*/ctx[9]);
           }
-          if (dirty & /*note*/8192) {
+          if (dirty[0] & /*note*/8192) {
             textarea.value = /*note*/ctx[13];
           }
-          if (dirty & /*taskName*/16) set_data(t28, /*taskName*/ctx[4]);
-          if (dirty & /*projectName*/8) set_data(t33, /*projectName*/ctx[3]);
-          if (dirty & /*clientName*/4) set_data(t38, /*clientName*/ctx[2]);
-          if (dirty & /*requestToken*/2) {
-            input4.value = /*requestToken*/ctx[1];
+          if (dirty[0] & /*taskName*/16) set_data(t30, /*taskName*/ctx[4]);
+          if (dirty[0] & /*projectName*/8) set_data(t35, /*projectName*/ctx[3]);
+          if (dirty[0] & /*clientName*/4) set_data(t40, /*clientName*/ctx[2]);
+          if (dirty[0] & /*requestToken*/2) {
+            input3.value = /*requestToken*/ctx[1];
           }
-          if (dirty & /*timeEditorButtonCaption*/256) set_data(t42, /*timeEditorButtonCaption*/ctx[8]);
+          if (dirty[0] & /*timeEditorButtonCaption*/256) set_data(t44, /*timeEditorButtonCaption*/ctx[8]);
           if (! /*isServer*/ctx[5]) {
-            if (if_block) {
-              if_block.p(ctx, dirty);
+            if (if_block1) {
+              if_block1.p(ctx, dirty);
             } else {
-              if_block = create_if_block$c(ctx);
-              if_block.c();
-              if_block.m(div0, null);
+              if_block1 = create_if_block$c(ctx);
+              if_block1.c();
+              if_block1.m(div0, null);
             }
-          } else if (if_block) {
-            if_block.d(1);
-            if_block = null;
+          } else if (if_block1) {
+            if_block1.d(1);
+            if_block1 = null;
           }
-          if (dirty & /*action*/1) {
+          if (dirty[0] & /*action*/1) {
             attr(form, "action", /*action*/ctx[0]);
           }
         },
@@ -17552,7 +17660,8 @@
           if (detaching) {
             detach(div1);
           }
-          if (if_block) if_block.d();
+          if_block0.d();
+          if (if_block1) if_block1.d();
           mounted = false;
           run_all(dispose);
         }
@@ -17561,6 +17670,7 @@
     var timeFormat = "HH:mm";
     var dateFormat$3 = "yyyy-MM-dd";
     function instance$j($$self, $$props, $$invalidate) {
+      var inputMethod;
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -17575,6 +17685,10 @@
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
       var localeOptions = Helpers.getDateLocaleOptions();
       var hasDate = Boolean(editTimeEntryData.date);
+      var inputMethods = {
+        decimal: "decimal",
+        minutes: "minutes"
+      };
       var startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
       var date = format$2(startDate, dateFormat$3, localeOptions);
       var duration = editTimeEntryData.duration;
@@ -17588,7 +17702,7 @@
           note
         });
       };
-      function input0_input_handler() {
+      function input_input_handler() {
         duration = this.value;
         $$invalidate(10, duration);
       }
@@ -17596,25 +17710,49 @@
         $$invalidate(10, duration = Helpers.normalizeDuration(duration));
         $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
-      function input1_input_handler() {
-        startTime = this.value;
-        $$invalidate(11, startTime);
+      function input_input_handler_1() {
+        duration = this.value;
+        $$invalidate(10, duration);
       }
       var input_handler_1 = function input_handler_1() {
-        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(Helpers.convertTimeDurationToDecimals(duration))));
       };
-      function input2_input_handler() {
-        endTime = this.value;
-        $$invalidate(12, endTime);
+      var click_handler = function click_handler() {
+        if (inputMethod === inputMethods.decimal) {
+          $$invalidate(14, inputMethod = inputMethods.minutes);
+          var newDuration = duration.replace('.', ':');
+          var _newDuration$split = newDuration.split(':'),
+            _newDuration$split2 = _slicedToArray(_newDuration$split, 2),
+            minutes = _newDuration$split2[1];
+          $$invalidate(10, duration = newDuration.replace(":".concat(minutes), +"0.".concat(minutes) * 60));
+        } else {
+          $$invalidate(14, inputMethod = inputMethods.decimal);
+          $$invalidate(10, duration = duration.replace(':', '.'));
+          var _duration$split = duration.split('.'),
+            _duration$split2 = _slicedToArray(_duration$split, 2),
+            _minutes = _duration$split2[1];
+          $$invalidate(10, duration = duration.replace(".".concat(_minutes), _minutes / 60));
+        }
+      };
+      function input0_input_handler() {
+        startTime = this.value;
+        $$invalidate(11, startTime);
       }
       var input_handler_2 = function input_handler_2() {
         return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
       };
-      function input3_input_handler() {
+      function input1_input_handler() {
+        endTime = this.value;
+        $$invalidate(12, endTime);
+      }
+      var input_handler_3 = function input_handler_3() {
+        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+      function input2_input_handler() {
         date = this.value;
         $$invalidate(9, date);
       }
-      var input_handler_3 = function input_handler_3(e) {
+      var input_handler_4 = function input_handler_4(e) {
         return $$invalidate(13, note = e.target.value);
       };
       $$self.$$set = function ($$props) {
@@ -17625,12 +17763,13 @@
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(15, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(16, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(17, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(18, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
       };
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, submit, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
+      $$invalidate(14, inputMethod = inputMethods.decimal);
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, inputMethod, inputMethods, submit, onSubmit, editTimeEntryData, input_input_handler, input_handler, input_input_handler_1, input_handler_1, click_handler, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -17647,11 +17786,11 @@
           taskName: 4,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 15,
-          editTimeEntryData: 16,
+          onSubmit: 17,
+          editTimeEntryData: 18,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8
-        });
+        }, null, [-1, -1]);
         return _this;
       }
       return _createClass$1(TimeEditor);

@@ -94,7 +94,23 @@ export class Helpers {
 		return normalizedValue;
 	}
 
-	// NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+	static convertTimeDurationToDecimals(duration) {
+		if (!duration) {
+			return duration;
+		}
+
+		const value = `${duration}`;
+		const [hours, minutes] = value.split(":");
+		let decimal = +hours;
+
+		if (minutes) {
+			decimal += (minutes / 60);
+		}
+
+		return decimal;
+	}
+
+	// NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
 	static calculateEndTime(startTime, duration) {
 		if (!startTime || !duration) {
 			return undefined;
