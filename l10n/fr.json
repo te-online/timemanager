@@ -111,7 +111,7 @@
 		"Imports need to be self-contained, there's no lookup for existing parent clients, projects or tasks": "Le fichier à importer devra contenir toute son arborescence : l'outil d'importation ne procédera pas à la recherche de clients, projets ou tâches déjà existants",
 		"Within the CSV file, relationships are determined by %sName%s, so make sure there are no duplicate names within each type of object": "Dans le fichier .CSV, les relations sont établies selon le %sName%s, assurez-vous qu'il n'y ait pas de nom en double dans chaque type d'objet",
 		"UTF-8 is the only supported file encoding": "UTF-8 est le seul encodage de fichier supporté",
-		"%s;%s and %s,%s are the only supported delimiters": "%s;%s und %s,%s sont les seuls délimitations supportés",
+		"%s;%s and %s,%s are the only supported delimiters": "%s;%s et %s,%s sont les seuls délimitations supportés",
 		"Time entries cannot be imported": "Les saisies de temps ne peuvent pas être importées",
 		"Show overview of expected CSV columns": "Prévisualiser les colonnes attendues du fichier .CSV",
 		"Column name": "Nom de la colonne",
