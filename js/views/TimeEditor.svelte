@@ -31,66 +31,64 @@
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
-	$: inputMethod = inputMethods.decimal;
+	let inputMethod = localStorage.getItem("timemanager_input_method") ?? inputMethods.decimal;
+	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
 
 	const submit = () => {
 		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
 	};
+
+	const changeInputMethod = (newInputMethod) => {
+		localStorage.setItem("timemanager_input_method", newInputMethod);
+	}
 </script>
 
 <div class="inner tm_new-item">
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<span class="flex-fields">
-			<span>
-				<label>
-					{translate("timemanager", "Duration (in hrs.)")}
-					<br />
+			{#if !isServer}
+				<span>
 					{#if inputMethod === inputMethods.decimal}
-						<input
-							autofocus
-							type="text"
-							name="duration"
-							placeholder=""
-							class="duration-input"
-							bind:value={duration}
-							on:input={() => {
-								duration = Helpers.normalizeDuration(duration);
-								endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
-							}}
-							required
-						/>
+						<label>
+							{translate("timemanager", "Duration (in hrs.)")}
+							<br />
+							<input
+								autofocus
+								type="text"
+								name="duration"
+								placeholder=""
+								class="duration-input"
+								bind:value={duration}
+								on:input={() => {
+									duration = Helpers.normalizeDuration(duration);
+									durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								}}
+								required
+							/>
+						</label>
 					{:else}
-						<input
-							autofocus
-							type="time"
-							name="duration"
-							placeholder=""
-							class="duration-input"
-							bind:value={duration}
-							on:input={() => {
-								endTime = Helpers.calculateEndTime(
-									startTime, parseFloat(Helpers.convertTimeDurationToDecimals(duration))
-								);
-							}}
-							required
-						/>
+						<label>
+							{translate("timemanager", "Duration (in hrs.)")}
+							<br />
+							<input
+								autofocus
+								type="time"
+								name="duration-time"
+								placeholder=""
+								class="duration-input"
+								bind:value={durationTimeString}
+								on:input={() => {
+									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								}}
+								required
+							/>
+						</label>
 					{/if}
-				</label>
-				<a href="#/" on:click|preventDefault={() => {
-					if(inputMethod === inputMethods.decimal) {
-						inputMethod = inputMethods.minutes;
-						const newDuration = duration.replace('.', ':');
-						const [, minutes] = newDuration.split(':');
-						duration = newDuration.replace(`:${minutes}`, +`0.${minutes}` * 60);
-					} else {
-						inputMethod = inputMethods.decimal;
-						duration = duration.replace(':', '.');
-						const [, minutes] = duration.split('.');
-						duration = duration.replace(`.${minutes}`, minutes/60);
-					}
-				}}>Switch input method</a>
-			</span>
+				</span>
+			{/if}
 			<span class="flex-fields">
 				<label>
 					{translate("timemanager", "Start time")}
@@ -156,6 +154,38 @@
 			<br />
 			<strong>{clientName}</strong>
 		</label>
+		<br />
+
+		{#if !isServer}
+			<br />
+			<details>
+				<summary>
+					{translate("timemanager", "Dialog settings")}
+				</summary>
+
+				<label class="settings-label">
+					<input
+						type="radio"
+						name="settings-input-method"
+						bind:group={inputMethod}
+						value={inputMethods.minutes}
+						on:click={() => changeInputMethod(inputMethods.minutes)}
+					/>
+					{translate("timemanager", "Input hours and minutes (02:30 hrs.)")}
+				</label>
+				<label class="settings-label">
+					<input
+						type="radio"
+						name="settings-input-method"
+						bind:group={inputMethod}
+						value={inputMethods.decimal}
+						on:click={() => changeInputMethod(inputMethods.decimal)}
+					/>
+					{translate("timemanager", "Input decimals (2.5 hrs.)")}
+				</label>
+			</details>
+		{/if}
+
 		<br />
 		<input type="hidden" name="requesttoken" value={requestToken} />
 		<div class="oc-dialog-buttonrow twobuttons reverse">
