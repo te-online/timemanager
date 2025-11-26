@@ -595,9 +595,9 @@
     };
 
     var toString$3 = functionUncurryThis({}.toString);
-    var stringSlice$4 = functionUncurryThis(''.slice);
+    var stringSlice$5 = functionUncurryThis(''.slice);
     var classofRaw = function (it) {
-      return stringSlice$4(toString$3(it), 8, -1);
+      return stringSlice$5(toString$3(it), 8, -1);
     };
 
     var $Object$4 = Object;
@@ -699,7 +699,7 @@
 
 
 
-    var $String$4 = global_1.String;
+    var $String$5 = global_1.String;
 
     // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
     var symbolConstructorDetection = !!Object.getOwnPropertySymbols && !fails(function () {
@@ -708,7 +708,7 @@
       // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
       // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
       // of course, fail.
-      return !$String$4(symbol) || !(Object(symbol) instanceof Symbol) ||
+      return !$String$5(symbol) || !(Object(symbol) instanceof Symbol) ||
       // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
       !Symbol.sham && engineV8Version && engineV8Version < 41;
     });
@@ -725,10 +725,10 @@
       return isCallable($Symbol) && objectIsPrototypeOf($Symbol.prototype, $Object$3(it));
     };
 
-    var $String$3 = String;
+    var $String$4 = String;
     var tryToString = function (argument) {
       try {
-        return $String$3(argument);
+        return $String$4(argument);
       } catch (error) {
         return 'Object';
       }
@@ -894,13 +894,13 @@
       }).prototype != 42;
     });
 
-    var $String$2 = String;
+    var $String$3 = String;
     var $TypeError$c = TypeError;
 
     // `Assert: Type(argument) is Object`
     var anObject = function (argument) {
       if (isObject$2(argument)) return argument;
-      throw $TypeError$c($String$2(argument) + ' is not an object');
+      throw $TypeError$c($String$3(argument) + ' is not an object');
     };
 
     var $TypeError$b = TypeError;
@@ -1124,14 +1124,14 @@
     };
 
     var ceil = Math.ceil;
-    var floor$2 = Math.floor;
+    var floor$3 = Math.floor;
 
     // `Math.trunc` method
     // https://tc39.es/ecma262/#sec-math.trunc
     // eslint-disable-next-line es/no-math-trunc -- safe
     var mathTrunc = Math.trunc || function trunc(x) {
       var n = +x;
-      return (n > 0 ? floor$2 : ceil)(n);
+      return (n > 0 ? floor$3 : ceil)(n);
     };
 
     // `ToIntegerOrInfinity` abstract operation
@@ -1798,10 +1798,10 @@
       return it;
     };
 
-    var $String$1 = String;
+    var $String$2 = String;
     var toString_1 = function (argument) {
       if (classof(argument) === 'Symbol') throw TypeError('Cannot convert a Symbol value to a string');
-      return $String$1(argument);
+      return $String$2(argument);
     };
 
     var MATCH = wellKnownSymbol('match');
@@ -2036,7 +2036,7 @@
 
     var charAt$5 = functionUncurryThis(''.charAt);
     var charCodeAt = functionUncurryThis(''.charCodeAt);
-    var stringSlice$3 = functionUncurryThis(''.slice);
+    var stringSlice$4 = functionUncurryThis(''.slice);
     var createMethod$2 = function (CONVERT_TO_STRING) {
       return function ($this, pos) {
         var S = toString_1(requireObjectCoercible($this));
@@ -2045,7 +2045,7 @@
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
         first = charCodeAt(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$3(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
     var stringMultibyte = {
@@ -2155,11 +2155,11 @@
       } catch (error) {/* empty */}
     };
 
-    var $String = String;
+    var $String$1 = String;
     var $TypeError$8 = TypeError;
     var aPossiblePrototype = function (argument) {
       if (typeof argument == 'object' || isCallable(argument)) return argument;
-      throw $TypeError$8("Can't set " + $String(argument) + ' as a prototype');
+      throw $TypeError$8("Can't set " + $String$1(argument) + ' as a prototype');
     };
 
     /* eslint-disable no-proto -- safe */
@@ -2451,7 +2451,7 @@
       var spreadable = O[IS_CONCAT_SPREADABLE];
       return spreadable !== undefined ? !!spreadable : isArray$3(O);
     };
-    var FORCED$3 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
+    var FORCED$4 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
 
     // `Array.prototype.concat` method
     // https://tc39.es/ecma262/#sec-array.prototype.concat
@@ -2460,7 +2460,7 @@
       target: 'Array',
       proto: true,
       arity: 1,
-      forced: FORCED$3
+      forced: FORCED$4
     }, {
       // eslint-disable-next-line no-unused-vars -- required for `.length`
       concat: function concat(arg) {
@@ -3835,6 +3835,25 @@
       } else {
         attr(node, prop, value);
       }
+    }
+
+    /**
+     * @param {HTMLInputElement[]} group
+     * @returns {{ p(...inputs: HTMLInputElement[]): void; r(): void; }}
+     */
+    function init_binding_group(group) {
+      /**
+       * @type {HTMLInputElement[]} */
+      let _inputs;
+      return {
+        /* push */p(...inputs) {
+          _inputs = inputs;
+          _inputs.forEach(input => group.push(input));
+        },
+        /* remove */r() {
+          _inputs.forEach(input => group.splice(group.indexOf(input), 1));
+        }
+      };
     }
 
     /**
@@ -12703,14 +12722,14 @@
 
     var nativeJoin = functionUncurryThis([].join);
     var ES3_STRINGS = indexedObject != Object;
-    var FORCED$2 = ES3_STRINGS || !arrayMethodIsStrict('join', ',');
+    var FORCED$3 = ES3_STRINGS || !arrayMethodIsStrict('join', ',');
 
     // `Array.prototype.join` method
     // https://tc39.es/ecma262/#sec-array.prototype.join
     _export({
       target: 'Array',
       proto: true,
-      forced: FORCED$2
+      forced: FORCED$3
     }, {
       join: function join(separator) {
         return nativeJoin(toIndexedObject(this), separator === undefined ? ',' : separator);
@@ -12790,7 +12809,7 @@
     var charAt$3 = functionUncurryThis(''.charAt);
     var indexOf$1 = functionUncurryThis(''.indexOf);
     var replace$2 = functionUncurryThis(''.replace);
-    var stringSlice$2 = functionUncurryThis(''.slice);
+    var stringSlice$3 = functionUncurryThis(''.slice);
     var UPDATES_LAST_INDEX_WRONG = function () {
       var re1 = /a/;
       var re2 = /b*/g;
@@ -12827,7 +12846,7 @@
           if (indexOf$1(flags, 'g') === -1) {
             flags += 'g';
           }
-          strCopy = stringSlice$2(str, re.lastIndex);
+          strCopy = stringSlice$3(str, re.lastIndex);
           // Support anchored sticky behavior.
           if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$3(str, re.lastIndex - 1) !== '\n')) {
             source = '(?: ' + source + ')';
@@ -12845,8 +12864,8 @@
         match = functionCall(nativeExec, sticky ? reCopy : re, strCopy);
         if (sticky) {
           if (match) {
-            match.input = stringSlice$2(match.input, charsAdded);
-            match[0] = stringSlice$2(match[0], charsAdded);
+            match.input = stringSlice$3(match.input, charsAdded);
+            match[0] = stringSlice$3(match[0], charsAdded);
             match.index = re.lastIndex;
             re.lastIndex += match[0].length;
           } else re.lastIndex = 0;
@@ -12966,10 +12985,10 @@
       return index + (unicode ? charAt$2(S, index).length : 1);
     };
 
-    var floor$1 = Math.floor;
+    var floor$2 = Math.floor;
     var charAt$1 = functionUncurryThis(''.charAt);
     var replace$1 = functionUncurryThis(''.replace);
-    var stringSlice$1 = functionUncurryThis(''.slice);
+    var stringSlice$2 = functionUncurryThis(''.slice);
     // eslint-disable-next-line redos/no-vulnerable -- safe
     var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
     var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g;
@@ -12992,18 +13011,18 @@
           case '&':
             return matched;
           case '`':
-            return stringSlice$1(str, 0, position);
+            return stringSlice$2(str, 0, position);
           case "'":
-            return stringSlice$1(str, tailPos);
+            return stringSlice$2(str, tailPos);
           case '<':
-            capture = namedCaptures[stringSlice$1(ch, 1, -1)];
+            capture = namedCaptures[stringSlice$2(ch, 1, -1)];
             break;
           default:
             // \d\d?
             var n = +ch;
             if (n === 0) return match;
             if (n > m) {
-              var f = floor$1(n / 10);
+              var f = floor$2(n / 10);
               if (f === 0) return match;
               if (f <= m) return captures[f - 1] === undefined ? charAt$1(ch, 1) : captures[f - 1] + charAt$1(ch, 1);
               return match;
@@ -13035,7 +13054,7 @@
     var concat = functionUncurryThis([].concat);
     var push$2 = functionUncurryThis([].push);
     var stringIndexOf = functionUncurryThis(''.indexOf);
-    var stringSlice = functionUncurryThis(''.slice);
+    var stringSlice$1 = functionUncurryThis(''.slice);
     var maybeToString = function (it) {
       return it === undefined ? it : String(it);
     };
@@ -13125,11 +13144,11 @@
             replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
           }
           if (position >= nextSourcePosition) {
-            accumulatedResult += stringSlice(S, nextSourcePosition, position) + replacement;
+            accumulatedResult += stringSlice$1(S, nextSourcePosition, position) + replacement;
             nextSourcePosition = position + matched.length;
           }
         }
-        return accumulatedResult + stringSlice(S, nextSourcePosition);
+        return accumulatedResult + stringSlice$1(S, nextSourcePosition);
       }];
     }, !REPLACE_SUPPORTS_NAMED_GROUPS || !REPLACE_KEEPS_$0 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
 
@@ -13168,6 +13187,200 @@
         var search = toString_1(searchString);
         return nativeEndsWith ? nativeEndsWith(that, search, end) : slice(that, end - search.length, end) === search;
       }
+    });
+
+    // `thisNumberValue` abstract operation
+    // https://tc39.es/ecma262/#sec-thisnumbervalue
+    var thisNumberValue = functionUncurryThis(1.0.valueOf);
+
+    var $RangeError$1 = RangeError;
+
+    // `String.prototype.repeat` method implementation
+    // https://tc39.es/ecma262/#sec-string.prototype.repeat
+    var stringRepeat = function repeat(count) {
+      var str = toString_1(requireObjectCoercible(this));
+      var result = '';
+      var n = toIntegerOrInfinity(count);
+      if (n < 0 || n == Infinity) throw $RangeError$1('Wrong number of repetitions');
+      for (; n > 0; (n >>>= 1) && (str += str)) if (n & 1) result += str;
+      return result;
+    };
+
+    var $RangeError = RangeError;
+    var $String = String;
+    var floor$1 = Math.floor;
+    var repeat = functionUncurryThis(stringRepeat);
+    var stringSlice = functionUncurryThis(''.slice);
+    var nativeToFixed = functionUncurryThis(1.0.toFixed);
+    var pow = function (x, n, acc) {
+      return n === 0 ? acc : n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc);
+    };
+    var log$1 = function (x) {
+      var n = 0;
+      var x2 = x;
+      while (x2 >= 4096) {
+        n += 12;
+        x2 /= 4096;
+      }
+      while (x2 >= 2) {
+        n += 1;
+        x2 /= 2;
+      }
+      return n;
+    };
+    var multiply = function (data, n, c) {
+      var index = -1;
+      var c2 = c;
+      while (++index < 6) {
+        c2 += n * data[index];
+        data[index] = c2 % 1e7;
+        c2 = floor$1(c2 / 1e7);
+      }
+    };
+    var divide = function (data, n) {
+      var index = 6;
+      var c = 0;
+      while (--index >= 0) {
+        c += data[index];
+        data[index] = floor$1(c / n);
+        c = c % n * 1e7;
+      }
+    };
+    var dataToString = function (data) {
+      var index = 6;
+      var s = '';
+      while (--index >= 0) {
+        if (s !== '' || index === 0 || data[index] !== 0) {
+          var t = $String(data[index]);
+          s = s === '' ? t : s + repeat('0', 7 - t.length) + t;
+        }
+      }
+      return s;
+    };
+    var FORCED$2 = fails(function () {
+      return nativeToFixed(0.00008, 3) !== '0.000' || nativeToFixed(0.9, 0) !== '1' || nativeToFixed(1.255, 2) !== '1.25' || nativeToFixed(1000000000000000128.0, 0) !== '1000000000000000128';
+    }) || !fails(function () {
+      // V8 ~ Android 4.3-
+      nativeToFixed({});
+    });
+
+    // `Number.prototype.toFixed` method
+    // https://tc39.es/ecma262/#sec-number.prototype.tofixed
+    _export({
+      target: 'Number',
+      proto: true,
+      forced: FORCED$2
+    }, {
+      toFixed: function toFixed(fractionDigits) {
+        var number = thisNumberValue(this);
+        var fractDigits = toIntegerOrInfinity(fractionDigits);
+        var data = [0, 0, 0, 0, 0, 0];
+        var sign = '';
+        var result = '0';
+        var e, z, j, k;
+
+        // TODO: ES2018 increased the maximum number of fraction digits to 100, need to improve the implementation
+        if (fractDigits < 0 || fractDigits > 20) throw $RangeError('Incorrect fraction digits');
+        // eslint-disable-next-line no-self-compare -- NaN check
+        if (number != number) return 'NaN';
+        if (number <= -1e21 || number >= 1e21) return $String(number);
+        if (number < 0) {
+          sign = '-';
+          number = -number;
+        }
+        if (number > 1e-21) {
+          e = log$1(number * pow(2, 69, 1)) - 69;
+          z = e < 0 ? number * pow(2, -e, 1) : number / pow(2, e, 1);
+          z *= 0x10000000000000;
+          e = 52 - e;
+          if (e > 0) {
+            multiply(data, 0, z);
+            j = fractDigits;
+            while (j >= 7) {
+              multiply(data, 1e7, 0);
+              j -= 7;
+            }
+            multiply(data, pow(10, j, 1), 0);
+            j = e - 1;
+            while (j >= 23) {
+              divide(data, 1 << 23);
+              j -= 23;
+            }
+            divide(data, 1 << j);
+            multiply(data, 1, 1);
+            divide(data, 2);
+            result = dataToString(data);
+          } else {
+            multiply(data, 0, z);
+            multiply(data, 1 << -e, 0);
+            result = dataToString(data) + repeat('0', fractDigits);
+          }
+        }
+        if (fractDigits > 0) {
+          k = result.length;
+          result = sign + (k <= fractDigits ? '0.' + repeat('0', fractDigits - k) + result : stringSlice(result, 0, k - fractDigits) + '.' + stringSlice(result, k - fractDigits));
+        } else {
+          result = sign + result;
+        }
+        return result;
+      }
+    });
+
+    // a string of all valid unicode whitespaces
+    var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+    var replace = functionUncurryThis(''.replace);
+    var ltrim = RegExp('^[' + whitespaces + ']+');
+    var rtrim = RegExp('(^|[^' + whitespaces + '])[' + whitespaces + ']+$');
+
+    // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+    var createMethod$1 = function (TYPE) {
+      return function ($this) {
+        var string = toString_1(requireObjectCoercible($this));
+        if (TYPE & 1) string = replace(string, ltrim, '');
+        if (TYPE & 2) string = replace(string, rtrim, '$1');
+        return string;
+      };
+    };
+    var stringTrim = {
+      // `String.prototype.{ trimLeft, trimStart }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+      start: createMethod$1(1),
+      // `String.prototype.{ trimRight, trimEnd }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimend
+      end: createMethod$1(2),
+      // `String.prototype.trim` method
+      // https://tc39.es/ecma262/#sec-string.prototype.trim
+      trim: createMethod$1(3)
+    };
+
+    var trim = stringTrim.trim;
+
+    var charAt = functionUncurryThis(''.charAt);
+    var $parseFloat = global_1.parseFloat;
+    var Symbol$1 = global_1.Symbol;
+    var ITERATOR = Symbol$1 && Symbol$1.iterator;
+    var FORCED$1 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity
+    // MS Edge 18- broken with boxed symbols
+    || ITERATOR && !fails(function () {
+      $parseFloat(Object(ITERATOR));
+    });
+
+    // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+    var numberParseFloat = FORCED$1 ? function parseFloat(string) {
+      var trimmedString = trim(toString_1(string));
+      var result = $parseFloat(trimmedString);
+      return result === 0 && charAt(trimmedString, 0) == '-' ? -0 : result;
+    } : $parseFloat;
+
+    // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+    _export({
+      global: true,
+      forced: parseFloat != numberParseFloat
+    }, {
+      parseFloat: numberParseFloat
     });
 
     var formatDistanceLocale$2 = {
@@ -14486,9 +14699,30 @@
             minutes = _value$split2[1];
           var decimal = +hours;
           if (minutes) {
-            decimal += minutes / 60;
+            decimal += this.simpleRounding(minutes / 60);
           }
           return decimal;
+        }
+      }, {
+        key: "convertDecimalsToTimeDuration",
+        value: function convertDecimalsToTimeDuration(timeDuration) {
+          if (!timeDuration) {
+            return timeDuration;
+          }
+          var _split = (timeDuration + "").split('.'),
+            _split2 = _slicedToArray(_split, 2),
+            hoursDecimal = _split2[0],
+            minutesDecimal = _split2[1];
+          var minutesMultiplier = parseFloat("0.".concat(minutesDecimal)).toFixed(2);
+          var minutes = this.simpleRounding(minutesMultiplier * 60);
+          if (minutes < 10) {
+            minutes = "0".concat(minutes);
+          }
+          var hours = +hoursDecimal;
+          if (hours < 10) {
+            hours = "0".concat(hours);
+          }
+          return "".concat(hours, ":").concat(minutes);
         }
 
         // NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
@@ -14618,7 +14852,7 @@
     }
 
     // (248:3) {#if !loading && weekTotal > 0}
-    function create_if_block_3$3(ctx) {
+    function create_if_block_3$4(ctx) {
       var each_1_anchor;
       var each_value = ensure_array_like( /*points*/ctx[3]);
       var each_blocks = [];
@@ -14819,7 +15053,7 @@
     }
 
     // (264:3) {#if controls && !loading && weekTotal === 0}
-    function create_if_block_2$6(ctx) {
+    function create_if_block_2$7(ctx) {
       var p;
       return {
         c() {
@@ -14987,8 +15221,8 @@
       var div2_class_value;
       var if_block0 = /*controls*/ctx[0] && create_if_block_7$2();
       var if_block1 = /*controls*/ctx[0] && create_if_block_6$3(ctx);
-      var if_block2 = ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] > 0 && create_if_block_3$3(ctx);
-      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$6();
+      var if_block2 = ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] > 0 && create_if_block_3$4(ctx);
+      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$7();
       var if_block4 = /*controls*/ctx[0] && create_if_block$j(ctx);
       return {
         c() {
@@ -15051,7 +15285,7 @@
             if (if_block2) {
               if_block2.p(ctx, dirty);
             } else {
-              if_block2 = create_if_block_3$3(ctx);
+              if_block2 = create_if_block_3$4(ctx);
               if_block2.c();
               if_block2.m(div0, t2);
             }
@@ -15061,7 +15295,7 @@
           }
           if ( /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0) {
             if (if_block3) ; else {
-              if_block3 = create_if_block_2$6();
+              if_block3 = create_if_block_2$7();
               if_block3.c();
               if_block3.m(div0, null);
             }
@@ -17123,94 +17357,92 @@
       return _createClass$1(TaskEditorDialog);
     }(SvelteComponent);
 
-    // a string of all valid unicode whitespaces
-    var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-    var replace = functionUncurryThis(''.replace);
-    var ltrim = RegExp('^[' + whitespaces + ']+');
-    var rtrim = RegExp('(^|[^' + whitespaces + '])[' + whitespaces + ']+$');
-
-    // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-    var createMethod$1 = function (TYPE) {
-      return function ($this) {
-        var string = toString_1(requireObjectCoercible($this));
-        if (TYPE & 1) string = replace(string, ltrim, '');
-        if (TYPE & 2) string = replace(string, rtrim, '$1');
-        return string;
+    function create_if_block_2$6(ctx) {
+      var span;
+      function select_block_type(ctx, dirty) {
+        if ( /*inputMethod*/ctx[14] === /*inputMethods*/ctx[16].decimal) return create_if_block_3$3;
+        return create_else_block$6;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
+      return {
+        c() {
+          span = element("span");
+          if_block.c();
+        },
+        m(target, anchor) {
+          insert(target, span, anchor);
+          if_block.m(span, null);
+        },
+        p(ctx, dirty) {
+          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+            if_block.p(ctx, dirty);
+          } else {
+            if_block.d(1);
+            if_block = current_block_type(ctx);
+            if (if_block) {
+              if_block.c();
+              if_block.m(span, null);
+            }
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(span);
+          }
+          if_block.d();
+        }
       };
-    };
-    var stringTrim = {
-      // `String.prototype.{ trimLeft, trimStart }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-      start: createMethod$1(1),
-      // `String.prototype.{ trimRight, trimEnd }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimend
-      end: createMethod$1(2),
-      // `String.prototype.trim` method
-      // https://tc39.es/ecma262/#sec-string.prototype.trim
-      trim: createMethod$1(3)
-    };
+    }
 
-    var trim = stringTrim.trim;
-
-    var charAt = functionUncurryThis(''.charAt);
-    var $parseFloat = global_1.parseFloat;
-    var Symbol$1 = global_1.Symbol;
-    var ITERATOR = Symbol$1 && Symbol$1.iterator;
-    var FORCED$1 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity
-    // MS Edge 18- broken with boxed symbols
-    || ITERATOR && !fails(function () {
-      $parseFloat(Object(ITERATOR));
-    });
-
-    // `parseFloat` method
-    // https://tc39.es/ecma262/#sec-parsefloat-string
-    var numberParseFloat = FORCED$1 ? function parseFloat(string) {
-      var trimmedString = trim(toString_1(string));
-      var result = $parseFloat(trimmedString);
-      return result === 0 && charAt(trimmedString, 0) == '-' ? -0 : result;
-    } : $parseFloat;
-
-    // `parseFloat` method
-    // https://tc39.es/ecma262/#sec-parsefloat-string
-    _export({
-      global: true,
-      forced: parseFloat != numberParseFloat
-    }, {
-      parseFloat: numberParseFloat
-    });
-
+    // (71:5) {:else}
     function create_else_block$6(ctx) {
+      var label;
+      var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
+      var t0;
+      var t1;
+      var br;
+      var t2;
       var input;
       var mounted;
       var dispose;
       return {
         c() {
+          label = element("label");
+          t0 = text$1(t0_value);
+          t1 = space$1();
+          br = element("br");
+          t2 = space$1();
           input = element("input");
           input.autofocus = true;
           attr(input, "type", "time");
-          attr(input, "name", "duration");
+          attr(input, "name", "duration-time");
           attr(input, "placeholder", "");
           attr(input, "class", "duration-input");
           input.required = true;
         },
         m(target, anchor) {
-          insert(target, input, anchor);
-          set_input_value(input, /*duration*/ctx[10]);
+          insert(target, label, anchor);
+          append(label, t0);
+          append(label, t1);
+          append(label, br);
+          append(label, t2);
+          append(label, input);
+          set_input_value(input, /*durationTimeString*/ctx[15]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[21]), listen(input, "input", /*input_handler_1*/ctx[22])];
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[23]), listen(input, "input", /*input_handler_1*/ctx[24])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*duration*/1024) {
-            set_input_value(input, /*duration*/ctx[10]);
+          if (dirty[0] & /*durationTimeString*/32768) {
+            set_input_value(input, /*durationTimeString*/ctx[15]);
           }
         },
         d(detaching) {
           if (detaching) {
-            detach(input);
+            detach(label);
           }
           mounted = false;
           run_all(dispose);
@@ -17218,13 +17450,24 @@
       };
     }
 
-    // (49:5) {#if inputMethod === inputMethods.decimal}
-    function create_if_block_1$7(ctx) {
+    // (52:5) {#if inputMethod === inputMethods.decimal}
+    function create_if_block_3$3(ctx) {
+      var label;
+      var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
+      var t0;
+      var t1;
+      var br;
+      var t2;
       var input;
       var mounted;
       var dispose;
       return {
         c() {
+          label = element("label");
+          t0 = text$1(t0_value);
+          t1 = space$1();
+          br = element("br");
+          t2 = space$1();
           input = element("input");
           input.autofocus = true;
           attr(input, "type", "text");
@@ -17234,11 +17477,16 @@
           input.required = true;
         },
         m(target, anchor) {
-          insert(target, input, anchor);
+          insert(target, label, anchor);
+          append(label, t0);
+          append(label, t1);
+          append(label, br);
+          append(label, t2);
+          append(label, input);
           set_input_value(input, /*duration*/ctx[10]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[19]), listen(input, "input", /*input_handler*/ctx[20])];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[21]), listen(input, "input", /*input_handler*/ctx[22])];
             mounted = true;
           }
         },
@@ -17249,7 +17497,7 @@
         },
         d(detaching) {
           if (detaching) {
-            detach(input);
+            detach(label);
           }
           mounted = false;
           run_all(dispose);
@@ -17257,7 +17505,101 @@
       };
     }
 
-    // (163:3) {#if !isServer}
+    // (159:2) {#if !isServer}
+    function create_if_block_1$7(ctx) {
+      var br;
+      var t0;
+      var details;
+      var summary;
+      var t2;
+      var label0;
+      var input0;
+      var t3;
+      var t4_value = translate("timemanager", "Input hours and minutes (02:30 hrs.)") + "";
+      var t4;
+      var t5;
+      var label1;
+      var input1;
+      var t6;
+      var t7_value = translate("timemanager", "Input decimals (2.5 hrs.)") + "";
+      var t7;
+      var binding_group;
+      var mounted;
+      var dispose;
+      binding_group = init_binding_group( /*$$binding_groups*/ctx[32][0]);
+      return {
+        c() {
+          br = element("br");
+          t0 = space$1();
+          details = element("details");
+          summary = element("summary");
+          summary.textContent = "".concat(translate("timemanager", "Dialog settings"));
+          t2 = space$1();
+          label0 = element("label");
+          input0 = element("input");
+          t3 = space$1();
+          t4 = text$1(t4_value);
+          t5 = space$1();
+          label1 = element("label");
+          input1 = element("input");
+          t6 = space$1();
+          t7 = text$1(t7_value);
+          attr(input0, "type", "radio");
+          attr(input0, "name", "settings-input-method");
+          input0.__value = /*inputMethods*/ctx[16].minutes;
+          set_input_value(input0, input0.__value);
+          attr(label0, "class", "settings-label");
+          attr(input1, "type", "radio");
+          attr(input1, "name", "settings-input-method");
+          input1.__value = /*inputMethods*/ctx[16].decimal;
+          set_input_value(input1, input1.__value);
+          attr(label1, "class", "settings-label");
+          binding_group.p(input0, input1);
+        },
+        m(target, anchor) {
+          insert(target, br, anchor);
+          insert(target, t0, anchor);
+          insert(target, details, anchor);
+          append(details, summary);
+          append(details, t2);
+          append(details, label0);
+          append(label0, input0);
+          input0.checked = input0.__value === /*inputMethod*/ctx[14];
+          append(label0, t3);
+          append(label0, t4);
+          append(details, t5);
+          append(details, label1);
+          append(label1, input1);
+          input1.checked = input1.__value === /*inputMethod*/ctx[14];
+          append(label1, t6);
+          append(label1, t7);
+          if (!mounted) {
+            dispose = [listen(input0, "change", /*input0_change_handler*/ctx[31]), listen(input0, "click", /*click_handler*/ctx[33]), listen(input1, "change", /*input1_change_handler*/ctx[34]), listen(input1, "click", /*click_handler_1*/ctx[35])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*inputMethod*/16384) {
+            input0.checked = input0.__value === /*inputMethod*/ctx[14];
+          }
+          if (dirty[0] & /*inputMethod*/16384) {
+            input1.checked = input1.__value === /*inputMethod*/ctx[14];
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(br);
+            detach(t0);
+            detach(details);
+          }
+          binding_group.r();
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    // (193:3) {#if !isServer}
     function create_if_block$c(ctx) {
       var button;
       var mounted;
@@ -17296,100 +17638,90 @@
       var t0;
       var t1;
       var form;
-      var span2;
+      var span1;
+      var t2;
       var span0;
       var label0;
-      var t2_value = translate("timemanager", "Duration (in hrs.)") + "";
-      var t2;
+      var t3_value = translate("timemanager", "Start time") + "";
       var t3;
-      var br0;
       var t4;
+      var br0;
       var t5;
-      var a;
-      var t7;
-      var span1;
-      var label1;
-      var t8_value = translate("timemanager", "Start time") + "";
-      var t8;
-      var t9;
-      var br1;
-      var t10;
       var input0;
+      var t6;
+      var label1;
+      var t7_value = translate("timemanager", "End time") + "";
+      var t7;
+      var t8;
+      var br1;
+      var t9;
+      var input1;
+      var t10;
+      var br2;
       var t11;
       var label2;
-      var t12_value = translate("timemanager", "End time") + "";
+      var t12_value = translate("timemanager", "Date") + "";
       var t12;
       var t13;
-      var br2;
-      var t14;
-      var input1;
-      var t15;
       var br3;
+      var t14;
+      var input2;
+      var t15;
+      var br4;
       var t16;
       var label3;
-      var t17_value = translate("timemanager", "Date") + "";
+      var t17_value = translate("timemanager", "Note") + "";
       var t17;
       var t18;
-      var br4;
-      var t19;
-      var input2;
-      var t20;
       var br5;
+      var t19;
+      var textarea;
+      var t20;
+      var br6;
       var t21;
       var label4;
-      var t22_value = translate("timemanager", "Note") + "";
+      var t22_value = translate("timemanager", "For task") + "";
       var t22;
       var t23;
-      var br6;
-      var t24;
-      var textarea;
-      var t25;
       var br7;
+      var t24;
+      var strong0;
+      var t25;
       var t26;
       var label5;
-      var t27_value = translate("timemanager", "For task") + "";
+      var t27_value = translate("timemanager", "For project") + "";
       var t27;
       var t28;
       var br8;
       var t29;
-      var strong0;
+      var strong1;
       var t30;
       var t31;
       var label6;
-      var t32_value = translate("timemanager", "For project") + "";
+      var t32_value = translate("timemanager", "For client") + "";
       var t32;
       var t33;
       var br9;
       var t34;
-      var strong1;
+      var strong2;
       var t35;
       var t36;
-      var label7;
-      var t37_value = translate("timemanager", "For client") + "";
+      var br10;
       var t37;
       var t38;
-      var br10;
-      var t39;
-      var strong2;
-      var t40;
-      var t41;
       var br11;
-      var t42;
+      var t39;
       var input3;
-      var t43;
+      var t40;
       var div0;
       var button;
-      var t44;
-      var t45;
+      var t41;
+      var t42;
       var mounted;
       var dispose;
-      function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[14] === /*inputMethods*/ctx[15].decimal) return create_if_block_1$7;
-        return create_else_block$6;
-      }
-      var current_block_type = select_block_type(ctx);
-      var if_block0 = current_block_type(ctx);
-      var if_block1 = ! /*isServer*/ctx[5] && create_if_block$c(ctx);
+      var if_block0 = ! /*isServer*/ctx[5] && create_if_block_2$6(ctx);
+      var if_block1 = ! /*isServer*/ctx[5] && create_if_block_1$7(ctx);
+      var if_block2 = ! /*isServer*/ctx[5] && create_if_block$c(ctx);
       return {
         c() {
           div1 = element("div");
@@ -17397,87 +17729,81 @@
           t0 = text$1( /*timeEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
-          span2 = element("span");
+          span1 = element("span");
+          if (if_block0) if_block0.c();
+          t2 = space$1();
           span0 = element("span");
           label0 = element("label");
-          t2 = text$1(t2_value);
-          t3 = space$1();
-          br0 = element("br");
+          t3 = text$1(t3_value);
           t4 = space$1();
-          if_block0.c();
+          br0 = element("br");
           t5 = space$1();
-          a = element("a");
-          a.textContent = "Switch input method";
-          t7 = space$1();
-          span1 = element("span");
-          label1 = element("label");
-          t8 = text$1(t8_value);
-          t9 = space$1();
-          br1 = element("br");
-          t10 = space$1();
           input0 = element("input");
+          t6 = space$1();
+          label1 = element("label");
+          t7 = text$1(t7_value);
+          t8 = space$1();
+          br1 = element("br");
+          t9 = space$1();
+          input1 = element("input");
+          t10 = space$1();
+          br2 = element("br");
           t11 = space$1();
           label2 = element("label");
           t12 = text$1(t12_value);
           t13 = space$1();
-          br2 = element("br");
-          t14 = space$1();
-          input1 = element("input");
-          t15 = space$1();
           br3 = element("br");
+          t14 = space$1();
+          input2 = element("input");
+          t15 = space$1();
+          br4 = element("br");
           t16 = space$1();
           label3 = element("label");
           t17 = text$1(t17_value);
           t18 = space$1();
-          br4 = element("br");
-          t19 = space$1();
-          input2 = element("input");
-          t20 = space$1();
           br5 = element("br");
+          t19 = space$1();
+          textarea = element("textarea");
+          t20 = space$1();
+          br6 = element("br");
           t21 = space$1();
           label4 = element("label");
           t22 = text$1(t22_value);
           t23 = space$1();
-          br6 = element("br");
-          t24 = space$1();
-          textarea = element("textarea");
-          t25 = space$1();
           br7 = element("br");
+          t24 = space$1();
+          strong0 = element("strong");
+          t25 = text$1( /*taskName*/ctx[4]);
           t26 = space$1();
           label5 = element("label");
           t27 = text$1(t27_value);
           t28 = space$1();
           br8 = element("br");
           t29 = space$1();
-          strong0 = element("strong");
-          t30 = text$1( /*taskName*/ctx[4]);
+          strong1 = element("strong");
+          t30 = text$1( /*projectName*/ctx[3]);
           t31 = space$1();
           label6 = element("label");
           t32 = text$1(t32_value);
           t33 = space$1();
           br9 = element("br");
           t34 = space$1();
-          strong1 = element("strong");
-          t35 = text$1( /*projectName*/ctx[3]);
-          t36 = space$1();
-          label7 = element("label");
-          t37 = text$1(t37_value);
-          t38 = space$1();
-          br10 = element("br");
-          t39 = space$1();
           strong2 = element("strong");
-          t40 = text$1( /*clientName*/ctx[2]);
-          t41 = space$1();
+          t35 = text$1( /*clientName*/ctx[2]);
+          t36 = space$1();
+          br10 = element("br");
+          t37 = space$1();
+          if (if_block1) if_block1.c();
+          t38 = space$1();
           br11 = element("br");
-          t42 = space$1();
+          t39 = space$1();
           input3 = element("input");
-          t43 = space$1();
+          t40 = space$1();
           div0 = element("div");
           button = element("button");
-          t44 = text$1( /*timeEditorButtonCaption*/ctx[8]);
-          t45 = space$1();
-          if (if_block1) if_block1.c();
-          attr(a, "href", "#/");
+          t41 = text$1( /*timeEditorButtonCaption*/ctx[8]);
+          t42 = space$1();
+          if (if_block2) if_block2.c();
           attr(input0, "type", "time");
           attr(input0, "name", "startTime");
           attr(input0, "placeholder", "--:--");
@@ -17490,8 +17816,8 @@
           attr(input1, "class", "time-input");
           attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input1.required = true;
+          attr(span0, "class", "flex-fields");
           attr(span1, "class", "flex-fields");
-          attr(span2, "class", "flex-fields");
           attr(input2, "type", "date");
           attr(input2, "name", "date");
           set_style(input2, "width", "100%");
@@ -17501,9 +17827,9 @@
           attr(textarea, "name", "note");
           attr(textarea, "placeholder", translate('timemanager', 'Describe what you did...'));
           textarea.value = /*note*/ctx[13];
+          attr(label4, "class", "space-top");
           attr(label5, "class", "space-top");
           attr(label6, "class", "space-top");
-          attr(label7, "class", "space-top");
           attr(input3, "type", "hidden");
           attr(input3, "name", "requesttoken");
           input3.value = /*requestToken*/ctx[1];
@@ -17520,104 +17846,102 @@
           append(h3, t0);
           append(div1, t1);
           append(div1, form);
-          append(form, span2);
-          append(span2, span0);
+          append(form, span1);
+          if (if_block0) if_block0.m(span1, null);
+          append(span1, t2);
+          append(span1, span0);
           append(span0, label0);
-          append(label0, t2);
           append(label0, t3);
-          append(label0, br0);
           append(label0, t4);
-          if_block0.m(label0, null);
-          append(span0, t5);
-          append(span0, a);
-          append(span2, t7);
-          append(span2, span1);
-          append(span1, label1);
-          append(label1, t8);
-          append(label1, t9);
-          append(label1, br1);
-          append(label1, t10);
-          append(label1, input0);
+          append(label0, br0);
+          append(label0, t5);
+          append(label0, input0);
           set_input_value(input0, /*startTime*/ctx[11]);
-          append(span1, t11);
-          append(span1, label2);
+          append(span0, t6);
+          append(span0, label1);
+          append(label1, t7);
+          append(label1, t8);
+          append(label1, br1);
+          append(label1, t9);
+          append(label1, input1);
+          set_input_value(input1, /*endTime*/ctx[12]);
+          append(form, t10);
+          append(form, br2);
+          append(form, t11);
+          append(form, label2);
           append(label2, t12);
           append(label2, t13);
-          append(label2, br2);
+          append(label2, br3);
           append(label2, t14);
-          append(label2, input1);
-          set_input_value(input1, /*endTime*/ctx[12]);
+          append(label2, input2);
+          set_input_value(input2, /*date*/ctx[9]);
           append(form, t15);
-          append(form, br3);
+          append(form, br4);
           append(form, t16);
           append(form, label3);
           append(label3, t17);
           append(label3, t18);
-          append(label3, br4);
+          append(label3, br5);
           append(label3, t19);
-          append(label3, input2);
-          set_input_value(input2, /*date*/ctx[9]);
+          append(label3, textarea);
           append(form, t20);
-          append(form, br5);
+          append(form, br6);
           append(form, t21);
           append(form, label4);
           append(label4, t22);
           append(label4, t23);
-          append(label4, br6);
+          append(label4, br7);
           append(label4, t24);
-          append(label4, textarea);
-          append(form, t25);
-          append(form, br7);
+          append(label4, strong0);
+          append(strong0, t25);
           append(form, t26);
           append(form, label5);
           append(label5, t27);
           append(label5, t28);
           append(label5, br8);
           append(label5, t29);
-          append(label5, strong0);
-          append(strong0, t30);
+          append(label5, strong1);
+          append(strong1, t30);
           append(form, t31);
           append(form, label6);
           append(label6, t32);
           append(label6, t33);
           append(label6, br9);
           append(label6, t34);
-          append(label6, strong1);
-          append(strong1, t35);
+          append(label6, strong2);
+          append(strong2, t35);
           append(form, t36);
-          append(form, label7);
-          append(label7, t37);
-          append(label7, t38);
-          append(label7, br10);
-          append(label7, t39);
-          append(label7, strong2);
-          append(strong2, t40);
-          append(form, t41);
+          append(form, br10);
+          append(form, t37);
+          if (if_block1) if_block1.m(form, null);
+          append(form, t38);
           append(form, br11);
-          append(form, t42);
+          append(form, t39);
           append(form, input3);
-          append(form, t43);
+          append(form, t40);
           append(form, div0);
           append(div0, button);
-          append(button, t44);
-          append(div0, t45);
-          if (if_block1) if_block1.m(div0, null);
+          append(button, t41);
+          append(div0, t42);
+          if (if_block2) if_block2.m(div0, null);
           if (!mounted) {
-            dispose = [listen(a, "click", prevent_default( /*click_handler*/ctx[23])), listen(input0, "input", /*input0_input_handler*/ctx[24]), listen(input0, "input", /*input_handler_2*/ctx[25]), listen(input1, "input", /*input1_input_handler*/ctx[26]), listen(input1, "input", /*input_handler_3*/ctx[27]), listen(input2, "input", /*input2_input_handler*/ctx[28]), listen(textarea, "input", /*input_handler_4*/ctx[29]), listen(form, "submit", prevent_default( /*submit*/ctx[16]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[25]), listen(input0, "input", /*input_handler_2*/ctx[26]), listen(input1, "input", /*input1_input_handler*/ctx[27]), listen(input1, "input", /*input_handler_3*/ctx[28]), listen(input2, "input", /*input2_input_handler*/ctx[29]), listen(textarea, "input", /*input_handler_4*/ctx[30]), listen(form, "submit", prevent_default( /*submit*/ctx[17]))];
             mounted = true;
           }
         },
         p(ctx, dirty) {
           if (dirty[0] & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
-          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
-            if_block0.p(ctx, dirty);
-          } else {
-            if_block0.d(1);
-            if_block0 = current_block_type(ctx);
+          if (! /*isServer*/ctx[5]) {
             if (if_block0) {
+              if_block0.p(ctx, dirty);
+            } else {
+              if_block0 = create_if_block_2$6(ctx);
               if_block0.c();
-              if_block0.m(label0, null);
+              if_block0.m(span1, t2);
             }
+          } else if (if_block0) {
+            if_block0.d(1);
+            if_block0 = null;
           }
           if (dirty[0] & /*startTime*/2048) {
             set_input_value(input0, /*startTime*/ctx[11]);
@@ -17631,24 +17955,36 @@
           if (dirty[0] & /*note*/8192) {
             textarea.value = /*note*/ctx[13];
           }
-          if (dirty[0] & /*taskName*/16) set_data(t30, /*taskName*/ctx[4]);
-          if (dirty[0] & /*projectName*/8) set_data(t35, /*projectName*/ctx[3]);
-          if (dirty[0] & /*clientName*/4) set_data(t40, /*clientName*/ctx[2]);
-          if (dirty[0] & /*requestToken*/2) {
-            input3.value = /*requestToken*/ctx[1];
-          }
-          if (dirty[0] & /*timeEditorButtonCaption*/256) set_data(t44, /*timeEditorButtonCaption*/ctx[8]);
+          if (dirty[0] & /*taskName*/16) set_data(t25, /*taskName*/ctx[4]);
+          if (dirty[0] & /*projectName*/8) set_data(t30, /*projectName*/ctx[3]);
+          if (dirty[0] & /*clientName*/4) set_data(t35, /*clientName*/ctx[2]);
           if (! /*isServer*/ctx[5]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
-              if_block1 = create_if_block$c(ctx);
+              if_block1 = create_if_block_1$7(ctx);
               if_block1.c();
-              if_block1.m(div0, null);
+              if_block1.m(form, t38);
             }
           } else if (if_block1) {
             if_block1.d(1);
             if_block1 = null;
+          }
+          if (dirty[0] & /*requestToken*/2) {
+            input3.value = /*requestToken*/ctx[1];
+          }
+          if (dirty[0] & /*timeEditorButtonCaption*/256) set_data(t41, /*timeEditorButtonCaption*/ctx[8]);
+          if (! /*isServer*/ctx[5]) {
+            if (if_block2) {
+              if_block2.p(ctx, dirty);
+            } else {
+              if_block2 = create_if_block$c(ctx);
+              if_block2.c();
+              if_block2.m(div0, null);
+            }
+          } else if (if_block2) {
+            if_block2.d(1);
+            if_block2 = null;
           }
           if (dirty[0] & /*action*/1) {
             attr(form, "action", /*action*/ctx[0]);
@@ -17660,8 +17996,9 @@
           if (detaching) {
             detach(div1);
           }
-          if_block0.d();
+          if (if_block0) if_block0.d();
           if (if_block1) if_block1.d();
+          if (if_block2) if_block2.d();
           mounted = false;
           run_all(dispose);
         }
@@ -17670,7 +18007,7 @@
     var timeFormat = "HH:mm";
     var dateFormat$3 = "yyyy-MM-dd";
     function instance$j($$self, $$props, $$invalidate) {
-      var inputMethod;
+      var _localStorage$getItem;
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -17695,6 +18032,8 @@
       var startTime = format$2(startDate, timeFormat, localeOptions);
       var endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
       var note = editTimeEntryData.note || "";
+      var inputMethod = (_localStorage$getItem = localStorage.getItem("timemanager_input_method")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : inputMethods.decimal;
+      var durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
       var submit = function submit() {
         onSubmit({
           duration,
@@ -17702,37 +18041,26 @@
           note
         });
       };
+      var changeInputMethod = function changeInputMethod(newInputMethod) {
+        localStorage.setItem("timemanager_input_method", newInputMethod);
+      };
+      var $$binding_groups = [[]];
       function input_input_handler() {
         duration = this.value;
         $$invalidate(10, duration);
       }
       var input_handler = function input_handler() {
         $$invalidate(10, duration = Helpers.normalizeDuration(duration));
+        $$invalidate(15, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
         $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
       function input_input_handler_1() {
-        duration = this.value;
-        $$invalidate(10, duration);
+        durationTimeString = this.value;
+        $$invalidate(15, durationTimeString);
       }
       var input_handler_1 = function input_handler_1() {
-        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(Helpers.convertTimeDurationToDecimals(duration))));
-      };
-      var click_handler = function click_handler() {
-        if (inputMethod === inputMethods.decimal) {
-          $$invalidate(14, inputMethod = inputMethods.minutes);
-          var newDuration = duration.replace('.', ':');
-          var _newDuration$split = newDuration.split(':'),
-            _newDuration$split2 = _slicedToArray(_newDuration$split, 2),
-            minutes = _newDuration$split2[1];
-          $$invalidate(10, duration = newDuration.replace(":".concat(minutes), +"0.".concat(minutes) * 60));
-        } else {
-          $$invalidate(14, inputMethod = inputMethods.decimal);
-          $$invalidate(10, duration = duration.replace(':', '.'));
-          var _duration$split = duration.split('.'),
-            _duration$split2 = _slicedToArray(_duration$split, 2),
-            _minutes = _duration$split2[1];
-          $$invalidate(10, duration = duration.replace(".".concat(_minutes), _minutes / 60));
-        }
+        $$invalidate(10, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
+        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
       function input0_input_handler() {
         startTime = this.value;
@@ -17755,6 +18083,20 @@
       var input_handler_4 = function input_handler_4(e) {
         return $$invalidate(13, note = e.target.value);
       };
+      function input0_change_handler() {
+        inputMethod = this.__value;
+        $$invalidate(14, inputMethod);
+      }
+      var click_handler = function click_handler() {
+        return changeInputMethod(inputMethods.minutes);
+      };
+      function input1_change_handler() {
+        inputMethod = this.__value;
+        $$invalidate(14, inputMethod);
+      }
+      var click_handler_1 = function click_handler_1() {
+        return changeInputMethod(inputMethods.decimal);
+      };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
         if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
@@ -17763,13 +18105,12 @@
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(17, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(18, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(19, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(20, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
       };
-      $$invalidate(14, inputMethod = inputMethods.decimal);
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, inputMethod, inputMethods, submit, onSubmit, editTimeEntryData, input_input_handler, input_handler, input_input_handler_1, input_handler_1, click_handler, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, inputMethod, durationTimeString, inputMethods, submit, changeInputMethod, onSubmit, editTimeEntryData, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4, input0_change_handler, $$binding_groups, click_handler, input1_change_handler, click_handler_1];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -17786,8 +18127,8 @@
           taskName: 4,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 17,
-          editTimeEntryData: 18,
+          onSubmit: 19,
+          editTimeEntryData: 20,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8
         }, null, [-1, -1]);

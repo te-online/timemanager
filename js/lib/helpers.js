@@ -104,10 +104,31 @@ export class Helpers {
 		let decimal = +hours;
 
 		if (minutes) {
-			decimal += (minutes / 60);
+			decimal += this.simpleRounding(minutes / 60);
 		}
 
 		return decimal;
+	}
+
+	static convertDecimalsToTimeDuration(timeDuration) {
+		if (!timeDuration) {
+			return timeDuration;
+		}
+
+		const [hoursDecimal, minutesDecimal] = (timeDuration + "").split('.');
+		const minutesMultiplier = parseFloat(`0.${minutesDecimal}`).toFixed(2);
+		let minutes = this.simpleRounding(minutesMultiplier * 60);
+
+		if (minutes < 10) {
+			minutes = `0${minutes}`;
+		}
+
+		let hours = +hoursDecimal;
+		if (hours < 10) {
+			hours = `0${hours}`;
+		}
+
+		return `${hours}:${minutes}`;
 	}
 
 	// NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
