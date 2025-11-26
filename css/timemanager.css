@@ -1037,3 +1037,11 @@ h5,
 h6 {
   margin-top: 12px;
 }
+
+label.settings-label {
+  display: flex;
+  text-transform: none;
+  letter-spacing: normal;
+  align-items: center;
+  gap: 4px;
+}
