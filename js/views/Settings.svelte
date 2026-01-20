@@ -15,6 +15,8 @@
 			{translate("timemanager", "Time field settings")}
 		</summary>
 
+		<p style="margin: 8px auto">{translate("timemanager", "This setting is saved in your browser only. Clearing cache or changing browsers will reset it.")}</p>
+
 		<label class="settings-label">
 			<input
 				type="radio"

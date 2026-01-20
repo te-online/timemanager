@@ -1044,4 +1044,9 @@ label.settings-label {
   letter-spacing: normal;
   align-items: center;
   gap: 4px;
+  font-size: var(--default-font-size);
+}
+label.settings-label input {
+  margin: 0;
+  height: auto;
 }
