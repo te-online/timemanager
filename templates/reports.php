@@ -46,7 +46,7 @@ $l = Util::getL10N('timemanager');
 						</div>
 						<div>
 							<span class="tm_label"><?php p($l->t("Duration")); ?></span>
-							<?php p($times_for_client->totalHours); ?> <?php p($l->t("hrs.")); ?>
+							<span data-duration="<?php p($times_for_client->totalHours); ?>"><?php p($times_for_client->totalHours); ?></span>&nbsp;<?php p($l->t("hrs.")); ?>
 							&nbsp;&middot;&nbsp;<?php p($times_for_client->percentageHours); ?>&thinsp;%
 						</div>
 					</a>
@@ -67,7 +67,7 @@ $l = Util::getL10N('timemanager');
 									data-action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>"
 									data-initialState="<?php p($paymentStatus); ?>">
 								</span>
-								<?php p($time->getDurationInHours()); ?> <?php p($l->t('hrs.')); ?>
+								<span data-duration="<?php p($time->getDurationInHours()); ?>"><?php p($time->getDurationInHours()); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
 								<form
 									action="<?php p($urlGenerator->linkToRoute('timemanager.page.times')); ?>/<?php p($paymentAction); ?>"
 									method="post" style="display: inline" data-svelte-hide="Checkmark.svelte">
@@ -110,7 +110,7 @@ $l = Util::getL10N('timemanager');
 				<div class="tm_summary">
 					<p>
 						<span class="tm_label"><?php p($l->t("Report total")); ?></span>
-						<?php p($_["hoursTotal"]); ?> <?php p($l->t("hrs.")); ?>
+						<span data-duration="<?php p($_["hoursTotal"]); ?>"><?php p($_["hoursTotal"]); ?></span>&nbsp;<?php p($l->t("hrs.")); ?>
 					</p>
 					<p>
 						<span class="tm_label"><?php p($l->t("Number of entries")); ?></span>

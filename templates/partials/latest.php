@@ -24,7 +24,9 @@ $l = Util::getL10N('timemanager');
 			<h3><?php p($entry->client->getName()); ?> › <?php p($entry->project->getName()); ?> › <?php p($entry->task->getName()); ?></h3>
 			<div class="tm_item-excerpt">
 				<span data-datetime="<?php p($entry->time->getStartFormatted("c")); ?>"><?php p($entry->time->getStartLocalized()); ?></span>
-				&nbsp;&middot;&nbsp;<span><?php p($entry->time->getDurationInHours()); ?> <?php p($l->t('hrs.')); ?></span>
+				&nbsp;&middot;&nbsp;<span>
+					<span data-duration="<?php p($entry->time->getDurationInHours()); ?>"><?php p($entry->time->getDurationInHours()); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+				</span>
 				<?php if (isset($entry->time->author_display_name) && !$entry->time->current_user_is_author) { ?>
 					&nbsp;&middot;&nbsp;
 					<span class="author">

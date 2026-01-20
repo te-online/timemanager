@@ -64,7 +64,9 @@ $l = Util::getL10N('timemanager');
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
 									<h3><em><?php p($task->client->getName()); ?></em> › <em><?php p($task->project->getName()); ?></em> › <?php p($task->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span><?php p($task->hours); ?> <?php p($l->t('hrs.')); ?></span>
+										<span>
+											<span data-duration="<?php p($task->hours); ?>"><?php p($task->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+										</span>
 										<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $task])); ?>
 									</div>
 								</a>
@@ -109,7 +111,9 @@ $l = Util::getL10N('timemanager');
 								<a class="timemanager-pjax-link" href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>?task=<?php echo $task->getUuid(); ?>">
 									<h3><?php p($task->getName()); ?></h3>
 									<div class="tm_item-excerpt">
-										<span><?php p($task->hours); ?> <?php p($l->t('hrs.')); ?></span>
+										<span>
+											<span data-duration="<?php p($task->hours); ?>"><?php p($task->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+										</span>
 									</div>
 								</a>
 							</div>
@@ -122,11 +126,11 @@ $l = Util::getL10N('timemanager');
 					<div class="tm_summary">
 						<p>
 							<span class="tm_label"><?php p($l->t('Project total')); ?></span>
-							<?php p($_['project']->hours); ?> <?php p($l->t('hrs.')); ?>
+							<span data-duration="<?php p($_['project']->hours); ?>"><?php p($_['project']->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
 						</p>
 						<p>
 							<span class="tm_label"><?php p($l->t('Client')); ?></span>
-							<?php p($_['client']->hours); ?> <?php p($l->t('hrs.')); ?>
+							<span data-duration="<?php p($_['client']->hours); ?>"><?php p($_['client']->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
 						</p>
 					</div>
 				<?php } ?>

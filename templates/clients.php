@@ -27,7 +27,7 @@ $l = Util::getL10N('timemanager');
 									<?php p($l->t('%s projects', [$client->project_count])); ?>
 								</span>&nbsp;&middot;&nbsp;
 								<span>
-									<?php p($client->hours); ?> <?php p($l->t('hrs.')); ?>
+									<span data-duration="<?php p($client->hours); ?>"><?php p($client->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
 								</span>&nbsp;&middot;&nbsp;
 								<span>
 									<?php p($l->t('since %s', [$client->getCreatedYear()])); ?>

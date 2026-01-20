@@ -4734,6 +4734,11 @@
         v: new Set()
       })).v.add(PUBLIC_VERSION);
 
+    var InputMethods = {
+      decimal: "decimal",
+      minutes: "minutes"
+    };
+
     function _typeof(o) {
       "@babel/helpers - typeof";
 
@@ -14757,12 +14762,11 @@
 
     function get_each_context$8(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[25] = list[i];
-      child_ctx[27] = i;
+      child_ctx[27] = list[i];
       return child_ctx;
     }
 
-    // (228:0) {#if controls}
+    // (239:0) {#if controls}
     function create_if_block_7$2(ctx) {
       var h2;
       return {
@@ -14781,13 +14785,13 @@
       };
     }
 
-    // (232:1) {#if controls}
+    // (243:1) {#if controls}
     function create_if_block_6$3(ctx) {
       var div;
       var figure0;
       var figcaption0;
       var t1;
-      var t2_value = /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4]) + "";
+      var t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "";
       var t2;
       var t3;
       var t4_value = translate("timemanager", "hrs.") + "";
@@ -14796,7 +14800,7 @@
       var figure1;
       var figcaption1;
       var t7;
-      var t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "";
+      var t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "";
       var t8;
       var t9;
       var t10_value = translate("timemanager", "hrs.") + "";
@@ -14840,8 +14844,8 @@
           append(figure1, t10);
         },
         p(ctx, dirty) {
-          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4]) + "")) set_data(t2, t2_value);
-          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "")) set_data(t8, t8_value);
+          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "")) set_data(t2, t2_value);
+          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "")) set_data(t8, t8_value);
         },
         d(detaching) {
           if (detaching) {
@@ -14851,7 +14855,7 @@
       };
     }
 
-    // (248:3) {#if !loading && weekTotal > 0}
+    // (259:3) {#if !loading && weekTotal > 0}
     function create_if_block_3$3(ctx) {
       var each_1_anchor;
       var each_value = ensure_array_like( /*points*/ctx[3]);
@@ -14875,7 +14879,7 @@
           insert(target, each_1_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*formatDateForScale, points, highest*/2120) {
+          if (dirty & /*formatDateForScale, points, highest, getFormattedTotal*/6216) {
             each_value = ensure_array_like( /*points*/ctx[3]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -14903,18 +14907,18 @@
       };
     }
 
-    // (251:6) {#if point && point.stats}
+    // (262:6) {#if point && point.stats}
     function create_if_block_4$3(ctx) {
       var t0;
       var div;
       var span0;
-      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "";
+      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[27].date, "primary") + "";
       var t1;
       var t2;
       var span1;
-      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "";
+      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[27].date, "secondary") + "";
       var t3;
-      var if_block = /*point*/ctx[25].stats.total > 0 && create_if_block_5$3(ctx);
+      var if_block = /*point*/ctx[27].stats.total > 0 && create_if_block_5$3(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -14940,7 +14944,7 @@
           append(span1, t3);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[25].stats.total > 0) {
+          if ( /*point*/ctx[27].stats.total > 0) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -14952,8 +14956,8 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "")) set_data(t1, t1_value);
-          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "")) set_data(t3, t3_value);
+          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[27].date, "primary") + "")) set_data(t1, t1_value);
+          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[27].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d(detaching) {
           if (detaching) {
@@ -14965,10 +14969,10 @@
       };
     }
 
-    // (252:7) {#if point.stats.total > 0}
+    // (263:7) {#if point.stats.total > 0}
     function create_if_block_5$3(ctx) {
       var span;
-      var t0_value = /*point*/ctx[25].stats.total + "";
+      var t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[27].stats.total) + "";
       var t0;
       var t1;
       var t2_value = translate("timemanager", "hrs.") + "";
@@ -14980,13 +14984,13 @@
         c() {
           span = element("span");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = text$1(" ");
           t2 = text$1(t2_value);
           t3 = space$1();
           div = element("div");
           attr(span, "class", "hours-label");
           attr(div, "class", "column-inner");
-          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"));
+          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[27].stats.total / /*highest*/ctx[6] * 100, "%"));
         },
         m(target, anchor) {
           insert(target, span, anchor);
@@ -14997,8 +15001,8 @@
           insert(target, div, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*points*/8 && t0_value !== (t0_value = /*point*/ctx[25].stats.total + "")) set_data(t0, t0_value);
-          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"))) {
+          if (dirty & /*points*/8 && t0_value !== (t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[27].stats.total) + "")) set_data(t0, t0_value);
+          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[27].stats.total / /*highest*/ctx[6] * 100, "%"))) {
             attr(div, "style", div_style_value);
           }
         },
@@ -15012,11 +15016,11 @@
       };
     }
 
-    // (249:4) {#each points as point, index}
+    // (260:4) {#each points as point}
     function create_each_block$8(ctx) {
       var div;
       var t;
-      var if_block = /*point*/ctx[25] && /*point*/ctx[25].stats && create_if_block_4$3(ctx);
+      var if_block = /*point*/ctx[27] && /*point*/ctx[27].stats && create_if_block_4$3(ctx);
       return {
         c() {
           div = element("div");
@@ -15030,7 +15034,7 @@
           append(div, t);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[25] && /*point*/ctx[25].stats) {
+          if ( /*point*/ctx[27] && /*point*/ctx[27].stats) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -15052,7 +15056,7 @@
       };
     }
 
-    // (264:3) {#if controls && !loading && weekTotal === 0}
+    // (277:3) {#if controls && !loading && weekTotal === 0}
     function create_if_block_2$7(ctx) {
       var p;
       return {
@@ -15072,7 +15076,7 @@
       };
     }
 
-    // (268:2) {#if controls}
+    // (281:2) {#if controls}
     function create_if_block$k(ctx) {
       var nav;
       var button0;
@@ -15148,7 +15152,7 @@
           append(span2, t12);
           append(span2, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[17])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[19]))];
+            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[18])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[20]))];
             mounted = true;
           }
         },
@@ -15181,7 +15185,7 @@
       };
     }
 
-    // (285:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    // (298:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
     function create_if_block_1$8(ctx) {
       var button;
       var mounted;
@@ -15195,7 +15199,7 @@
         m(target, anchor) {
           insert(target, button, anchor);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[18]));
+            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[19]));
             mounted = true;
           }
         },
@@ -15340,6 +15344,7 @@
     var dateFormat$4 = "yyyy-MM-dd";
     var apiDateFormat = "yyyy-MM-dd HH:mm:ss";
     function instance$s($$self, $$props, $$invalidate) {
+      var _localStorage$getItem;
       var loading;
       var scale;
       var points;
@@ -15573,6 +15578,13 @@
           return format$2(date, "d.M.", localeOptions);
         }
       };
+      var inputMethod = (_localStorage$getItem = localStorage.getItem("timemanager_input_method")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : InputMethods.decimal;
+      var getFormattedTotal = function getFormattedTotal(value) {
+        if (inputMethod === InputMethods.minutes) {
+          return Helpers.convertDecimalsToTimeDuration(value);
+        }
+        return value;
+      };
       var click_handler = function click_handler() {
         return weekNavigation("previous");
       };
@@ -15583,18 +15595,18 @@
         return weekNavigation("next");
       };
       $$self.$$set = function ($$props) {
-        if ('statsApiUrl' in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
-        if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+        if ('statsApiUrl' in $$props) $$invalidate(13, statsApiUrl = $$props.statsApiUrl);
+        if ('requestToken' in $$props) $$invalidate(14, requestToken = $$props.requestToken);
         if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
-        if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
-        if ('start' in $$props) $$invalidate(15, start = $$props.start);
-        if ('end' in $$props) $$invalidate(16, end = $$props.end);
+        if ('includeShared' in $$props) $$invalidate(15, includeShared = $$props.includeShared);
+        if ('start' in $$props) $$invalidate(16, start = $$props.start);
+        if ('end' in $$props) $$invalidate(17, end = $$props.end);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*start*/32768) {
+        if ($$self.$$.dirty & /*start*/65536) {
           $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
-        if ($$self.$$.dirty & /*end*/65536) {
+        if ($$self.$$.dirty & /*end*/131072) {
           endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
@@ -15605,7 +15617,7 @@
       $$invalidate(4, todayTotal = 0);
       $$invalidate(6, highest = 0);
       $$invalidate(7, currentWeek = null);
-      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
+      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, getFormattedTotal, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
     }
     var Statistics = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Statistics, _SvelteComponent);
@@ -15615,12 +15627,12 @@
         _classCallCheck$1(this, Statistics);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$s, create_fragment$t, safe_not_equal, {
-          statsApiUrl: 12,
-          requestToken: 13,
+          statsApiUrl: 13,
+          requestToken: 14,
           controls: 0,
-          includeShared: 14,
-          start: 15,
-          end: 16
+          includeShared: 15,
+          start: 16,
+          end: 17
         });
         return _this;
       }
@@ -17356,11 +17368,6 @@
       }
       return _createClass$1(TaskEditorDialog);
     }(SvelteComponent);
-
-    var InputMethods = {
-      decimal: "decimal",
-      minutes: "minutes"
-    };
 
     function create_if_block_1$7(ctx) {
       var span;
@@ -40265,6 +40272,7 @@
       }
     };
     var init = function init() {
+      var _localStorage$getItem;
       // Destroy all previous components
       while (components.length) {
         var component = components.pop();
@@ -40439,6 +40447,19 @@
             element.href += "?timezone=".concat(Helpers.getTimezone());
           }
         });
+      }
+      var inputMethod = (_localStorage$getItem = localStorage.getItem("timemanager_input_method")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : InputMethods.decimal;
+      if (inputMethod === InputMethods.minutes) {
+        var durationElements = document.querySelectorAll("[data-duration]");
+        if (durationElements && durationElements.length > 0) {
+          durationElements.forEach(function (element) {
+            var duration = element.getAttribute("data-duration");
+            if (!duration) {
+              return;
+            }
+            element.innerText = Helpers.convertDecimalsToTimeDuration(duration);
+          });
+        }
       }
       document.body.classList.add("tm_ready");
     };
