@@ -39423,7 +39423,7 @@
       !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/);
     };
 
-    var pjax$1 = createCommonjsModule(function (module) {
+    var pjax = createCommonjsModule(function (module) {
     var Pjax = function (options) {
       this.state = {
         numPendingSwitches: 0,
@@ -39652,7 +39652,7 @@
       /**
        * Enable seamless page navigation with pjax.
        */
-      this.pjaxInstance = new pjax$1({
+      this.pjaxInstance = new pjax({
         elements: [".timemanager-pjax-link"],
         selectors: [".app-timemanager #app-navigation ul", ".app-timemanager #app-content .container"],
         cacheBust: false,
@@ -40303,14 +40303,8 @@
 
     var token = getRequestToken();
     var components = [];
-    var pjax = [];
     var defaultDateFormat = "EEEE, MMMM d, y";
     var localeOptions = Helpers.getDateLocaleOptions();
-    $(document).ready(function () {
-      if ($('input[name="duration"]').length > 0) {
-        $('input[name="duration"]')[0].focus();
-      }
-    });
     var safelyCreateComponent = function safelyCreateComponent(_ref) {
       var Component = _ref.component,
         selector = _ref.selector,
@@ -40503,6 +40497,6 @@
       document.body.classList.add("tm_ready");
     };
     init();
-    pjax.push(new PagePjax(init));
+    new PagePjax(init);
 
 })();

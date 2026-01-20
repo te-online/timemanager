@@ -23,16 +23,10 @@ import "../css/timemanager.scss";
 import { InputMethods } from "./lib/constants";
 const token = auth.getRequestToken();
 const components = [];
-const pjax = [];
+let pjax;
 
 const defaultDateFormat = "EEEE, MMMM d, y";
 const localeOptions = Helpers.getDateLocaleOptions();
-
-$(document).ready(function () {
-	if ($('input[name="duration"]').length > 0) {
-		$('input[name="duration"]')[0].focus();
-	}
-});
 
 const safelyCreateComponent = ({ component: Component, selector, props = {} }) => {
 	const node = document.querySelector(selector);
@@ -298,4 +292,4 @@ const init = () => {
 };
 
 init();
-pjax.push(new PagePjax(init));
+pjax = new PagePjax(init);
