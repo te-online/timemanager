@@ -18031,7 +18031,7 @@
           append(div, button);
           append(button, t);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[15]));
+            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[16]));
             mounted = true;
           }
         },
@@ -18048,7 +18048,7 @@
       };
     }
 
-    // (60:0) {#if !timeUuid}
+    // (65:0) {#if !timeUuid}
     function create_if_block_1$6(ctx) {
       var a;
       var span;
@@ -18068,7 +18068,7 @@
           append(a, span);
           append(span, t);
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[14]));
+            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[15]));
             mounted = true;
           }
         },
@@ -18085,13 +18085,13 @@
       };
     }
 
-    // (69:0) {#if show}
+    // (74:0) {#if show}
     function create_if_block$c(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[10],
+          loading: /*loading*/ctx[11],
           $$slots: {
             default: [create_default_slot$5]
           },
@@ -18110,8 +18110,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/1024) overlay_changes.loading = /*loading*/ctx[10];
-          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/265213) {
+          if (dirty & /*loading*/2048) overlay_changes.loading = /*loading*/ctx[11];
+          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings*/530429) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -18134,7 +18134,7 @@
       };
     }
 
-    // (70:1) <Overlay {loading}>
+    // (75:1) <Overlay {loading}>
     function create_default_slot$5(ctx) {
       var timeeditor;
       var current;
@@ -18142,15 +18142,16 @@
         props: {
           action: /*action*/ctx[0],
           requestToken: /*requestToken*/ctx[2],
-          onCancel: /*func*/ctx[16],
-          onSubmit: /*save*/ctx[12],
+          onCancel: /*func*/ctx[17],
+          onSubmit: /*save*/ctx[13],
           clientName: /*clientName*/ctx[3],
           projectName: /*projectName*/ctx[4],
           taskName: /*taskName*/ctx[5],
           timeEditorButtonCaption: /*timeEditorButtonCaption*/ctx[6],
           timeEditorCaption: /*timeEditorCaption*/ctx[7],
           editTimeEntryData: /*editTimeEntryData*/ctx[8],
-          isServer: /*isServer*/ctx[9]
+          isServer: /*isServer*/ctx[9],
+          settings: /*settings*/ctx[10]
         }
       });
       return {
@@ -18165,7 +18166,7 @@
           var timeeditor_changes = {};
           if (dirty & /*action*/1) timeeditor_changes.action = /*action*/ctx[0];
           if (dirty & /*requestToken*/4) timeeditor_changes.requestToken = /*requestToken*/ctx[2];
-          if (dirty & /*show*/2048) timeeditor_changes.onCancel = /*func*/ctx[16];
+          if (dirty & /*show*/4096) timeeditor_changes.onCancel = /*func*/ctx[17];
           if (dirty & /*clientName*/8) timeeditor_changes.clientName = /*clientName*/ctx[3];
           if (dirty & /*projectName*/16) timeeditor_changes.projectName = /*projectName*/ctx[4];
           if (dirty & /*taskName*/32) timeeditor_changes.taskName = /*taskName*/ctx[5];
@@ -18173,6 +18174,7 @@
           if (dirty & /*timeEditorCaption*/128) timeeditor_changes.timeEditorCaption = /*timeEditorCaption*/ctx[7];
           if (dirty & /*editTimeEntryData*/256) timeeditor_changes.editTimeEntryData = /*editTimeEntryData*/ctx[8];
           if (dirty & /*isServer*/512) timeeditor_changes.isServer = /*isServer*/ctx[9];
+          if (dirty & /*settings*/1024) timeeditor_changes.settings = /*settings*/ctx[10];
           timeeditor.$set(timeeditor_changes);
         },
         i(local) {
@@ -18199,7 +18201,7 @@
       }
       var current_block_type = select_block_type(ctx);
       var if_block0 = current_block_type(ctx);
-      var if_block1 = /*show*/ctx[11] && create_if_block$c(ctx);
+      var if_block1 = /*show*/ctx[12] && create_if_block$c(ctx);
       return {
         c() {
           if_block0.c();
@@ -18227,10 +18229,10 @@
               if_block0.m(t.parentNode, t);
             }
           }
-          if ( /*show*/ctx[11]) {
+          if ( /*show*/ctx[12]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
-              if (dirty & /*show*/2048) {
+              if (dirty & /*show*/4096) {
                 transition_in(if_block1, 1);
               }
             } else {
@@ -18281,6 +18283,10 @@
       var timeEditorCaption = $$props.timeEditorCaption;
       var editTimeEntryData = $$props.editTimeEntryData;
       var isServer = $$props.isServer;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
       var localeOptions = Helpers.getDateLocaleOptions();
       onMount(function () {
         Helpers.hideFallbacks("TimeEditor.svelte");
@@ -18295,7 +18301,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(10, loading = true);
+                  $$invalidate(11, loading = true);
                   _context.prev = 1;
                   entry = {
                     duration,
@@ -18317,7 +18323,7 @@
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(11, show = false);
+                    $$invalidate(12, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
                   _context.next = 13;
@@ -18327,7 +18333,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(10, loading = false);
+                  $$invalidate(11, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -18340,17 +18346,17 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(11, show = !show);
+        return $$invalidate(12, show = !show);
       };
       var click_handler_1 = function click_handler_1() {
-        return $$invalidate(11, show = !show);
+        return $$invalidate(12, show = !show);
       };
       var func = function func() {
-        return $$invalidate(11, show = false);
+        return $$invalidate(12, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editTimeEntryAction' in $$props) $$invalidate(13, editTimeEntryAction = $$props.editTimeEntryAction);
+        if ('editTimeEntryAction' in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
         if ('timeUuid' in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
         if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
         if ('clientName' in $$props) $$invalidate(3, clientName = $$props.clientName);
@@ -18360,10 +18366,11 @@
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('editTimeEntryData' in $$props) $$invalidate(8, editTimeEntryData = $$props.editTimeEntryData);
         if ('isServer' in $$props) $$invalidate(9, isServer = $$props.isServer);
+        if ('settings' in $$props) $$invalidate(10, settings = $$props.settings);
       };
-      $$invalidate(11, show = false);
-      $$invalidate(10, loading = false);
-      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
+      $$invalidate(12, show = false);
+      $$invalidate(11, loading = false);
+      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
     }
     var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditorDialog, _SvelteComponent);
@@ -18374,7 +18381,7 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$j, create_fragment$k, safe_not_equal, {
           action: 0,
-          editTimeEntryAction: 13,
+          editTimeEntryAction: 14,
           timeUuid: 1,
           requestToken: 2,
           clientName: 3,
@@ -18383,7 +18390,8 @@
           timeEditorButtonCaption: 6,
           timeEditorCaption: 7,
           editTimeEntryData: 8,
-          isServer: 9
+          isServer: 9,
+          settings: 10
         });
         return _this;
       }
