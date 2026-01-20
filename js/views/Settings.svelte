@@ -1,49 +1,39 @@
 <script>
-	export let settingsAction;
-	export let requestToken;
-	export let settings = {
-		handle_conflicts: false
-	};
-
-	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
+	import { InputMethods } from "../lib/constants";
+	export let isServer;
 
-	$: handleConflicts = false;
-	$: loading = false;
-
-	onMount(() => {
-		handleConflicts = settings.handle_conflicts;
-	});
-
-	const save = async () => {
-		loading = true;
-		await fetch(settingsAction, {
-			method: "POST",
-			body: JSON.stringify({
-				handle_conflicts: !!handleConflicts
-			}),
-			headers: {
-				requesttoken: requestToken,
-				"content-type": "application/json"
-			}
-		});
-		loading = false;
-	};
+	$: inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
+	const changeInputMethod = (newInputMethod) => {
+		localStorage.setItem("timemanager_input_method", newInputMethod);
+	}
 </script>
 
-<span class="checkbox-action">
-	<input
-		type="checkbox"
-		class="checkbox"
-		id="settings_handle_conflicts"
-		checked={handleConflicts}
-		disabled={loading}
-		on:change|preventDefault={e => {
-			handleConflicts = e.target.checked;
-			save();
-		}} />
-	<label for="settings_handle_conflicts">
-		{translate('timemanager', "My (mobile) apps can handle conflicts (leave unchecked if you're unsure)")}
-	</label>
-</span>
-<span class={`checkbox-action-loading${loading ? ' icon-loading' : ''}`} style="left: 5px;" />
+{#if !isServer}
+	<details open>
+		<summary>
+			{translate("timemanager", "Time field settings")}
+		</summary>
+
+		<label class="settings-label">
+			<input
+				type="radio"
+				name="settings-input-method"
+				bind:group={inputMethod}
+				value={InputMethods.minutes}
+				on:click={() => changeInputMethod(InputMethods.minutes)}
+			/>
+			{translate("timemanager", "Input hours and minutes (02:30 hrs.)")}
+		</label>
+		<label class="settings-label">
+			<input
+				type="radio"
+				name="settings-input-method"
+				bind:group={inputMethod}
+				value={InputMethods.decimal}
+				on:click={() => changeInputMethod(InputMethods.decimal)}
+			/>
+			{translate("timemanager", "Input decimals (2.5 hrs.)")}
+		</label>
+	</details>
+{/if}

@@ -13,6 +13,7 @@
 
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
+	import { InputMethods } from "../lib/constants";
 	import { format, parseISO } from "date-fns";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
@@ -20,27 +21,18 @@
 	const dateFormat = "yyyy-MM-dd";
 	const hasDate = Boolean(editTimeEntryData.date);
 
-	const inputMethods = {
-		decimal: "decimal",
-		minutes: "minutes"
-	}
-
 	const startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
 	let date = format(startDate, dateFormat, localeOptions);
 	let duration = editTimeEntryData.duration;
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
-	let inputMethod = localStorage.getItem("timemanager_input_method") ?? inputMethods.decimal;
+	let inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
 
 	const submit = () => {
 		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
 	};
-
-	const changeInputMethod = (newInputMethod) => {
-		localStorage.setItem("timemanager_input_method", newInputMethod);
-	}
 </script>
 
 <div class="inner tm_new-item">
@@ -49,7 +41,7 @@
 		<span class="flex-fields">
 			{#if !isServer}
 				<span>
-					{#if inputMethod === inputMethods.decimal}
+					{#if inputMethod === InputMethods.decimal}
 						<label>
 							{translate("timemanager", "Duration (in hrs.)")}
 							<br />
@@ -154,37 +146,6 @@
 			<br />
 			<strong>{clientName}</strong>
 		</label>
-		<br />
-
-		{#if !isServer}
-			<br />
-			<details>
-				<summary>
-					{translate("timemanager", "Dialog settings")}
-				</summary>
-
-				<label class="settings-label">
-					<input
-						type="radio"
-						name="settings-input-method"
-						bind:group={inputMethod}
-						value={inputMethods.minutes}
-						on:click={() => changeInputMethod(inputMethods.minutes)}
-					/>
-					{translate("timemanager", "Input hours and minutes (02:30 hrs.)")}
-				</label>
-				<label class="settings-label">
-					<input
-						type="radio"
-						name="settings-input-method"
-						bind:group={inputMethod}
-						value={inputMethods.decimal}
-						on:click={() => changeInputMethod(inputMethods.decimal)}
-					/>
-					{translate("timemanager", "Input decimals (2.5 hrs.)")}
-				</label>
-			</details>
-		{/if}
 
 		<br />
 		<input type="hidden" name="requesttoken" value={requestToken} />
