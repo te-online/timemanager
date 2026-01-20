@@ -294,20 +294,6 @@ const init = () => {
 		});
 	}
 
-	let inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
-	if (inputMethod === InputMethods.minutes) {
-		const durationElements = document.querySelectorAll("[data-duration]");
-		if (durationElements && durationElements.length > 0) {
-			durationElements.forEach((element) => {
-				const duration = element.getAttribute("data-duration");
-				if (!duration) {
-					return;
-				}
-				element.innerText = Helpers.convertDecimalsToTimeDuration(duration);
-			});
-		}
-	}
-
 	document.body.classList.add("tm_ready");
 };
 

@@ -1,5 +1,6 @@
 <?php
 
+use OCA\TimeManager\Helper\DurationHelper;
 use \OCP\Util;
 
 Util::addScript('timemanager', 'bundle');
@@ -79,7 +80,9 @@ $l = Util::getL10N('timemanager');
 									<div class="tm_item-excerpt">
 										<span><?php p($l->t('%s tasks', [$project->task_count])); ?></span>&nbsp;&middot;&nbsp;
 										<span>
-											<span data-duration="<?php p($project->hours); ?>"><?php p($project->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+											<span data-duration="<?php p($project->hours); ?>">
+												<?php p(DurationHelper::format_duration($project->hours, $_["store"])); ?>
+											</span><?php p($l->t('hrs.')); ?>
 										</span>
 										<?php print_unescaped($this->inc('partials/sharestatus', ['entity' => $project])); ?>
 									</div>
@@ -119,7 +122,9 @@ $l = Util::getL10N('timemanager');
 									<h3><?php p($project->getName()); ?></h3>
 									<div class="tm_item-excerpt">
 										<span><?php p($l->t('%s tasks', [$project->task_count])); ?></span>&nbsp;&middot;&nbsp;<span>
-											<span data-duration="<?php p($project->hours); ?>"><?php p($project->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+											<span data-duration="<?php p($project->hours); ?>">
+												<?php p(DurationHelper::format_duration($project->hours, $_["store"])); ?>
+											</span><?php p($l->t('hrs.')); ?>
 										</span>
 									</div>
 								</a>
@@ -133,7 +138,9 @@ $l = Util::getL10N('timemanager');
 					<div class="tm_summary">
 						<p>
 							<span class="tm_label"><?php p($l->t('Client total')); ?></span>
-							<span data-duration="<?php p($_['client']->hours); ?>"><?php p($_['client']->hours); ?></span>&nbsp;<?php p($l->t('hrs.')); ?>
+							<span data-duration="<?php p($_['client']->hours); ?>">
+								<?php p(DurationHelper::format_duration($_['client']->hours, $_["store"])); ?>
+							</span><?php p($l->t('hrs.')); ?>
 						</p>
 					</div>
 				<?php } ?>

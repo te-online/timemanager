@@ -5,6 +5,9 @@
 	export let requestToken;
 	export let controls = true;
 	export let includeShared = false;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { onMount } from "svelte";
 	import {
@@ -226,7 +229,7 @@
 		}
 	};
 
-	let inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	const getFormattedTotal = (value) => {
 		if (inputMethod === InputMethods.minutes) {
 			return Helpers.convertDecimalsToTimeDuration(value);
