@@ -10,6 +10,9 @@
 	export let editTimeEntryData = {};
 	export let timeEditorCaption;
 	export let timeEditorButtonCaption;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
@@ -27,7 +30,7 @@
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
-	let inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
 
 	const submit = () => {

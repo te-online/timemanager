@@ -1,11 +1,38 @@
 <script>
 	import { translate } from "@nextcloud/l10n";
 	import { InputMethods } from "../lib/constants";
-	export let isServer;
 
-	$: inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
-	const changeInputMethod = (newInputMethod) => {
-		localStorage.setItem("timemanager_input_method", newInputMethod);
+	export let isServer;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
+	export let settingsAction;
+	export let requestToken;
+
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
+
+	const changeInputMethod = async (newInputMethod) => {
+		const previousInputMethod = inputMethod;
+		inputMethod = newInputMethod;
+
+		const response = await fetch(
+			settingsAction,
+			{
+				method: 'POST',
+				headers: {
+					requesttoken: requestToken,
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({
+					timemanager_input_method: newInputMethod,
+				}),
+			}
+		);
+
+		if (!response.ok) {
+			inputMethod = previousInputMethod;
+			alert(translate("timemanager", "Could not save settings."));
+		}
 	}
 </script>
 
@@ -14,8 +41,6 @@
 		<summary>
 			{translate("timemanager", "Time field settings")}
 		</summary>
-
-		<p style="margin: 8px auto">{translate("timemanager", "This setting is saved in your browser only. Clearing cache or changing browsers will reset it.")}</p>
 
 		<label class="settings-label">
 			<input

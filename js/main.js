@@ -262,7 +262,8 @@ const init = () => {
 			component: Settings,
 			selector: "#content.app-timemanager [data-svelte='Settings.svelte']",
 			props: {
-				isServer: false,
+				...store,
+				requestToken: token,
 			},
 		})
 	);

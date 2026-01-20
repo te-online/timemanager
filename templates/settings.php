@@ -16,6 +16,7 @@ $l = Util::getL10N('timemanager');
             <section class="section">
                 <h2><?php p($l->t("Settings")); ?></h2>
                 <span data-svelte="Settings.svelte"></span>
+								<span data-store="<?php p($_["store"]); ?>"></span>
             </section>
         </main>
     </div>

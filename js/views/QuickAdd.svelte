@@ -7,6 +7,9 @@
 	export let projects;
 	export let tasks;
 	export let latestSearchEntries;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
@@ -366,7 +369,7 @@
 		loading = false;
 	};
 
-	let inputMethod = localStorage.getItem("timemanager_input_method") ?? InputMethods.decimal;
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
 </script>
 

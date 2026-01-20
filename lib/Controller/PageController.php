@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Controller;
 
 use OC\Remote\Api\NotFoundException;
+use OCA\TimeManager\Helper\InputMethods;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -19,10 +20,10 @@ use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
-use OCP\IConfig;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
@@ -45,7 +46,7 @@ class PageController extends Controller {
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
-	/** @var IConfig */
+	/** @var IAppConfig */
 	private $config;
 	/** @var IUserManager */
 	private $userManager;
@@ -61,6 +62,9 @@ class PageController extends Controller {
 	private $requestToken;
 	/** @var LoggerInterface logger */
 	private $logger;
+
+    const INPUT_METHOD_SETTING_NAME = "timemanager_input_method";
+    const FULL_DATE_FORMAT_SETTING_NAME = "fullDateFormat";
 
 	/**
 	 * constructor of the controller
@@ -85,7 +89,7 @@ class PageController extends Controller {
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
-		IConfig $config,
+		IAppConfig $config,
 		IUserManager $userManager,
 		IGroupManager $groupManager,
 		IURLGenerator $urlGenerator,
@@ -122,7 +126,7 @@ class PageController extends Controller {
 
 		$this->fullDateFormat = \Punic\Calendar::getDateFormat(
 			"full",
-			$this->config->getUserValue($this->userId, "core", "locale")
+			$this->config->getUserValue($this->userId, "core.locale")
 		);
 	}
 
@@ -176,13 +180,7 @@ class PageController extends Controller {
 				}, $all_tasks),
 				"action" => $this->urlGenerator->linkToRoute("timemanager.page.times"),
 				"statsApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.getHoursInPeriodStats"),
-				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-				"settings" => [
-					"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-						"handle_conflicts",
-					"fullDateFormat" => $this->fullDateFormat,
-				],
+                "settings" => $this->getSettings(),
 				"requestToken" => $this->requestToken,
 				"isServer" => true,
 				"latestSearchEntries" => array_map(function ($latestSearchEntry) {
@@ -336,13 +334,7 @@ class PageController extends Controller {
 				"start" => $start,
 				"end" => $end,
 				"controls" => false,
-				"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-				"settings" => [
-					"handle_conflicts" =>
-					$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-						"handle_conflicts",
-					"fullDateFormat" => $this->fullDateFormat,
-				],
+                "settings" => $this->getSettings(),
 				"includeShared" => true,
 			];
 
@@ -398,12 +390,7 @@ class PageController extends Controller {
 
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
+            "settings" => $this->getSettings(),
 			"clientEditorButtonCaption" => $this->l->t("Add client"),
 			"clientEditorCaption" => $this->l->t("New client"),
 		];
@@ -590,12 +577,7 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.projects") . "?client=" . $client_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.clients"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
+            "settings" => $this->getSettings(),
 			"requestToken" => $this->requestToken,
 			"clientName" => $client_name,
 			"clientEditorButtonCaption" => $this->l->t("Edit client"),
@@ -787,12 +769,7 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tasks") . "?project=" . $project_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.projects"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
+            "settings" => $this->getSettings(),
 			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => $project_name,
@@ -964,12 +941,7 @@ class PageController extends Controller {
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.tasks"),
-			"settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			"settings" => [
-				"handle_conflicts" =>
-				$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") === "handle_conflicts",
-				"fullDateFormat" => $this->fullDateFormat,
-			],
+            "settings" => $this->getSettings(),
 			"requestToken" => $this->requestToken,
 			"clientName" => isset($client_data) && count($client_data) > 0 ? $client_data[0]->getName() : "",
 			"projectName" => isset($project_data) && count($project_data) > 0 ? $project_data[0]->getName() : "",
@@ -1151,13 +1123,18 @@ class PageController extends Controller {
 	/**
 	 * @NoAdminRequired
 	 */
-	function updateSettings($handle_conflicts) {
-		$this->config->setAppValue(
-			"timemanager",
-			"sync_mode",
-			(bool) $handle_conflicts ? "handle_conflicts" : "force_skip_conflict_handling"
+	function updateSettings($timemanager_input_method): RedirectResponse {
+        $input_method = InputMethods::Decimal;
+        if ($timemanager_input_method === InputMethods::Minutes) {
+            $input_method = InputMethods::Minutes;
+        }
+
+		$this->config->setAppValueString(
+            self::INPUT_METHOD_SETTING_NAME,
+			$input_method
 		);
-		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.index"));
+
+		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.settings"));
 	}
 
 	/**
@@ -1179,12 +1156,6 @@ class PageController extends Controller {
 			"syncApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
 			"requestToken" => $this->requestToken,
 			"isServer" => true,
-			// "settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-			// "settings" => [
-			// 	"handle_conflicts" =>
-			// 		$this->config->getAppValue("timemanager", "sync_mode", "force_skip_conflict_handling") ===
-			// 		"handle_conflicts",
-			// ],
 		];
 
 		return new TemplateResponse("timemanager", "tools", [
@@ -1202,8 +1173,23 @@ class PageController extends Controller {
      * @NoCSRFRequired
      */
     function settings(): TemplateResponse {
+        $store = [
+            "requestToken" => $this->requestToken,
+            "isServer" => false,
+            "settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
+            "settings" => $this->getSettings(),
+        ];
+
         return new TemplateResponse("timemanager", "settings", [
-            "page" => "settings"
+            "page" => "settings",
+            "store" => json_encode($store),
         ]);
+    }
+
+    private function getSettings(): array {
+        return [
+            self::INPUT_METHOD_SETTING_NAME => $this->config->getAppValueString(self::INPUT_METHOD_SETTING_NAME, InputMethods::Decimal),
+            self::FULL_DATE_FORMAT_SETTING_NAME => $this->fullDateFormat,
+        ];
     }
 }
