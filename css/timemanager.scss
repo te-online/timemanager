@@ -412,7 +412,7 @@ label {
 
 	.quick-add {
 		// Using minmax fixes some unpredictable layout-shifts in Safari...
-		grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
+		grid-template-columns: minmax(200px, calc(100% - 556px)) 225px 250px 100px;
 
 		@media screen and (max-width: 768px) {
 			display: block;

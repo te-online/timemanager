@@ -117,7 +117,7 @@ export class Helpers {
 
 		const [hoursDecimal, minutesDecimal] = (timeDuration + "").split('.');
 		const minutesMultiplier = parseFloat(`0.${minutesDecimal}`).toFixed(2);
-		let minutes = this.simpleRounding(minutesMultiplier * 60);
+		let minutes = this.simpleRounding(minutesMultiplier * 60).toFixed(0);
 
 		if (minutes < 10) {
 			minutes = `0${minutes}`;
