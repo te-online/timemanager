@@ -20,7 +20,6 @@ import { translate } from "@nextcloud/l10n";
 import { format, parseISO } from "date-fns";
 import * as auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
-import { InputMethods } from "./lib/constants";
 const token = auth.getRequestToken();
 const components = [];
 let pjax;
