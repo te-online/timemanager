@@ -26,6 +26,7 @@ return [
 		["name" => "page#unpayTime", "url" => "/times/unpaid", "verb" => "POST"],
 		["name" => "page#updateSettings", "url" => "/settings", "verb" => "POST"],
 		["name" => "page#tools", "url" => "/tools", "verb" => "GET"],
+		["name" => "page#settings", "url" => "/settings", "verb" => "GET"],
 		["name" => "t_api#get", "url" => "/api/items", "verb" => "GET"],
 		["name" => "t_api#post", "url" => "/api/items", "verb" => "POST"],
 		["name" => "t_api#updateObjects", "url" => "/api/updateObjects", "verb" => "POST"],

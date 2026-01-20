@@ -1196,4 +1196,14 @@ class PageController extends Controller {
 			"page" => "tools",
 		]);
 	}
+
+    /**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    function settings(): TemplateResponse {
+        return new TemplateResponse("timemanager", "settings", [
+            "page" => "settings"
+        ]);
+    }
 }
