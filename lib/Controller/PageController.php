@@ -3,6 +3,7 @@
 namespace OCA\TimeManager\Controller;
 
 use OC\Remote\Api\NotFoundException;
+use OCA\TimeManager\Helper\DurationHelper;
 use OCA\TimeManager\Helper\InputMethods;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -282,12 +283,15 @@ class PageController extends Controller {
 					$end_date_time = new \DateTime($time->getEnd(), new \DateTimeZone("UTC"));
 					$end_date_time->setTimezone($date_time_zone);
 
+                    $duration = $this->config->getAppValueString(self::INPUT_METHOD_SETTING_NAME, InputMethods::Decimal) == InputMethods::Minutes ?
+                        DurationHelper::format_decimal_duration_as_time($hours) : $hours;
+
 					$all_time_entries[] = [
 						"start" => $start_date_time->format("Y-m-d H:i:s"),
 						"end" => $end_date_time->format("Y-m-d H:i:s"),
 						"note" => $time->getNote(),
 						"status" => strtolower($time->getPaymentStatus()) === "paid" ? "resolved" : "unresolved",
-						"duration" => $hours,
+						"duration" => $duration,
 						"client" => $client->getName(),
 						"project" => $project->getName(),
 						"task" => $task->getName(),
