@@ -182,6 +182,10 @@ OC.L10N.register(
 		"{duration} hrs. on {date}": "{duration} Std. am {date}",
 		"(Group)": "(Gruppe)",
 		"Print report": "Report drucken",
+		"Time field settings": "Einstellung für Zeiteingabe",
+		"Input hours and minutes (02:30 hrs.)": "Stunden und Minuten eingeben (02:30 Std.)",
+		"Input decimals (2.5 hrs.)": "Dezimalzahl eingeben (2,5 Std.)",
+		Settings: "Einstellungen",
 	},
 	"nplurals=2; plural=(n != 1);",
 );
