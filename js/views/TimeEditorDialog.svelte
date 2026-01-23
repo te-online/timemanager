@@ -1,4 +1,6 @@
 <script>
+	import { InputMethods } from "../lib/constants";
+
 	export let action;
 	export let editTimeEntryAction;
 	export let timeUuid;
@@ -10,6 +12,9 @@
 	export let timeEditorCaption;
 	export let editTimeEntryData;
 	export let isServer;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import Overlay from "./Overlay.svelte";
 	import TimeEditor from "./TimeEditor.svelte";
@@ -80,6 +85,7 @@
 			{timeEditorCaption}
 			{editTimeEntryData}
 			{isServer}
+			{settings}
 		/>
 	</Overlay>
 {/if}

@@ -595,9 +595,9 @@
     };
 
     var toString$3 = functionUncurryThis({}.toString);
-    var stringSlice$4 = functionUncurryThis(''.slice);
+    var stringSlice$5 = functionUncurryThis(''.slice);
     var classofRaw = function (it) {
-      return stringSlice$4(toString$3(it), 8, -1);
+      return stringSlice$5(toString$3(it), 8, -1);
     };
 
     var $Object$4 = Object;
@@ -699,7 +699,7 @@
 
 
 
-    var $String$4 = global_1.String;
+    var $String$5 = global_1.String;
 
     // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
     var symbolConstructorDetection = !!Object.getOwnPropertySymbols && !fails(function () {
@@ -708,7 +708,7 @@
       // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
       // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
       // of course, fail.
-      return !$String$4(symbol) || !(Object(symbol) instanceof Symbol) ||
+      return !$String$5(symbol) || !(Object(symbol) instanceof Symbol) ||
       // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
       !Symbol.sham && engineV8Version && engineV8Version < 41;
     });
@@ -725,10 +725,10 @@
       return isCallable($Symbol) && objectIsPrototypeOf($Symbol.prototype, $Object$3(it));
     };
 
-    var $String$3 = String;
+    var $String$4 = String;
     var tryToString = function (argument) {
       try {
-        return $String$3(argument);
+        return $String$4(argument);
       } catch (error) {
         return 'Object';
       }
@@ -894,13 +894,13 @@
       }).prototype != 42;
     });
 
-    var $String$2 = String;
+    var $String$3 = String;
     var $TypeError$c = TypeError;
 
     // `Assert: Type(argument) is Object`
     var anObject = function (argument) {
       if (isObject$2(argument)) return argument;
-      throw $TypeError$c($String$2(argument) + ' is not an object');
+      throw $TypeError$c($String$3(argument) + ' is not an object');
     };
 
     var $TypeError$b = TypeError;
@@ -1124,14 +1124,14 @@
     };
 
     var ceil = Math.ceil;
-    var floor$2 = Math.floor;
+    var floor$3 = Math.floor;
 
     // `Math.trunc` method
     // https://tc39.es/ecma262/#sec-math.trunc
     // eslint-disable-next-line es/no-math-trunc -- safe
     var mathTrunc = Math.trunc || function trunc(x) {
       var n = +x;
-      return (n > 0 ? floor$2 : ceil)(n);
+      return (n > 0 ? floor$3 : ceil)(n);
     };
 
     // `ToIntegerOrInfinity` abstract operation
@@ -1798,10 +1798,10 @@
       return it;
     };
 
-    var $String$1 = String;
+    var $String$2 = String;
     var toString_1 = function (argument) {
       if (classof(argument) === 'Symbol') throw TypeError('Cannot convert a Symbol value to a string');
-      return $String$1(argument);
+      return $String$2(argument);
     };
 
     var MATCH = wellKnownSymbol('match');
@@ -2036,7 +2036,7 @@
 
     var charAt$5 = functionUncurryThis(''.charAt);
     var charCodeAt = functionUncurryThis(''.charCodeAt);
-    var stringSlice$3 = functionUncurryThis(''.slice);
+    var stringSlice$4 = functionUncurryThis(''.slice);
     var createMethod$2 = function (CONVERT_TO_STRING) {
       return function ($this, pos) {
         var S = toString_1(requireObjectCoercible($this));
@@ -2045,7 +2045,7 @@
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
         first = charCodeAt(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$3(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
     var stringMultibyte = {
@@ -2155,11 +2155,11 @@
       } catch (error) {/* empty */}
     };
 
-    var $String = String;
+    var $String$1 = String;
     var $TypeError$8 = TypeError;
     var aPossiblePrototype = function (argument) {
       if (typeof argument == 'object' || isCallable(argument)) return argument;
-      throw $TypeError$8("Can't set " + $String(argument) + ' as a prototype');
+      throw $TypeError$8("Can't set " + $String$1(argument) + ' as a prototype');
     };
 
     /* eslint-disable no-proto -- safe */
@@ -2451,7 +2451,7 @@
       var spreadable = O[IS_CONCAT_SPREADABLE];
       return spreadable !== undefined ? !!spreadable : isArray$3(O);
     };
-    var FORCED$3 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
+    var FORCED$4 = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport('concat');
 
     // `Array.prototype.concat` method
     // https://tc39.es/ecma262/#sec-array.prototype.concat
@@ -2460,7 +2460,7 @@
       target: 'Array',
       proto: true,
       arity: 1,
-      forced: FORCED$3
+      forced: FORCED$4
     }, {
       // eslint-disable-next-line no-unused-vars -- required for `.length`
       concat: function concat(arg) {
@@ -3838,6 +3838,25 @@
     }
 
     /**
+     * @param {HTMLInputElement[]} group
+     * @returns {{ p(...inputs: HTMLInputElement[]): void; r(): void; }}
+     */
+    function init_binding_group(group) {
+      /**
+       * @type {HTMLInputElement[]} */
+      let _inputs;
+      return {
+        /* push */p(...inputs) {
+          _inputs = inputs;
+          _inputs.forEach(input => group.push(input));
+        },
+        /* remove */r() {
+          _inputs.forEach(input => group.splice(group.indexOf(input), 1));
+        }
+      };
+    }
+
+    /**
      * @param {Element} element
      * @returns {ChildNode[]}
      */
@@ -4714,6 +4733,11 @@
       (window.__svelte || (window.__svelte = {
         v: new Set()
       })).v.add(PUBLIC_VERSION);
+
+    var InputMethods = {
+      decimal: "decimal",
+      minutes: "minutes"
+    };
 
     function _typeof(o) {
       "@babel/helpers - typeof";
@@ -12703,14 +12727,14 @@
 
     var nativeJoin = functionUncurryThis([].join);
     var ES3_STRINGS = indexedObject != Object;
-    var FORCED$2 = ES3_STRINGS || !arrayMethodIsStrict('join', ',');
+    var FORCED$3 = ES3_STRINGS || !arrayMethodIsStrict('join', ',');
 
     // `Array.prototype.join` method
     // https://tc39.es/ecma262/#sec-array.prototype.join
     _export({
       target: 'Array',
       proto: true,
-      forced: FORCED$2
+      forced: FORCED$3
     }, {
       join: function join(separator) {
         return nativeJoin(toIndexedObject(this), separator === undefined ? ',' : separator);
@@ -12790,7 +12814,7 @@
     var charAt$3 = functionUncurryThis(''.charAt);
     var indexOf$1 = functionUncurryThis(''.indexOf);
     var replace$2 = functionUncurryThis(''.replace);
-    var stringSlice$2 = functionUncurryThis(''.slice);
+    var stringSlice$3 = functionUncurryThis(''.slice);
     var UPDATES_LAST_INDEX_WRONG = function () {
       var re1 = /a/;
       var re2 = /b*/g;
@@ -12827,7 +12851,7 @@
           if (indexOf$1(flags, 'g') === -1) {
             flags += 'g';
           }
-          strCopy = stringSlice$2(str, re.lastIndex);
+          strCopy = stringSlice$3(str, re.lastIndex);
           // Support anchored sticky behavior.
           if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$3(str, re.lastIndex - 1) !== '\n')) {
             source = '(?: ' + source + ')';
@@ -12845,8 +12869,8 @@
         match = functionCall(nativeExec, sticky ? reCopy : re, strCopy);
         if (sticky) {
           if (match) {
-            match.input = stringSlice$2(match.input, charsAdded);
-            match[0] = stringSlice$2(match[0], charsAdded);
+            match.input = stringSlice$3(match.input, charsAdded);
+            match[0] = stringSlice$3(match[0], charsAdded);
             match.index = re.lastIndex;
             re.lastIndex += match[0].length;
           } else re.lastIndex = 0;
@@ -12966,10 +12990,10 @@
       return index + (unicode ? charAt$2(S, index).length : 1);
     };
 
-    var floor$1 = Math.floor;
+    var floor$2 = Math.floor;
     var charAt$1 = functionUncurryThis(''.charAt);
     var replace$1 = functionUncurryThis(''.replace);
-    var stringSlice$1 = functionUncurryThis(''.slice);
+    var stringSlice$2 = functionUncurryThis(''.slice);
     // eslint-disable-next-line redos/no-vulnerable -- safe
     var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
     var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g;
@@ -12992,18 +13016,18 @@
           case '&':
             return matched;
           case '`':
-            return stringSlice$1(str, 0, position);
+            return stringSlice$2(str, 0, position);
           case "'":
-            return stringSlice$1(str, tailPos);
+            return stringSlice$2(str, tailPos);
           case '<':
-            capture = namedCaptures[stringSlice$1(ch, 1, -1)];
+            capture = namedCaptures[stringSlice$2(ch, 1, -1)];
             break;
           default:
             // \d\d?
             var n = +ch;
             if (n === 0) return match;
             if (n > m) {
-              var f = floor$1(n / 10);
+              var f = floor$2(n / 10);
               if (f === 0) return match;
               if (f <= m) return captures[f - 1] === undefined ? charAt$1(ch, 1) : captures[f - 1] + charAt$1(ch, 1);
               return match;
@@ -13035,7 +13059,7 @@
     var concat = functionUncurryThis([].concat);
     var push$2 = functionUncurryThis([].push);
     var stringIndexOf = functionUncurryThis(''.indexOf);
-    var stringSlice = functionUncurryThis(''.slice);
+    var stringSlice$1 = functionUncurryThis(''.slice);
     var maybeToString = function (it) {
       return it === undefined ? it : String(it);
     };
@@ -13125,11 +13149,11 @@
             replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
           }
           if (position >= nextSourcePosition) {
-            accumulatedResult += stringSlice(S, nextSourcePosition, position) + replacement;
+            accumulatedResult += stringSlice$1(S, nextSourcePosition, position) + replacement;
             nextSourcePosition = position + matched.length;
           }
         }
-        return accumulatedResult + stringSlice(S, nextSourcePosition);
+        return accumulatedResult + stringSlice$1(S, nextSourcePosition);
       }];
     }, !REPLACE_SUPPORTS_NAMED_GROUPS || !REPLACE_KEEPS_$0 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
 
@@ -13168,6 +13192,200 @@
         var search = toString_1(searchString);
         return nativeEndsWith ? nativeEndsWith(that, search, end) : slice(that, end - search.length, end) === search;
       }
+    });
+
+    // `thisNumberValue` abstract operation
+    // https://tc39.es/ecma262/#sec-thisnumbervalue
+    var thisNumberValue = functionUncurryThis(1.0.valueOf);
+
+    var $RangeError$1 = RangeError;
+
+    // `String.prototype.repeat` method implementation
+    // https://tc39.es/ecma262/#sec-string.prototype.repeat
+    var stringRepeat = function repeat(count) {
+      var str = toString_1(requireObjectCoercible(this));
+      var result = '';
+      var n = toIntegerOrInfinity(count);
+      if (n < 0 || n == Infinity) throw $RangeError$1('Wrong number of repetitions');
+      for (; n > 0; (n >>>= 1) && (str += str)) if (n & 1) result += str;
+      return result;
+    };
+
+    var $RangeError = RangeError;
+    var $String = String;
+    var floor$1 = Math.floor;
+    var repeat = functionUncurryThis(stringRepeat);
+    var stringSlice = functionUncurryThis(''.slice);
+    var nativeToFixed = functionUncurryThis(1.0.toFixed);
+    var pow = function (x, n, acc) {
+      return n === 0 ? acc : n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc);
+    };
+    var log$1 = function (x) {
+      var n = 0;
+      var x2 = x;
+      while (x2 >= 4096) {
+        n += 12;
+        x2 /= 4096;
+      }
+      while (x2 >= 2) {
+        n += 1;
+        x2 /= 2;
+      }
+      return n;
+    };
+    var multiply = function (data, n, c) {
+      var index = -1;
+      var c2 = c;
+      while (++index < 6) {
+        c2 += n * data[index];
+        data[index] = c2 % 1e7;
+        c2 = floor$1(c2 / 1e7);
+      }
+    };
+    var divide = function (data, n) {
+      var index = 6;
+      var c = 0;
+      while (--index >= 0) {
+        c += data[index];
+        data[index] = floor$1(c / n);
+        c = c % n * 1e7;
+      }
+    };
+    var dataToString = function (data) {
+      var index = 6;
+      var s = '';
+      while (--index >= 0) {
+        if (s !== '' || index === 0 || data[index] !== 0) {
+          var t = $String(data[index]);
+          s = s === '' ? t : s + repeat('0', 7 - t.length) + t;
+        }
+      }
+      return s;
+    };
+    var FORCED$2 = fails(function () {
+      return nativeToFixed(0.00008, 3) !== '0.000' || nativeToFixed(0.9, 0) !== '1' || nativeToFixed(1.255, 2) !== '1.25' || nativeToFixed(1000000000000000128.0, 0) !== '1000000000000000128';
+    }) || !fails(function () {
+      // V8 ~ Android 4.3-
+      nativeToFixed({});
+    });
+
+    // `Number.prototype.toFixed` method
+    // https://tc39.es/ecma262/#sec-number.prototype.tofixed
+    _export({
+      target: 'Number',
+      proto: true,
+      forced: FORCED$2
+    }, {
+      toFixed: function toFixed(fractionDigits) {
+        var number = thisNumberValue(this);
+        var fractDigits = toIntegerOrInfinity(fractionDigits);
+        var data = [0, 0, 0, 0, 0, 0];
+        var sign = '';
+        var result = '0';
+        var e, z, j, k;
+
+        // TODO: ES2018 increased the maximum number of fraction digits to 100, need to improve the implementation
+        if (fractDigits < 0 || fractDigits > 20) throw $RangeError('Incorrect fraction digits');
+        // eslint-disable-next-line no-self-compare -- NaN check
+        if (number != number) return 'NaN';
+        if (number <= -1e21 || number >= 1e21) return $String(number);
+        if (number < 0) {
+          sign = '-';
+          number = -number;
+        }
+        if (number > 1e-21) {
+          e = log$1(number * pow(2, 69, 1)) - 69;
+          z = e < 0 ? number * pow(2, -e, 1) : number / pow(2, e, 1);
+          z *= 0x10000000000000;
+          e = 52 - e;
+          if (e > 0) {
+            multiply(data, 0, z);
+            j = fractDigits;
+            while (j >= 7) {
+              multiply(data, 1e7, 0);
+              j -= 7;
+            }
+            multiply(data, pow(10, j, 1), 0);
+            j = e - 1;
+            while (j >= 23) {
+              divide(data, 1 << 23);
+              j -= 23;
+            }
+            divide(data, 1 << j);
+            multiply(data, 1, 1);
+            divide(data, 2);
+            result = dataToString(data);
+          } else {
+            multiply(data, 0, z);
+            multiply(data, 1 << -e, 0);
+            result = dataToString(data) + repeat('0', fractDigits);
+          }
+        }
+        if (fractDigits > 0) {
+          k = result.length;
+          result = sign + (k <= fractDigits ? '0.' + repeat('0', fractDigits - k) + result : stringSlice(result, 0, k - fractDigits) + '.' + stringSlice(result, k - fractDigits));
+        } else {
+          result = sign + result;
+        }
+        return result;
+      }
+    });
+
+    // a string of all valid unicode whitespaces
+    var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+    var replace = functionUncurryThis(''.replace);
+    var ltrim = RegExp('^[' + whitespaces + ']+');
+    var rtrim = RegExp('(^|[^' + whitespaces + '])[' + whitespaces + ']+$');
+
+    // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+    var createMethod$1 = function (TYPE) {
+      return function ($this) {
+        var string = toString_1(requireObjectCoercible($this));
+        if (TYPE & 1) string = replace(string, ltrim, '');
+        if (TYPE & 2) string = replace(string, rtrim, '$1');
+        return string;
+      };
+    };
+    var stringTrim = {
+      // `String.prototype.{ trimLeft, trimStart }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+      start: createMethod$1(1),
+      // `String.prototype.{ trimRight, trimEnd }` methods
+      // https://tc39.es/ecma262/#sec-string.prototype.trimend
+      end: createMethod$1(2),
+      // `String.prototype.trim` method
+      // https://tc39.es/ecma262/#sec-string.prototype.trim
+      trim: createMethod$1(3)
+    };
+
+    var trim = stringTrim.trim;
+
+    var charAt = functionUncurryThis(''.charAt);
+    var $parseFloat = global_1.parseFloat;
+    var Symbol$1 = global_1.Symbol;
+    var ITERATOR = Symbol$1 && Symbol$1.iterator;
+    var FORCED$1 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity
+    // MS Edge 18- broken with boxed symbols
+    || ITERATOR && !fails(function () {
+      $parseFloat(Object(ITERATOR));
+    });
+
+    // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+    var numberParseFloat = FORCED$1 ? function parseFloat(string) {
+      var trimmedString = trim(toString_1(string));
+      var result = $parseFloat(trimmedString);
+      return result === 0 && charAt(trimmedString, 0) == '-' ? -0 : result;
+    } : $parseFloat;
+
+    // `parseFloat` method
+    // https://tc39.es/ecma262/#sec-parsefloat-string
+    _export({
+      global: true,
+      forced: parseFloat != numberParseFloat
+    }, {
+      parseFloat: numberParseFloat
     });
 
     var formatDistanceLocale$2 = {
@@ -14473,8 +14691,46 @@
           }
           return normalizedValue;
         }
+      }, {
+        key: "convertTimeDurationToDecimals",
+        value: function convertTimeDurationToDecimals(duration) {
+          if (!duration) {
+            return duration;
+          }
+          var value = "".concat(duration);
+          var _value$split = value.split(":"),
+            _value$split2 = _slicedToArray(_value$split, 2),
+            hours = _value$split2[0],
+            minutes = _value$split2[1];
+          var decimal = +hours;
+          if (minutes) {
+            decimal += this.simpleRounding(minutes / 60);
+          }
+          return decimal;
+        }
+      }, {
+        key: "convertDecimalsToTimeDuration",
+        value: function convertDecimalsToTimeDuration(timeDuration) {
+          if (!timeDuration) {
+            return timeDuration;
+          }
+          var _split = (timeDuration + "").split('.'),
+            _split2 = _slicedToArray(_split, 2),
+            hoursDecimal = _split2[0],
+            minutesDecimal = _split2[1];
+          var minutesMultiplier = parseFloat("0.".concat(minutesDecimal)).toFixed(2);
+          var minutes = this.simpleRounding(minutesMultiplier * 60).toFixed(0);
+          if (minutes < 10) {
+            minutes = "0".concat(minutes);
+          }
+          var hours = +hoursDecimal;
+          if (hours < 10) {
+            hours = "0".concat(hours);
+          }
+          return "".concat(hours, ":").concat(minutes);
+        }
 
-        // NOTE: As this methods returns the 'HH:mm' value only, durations >= 24h will be ignored
+        // NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
       }, {
         key: "calculateEndTime",
         value: function calculateEndTime(startTime, duration) {
@@ -14506,12 +14762,11 @@
 
     function get_each_context$8(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[25] = list[i];
-      child_ctx[27] = i;
+      child_ctx[28] = list[i];
       return child_ctx;
     }
 
-    // (228:0) {#if controls}
+    // (242:0) {#if controls}
     function create_if_block_7$2(ctx) {
       var h2;
       return {
@@ -14530,13 +14785,13 @@
       };
     }
 
-    // (232:1) {#if controls}
+    // (246:1) {#if controls}
     function create_if_block_6$3(ctx) {
       var div;
       var figure0;
       var figcaption0;
       var t1;
-      var t2_value = /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4]) + "";
+      var t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "";
       var t2;
       var t3;
       var t4_value = translate("timemanager", "hrs.") + "";
@@ -14545,7 +14800,7 @@
       var figure1;
       var figcaption1;
       var t7;
-      var t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "";
+      var t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "";
       var t8;
       var t9;
       var t10_value = translate("timemanager", "hrs.") + "";
@@ -14589,8 +14844,8 @@
           append(figure1, t10);
         },
         p(ctx, dirty) {
-          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4]) + "")) set_data(t2, t2_value);
-          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5]) + "")) set_data(t8, t8_value);
+          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "")) set_data(t2, t2_value);
+          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "")) set_data(t8, t8_value);
         },
         d(detaching) {
           if (detaching) {
@@ -14600,7 +14855,7 @@
       };
     }
 
-    // (248:3) {#if !loading && weekTotal > 0}
+    // (262:3) {#if !loading && weekTotal > 0}
     function create_if_block_3$3(ctx) {
       var each_1_anchor;
       var each_value = ensure_array_like( /*points*/ctx[3]);
@@ -14624,7 +14879,7 @@
           insert(target, each_1_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*formatDateForScale, points, highest*/2120) {
+          if (dirty & /*formatDateForScale, points, highest, getFormattedTotal*/6216) {
             each_value = ensure_array_like( /*points*/ctx[3]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -14652,18 +14907,18 @@
       };
     }
 
-    // (251:6) {#if point && point.stats}
+    // (265:6) {#if point && point.stats}
     function create_if_block_4$3(ctx) {
       var t0;
       var div;
       var span0;
-      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "";
+      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "primary") + "";
       var t1;
       var t2;
       var span1;
-      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "";
+      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "secondary") + "";
       var t3;
-      var if_block = /*point*/ctx[25].stats.total > 0 && create_if_block_5$3(ctx);
+      var if_block = /*point*/ctx[28].stats.total > 0 && create_if_block_5$3(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -14689,7 +14944,7 @@
           append(span1, t3);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[25].stats.total > 0) {
+          if ( /*point*/ctx[28].stats.total > 0) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -14701,8 +14956,8 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "primary") + "")) set_data(t1, t1_value);
-          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[25].date, "secondary") + "")) set_data(t3, t3_value);
+          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "primary") + "")) set_data(t1, t1_value);
+          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d(detaching) {
           if (detaching) {
@@ -14714,10 +14969,10 @@
       };
     }
 
-    // (252:7) {#if point.stats.total > 0}
+    // (266:7) {#if point.stats.total > 0}
     function create_if_block_5$3(ctx) {
       var span;
-      var t0_value = /*point*/ctx[25].stats.total + "";
+      var t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[28].stats.total) + "";
       var t0;
       var t1;
       var t2_value = translate("timemanager", "hrs.") + "";
@@ -14729,13 +14984,13 @@
         c() {
           span = element("span");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = text$1(" ");
           t2 = text$1(t2_value);
           t3 = space$1();
           div = element("div");
           attr(span, "class", "hours-label");
           attr(div, "class", "column-inner");
-          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"));
+          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"));
         },
         m(target, anchor) {
           insert(target, span, anchor);
@@ -14746,8 +15001,8 @@
           insert(target, div, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*points*/8 && t0_value !== (t0_value = /*point*/ctx[25].stats.total + "")) set_data(t0, t0_value);
-          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[25].stats.total / /*highest*/ctx[6] * 100, "%"))) {
+          if (dirty & /*points*/8 && t0_value !== (t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[28].stats.total) + "")) set_data(t0, t0_value);
+          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"))) {
             attr(div, "style", div_style_value);
           }
         },
@@ -14761,11 +15016,11 @@
       };
     }
 
-    // (249:4) {#each points as point, index}
+    // (263:4) {#each points as point}
     function create_each_block$8(ctx) {
       var div;
       var t;
-      var if_block = /*point*/ctx[25] && /*point*/ctx[25].stats && create_if_block_4$3(ctx);
+      var if_block = /*point*/ctx[28] && /*point*/ctx[28].stats && create_if_block_4$3(ctx);
       return {
         c() {
           div = element("div");
@@ -14779,7 +15034,7 @@
           append(div, t);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[25] && /*point*/ctx[25].stats) {
+          if ( /*point*/ctx[28] && /*point*/ctx[28].stats) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -14801,8 +15056,8 @@
       };
     }
 
-    // (264:3) {#if controls && !loading && weekTotal === 0}
-    function create_if_block_2$6(ctx) {
+    // (280:3) {#if controls && !loading && weekTotal === 0}
+    function create_if_block_2$7(ctx) {
       var p;
       return {
         c() {
@@ -14821,8 +15076,8 @@
       };
     }
 
-    // (268:2) {#if controls}
-    function create_if_block$j(ctx) {
+    // (284:2) {#if controls}
+    function create_if_block$k(ctx) {
       var nav;
       var button0;
       var t1;
@@ -14847,7 +15102,7 @@
       var button1;
       var mounted;
       var dispose;
-      var if_block = show_if && create_if_block_1$7(ctx);
+      var if_block = show_if && create_if_block_1$8(ctx);
       return {
         c() {
           nav = element("nav");
@@ -14897,7 +15152,7 @@
           append(span2, t12);
           append(span2, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[17])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[19]))];
+            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[19])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[21]))];
             mounted = true;
           }
         },
@@ -14910,7 +15165,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block_1$7(ctx);
+              if_block = create_if_block_1$8(ctx);
               if_block.c();
               if_block.m(span2, t12);
             }
@@ -14930,8 +15185,8 @@
       };
     }
 
-    // (285:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
-    function create_if_block_1$7(ctx) {
+    // (301:5) {#if !isSameDay(startOfWeek(startOfToday(), localeOptions), startCursor)}
+    function create_if_block_1$8(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -14944,7 +15199,7 @@
         m(target, anchor) {
           insert(target, button, anchor);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[18]));
+            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[20]));
             mounted = true;
           }
         },
@@ -14958,7 +15213,7 @@
         }
       };
     }
-    function create_fragment$s(ctx) {
+    function create_fragment$t(ctx) {
       var t0;
       var div2;
       var t1;
@@ -14971,8 +15226,8 @@
       var if_block0 = /*controls*/ctx[0] && create_if_block_7$2();
       var if_block1 = /*controls*/ctx[0] && create_if_block_6$3(ctx);
       var if_block2 = ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] > 0 && create_if_block_3$3(ctx);
-      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$6();
-      var if_block4 = /*controls*/ctx[0] && create_if_block$j(ctx);
+      var if_block3 = /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0 && create_if_block_2$7();
+      var if_block4 = /*controls*/ctx[0] && create_if_block$k(ctx);
       return {
         c() {
           if (if_block0) if_block0.c();
@@ -15044,7 +15299,7 @@
           }
           if ( /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0) {
             if (if_block3) ; else {
-              if_block3 = create_if_block_2$6();
+              if_block3 = create_if_block_2$7();
               if_block3.c();
               if_block3.m(div0, null);
             }
@@ -15059,7 +15314,7 @@
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
-              if_block4 = create_if_block$j(ctx);
+              if_block4 = create_if_block$k(ctx);
               if_block4.c();
               if_block4.m(div1, null);
             }
@@ -15088,7 +15343,8 @@
     }
     var dateFormat$4 = "yyyy-MM-dd";
     var apiDateFormat = "yyyy-MM-dd HH:mm:ss";
-    function instance$r($$self, $$props, $$invalidate) {
+    function instance$s($$self, $$props, $$invalidate) {
+      var _settings$timemanager;
       var loading;
       var scale;
       var points;
@@ -15104,6 +15360,10 @@
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
       var _$$props$includeShare = $$props.includeShared,
         includeShared = _$$props$includeShare === void 0 ? false : _$$props$includeShare;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
       var simpleRounding = Helpers.simpleRounding;
       var localeOptions = Helpers.getDateLocaleOptions();
       var _$$props$start = $$props.start,
@@ -15322,6 +15582,13 @@
           return format$2(date, "d.M.", localeOptions);
         }
       };
+      var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
+      var getFormattedTotal = function getFormattedTotal(value) {
+        if (inputMethod === InputMethods.minutes) {
+          return Helpers.convertDecimalsToTimeDuration(value);
+        }
+        return value;
+      };
       var click_handler = function click_handler() {
         return weekNavigation("previous");
       };
@@ -15332,18 +15599,19 @@
         return weekNavigation("next");
       };
       $$self.$$set = function ($$props) {
-        if ('statsApiUrl' in $$props) $$invalidate(12, statsApiUrl = $$props.statsApiUrl);
-        if ('requestToken' in $$props) $$invalidate(13, requestToken = $$props.requestToken);
+        if ('statsApiUrl' in $$props) $$invalidate(13, statsApiUrl = $$props.statsApiUrl);
+        if ('requestToken' in $$props) $$invalidate(14, requestToken = $$props.requestToken);
         if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
-        if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
-        if ('start' in $$props) $$invalidate(15, start = $$props.start);
-        if ('end' in $$props) $$invalidate(16, end = $$props.end);
+        if ('includeShared' in $$props) $$invalidate(15, includeShared = $$props.includeShared);
+        if ('settings' in $$props) $$invalidate(16, settings = $$props.settings);
+        if ('start' in $$props) $$invalidate(17, start = $$props.start);
+        if ('end' in $$props) $$invalidate(18, end = $$props.end);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*start*/32768) {
+        if ($$self.$$.dirty & /*start*/131072) {
           $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
-        if ($$self.$$.dirty & /*end*/65536) {
+        if ($$self.$$.dirty & /*end*/262144) {
           endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
@@ -15354,7 +15622,7 @@
       $$invalidate(4, todayTotal = 0);
       $$invalidate(6, highest = 0);
       $$invalidate(7, currentWeek = null);
-      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, statsApiUrl, requestToken, includeShared, start, end, click_handler, click_handler_1, click_handler_2];
+      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, getFormattedTotal, statsApiUrl, requestToken, includeShared, settings, start, end, click_handler, click_handler_1, click_handler_2];
     }
     var Statistics = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Statistics, _SvelteComponent);
@@ -15363,20 +15631,21 @@
         var _this;
         _classCallCheck$1(this, Statistics);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$r, create_fragment$s, safe_not_equal, {
-          statsApiUrl: 12,
-          requestToken: 13,
+        init$2(_assertThisInitialized$1(_this), options, instance$s, create_fragment$t, safe_not_equal, {
+          statsApiUrl: 13,
+          requestToken: 14,
           controls: 0,
-          includeShared: 14,
-          start: 15,
-          end: 16
+          includeShared: 15,
+          settings: 16,
+          start: 17,
+          end: 18
         });
         return _this;
       }
       return _createClass$1(Statistics);
     }(SvelteComponent);
 
-    function create_fragment$r(ctx) {
+    function create_fragment$s(ctx) {
       var div0;
       var t;
       var div1;
@@ -15434,7 +15703,7 @@
         }
       };
     }
-    function instance$q($$self, $$props, $$invalidate) {
+    function instance$r($$self, $$props, $$invalidate) {
       var _$$props$$$slots = $$props.$$slots,
         slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots,
         $$scope = $$props.$$scope;
@@ -15453,7 +15722,7 @@
         var _this;
         _classCallCheck$1(this, Overlay);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$q, create_fragment$r, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$r, create_fragment$s, safe_not_equal, {
           loading: 0
         });
         return _this;
@@ -15461,7 +15730,7 @@
       return _createClass$1(Overlay);
     }(SvelteComponent);
 
-    function create_if_block$i(ctx) {
+    function create_if_block$j(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -15493,7 +15762,7 @@
         }
       };
     }
-    function create_fragment$q(ctx) {
+    function create_fragment$r(ctx) {
       var div1;
       var h3;
       var t0;
@@ -15523,7 +15792,7 @@
       var t12;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[2] && create_if_block$i(ctx);
+      var if_block = ! /*isServer*/ctx[2] && create_if_block$j(ctx);
       return {
         c() {
           div1 = element("div");
@@ -15628,7 +15897,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$i(ctx);
+              if_block = create_if_block$j(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -15652,7 +15921,7 @@
         }
       };
     }
-    function instance$p($$self, $$props, $$invalidate) {
+    function instance$q($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var isServer = $$props.isServer;
@@ -15695,7 +15964,7 @@
         var _this;
         _classCallCheck$1(this, ClientEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$p, create_fragment$q, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$q, create_fragment$r, safe_not_equal, {
           action: 0,
           requestToken: 1,
           isServer: 2,
@@ -15710,7 +15979,7 @@
       return _createClass$1(ClientEditor);
     }(SvelteComponent);
 
-    function create_if_block$h(ctx) {
+    function create_if_block$i(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -15805,7 +16074,7 @@
         }
       };
     }
-    function create_fragment$p(ctx) {
+    function create_fragment$q(ctx) {
       var a;
       var span;
       var t0;
@@ -15814,7 +16083,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[6] && create_if_block$h(ctx);
+      var if_block = /*show*/ctx[6] && create_if_block$i(ctx);
       return {
         c() {
           a = element("a");
@@ -15850,7 +16119,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$h(ctx);
+              if_block = create_if_block$i(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -15884,7 +16153,7 @@
         }
       };
     }
-    function instance$o($$self, $$props, $$invalidate) {
+    function instance$p($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -15981,7 +16250,7 @@
         var _this;
         _classCallCheck$1(this, ClientEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$o, create_fragment$p, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$p, create_fragment$q, safe_not_equal, {
           action: 0,
           editAction: 8,
           requestToken: 1,
@@ -15995,7 +16264,7 @@
       return _createClass$1(ClientEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$g(ctx) {
+    function create_if_block$h(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -16027,7 +16296,7 @@
         }
       };
     }
-    function create_fragment$o(ctx) {
+    function create_fragment$p(ctx) {
       var div1;
       var h3;
       var t0;
@@ -16060,7 +16329,7 @@
       var t14;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[3] && create_if_block$g(ctx);
+      var if_block = ! /*isServer*/ctx[3] && create_if_block$h(ctx);
       return {
         c() {
           div1 = element("div");
@@ -16164,7 +16433,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$g(ctx);
+              if_block = create_if_block$h(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -16188,7 +16457,7 @@
         }
       };
     }
-    function instance$n($$self, $$props, $$invalidate) {
+    function instance$o($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -16228,7 +16497,7 @@
         var _this;
         _classCallCheck$1(this, ProjectEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$n, create_fragment$o, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$o, create_fragment$p, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -16244,7 +16513,7 @@
       return _createClass$1(ProjectEditor);
     }(SvelteComponent);
 
-    function create_if_block$f(ctx) {
+    function create_if_block$g(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -16343,7 +16612,7 @@
         }
       };
     }
-    function create_fragment$n(ctx) {
+    function create_fragment$o(ctx) {
       var a;
       var span;
       var t0;
@@ -16352,7 +16621,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[8] && create_if_block$f(ctx);
+      var if_block = /*show*/ctx[8] && create_if_block$g(ctx);
       return {
         c() {
           a = element("a");
@@ -16388,7 +16657,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$f(ctx);
+              if_block = create_if_block$g(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -16422,7 +16691,7 @@
         }
       };
     }
-    function instance$m($$self, $$props, $$invalidate) {
+    function instance$n($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -16517,7 +16786,7 @@
         var _this;
         _classCallCheck$1(this, ProjectEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$m, create_fragment$n, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$n, create_fragment$o, safe_not_equal, {
           action: 0,
           editAction: 10,
           requestToken: 1,
@@ -16533,7 +16802,7 @@
       return _createClass$1(ProjectEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$e(ctx) {
+    function create_if_block$f(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -16565,7 +16834,7 @@
         }
       };
     }
-    function create_fragment$m(ctx) {
+    function create_fragment$n(ctx) {
       var div1;
       var h3;
       var t0;
@@ -16607,7 +16876,7 @@
       var t19;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[4] && create_if_block$e(ctx);
+      var if_block = ! /*isServer*/ctx[4] && create_if_block$f(ctx);
       return {
         c() {
           div1 = element("div");
@@ -16729,7 +16998,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$e(ctx);
+              if_block = create_if_block$f(ctx);
               if_block.c();
               if_block.m(div0, null);
             }
@@ -16753,7 +17022,7 @@
         }
       };
     }
-    function instance$l($$self, $$props, $$invalidate) {
+    function instance$m($$self, $$props, $$invalidate) {
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -16795,7 +17064,7 @@
         var _this;
         _classCallCheck$1(this, TaskEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$l, create_fragment$m, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$m, create_fragment$n, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -16812,7 +17081,7 @@
       return _createClass$1(TaskEditor);
     }(SvelteComponent);
 
-    function create_if_block$d(ctx) {
+    function create_if_block$e(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -16913,7 +17182,7 @@
         }
       };
     }
-    function create_fragment$l(ctx) {
+    function create_fragment$m(ctx) {
       var a;
       var span;
       var t0;
@@ -16922,7 +17191,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[9] && create_if_block$d(ctx);
+      var if_block = /*show*/ctx[9] && create_if_block$e(ctx);
       return {
         c() {
           a = element("a");
@@ -16958,7 +17227,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$d(ctx);
+              if_block = create_if_block$e(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -16992,7 +17261,7 @@
         }
       };
     }
-    function instance$k($$self, $$props, $$invalidate) {
+    function instance$l($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -17089,7 +17358,7 @@
         var _this;
         _classCallCheck$1(this, TaskEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$k, create_fragment$l, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$l, create_fragment$m, safe_not_equal, {
           action: 0,
           editAction: 11,
           requestToken: 1,
@@ -17106,64 +17375,147 @@
       return _createClass$1(TaskEditorDialog);
     }(SvelteComponent);
 
-    // a string of all valid unicode whitespaces
-    var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' + '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-    var replace = functionUncurryThis(''.replace);
-    var ltrim = RegExp('^[' + whitespaces + ']+');
-    var rtrim = RegExp('(^|[^' + whitespaces + '])[' + whitespaces + ']+$');
-
-    // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-    var createMethod$1 = function (TYPE) {
-      return function ($this) {
-        var string = toString_1(requireObjectCoercible($this));
-        if (TYPE & 1) string = replace(string, ltrim, '');
-        if (TYPE & 2) string = replace(string, rtrim, '$1');
-        return string;
+    function create_if_block_1$7(ctx) {
+      var span;
+      function select_block_type(ctx, dirty) {
+        if ( /*inputMethod*/ctx[15] === InputMethods.decimal) return create_if_block_2$6;
+        return create_else_block$6;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
+      return {
+        c() {
+          span = element("span");
+          if_block.c();
+        },
+        m(target, anchor) {
+          insert(target, span, anchor);
+          if_block.m(span, null);
+        },
+        p(ctx, dirty) {
+          if_block.p(ctx, dirty);
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(span);
+          }
+          if_block.d();
+        }
       };
-    };
-    var stringTrim = {
-      // `String.prototype.{ trimLeft, trimStart }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-      start: createMethod$1(1),
-      // `String.prototype.{ trimRight, trimEnd }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimend
-      end: createMethod$1(2),
-      // `String.prototype.trim` method
-      // https://tc39.es/ecma262/#sec-string.prototype.trim
-      trim: createMethod$1(3)
-    };
+    }
 
-    var trim = stringTrim.trim;
+    // (66:5) {:else}
+    function create_else_block$6(ctx) {
+      var label;
+      var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
+      var t0;
+      var t1;
+      var br;
+      var t2;
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          label = element("label");
+          t0 = text$1(t0_value);
+          t1 = space$1();
+          br = element("br");
+          t2 = space$1();
+          input = element("input");
+          input.autofocus = true;
+          attr(input, "type", "time");
+          attr(input, "name", "duration-time");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+          input.required = true;
+        },
+        m(target, anchor) {
+          insert(target, label, anchor);
+          append(label, t0);
+          append(label, t1);
+          append(label, br);
+          append(label, t2);
+          append(label, input);
+          set_input_value(input, /*durationTimeString*/ctx[14]);
+          input.focus();
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[22]), listen(input, "input", /*input_handler_1*/ctx[23])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*durationTimeString*/16384) {
+            set_input_value(input, /*durationTimeString*/ctx[14]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(label);
+          }
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
 
-    var charAt = functionUncurryThis(''.charAt);
-    var $parseFloat = global_1.parseFloat;
-    var Symbol$1 = global_1.Symbol;
-    var ITERATOR = Symbol$1 && Symbol$1.iterator;
-    var FORCED$1 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity
-    // MS Edge 18- broken with boxed symbols
-    || ITERATOR && !fails(function () {
-      $parseFloat(Object(ITERATOR));
-    });
+    // (47:5) {#if inputMethod === InputMethods.decimal}
+    function create_if_block_2$6(ctx) {
+      var label;
+      var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
+      var t0;
+      var t1;
+      var br;
+      var t2;
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          label = element("label");
+          t0 = text$1(t0_value);
+          t1 = space$1();
+          br = element("br");
+          t2 = space$1();
+          input = element("input");
+          input.autofocus = true;
+          attr(input, "type", "text");
+          attr(input, "name", "duration");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+          input.required = true;
+        },
+        m(target, anchor) {
+          insert(target, label, anchor);
+          append(label, t0);
+          append(label, t1);
+          append(label, br);
+          append(label, t2);
+          append(label, input);
+          set_input_value(input, /*duration*/ctx[10]);
+          input.focus();
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[20]), listen(input, "input", /*input_handler*/ctx[21])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*duration*/1024 && input.value !== /*duration*/ctx[10]) {
+            set_input_value(input, /*duration*/ctx[10]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(label);
+          }
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
 
-    // `parseFloat` method
-    // https://tc39.es/ecma262/#sec-parsefloat-string
-    var numberParseFloat = FORCED$1 ? function parseFloat(string) {
-      var trimmedString = trim(toString_1(string));
-      var result = $parseFloat(trimmedString);
-      return result === 0 && charAt(trimmedString, 0) == '-' ? -0 : result;
-    } : $parseFloat;
-
-    // `parseFloat` method
-    // https://tc39.es/ecma262/#sec-parsefloat-string
-    _export({
-      global: true,
-      forced: parseFloat != numberParseFloat
-    }, {
-      parseFloat: numberParseFloat
-    });
-
-    function create_if_block$c(ctx) {
+    // (157:3) {#if !isServer}
+    function create_if_block$d(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -17195,98 +17547,92 @@
         }
       };
     }
-    function create_fragment$k(ctx) {
+    function create_fragment$l(ctx) {
       var div1;
       var h3;
       var t0;
       var t1;
       var form;
       var span1;
-      var label0;
-      var t2_value = translate("timemanager", "Duration (in hrs.)") + "";
       var t2;
-      var t3;
-      var br0;
-      var t4;
-      var input0;
-      var t5;
       var span0;
-      var label1;
-      var t6_value = translate("timemanager", "Start time") + "";
+      var label0;
+      var t3_value = translate("timemanager", "Start time") + "";
+      var t3;
+      var t4;
+      var br0;
+      var t5;
+      var input0;
       var t6;
+      var label1;
+      var t7_value = translate("timemanager", "End time") + "";
       var t7;
-      var br1;
       var t8;
-      var input1;
+      var br1;
       var t9;
-      var label2;
-      var t10_value = translate("timemanager", "End time") + "";
+      var input1;
       var t10;
-      var t11;
       var br2;
+      var t11;
+      var label2;
+      var t12_value = translate("timemanager", "Date") + "";
       var t12;
-      var input2;
       var t13;
       var br3;
       var t14;
-      var label3;
-      var t15_value = translate("timemanager", "Date") + "";
+      var input2;
       var t15;
-      var t16;
       var br4;
+      var t16;
+      var label3;
+      var t17_value = translate("timemanager", "Note") + "";
       var t17;
-      var input3;
       var t18;
       var br5;
       var t19;
-      var label4;
-      var t20_value = translate("timemanager", "Note") + "";
-      var t20;
-      var t21;
-      var br6;
-      var t22;
       var textarea;
+      var t20;
+      var br6;
+      var t21;
+      var label4;
+      var t22_value = translate("timemanager", "For task") + "";
+      var t22;
       var t23;
       var br7;
       var t24;
-      var label5;
-      var t25_value = translate("timemanager", "For task") + "";
+      var strong0;
       var t25;
       var t26;
-      var br8;
+      var label5;
+      var t27_value = translate("timemanager", "For project") + "";
       var t27;
-      var strong0;
       var t28;
+      var br8;
       var t29;
-      var label6;
-      var t30_value = translate("timemanager", "For project") + "";
+      var strong1;
       var t30;
       var t31;
-      var br9;
+      var label6;
+      var t32_value = translate("timemanager", "For client") + "";
       var t32;
-      var strong1;
       var t33;
+      var br9;
       var t34;
-      var label7;
-      var t35_value = translate("timemanager", "For client") + "";
+      var strong2;
       var t35;
       var t36;
       var br10;
       var t37;
-      var strong2;
+      var input3;
       var t38;
-      var t39;
-      var br11;
-      var t40;
-      var input4;
-      var t41;
       var div0;
       var button;
-      var t42;
-      var t43;
+      var t39;
+      var t40;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[5] && create_if_block$c(ctx);
+      var if_block0 = ! /*isServer*/ctx[5] && create_if_block_1$7(ctx);
+      var if_block1 = ! /*isServer*/ctx[5] && create_if_block$d(ctx);
       return {
         c() {
           div1 = element("div");
@@ -17295,116 +17641,105 @@
           t1 = space$1();
           form = element("form");
           span1 = element("span");
-          label0 = element("label");
-          t2 = text$1(t2_value);
-          t3 = space$1();
-          br0 = element("br");
-          t4 = space$1();
-          input0 = element("input");
-          t5 = space$1();
+          if (if_block0) if_block0.c();
+          t2 = space$1();
           span0 = element("span");
+          label0 = element("label");
+          t3 = text$1(t3_value);
+          t4 = space$1();
+          br0 = element("br");
+          t5 = space$1();
+          input0 = element("input");
+          t6 = space$1();
           label1 = element("label");
-          t6 = text$1(t6_value);
-          t7 = space$1();
-          br1 = element("br");
+          t7 = text$1(t7_value);
           t8 = space$1();
-          input1 = element("input");
+          br1 = element("br");
           t9 = space$1();
-          label2 = element("label");
-          t10 = text$1(t10_value);
-          t11 = space$1();
+          input1 = element("input");
+          t10 = space$1();
           br2 = element("br");
-          t12 = space$1();
-          input2 = element("input");
+          t11 = space$1();
+          label2 = element("label");
+          t12 = text$1(t12_value);
           t13 = space$1();
           br3 = element("br");
           t14 = space$1();
-          label3 = element("label");
-          t15 = text$1(t15_value);
-          t16 = space$1();
+          input2 = element("input");
+          t15 = space$1();
           br4 = element("br");
-          t17 = space$1();
-          input3 = element("input");
+          t16 = space$1();
+          label3 = element("label");
+          t17 = text$1(t17_value);
           t18 = space$1();
           br5 = element("br");
           t19 = space$1();
-          label4 = element("label");
-          t20 = text$1(t20_value);
-          t21 = space$1();
-          br6 = element("br");
-          t22 = space$1();
           textarea = element("textarea");
+          t20 = space$1();
+          br6 = element("br");
+          t21 = space$1();
+          label4 = element("label");
+          t22 = text$1(t22_value);
           t23 = space$1();
           br7 = element("br");
           t24 = space$1();
-          label5 = element("label");
-          t25 = text$1(t25_value);
-          t26 = space$1();
-          br8 = element("br");
-          t27 = space$1();
           strong0 = element("strong");
-          t28 = text$1( /*taskName*/ctx[4]);
+          t25 = text$1( /*taskName*/ctx[4]);
+          t26 = space$1();
+          label5 = element("label");
+          t27 = text$1(t27_value);
+          t28 = space$1();
+          br8 = element("br");
           t29 = space$1();
-          label6 = element("label");
-          t30 = text$1(t30_value);
-          t31 = space$1();
-          br9 = element("br");
-          t32 = space$1();
           strong1 = element("strong");
-          t33 = text$1( /*projectName*/ctx[3]);
+          t30 = text$1( /*projectName*/ctx[3]);
+          t31 = space$1();
+          label6 = element("label");
+          t32 = text$1(t32_value);
+          t33 = space$1();
+          br9 = element("br");
           t34 = space$1();
-          label7 = element("label");
-          t35 = text$1(t35_value);
+          strong2 = element("strong");
+          t35 = text$1( /*clientName*/ctx[2]);
           t36 = space$1();
           br10 = element("br");
           t37 = space$1();
-          strong2 = element("strong");
-          t38 = text$1( /*clientName*/ctx[2]);
-          t39 = space$1();
-          br11 = element("br");
-          t40 = space$1();
-          input4 = element("input");
-          t41 = space$1();
+          input3 = element("input");
+          t38 = space$1();
           div0 = element("div");
           button = element("button");
-          t42 = text$1( /*timeEditorButtonCaption*/ctx[8]);
-          t43 = space$1();
-          if (if_block) if_block.c();
-          input0.autofocus = true;
-          attr(input0, "type", "text");
-          attr(input0, "name", "duration");
-          attr(input0, "placeholder", "");
-          attr(input0, "class", "duration-input");
+          t39 = text$1( /*timeEditorButtonCaption*/ctx[8]);
+          t40 = space$1();
+          if (if_block1) if_block1.c();
+          attr(input0, "type", "time");
+          attr(input0, "name", "startTime");
+          attr(input0, "placeholder", "--:--");
+          attr(input0, "class", "time-input");
+          attr(input0, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input0.required = true;
           attr(input1, "type", "time");
-          attr(input1, "name", "startTime");
+          attr(input1, "name", "endTime");
           attr(input1, "placeholder", "--:--");
           attr(input1, "class", "time-input");
           attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input1.required = true;
-          attr(input2, "type", "time");
-          attr(input2, "name", "endTime");
-          attr(input2, "placeholder", "--:--");
-          attr(input2, "class", "time-input");
-          attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
-          input2.required = true;
           attr(span0, "class", "flex-fields");
           attr(span1, "class", "flex-fields");
-          attr(input3, "type", "date");
-          attr(input3, "name", "date");
-          set_style(input3, "width", "100%");
-          attr(input3, "class", "input-wide");
+          attr(input2, "type", "date");
+          attr(input2, "name", "date");
+          set_style(input2, "width", "100%");
+          attr(input2, "class", "input-wide");
           set_style(textarea, "width", "100%");
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
           attr(textarea, "placeholder", translate('timemanager', 'Describe what you did...'));
           textarea.value = /*note*/ctx[13];
+          attr(label4, "class", "space-top");
           attr(label5, "class", "space-top");
           attr(label6, "class", "space-top");
-          attr(label7, "class", "space-top");
-          attr(input4, "type", "hidden");
-          attr(input4, "name", "requesttoken");
-          input4.value = /*requestToken*/ctx[1];
+          attr(input3, "type", "hidden");
+          attr(input3, "name", "requesttoken");
+          input3.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
@@ -17419,130 +17754,130 @@
           append(div1, t1);
           append(div1, form);
           append(form, span1);
-          append(span1, label0);
-          append(label0, t2);
-          append(label0, t3);
-          append(label0, br0);
-          append(label0, t4);
-          append(label0, input0);
-          set_input_value(input0, /*duration*/ctx[10]);
-          append(span1, t5);
+          if (if_block0) if_block0.m(span1, null);
+          append(span1, t2);
           append(span1, span0);
+          append(span0, label0);
+          append(label0, t3);
+          append(label0, t4);
+          append(label0, br0);
+          append(label0, t5);
+          append(label0, input0);
+          set_input_value(input0, /*startTime*/ctx[11]);
+          append(span0, t6);
           append(span0, label1);
-          append(label1, t6);
           append(label1, t7);
-          append(label1, br1);
           append(label1, t8);
+          append(label1, br1);
+          append(label1, t9);
           append(label1, input1);
-          set_input_value(input1, /*startTime*/ctx[11]);
-          append(span0, t9);
-          append(span0, label2);
-          append(label2, t10);
-          append(label2, t11);
-          append(label2, br2);
+          set_input_value(input1, /*endTime*/ctx[12]);
+          append(form, t10);
+          append(form, br2);
+          append(form, t11);
+          append(form, label2);
           append(label2, t12);
+          append(label2, t13);
+          append(label2, br3);
+          append(label2, t14);
           append(label2, input2);
-          set_input_value(input2, /*endTime*/ctx[12]);
-          append(form, t13);
-          append(form, br3);
-          append(form, t14);
+          set_input_value(input2, /*date*/ctx[9]);
+          append(form, t15);
+          append(form, br4);
+          append(form, t16);
           append(form, label3);
-          append(label3, t15);
-          append(label3, t16);
-          append(label3, br4);
           append(label3, t17);
-          append(label3, input3);
-          set_input_value(input3, /*date*/ctx[9]);
-          append(form, t18);
-          append(form, br5);
-          append(form, t19);
+          append(label3, t18);
+          append(label3, br5);
+          append(label3, t19);
+          append(label3, textarea);
+          append(form, t20);
+          append(form, br6);
+          append(form, t21);
           append(form, label4);
-          append(label4, t20);
-          append(label4, t21);
-          append(label4, br6);
           append(label4, t22);
-          append(label4, textarea);
-          append(form, t23);
-          append(form, br7);
-          append(form, t24);
+          append(label4, t23);
+          append(label4, br7);
+          append(label4, t24);
+          append(label4, strong0);
+          append(strong0, t25);
+          append(form, t26);
           append(form, label5);
-          append(label5, t25);
-          append(label5, t26);
-          append(label5, br8);
           append(label5, t27);
-          append(label5, strong0);
-          append(strong0, t28);
-          append(form, t29);
+          append(label5, t28);
+          append(label5, br8);
+          append(label5, t29);
+          append(label5, strong1);
+          append(strong1, t30);
+          append(form, t31);
           append(form, label6);
-          append(label6, t30);
-          append(label6, t31);
-          append(label6, br9);
           append(label6, t32);
-          append(label6, strong1);
-          append(strong1, t33);
-          append(form, t34);
-          append(form, label7);
-          append(label7, t35);
-          append(label7, t36);
-          append(label7, br10);
-          append(label7, t37);
-          append(label7, strong2);
-          append(strong2, t38);
-          append(form, t39);
-          append(form, br11);
-          append(form, t40);
-          append(form, input4);
-          append(form, t41);
+          append(label6, t33);
+          append(label6, br9);
+          append(label6, t34);
+          append(label6, strong2);
+          append(strong2, t35);
+          append(form, t36);
+          append(form, br10);
+          append(form, t37);
+          append(form, input3);
+          append(form, t38);
           append(form, div0);
           append(div0, button);
-          append(button, t42);
-          append(div0, t43);
-          if (if_block) if_block.m(div0, null);
-          input0.focus();
+          append(button, t39);
+          append(div0, t40);
+          if (if_block1) if_block1.m(div0, null);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[17]), listen(input0, "input", /*input_handler*/ctx[18]), listen(input1, "input", /*input1_input_handler*/ctx[19]), listen(input1, "input", /*input_handler_1*/ctx[20]), listen(input2, "input", /*input2_input_handler*/ctx[21]), listen(input2, "input", /*input_handler_2*/ctx[22]), listen(input3, "input", /*input3_input_handler*/ctx[23]), listen(textarea, "input", /*input_handler_3*/ctx[24]), listen(form, "submit", prevent_default( /*submit*/ctx[14]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[24]), listen(input0, "input", /*input_handler_2*/ctx[25]), listen(input1, "input", /*input1_input_handler*/ctx[26]), listen(input1, "input", /*input_handler_3*/ctx[27]), listen(input2, "input", /*input2_input_handler*/ctx[28]), listen(textarea, "input", /*input_handler_4*/ctx[29]), listen(form, "submit", prevent_default( /*submit*/ctx[16]))];
             mounted = true;
           }
         },
-        p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
-            dirty = _ref2[0];
-          if (dirty & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
-          if (dirty & /*duration*/1024 && input0.value !== /*duration*/ctx[10]) {
-            set_input_value(input0, /*duration*/ctx[10]);
+        p(ctx, dirty) {
+          if (dirty[0] & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
+          if (! /*isServer*/ctx[5]) {
+            if (if_block0) {
+              if_block0.p(ctx, dirty);
+            } else {
+              if_block0 = create_if_block_1$7(ctx);
+              if_block0.c();
+              if_block0.m(span1, t2);
+            }
+          } else if (if_block0) {
+            if_block0.d(1);
+            if_block0 = null;
           }
-          if (dirty & /*startTime*/2048) {
-            set_input_value(input1, /*startTime*/ctx[11]);
+          if (dirty[0] & /*startTime*/2048) {
+            set_input_value(input0, /*startTime*/ctx[11]);
           }
-          if (dirty & /*endTime*/4096) {
-            set_input_value(input2, /*endTime*/ctx[12]);
+          if (dirty[0] & /*endTime*/4096) {
+            set_input_value(input1, /*endTime*/ctx[12]);
           }
-          if (dirty & /*date*/512) {
-            set_input_value(input3, /*date*/ctx[9]);
+          if (dirty[0] & /*date*/512) {
+            set_input_value(input2, /*date*/ctx[9]);
           }
-          if (dirty & /*note*/8192) {
+          if (dirty[0] & /*note*/8192) {
             textarea.value = /*note*/ctx[13];
           }
-          if (dirty & /*taskName*/16) set_data(t28, /*taskName*/ctx[4]);
-          if (dirty & /*projectName*/8) set_data(t33, /*projectName*/ctx[3]);
-          if (dirty & /*clientName*/4) set_data(t38, /*clientName*/ctx[2]);
-          if (dirty & /*requestToken*/2) {
-            input4.value = /*requestToken*/ctx[1];
+          if (dirty[0] & /*taskName*/16) set_data(t25, /*taskName*/ctx[4]);
+          if (dirty[0] & /*projectName*/8) set_data(t30, /*projectName*/ctx[3]);
+          if (dirty[0] & /*clientName*/4) set_data(t35, /*clientName*/ctx[2]);
+          if (dirty[0] & /*requestToken*/2) {
+            input3.value = /*requestToken*/ctx[1];
           }
-          if (dirty & /*timeEditorButtonCaption*/256) set_data(t42, /*timeEditorButtonCaption*/ctx[8]);
+          if (dirty[0] & /*timeEditorButtonCaption*/256) set_data(t39, /*timeEditorButtonCaption*/ctx[8]);
           if (! /*isServer*/ctx[5]) {
-            if (if_block) {
-              if_block.p(ctx, dirty);
+            if (if_block1) {
+              if_block1.p(ctx, dirty);
             } else {
-              if_block = create_if_block$c(ctx);
-              if_block.c();
-              if_block.m(div0, null);
+              if_block1 = create_if_block$d(ctx);
+              if_block1.c();
+              if_block1.m(div0, null);
             }
-          } else if (if_block) {
-            if_block.d(1);
-            if_block = null;
+          } else if (if_block1) {
+            if_block1.d(1);
+            if_block1 = null;
           }
-          if (dirty & /*action*/1) {
+          if (dirty[0] & /*action*/1) {
             attr(form, "action", /*action*/ctx[0]);
           }
         },
@@ -17552,7 +17887,8 @@
           if (detaching) {
             detach(div1);
           }
-          if (if_block) if_block.d();
+          if (if_block0) if_block0.d();
+          if (if_block1) if_block1.d();
           mounted = false;
           run_all(dispose);
         }
@@ -17560,7 +17896,8 @@
     }
     var timeFormat = "HH:mm";
     var dateFormat$3 = "yyyy-MM-dd";
-    function instance$j($$self, $$props, $$invalidate) {
+    function instance$k($$self, $$props, $$invalidate) {
+      var _settings$timemanager;
       var action = $$props.action;
       var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
@@ -17573,6 +17910,10 @@
         editTimeEntryData = _$$props$editTimeEntr === void 0 ? {} : _$$props$editTimeEntr;
       var timeEditorCaption = $$props.timeEditorCaption;
       var timeEditorButtonCaption = $$props.timeEditorButtonCaption;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
       var localeOptions = Helpers.getDateLocaleOptions();
       var hasDate = Boolean(editTimeEntryData.date);
       var startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
@@ -17581,6 +17922,8 @@
       var startTime = format$2(startDate, timeFormat, localeOptions);
       var endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
       var note = editTimeEntryData.note || "";
+      var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
+      var durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
       var submit = function submit() {
         onSubmit({
           duration,
@@ -17588,33 +17931,42 @@
           note
         });
       };
-      function input0_input_handler() {
+      function input_input_handler() {
         duration = this.value;
         $$invalidate(10, duration);
       }
       var input_handler = function input_handler() {
         $$invalidate(10, duration = Helpers.normalizeDuration(duration));
+        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
         $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
-      function input1_input_handler() {
-        startTime = this.value;
-        $$invalidate(11, startTime);
+      function input_input_handler_1() {
+        durationTimeString = this.value;
+        $$invalidate(14, durationTimeString);
       }
       var input_handler_1 = function input_handler_1() {
-        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(10, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
+        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
-      function input2_input_handler() {
-        endTime = this.value;
-        $$invalidate(12, endTime);
+      function input0_input_handler() {
+        startTime = this.value;
+        $$invalidate(11, startTime);
       }
       var input_handler_2 = function input_handler_2() {
         return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
       };
-      function input3_input_handler() {
+      function input1_input_handler() {
+        endTime = this.value;
+        $$invalidate(12, endTime);
+      }
+      var input_handler_3 = function input_handler_3() {
+        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+      function input2_input_handler() {
         date = this.value;
         $$invalidate(9, date);
       }
-      var input_handler_3 = function input_handler_3(e) {
+      var input_handler_4 = function input_handler_4(e) {
         return $$invalidate(13, note = e.target.value);
       };
       $$self.$$set = function ($$props) {
@@ -17625,12 +17977,13 @@
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(15, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(16, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(17, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(18, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+        if ('settings' in $$props) $$invalidate(19, settings = $$props.settings);
       };
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, submit, onSubmit, editTimeEntryData, input0_input_handler, input_handler, input1_input_handler, input_handler_1, input2_input_handler, input_handler_2, input3_input_handler, input_handler_3];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -17639,7 +17992,7 @@
         var _this;
         _classCallCheck$1(this, TimeEditor);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$j, create_fragment$k, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$k, create_fragment$l, safe_not_equal, {
           action: 0,
           requestToken: 1,
           clientName: 2,
@@ -17647,11 +18000,12 @@
           taskName: 4,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 15,
-          editTimeEntryData: 16,
+          onSubmit: 17,
+          editTimeEntryData: 18,
           timeEditorCaption: 7,
-          timeEditorButtonCaption: 8
-        });
+          timeEditorButtonCaption: 8,
+          settings: 19
+        }, null, [-1, -1]);
         return _this;
       }
       return _createClass$1(TimeEditor);
@@ -17677,7 +18031,7 @@
           append(div, button);
           append(button, t);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[15]));
+            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[16]));
             mounted = true;
           }
         },
@@ -17694,7 +18048,7 @@
       };
     }
 
-    // (60:0) {#if !timeUuid}
+    // (65:0) {#if !timeUuid}
     function create_if_block_1$6(ctx) {
       var a;
       var span;
@@ -17714,7 +18068,7 @@
           append(a, span);
           append(span, t);
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[14]));
+            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[15]));
             mounted = true;
           }
         },
@@ -17731,13 +18085,13 @@
       };
     }
 
-    // (69:0) {#if show}
-    function create_if_block$b(ctx) {
+    // (74:0) {#if show}
+    function create_if_block$c(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[10],
+          loading: /*loading*/ctx[11],
           $$slots: {
             default: [create_default_slot$5]
           },
@@ -17756,8 +18110,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/1024) overlay_changes.loading = /*loading*/ctx[10];
-          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer*/265213) {
+          if (dirty & /*loading*/2048) overlay_changes.loading = /*loading*/ctx[11];
+          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings*/530429) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -17780,7 +18134,7 @@
       };
     }
 
-    // (70:1) <Overlay {loading}>
+    // (75:1) <Overlay {loading}>
     function create_default_slot$5(ctx) {
       var timeeditor;
       var current;
@@ -17788,15 +18142,16 @@
         props: {
           action: /*action*/ctx[0],
           requestToken: /*requestToken*/ctx[2],
-          onCancel: /*func*/ctx[16],
-          onSubmit: /*save*/ctx[12],
+          onCancel: /*func*/ctx[17],
+          onSubmit: /*save*/ctx[13],
           clientName: /*clientName*/ctx[3],
           projectName: /*projectName*/ctx[4],
           taskName: /*taskName*/ctx[5],
           timeEditorButtonCaption: /*timeEditorButtonCaption*/ctx[6],
           timeEditorCaption: /*timeEditorCaption*/ctx[7],
           editTimeEntryData: /*editTimeEntryData*/ctx[8],
-          isServer: /*isServer*/ctx[9]
+          isServer: /*isServer*/ctx[9],
+          settings: /*settings*/ctx[10]
         }
       });
       return {
@@ -17811,7 +18166,7 @@
           var timeeditor_changes = {};
           if (dirty & /*action*/1) timeeditor_changes.action = /*action*/ctx[0];
           if (dirty & /*requestToken*/4) timeeditor_changes.requestToken = /*requestToken*/ctx[2];
-          if (dirty & /*show*/2048) timeeditor_changes.onCancel = /*func*/ctx[16];
+          if (dirty & /*show*/4096) timeeditor_changes.onCancel = /*func*/ctx[17];
           if (dirty & /*clientName*/8) timeeditor_changes.clientName = /*clientName*/ctx[3];
           if (dirty & /*projectName*/16) timeeditor_changes.projectName = /*projectName*/ctx[4];
           if (dirty & /*taskName*/32) timeeditor_changes.taskName = /*taskName*/ctx[5];
@@ -17819,6 +18174,7 @@
           if (dirty & /*timeEditorCaption*/128) timeeditor_changes.timeEditorCaption = /*timeEditorCaption*/ctx[7];
           if (dirty & /*editTimeEntryData*/256) timeeditor_changes.editTimeEntryData = /*editTimeEntryData*/ctx[8];
           if (dirty & /*isServer*/512) timeeditor_changes.isServer = /*isServer*/ctx[9];
+          if (dirty & /*settings*/1024) timeeditor_changes.settings = /*settings*/ctx[10];
           timeeditor.$set(timeeditor_changes);
         },
         i(local) {
@@ -17835,7 +18191,7 @@
         }
       };
     }
-    function create_fragment$j(ctx) {
+    function create_fragment$k(ctx) {
       var t;
       var if_block1_anchor;
       var current;
@@ -17845,7 +18201,7 @@
       }
       var current_block_type = select_block_type(ctx);
       var if_block0 = current_block_type(ctx);
-      var if_block1 = /*show*/ctx[11] && create_if_block$b(ctx);
+      var if_block1 = /*show*/ctx[12] && create_if_block$c(ctx);
       return {
         c() {
           if_block0.c();
@@ -17873,14 +18229,14 @@
               if_block0.m(t.parentNode, t);
             }
           }
-          if ( /*show*/ctx[11]) {
+          if ( /*show*/ctx[12]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
-              if (dirty & /*show*/2048) {
+              if (dirty & /*show*/4096) {
                 transition_in(if_block1, 1);
               }
             } else {
-              if_block1 = create_if_block$b(ctx);
+              if_block1 = create_if_block$c(ctx);
               if_block1.c();
               transition_in(if_block1, 1);
               if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -17913,7 +18269,7 @@
       };
     }
     var dateFormat$2 = "yyyy-MM-dd HH:mm:ss";
-    function instance$i($$self, $$props, $$invalidate) {
+    function instance$j($$self, $$props, $$invalidate) {
       var show;
       var loading;
       var action = $$props.action;
@@ -17927,6 +18283,10 @@
       var timeEditorCaption = $$props.timeEditorCaption;
       var editTimeEntryData = $$props.editTimeEntryData;
       var isServer = $$props.isServer;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
       var localeOptions = Helpers.getDateLocaleOptions();
       onMount(function () {
         Helpers.hideFallbacks("TimeEditor.svelte");
@@ -17941,7 +18301,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(10, loading = true);
+                  $$invalidate(11, loading = true);
                   _context.prev = 1;
                   entry = {
                     duration,
@@ -17963,7 +18323,7 @@
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(11, show = false);
+                    $$invalidate(12, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
                   _context.next = 13;
@@ -17973,7 +18333,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(10, loading = false);
+                  $$invalidate(11, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -17986,17 +18346,17 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(11, show = !show);
+        return $$invalidate(12, show = !show);
       };
       var click_handler_1 = function click_handler_1() {
-        return $$invalidate(11, show = !show);
+        return $$invalidate(12, show = !show);
       };
       var func = function func() {
-        return $$invalidate(11, show = false);
+        return $$invalidate(12, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editTimeEntryAction' in $$props) $$invalidate(13, editTimeEntryAction = $$props.editTimeEntryAction);
+        if ('editTimeEntryAction' in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
         if ('timeUuid' in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
         if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
         if ('clientName' in $$props) $$invalidate(3, clientName = $$props.clientName);
@@ -18006,10 +18366,11 @@
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('editTimeEntryData' in $$props) $$invalidate(8, editTimeEntryData = $$props.editTimeEntryData);
         if ('isServer' in $$props) $$invalidate(9, isServer = $$props.isServer);
+        if ('settings' in $$props) $$invalidate(10, settings = $$props.settings);
       };
-      $$invalidate(11, show = false);
-      $$invalidate(10, loading = false);
-      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
+      $$invalidate(12, show = false);
+      $$invalidate(11, loading = false);
+      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
     }
     var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditorDialog, _SvelteComponent);
@@ -18018,9 +18379,9 @@
         var _this;
         _classCallCheck$1(this, TimeEditorDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$i, create_fragment$j, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$j, create_fragment$k, safe_not_equal, {
           action: 0,
-          editTimeEntryAction: 13,
+          editTimeEntryAction: 14,
           timeUuid: 1,
           requestToken: 2,
           clientName: 3,
@@ -18029,14 +18390,15 @@
           timeEditorButtonCaption: 6,
           timeEditorCaption: 7,
           editTimeEntryData: 8,
-          isServer: 9
+          isServer: 9,
+          settings: 10
         });
         return _this;
       }
       return _createClass$1(TimeEditorDialog);
     }(SvelteComponent);
 
-    function create_if_block$a(ctx) {
+    function create_if_block$b(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -18134,7 +18496,7 @@
         }
       };
     }
-    function create_fragment$i(ctx) {
+    function create_fragment$j(ctx) {
       var t0;
       var form_1;
       var input0;
@@ -18144,7 +18506,7 @@
       var button;
       var t3;
       var current;
-      var if_block = /*confirmation*/ctx[6] && create_if_block$a(ctx);
+      var if_block = /*confirmation*/ctx[6] && create_if_block$b(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -18193,7 +18555,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$a(ctx);
+              if_block = create_if_block$b(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -18236,7 +18598,7 @@
         }
       };
     }
-    function instance$h($$self, $$props, $$invalidate) {
+    function instance$i($$self, $$props, $$invalidate) {
       var confirmation;
       var deleteAction = $$props.deleteAction;
       var deleteUuid = $$props.deleteUuid;
@@ -18283,7 +18645,7 @@
         var _this;
         _classCallCheck$1(this, DeleteButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$h, create_fragment$i, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$i, create_fragment$j, safe_not_equal, {
           deleteAction: 0,
           deleteUuid: 1,
           deleteButtonCaption: 2,
@@ -18327,7 +18689,7 @@
     function add_css$5(target) {
       append_styles(target, "svelte-3e0qet", ".item.svelte-3e0qet{cursor:default;height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--itemPadding, 0 20px);color:var(--itemColor, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.groupHeader.svelte-3e0qet{text-transform:var(--groupTitleTextTransform, uppercase)}.groupItem.svelte-3e0qet{padding-left:var(--groupItemPaddingLeft, 40px)}.item.svelte-3e0qet:active{background:var(--itemActiveBackground, #b9daff)}.item.active.svelte-3e0qet{background:var(--itemIsActiveBG, #007aff);color:var(--itemIsActiveColor, #fff)}.item.notSelectable.svelte-3e0qet{color:var(--itemIsNotSelectableColor, #999)}.item.first.svelte-3e0qet{border-radius:var(--itemFirstBorderRadius, 4px 4px 0 0)}.item.hover.svelte-3e0qet:not(.active){background:var(--itemHoverBG, #e7f2ff);color:var(--itemHoverColor, inherit)}");
     }
-    function create_fragment$h(ctx) {
+    function create_fragment$i(ctx) {
       let div;
       let raw_value = /*getOptionLabel*/ctx[0]( /*item*/ctx[1], /*filterText*/ctx[2]) + "";
       let div_class_value;
@@ -18355,7 +18717,7 @@
         }
       };
     }
-    function instance$g($$self, $$props, $$invalidate) {
+    function instance$h($$self, $$props, $$invalidate) {
       let {
         isActive = false
       } = $$props;
@@ -18418,7 +18780,7 @@
     class Item extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$g, create_fragment$h, safe_not_equal, {
+        init$2(this, options, instance$h, create_fragment$i, safe_not_equal, {
           isActive: 4,
           isFirst: 5,
           isHover: 6,
@@ -18536,7 +18898,7 @@
     }
 
     // (286:4) {#if isVirtualList}
-    function create_if_block$9(ctx) {
+    function create_if_block$a(ctx) {
       let switch_instance;
       let switch_instance_anchor;
       let current;
@@ -18688,7 +19050,7 @@
     }
 
     // (313:12) {:else}
-    function create_else_block_1(ctx) {
+    function create_else_block_1$1(ctx) {
       let div;
       let switch_instance;
       let t;
@@ -18826,7 +19188,7 @@
       let if_block;
       let if_block_anchor;
       let current;
-      const if_block_creators = [create_if_block_1$5, create_else_block_1];
+      const if_block_creators = [create_if_block_1$5, create_else_block_1$1];
       const if_blocks = [];
       function select_block_type_1(ctx, dirty) {
         if ( /*item*/ctx[41].isGroupHeader && ! /*item*/ctx[41].isSelectable) return 0;
@@ -18985,14 +19347,14 @@
         }
       };
     }
-    function create_fragment$g(ctx) {
+    function create_fragment$h(ctx) {
       let div;
       let current_block_type_index;
       let if_block;
       let current;
       let mounted;
       let dispose;
-      const if_block_creators = [create_if_block$9, create_else_block$4];
+      const if_block_creators = [create_if_block$a, create_else_block$4];
       const if_blocks = [];
       function select_block_type(ctx, dirty) {
         if ( /*isVirtualList*/ctx[5]) return 0;
@@ -19081,7 +19443,7 @@
       return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
     }
 
-    function instance$f($$self, $$props, $$invalidate) {
+    function instance$g($$self, $$props, $$invalidate) {
       const dispatch = createEventDispatcher();
       let {
         container = undefined
@@ -19334,7 +19696,7 @@
     class List extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$f, create_fragment$g, safe_not_equal, {
+        init$2(this, options, instance$g, create_fragment$h, safe_not_equal, {
           container: 0,
           VirtualList: 3,
           Item: 4,
@@ -19363,7 +19725,7 @@
     function add_css$3(target) {
       append_styles(target, "svelte-pu1q1n", ".selection.svelte-pu1q1n{text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap}");
     }
-    function create_fragment$f(ctx) {
+    function create_fragment$g(ctx) {
       let div;
       let raw_value = /*getSelectionLabel*/ctx[0]( /*item*/ctx[1]) + "";
       return {
@@ -19387,7 +19749,7 @@
         }
       };
     }
-    function instance$e($$self, $$props, $$invalidate) {
+    function instance$f($$self, $$props, $$invalidate) {
       let {
         getSelectionLabel = undefined
       } = $$props;
@@ -19403,7 +19765,7 @@
     class Selection extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
+        init$2(this, options, instance$f, create_fragment$g, safe_not_equal, {
           getSelectionLabel: 0,
           item: 1
         }, add_css$3);
@@ -19421,7 +19783,7 @@
     }
 
     // (87:8) {#if !isDisabled && !multiFullItemClearable}
-    function create_if_block$8(ctx) {
+    function create_if_block$9(ctx) {
       let div;
       let mounted;
       let dispose;
@@ -19465,7 +19827,7 @@
       let div1_class_value;
       let mounted;
       let dispose;
-      let if_block = ! /*isDisabled*/ctx[2] && ! /*multiFullItemClearable*/ctx[3] && create_if_block$8(ctx);
+      let if_block = ! /*isDisabled*/ctx[2] && ! /*multiFullItemClearable*/ctx[3] && create_if_block$9(ctx);
       function click_handler_1(...args) {
         return (/*click_handler_1*/ctx[7]( /*i*/ctx[11], ...args)
         );
@@ -19499,7 +19861,7 @@
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
-              if_block = create_if_block$8(ctx);
+              if_block = create_if_block$9(ctx);
               if_block.c();
               if_block.m(div1, t1);
             }
@@ -19521,7 +19883,7 @@
         }
       };
     }
-    function create_fragment$e(ctx) {
+    function create_fragment$f(ctx) {
       let each_1_anchor;
       let each_value = ensure_array_like( /*value*/ctx[0]);
       let each_blocks = [];
@@ -19573,7 +19935,7 @@
         }
       };
     }
-    function instance$d($$self, $$props, $$invalidate) {
+    function instance$e($$self, $$props, $$invalidate) {
       const dispatch = createEventDispatcher();
       let {
         value = []
@@ -19610,7 +19972,7 @@
     class MultiSelection extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
+        init$2(this, options, instance$e, create_fragment$f, safe_not_equal, {
           value: 0,
           activeValue: 1,
           isDisabled: 2,
@@ -19708,7 +20070,7 @@
         }
       };
     }
-    function create_fragment$d(ctx) {
+    function create_fragment$e(ctx) {
       let svelte_virtual_list_viewport;
       let svelte_virtual_list_contents;
       let each_blocks = [];
@@ -19806,7 +20168,7 @@
         }
       };
     }
-    function instance$c($$self, $$props, $$invalidate) {
+    function instance$d($$self, $$props, $$invalidate) {
       let {
         $$slots: slots = {},
         $$scope
@@ -19955,7 +20317,7 @@
     class VirtualList extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$c, create_fragment$d, safe_not_equal, {
+        init$2(this, options, instance$d, create_fragment$e, safe_not_equal, {
           items: 11,
           height: 0,
           itemHeight: 12,
@@ -19966,7 +20328,7 @@
       }
     }
 
-    function create_fragment$c(ctx) {
+    function create_fragment$d(ctx) {
       let svg;
       let path;
       return {
@@ -19999,7 +20361,7 @@
     class ClearIcon extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, null, create_fragment$c, safe_not_equal, {});
+        init$2(this, options, null, create_fragment$d, safe_not_equal, {});
       }
     }
 
@@ -20138,7 +20500,7 @@
     }
 
     // (888:4) {#if showMultiSelect}
-    function create_if_block_8(ctx) {
+    function create_if_block_8$1(ctx) {
       let switch_instance;
       let switch_instance_anchor;
       let current;
@@ -20608,7 +20970,7 @@
     }
 
     // (983:4) {#if isMulti && showMultiSelect}
-    function create_if_block$7(ctx) {
+    function create_if_block$8(ctx) {
       let each_1_anchor;
       let each_value = ensure_array_like( /*value*/ctx[2]);
       let each_blocks = [];
@@ -20690,7 +21052,7 @@
         }
       };
     }
-    function create_fragment$b(ctx) {
+    function create_fragment$c(ctx) {
       let div;
       let span;
       let t0;
@@ -20711,7 +21073,7 @@
       let dispose;
       let if_block0 = /*isFocused*/ctx[1] && create_if_block_10(ctx);
       let if_block1 = /*Icon*/ctx[17] && create_if_block_9(ctx);
-      let if_block2 = /*showMultiSelect*/ctx[35] && create_if_block_8(ctx);
+      let if_block2 = /*showMultiSelect*/ctx[35] && create_if_block_8$1(ctx);
       let input_1_levels = [{
         readOnly: input_1_readonly_value = ! /*isSearchable*/ctx[13]
       }, /*_inputAttributes*/ctx[31], {
@@ -20731,7 +21093,7 @@
       let if_block6 = /*isWaiting*/ctx[4] && create_if_block_3$2();
       let if_block7 = /*listOpen*/ctx[5] && create_if_block_2$4(ctx);
       let if_block8 = (! /*isMulti*/ctx[7] || /*isMulti*/ctx[7] && ! /*showMultiSelect*/ctx[35]) && create_if_block_1$4(ctx);
-      let if_block9 = /*isMulti*/ctx[7] && /*showMultiSelect*/ctx[35] && create_if_block$7(ctx);
+      let if_block9 = /*isMulti*/ctx[7] && /*showMultiSelect*/ctx[35] && create_if_block$8(ctx);
       return {
         c() {
           div = element("div");
@@ -20845,7 +21207,7 @@
                 transition_in(if_block2, 1);
               }
             } else {
-              if_block2 = create_if_block_8(ctx);
+              if_block2 = create_if_block_8$1(ctx);
               if_block2.c();
               transition_in(if_block2, 1);
               if_block2.m(div, t2);
@@ -20965,7 +21327,7 @@
             if (if_block9) {
               if_block9.p(ctx, dirty);
             } else {
-              if_block9 = create_if_block$7(ctx);
+              if_block9 = create_if_block$8(ctx);
               if_block9.c();
               if_block9.m(div, null);
             }
@@ -21041,7 +21403,7 @@
         };
       });
     }
-    function instance$b($$self, $$props, $$invalidate) {
+    function instance$c($$self, $$props, $$invalidate) {
       let filteredItems;
       let showSelectedItem;
       let showClearIcon;
@@ -21793,7 +22155,7 @@
     class Select extends SvelteComponent {
       constructor(options) {
         super();
-        init$2(this, options, instance$b, create_fragment$b, safe_not_equal, {
+        init$2(this, options, instance$c, create_fragment$c, safe_not_equal, {
           id: 46,
           container: 0,
           input: 6,
@@ -22091,7 +22453,7 @@
     }
 
     // (88:0) {#if dialogVisible}
-    function create_if_block$6(ctx) {
+    function create_if_block$7(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -22507,7 +22869,7 @@
         }
       };
     }
-    function create_fragment$a(ctx) {
+    function create_fragment$b(ctx) {
       var t0;
       var form_1;
       var input0;
@@ -22522,7 +22884,7 @@
       var t4;
       var button;
       var current;
-      var if_block = /*dialogVisible*/ctx[7] && create_if_block$6(ctx);
+      var if_block = /*dialogVisible*/ctx[7] && create_if_block$7(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -22584,7 +22946,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$6(ctx);
+              if_block = create_if_block$7(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -22632,7 +22994,7 @@
         }
       };
     }
-    function instance$a($$self, $$props, $$invalidate) {
+    function instance$b($$self, $$props, $$invalidate) {
       var dialogVisible;
       var loading;
       var shareAction = $$props.shareAction;
@@ -22756,7 +23118,7 @@
         var _this;
         _classCallCheck$1(this, ShareDialog);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$a, create_fragment$a, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$b, create_fragment$b, safe_not_equal, {
           shareAction: 0,
           deleteShareAction: 1,
           sharees: 2,
@@ -22943,7 +23305,7 @@
     }
 
     // (44:0) {#if sharedBy}
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
       var span;
       var t1;
       var ul;
@@ -22997,11 +23359,11 @@
         }
       };
     }
-    function create_fragment$9(ctx) {
+    function create_fragment$a(ctx) {
       var t;
       var if_block1_anchor;
       var if_block0 = /*sharees*/ctx[0] && /*sharees*/ctx[0].length && create_if_block_1$2(ctx);
-      var if_block1 = /*sharedBy*/ctx[1] && create_if_block$5(ctx);
+      var if_block1 = /*sharedBy*/ctx[1] && create_if_block$6(ctx);
       return {
         c() {
           if (if_block0) if_block0.c();
@@ -23034,7 +23396,7 @@
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
-              if_block1 = create_if_block$5(ctx);
+              if_block1 = create_if_block$6(ctx);
               if_block1.c();
               if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
             }
@@ -23055,7 +23417,7 @@
         }
       };
     }
-    function instance$9($$self, $$props, $$invalidate) {
+    function instance$a($$self, $$props, $$invalidate) {
       var sharees = $$props.sharees;
       var sharedBy = $$props.sharedBy;
       onMount(function () {
@@ -23074,7 +23436,7 @@
         var _this;
         _classCallCheck$1(this, ShareStatus);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$9, create_fragment$9, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$a, create_fragment$a, safe_not_equal, {
           sharees: 0,
           sharedBy: 1
         });
@@ -23083,7 +23445,7 @@
       return _createClass$1(ShareStatus);
     }(SvelteComponent);
 
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
       var overlay;
       var current;
       overlay = new Overlay({
@@ -23180,7 +23542,7 @@
         }
       };
     }
-    function create_fragment$8(ctx) {
+    function create_fragment$9(ctx) {
       var t0;
       var form;
       var input0;
@@ -23191,7 +23553,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*confirmation*/ctx[3] && create_if_block$4(ctx);
+      var if_block = /*confirmation*/ctx[3] && create_if_block$5(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -23242,7 +23604,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$4(ctx);
+              if_block = create_if_block$5(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(t0.parentNode, t0);
@@ -23284,7 +23646,7 @@
         }
       };
     }
-    function instance$8($$self, $$props, $$invalidate) {
+    function instance$9($$self, $$props, $$invalidate) {
       var confirmation;
       var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
       var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
@@ -23359,7 +23721,7 @@
         var _this;
         _classCallCheck$1(this, DeleteTimeEntryButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$9, create_fragment$9, safe_not_equal, {
           deleteTimeEntryAction: 0,
           deleteTimeEntryUuid: 1,
           requestToken: 2
@@ -26907,38 +27269,38 @@
 
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[83] = list[i];
+      child_ctx[89] = list[i];
       return child_ctx;
     }
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[86] = list[i];
+      child_ctx[92] = list[i];
       return child_ctx;
     }
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[89] = list[i];
-      child_ctx[90] = list;
-      child_ctx[91] = i;
+      child_ctx[95] = list[i];
+      child_ctx[96] = list;
+      child_ctx[97] = i;
       return child_ctx;
     }
     function get_each_context_3(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[92] = list[i];
-      child_ctx[93] = list;
-      child_ctx[94] = i;
+      child_ctx[98] = list[i];
+      child_ctx[99] = list;
+      child_ctx[100] = i;
       return child_ctx;
     }
     function get_each_context_4(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[95] = list[i];
-      child_ctx[96] = list;
-      child_ctx[94] = i;
+      child_ctx[101] = list[i];
+      child_ctx[102] = list;
+      child_ctx[100] = i;
       return child_ctx;
     }
 
-    // (429:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
-    function create_if_block_7(ctx) {
+    // (437:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    function create_if_block_8(ctx) {
       var div;
       var ul;
       var mounted;
@@ -26967,12 +27329,12 @@
             }
           }
           if (!mounted) {
-            dispose = action_destroyer(/*noteSuggestPopperContent*/ctx[29].call(null, div, /*extraOpts*/ctx[25]));
+            dispose = action_destroyer(/*noteSuggestPopperContent*/ctx[30].call(null, div, /*extraOpts*/ctx[26]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/4458722) {
+          if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/8915170) {
             each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
             var _i3;
             for (_i3 = 0; _i3 < each_value_4.length; _i3 += 1) {
@@ -27002,33 +27364,33 @@
       };
     }
 
-    // (432:5) {#each noteAutosuggestList as suggestion, index}
+    // (440:5) {#each noteAutosuggestList as suggestion, index}
     function create_each_block_4(ctx) {
-      var _ctx$95$time$note, _ctx$, _ctx$95$client$name, _ctx$2, _ctx$95$project$name, _ctx$3, _ctx$95$task$name, _ctx$4;
+      var _ctx$101$time$note, _ctx$, _ctx$101$client$name, _ctx$2, _ctx$101$project$name, _ctx$3, _ctx$101$task$name, _ctx$4;
       var li;
       var a;
-      var t0_value = ( /*suggestion*/(_ctx$95$time$note = (_ctx$ = ctx[95]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$95$time$note !== void 0 ? _ctx$95$time$note : "") + "";
+      var t0_value = ( /*suggestion*/(_ctx$101$time$note = (_ctx$ = ctx[101]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$101$time$note !== void 0 ? _ctx$101$time$note : "") + "";
       var t0;
       var t1;
-      var t2_value = ( /*suggestion*/(_ctx$95$client$name = (_ctx$2 = ctx[95]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$95$client$name !== void 0 ? _ctx$95$client$name : "") + "";
+      var t2_value = ( /*suggestion*/(_ctx$101$client$name = (_ctx$2 = ctx[101]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$101$client$name !== void 0 ? _ctx$101$client$name : "") + "";
       var t2;
       var t3;
-      var t4_value = ( /*suggestion*/(_ctx$95$project$name = (_ctx$3 = ctx[95]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$95$project$name !== void 0 ? _ctx$95$project$name : "") + "";
+      var t4_value = ( /*suggestion*/(_ctx$101$project$name = (_ctx$3 = ctx[101]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$101$project$name !== void 0 ? _ctx$101$project$name : "") + "";
       var t4;
       var t5;
-      var t6_value = ( /*suggestion*/(_ctx$95$task$name = (_ctx$4 = ctx[95]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$95$task$name !== void 0 ? _ctx$95$task$name : "") + "";
+      var t6_value = ( /*suggestion*/(_ctx$101$task$name = (_ctx$4 = ctx[101]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$101$task$name !== void 0 ? _ctx$101$task$name : "") + "";
       var t6;
       var t7;
-      var index = /*index*/ctx[94];
+      var index = /*index*/ctx[100];
       var t8;
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding*/ctx[49](a, index)
+        return (/*a_binding*/ctx[52](a, index)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding*/ctx[49](null, index)
+        return (/*a_binding*/ctx[52](null, index)
         );
       };
       function click_handler_1() {
@@ -27036,11 +27398,11 @@
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
-        return (/*click_handler_1*/(_ctx = ctx)[50].apply(_ctx, [/*suggestion*/ctx[95]].concat(args))
+        return (/*click_handler_1*/(_ctx = ctx)[53].apply(_ctx, [/*suggestion*/ctx[101]].concat(args))
         );
       }
       function focus_handler_1() {
-        return (/*focus_handler_1*/ctx[51]( /*index*/ctx[94])
+        return (/*focus_handler_1*/ctx[54]( /*index*/ctx[100])
         );
       }
       return {
@@ -27079,15 +27441,15 @@
           }
         },
         p(new_ctx, dirty) {
-          var _ctx$95$time$note2, _ctx$5, _ctx$95$client$name2, _ctx$6, _ctx$95$project$name2, _ctx$7, _ctx$95$task$name2, _ctx$8;
+          var _ctx$101$time$note2, _ctx$5, _ctx$101$client$name2, _ctx$6, _ctx$101$project$name2, _ctx$7, _ctx$101$task$name2, _ctx$8;
           ctx = new_ctx;
-          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$95$time$note2 = (_ctx$5 = ctx[95]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$95$time$note2 !== void 0 ? _ctx$95$time$note2 : "") + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$95$client$name2 = (_ctx$6 = ctx[95]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$95$client$name2 !== void 0 ? _ctx$95$client$name2 : "") + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$95$project$name2 = (_ctx$7 = ctx[95]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$95$project$name2 !== void 0 ? _ctx$95$project$name2 : "") + "")) set_data(t4, t4_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$95$task$name2 = (_ctx$8 = ctx[95]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$95$task$name2 !== void 0 ? _ctx$95$task$name2 : "") + "")) set_data(t6, t6_value);
-          if (index !== /*index*/ctx[94]) {
+          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$101$time$note2 = (_ctx$5 = ctx[101]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$101$time$note2 !== void 0 ? _ctx$101$time$note2 : "") + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$101$client$name2 = (_ctx$6 = ctx[101]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$101$client$name2 !== void 0 ? _ctx$101$client$name2 : "") + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$101$project$name2 = (_ctx$7 = ctx[101]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$101$project$name2 !== void 0 ? _ctx$101$project$name2 : "") + "")) set_data(t4, t4_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$101$task$name2 = (_ctx$8 = ctx[101]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$101$task$name2 !== void 0 ? _ctx$101$task$name2 : "") + "")) set_data(t6, t6_value);
+          if (index !== /*index*/ctx[100]) {
             unassign_a();
-            index = /*index*/ctx[94];
+            index = /*index*/ctx[100];
             assign_a();
           }
         },
@@ -27102,7 +27464,7 @@
       };
     }
 
-    // (497:1) {#if showDurationSelector}
+    // (505:1) {#if showDurationSelector}
     function create_if_block_6$1(ctx) {
       var div;
       var span1;
@@ -27110,28 +27472,33 @@
       var html_tag;
       var raw0_value = translate("timemanager", "Duration (in hrs.)") + "";
       var t0;
-      var input0;
       var t1;
       var span0;
       var label1;
       var html_tag_1;
       var raw1_value = translate("timemanager", "Start time") + "";
       var t2;
-      var input1;
+      var input0;
       var t3;
       var label2;
       var html_tag_2;
       var raw2_value = translate("timemanager", "End time") + "";
       var t4;
-      var input2;
+      var input1;
       var t5;
       var label3;
       var html_tag_3;
       var raw3_value = translate("timemanager", "Date") + "";
       var t6;
-      var input3;
+      var input2;
       var mounted;
       var dispose;
+      function select_block_type(ctx, dirty) {
+        if ( /*inputMethod*/ctx[40] === InputMethods.decimal) return create_if_block_7;
+        return create_else_block_1;
+      }
+      var current_block_type = select_block_type(ctx);
+      var if_block = current_block_type(ctx);
       return {
         c() {
           div = element("div");
@@ -27139,53 +27506,50 @@
           label0 = element("label");
           html_tag = new HtmlTag(false);
           t0 = space$1();
-          input0 = element("input");
+          if_block.c();
           t1 = space$1();
           span0 = element("span");
           label1 = element("label");
           html_tag_1 = new HtmlTag(false);
           t2 = space$1();
-          input1 = element("input");
+          input0 = element("input");
           t3 = space$1();
           label2 = element("label");
           html_tag_2 = new HtmlTag(false);
           t4 = space$1();
-          input2 = element("input");
+          input1 = element("input");
           t5 = space$1();
           label3 = element("label");
           html_tag_3 = new HtmlTag(false);
           t6 = space$1();
-          input3 = element("input");
+          input2 = element("input");
           html_tag.a = t0;
-          attr(input0, "id", "quick-add-time");
-          attr(input0, "type", "text");
-          attr(input0, "name", "duration");
-          attr(input0, "placeholder", "");
-          attr(input0, "class", "duration-input");
           html_tag_1.a = t2;
+          attr(input0, "type", "time");
+          attr(input0, "name", "startTime");
+          attr(input0, "placeholder", "--:--");
+          attr(input0, "class", "time-input");
+          attr(input0, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
+          input0.required = true;
+          attr(input0, "data-hideevent", "skip");
+          html_tag_2.a = t4;
           attr(input1, "type", "time");
-          attr(input1, "name", "startTime");
+          attr(input1, "name", "endTime");
           attr(input1, "placeholder", "--:--");
           attr(input1, "class", "time-input");
           attr(input1, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
           input1.required = true;
           attr(input1, "data-hideevent", "skip");
-          html_tag_2.a = t4;
-          attr(input2, "type", "time");
-          attr(input2, "name", "endTime");
-          attr(input2, "placeholder", "--:--");
-          attr(input2, "class", "time-input");
-          attr(input2, "pattern", "[0-9]" + 2 + ":[0-9]" + 2);
-          input2.required = true;
-          attr(input2, "data-hideevent", "skip");
           attr(span0, "class", "flex-fields");
           attr(span1, "class", "flex-fields");
           html_tag_3.a = t6;
-          attr(input3, "type", "date");
-          attr(input3, "name", "date");
-          attr(input3, "class", "date-input");
-          attr(input3, "data-hideevent", "skip");
+          attr(input2, "type", "date");
+          attr(input2, "name", "date");
+          attr(input2, "class", "date-input");
+          attr(input2, "data-hideevent", "skip");
           attr(div, "class", "duration-selector-popover popover");
+          attr(div, "role", "button");
+          attr(div, "tabindex", "0");
         },
         m(target, anchor) {
           insert(target, div, anchor);
@@ -27193,62 +27557,139 @@
           append(span1, label0);
           html_tag.m(raw0_value, label0);
           append(label0, t0);
-          append(label0, input0);
-          set_input_value(input0, /*duration*/ctx[7]);
-          /*input0_binding_1*/
-          ctx[55](input0);
+          if_block.m(label0, null);
           append(span1, t1);
           append(span1, span0);
           append(span0, label1);
           html_tag_1.m(raw1_value, label1);
           append(label1, t2);
-          append(label1, input1);
-          set_input_value(input1, /*startTime*/ctx[8]);
+          append(label1, input0);
+          set_input_value(input0, /*startTime*/ctx[8]);
           append(span0, t3);
           append(span0, label2);
           html_tag_2.m(raw2_value, label2);
           append(label2, t4);
-          append(label2, input2);
-          set_input_value(input2, /*endTime*/ctx[9]);
+          append(label2, input1);
+          set_input_value(input1, /*endTime*/ctx[9]);
           append(div, t5);
           append(div, label3);
           html_tag_3.m(raw3_value, label3);
           append(label3, t6);
-          append(label3, input3);
-          set_input_value(input3, /*date*/ctx[10]);
+          append(label3, input2);
+          set_input_value(input2, /*date*/ctx[10]);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[53]), listen(input0, "input", /*input_handler_1*/ctx[54]), listen(input1, "input", /*input1_input_handler*/ctx[56]), listen(input1, "input", /*input_handler_2*/ctx[57]), listen(input2, "input", /*input2_input_handler*/ctx[58]), listen(input2, "input", /*input_handler_3*/ctx[59]), listen(input3, "input", /*input3_input_handler*/ctx[60]), listen(input3, "blur", /*blur_handler*/ctx[61]), action_destroyer(/*durationSelectorPopperContent*/ctx[31].call(null, div, /*extraOpts*/ctx[25])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
+            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[62]), listen(input0, "input", /*input_handler_3*/ctx[63]), listen(input1, "input", /*input1_input_handler*/ctx[64]), listen(input1, "input", /*input_handler_4*/ctx[65]), listen(input2, "input", /*input2_input_handler*/ctx[66]), listen(input2, "blur", /*blur_handler*/ctx[67]), action_destroyer(/*durationSelectorPopperContent*/ctx[32].call(null, div, /*extraOpts*/ctx[26])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*duration*/128 && input0.value !== /*duration*/ctx[7]) {
-            set_input_value(input0, /*duration*/ctx[7]);
-          }
+          if_block.p(ctx, dirty);
           if (dirty[0] & /*startTime*/256) {
-            set_input_value(input1, /*startTime*/ctx[8]);
+            set_input_value(input0, /*startTime*/ctx[8]);
           }
           if (dirty[0] & /*endTime*/512) {
-            set_input_value(input2, /*endTime*/ctx[9]);
+            set_input_value(input1, /*endTime*/ctx[9]);
           }
           if (dirty[0] & /*date*/1024) {
-            set_input_value(input3, /*date*/ctx[10]);
+            set_input_value(input2, /*date*/ctx[10]);
           }
         },
         d(detaching) {
           if (detaching) {
             detach(div);
           }
-
-          /*input0_binding_1*/
-          ctx[55](null);
+          if_block.d();
           mounted = false;
           run_all(dispose);
         }
       };
     }
 
-    // (605:2) {:else}
+    // (541:5) {:else}
+    function create_else_block_1(ctx) {
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          input = element("input");
+          attr(input, "id", "quick-add-time");
+          attr(input, "type", "time");
+          attr(input, "name", "duration");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+        },
+        m(target, anchor) {
+          insert(target, input, anchor);
+          set_input_value(input, /*durationTimeString*/ctx[17]);
+          /*input_binding_1*/
+          ctx[61](input);
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[59]), listen(input, "input", /*input_handler_2*/ctx[60])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*durationTimeString*/131072) {
+            set_input_value(input, /*durationTimeString*/ctx[17]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(input);
+          }
+
+          /*input_binding_1*/
+          ctx[61](null);
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    // (526:5) {#if inputMethod === InputMethods.decimal}
+    function create_if_block_7(ctx) {
+      var input;
+      var mounted;
+      var dispose;
+      return {
+        c() {
+          input = element("input");
+          attr(input, "id", "quick-add-time");
+          attr(input, "type", "text");
+          attr(input, "name", "duration");
+          attr(input, "placeholder", "");
+          attr(input, "class", "duration-input");
+        },
+        m(target, anchor) {
+          insert(target, input, anchor);
+          set_input_value(input, /*duration*/ctx[7]);
+          /*input_binding*/
+          ctx[58](input);
+          if (!mounted) {
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[56]), listen(input, "input", /*input_handler_1*/ctx[57])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty[0] & /*duration*/128 && input.value !== /*duration*/ctx[7]) {
+            set_input_value(input, /*duration*/ctx[7]);
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(input);
+          }
+
+          /*input_binding*/
+          ctx[58](null);
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+
+    // (632:2) {:else}
     function create_else_block(ctx) {
       var t0_value = translate("timemanager", "Client, project or task") + "";
       var t0;
@@ -27267,15 +27708,15 @@
           attr(input, "type", "text");
           attr(input, "placeholder", translate("timemanager", "Select..."));
           input.disabled = /*showTaskSelector*/ctx[0];
-          input.value = input_value_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "";
-          attr(input, "title", input_title_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "");
+          input.value = input_value_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "";
+          attr(input, "title", input_title_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "");
         },
         m(target, anchor) {
           insert(target, t0, anchor);
           insert(target, t1, anchor);
           insert(target, input, anchor);
           if (!mounted) {
-            dispose = [action_destroyer(/*taskSelectorPopperRef*/ctx[26].call(null, input)), listen(input, "focus", /*handleShowTaskSelector*/ctx[36])];
+            dispose = [action_destroyer(/*taskSelectorPopperRef*/ctx[27].call(null, input)), listen(input, "focus", /*handleShowTaskSelector*/ctx[37])];
             mounted = true;
           }
         },
@@ -27283,10 +27724,10 @@
           if (dirty[0] & /*showTaskSelector*/1) {
             input.disabled = /*showTaskSelector*/ctx[0];
           }
-          if (dirty[0] & /*selected*/262144 && input_value_value !== (input_value_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "") && input.value !== input_value_value) {
+          if (dirty[0] & /*selected*/524288 && input_value_value !== (input_value_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "") && input.value !== input_value_value) {
             input.value = input_value_value;
           }
-          if (dirty[0] & /*selected*/262144 && input_title_value !== (input_title_value = /*selected*/ctx[18] ? "".concat( /*selected*/ctx[18].client.label, " \u203A ").concat( /*selected*/ctx[18].project.label, " \u203A ").concat( /*selected*/ctx[18].task.label) : "")) {
+          if (dirty[0] & /*selected*/524288 && input_title_value !== (input_title_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "")) {
             attr(input, "title", input_title_value);
           }
         },
@@ -27302,7 +27743,7 @@
       };
     }
 
-    // (581:2) {#if selected && !showTaskSelector}
+    // (608:2) {#if selected && !showTaskSelector}
     function create_if_block_5$1(ctx) {
       var a;
       var ul;
@@ -27310,21 +27751,21 @@
       var span0;
       var t1;
       var span1;
-      var t2_value = /*selected*/ctx[18].client.label + "";
+      var t2_value = /*selected*/ctx[19].client.label + "";
       var t2;
       var t3;
       var li1;
       var span2;
       var t5;
       var span3;
-      var t6_value = /*selected*/ctx[18].project.label + "";
+      var t6_value = /*selected*/ctx[19].project.label + "";
       var t6;
       var t7;
       var li2;
       var span4;
       var t9;
       var span5;
-      var t10_value = /*selected*/ctx[18].task.label + "";
+      var t10_value = /*selected*/ctx[19].task.label + "";
       var t10;
       var t11;
       var input;
@@ -27390,14 +27831,14 @@
           insert(target, t11, anchor);
           insert(target, input, anchor);
           if (!mounted) {
-            dispose = [listen(a, "focus", /*handleShowTaskSelector*/ctx[36]), listen(a, "click", /*handleShowTaskSelector*/ctx[36]), listen(input, "focus", /*handleShowTaskSelector*/ctx[36])];
+            dispose = [listen(a, "focus", /*handleShowTaskSelector*/ctx[37]), listen(a, "click", /*handleShowTaskSelector*/ctx[37]), listen(input, "focus", /*handleShowTaskSelector*/ctx[37])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*selected*/262144 && t2_value !== (t2_value = /*selected*/ctx[18].client.label + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*selected*/262144 && t6_value !== (t6_value = /*selected*/ctx[18].project.label + "")) set_data(t6, t6_value);
-          if (dirty[0] & /*selected*/262144 && t10_value !== (t10_value = /*selected*/ctx[18].task.label + "")) set_data(t10, t10_value);
+          if (dirty[0] & /*selected*/524288 && t2_value !== (t2_value = /*selected*/ctx[19].client.label + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*selected*/524288 && t6_value !== (t6_value = /*selected*/ctx[19].project.label + "")) set_data(t6, t6_value);
+          if (dirty[0] & /*selected*/524288 && t10_value !== (t10_value = /*selected*/ctx[19].task.label + "")) set_data(t10, t10_value);
         },
         d(detaching) {
           if (detaching) {
@@ -27411,8 +27852,8 @@
       };
     }
 
-    // (619:1) {#if showTaskSelector}
-    function create_if_block$3(ctx) {
+    // (646:1) {#if showTaskSelector}
+    function create_if_block$4(ctx) {
       var _ctx$9;
       var div3;
       var label;
@@ -27427,13 +27868,13 @@
       var div2;
       var mounted;
       var dispose;
-      var if_block0 = /*lastUsed*/((_ctx$9 = ctx[32]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && ! /*searchValue*/ctx[14] && create_if_block_3$1(ctx);
-      function select_block_type_1(ctx, dirty) {
+      var if_block0 = /*lastUsed*/((_ctx$9 = ctx[33]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && ! /*searchValue*/ctx[14] && create_if_block_3$1(ctx);
+      function select_block_type_2(ctx, dirty) {
         var _ctx$10, _ctx$11;
-        if ( /*searchResults*/(_ctx$10 = ctx[23]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
+        if ( /*searchResults*/(_ctx$10 = ctx[24]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
         if ( /*searchValue*/(_ctx$11 = ctx[14]) !== null && _ctx$11 !== void 0 && _ctx$11.length) return create_if_block_2$1;
       }
-      var current_block_type = select_block_type_1(ctx);
+      var current_block_type = select_block_type_2(ctx);
       var if_block1 = current_block_type && current_block_type(ctx);
       return {
         c() {
@@ -27475,8 +27916,8 @@
           append(label, span);
           append(label, t1);
           append(label, input);
-          /*input_binding*/
-          ctx[62](input);
+          /*input_binding_2*/
+          ctx[68](input);
           set_input_value(input, /*searchValue*/ctx[14]);
           append(div3, t2);
           append(div3, div0);
@@ -27488,7 +27929,7 @@
           append(div3, div2);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[63]), listen(input, "input", /*input_handler_4*/ctx[64]), action_destroyer(/*taskSelectorPopperContent*/ctx[27].call(null, div3, /*extraOpts*/ctx[25])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
+            dispose = [listen(input, "input", /*input_input_handler_2*/ctx[69]), listen(input, "input", /*input_handler_5*/ctx[70]), action_destroyer(/*taskSelectorPopperContent*/ctx[28].call(null, div3, /*extraOpts*/ctx[26])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
             mounted = true;
           }
         },
@@ -27497,7 +27938,7 @@
           if (dirty[0] & /*searchValue*/16384 && input.value !== /*searchValue*/ctx[14]) {
             set_input_value(input, /*searchValue*/ctx[14]);
           }
-          if ( /*lastUsed*/(_ctx$12 = ctx[32]) !== null && _ctx$12 !== void 0 && _ctx$12.length && ! /*searchValue*/ctx[14]) {
+          if ( /*lastUsed*/(_ctx$12 = ctx[33]) !== null && _ctx$12 !== void 0 && _ctx$12.length && ! /*searchValue*/ctx[14]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -27509,7 +27950,7 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
+          if (current_block_type === (current_block_type = select_block_type_2(ctx)) && if_block1) {
             if_block1.p(ctx, dirty);
           } else {
             if (if_block1) if_block1.d(1);
@@ -27525,8 +27966,8 @@
             detach(div3);
           }
 
-          /*input_binding*/
-          ctx[62](null);
+          /*input_binding_2*/
+          ctx[68](null);
           if (if_block0) if_block0.d();
           if (if_block1) {
             if_block1.d();
@@ -27537,10 +27978,10 @@
       };
     }
 
-    // (648:4) {#if lastUsed?.length && !searchValue}
+    // (675:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
-      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[32]);
+      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[33]);
       var each_blocks = [];
       for (var i = 0; i < each_value_3.length; i += 1) {
         each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
@@ -27562,8 +28003,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/1310737 | dirty[1] & /*lastUsed*/2) {
-            each_value_3 = ensure_array_like( /*lastUsed*/ctx[32]);
+          if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/2621457 | dirty[1] & /*lastUsed*/4) {
+            each_value_3 = ensure_array_like( /*lastUsed*/ctx[33]);
             var _i6;
             for (_i6 = 0; _i6 < each_value_3.length; _i6 += 1) {
               var child_ctx = get_each_context_3(ctx, each_value_3, _i6);
@@ -27590,7 +28031,7 @@
       };
     }
 
-    // (652:8) {#if index === 0}
+    // (679:8) {#if index === 0}
     function create_if_block_4$1(ctx) {
       var span;
       return {
@@ -27610,7 +28051,7 @@
       };
     }
 
-    // (650:6) {#each lastUsed as entry, index}
+    // (677:6) {#each lastUsed as entry, index}
     function create_each_block_3(ctx) {
       var li3;
       var t0;
@@ -27630,17 +28071,17 @@
       var span4;
       var t10;
       var span5;
-      var index = /*index*/ctx[94];
+      var index = /*index*/ctx[100];
       var t12;
       var mounted;
       var dispose;
-      var if_block = /*index*/ctx[94] === 0 && create_if_block_4$1();
+      var if_block = /*index*/ctx[100] === 0 && create_if_block_4$1();
       var assign_a = function assign_a() {
-        return (/*a_binding_1*/ctx[65](a, index)
+        return (/*a_binding_1*/ctx[71](a, index)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_1*/ctx[65](null, index)
+        return (/*a_binding_1*/ctx[71](null, index)
         );
       };
       function click_handler_3() {
@@ -27648,11 +28089,11 @@
         for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
           args[_key2] = arguments[_key2];
         }
-        return (/*click_handler_3*/(_ctx2 = ctx)[66].apply(_ctx2, [/*entry*/ctx[92]].concat(args))
+        return (/*click_handler_3*/(_ctx2 = ctx)[72].apply(_ctx2, [/*entry*/ctx[98]].concat(args))
         );
       }
       function focus_handler_2() {
-        return (/*focus_handler_2*/ctx[67]( /*index*/ctx[94])
+        return (/*focus_handler_2*/ctx[73]( /*index*/ctx[100])
         );
       }
       return {
@@ -27667,21 +28108,21 @@
           span0.textContent = "".concat(translate("timemanager", "Client"));
           t2 = space$1();
           span1 = element("span");
-          span1.textContent = "".concat( /*entry*/ctx[92].client.name);
+          span1.textContent = "".concat( /*entry*/ctx[98].client.name);
           t4 = space$1();
           li1 = element("li");
           span2 = element("span");
           span2.textContent = "".concat(translate("timemanager", "Project"));
           t6 = space$1();
           span3 = element("span");
-          span3.textContent = "".concat( /*entry*/ctx[92].project.name);
+          span3.textContent = "".concat( /*entry*/ctx[98].project.name);
           t8 = space$1();
           li2 = element("li");
           span4 = element("span");
           span4.textContent = "".concat(translate("timemanager", "Task"));
           t10 = space$1();
           span5 = element("span");
-          span5.textContent = "".concat( /*entry*/ctx[92].task.name);
+          span5.textContent = "".concat( /*entry*/ctx[98].task.name);
           t12 = space$1();
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
@@ -27722,9 +28163,9 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if (index !== /*index*/ctx[94]) {
+          if (index !== /*index*/ctx[100]) {
             unassign_a();
-            index = /*index*/ctx[94];
+            index = /*index*/ctx[100];
             assign_a();
           }
         },
@@ -27740,7 +28181,7 @@
       };
     }
 
-    // (739:34) 
+    // (766:34) 
     function create_if_block_2$1(ctx) {
       var p;
       return {
@@ -27761,10 +28202,10 @@
       };
     }
 
-    // (695:4) {#if searchResults?.length}
+    // (722:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
-      var each_value = ensure_array_like( /*searchResults*/ctx[23]);
+      var each_value = ensure_array_like( /*searchResults*/ctx[24]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
@@ -27785,8 +28226,8 @@
           insert(target, each_1_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value = ensure_array_like( /*searchResults*/ctx[23]);
+          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
+            each_value = ensure_array_like( /*searchResults*/ctx[24]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context$1(ctx, each_value, _i9);
@@ -27813,22 +28254,22 @@
       };
     }
 
-    // (705:12) {#each project.tasks as task}
+    // (732:12) {#each project.tasks as task}
     function create_each_block_2$1(ctx) {
       var li;
       var a;
-      var t0_value = /*task*/ctx[89].label + "";
+      var t0_value = /*task*/ctx[95].label + "";
       var t0;
-      var task = /*task*/ctx[89];
+      var task = /*task*/ctx[95];
       var t1;
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding_2*/ctx[68](a, task)
+        return (/*a_binding_2*/ctx[74](a, task)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_2*/ctx[68](null, task)
+        return (/*a_binding_2*/ctx[74](null, task)
         );
       };
       function click_handler_4() {
@@ -27836,11 +28277,11 @@
         for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
           args[_key3] = arguments[_key3];
         }
-        return (/*click_handler_4*/(_ctx3 = ctx)[69].apply(_ctx3, [/*client*/ctx[83], /*project*/ctx[86], /*task*/ctx[89]].concat(args))
+        return (/*click_handler_4*/(_ctx3 = ctx)[75].apply(_ctx3, [/*client*/ctx[89], /*project*/ctx[92], /*task*/ctx[95]].concat(args))
         );
       }
       function focus_handler_3() {
-        return (/*focus_handler_3*/ctx[70]( /*task*/ctx[89])
+        return (/*focus_handler_3*/ctx[76]( /*task*/ctx[95])
         );
       }
       return {
@@ -27866,10 +28307,10 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if (dirty[0] & /*searchResults*/8388608 && t0_value !== (t0_value = /*task*/ctx[89].label + "")) set_data(t0, t0_value);
-          if (task !== /*task*/ctx[89]) {
+          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*task*/ctx[95].label + "")) set_data(t0, t0_value);
+          if (task !== /*task*/ctx[95]) {
             unassign_a();
-            task = /*task*/ctx[89];
+            task = /*task*/ctx[95];
             assign_a();
           }
         },
@@ -27884,16 +28325,16 @@
       };
     }
 
-    // (701:9) {#each client.projects as project}
+    // (728:9) {#each client.projects as project}
     function create_each_block_1$1(ctx) {
       var li;
       var span;
-      var t0_value = /*project*/ctx[86].label + "";
+      var t0_value = /*project*/ctx[92].label + "";
       var t0;
       var t1;
       var ul;
       var t2;
-      var each_value_2 = ensure_array_like( /*project*/ctx[86].tasks);
+      var each_value_2 = ensure_array_like( /*project*/ctx[92].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
@@ -27925,9 +28366,9 @@
           append(li, t2);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults*/8388608 && t0_value !== (t0_value = /*project*/ctx[86].label + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value_2 = ensure_array_like( /*project*/ctx[86].tasks);
+          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*project*/ctx[92].label + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
+            each_value_2 = ensure_array_like( /*project*/ctx[92].tasks);
             var _i12;
             for (_i12 = 0; _i12 < each_value_2.length; _i12 += 1) {
               var child_ctx = get_each_context_2$1(ctx, each_value_2, _i12);
@@ -27954,17 +28395,17 @@
       };
     }
 
-    // (696:5) {#each searchResults as client}
+    // (723:5) {#each searchResults as client}
     function create_each_block$1(ctx) {
       var ul1;
       var li;
       var span;
-      var t0_value = /*client*/ctx[83].label + "";
+      var t0_value = /*client*/ctx[89].label + "";
       var t0;
       var t1;
       var ul0;
       var t2;
-      var each_value_1 = ensure_array_like( /*client*/ctx[83].projects);
+      var each_value_1 = ensure_array_like( /*client*/ctx[89].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
@@ -27999,9 +28440,9 @@
           append(ul1, t2);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults*/8388608 && t0_value !== (t0_value = /*client*/ctx[83].label + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/10747913) {
-            each_value_1 = ensure_array_like( /*client*/ctx[83].projects);
+          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*client*/ctx[89].label + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
+            each_value_1 = ensure_array_like( /*client*/ctx[89].projects);
             var _i15;
             for (_i15 = 0; _i15 < each_value_1.length; _i15 += 1) {
               var child_ctx = get_each_context_1$1(ctx, each_value_1, _i15);
@@ -28027,7 +28468,7 @@
         }
       };
     }
-    function create_fragment$7(ctx) {
+    function create_fragment$8(ctx) {
       var _ctx$13;
       var form;
       var label0;
@@ -28058,18 +28499,18 @@
       var form_class_value;
       var mounted;
       var dispose;
-      var if_block0 = /*showNoteAutosuggest*/ctx[1] && ( /*noteAutosuggestList*/(_ctx$13 = ctx[5]) === null || _ctx$13 === void 0 ? void 0 : _ctx$13.length) && create_if_block_7(ctx);
+      var if_block0 = /*showNoteAutosuggest*/ctx[1] && ( /*noteAutosuggestList*/(_ctx$13 = ctx[5]) === null || _ctx$13 === void 0 ? void 0 : _ctx$13.length) && create_if_block_8(ctx);
       var if_block1 = /*showDurationSelector*/ctx[2] && create_if_block_6$1(ctx);
-      function select_block_type(ctx, dirty) {
-        if ( /*selected*/ctx[18] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
+      function select_block_type_1(ctx, dirty) {
+        if ( /*selected*/ctx[19] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
         return create_else_block;
       }
-      var current_block_type = select_block_type(ctx);
+      var current_block_type = select_block_type_1(ctx);
       var if_block2 = current_block_type(ctx);
-      var if_block3 = /*showTaskSelector*/ctx[0] && create_if_block$3(ctx);
+      var if_block3 = /*showTaskSelector*/ctx[0] && create_if_block$4(ctx);
       return {
         c() {
-          var _ctx$14;
+          var _ctx$14, _ctx$15;
           form = element("form");
           label0 = element("label");
           t0 = text$1(t0_value);
@@ -28109,20 +28550,20 @@
           attr(input1, "class", "duration-trigger");
           attr(input1, "type", "text");
           input1.value = input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0,
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
+            duration: /*inputMethod*/ctx[40] === InputMethods.decimal ? /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$15 = ctx[7]) !== null && _ctx$15 !== void 0 ? _ctx$15 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25]), "PP", /*localeOptions*/ctx[25]) : "?"
           });
           input1.disabled = /*showDurationSelector*/ctx[2];
           attr(input1, "data-cy", "quick-add-duration");
           attr(input1, "data-hideevent", "skip");
           attr(input2, "type", "hidden");
-          attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[19] ? " error" : ""));
+          attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[20] ? " error" : ""));
           attr(label2, "data-cy", "task-selector-trigger");
-          button.disabled = /*loading*/ctx[17];
+          button.disabled = /*loading*/ctx[18];
           attr(button, "type", "submit");
           attr(button, "class", "button primary button-w-icon icon-add");
           attr(span, "class", "actions");
-          attr(form, "class", form_class_value = "quick-add".concat( /*loading*/ctx[17] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "quick-add".concat( /*loading*/ctx[18] ? " icon-loading" : ""));
           attr(form, "data-cy", "quick-add-form");
         },
         m(target, anchor) {
@@ -28133,7 +28574,7 @@
           append(label0, input0);
           set_input_value(input0, /*note*/ctx[11]);
           /*input0_binding*/
-          ctx[46](input0);
+          ctx[49](input0);
           append(label0, t2);
           if (if_block0) if_block0.m(label0, null);
           append(form, t3);
@@ -28142,7 +28583,7 @@
           append(label1, t4);
           append(label1, input1);
           /*input1_binding*/
-          ctx[52](input1);
+          ctx[55](input1);
           append(form, t5);
           if (if_block1) if_block1.m(form, null);
           append(form, t6);
@@ -28157,20 +28598,20 @@
           append(span, button);
           append(button, t10);
           if (!mounted) {
-            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[33]), action_destroyer(/*noteSuggestPopperRef*/ctx[28].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[45]), listen(input0, "input", /*input_handler*/ctx[47]), listen(input0, "focus", /*focus_handler*/ctx[48]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[30].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[37]), listen(input1, "click", /*handleShowDurationSelector*/ctx[37]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[71])];
+            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[34]), action_destroyer(/*noteSuggestPopperRef*/ctx[29].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[48]), listen(input0, "input", /*input_handler*/ctx[50]), listen(input0, "focus", /*focus_handler*/ctx[51]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[31].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[38]), listen(input1, "click", /*handleShowDurationSelector*/ctx[38]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[77])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          var _ctx$15, _ctx$16;
+          var _ctx$16, _ctx$17, _ctx$18;
           if (dirty[0] & /*note*/2048 && input0.value !== /*note*/ctx[11]) {
             set_input_value(input0, /*note*/ctx[11]);
           }
-          if ( /*showNoteAutosuggest*/ctx[1] && /*noteAutosuggestList*/(_ctx$15 = ctx[5]) !== null && _ctx$15 !== void 0 && _ctx$15.length) {
+          if ( /*showNoteAutosuggest*/ctx[1] && /*noteAutosuggestList*/(_ctx$16 = ctx[5]) !== null && _ctx$16 !== void 0 && _ctx$16.length) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
-              if_block0 = create_if_block_7(ctx);
+              if_block0 = create_if_block_8(ctx);
               if_block0.c();
               if_block0.m(label0, null);
             }
@@ -28179,8 +28620,8 @@
             if_block0 = null;
           }
           if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*duration*/(_ctx$16 = ctx[7]) !== null && _ctx$16 !== void 0 ? _ctx$16 : 0,
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[24]), "PP", /*localeOptions*/ctx[24]) : "?"
+            duration: /*inputMethod*/ctx[40] === InputMethods.decimal ? /*duration*/(_ctx$17 = ctx[7]) !== null && _ctx$17 !== void 0 ? _ctx$17 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$18 = ctx[7]) !== null && _ctx$18 !== void 0 ? _ctx$18 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25]), "PP", /*localeOptions*/ctx[25]) : "?"
           })) && input1.value !== input1_value_value) {
             input1.value = input1_value_value;
           }
@@ -28199,7 +28640,7 @@
             if_block1.d(1);
             if_block1 = null;
           }
-          if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block2) {
+          if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block2) {
             if_block2.p(ctx, dirty);
           } else {
             if_block2.d(1);
@@ -28209,14 +28650,14 @@
               if_block2.m(label2, null);
             }
           }
-          if (dirty[0] & /*taskError*/524288 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[19] ? " error" : ""))) {
+          if (dirty[0] & /*taskError*/1048576 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[20] ? " error" : ""))) {
             attr(label2, "class", label2_class_value);
           }
           if ( /*showTaskSelector*/ctx[0]) {
             if (if_block3) {
               if_block3.p(ctx, dirty);
             } else {
-              if_block3 = create_if_block$3(ctx);
+              if_block3 = create_if_block$4(ctx);
               if_block3.c();
               if_block3.m(form, t9);
             }
@@ -28224,10 +28665,10 @@
             if_block3.d(1);
             if_block3 = null;
           }
-          if (dirty[0] & /*loading*/131072) {
-            button.disabled = /*loading*/ctx[17];
+          if (dirty[0] & /*loading*/262144) {
+            button.disabled = /*loading*/ctx[18];
           }
-          if (dirty[0] & /*loading*/131072 && form_class_value !== (form_class_value = "quick-add".concat( /*loading*/ctx[17] ? " icon-loading" : ""))) {
+          if (dirty[0] & /*loading*/262144 && form_class_value !== (form_class_value = "quick-add".concat( /*loading*/ctx[18] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -28239,10 +28680,10 @@
           }
 
           /*input0_binding*/
-          ctx[46](null);
+          ctx[49](null);
           if (if_block0) if_block0.d();
           /*input1_binding*/
-          ctx[52](null);
+          ctx[55](null);
           if (if_block1) if_block1.d();
           if_block2.d();
           if (if_block3) if_block3.d();
@@ -28272,8 +28713,8 @@
       event.preventDefault();
     };
     var keypress_handler_1 = function keypress_handler_1() {};
-    function instance$7($$self, $$props, $$invalidate) {
-      var _Object$values;
+    function instance$8($$self, $$props, $$invalidate) {
+      var _Object$values, _settings$timemanager;
       var loading;
       var taskError;
       var selected;
@@ -28288,6 +28729,10 @@
       var projects = $$props.projects;
       var tasks = $$props.tasks;
       var latestSearchEntries = $$props.latestSearchEntries;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
       var localeOptions = Helpers.getDateLocaleOptions();
       var initialDate = format$2(new Date(), dateFormat$1, localeOptions);
       var extraOpts = {
@@ -28384,9 +28829,9 @@
               var _noteAutosuggestList, _noteAutosuggestButto;
               var reachedEnd = currentFocusNoteIndex + 1 >= ((_noteAutosuggestList = noteAutosuggestList) === null || _noteAutosuggestList === void 0 ? void 0 : _noteAutosuggestList.length);
               if (reachedEnd) {
-                $$invalidate(22, currentFocusNoteIndex = 0);
+                $$invalidate(23, currentFocusNoteIndex = 0);
               } else {
-                $$invalidate(22, currentFocusNoteIndex++, currentFocusNoteIndex);
+                $$invalidate(23, currentFocusNoteIndex++, currentFocusNoteIndex);
               }
               (_noteAutosuggestButto = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto === void 0 ? void 0 : _noteAutosuggestButto.focus();
               break;
@@ -28395,9 +28840,9 @@
               var _lastUsedTasksButtons;
               var _reachedEnd = currentLastestFocusTaskIndex + 1 >= (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length);
               if (_reachedEnd) {
-                $$invalidate(20, currentLastestFocusTaskIndex = 0);
+                $$invalidate(21, currentLastestFocusTaskIndex = 0);
               } else {
-                $$invalidate(20, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
+                $$invalidate(21, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
               }
               (_lastUsedTasksButtons = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons === void 0 ? void 0 : _lastUsedTasksButtons.focus();
               break;
@@ -28406,9 +28851,9 @@
               var _tasksButtons$current;
               var _reachedEnd2 = currentFocusTaskIndex + 1 >= searchResultsNumTasks;
               if (_reachedEnd2) {
-                $$invalidate(21, currentFocusTaskIndex = 0);
+                $$invalidate(22, currentFocusTaskIndex = 0);
               } else {
-                $$invalidate(21, currentFocusTaskIndex++, currentFocusTaskIndex);
+                $$invalidate(22, currentFocusTaskIndex++, currentFocusTaskIndex);
               }
               (_tasksButtons$current = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current === void 0 ? void 0 : _tasksButtons$current.focus();
               break;
@@ -28420,9 +28865,9 @@
               var reachedStart = currentFocusNoteIndex - 1 < 0;
               if (reachedStart) {
                 var _noteAutosuggestList2;
-                $$invalidate(22, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
+                $$invalidate(23, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
               } else {
-                $$invalidate(22, currentFocusNoteIndex--, currentFocusNoteIndex);
+                $$invalidate(23, currentFocusNoteIndex--, currentFocusNoteIndex);
               }
               (_noteAutosuggestButto2 = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto2 === void 0 ? void 0 : _noteAutosuggestButto2.focus();
               break;
@@ -28431,9 +28876,9 @@
               var _lastUsedTasksButtons2;
               var _reachedStart = currentLastestFocusTaskIndex - 1 < 0;
               if (_reachedStart) {
-                $$invalidate(20, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
+                $$invalidate(21, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
               } else {
-                $$invalidate(20, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
+                $$invalidate(21, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
               }
               (_lastUsedTasksButtons2 = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons2 === void 0 ? void 0 : _lastUsedTasksButtons2.focus();
               break;
@@ -28442,9 +28887,9 @@
               var _tasksButtons$current2;
               var _reachedStart2 = currentFocusTaskIndex - 1 < 0;
               if (_reachedStart2) {
-                $$invalidate(21, currentFocusTaskIndex = searchResultsNumTasks - 1);
+                $$invalidate(22, currentFocusTaskIndex = searchResultsNumTasks - 1);
               } else {
-                $$invalidate(21, currentFocusTaskIndex--, currentFocusTaskIndex);
+                $$invalidate(22, currentFocusTaskIndex--, currentFocusTaskIndex);
               }
               (_tasksButtons$current2 = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current2 === void 0 ? void 0 : _tasksButtons$current2.focus();
               break;
@@ -28469,14 +28914,14 @@
       };
       var search = function search(q) {
         if (!q) {
-          $$invalidate(23, searchResults = []);
+          $$invalidate(24, searchResults = []);
           return;
         }
         var clientsResults = clientsFuse.search(q);
         var projectsResults = projectsFuse.search(q);
         var tasksResults = tasksFuse.search(q);
         var taskIndex = -1;
-        $$invalidate(23, searchResults = _toConsumableArray(groupedData).map(function (client) {
+        $$invalidate(24, searchResults = _toConsumableArray(groupedData).map(function (client) {
           var _clientFound$score;
           if (!client) {
             return {
@@ -28552,10 +28997,10 @@
         // We want to use the task input as a button
         // and then focus the actual search input
         (_searchInput = searchInput) === null || _searchInput === void 0 ? void 0 : _searchInput.focus();
-        $$invalidate(21, currentFocusTaskIndex = -1);
-        $$invalidate(20, currentLastestFocusTaskIndex = -1);
+        $$invalidate(22, currentFocusTaskIndex = -1);
+        $$invalidate(21, currentLastestFocusTaskIndex = -1);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(22, currentFocusNoteIndex = -1);
+        $$invalidate(23, currentFocusNoteIndex = -1);
         $$invalidate(2, showDurationSelector = false);
       };
       var handleHidePopovers = function handleHidePopovers(event) {
@@ -28567,19 +29012,19 @@
         $$invalidate(0, showTaskSelector = false);
         $$invalidate(1, showNoteAutosuggest = false);
         $$invalidate(2, showDurationSelector = false);
-        $$invalidate(21, currentFocusTaskIndex = -1);
-        $$invalidate(20, currentLastestFocusTaskIndex = -1);
-        $$invalidate(22, currentFocusNoteIndex = -1);
+        $$invalidate(22, currentFocusTaskIndex = -1);
+        $$invalidate(21, currentLastestFocusTaskIndex = -1);
+        $$invalidate(23, currentFocusNoteIndex = -1);
       };
       var handleShowDurationSelector = function handleShowDurationSelector(event) {
         event.preventDefault();
         event.stopPropagation();
         $$invalidate(2, showDurationSelector = true);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(22, currentFocusNoteIndex = -1);
+        $$invalidate(23, currentFocusNoteIndex = -1);
         $$invalidate(0, showTaskSelector = false);
-        $$invalidate(21, currentFocusTaskIndex = -1);
-        $$invalidate(20, currentLastestFocusTaskIndex = -1);
+        $$invalidate(22, currentFocusTaskIndex = -1);
+        $$invalidate(21, currentLastestFocusTaskIndex = -1);
         setTimeout(function () {
           var _durationInput;
           (_durationInput = durationInput) === null || _durationInput === void 0 ? void 0 : _durationInput.focus();
@@ -28614,14 +29059,14 @@
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                $$invalidate(17, loading = true);
-                $$invalidate(19, taskError = false);
+                $$invalidate(18, loading = true);
+                $$invalidate(20, taskError = false);
                 if ((_selected = selected) !== null && _selected !== void 0 && (_selected = _selected.task) !== null && _selected !== void 0 && _selected.value) {
                   _context.next = 6;
                   break;
                 }
-                $$invalidate(17, loading = false);
-                $$invalidate(19, taskError = true);
+                $$invalidate(18, loading = false);
+                $$invalidate(20, taskError = true);
                 return _context.abrupt("return");
               case 6:
                 startDateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -28654,7 +29099,7 @@
                 _context.t0 = _context["catch"](8);
                 console.error(_context.t0);
               case 19:
-                $$invalidate(17, loading = false);
+                $$invalidate(18, loading = false);
               case 20:
               case "end":
                 return _context.stop();
@@ -28665,6 +29110,8 @@
           return _ref.apply(this, arguments);
         };
       }();
+      var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
+      var durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
       function input0_input_handler() {
         note = this.value;
         $$invalidate(11, note);
@@ -28702,8 +29149,8 @@
           $$invalidate(1, showNoteAutosuggest = true);
         }
         $$invalidate(0, showTaskSelector = false);
-        $$invalidate(21, currentFocusTaskIndex = -1);
-        $$invalidate(20, currentLastestFocusTaskIndex = -1);
+        $$invalidate(22, currentFocusTaskIndex = -1);
+        $$invalidate(21, currentLastestFocusTaskIndex = -1);
         $$invalidate(2, showDurationSelector = false);
       };
       function a_binding($$value, index) {
@@ -28724,7 +29171,7 @@
         var startDate = parseISO(time.start);
         var endDate = parseISO(time.end);
         $$invalidate(7, duration = Helpers.calculateDuration(format$2(startDate, "HH:mm", startDate), format$2(endDate, "HH:mm", endDate)));
-        $$invalidate(18, selected = {
+        $$invalidate(19, selected = {
           task: {
             label: suggestion === null || suggestion === void 0 || (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
             value: suggestion === null || suggestion === void 0 || (_suggestion$task2 = suggestion.task) === null || _suggestion$task2 === void 0 ? void 0 : _suggestion$task2.uuid
@@ -28739,10 +29186,10 @@
           }
         });
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(22, currentFocusNoteIndex = -1);
+        $$invalidate(23, currentFocusNoteIndex = -1);
       };
       var focus_handler_1 = function focus_handler_1(index) {
-        $$invalidate(22, currentFocusNoteIndex = index);
+        $$invalidate(23, currentFocusNoteIndex = index);
       };
       function input1_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -28750,35 +29197,50 @@
           $$invalidate(16, durationTrigger);
         });
       }
-      function input0_input_handler_1() {
+      function input_input_handler() {
         duration = this.value;
         $$invalidate(7, duration);
       }
       var input_handler_1 = function input_handler_1() {
         $$invalidate(7, duration = Helpers.normalizeDuration(duration));
+        $$invalidate(17, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
         $$invalidate(9, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
-      function input0_binding_1($$value) {
+      function input_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           durationInput = $$value;
           $$invalidate(15, durationInput);
         });
       }
-      function input1_input_handler() {
-        startTime = this.value;
-        $$invalidate(8, startTime);
+      function input_input_handler_1() {
+        durationTimeString = this.value;
+        $$invalidate(17, durationTimeString);
       }
       var input_handler_2 = function input_handler_2() {
-        return $$invalidate(7, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(7, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
+        $$invalidate(9, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
       };
-      function input2_input_handler() {
-        endTime = this.value;
-        $$invalidate(9, endTime);
+      function input_binding_1($$value) {
+        binding_callbacks[$$value ? 'unshift' : 'push'](function () {
+          durationInput = $$value;
+          $$invalidate(15, durationInput);
+        });
+      }
+      function input0_input_handler_1() {
+        startTime = this.value;
+        $$invalidate(8, startTime);
       }
       var input_handler_3 = function input_handler_3() {
         return $$invalidate(7, duration = Helpers.calculateDuration(startTime, endTime));
       };
-      function input3_input_handler() {
+      function input1_input_handler() {
+        endTime = this.value;
+        $$invalidate(9, endTime);
+      }
+      var input_handler_4 = function input_handler_4() {
+        return $$invalidate(7, duration = Helpers.calculateDuration(startTime, endTime));
+      };
+      function input2_input_handler() {
         date = this.value;
         $$invalidate(10, date);
       }
@@ -28787,17 +29249,17 @@
           $$invalidate(10, date = format$2(startOfDay(new Date(), localeOptions), dateFormat$1, new Date()));
         }
       };
-      function input_binding($$value) {
+      function input_binding_2($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           searchInput = $$value;
           $$invalidate(13, searchInput);
         });
       }
-      function input_input_handler() {
+      function input_input_handler_2() {
         searchValue = this.value;
         $$invalidate(14, searchValue);
       }
-      var input_handler_4 = function input_handler_4() {
+      var input_handler_5 = function input_handler_5() {
         return search(searchValue);
       };
       function a_binding_1($$value, index) {
@@ -28810,7 +29272,7 @@
         var _entry$task2, _entry$task3, _entry$project, _entry$project2, _entry$client, _entry$client2;
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(18, selected = {
+        $$invalidate(19, selected = {
           task: {
             label: entry === null || entry === void 0 || (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
             value: entry === null || entry === void 0 || (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
@@ -28827,7 +29289,7 @@
         $$invalidate(0, showTaskSelector = false);
       };
       var focus_handler_2 = function focus_handler_2(index) {
-        $$invalidate(20, currentLastestFocusTaskIndex = index);
+        $$invalidate(21, currentLastestFocusTaskIndex = index);
       };
       function a_binding_2($$value, task) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -28838,7 +29300,7 @@
       var click_handler_4 = function click_handler_4(client, project, task, event) {
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(18, selected = {
+        $$invalidate(19, selected = {
           client: {
             label: client.label,
             value: client.value
@@ -28852,7 +29314,7 @@
         $$invalidate(0, showTaskSelector = false);
       };
       var focus_handler_3 = function focus_handler_3(task) {
-        $$invalidate(21, currentFocusTaskIndex = task.taskIndex);
+        $$invalidate(22, currentFocusTaskIndex = task.taskIndex);
       };
       var submit_handler = function submit_handler(event) {
         event.stopPropagation();
@@ -28860,22 +29322,23 @@
         save();
       };
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(39, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(40, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(41, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(42, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(43, tasks = $$props.tasks);
-        if ('latestSearchEntries' in $$props) $$invalidate(44, latestSearchEntries = $$props.latestSearchEntries);
+        if ('action' in $$props) $$invalidate(41, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(42, requestToken = $$props.requestToken);
+        if ('clients' in $$props) $$invalidate(43, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(44, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(45, tasks = $$props.tasks);
+        if ('latestSearchEntries' in $$props) $$invalidate(46, latestSearchEntries = $$props.latestSearchEntries);
+        if ('settings' in $$props) $$invalidate(47, settings = $$props.settings);
       };
-      $$invalidate(17, loading = false);
-      $$invalidate(19, taskError = false);
-      $$invalidate(18, selected = null);
+      $$invalidate(18, loading = false);
+      $$invalidate(20, taskError = false);
+      $$invalidate(19, selected = null);
       searchResultsNumTasks = 0;
-      $$invalidate(21, currentFocusTaskIndex = -1);
-      $$invalidate(20, currentLastestFocusTaskIndex = -1);
-      $$invalidate(22, currentFocusNoteIndex = -1);
-      $$invalidate(23, searchResults = []);
-      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, action, requestToken, clients, projects, tasks, latestSearchEntries, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input0_input_handler_1, input_handler_1, input0_binding_1, input1_input_handler, input_handler_2, input2_input_handler, input_handler_3, input3_input_handler, blur_handler, input_binding, input_input_handler, input_handler_4, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
+      $$invalidate(22, currentFocusTaskIndex = -1);
+      $$invalidate(21, currentLastestFocusTaskIndex = -1);
+      $$invalidate(23, currentFocusNoteIndex = -1);
+      $$invalidate(24, searchResults = []);
+      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(QuickAdd, _SvelteComponent);
@@ -28884,20 +29347,21 @@
         var _this;
         _classCallCheck$1(this, QuickAdd);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$7, create_fragment$7, safe_not_equal, {
-          action: 39,
-          requestToken: 40,
-          clients: 41,
-          projects: 42,
-          tasks: 43,
-          latestSearchEntries: 44
+        init$2(_assertThisInitialized$1(_this), options, instance$8, create_fragment$8, safe_not_equal, {
+          action: 41,
+          requestToken: 42,
+          clients: 43,
+          projects: 44,
+          tasks: 45,
+          latestSearchEntries: 46,
+          settings: 47
         }, null, [-1, -1, -1, -1]);
         return _this;
       }
       return _createClass$1(QuickAdd);
     }(SvelteComponent);
 
-    function create_fragment$6(ctx) {
+    function create_fragment$7(ctx) {
       var span0;
       var input;
       var input_id_value;
@@ -28971,7 +29435,7 @@
         }
       };
     }
-    function instance$6($$self, $$props, $$invalidate) {
+    function instance$7($$self, $$props, $$invalidate) {
       var loading;
       var uuid = $$props.uuid;
       var initialState = $$props.initialState;
@@ -29044,7 +29508,7 @@
         var _this;
         _classCallCheck$1(this, Checkmark);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$6, create_fragment$6, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$7, create_fragment$7, safe_not_equal, {
           uuid: 0,
           initialState: 1,
           action: 5,
@@ -29132,7 +29596,7 @@
 
     var isFilterSet = writable(false);
 
-    function create_if_block$2(ctx) {
+    function create_if_block$3(ctx) {
       var label;
       var t0_value = translate("timemanager", "Created by") + "";
       var t0;
@@ -29196,10 +29660,10 @@
         }
       };
     }
-    function create_fragment$5(ctx) {
+    function create_fragment$6(ctx) {
       var if_block_anchor;
       var current;
-      var if_block = /*isVisible*/ctx[0] && create_if_block$2(ctx);
+      var if_block = /*isVisible*/ctx[0] && create_if_block$3(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -29220,7 +29684,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block$2(ctx);
+              if_block = create_if_block$3(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -29250,7 +29714,7 @@
         }
       };
     }
-    function instance$5($$self, $$props, $$invalidate) {
+    function instance$6($$self, $$props, $$invalidate) {
       var loading;
       var requestToken = $$props.requestToken;
       var _$$props$isVisible = $$props.isVisible,
@@ -29406,7 +29870,7 @@
         var _this;
         _classCallCheck$1(this, UserFilterSelect);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$6, create_fragment$6, safe_not_equal, {
           requestToken: 7,
           isVisible: 0,
           form: 1
@@ -29416,7 +29880,7 @@
       return _createClass$1(UserFilterSelect);
     }(SvelteComponent);
 
-    function create_fragment$4(ctx) {
+    function create_fragment$5(ctx) {
       var div;
       var userfilterselect;
       var t0;
@@ -29580,7 +30044,7 @@
       };
     }
     var dateFormat = "yyyy-MM-dd";
-    function instance$4($$self, $$props, $$invalidate) {
+    function instance$5($$self, $$props, $$invalidate) {
       var loading;
       var start;
       var end;
@@ -29737,7 +30201,7 @@
         var _this;
         _classCallCheck$1(this, Timerange);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
           requestToken: 0,
           startOfMonth: 7,
           endOfMonth: 8,
@@ -29748,7 +30212,7 @@
       return _createClass$1(Timerange);
     }(SvelteComponent);
 
-    function create_fragment$3(ctx) {
+    function create_fragment$4(ctx) {
       var form;
       var label0;
       var t0_value = translate("timemanager", "Clients") + "";
@@ -29958,7 +30422,7 @@
         }
       };
     }
-    function instance$3($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
       var loading;
       var availableProjects;
       var availableTasks;
@@ -30134,7 +30598,7 @@
         var _this;
         _classCallCheck$1(this, Filters);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           clients: 0,
           projects: 17,
           tasks: 18,
@@ -30145,7 +30609,7 @@
       return _createClass$1(Filters);
     }(SvelteComponent);
 
-    function create_fragment$2(ctx) {
+    function create_fragment$3(ctx) {
       var button;
       var mounted;
       var dispose;
@@ -30175,7 +30639,7 @@
         }
       };
     }
-    function instance$2($$self) {
+    function instance$3($$self) {
       onMount(function () {
         var openDetailsBeforePrint = function openDetailsBeforePrint() {
           var details = document.querySelectorAll("details");
@@ -30212,7 +30676,7 @@
         var _this;
         _classCallCheck$1(this, PrintButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$2, create_fragment$2, safe_not_equal, {});
+        init$2(_assertThisInitialized$1(_this), options, instance$3, create_fragment$3, safe_not_equal, {});
         return _this;
       }
       return _createClass$1(PrintButton);
@@ -37221,7 +37685,7 @@
     }
 
     // (355:0) {#if importPreviewData.length}
-    function create_if_block$1(ctx) {
+    function create_if_block$2(ctx) {
       var form;
       var button;
       var t_value = translate('timemanager', 'Import now') + "";
@@ -37265,7 +37729,7 @@
         }
       };
     }
-    function create_fragment$1(ctx) {
+    function create_fragment$2(ctx) {
       var form;
       var label0;
       var t0_value = translate('timemanager', 'Select delimiter') + "";
@@ -37303,7 +37767,7 @@
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
       }
-      var if_block4 = /*importPreviewData*/ctx[8].length && create_if_block$1(ctx);
+      var if_block4 = /*importPreviewData*/ctx[8].length && create_if_block$2(ctx);
       return {
         c() {
           form = element("form");
@@ -37485,7 +37949,7 @@
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
-              if_block4 = create_if_block$1(ctx);
+              if_block4 = create_if_block$2(ctx);
               if_block4.c();
               if_block4.m(if_block4_anchor.parentNode, if_block4_anchor);
             }
@@ -37534,7 +37998,7 @@
         }
       };
     }
-    function instance$1($$self, $$props, $$invalidate) {
+    function instance$2($$self, $$props, $$invalidate) {
       var parseError;
       var importError;
       var successMessage;
@@ -37835,7 +38299,7 @@
         var _this;
         _classCallCheck$1(this, Import);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$2, create_fragment$2, safe_not_equal, {
           syncApiUrl: 13,
           requestToken: 14
         }, null, [-1, -1]);
@@ -37844,7 +38308,7 @@
       return _createClass$1(Import);
     }(SvelteComponent);
 
-    function create_if_block(ctx) {
+    function create_if_block$1(ctx) {
       var div;
       var userfilterselect;
       var current;
@@ -37896,7 +38360,7 @@
         }
       };
     }
-    function create_fragment(ctx) {
+    function create_fragment$1(ctx) {
       var button;
       var t0_value = translate('timemanager', 'Filter by person') + "";
       var t0;
@@ -37906,7 +38370,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*showTooltip*/ctx[1] && create_if_block(ctx);
+      var if_block = /*showTooltip*/ctx[1] && create_if_block$1(ctx);
       return {
         c() {
           button = element("button");
@@ -37941,7 +38405,7 @@
                 transition_in(if_block, 1);
               }
             } else {
-              if_block = create_if_block(ctx);
+              if_block = create_if_block$1(ctx);
               if_block.c();
               transition_in(if_block, 1);
               if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -37975,7 +38439,7 @@
         }
       };
     }
-    function instance($$self, $$props, $$invalidate) {
+    function instance$1($$self, $$props, $$invalidate) {
       var $isFilterSet;
       component_subscribe($$self, isFilterSet, function ($$value) {
         return $$invalidate(2, $isFilterSet = $$value);
@@ -38055,12 +38519,221 @@
         var _this;
         _classCallCheck$1(this, UserFilterButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance, create_fragment, safe_not_equal, {
+        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {
           requestToken: 0
         });
         return _this;
       }
       return _createClass$1(UserFilterButton);
+    }(SvelteComponent);
+
+    function create_if_block(ctx) {
+      var details;
+      var summary;
+      var t1;
+      var label0;
+      var input0;
+      var t2;
+      var t3_value = translate("timemanager", "Input hours and minutes (02:30 hrs.)") + "";
+      var t3;
+      var t4;
+      var label1;
+      var input1;
+      var t5;
+      var t6_value = translate("timemanager", "Input decimals (2.5 hrs.)") + "";
+      var t6;
+      var binding_group;
+      var mounted;
+      var dispose;
+      binding_group = init_binding_group( /*$$binding_groups*/ctx[7][0]);
+      return {
+        c() {
+          details = element("details");
+          summary = element("summary");
+          summary.textContent = "".concat(translate("timemanager", "Time field settings"));
+          t1 = space$1();
+          label0 = element("label");
+          input0 = element("input");
+          t2 = space$1();
+          t3 = text$1(t3_value);
+          t4 = space$1();
+          label1 = element("label");
+          input1 = element("input");
+          t5 = space$1();
+          t6 = text$1(t6_value);
+          attr(input0, "type", "radio");
+          attr(input0, "name", "settings-input-method");
+          input0.__value = InputMethods.minutes;
+          set_input_value(input0, input0.__value);
+          attr(label0, "class", "settings-label");
+          attr(input1, "type", "radio");
+          attr(input1, "name", "settings-input-method");
+          input1.__value = InputMethods.decimal;
+          set_input_value(input1, input1.__value);
+          attr(label1, "class", "settings-label");
+          details.open = true;
+          binding_group.p(input0, input1);
+        },
+        m(target, anchor) {
+          insert(target, details, anchor);
+          append(details, summary);
+          append(details, t1);
+          append(details, label0);
+          append(label0, input0);
+          input0.checked = input0.__value === /*inputMethod*/ctx[1];
+          append(label0, t2);
+          append(label0, t3);
+          append(details, t4);
+          append(details, label1);
+          append(label1, input1);
+          input1.checked = input1.__value === /*inputMethod*/ctx[1];
+          append(label1, t5);
+          append(label1, t6);
+          if (!mounted) {
+            dispose = [listen(input0, "change", /*input0_change_handler*/ctx[6]), listen(input0, "click", /*click_handler*/ctx[8]), listen(input1, "change", /*input1_change_handler*/ctx[9]), listen(input1, "click", /*click_handler_1*/ctx[10])];
+            mounted = true;
+          }
+        },
+        p(ctx, dirty) {
+          if (dirty & /*inputMethod*/2) {
+            input0.checked = input0.__value === /*inputMethod*/ctx[1];
+          }
+          if (dirty & /*inputMethod*/2) {
+            input1.checked = input1.__value === /*inputMethod*/ctx[1];
+          }
+        },
+        d(detaching) {
+          if (detaching) {
+            detach(details);
+          }
+          binding_group.r();
+          mounted = false;
+          run_all(dispose);
+        }
+      };
+    }
+    function create_fragment(ctx) {
+      var if_block_anchor;
+      var if_block = ! /*isServer*/ctx[0] && create_if_block(ctx);
+      return {
+        c() {
+          if (if_block) if_block.c();
+          if_block_anchor = empty();
+        },
+        m(target, anchor) {
+          if (if_block) if_block.m(target, anchor);
+          insert(target, if_block_anchor, anchor);
+        },
+        p(ctx, _ref) {
+          var _ref2 = _slicedToArray(_ref, 1),
+            dirty = _ref2[0];
+          if (! /*isServer*/ctx[0]) {
+            if (if_block) {
+              if_block.p(ctx, dirty);
+            } else {
+              if_block = create_if_block(ctx);
+              if_block.c();
+              if_block.m(if_block_anchor.parentNode, if_block_anchor);
+            }
+          } else if (if_block) {
+            if_block.d(1);
+            if_block = null;
+          }
+        },
+        i: noop$1,
+        o: noop$1,
+        d(detaching) {
+          if (detaching) {
+            detach(if_block_anchor);
+          }
+          if (if_block) if_block.d(detaching);
+        }
+      };
+    }
+    function instance($$self, $$props, $$invalidate) {
+      var _settings$timemanager;
+      var isServer = $$props.isServer;
+      var _$$props$settings = $$props.settings,
+        settings = _$$props$settings === void 0 ? {
+          timemanager_input_method: InputMethods.decimal
+        } : _$$props$settings;
+      var settingsAction = $$props.settingsAction;
+      var requestToken = $$props.requestToken;
+      var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
+      var changeInputMethod = /*#__PURE__*/function () {
+        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(newInputMethod) {
+          var previousInputMethod, response;
+          return _regeneratorRuntime().wrap(function _callee$(_context) {
+            while (1) switch (_context.prev = _context.next) {
+              case 0:
+                previousInputMethod = inputMethod;
+                $$invalidate(1, inputMethod = newInputMethod);
+                _context.next = 4;
+                return fetch(settingsAction, {
+                  method: 'POST',
+                  headers: {
+                    requesttoken: requestToken,
+                    "content-type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    timemanager_input_method: newInputMethod
+                  })
+                });
+              case 4:
+                response = _context.sent;
+                if (!response.ok) {
+                  $$invalidate(1, inputMethod = previousInputMethod);
+                  alert(translate("timemanager", "Could not save settings."));
+                }
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }, _callee);
+        }));
+        return function changeInputMethod(_x) {
+          return _ref3.apply(this, arguments);
+        };
+      }();
+      var $$binding_groups = [[]];
+      function input0_change_handler() {
+        inputMethod = this.__value;
+        $$invalidate(1, inputMethod);
+      }
+      var click_handler = function click_handler() {
+        return changeInputMethod(InputMethods.minutes);
+      };
+      function input1_change_handler() {
+        inputMethod = this.__value;
+        $$invalidate(1, inputMethod);
+      }
+      var click_handler_1 = function click_handler_1() {
+        return changeInputMethod(InputMethods.decimal);
+      };
+      $$self.$$set = function ($$props) {
+        if ('isServer' in $$props) $$invalidate(0, isServer = $$props.isServer);
+        if ('settings' in $$props) $$invalidate(3, settings = $$props.settings);
+        if ('settingsAction' in $$props) $$invalidate(4, settingsAction = $$props.settingsAction);
+        if ('requestToken' in $$props) $$invalidate(5, requestToken = $$props.requestToken);
+      };
+      return [isServer, inputMethod, changeInputMethod, settings, settingsAction, requestToken, input0_change_handler, $$binding_groups, click_handler, input1_change_handler, click_handler_1];
+    }
+    var Settings = /*#__PURE__*/function (_SvelteComponent) {
+      _inherits$1(Settings, _SvelteComponent);
+      var _super = _createSuper$1(Settings);
+      function Settings(options) {
+        var _this;
+        _classCallCheck$1(this, Settings);
+        _this = _super.call(this);
+        init$2(_assertThisInitialized$1(_this), options, instance, create_fragment, safe_not_equal, {
+          isServer: 0,
+          settings: 3,
+          settingsAction: 4,
+          requestToken: 5
+        });
+        return _this;
+      }
+      return _createClass$1(Settings);
     }(SvelteComponent);
 
     /* global HTMLCollection: true */
@@ -38758,7 +39431,7 @@
       !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/);
     };
 
-    var pjax$1 = createCommonjsModule(function (module) {
+    var pjax = createCommonjsModule(function (module) {
     var Pjax = function (options) {
       this.state = {
         numPendingSwitches: 0,
@@ -38987,7 +39660,7 @@
       /**
        * Enable seamless page navigation with pjax.
        */
-      this.pjaxInstance = new pjax$1({
+      this.pjaxInstance = new pjax({
         elements: [".timemanager-pjax-link"],
         selectors: [".app-timemanager #app-navigation ul", ".app-timemanager #app-content .container"],
         cacheBust: false,
@@ -39638,14 +40311,8 @@
 
     var token = getRequestToken();
     var components = [];
-    var pjax = [];
     var defaultDateFormat = "EEEE, MMMM d, y";
     var localeOptions = Helpers.getDateLocaleOptions();
-    $(document).ready(function () {
-      if ($('input[name="duration"]').length > 0) {
-        $('input[name="duration"]')[0].focus();
-      }
-    });
     var safelyCreateComponent = function safelyCreateComponent(_ref) {
       var Component = _ref.component,
         selector = _ref.selector,
@@ -39807,17 +40474,13 @@
           requestToken: token
         })
       }));
-
-      // components.push(
-      // 	new Settings({
-      // 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
-      // 		props: {
-      // 			...store,
-      // 			requestToken: token,
-      // 		},
-      // 	})
-      // );
-
+      components.push(safelyCreateComponent({
+        component: Settings,
+        selector: "#content.app-timemanager [data-svelte='Settings.svelte']",
+        props: _objectSpread2(_objectSpread2({}, store), {}, {
+          requestToken: token
+        })
+      }));
       var dateTimeElements = document.querySelectorAll("[data-datetime]");
       if (dateTimeElements && dateTimeElements.length > 0) {
         dateTimeElements.forEach(function (element) {
@@ -39842,6 +40505,6 @@
       document.body.classList.add("tm_ready");
     };
     init();
-    pjax.push(new PagePjax(init));
+    new PagePjax(init);
 
 })();

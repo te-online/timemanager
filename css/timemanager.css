@@ -413,7 +413,7 @@ label.space-top {
   min-height: 156px;
 }
 #content.app-timemanager .quick-add {
-  grid-template-columns: minmax(200px, calc(100% - 556px)) 206px 250px 100px;
+  grid-template-columns: minmax(200px, calc(100% - 556px)) 225px 250px 100px;
   --quick-add-z-index: 99999;
 }
 @media screen and (max-width: 768px) {
@@ -1036,4 +1036,17 @@ h4,
 h5,
 h6 {
   margin-top: 12px;
+}
+
+label.settings-label {
+  display: flex;
+  text-transform: none;
+  letter-spacing: normal;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--default-font-size);
+}
+label.settings-label input {
+  margin: 0;
+  height: auto;
 }

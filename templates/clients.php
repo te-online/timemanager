@@ -1,5 +1,6 @@
 <?php
 
+use OCA\TimeManager\Helper\DurationHelper;
 use \OCP\Util;
 
 Util::addScript('timemanager', 'bundle');
@@ -27,7 +28,9 @@ $l = Util::getL10N('timemanager');
 									<?php p($l->t('%s projects', [$client->project_count])); ?>
 								</span>&nbsp;&middot;&nbsp;
 								<span>
-									<?php p($client->hours); ?> <?php p($l->t('hrs.')); ?>
+									<span data-duration="<?php p($client->hours); ?>">
+										<?php p(DurationHelper::format_duration($client->hours, $_["store"])); ?>
+									</span><?php p($l->t('hrs.')); ?>
 								</span>&nbsp;&middot;&nbsp;
 								<span>
 									<?php p($l->t('since %s', [$client->getCreatedYear()])); ?>

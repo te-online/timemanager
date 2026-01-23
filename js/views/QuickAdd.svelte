@@ -1,10 +1,15 @@
 <script>
+	import { InputMethods } from "../lib/constants";
+
 	export let action;
 	export let requestToken;
 	export let clients;
 	export let projects;
 	export let tasks;
 	export let latestSearchEntries;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { onMount } from "svelte";
 	import { translate } from "@nextcloud/l10n";
@@ -363,6 +368,9 @@
 		}
 		loading = false;
 	};
+
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
+	let durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -478,7 +486,7 @@
 			class="duration-trigger"
 			type="text"
 			value={translate("timemanager", "{duration} hrs. on {date}", {
-				duration: duration ?? 0,
+				duration: inputMethod === InputMethods.decimal ? (duration ?? 0) : Helpers.convertDecimalsToTimeDuration(duration ?? 0),
 				date:
 					date && isDate(startOfDay(parse(date, dateFormat, new Date()), localeOptions))
 						? format(startOfDay(parse(date, dateFormat, new Date()), localeOptions), "PP", localeOptions)
@@ -508,24 +516,43 @@
 				event.preventDefault();
 			}}
 			on:keypress={() => {}}
+			role="button"
+			tabindex="0"
 		>
 			<span class="flex-fields">
 				<label>
 					{@html translate("timemanager", "Duration (in hrs.)")}
 					<!-- This can't be type=number, because some browser have issues with (localized) decimals then -->
-					<input
-						id="quick-add-time"
-						type="text"
-						name="duration"
-						placeholder=""
-						class="duration-input"
-						bind:value={duration}
-						on:input={() => {
-							duration = Helpers.normalizeDuration(duration);
-							endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
-						}}
-						bind:this={durationInput}
-					/>
+					{#if inputMethod === InputMethods.decimal}
+						<input
+							id="quick-add-time"
+							type="text"
+							name="duration"
+							placeholder=""
+							class="duration-input"
+							bind:value={duration}
+							on:input={() => {
+								duration = Helpers.normalizeDuration(duration);
+								durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+								endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+							}}
+							bind:this={durationInput}
+						/>
+					{:else}
+						<input
+							id="quick-add-time"
+							type="time"
+							name="duration"
+							placeholder=""
+							class="duration-input"
+							bind:value={durationTimeString}
+							on:input={() => {
+									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								}}
+							bind:this={durationInput}
+						/>
+					{/if}
 				</label>
 				<span class="flex-fields">
 					<label>

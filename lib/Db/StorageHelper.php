@@ -4,7 +4,7 @@ namespace OCA\TimeManager\Db;
 
 use OCA\TimeManager\Helper\UUID;
 use OCP\AppFramework\Db\Entity;
-use OCP\IConfig;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IUser;
 use OCP\IUserManager;
 use Psr\Log\LoggerInterface;
@@ -29,7 +29,7 @@ class StorageHelper {
 	protected $shareMapper;
 	/** @var string user ID */
 	protected $userId;
-	/** @var IConfig */
+	/** @var IAppConfig */
 	private $config;
 	/** @var LoggerInterface logger */
 	private $logger;
@@ -41,7 +41,7 @@ class StorageHelper {
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
-		IConfig $config,
+		IAppConfig $config,
 		LoggerInterface $logger,
 		string $userId
 	) {

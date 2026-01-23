@@ -13,7 +13,7 @@ import Filters from "./views/Filters.svelte";
 import PrintButton from "./views/PrintButton.svelte";
 import Import from "./views/Import.svelte";
 import UserFilterButton from "./views/UserFilterButton.svelte";
-// import Settings from "./views/Settings.svelte";
+import Settings from "./views/Settings.svelte";
 import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
@@ -22,16 +22,10 @@ import * as auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
 const token = auth.getRequestToken();
 const components = [];
-const pjax = [];
+let pjax;
 
 const defaultDateFormat = "EEEE, MMMM d, y";
 const localeOptions = Helpers.getDateLocaleOptions();
-
-$(document).ready(function () {
-	if ($('input[name="duration"]').length > 0) {
-		$('input[name="duration"]')[0].focus();
-	}
-});
 
 const safelyCreateComponent = ({ component: Component, selector, props = {} }) => {
 	const node = document.querySelector(selector);
@@ -256,15 +250,16 @@ const init = () => {
 		}),
 	);
 
-	// components.push(
-	// 	new Settings({
-	// 		target: Helpers.replaceNode(document.querySelector("#content.app-timemanager [data-svelte='Settings.svelte']")),
-	// 		props: {
-	// 			...store,
-	// 			requestToken: token,
-	// 		},
-	// 	})
-	// );
+	components.push(
+		safelyCreateComponent({
+			component: Settings,
+			selector: "#content.app-timemanager [data-svelte='Settings.svelte']",
+			props: {
+				...store,
+				requestToken: token,
+			},
+		})
+	);
 
 	const dateTimeElements = document.querySelectorAll("[data-datetime]");
 	if (dateTimeElements && dateTimeElements.length > 0) {
@@ -296,4 +291,4 @@ const init = () => {
 };
 
 init();
-pjax.push(new PagePjax(init));
+pjax = new PagePjax(init);

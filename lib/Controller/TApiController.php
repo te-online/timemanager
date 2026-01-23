@@ -15,8 +15,8 @@ use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IRequest;
-use OCP\IConfig;
 use Psr\Log\LoggerInterface;
 
 class TApiController extends ApiController {
@@ -36,7 +36,7 @@ class TApiController extends ApiController {
 	protected $storageHelper;
 	/** @var string user ID */
 	protected $userId;
-	/** @var IConfig */
+	/** @var IAppConfig */
 	private $config;
 	/** @var LoggerInterface logger */
 	private $logger;
@@ -62,7 +62,7 @@ class TApiController extends ApiController {
 		TimeMapper $timeMapper,
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
-		IConfig $config,
+		IAppConfig $config,
 		LoggerInterface $logger
 	) {
 		parent::__construct($appName, $request);

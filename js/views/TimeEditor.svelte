@@ -10,9 +10,13 @@
 	export let editTimeEntryData = {};
 	export let timeEditorCaption;
 	export let timeEditorButtonCaption;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
+	import { InputMethods } from "../lib/constants";
 	import { format, parseISO } from "date-fns";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
@@ -26,6 +30,8 @@
 	let startTime = format(startDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 	let note = editTimeEntryData.note || "";
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
+	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
 
 	const submit = () => {
 		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
@@ -36,23 +42,48 @@
 	<h3>{timeEditorCaption}</h3>
 	<form {action} on:submit|preventDefault={submit} method="post">
 		<span class="flex-fields">
-			<label>
-				{translate("timemanager", "Duration (in hrs.)")}
-				<br />
-				<input
-					autofocus
-					type="text"
-					name="duration"
-					placeholder=""
-					class="duration-input"
-					bind:value={duration}
-					on:input={() => {
-						duration = Helpers.normalizeDuration(duration);
-						endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
-					}}
-					required
-				/>
-			</label>
+			{#if !isServer}
+				<span>
+					{#if inputMethod === InputMethods.decimal}
+						<label>
+							{translate("timemanager", "Duration (in hrs.)")}
+							<br />
+							<input
+								autofocus
+								type="text"
+								name="duration"
+								placeholder=""
+								class="duration-input"
+								bind:value={duration}
+								on:input={() => {
+									duration = Helpers.normalizeDuration(duration);
+									durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								}}
+								required
+							/>
+						</label>
+					{:else}
+						<label>
+							{translate("timemanager", "Duration (in hrs.)")}
+							<br />
+							<input
+								autofocus
+								type="time"
+								name="duration-time"
+								placeholder=""
+								class="duration-input"
+								bind:value={durationTimeString}
+								on:input={() => {
+									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								}}
+								required
+							/>
+						</label>
+					{/if}
+				</span>
+			{/if}
 			<span class="flex-fields">
 				<label>
 					{translate("timemanager", "Start time")}
@@ -118,6 +149,7 @@
 			<br />
 			<strong>{clientName}</strong>
 		</label>
+
 		<br />
 		<input type="hidden" name="requesttoken" value={requestToken} />
 		<div class="oc-dialog-buttonrow twobuttons reverse">

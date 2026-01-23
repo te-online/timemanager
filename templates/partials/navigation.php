@@ -72,16 +72,14 @@ $l = Util::getL10N('timemanager');
 				<span><?php p($l->t('Tools')); ?></span>
 			</a>
     </li>
+		<li>
+			<a
+				class="timemanager-pjax-link<?php echo $_['page'] === 'settings' ? ' active' : ''; ?>"
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.settings'); ?>"
+			>
+				<img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/settings-dark.svg')); ?>">
+				<span><?php p($l->t('Settings')); ?></span>
+			</a>
+		</li>
   </ul>
-
-	<!-- <div id="app-settings">
-		<div id="app-settings-header">
-			<button class="settings-button" data-apps-slide-toggle="#app-settings-content">
-				<?php p($l->t('Settings')); ?>
-			</button>
-		</div>
-		<div id="app-settings-content">
-			<span class="settings" data-svelte="Settings.svelte"></section>
-		</div>
-	</div> -->
 </div>

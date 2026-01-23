@@ -1,49 +1,66 @@
 <script>
+	import { translate } from "@nextcloud/l10n";
+	import { InputMethods } from "../lib/constants";
+
+	export let isServer;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 	export let settingsAction;
 	export let requestToken;
-	export let settings = {
-		handle_conflicts: false
-	};
 
-	import { onMount } from "svelte";
-	import { translate } from "@nextcloud/l10n";
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 
-	$: handleConflicts = false;
-	$: loading = false;
+	const changeInputMethod = async (newInputMethod) => {
+		const previousInputMethod = inputMethod;
+		inputMethod = newInputMethod;
 
-	onMount(() => {
-		handleConflicts = settings.handle_conflicts;
-	});
-
-	const save = async () => {
-		loading = true;
-		await fetch(settingsAction, {
-			method: "POST",
-			body: JSON.stringify({
-				handle_conflicts: !!handleConflicts
-			}),
-			headers: {
-				requesttoken: requestToken,
-				"content-type": "application/json"
+		const response = await fetch(
+			settingsAction,
+			{
+				method: 'POST',
+				headers: {
+					requesttoken: requestToken,
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({
+					timemanager_input_method: newInputMethod,
+				}),
 			}
-		});
-		loading = false;
-	};
+		);
+
+		if (!response.ok) {
+			inputMethod = previousInputMethod;
+			alert(translate("timemanager", "Could not save settings."));
+		}
+	}
 </script>
 
-<span class="checkbox-action">
-	<input
-		type="checkbox"
-		class="checkbox"
-		id="settings_handle_conflicts"
-		checked={handleConflicts}
-		disabled={loading}
-		on:change|preventDefault={e => {
-			handleConflicts = e.target.checked;
-			save();
-		}} />
-	<label for="settings_handle_conflicts">
-		{translate('timemanager', "My (mobile) apps can handle conflicts (leave unchecked if you're unsure)")}
-	</label>
-</span>
-<span class={`checkbox-action-loading${loading ? ' icon-loading' : ''}`} style="left: 5px;" />
+{#if !isServer}
+	<details open>
+		<summary>
+			{translate("timemanager", "Time field settings")}
+		</summary>
+
+		<label class="settings-label">
+			<input
+				type="radio"
+				name="settings-input-method"
+				bind:group={inputMethod}
+				value={InputMethods.minutes}
+				on:click={() => changeInputMethod(InputMethods.minutes)}
+			/>
+			{translate("timemanager", "Input hours and minutes (02:30 hrs.)")}
+		</label>
+		<label class="settings-label">
+			<input
+				type="radio"
+				name="settings-input-method"
+				bind:group={inputMethod}
+				value={InputMethods.decimal}
+				on:click={() => changeInputMethod(InputMethods.decimal)}
+			/>
+			{translate("timemanager", "Input decimals (2.5 hrs.)")}
+		</label>
+	</details>
+{/if}

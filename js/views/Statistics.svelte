@@ -1,8 +1,13 @@
 <script>
+	import { InputMethods } from "../lib/constants";
+
 	export let statsApiUrl;
 	export let requestToken;
 	export let controls = true;
 	export let includeShared = false;
+	export let settings = {
+		timemanager_input_method: InputMethods.decimal,
+	};
 
 	import { onMount } from "svelte";
 	import {
@@ -223,6 +228,15 @@
 			return format(date, "d.M.", localeOptions);
 		}
 	};
+
+	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
+	const getFormattedTotal = (value) => {
+		if (inputMethod === InputMethods.minutes) {
+			return Helpers.convertDecimalsToTimeDuration(value);
+		}
+
+		return value;
+	}
 </script>
 
 {#if controls}
@@ -233,12 +247,12 @@
 		<div class="top-stats">
 			<figure>
 				<figcaption class="tm_label">{translate("timemanager", "Today")}</figcaption>
-				{simpleRounding(todayTotal)}
+				{getFormattedTotal(simpleRounding(todayTotal))}
 				{translate("timemanager", "hrs.")}
 			</figure>
 			<figure>
 				<figcaption class="tm_label">{translate("timemanager", "Week")}</figcaption>
-				{simpleRounding(weekTotal)}
+				{getFormattedTotal(simpleRounding(weekTotal))}
 				{translate("timemanager", "hrs.")}
 			</figure>
 		</div>
@@ -246,11 +260,13 @@
 	<div class="graphs">
 		<div class={`hours-per-week ${points.length > 12 || window.clientWidth < 768 ? "many" : "few"}`}>
 			{#if !loading && weekTotal > 0}
-				{#each points as point, index}
+				{#each points as point}
 					<div class="column">
 						{#if point && point.stats}
 							{#if point.stats.total > 0}
-								<span class="hours-label">{point.stats.total} {translate("timemanager", "hrs.")}</span>
+								<span class="hours-label">
+									{getFormattedTotal(point.stats.total)}&nbsp;{translate("timemanager", "hrs.")}
+								</span>
 								<div class="column-inner" style={`height: ${(point.stats.total / highest) * 100}%`} />
 							{/if}
 							<div class="date-label">
