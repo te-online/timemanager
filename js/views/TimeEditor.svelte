@@ -24,11 +24,15 @@
 	const dateFormat = "yyyy-MM-dd";
 	const hasDate = Boolean(editTimeEntryData.date);
 
-	const startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
-	let date = format(startDate, dateFormat, localeOptions);
+	const anchorDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
+	let date = format(anchorDate, dateFormat, localeOptions);
 	let duration = editTimeEntryData.duration;
-	let startTime = format(startDate, timeFormat, localeOptions);
+	let startTime = format(anchorDate, timeFormat, localeOptions);
 	let endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+	if (!hasDate) {
+		endTime = format(anchorDate, timeFormat, localeOptions);
+		startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
+	}
 	let note = editTimeEntryData.note || "";
 	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
@@ -58,7 +62,11 @@
 								on:input={() => {
 									duration = Helpers.normalizeDuration(duration);
 									durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
-									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+									if (hasDate) {
+										endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+									} else {
+										startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
+									}
 								}}
 								required
 							/>
@@ -76,7 +84,11 @@
 								bind:value={durationTimeString}
 								on:input={() => {
 									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
-									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+									if (hasDate) {
+										endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+									} else {
+										startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
+									}
 								}}
 								required
 							/>

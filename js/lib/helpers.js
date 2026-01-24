@@ -1,9 +1,9 @@
 import { de, fr, pt } from "date-fns/locale";
 import { getFirstDay, getLocale } from "@nextcloud/l10n";
-import { addMinutes, differenceInMinutes, parse } from "date-fns";
+import { addMinutes, differenceInMinutes, parse, subMinutes } from "date-fns";
 
 export class Helpers {
-	// Helps replacing a SSR node with a Svelte component
+	// Helps to replace an SSR node with a Svelte component
 	static replaceNode(node) {
 		if (node) {
 			node.innerHTML = "";
@@ -140,6 +140,19 @@ export class Helpers {
 		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
 
 		return addMinutes(start, Math.round(duration * 60))
+			.toTimeString()
+			.substring(0, 5);
+	}
+
+	// NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
+	static calculateStartTime(endTime, duration) {
+		if (!endTime || !duration) {
+			return undefined;
+		}
+
+		const end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+
+		return subMinutes(end, Math.round(duration * 60))
 			.toTimeString()
 			.substring(0, 5);
 	}

@@ -56,8 +56,8 @@
 	$: currentFocusNoteIndex = -1;
 
 	let duration = 1;
-	let startTime = new Date().toTimeString().substring(0, 5);
-	let endTime = Helpers.calculateEndTime(startTime, duration);
+	let endTime = new Date().toTimeString().substring(0, 5);
+	let startTime = Helpers.calculateStartTime(endTime, duration);
 	let date = initialDate;
 	let note;
 	let noteInput;
@@ -534,7 +534,7 @@
 							on:input={() => {
 								duration = Helpers.normalizeDuration(duration);
 								durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
-								endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+								startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
 							}}
 							bind:this={durationInput}
 						/>
@@ -548,7 +548,7 @@
 							bind:value={durationTimeString}
 							on:input={() => {
 									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
-									endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+									startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
 								}}
 							bind:this={durationInput}
 						/>

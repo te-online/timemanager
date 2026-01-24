@@ -11221,6 +11221,30 @@
     }
 
     /**
+     * @name subMinutes
+     * @category Minute Helpers
+     * @summary Subtract the specified number of minutes from the given date.
+     *
+     * @description
+     * Subtract the specified number of minutes from the given date.
+     *
+     * @param {Date|Number} date - the date to be changed
+     * @param {Number} amount - the amount of minutes to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+     * @returns {Date} the new date with the minutes subtracted
+     * @throws {TypeError} 2 arguments required
+     *
+     * @example
+     * // Subtract 30 minutes from 10 July 2014 12:00:00:
+     * const result = subMinutes(new Date(2014, 6, 10, 12, 0), 30)
+     * //=> Thu Jul 10 2014 11:30:00
+     */
+    function subMinutes(dirtyDate, dirtyAmount) {
+      requiredArgs(2, arguments);
+      var amount = toInteger(dirtyAmount);
+      return addMinutes(dirtyDate, -amount);
+    }
+
+    /**
      * @name subWeeks
      * @category Week Helpers
      * @summary Subtract the specified number of weeks from the given date.
@@ -14589,7 +14613,7 @@
       _createClass$1(Helpers, null, [{
         key: "replaceNode",
         value:
-        // Helps replacing a SSR node with a Svelte component
+        // Helps to replace an SSR node with a Svelte component
         function replaceNode(node) {
           if (node) {
             node.innerHTML = "";
@@ -14739,6 +14763,17 @@
           }
           var start = parse$3(startTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
           return addMinutes(start, Math.round(duration * 60)).toTimeString().substring(0, 5);
+        }
+
+        // NOTE: As this method returns the 'HH:mm' value only, durations >= 24h will be ignored
+      }, {
+        key: "calculateStartTime",
+        value: function calculateStartTime(endTime, duration) {
+          if (!endTime || !duration) {
+            return undefined;
+          }
+          var end = parse$3(endTime, "HH:mm", new Date(), this.getDateLocaleOptions()).getTime();
+          return subMinutes(end, Math.round(duration * 60)).toTimeString().substring(0, 5);
         }
       }, {
         key: "toUTC",
@@ -17378,7 +17413,7 @@
     function create_if_block_1$7(ctx) {
       var span;
       function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[15] === InputMethods.decimal) return create_if_block_2$6;
+        if ( /*inputMethod*/ctx[16] === InputMethods.decimal) return create_if_block_2$6;
         return create_else_block$6;
       }
       var current_block_type = select_block_type(ctx);
@@ -17404,7 +17439,7 @@
       };
     }
 
-    // (66:5) {:else}
+    // (74:5) {:else}
     function create_else_block$6(ctx) {
       var label;
       var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
@@ -17440,7 +17475,7 @@
           set_input_value(input, /*durationTimeString*/ctx[14]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[22]), listen(input, "input", /*input_handler_1*/ctx[23])];
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[23]), listen(input, "input", /*input_handler_1*/ctx[24])];
             mounted = true;
           }
         },
@@ -17459,7 +17494,7 @@
       };
     }
 
-    // (47:5) {#if inputMethod === InputMethods.decimal}
+    // (51:5) {#if inputMethod === InputMethods.decimal}
     function create_if_block_2$6(ctx) {
       var label;
       var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
@@ -17495,7 +17530,7 @@
           set_input_value(input, /*duration*/ctx[10]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[20]), listen(input, "input", /*input_handler*/ctx[21])];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[21]), listen(input, "input", /*input_handler*/ctx[22])];
             mounted = true;
           }
         },
@@ -17514,7 +17549,7 @@
       };
     }
 
-    // (157:3) {#if !isServer}
+    // (175:3) {#if !isServer}
     function create_if_block$d(ctx) {
       var button;
       var mounted;
@@ -17828,7 +17863,7 @@
           append(div0, t40);
           if (if_block1) if_block1.m(div0, null);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[24]), listen(input0, "input", /*input_handler_2*/ctx[25]), listen(input1, "input", /*input1_input_handler*/ctx[26]), listen(input1, "input", /*input_handler_3*/ctx[27]), listen(input2, "input", /*input2_input_handler*/ctx[28]), listen(textarea, "input", /*input_handler_4*/ctx[29]), listen(form, "submit", prevent_default( /*submit*/ctx[16]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[25]), listen(input0, "input", /*input_handler_2*/ctx[26]), listen(input1, "input", /*input1_input_handler*/ctx[27]), listen(input1, "input", /*input_handler_3*/ctx[28]), listen(input2, "input", /*input2_input_handler*/ctx[29]), listen(textarea, "input", /*input_handler_4*/ctx[30]), listen(form, "submit", prevent_default( /*submit*/ctx[17]))];
             mounted = true;
           }
         },
@@ -17916,11 +17951,15 @@
         } : _$$props$settings;
       var localeOptions = Helpers.getDateLocaleOptions();
       var hasDate = Boolean(editTimeEntryData.date);
-      var startDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
-      var date = format$2(startDate, dateFormat$3, localeOptions);
+      var anchorDate = hasDate ? parseISO(editTimeEntryData.date) : new Date();
+      var date = format$2(anchorDate, dateFormat$3, localeOptions);
       var duration = editTimeEntryData.duration;
-      var startTime = format$2(startDate, timeFormat, localeOptions);
+      var startTime = format$2(anchorDate, timeFormat, localeOptions);
       var endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
+      if (!hasDate) {
+        endTime = format$2(anchorDate, timeFormat, localeOptions);
+        startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
+      }
       var note = editTimeEntryData.note || "";
       var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
       var durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
@@ -17938,7 +17977,11 @@
       var input_handler = function input_handler() {
         $$invalidate(10, duration = Helpers.normalizeDuration(duration));
         $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
-        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        if (hasDate) {
+          $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        } else {
+          $$invalidate(11, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
+        }
       };
       function input_input_handler_1() {
         durationTimeString = this.value;
@@ -17946,21 +17989,27 @@
       }
       var input_handler_1 = function input_handler_1() {
         $$invalidate(10, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
-        $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        if (hasDate) {
+          $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        } else {
+          $$invalidate(11, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
+        }
       };
       function input0_input_handler() {
         startTime = this.value;
         $$invalidate(11, startTime);
       }
       var input_handler_2 = function input_handler_2() {
-        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
       };
       function input1_input_handler() {
         endTime = this.value;
         $$invalidate(12, endTime);
       }
       var input_handler_3 = function input_handler_3() {
-        return $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
       };
       function input2_input_handler() {
         date = this.value;
@@ -17977,13 +18026,13 @@
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(17, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(18, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(18, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(19, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
-        if ('settings' in $$props) $$invalidate(19, settings = $$props.settings);
+        if ('settings' in $$props) $$invalidate(20, settings = $$props.settings);
       };
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, hasDate, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -18000,11 +18049,11 @@
           taskName: 4,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 17,
-          editTimeEntryData: 18,
+          onSubmit: 18,
+          editTimeEntryData: 19,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8,
-          settings: 19
+          settings: 20
         }, null, [-1, -1]);
         return _this;
       }
@@ -27564,13 +27613,13 @@
           html_tag_1.m(raw1_value, label1);
           append(label1, t2);
           append(label1, input0);
-          set_input_value(input0, /*startTime*/ctx[8]);
+          set_input_value(input0, /*startTime*/ctx[9]);
           append(span0, t3);
           append(span0, label2);
           html_tag_2.m(raw2_value, label2);
           append(label2, t4);
           append(label2, input1);
-          set_input_value(input1, /*endTime*/ctx[9]);
+          set_input_value(input1, /*endTime*/ctx[8]);
           append(div, t5);
           append(div, label3);
           html_tag_3.m(raw3_value, label3);
@@ -27584,11 +27633,11 @@
         },
         p(ctx, dirty) {
           if_block.p(ctx, dirty);
-          if (dirty[0] & /*startTime*/256) {
-            set_input_value(input0, /*startTime*/ctx[8]);
+          if (dirty[0] & /*startTime*/512) {
+            set_input_value(input0, /*startTime*/ctx[9]);
           }
-          if (dirty[0] & /*endTime*/512) {
-            set_input_value(input1, /*endTime*/ctx[9]);
+          if (dirty[0] & /*endTime*/256) {
+            set_input_value(input1, /*endTime*/ctx[8]);
           }
           if (dirty[0] & /*date*/1024) {
             set_input_value(input2, /*date*/ctx[10]);
@@ -28772,8 +28821,8 @@
       var noteAutosuggestList = [];
       var noteAutosuggestButtons = [];
       var duration = 1;
-      var startTime = new Date().toTimeString().substring(0, 5);
-      var endTime = Helpers.calculateEndTime(startTime, duration);
+      var endTime = new Date().toTimeString().substring(0, 5);
+      var startTime = Helpers.calculateStartTime(endTime, duration);
       var date = initialDate;
       var note;
       var noteInput;
@@ -29204,7 +29253,7 @@
       var input_handler_1 = function input_handler_1() {
         $$invalidate(7, duration = Helpers.normalizeDuration(duration));
         $$invalidate(17, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
-        $$invalidate(9, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        $$invalidate(9, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
       };
       function input_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -29218,7 +29267,7 @@
       }
       var input_handler_2 = function input_handler_2() {
         $$invalidate(7, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
-        $$invalidate(9, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+        $$invalidate(9, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
       };
       function input_binding_1($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -29228,14 +29277,14 @@
       }
       function input0_input_handler_1() {
         startTime = this.value;
-        $$invalidate(8, startTime);
+        $$invalidate(9, startTime);
       }
       var input_handler_3 = function input_handler_3() {
         return $$invalidate(7, duration = Helpers.calculateDuration(startTime, endTime));
       };
       function input1_input_handler() {
         endTime = this.value;
-        $$invalidate(9, endTime);
+        $$invalidate(8, endTime);
       }
       var input_handler_4 = function input_handler_4() {
         return $$invalidate(7, duration = Helpers.calculateDuration(startTime, endTime));
@@ -29338,7 +29387,7 @@
       $$invalidate(21, currentLastestFocusTaskIndex = -1);
       $$invalidate(23, currentFocusNoteIndex = -1);
       $$invalidate(24, searchResults = []);
-      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, startTime, endTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
+      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, endTime, startTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(QuickAdd, _SvelteComponent);
