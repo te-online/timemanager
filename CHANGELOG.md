@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.20 Beta, 1. February 2026
+
+### Added
+- Settings page
+- Time input for durations, if appropriate setting is applied (implements #18)
+- Keep end time fixed when changing duration for new time entries, behaviour for editing is unchanged
+
+### Changed
+- Update French translations (thanks to @punkyard)
+
+### Fixed
+- Update npm dependencies
+
+### Removed
+- PHP Svelte renderer, as it does not provide a lot of benefit anymore, but causes problems
+
 ## 0.3.19 Beta, 23. September 2025
 
 ### Added
