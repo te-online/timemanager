@@ -10,7 +10,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"cypress": "13.2.0",
+		"cypress": "^15.9.0",
 		"date-fns": "^2.29.3",
 		"typescript": "^5.0.4"
 	}
