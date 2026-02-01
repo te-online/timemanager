@@ -5,7 +5,7 @@
 ### Added
 - Settings page
 - Time input for durations, if appropriate setting is applied (implements #18)
-- Keep end time fixed when changing duration for new time entries, behaviour for editing is unchanged
+- Keep end time fixed when changing duration for new time entries, behaviour for editing is unchanged (implements #177)
 
 ### Changed
 - Update French translations (thanks to @punkyard)
