@@ -371,6 +371,7 @@
 
 	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+	let backupDurationTimeString = durationTimeString;
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -541,13 +542,25 @@
 					{:else}
 						<input
 							id="quick-add-time"
-							type="time"
+							type="text"
 							name="duration"
-							placeholder=""
+							placeholder="--:--"
 							class="duration-input"
 							bind:value={durationTimeString}
 							on:input={() => {
-									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+									const computedDuration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+
+									if (durationTimeString.match(/[^0-9:]/)) {
+										durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, '');
+									}
+
+									if (isNaN(computedDuration) || computedDuration > 24) {
+										durationTimeString = backupDurationTimeString;
+										return;
+									}
+
+									duration = computedDuration;
+									backupDurationTimeString = durationTimeString;
 									startTime = Helpers.calculateStartTime(endTime, parseFloat(duration));
 								}}
 							bind:this={durationInput}

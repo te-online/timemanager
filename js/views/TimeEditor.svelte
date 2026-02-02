@@ -36,6 +36,7 @@
 	let note = editTimeEntryData.note || "";
 	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 	let durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
+	let backupDurationTimeString = durationTimeString;
 
 	const submit = () => {
 		onSubmit({ duration, date: `${date}T${startTime}:00`, note });
@@ -77,13 +78,26 @@
 							<br />
 							<input
 								autofocus
-								type="time"
+								type="text"
 								name="duration-time"
-								placeholder=""
+								placeholder="--:--"
 								class="duration-input"
 								bind:value={durationTimeString}
 								on:input={() => {
-									duration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+									const computedDuration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+
+									if (durationTimeString.match(/[^0-9:]/)) {
+										durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, '');
+									}
+
+									if (isNaN(computedDuration) || computedDuration > 24) {
+										durationTimeString = backupDurationTimeString;
+										return;
+									}
+
+									duration = computedDuration;
+									backupDurationTimeString = durationTimeString;
+
 									if (hasDate) {
 										endTime = Helpers.calculateEndTime(startTime, parseFloat(duration));
 									} else {
