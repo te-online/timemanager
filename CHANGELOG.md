@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.21 Beta, 2. February 2026
+
+### Fixed
+- Use `type="text"` and programmatic restrictions for hours + minutes based time input, as browsers can render time input in am/pm fashion, which clashes with entering durations
+
 ## 0.3.20 Beta, 1. February 2026
 
 ### Added
