@@ -595,9 +595,9 @@
     };
 
     var toString$3 = functionUncurryThis({}.toString);
-    var stringSlice$5 = functionUncurryThis(''.slice);
+    var stringSlice$6 = functionUncurryThis(''.slice);
     var classofRaw = function (it) {
-      return stringSlice$5(toString$3(it), 8, -1);
+      return stringSlice$6(toString$3(it), 8, -1);
     };
 
     var $Object$4 = Object;
@@ -618,12 +618,12 @@
       return it === null || it === undefined;
     };
 
-    var $TypeError$g = TypeError;
+    var $TypeError$h = TypeError;
 
     // `RequireObjectCoercible` abstract operation
     // https://tc39.es/ecma262/#sec-requireobjectcoercible
     var requireObjectCoercible = function (it) {
-      if (isNullOrUndefined(it)) throw $TypeError$g("Can't call method on " + it);
+      if (isNullOrUndefined(it)) throw $TypeError$h("Can't call method on " + it);
       return it;
     };
 
@@ -734,12 +734,12 @@
       }
     };
 
-    var $TypeError$f = TypeError;
+    var $TypeError$g = TypeError;
 
     // `Assert: IsCallable(argument) is true`
     var aCallable = function (argument) {
       if (isCallable(argument)) return argument;
-      throw $TypeError$f(tryToString(argument) + ' is not a function');
+      throw $TypeError$g(tryToString(argument) + ' is not a function');
     };
 
     // `GetMethod` abstract operation
@@ -749,7 +749,7 @@
       return isNullOrUndefined(func) ? undefined : aCallable(func);
     };
 
-    var $TypeError$e = TypeError;
+    var $TypeError$f = TypeError;
 
     // `OrdinaryToPrimitive` abstract operation
     // https://tc39.es/ecma262/#sec-ordinarytoprimitive
@@ -757,7 +757,7 @@
       var fn, val;
       if (isCallable(fn = input.toString) && !isObject$2(val = functionCall(fn, input))) return val;
       if (isCallable(fn = input.valueOf) && !isObject$2(val = functionCall(fn, input))) return val;
-      throw $TypeError$e("Can't convert object to primitive value");
+      throw $TypeError$f("Can't convert object to primitive value");
     };
 
     // eslint-disable-next-line es/no-object-defineproperty -- safe
@@ -825,7 +825,7 @@
       return WellKnownSymbolsStore[name];
     };
 
-    var $TypeError$d = TypeError;
+    var $TypeError$e = TypeError;
     var TO_PRIMITIVE = wellKnownSymbol('toPrimitive');
 
     // `ToPrimitive` abstract operation
@@ -837,7 +837,7 @@
       if (exoticToPrim) {
         result = functionCall(exoticToPrim, input, pref);
         if (!isObject$2(result) || isSymbol(result)) return result;
-        throw $TypeError$d("Can't convert object to primitive value");
+        throw $TypeError$e("Can't convert object to primitive value");
       }
       return ordinaryToPrimitive(input);
     };
@@ -895,15 +895,15 @@
     });
 
     var $String$3 = String;
-    var $TypeError$c = TypeError;
+    var $TypeError$d = TypeError;
 
     // `Assert: Type(argument) is Object`
     var anObject = function (argument) {
       if (isObject$2(argument)) return argument;
-      throw $TypeError$c($String$3(argument) + ' is not an object');
+      throw $TypeError$d($String$3(argument) + ' is not an object');
     };
 
-    var $TypeError$b = TypeError;
+    var $TypeError$c = TypeError;
     // eslint-disable-next-line es/no-object-defineproperty -- safe
     var $defineProperty = Object.defineProperty;
     // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
@@ -937,7 +937,7 @@
       if (ie8DomDefine) try {
         return $defineProperty(O, P, Attributes);
       } catch (error) {/* empty */}
-      if ('get' in Attributes || 'set' in Attributes) throw $TypeError$b('Accessors not supported');
+      if ('get' in Attributes || 'set' in Attributes) throw $TypeError$c('Accessors not supported');
       if ('value' in Attributes) O[P] = Attributes.value;
       return O;
     };
@@ -1142,7 +1142,7 @@
       return number !== number || number === 0 ? 0 : mathTrunc(number);
     };
 
-    var max$4 = Math.max;
+    var max$5 = Math.max;
     var min$4 = Math.min;
 
     // Helper for a popular repeating case of the spec:
@@ -1150,7 +1150,7 @@
     // If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
     var toAbsoluteIndex = function (index, length) {
       var integer = toIntegerOrInfinity(index);
-      return integer < 0 ? max$4(integer + length, 0) : min$4(integer, length);
+      return integer < 0 ? max$5(integer + length, 0) : min$4(integer, length);
     };
 
     var min$3 = Math.min;
@@ -1196,7 +1196,7 @@
       indexOf: createMethod$4(false)
     };
 
-    var indexOf$2 = arrayIncludes.indexOf;
+    var indexOf$3 = arrayIncludes.indexOf;
 
     var push$4 = functionUncurryThis([].push);
     var objectKeysInternal = function (object, names) {
@@ -1207,7 +1207,7 @@
       for (key in O) !hasOwnProperty_1(hiddenKeys$1, key) && hasOwnProperty_1(O, key) && push$4(result, key);
       // Don't enum bug & hidden keys
       while (names.length > i) if (hasOwnProperty_1(O, key = names[i++])) {
-        ~indexOf$2(result, key) || push$4(result, key);
+        ~indexOf$3(result, key) || push$4(result, key);
       }
       return result;
     };
@@ -1790,10 +1790,10 @@
       return isObject$2(it) && ((isRegExp = it[MATCH$1]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
     };
 
-    var $TypeError$a = TypeError;
+    var $TypeError$b = TypeError;
     var notARegexp = function (it) {
       if (isRegexp(it)) {
-        throw $TypeError$a("The method doesn't accept regular expressions");
+        throw $TypeError$b("The method doesn't accept regular expressions");
       }
       return it;
     };
@@ -1818,7 +1818,7 @@
       return false;
     };
 
-    var stringIndexOf$2 = functionUncurryThis(''.indexOf);
+    var stringIndexOf$3 = functionUncurryThis(''.indexOf);
 
     // `String.prototype.includes` method
     // https://tc39.es/ecma262/#sec-string.prototype.includes
@@ -1828,7 +1828,7 @@
       forced: !correctIsRegexpLogic('includes')
     }, {
       includes: function includes(searchString /* , position = 0 */) {
-        return !!~stringIndexOf$2(toString_1(requireObjectCoercible(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
+        return !!~stringIndexOf$3(toString_1(requireObjectCoercible(this)), toString_1(notARegexp(searchString)), arguments.length > 1 ? arguments[1] : undefined);
       }
     });
 
@@ -1859,7 +1859,7 @@
     var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('slice');
     var SPECIES$4 = wellKnownSymbol('species');
     var $Array$2 = Array;
-    var max$3 = Math.max;
+    var max$4 = Math.max;
 
     // `Array.prototype.slice` method
     // https://tc39.es/ecma262/#sec-array.prototype.slice
@@ -1889,7 +1889,7 @@
             return arraySlice(O, k, fin);
           }
         }
-        result = new (Constructor === undefined ? $Array$2 : Constructor)(max$3(fin - k, 0));
+        result = new (Constructor === undefined ? $Array$2 : Constructor)(max$4(fin - k, 0));
         for (n = 0; k < fin; k++, n++) if (k in O) createProperty(result, n, O[k]);
         result.length = n;
         return result;
@@ -1936,11 +1936,11 @@
       if (!isNullOrUndefined(it)) return getMethod(it, ITERATOR$5) || getMethod(it, '@@iterator') || iterators[classof(it)];
     };
 
-    var $TypeError$9 = TypeError;
+    var $TypeError$a = TypeError;
     var getIterator = function (argument, usingIterator) {
       var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
       if (aCallable(iteratorMethod)) return anObject(functionCall(iteratorMethod, argument));
-      throw $TypeError$9(tryToString(argument) + ' is not iterable');
+      throw $TypeError$a(tryToString(argument) + ' is not iterable');
     };
 
     var $Array$1 = Array;
@@ -2036,7 +2036,7 @@
 
     var charAt$5 = functionUncurryThis(''.charAt);
     var charCodeAt = functionUncurryThis(''.charCodeAt);
-    var stringSlice$4 = functionUncurryThis(''.slice);
+    var stringSlice$5 = functionUncurryThis(''.slice);
     var createMethod$2 = function (CONVERT_TO_STRING) {
       return function ($this, pos) {
         var S = toString_1(requireObjectCoercible($this));
@@ -2045,7 +2045,7 @@
         var first, second;
         if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
         first = charCodeAt(S, position);
-        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$4(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? charAt$5(S, position) : first : CONVERT_TO_STRING ? stringSlice$5(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
       };
     };
     var stringMultibyte = {
@@ -2156,10 +2156,10 @@
     };
 
     var $String$1 = String;
-    var $TypeError$8 = TypeError;
+    var $TypeError$9 = TypeError;
     var aPossiblePrototype = function (argument) {
       if (typeof argument == 'object' || isCallable(argument)) return argument;
-      throw $TypeError$8("Can't set " + $String$1(argument) + ' as a prototype');
+      throw $TypeError$9("Can't set " + $String$1(argument) + ' as a prototype');
     };
 
     /* eslint-disable no-proto -- safe */
@@ -2428,11 +2428,11 @@
       }
     });
 
-    var $TypeError$7 = TypeError;
+    var $TypeError$8 = TypeError;
     var MAX_SAFE_INTEGER$2 = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
 
     var doesNotExceedSafeInteger = function (it) {
-      if (it > MAX_SAFE_INTEGER$2) throw $TypeError$7('Maximum allowed index exceeded');
+      if (it > MAX_SAFE_INTEGER$2) throw $TypeError$8('Maximum allowed index exceeded');
       return it;
     };
 
@@ -2735,18 +2735,18 @@
       }
     };
 
-    var $TypeError$6 = TypeError;
+    var $TypeError$7 = TypeError;
     var anInstance = function (it, Prototype) {
       if (objectIsPrototypeOf(Prototype, it)) return it;
-      throw $TypeError$6('Incorrect invocation');
+      throw $TypeError$7('Incorrect invocation');
     };
 
-    var $TypeError$5 = TypeError;
+    var $TypeError$6 = TypeError;
 
     // `Assert: IsConstructor(argument) is true`
     var aConstructor = function (argument) {
       if (isConstructor(argument)) return argument;
-      throw $TypeError$5(tryToString(argument) + ' is not a constructor');
+      throw $TypeError$6(tryToString(argument) + ' is not a constructor');
     };
 
     var SPECIES$2 = wellKnownSymbol('species');
@@ -2768,9 +2768,9 @@
       return call.apply(apply$1, arguments);
     });
 
-    var $TypeError$4 = TypeError;
+    var $TypeError$5 = TypeError;
     var validateArgumentsLength = function (passed, required) {
-      if (passed < required) throw $TypeError$4('Not enough arguments');
+      if (passed < required) throw $TypeError$5('Not enough arguments');
       return passed;
     };
 
@@ -3039,11 +3039,11 @@
       SUBCLASSING: SUBCLASSING
     };
 
-    var $TypeError$3 = TypeError;
+    var $TypeError$4 = TypeError;
     var PromiseCapability = function (C) {
       var resolve, reject;
       this.promise = new C(function ($$resolve, $$reject) {
-        if (resolve !== undefined || reject !== undefined) throw $TypeError$3('Bad Promise constructor');
+        if (resolve !== undefined || reject !== undefined) throw $TypeError$4('Bad Promise constructor');
         resolve = $$resolve;
         reject = $$reject;
       });
@@ -3322,7 +3322,7 @@
     setToStringTag(PromiseConstructor, PROMISE, false);
     setSpecies(PROMISE);
 
-    var $TypeError$2 = TypeError;
+    var $TypeError$3 = TypeError;
     var Result = function (stopped, result) {
       this.stopped = stopped;
       this.result = result;
@@ -3337,7 +3337,7 @@
       };
       {
         iterFn = getIteratorMethod(iterable);
-        if (!iterFn) throw $TypeError$2(tryToString(iterable) + ' is not iterable');
+        if (!iterFn) throw $TypeError$3(tryToString(iterable) + ' is not iterable');
         // optimisation for array iterators
         if (isArrayIteratorMethod(iterFn)) {
           for (index = 0, length = lengthOfArrayLike(iterable); length > index; index++) {
@@ -11315,7 +11315,7 @@
     const stringToString = unapply(String.prototype.toString);
     const stringMatch = unapply(String.prototype.match);
     const stringReplace = unapply(String.prototype.replace);
-    const stringIndexOf$1 = unapply(String.prototype.indexOf);
+    const stringIndexOf$2 = unapply(String.prototype.indexOf);
     const stringTrim$1 = unapply(String.prototype.trim);
     const objectHasOwnProperty = unapply(Object.prototype.hasOwnProperty);
     const regExpTest = unapply(RegExp.prototype.test);
@@ -12270,7 +12270,7 @@
             return false;
           }
           /* Check value is safe. First, is attr inert? If so, is safe */
-        } else if (URI_SAFE_ATTRIBUTES[lcName]) ; else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$1(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ; else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if (value) {
+        } else if (URI_SAFE_ATTRIBUTES[lcName]) ; else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$2(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ; else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if (value) {
           return false;
         } else ;
         return true;
@@ -12836,9 +12836,9 @@
     var nativeExec = RegExp.prototype.exec;
     var patchedExec = nativeExec;
     var charAt$3 = functionUncurryThis(''.charAt);
-    var indexOf$1 = functionUncurryThis(''.indexOf);
+    var indexOf$2 = functionUncurryThis(''.indexOf);
     var replace$2 = functionUncurryThis(''.replace);
-    var stringSlice$3 = functionUncurryThis(''.slice);
+    var stringSlice$4 = functionUncurryThis(''.slice);
     var UPDATES_LAST_INDEX_WRONG = function () {
       var re1 = /a/;
       var re2 = /b*/g;
@@ -12872,10 +12872,10 @@
         var strCopy = str;
         if (sticky) {
           flags = replace$2(flags, 'y', '');
-          if (indexOf$1(flags, 'g') === -1) {
+          if (indexOf$2(flags, 'g') === -1) {
             flags += 'g';
           }
-          strCopy = stringSlice$3(str, re.lastIndex);
+          strCopy = stringSlice$4(str, re.lastIndex);
           // Support anchored sticky behavior.
           if (re.lastIndex > 0 && (!re.multiline || re.multiline && charAt$3(str, re.lastIndex - 1) !== '\n')) {
             source = '(?: ' + source + ')';
@@ -12893,8 +12893,8 @@
         match = functionCall(nativeExec, sticky ? reCopy : re, strCopy);
         if (sticky) {
           if (match) {
-            match.input = stringSlice$3(match.input, charsAdded);
-            match[0] = stringSlice$3(match[0], charsAdded);
+            match.input = stringSlice$4(match.input, charsAdded);
+            match[0] = stringSlice$4(match[0], charsAdded);
             match.index = re.lastIndex;
             re.lastIndex += match[0].length;
           } else re.lastIndex = 0;
@@ -12941,7 +12941,7 @@
 
 
     var SPECIES = wellKnownSymbol('species');
-    var RegExpPrototype = RegExp.prototype;
+    var RegExpPrototype$1 = RegExp.prototype;
     var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
       var SYMBOL = wellKnownSymbol(KEY);
       var DELEGATES_TO_SYMBOL = !fails(function () {
@@ -12982,7 +12982,7 @@
         var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
           var uncurriedNativeMethod = functionUncurryThisClause(nativeMethod);
           var $exec = regexp.exec;
-          if ($exec === regexpExec || $exec === RegExpPrototype.exec) {
+          if ($exec === regexpExec || $exec === RegExpPrototype$1.exec) {
             if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
               // The native String method already delegates to @@method (this
               // polyfilled function), leasing to infinite recursion.
@@ -13002,7 +13002,7 @@
           };
         });
         defineBuiltIn(String.prototype, KEY, methods[0]);
-        defineBuiltIn(RegExpPrototype, SYMBOL, methods[1]);
+        defineBuiltIn(RegExpPrototype$1, SYMBOL, methods[1]);
       }
     };
 
@@ -13017,7 +13017,7 @@
     var floor$2 = Math.floor;
     var charAt$1 = functionUncurryThis(''.charAt);
     var replace$1 = functionUncurryThis(''.replace);
-    var stringSlice$2 = functionUncurryThis(''.slice);
+    var stringSlice$3 = functionUncurryThis(''.slice);
     // eslint-disable-next-line redos/no-vulnerable -- safe
     var SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
     var SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g;
@@ -13040,11 +13040,11 @@
           case '&':
             return matched;
           case '`':
-            return stringSlice$2(str, 0, position);
+            return stringSlice$3(str, 0, position);
           case "'":
-            return stringSlice$2(str, tailPos);
+            return stringSlice$3(str, tailPos);
           case '<':
-            capture = namedCaptures[stringSlice$2(ch, 1, -1)];
+            capture = namedCaptures[stringSlice$3(ch, 1, -1)];
             break;
           default:
             // \d\d?
@@ -13062,7 +13062,7 @@
       });
     };
 
-    var $TypeError$1 = TypeError;
+    var $TypeError$2 = TypeError;
 
     // `RegExpExec` abstract operation
     // https://tc39.es/ecma262/#sec-regexpexec
@@ -13074,16 +13074,16 @@
         return result;
       }
       if (classofRaw(R) === 'RegExp') return functionCall(regexpExec, R, S);
-      throw $TypeError$1('RegExp#exec called on incompatible receiver');
+      throw $TypeError$2('RegExp#exec called on incompatible receiver');
     };
 
-    var REPLACE = wellKnownSymbol('replace');
-    var max$2 = Math.max;
+    var REPLACE$1 = wellKnownSymbol('replace');
+    var max$3 = Math.max;
     var min$2 = Math.min;
     var concat = functionUncurryThis([].concat);
     var push$2 = functionUncurryThis([].push);
-    var stringIndexOf = functionUncurryThis(''.indexOf);
-    var stringSlice$1 = functionUncurryThis(''.slice);
+    var stringIndexOf$1 = functionUncurryThis(''.indexOf);
+    var stringSlice$2 = functionUncurryThis(''.slice);
     var maybeToString = function (it) {
       return it === undefined ? it : String(it);
     };
@@ -13097,8 +13097,8 @@
 
     // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
     var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function () {
-      if (/./[REPLACE]) {
-        return /./[REPLACE]('a', '$0') === '';
+      if (/./[REPLACE$1]) {
+        return /./[REPLACE$1]('a', '$0') === '';
       }
       return false;
     }();
@@ -13123,7 +13123,7 @@
       // https://tc39.es/ecma262/#sec-string.prototype.replace
       function replace(searchValue, replaceValue) {
         var O = requireObjectCoercible(this);
-        var replacer = isNullOrUndefined(searchValue) ? undefined : getMethod(searchValue, REPLACE);
+        var replacer = isNullOrUndefined(searchValue) ? undefined : getMethod(searchValue, REPLACE$1);
         return replacer ? functionCall(replacer, searchValue, O, replaceValue) : functionCall(nativeReplace, toString_1(O), searchValue, replaceValue);
       },
       // `RegExp.prototype[@@replace]` method
@@ -13131,7 +13131,7 @@
       function (string, replaceValue) {
         var rx = anObject(this);
         var S = toString_1(string);
-        if (typeof replaceValue == 'string' && stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf(replaceValue, '$<') === -1) {
+        if (typeof replaceValue == 'string' && stringIndexOf$1(replaceValue, UNSAFE_SUBSTITUTE) === -1 && stringIndexOf$1(replaceValue, '$<') === -1) {
           var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
           if (res.done) return res.value;
         }
@@ -13156,7 +13156,7 @@
         for (var i = 0; i < results.length; i++) {
           result = results[i];
           var matched = toString_1(result[0]);
-          var position = max$2(min$2(toIntegerOrInfinity(result.index), S.length), 0);
+          var position = max$3(min$2(toIntegerOrInfinity(result.index), S.length), 0);
           var captures = [];
           // NOTE: This is equivalent to
           //   captures = result.slice(1).map(maybeToString)
@@ -13173,11 +13173,11 @@
             replacement = getSubstitution(matched, S, position, captures, namedCaptures, replaceValue);
           }
           if (position >= nextSourcePosition) {
-            accumulatedResult += stringSlice$1(S, nextSourcePosition, position) + replacement;
+            accumulatedResult += stringSlice$2(S, nextSourcePosition, position) + replacement;
             nextSourcePosition = position + matched.length;
           }
         }
-        return accumulatedResult + stringSlice$1(S, nextSourcePosition);
+        return accumulatedResult + stringSlice$2(S, nextSourcePosition);
       }];
     }, !REPLACE_SUPPORTS_NAMED_GROUPS || !REPLACE_KEEPS_$0 || REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
 
@@ -13239,7 +13239,7 @@
     var $String = String;
     var floor$1 = Math.floor;
     var repeat = functionUncurryThis(stringRepeat);
-    var stringSlice = functionUncurryThis(''.slice);
+    var stringSlice$1 = functionUncurryThis(''.slice);
     var nativeToFixed = functionUncurryThis(1.0.toFixed);
     var pow = function (x, n, acc) {
       return n === 0 ? acc : n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc);
@@ -13347,7 +13347,7 @@
         }
         if (fractDigits > 0) {
           k = result.length;
-          result = sign + (k <= fractDigits ? '0.' + repeat('0', fractDigits - k) + result : stringSlice(result, 0, k - fractDigits) + '.' + stringSlice(result, k - fractDigits));
+          result = sign + (k <= fractDigits ? '0.' + repeat('0', fractDigits - k) + result : stringSlice$1(result, 0, k - fractDigits) + '.' + stringSlice$1(result, k - fractDigits));
         } else {
           result = sign + result;
         }
@@ -17410,10 +17410,104 @@
       return _createClass$1(TaskEditorDialog);
     }(SvelteComponent);
 
+    // @@match logic
+    fixRegexpWellKnownSymbolLogic('match', function (MATCH, nativeMatch, maybeCallNative) {
+      return [
+      // `String.prototype.match` method
+      // https://tc39.es/ecma262/#sec-string.prototype.match
+      function match(regexp) {
+        var O = requireObjectCoercible(this);
+        var matcher = isNullOrUndefined(regexp) ? undefined : getMethod(regexp, MATCH);
+        return matcher ? functionCall(matcher, regexp, O) : new RegExp(regexp)[MATCH](toString_1(O));
+      },
+      // `RegExp.prototype[@@match]` method
+      // https://tc39.es/ecma262/#sec-regexp.prototype-@@match
+      function (string) {
+        var rx = anObject(this);
+        var S = toString_1(string);
+        var res = maybeCallNative(nativeMatch, rx, S);
+        if (res.done) return res.value;
+        if (!rx.global) return regexpExecAbstract(rx, S);
+        var fullUnicode = rx.unicode;
+        rx.lastIndex = 0;
+        var A = [];
+        var n = 0;
+        var result;
+        while ((result = regexpExecAbstract(rx, S)) !== null) {
+          var matchStr = toString_1(result[0]);
+          A[n] = matchStr;
+          if (matchStr === '') rx.lastIndex = advanceStringIndex(S, toLength(rx.lastIndex), fullUnicode);
+          n++;
+        }
+        return n === 0 ? null : A;
+      }];
+    });
+
+    var RegExpPrototype = RegExp.prototype;
+    var regexpGetFlags = function (R) {
+      var flags = R.flags;
+      return flags === undefined && !('flags' in RegExpPrototype) && !hasOwnProperty_1(R, 'flags') && objectIsPrototypeOf(RegExpPrototype, R) ? functionCall(regexpFlags, R) : flags;
+    };
+
+    var REPLACE = wellKnownSymbol('replace');
+    var $TypeError$1 = TypeError;
+    var indexOf$1 = functionUncurryThis(''.indexOf);
+    functionUncurryThis(''.replace);
+    var stringSlice = functionUncurryThis(''.slice);
+    var max$2 = Math.max;
+    var stringIndexOf = function (string, searchValue, fromIndex) {
+      if (fromIndex > string.length) return -1;
+      if (searchValue === '') return fromIndex;
+      return indexOf$1(string, searchValue, fromIndex);
+    };
+
+    // `String.prototype.replaceAll` method
+    // https://tc39.es/ecma262/#sec-string.prototype.replaceall
+    _export({
+      target: 'String',
+      proto: true
+    }, {
+      replaceAll: function replaceAll(searchValue, replaceValue) {
+        var O = requireObjectCoercible(this);
+        var IS_REG_EXP, flags, replacer, string, searchString, functionalReplace, searchLength, advanceBy, replacement;
+        var position = 0;
+        var endOfLastMatch = 0;
+        var result = '';
+        if (!isNullOrUndefined(searchValue)) {
+          IS_REG_EXP = isRegexp(searchValue);
+          if (IS_REG_EXP) {
+            flags = toString_1(requireObjectCoercible(regexpGetFlags(searchValue)));
+            if (!~indexOf$1(flags, 'g')) throw $TypeError$1('`.replaceAll` does not allow non-global regexes');
+          }
+          replacer = getMethod(searchValue, REPLACE);
+          if (replacer) {
+            return functionCall(replacer, searchValue, O, replaceValue);
+          }
+        }
+        string = toString_1(O);
+        searchString = toString_1(searchValue);
+        functionalReplace = isCallable(replaceValue);
+        if (!functionalReplace) replaceValue = toString_1(replaceValue);
+        searchLength = searchString.length;
+        advanceBy = max$2(1, searchLength);
+        position = stringIndexOf(string, searchString, 0);
+        while (position !== -1) {
+          replacement = functionalReplace ? toString_1(replaceValue(searchString, position, string)) : getSubstitution(searchString, string, position, [], undefined, replaceValue);
+          result += stringSlice(string, endOfLastMatch, position) + replacement;
+          endOfLastMatch = position + searchLength;
+          position = stringIndexOf(string, searchString, position + advanceBy);
+        }
+        if (endOfLastMatch < string.length) {
+          result += stringSlice(string, endOfLastMatch);
+        }
+        return result;
+      }
+    });
+
     function create_if_block_1$7(ctx) {
       var span;
       function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[16] === InputMethods.decimal) return create_if_block_2$6;
+        if ( /*inputMethod*/ctx[17] === InputMethods.decimal) return create_if_block_2$6;
         return create_else_block$6;
       }
       var current_block_type = select_block_type(ctx);
@@ -17439,7 +17533,7 @@
       };
     }
 
-    // (74:5) {:else}
+    // (75:5) {:else}
     function create_else_block$6(ctx) {
       var label;
       var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
@@ -17459,9 +17553,9 @@
           t2 = space$1();
           input = element("input");
           input.autofocus = true;
-          attr(input, "type", "time");
+          attr(input, "type", "text");
           attr(input, "name", "duration-time");
-          attr(input, "placeholder", "");
+          attr(input, "placeholder", "--:--");
           attr(input, "class", "duration-input");
           input.required = true;
         },
@@ -17475,12 +17569,12 @@
           set_input_value(input, /*durationTimeString*/ctx[14]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[23]), listen(input, "input", /*input_handler_1*/ctx[24])];
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[24]), listen(input, "input", /*input_handler_1*/ctx[25])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*durationTimeString*/16384) {
+          if (dirty[0] & /*durationTimeString*/16384 && input.value !== /*durationTimeString*/ctx[14]) {
             set_input_value(input, /*durationTimeString*/ctx[14]);
           }
         },
@@ -17494,7 +17588,7 @@
       };
     }
 
-    // (51:5) {#if inputMethod === InputMethods.decimal}
+    // (52:5) {#if inputMethod === InputMethods.decimal}
     function create_if_block_2$6(ctx) {
       var label;
       var t0_value = translate("timemanager", "Duration (in hrs.)") + "";
@@ -17530,7 +17624,7 @@
           set_input_value(input, /*duration*/ctx[10]);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[21]), listen(input, "input", /*input_handler*/ctx[22])];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[22]), listen(input, "input", /*input_handler*/ctx[23])];
             mounted = true;
           }
         },
@@ -17549,7 +17643,7 @@
       };
     }
 
-    // (175:3) {#if !isServer}
+    // (189:3) {#if !isServer}
     function create_if_block$d(ctx) {
       var button;
       var mounted;
@@ -17863,7 +17957,7 @@
           append(div0, t40);
           if (if_block1) if_block1.m(div0, null);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[25]), listen(input0, "input", /*input_handler_2*/ctx[26]), listen(input1, "input", /*input1_input_handler*/ctx[27]), listen(input1, "input", /*input_handler_3*/ctx[28]), listen(input2, "input", /*input2_input_handler*/ctx[29]), listen(textarea, "input", /*input_handler_4*/ctx[30]), listen(form, "submit", prevent_default( /*submit*/ctx[17]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[26]), listen(input0, "input", /*input_handler_2*/ctx[27]), listen(input1, "input", /*input1_input_handler*/ctx[28]), listen(input1, "input", /*input_handler_3*/ctx[29]), listen(input2, "input", /*input2_input_handler*/ctx[30]), listen(textarea, "input", /*input_handler_4*/ctx[31]), listen(form, "submit", prevent_default( /*submit*/ctx[18]))];
             mounted = true;
           }
         },
@@ -17963,6 +18057,7 @@
       var note = editTimeEntryData.note || "";
       var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
       var durationTimeString = Helpers.convertDecimalsToTimeDuration(editTimeEntryData.duration);
+      var backupDurationTimeString = durationTimeString;
       var submit = function submit() {
         onSubmit({
           duration,
@@ -17988,7 +18083,16 @@
         $$invalidate(14, durationTimeString);
       }
       var input_handler_1 = function input_handler_1() {
-        $$invalidate(10, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
+        var computedDuration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+        if (durationTimeString.match(/[^0-9:]/)) {
+          $$invalidate(14, durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, ''));
+        }
+        if (isNaN(computedDuration) || computedDuration > 24) {
+          $$invalidate(14, durationTimeString = backupDurationTimeString);
+          return;
+        }
+        $$invalidate(10, duration = computedDuration);
+        $$invalidate(15, backupDurationTimeString = durationTimeString);
         if (hasDate) {
           $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
         } else {
@@ -18026,13 +18130,13 @@
         if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
         if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
         if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
-        if ('onSubmit' in $$props) $$invalidate(18, onSubmit = $$props.onSubmit);
-        if ('editTimeEntryData' in $$props) $$invalidate(19, editTimeEntryData = $$props.editTimeEntryData);
+        if ('onSubmit' in $$props) $$invalidate(19, onSubmit = $$props.onSubmit);
+        if ('editTimeEntryData' in $$props) $$invalidate(20, editTimeEntryData = $$props.editTimeEntryData);
         if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
         if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
-        if ('settings' in $$props) $$invalidate(20, settings = $$props.settings);
+        if ('settings' in $$props) $$invalidate(21, settings = $$props.settings);
       };
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, hasDate, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
+      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, backupDurationTimeString, hasDate, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -18049,11 +18153,11 @@
           taskName: 4,
           isServer: 5,
           onCancel: 6,
-          onSubmit: 18,
-          editTimeEntryData: 19,
+          onSubmit: 19,
+          editTimeEntryData: 20,
           timeEditorCaption: 7,
           timeEditorButtonCaption: 8,
-          settings: 20
+          settings: 21
         }, null, [-1, -1]);
         return _this;
       }
@@ -27318,37 +27422,37 @@
 
     function get_each_context$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[89] = list[i];
+      child_ctx[90] = list[i];
       return child_ctx;
     }
     function get_each_context_1$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[92] = list[i];
+      child_ctx[93] = list[i];
       return child_ctx;
     }
     function get_each_context_2$1(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[95] = list[i];
-      child_ctx[96] = list;
-      child_ctx[97] = i;
+      child_ctx[96] = list[i];
+      child_ctx[97] = list;
+      child_ctx[98] = i;
       return child_ctx;
     }
     function get_each_context_3(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[98] = list[i];
-      child_ctx[99] = list;
-      child_ctx[100] = i;
+      child_ctx[99] = list[i];
+      child_ctx[100] = list;
+      child_ctx[101] = i;
       return child_ctx;
     }
     function get_each_context_4(ctx, list, i) {
       var child_ctx = ctx.slice();
-      child_ctx[101] = list[i];
-      child_ctx[102] = list;
-      child_ctx[100] = i;
+      child_ctx[102] = list[i];
+      child_ctx[103] = list;
+      child_ctx[101] = i;
       return child_ctx;
     }
 
-    // (437:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
+    // (438:2) {#if showNoteAutosuggest && noteAutosuggestList?.length}
     function create_if_block_8(ctx) {
       var div;
       var ul;
@@ -27378,12 +27482,12 @@
             }
           }
           if (!mounted) {
-            dispose = action_destroyer(/*noteSuggestPopperContent*/ctx[30].call(null, div, /*extraOpts*/ctx[26]));
+            dispose = action_destroyer(/*noteSuggestPopperContent*/ctx[31].call(null, div, /*extraOpts*/ctx[27]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/8915170) {
+          if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/17828066) {
             each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
             var _i3;
             for (_i3 = 0; _i3 < each_value_4.length; _i3 += 1) {
@@ -27413,33 +27517,33 @@
       };
     }
 
-    // (440:5) {#each noteAutosuggestList as suggestion, index}
+    // (441:5) {#each noteAutosuggestList as suggestion, index}
     function create_each_block_4(ctx) {
-      var _ctx$101$time$note, _ctx$, _ctx$101$client$name, _ctx$2, _ctx$101$project$name, _ctx$3, _ctx$101$task$name, _ctx$4;
+      var _ctx$102$time$note, _ctx$, _ctx$102$client$name, _ctx$2, _ctx$102$project$name, _ctx$3, _ctx$102$task$name, _ctx$4;
       var li;
       var a;
-      var t0_value = ( /*suggestion*/(_ctx$101$time$note = (_ctx$ = ctx[101]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$101$time$note !== void 0 ? _ctx$101$time$note : "") + "";
+      var t0_value = ( /*suggestion*/(_ctx$102$time$note = (_ctx$ = ctx[102]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$102$time$note !== void 0 ? _ctx$102$time$note : "") + "";
       var t0;
       var t1;
-      var t2_value = ( /*suggestion*/(_ctx$101$client$name = (_ctx$2 = ctx[101]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$101$client$name !== void 0 ? _ctx$101$client$name : "") + "";
+      var t2_value = ( /*suggestion*/(_ctx$102$client$name = (_ctx$2 = ctx[102]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$102$client$name !== void 0 ? _ctx$102$client$name : "") + "";
       var t2;
       var t3;
-      var t4_value = ( /*suggestion*/(_ctx$101$project$name = (_ctx$3 = ctx[101]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$101$project$name !== void 0 ? _ctx$101$project$name : "") + "";
+      var t4_value = ( /*suggestion*/(_ctx$102$project$name = (_ctx$3 = ctx[102]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$102$project$name !== void 0 ? _ctx$102$project$name : "") + "";
       var t4;
       var t5;
-      var t6_value = ( /*suggestion*/(_ctx$101$task$name = (_ctx$4 = ctx[101]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$101$task$name !== void 0 ? _ctx$101$task$name : "") + "";
+      var t6_value = ( /*suggestion*/(_ctx$102$task$name = (_ctx$4 = ctx[102]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$102$task$name !== void 0 ? _ctx$102$task$name : "") + "";
       var t6;
       var t7;
-      var index = /*index*/ctx[100];
+      var index = /*index*/ctx[101];
       var t8;
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding*/ctx[52](a, index)
+        return (/*a_binding*/ctx[53](a, index)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding*/ctx[52](null, index)
+        return (/*a_binding*/ctx[53](null, index)
         );
       };
       function click_handler_1() {
@@ -27447,11 +27551,11 @@
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
-        return (/*click_handler_1*/(_ctx = ctx)[53].apply(_ctx, [/*suggestion*/ctx[101]].concat(args))
+        return (/*click_handler_1*/(_ctx = ctx)[54].apply(_ctx, [/*suggestion*/ctx[102]].concat(args))
         );
       }
       function focus_handler_1() {
-        return (/*focus_handler_1*/ctx[54]( /*index*/ctx[100])
+        return (/*focus_handler_1*/ctx[55]( /*index*/ctx[101])
         );
       }
       return {
@@ -27490,15 +27594,15 @@
           }
         },
         p(new_ctx, dirty) {
-          var _ctx$101$time$note2, _ctx$5, _ctx$101$client$name2, _ctx$6, _ctx$101$project$name2, _ctx$7, _ctx$101$task$name2, _ctx$8;
+          var _ctx$102$time$note2, _ctx$5, _ctx$102$client$name2, _ctx$6, _ctx$102$project$name2, _ctx$7, _ctx$102$task$name2, _ctx$8;
           ctx = new_ctx;
-          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$101$time$note2 = (_ctx$5 = ctx[101]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$101$time$note2 !== void 0 ? _ctx$101$time$note2 : "") + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$101$client$name2 = (_ctx$6 = ctx[101]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$101$client$name2 !== void 0 ? _ctx$101$client$name2 : "") + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$101$project$name2 = (_ctx$7 = ctx[101]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$101$project$name2 !== void 0 ? _ctx$101$project$name2 : "") + "")) set_data(t4, t4_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$101$task$name2 = (_ctx$8 = ctx[101]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$101$task$name2 !== void 0 ? _ctx$101$task$name2 : "") + "")) set_data(t6, t6_value);
-          if (index !== /*index*/ctx[100]) {
+          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$102$time$note2 = (_ctx$5 = ctx[102]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$102$time$note2 !== void 0 ? _ctx$102$time$note2 : "") + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$102$client$name2 = (_ctx$6 = ctx[102]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$102$client$name2 !== void 0 ? _ctx$102$client$name2 : "") + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$102$project$name2 = (_ctx$7 = ctx[102]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$102$project$name2 !== void 0 ? _ctx$102$project$name2 : "") + "")) set_data(t4, t4_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$102$task$name2 = (_ctx$8 = ctx[102]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$102$task$name2 !== void 0 ? _ctx$102$task$name2 : "") + "")) set_data(t6, t6_value);
+          if (index !== /*index*/ctx[101]) {
             unassign_a();
-            index = /*index*/ctx[100];
+            index = /*index*/ctx[101];
             assign_a();
           }
         },
@@ -27513,7 +27617,7 @@
       };
     }
 
-    // (505:1) {#if showDurationSelector}
+    // (506:1) {#if showDurationSelector}
     function create_if_block_6$1(ctx) {
       var div;
       var span1;
@@ -27543,7 +27647,7 @@
       var mounted;
       var dispose;
       function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[40] === InputMethods.decimal) return create_if_block_7;
+        if ( /*inputMethod*/ctx[41] === InputMethods.decimal) return create_if_block_7;
         return create_else_block_1;
       }
       var current_block_type = select_block_type(ctx);
@@ -27627,7 +27731,7 @@
           append(label3, input2);
           set_input_value(input2, /*date*/ctx[10]);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[62]), listen(input0, "input", /*input_handler_3*/ctx[63]), listen(input1, "input", /*input1_input_handler*/ctx[64]), listen(input1, "input", /*input_handler_4*/ctx[65]), listen(input2, "input", /*input2_input_handler*/ctx[66]), listen(input2, "blur", /*blur_handler*/ctx[67]), action_destroyer(/*durationSelectorPopperContent*/ctx[32].call(null, div, /*extraOpts*/ctx[26])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
+            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[63]), listen(input0, "input", /*input_handler_3*/ctx[64]), listen(input1, "input", /*input1_input_handler*/ctx[65]), listen(input1, "input", /*input_handler_4*/ctx[66]), listen(input2, "input", /*input2_input_handler*/ctx[67]), listen(input2, "blur", /*blur_handler*/ctx[68]), action_destroyer(/*durationSelectorPopperContent*/ctx[33].call(null, div, /*extraOpts*/ctx[27])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
             mounted = true;
           }
         },
@@ -27654,7 +27758,7 @@
       };
     }
 
-    // (541:5) {:else}
+    // (542:5) {:else}
     function create_else_block_1(ctx) {
       var input;
       var mounted;
@@ -27663,23 +27767,23 @@
         c() {
           input = element("input");
           attr(input, "id", "quick-add-time");
-          attr(input, "type", "time");
+          attr(input, "type", "text");
           attr(input, "name", "duration");
-          attr(input, "placeholder", "");
+          attr(input, "placeholder", "--:--");
           attr(input, "class", "duration-input");
         },
         m(target, anchor) {
           insert(target, input, anchor);
           set_input_value(input, /*durationTimeString*/ctx[17]);
           /*input_binding_1*/
-          ctx[61](input);
+          ctx[62](input);
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[59]), listen(input, "input", /*input_handler_2*/ctx[60])];
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[60]), listen(input, "input", /*input_handler_2*/ctx[61])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*durationTimeString*/131072) {
+          if (dirty[0] & /*durationTimeString*/131072 && input.value !== /*durationTimeString*/ctx[17]) {
             set_input_value(input, /*durationTimeString*/ctx[17]);
           }
         },
@@ -27689,14 +27793,14 @@
           }
 
           /*input_binding_1*/
-          ctx[61](null);
+          ctx[62](null);
           mounted = false;
           run_all(dispose);
         }
       };
     }
 
-    // (526:5) {#if inputMethod === InputMethods.decimal}
+    // (527:5) {#if inputMethod === InputMethods.decimal}
     function create_if_block_7(ctx) {
       var input;
       var mounted;
@@ -27714,9 +27818,9 @@
           insert(target, input, anchor);
           set_input_value(input, /*duration*/ctx[7]);
           /*input_binding*/
-          ctx[58](input);
+          ctx[59](input);
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[56]), listen(input, "input", /*input_handler_1*/ctx[57])];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[57]), listen(input, "input", /*input_handler_1*/ctx[58])];
             mounted = true;
           }
         },
@@ -27731,14 +27835,14 @@
           }
 
           /*input_binding*/
-          ctx[58](null);
+          ctx[59](null);
           mounted = false;
           run_all(dispose);
         }
       };
     }
 
-    // (632:2) {:else}
+    // (645:2) {:else}
     function create_else_block(ctx) {
       var t0_value = translate("timemanager", "Client, project or task") + "";
       var t0;
@@ -27757,15 +27861,15 @@
           attr(input, "type", "text");
           attr(input, "placeholder", translate("timemanager", "Select..."));
           input.disabled = /*showTaskSelector*/ctx[0];
-          input.value = input_value_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "";
-          attr(input, "title", input_title_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "");
+          input.value = input_value_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "";
+          attr(input, "title", input_title_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "");
         },
         m(target, anchor) {
           insert(target, t0, anchor);
           insert(target, t1, anchor);
           insert(target, input, anchor);
           if (!mounted) {
-            dispose = [action_destroyer(/*taskSelectorPopperRef*/ctx[27].call(null, input)), listen(input, "focus", /*handleShowTaskSelector*/ctx[37])];
+            dispose = [action_destroyer(/*taskSelectorPopperRef*/ctx[28].call(null, input)), listen(input, "focus", /*handleShowTaskSelector*/ctx[38])];
             mounted = true;
           }
         },
@@ -27773,10 +27877,10 @@
           if (dirty[0] & /*showTaskSelector*/1) {
             input.disabled = /*showTaskSelector*/ctx[0];
           }
-          if (dirty[0] & /*selected*/524288 && input_value_value !== (input_value_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "") && input.value !== input_value_value) {
+          if (dirty[0] & /*selected*/1048576 && input_value_value !== (input_value_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "") && input.value !== input_value_value) {
             input.value = input_value_value;
           }
-          if (dirty[0] & /*selected*/524288 && input_title_value !== (input_title_value = /*selected*/ctx[19] ? "".concat( /*selected*/ctx[19].client.label, " \u203A ").concat( /*selected*/ctx[19].project.label, " \u203A ").concat( /*selected*/ctx[19].task.label) : "")) {
+          if (dirty[0] & /*selected*/1048576 && input_title_value !== (input_title_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "")) {
             attr(input, "title", input_title_value);
           }
         },
@@ -27792,7 +27896,7 @@
       };
     }
 
-    // (608:2) {#if selected && !showTaskSelector}
+    // (621:2) {#if selected && !showTaskSelector}
     function create_if_block_5$1(ctx) {
       var a;
       var ul;
@@ -27800,21 +27904,21 @@
       var span0;
       var t1;
       var span1;
-      var t2_value = /*selected*/ctx[19].client.label + "";
+      var t2_value = /*selected*/ctx[20].client.label + "";
       var t2;
       var t3;
       var li1;
       var span2;
       var t5;
       var span3;
-      var t6_value = /*selected*/ctx[19].project.label + "";
+      var t6_value = /*selected*/ctx[20].project.label + "";
       var t6;
       var t7;
       var li2;
       var span4;
       var t9;
       var span5;
-      var t10_value = /*selected*/ctx[19].task.label + "";
+      var t10_value = /*selected*/ctx[20].task.label + "";
       var t10;
       var t11;
       var input;
@@ -27880,14 +27984,14 @@
           insert(target, t11, anchor);
           insert(target, input, anchor);
           if (!mounted) {
-            dispose = [listen(a, "focus", /*handleShowTaskSelector*/ctx[37]), listen(a, "click", /*handleShowTaskSelector*/ctx[37]), listen(input, "focus", /*handleShowTaskSelector*/ctx[37])];
+            dispose = [listen(a, "focus", /*handleShowTaskSelector*/ctx[38]), listen(a, "click", /*handleShowTaskSelector*/ctx[38]), listen(input, "focus", /*handleShowTaskSelector*/ctx[38])];
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*selected*/524288 && t2_value !== (t2_value = /*selected*/ctx[19].client.label + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*selected*/524288 && t6_value !== (t6_value = /*selected*/ctx[19].project.label + "")) set_data(t6, t6_value);
-          if (dirty[0] & /*selected*/524288 && t10_value !== (t10_value = /*selected*/ctx[19].task.label + "")) set_data(t10, t10_value);
+          if (dirty[0] & /*selected*/1048576 && t2_value !== (t2_value = /*selected*/ctx[20].client.label + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*selected*/1048576 && t6_value !== (t6_value = /*selected*/ctx[20].project.label + "")) set_data(t6, t6_value);
+          if (dirty[0] & /*selected*/1048576 && t10_value !== (t10_value = /*selected*/ctx[20].task.label + "")) set_data(t10, t10_value);
         },
         d(detaching) {
           if (detaching) {
@@ -27901,7 +28005,7 @@
       };
     }
 
-    // (646:1) {#if showTaskSelector}
+    // (659:1) {#if showTaskSelector}
     function create_if_block$4(ctx) {
       var _ctx$9;
       var div3;
@@ -27917,10 +28021,10 @@
       var div2;
       var mounted;
       var dispose;
-      var if_block0 = /*lastUsed*/((_ctx$9 = ctx[33]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && ! /*searchValue*/ctx[14] && create_if_block_3$1(ctx);
+      var if_block0 = /*lastUsed*/((_ctx$9 = ctx[34]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && ! /*searchValue*/ctx[14] && create_if_block_3$1(ctx);
       function select_block_type_2(ctx, dirty) {
         var _ctx$10, _ctx$11;
-        if ( /*searchResults*/(_ctx$10 = ctx[24]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
+        if ( /*searchResults*/(_ctx$10 = ctx[25]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
         if ( /*searchValue*/(_ctx$11 = ctx[14]) !== null && _ctx$11 !== void 0 && _ctx$11.length) return create_if_block_2$1;
       }
       var current_block_type = select_block_type_2(ctx);
@@ -27966,7 +28070,7 @@
           append(label, t1);
           append(label, input);
           /*input_binding_2*/
-          ctx[68](input);
+          ctx[69](input);
           set_input_value(input, /*searchValue*/ctx[14]);
           append(div3, t2);
           append(div3, div0);
@@ -27978,7 +28082,7 @@
           append(div3, div2);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_2*/ctx[69]), listen(input, "input", /*input_handler_5*/ctx[70]), action_destroyer(/*taskSelectorPopperContent*/ctx[28].call(null, div3, /*extraOpts*/ctx[26])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
+            dispose = [listen(input, "input", /*input_input_handler_2*/ctx[70]), listen(input, "input", /*input_handler_5*/ctx[71]), action_destroyer(/*taskSelectorPopperContent*/ctx[29].call(null, div3, /*extraOpts*/ctx[27])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
             mounted = true;
           }
         },
@@ -27987,7 +28091,7 @@
           if (dirty[0] & /*searchValue*/16384 && input.value !== /*searchValue*/ctx[14]) {
             set_input_value(input, /*searchValue*/ctx[14]);
           }
-          if ( /*lastUsed*/(_ctx$12 = ctx[33]) !== null && _ctx$12 !== void 0 && _ctx$12.length && ! /*searchValue*/ctx[14]) {
+          if ( /*lastUsed*/(_ctx$12 = ctx[34]) !== null && _ctx$12 !== void 0 && _ctx$12.length && ! /*searchValue*/ctx[14]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -28016,7 +28120,7 @@
           }
 
           /*input_binding_2*/
-          ctx[68](null);
+          ctx[69](null);
           if (if_block0) if_block0.d();
           if (if_block1) {
             if_block1.d();
@@ -28027,10 +28131,10 @@
       };
     }
 
-    // (675:4) {#if lastUsed?.length && !searchValue}
+    // (688:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
-      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[33]);
+      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[34]);
       var each_blocks = [];
       for (var i = 0; i < each_value_3.length; i += 1) {
         each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
@@ -28052,8 +28156,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/2621457 | dirty[1] & /*lastUsed*/4) {
-            each_value_3 = ensure_array_like( /*lastUsed*/ctx[33]);
+          if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/5242897 | dirty[1] & /*lastUsed*/8) {
+            each_value_3 = ensure_array_like( /*lastUsed*/ctx[34]);
             var _i6;
             for (_i6 = 0; _i6 < each_value_3.length; _i6 += 1) {
               var child_ctx = get_each_context_3(ctx, each_value_3, _i6);
@@ -28080,7 +28184,7 @@
       };
     }
 
-    // (679:8) {#if index === 0}
+    // (692:8) {#if index === 0}
     function create_if_block_4$1(ctx) {
       var span;
       return {
@@ -28100,7 +28204,7 @@
       };
     }
 
-    // (677:6) {#each lastUsed as entry, index}
+    // (690:6) {#each lastUsed as entry, index}
     function create_each_block_3(ctx) {
       var li3;
       var t0;
@@ -28120,17 +28224,17 @@
       var span4;
       var t10;
       var span5;
-      var index = /*index*/ctx[100];
+      var index = /*index*/ctx[101];
       var t12;
       var mounted;
       var dispose;
-      var if_block = /*index*/ctx[100] === 0 && create_if_block_4$1();
+      var if_block = /*index*/ctx[101] === 0 && create_if_block_4$1();
       var assign_a = function assign_a() {
-        return (/*a_binding_1*/ctx[71](a, index)
+        return (/*a_binding_1*/ctx[72](a, index)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_1*/ctx[71](null, index)
+        return (/*a_binding_1*/ctx[72](null, index)
         );
       };
       function click_handler_3() {
@@ -28138,11 +28242,11 @@
         for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
           args[_key2] = arguments[_key2];
         }
-        return (/*click_handler_3*/(_ctx2 = ctx)[72].apply(_ctx2, [/*entry*/ctx[98]].concat(args))
+        return (/*click_handler_3*/(_ctx2 = ctx)[73].apply(_ctx2, [/*entry*/ctx[99]].concat(args))
         );
       }
       function focus_handler_2() {
-        return (/*focus_handler_2*/ctx[73]( /*index*/ctx[100])
+        return (/*focus_handler_2*/ctx[74]( /*index*/ctx[101])
         );
       }
       return {
@@ -28157,21 +28261,21 @@
           span0.textContent = "".concat(translate("timemanager", "Client"));
           t2 = space$1();
           span1 = element("span");
-          span1.textContent = "".concat( /*entry*/ctx[98].client.name);
+          span1.textContent = "".concat( /*entry*/ctx[99].client.name);
           t4 = space$1();
           li1 = element("li");
           span2 = element("span");
           span2.textContent = "".concat(translate("timemanager", "Project"));
           t6 = space$1();
           span3 = element("span");
-          span3.textContent = "".concat( /*entry*/ctx[98].project.name);
+          span3.textContent = "".concat( /*entry*/ctx[99].project.name);
           t8 = space$1();
           li2 = element("li");
           span4 = element("span");
           span4.textContent = "".concat(translate("timemanager", "Task"));
           t10 = space$1();
           span5 = element("span");
-          span5.textContent = "".concat( /*entry*/ctx[98].task.name);
+          span5.textContent = "".concat( /*entry*/ctx[99].task.name);
           t12 = space$1();
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
@@ -28212,9 +28316,9 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if (index !== /*index*/ctx[100]) {
+          if (index !== /*index*/ctx[101]) {
             unassign_a();
-            index = /*index*/ctx[100];
+            index = /*index*/ctx[101];
             assign_a();
           }
         },
@@ -28230,7 +28334,7 @@
       };
     }
 
-    // (766:34) 
+    // (779:34) 
     function create_if_block_2$1(ctx) {
       var p;
       return {
@@ -28251,10 +28355,10 @@
       };
     }
 
-    // (722:4) {#if searchResults?.length}
+    // (735:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
-      var each_value = ensure_array_like( /*searchResults*/ctx[24]);
+      var each_value = ensure_array_like( /*searchResults*/ctx[25]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
@@ -28275,8 +28379,8 @@
           insert(target, each_1_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
-            each_value = ensure_array_like( /*searchResults*/ctx[24]);
+          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
+            each_value = ensure_array_like( /*searchResults*/ctx[25]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context$1(ctx, each_value, _i9);
@@ -28303,22 +28407,22 @@
       };
     }
 
-    // (732:12) {#each project.tasks as task}
+    // (745:12) {#each project.tasks as task}
     function create_each_block_2$1(ctx) {
       var li;
       var a;
-      var t0_value = /*task*/ctx[95].label + "";
+      var t0_value = /*task*/ctx[96].label + "";
       var t0;
-      var task = /*task*/ctx[95];
+      var task = /*task*/ctx[96];
       var t1;
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding_2*/ctx[74](a, task)
+        return (/*a_binding_2*/ctx[75](a, task)
         );
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_2*/ctx[74](null, task)
+        return (/*a_binding_2*/ctx[75](null, task)
         );
       };
       function click_handler_4() {
@@ -28326,11 +28430,11 @@
         for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
           args[_key3] = arguments[_key3];
         }
-        return (/*click_handler_4*/(_ctx3 = ctx)[75].apply(_ctx3, [/*client*/ctx[89], /*project*/ctx[92], /*task*/ctx[95]].concat(args))
+        return (/*click_handler_4*/(_ctx3 = ctx)[76].apply(_ctx3, [/*client*/ctx[90], /*project*/ctx[93], /*task*/ctx[96]].concat(args))
         );
       }
       function focus_handler_3() {
-        return (/*focus_handler_3*/ctx[76]( /*task*/ctx[95])
+        return (/*focus_handler_3*/ctx[77]( /*task*/ctx[96])
         );
       }
       return {
@@ -28356,10 +28460,10 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*task*/ctx[95].label + "")) set_data(t0, t0_value);
-          if (task !== /*task*/ctx[95]) {
+          if (dirty[0] & /*searchResults*/33554432 && t0_value !== (t0_value = /*task*/ctx[96].label + "")) set_data(t0, t0_value);
+          if (task !== /*task*/ctx[96]) {
             unassign_a();
-            task = /*task*/ctx[95];
+            task = /*task*/ctx[96];
             assign_a();
           }
         },
@@ -28374,16 +28478,16 @@
       };
     }
 
-    // (728:9) {#each client.projects as project}
+    // (741:9) {#each client.projects as project}
     function create_each_block_1$1(ctx) {
       var li;
       var span;
-      var t0_value = /*project*/ctx[92].label + "";
+      var t0_value = /*project*/ctx[93].label + "";
       var t0;
       var t1;
       var ul;
       var t2;
-      var each_value_2 = ensure_array_like( /*project*/ctx[92].tasks);
+      var each_value_2 = ensure_array_like( /*project*/ctx[93].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
@@ -28415,9 +28519,9 @@
           append(li, t2);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*project*/ctx[92].label + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
-            each_value_2 = ensure_array_like( /*project*/ctx[92].tasks);
+          if (dirty[0] & /*searchResults*/33554432 && t0_value !== (t0_value = /*project*/ctx[93].label + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
+            each_value_2 = ensure_array_like( /*project*/ctx[93].tasks);
             var _i12;
             for (_i12 = 0; _i12 < each_value_2.length; _i12 += 1) {
               var child_ctx = get_each_context_2$1(ctx, each_value_2, _i12);
@@ -28444,17 +28548,17 @@
       };
     }
 
-    // (723:5) {#each searchResults as client}
+    // (736:5) {#each searchResults as client}
     function create_each_block$1(ctx) {
       var ul1;
       var li;
       var span;
-      var t0_value = /*client*/ctx[89].label + "";
+      var t0_value = /*client*/ctx[90].label + "";
       var t0;
       var t1;
       var ul0;
       var t2;
-      var each_value_1 = ensure_array_like( /*client*/ctx[89].projects);
+      var each_value_1 = ensure_array_like( /*client*/ctx[90].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
@@ -28489,9 +28593,9 @@
           append(ul1, t2);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*searchResults*/16777216 && t0_value !== (t0_value = /*client*/ctx[89].label + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/21495817) {
-            each_value_1 = ensure_array_like( /*client*/ctx[89].projects);
+          if (dirty[0] & /*searchResults*/33554432 && t0_value !== (t0_value = /*client*/ctx[90].label + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
+            each_value_1 = ensure_array_like( /*client*/ctx[90].projects);
             var _i15;
             for (_i15 = 0; _i15 < each_value_1.length; _i15 += 1) {
               var child_ctx = get_each_context_1$1(ctx, each_value_1, _i15);
@@ -28551,7 +28655,7 @@
       var if_block0 = /*showNoteAutosuggest*/ctx[1] && ( /*noteAutosuggestList*/(_ctx$13 = ctx[5]) === null || _ctx$13 === void 0 ? void 0 : _ctx$13.length) && create_if_block_8(ctx);
       var if_block1 = /*showDurationSelector*/ctx[2] && create_if_block_6$1(ctx);
       function select_block_type_1(ctx, dirty) {
-        if ( /*selected*/ctx[19] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
+        if ( /*selected*/ctx[20] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
         return create_else_block;
       }
       var current_block_type = select_block_type_1(ctx);
@@ -28599,20 +28703,20 @@
           attr(input1, "class", "duration-trigger");
           attr(input1, "type", "text");
           input1.value = input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*inputMethod*/ctx[40] === InputMethods.decimal ? /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$15 = ctx[7]) !== null && _ctx$15 !== void 0 ? _ctx$15 : 0),
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25]), "PP", /*localeOptions*/ctx[25]) : "?"
+            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$15 = ctx[7]) !== null && _ctx$15 !== void 0 ? _ctx$15 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
           });
           input1.disabled = /*showDurationSelector*/ctx[2];
           attr(input1, "data-cy", "quick-add-duration");
           attr(input1, "data-hideevent", "skip");
           attr(input2, "type", "hidden");
-          attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[20] ? " error" : ""));
+          attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[21] ? " error" : ""));
           attr(label2, "data-cy", "task-selector-trigger");
-          button.disabled = /*loading*/ctx[18];
+          button.disabled = /*loading*/ctx[19];
           attr(button, "type", "submit");
           attr(button, "class", "button primary button-w-icon icon-add");
           attr(span, "class", "actions");
-          attr(form, "class", form_class_value = "quick-add".concat( /*loading*/ctx[18] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "quick-add".concat( /*loading*/ctx[19] ? " icon-loading" : ""));
           attr(form, "data-cy", "quick-add-form");
         },
         m(target, anchor) {
@@ -28623,7 +28727,7 @@
           append(label0, input0);
           set_input_value(input0, /*note*/ctx[11]);
           /*input0_binding*/
-          ctx[49](input0);
+          ctx[50](input0);
           append(label0, t2);
           if (if_block0) if_block0.m(label0, null);
           append(form, t3);
@@ -28632,7 +28736,7 @@
           append(label1, t4);
           append(label1, input1);
           /*input1_binding*/
-          ctx[55](input1);
+          ctx[56](input1);
           append(form, t5);
           if (if_block1) if_block1.m(form, null);
           append(form, t6);
@@ -28647,7 +28751,7 @@
           append(span, button);
           append(button, t10);
           if (!mounted) {
-            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[34]), action_destroyer(/*noteSuggestPopperRef*/ctx[29].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[48]), listen(input0, "input", /*input_handler*/ctx[50]), listen(input0, "focus", /*focus_handler*/ctx[51]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[31].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[38]), listen(input1, "click", /*handleShowDurationSelector*/ctx[38]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[77])];
+            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[35]), action_destroyer(/*noteSuggestPopperRef*/ctx[30].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[49]), listen(input0, "input", /*input_handler*/ctx[51]), listen(input0, "focus", /*focus_handler*/ctx[52]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[32].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[39]), listen(input1, "click", /*handleShowDurationSelector*/ctx[39]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[78])];
             mounted = true;
           }
         },
@@ -28669,8 +28773,8 @@
             if_block0 = null;
           }
           if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*inputMethod*/ctx[40] === InputMethods.decimal ? /*duration*/(_ctx$17 = ctx[7]) !== null && _ctx$17 !== void 0 ? _ctx$17 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$18 = ctx[7]) !== null && _ctx$18 !== void 0 ? _ctx$18 : 0),
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[25]), "PP", /*localeOptions*/ctx[25]) : "?"
+            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$17 = ctx[7]) !== null && _ctx$17 !== void 0 ? _ctx$17 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$18 = ctx[7]) !== null && _ctx$18 !== void 0 ? _ctx$18 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
           })) && input1.value !== input1_value_value) {
             input1.value = input1_value_value;
           }
@@ -28699,7 +28803,7 @@
               if_block2.m(label2, null);
             }
           }
-          if (dirty[0] & /*taskError*/1048576 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[20] ? " error" : ""))) {
+          if (dirty[0] & /*taskError*/2097152 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[21] ? " error" : ""))) {
             attr(label2, "class", label2_class_value);
           }
           if ( /*showTaskSelector*/ctx[0]) {
@@ -28714,10 +28818,10 @@
             if_block3.d(1);
             if_block3 = null;
           }
-          if (dirty[0] & /*loading*/262144) {
-            button.disabled = /*loading*/ctx[18];
+          if (dirty[0] & /*loading*/524288) {
+            button.disabled = /*loading*/ctx[19];
           }
-          if (dirty[0] & /*loading*/262144 && form_class_value !== (form_class_value = "quick-add".concat( /*loading*/ctx[18] ? " icon-loading" : ""))) {
+          if (dirty[0] & /*loading*/524288 && form_class_value !== (form_class_value = "quick-add".concat( /*loading*/ctx[19] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -28729,10 +28833,10 @@
           }
 
           /*input0_binding*/
-          ctx[49](null);
+          ctx[50](null);
           if (if_block0) if_block0.d();
           /*input1_binding*/
-          ctx[55](null);
+          ctx[56](null);
           if (if_block1) if_block1.d();
           if_block2.d();
           if (if_block3) if_block3.d();
@@ -28878,9 +28982,9 @@
               var _noteAutosuggestList, _noteAutosuggestButto;
               var reachedEnd = currentFocusNoteIndex + 1 >= ((_noteAutosuggestList = noteAutosuggestList) === null || _noteAutosuggestList === void 0 ? void 0 : _noteAutosuggestList.length);
               if (reachedEnd) {
-                $$invalidate(23, currentFocusNoteIndex = 0);
+                $$invalidate(24, currentFocusNoteIndex = 0);
               } else {
-                $$invalidate(23, currentFocusNoteIndex++, currentFocusNoteIndex);
+                $$invalidate(24, currentFocusNoteIndex++, currentFocusNoteIndex);
               }
               (_noteAutosuggestButto = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto === void 0 ? void 0 : _noteAutosuggestButto.focus();
               break;
@@ -28889,9 +28993,9 @@
               var _lastUsedTasksButtons;
               var _reachedEnd = currentLastestFocusTaskIndex + 1 >= (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length);
               if (_reachedEnd) {
-                $$invalidate(21, currentLastestFocusTaskIndex = 0);
+                $$invalidate(22, currentLastestFocusTaskIndex = 0);
               } else {
-                $$invalidate(21, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
+                $$invalidate(22, currentLastestFocusTaskIndex++, currentLastestFocusTaskIndex);
               }
               (_lastUsedTasksButtons = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons === void 0 ? void 0 : _lastUsedTasksButtons.focus();
               break;
@@ -28900,9 +29004,9 @@
               var _tasksButtons$current;
               var _reachedEnd2 = currentFocusTaskIndex + 1 >= searchResultsNumTasks;
               if (_reachedEnd2) {
-                $$invalidate(22, currentFocusTaskIndex = 0);
+                $$invalidate(23, currentFocusTaskIndex = 0);
               } else {
-                $$invalidate(22, currentFocusTaskIndex++, currentFocusTaskIndex);
+                $$invalidate(23, currentFocusTaskIndex++, currentFocusTaskIndex);
               }
               (_tasksButtons$current = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current === void 0 ? void 0 : _tasksButtons$current.focus();
               break;
@@ -28914,9 +29018,9 @@
               var reachedStart = currentFocusNoteIndex - 1 < 0;
               if (reachedStart) {
                 var _noteAutosuggestList2;
-                $$invalidate(23, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
+                $$invalidate(24, currentFocusNoteIndex = ((_noteAutosuggestList2 = noteAutosuggestList) === null || _noteAutosuggestList2 === void 0 ? void 0 : _noteAutosuggestList2.length) - 1);
               } else {
-                $$invalidate(23, currentFocusNoteIndex--, currentFocusNoteIndex);
+                $$invalidate(24, currentFocusNoteIndex--, currentFocusNoteIndex);
               }
               (_noteAutosuggestButto2 = noteAutosuggestButtons[currentFocusNoteIndex]) === null || _noteAutosuggestButto2 === void 0 ? void 0 : _noteAutosuggestButto2.focus();
               break;
@@ -28925,9 +29029,9 @@
               var _lastUsedTasksButtons2;
               var _reachedStart = currentLastestFocusTaskIndex - 1 < 0;
               if (_reachedStart) {
-                $$invalidate(21, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
+                $$invalidate(22, currentLastestFocusTaskIndex = (lastUsed === null || lastUsed === void 0 ? void 0 : lastUsed.length) - 1);
               } else {
-                $$invalidate(21, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
+                $$invalidate(22, currentLastestFocusTaskIndex--, currentLastestFocusTaskIndex);
               }
               (_lastUsedTasksButtons2 = lastUsedTasksButtons[currentLastestFocusTaskIndex]) === null || _lastUsedTasksButtons2 === void 0 ? void 0 : _lastUsedTasksButtons2.focus();
               break;
@@ -28936,9 +29040,9 @@
               var _tasksButtons$current2;
               var _reachedStart2 = currentFocusTaskIndex - 1 < 0;
               if (_reachedStart2) {
-                $$invalidate(22, currentFocusTaskIndex = searchResultsNumTasks - 1);
+                $$invalidate(23, currentFocusTaskIndex = searchResultsNumTasks - 1);
               } else {
-                $$invalidate(22, currentFocusTaskIndex--, currentFocusTaskIndex);
+                $$invalidate(23, currentFocusTaskIndex--, currentFocusTaskIndex);
               }
               (_tasksButtons$current2 = tasksButtons[currentFocusTaskIndex]) === null || _tasksButtons$current2 === void 0 ? void 0 : _tasksButtons$current2.focus();
               break;
@@ -28963,14 +29067,14 @@
       };
       var search = function search(q) {
         if (!q) {
-          $$invalidate(24, searchResults = []);
+          $$invalidate(25, searchResults = []);
           return;
         }
         var clientsResults = clientsFuse.search(q);
         var projectsResults = projectsFuse.search(q);
         var tasksResults = tasksFuse.search(q);
         var taskIndex = -1;
-        $$invalidate(24, searchResults = _toConsumableArray(groupedData).map(function (client) {
+        $$invalidate(25, searchResults = _toConsumableArray(groupedData).map(function (client) {
           var _clientFound$score;
           if (!client) {
             return {
@@ -29046,10 +29150,10 @@
         // We want to use the task input as a button
         // and then focus the actual search input
         (_searchInput = searchInput) === null || _searchInput === void 0 ? void 0 : _searchInput.focus();
-        $$invalidate(22, currentFocusTaskIndex = -1);
-        $$invalidate(21, currentLastestFocusTaskIndex = -1);
+        $$invalidate(23, currentFocusTaskIndex = -1);
+        $$invalidate(22, currentLastestFocusTaskIndex = -1);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(23, currentFocusNoteIndex = -1);
+        $$invalidate(24, currentFocusNoteIndex = -1);
         $$invalidate(2, showDurationSelector = false);
       };
       var handleHidePopovers = function handleHidePopovers(event) {
@@ -29061,19 +29165,19 @@
         $$invalidate(0, showTaskSelector = false);
         $$invalidate(1, showNoteAutosuggest = false);
         $$invalidate(2, showDurationSelector = false);
-        $$invalidate(22, currentFocusTaskIndex = -1);
-        $$invalidate(21, currentLastestFocusTaskIndex = -1);
-        $$invalidate(23, currentFocusNoteIndex = -1);
+        $$invalidate(23, currentFocusTaskIndex = -1);
+        $$invalidate(22, currentLastestFocusTaskIndex = -1);
+        $$invalidate(24, currentFocusNoteIndex = -1);
       };
       var handleShowDurationSelector = function handleShowDurationSelector(event) {
         event.preventDefault();
         event.stopPropagation();
         $$invalidate(2, showDurationSelector = true);
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(23, currentFocusNoteIndex = -1);
+        $$invalidate(24, currentFocusNoteIndex = -1);
         $$invalidate(0, showTaskSelector = false);
-        $$invalidate(22, currentFocusTaskIndex = -1);
-        $$invalidate(21, currentLastestFocusTaskIndex = -1);
+        $$invalidate(23, currentFocusTaskIndex = -1);
+        $$invalidate(22, currentLastestFocusTaskIndex = -1);
         setTimeout(function () {
           var _durationInput;
           (_durationInput = durationInput) === null || _durationInput === void 0 ? void 0 : _durationInput.focus();
@@ -29108,14 +29212,14 @@
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                $$invalidate(18, loading = true);
-                $$invalidate(20, taskError = false);
+                $$invalidate(19, loading = true);
+                $$invalidate(21, taskError = false);
                 if ((_selected = selected) !== null && _selected !== void 0 && (_selected = _selected.task) !== null && _selected !== void 0 && _selected.value) {
                   _context.next = 6;
                   break;
                 }
-                $$invalidate(18, loading = false);
-                $$invalidate(20, taskError = true);
+                $$invalidate(19, loading = false);
+                $$invalidate(21, taskError = true);
                 return _context.abrupt("return");
               case 6:
                 startDateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -29148,7 +29252,7 @@
                 _context.t0 = _context["catch"](8);
                 console.error(_context.t0);
               case 19:
-                $$invalidate(18, loading = false);
+                $$invalidate(19, loading = false);
               case 20:
               case "end":
                 return _context.stop();
@@ -29161,6 +29265,7 @@
       }();
       var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
       var durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+      var backupDurationTimeString = durationTimeString;
       function input0_input_handler() {
         note = this.value;
         $$invalidate(11, note);
@@ -29198,8 +29303,8 @@
           $$invalidate(1, showNoteAutosuggest = true);
         }
         $$invalidate(0, showTaskSelector = false);
-        $$invalidate(22, currentFocusTaskIndex = -1);
-        $$invalidate(21, currentLastestFocusTaskIndex = -1);
+        $$invalidate(23, currentFocusTaskIndex = -1);
+        $$invalidate(22, currentLastestFocusTaskIndex = -1);
         $$invalidate(2, showDurationSelector = false);
       };
       function a_binding($$value, index) {
@@ -29220,7 +29325,7 @@
         var startDate = parseISO(time.start);
         var endDate = parseISO(time.end);
         $$invalidate(7, duration = Helpers.calculateDuration(format$2(startDate, "HH:mm", startDate), format$2(endDate, "HH:mm", endDate)));
-        $$invalidate(19, selected = {
+        $$invalidate(20, selected = {
           task: {
             label: suggestion === null || suggestion === void 0 || (_suggestion$task = suggestion.task) === null || _suggestion$task === void 0 ? void 0 : _suggestion$task.name,
             value: suggestion === null || suggestion === void 0 || (_suggestion$task2 = suggestion.task) === null || _suggestion$task2 === void 0 ? void 0 : _suggestion$task2.uuid
@@ -29235,10 +29340,10 @@
           }
         });
         $$invalidate(1, showNoteAutosuggest = false);
-        $$invalidate(23, currentFocusNoteIndex = -1);
+        $$invalidate(24, currentFocusNoteIndex = -1);
       };
       var focus_handler_1 = function focus_handler_1(index) {
-        $$invalidate(23, currentFocusNoteIndex = index);
+        $$invalidate(24, currentFocusNoteIndex = index);
       };
       function input1_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -29266,7 +29371,16 @@
         $$invalidate(17, durationTimeString);
       }
       var input_handler_2 = function input_handler_2() {
-        $$invalidate(7, duration = Helpers.convertTimeDurationToDecimals(durationTimeString));
+        var computedDuration = Helpers.convertTimeDurationToDecimals(durationTimeString);
+        if (durationTimeString.match(/[^0-9:]/)) {
+          $$invalidate(17, durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, ''));
+        }
+        if (isNaN(computedDuration) || computedDuration > 24) {
+          $$invalidate(17, durationTimeString = backupDurationTimeString);
+          return;
+        }
+        $$invalidate(7, duration = computedDuration);
+        $$invalidate(18, backupDurationTimeString = durationTimeString);
         $$invalidate(9, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
       };
       function input_binding_1($$value) {
@@ -29321,7 +29435,7 @@
         var _entry$task2, _entry$task3, _entry$project, _entry$project2, _entry$client, _entry$client2;
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(19, selected = {
+        $$invalidate(20, selected = {
           task: {
             label: entry === null || entry === void 0 || (_entry$task2 = entry.task) === null || _entry$task2 === void 0 ? void 0 : _entry$task2.name,
             value: entry === null || entry === void 0 || (_entry$task3 = entry.task) === null || _entry$task3 === void 0 ? void 0 : _entry$task3.uuid
@@ -29338,7 +29452,7 @@
         $$invalidate(0, showTaskSelector = false);
       };
       var focus_handler_2 = function focus_handler_2(index) {
-        $$invalidate(21, currentLastestFocusTaskIndex = index);
+        $$invalidate(22, currentLastestFocusTaskIndex = index);
       };
       function a_binding_2($$value, task) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
@@ -29349,7 +29463,7 @@
       var click_handler_4 = function click_handler_4(client, project, task, event) {
         event.stopPropagation();
         event.preventDefault();
-        $$invalidate(19, selected = {
+        $$invalidate(20, selected = {
           client: {
             label: client.label,
             value: client.value
@@ -29363,7 +29477,7 @@
         $$invalidate(0, showTaskSelector = false);
       };
       var focus_handler_3 = function focus_handler_3(task) {
-        $$invalidate(22, currentFocusTaskIndex = task.taskIndex);
+        $$invalidate(23, currentFocusTaskIndex = task.taskIndex);
       };
       var submit_handler = function submit_handler(event) {
         event.stopPropagation();
@@ -29371,23 +29485,23 @@
         save();
       };
       $$self.$$set = function ($$props) {
-        if ('action' in $$props) $$invalidate(41, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(42, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(43, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(44, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(45, tasks = $$props.tasks);
-        if ('latestSearchEntries' in $$props) $$invalidate(46, latestSearchEntries = $$props.latestSearchEntries);
-        if ('settings' in $$props) $$invalidate(47, settings = $$props.settings);
+        if ('action' in $$props) $$invalidate(42, action = $$props.action);
+        if ('requestToken' in $$props) $$invalidate(43, requestToken = $$props.requestToken);
+        if ('clients' in $$props) $$invalidate(44, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(45, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(46, tasks = $$props.tasks);
+        if ('latestSearchEntries' in $$props) $$invalidate(47, latestSearchEntries = $$props.latestSearchEntries);
+        if ('settings' in $$props) $$invalidate(48, settings = $$props.settings);
       };
-      $$invalidate(18, loading = false);
-      $$invalidate(20, taskError = false);
-      $$invalidate(19, selected = null);
+      $$invalidate(19, loading = false);
+      $$invalidate(21, taskError = false);
+      $$invalidate(20, selected = null);
       searchResultsNumTasks = 0;
-      $$invalidate(22, currentFocusTaskIndex = -1);
-      $$invalidate(21, currentLastestFocusTaskIndex = -1);
-      $$invalidate(23, currentFocusNoteIndex = -1);
-      $$invalidate(24, searchResults = []);
-      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, endTime, startTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
+      $$invalidate(23, currentFocusTaskIndex = -1);
+      $$invalidate(22, currentLastestFocusTaskIndex = -1);
+      $$invalidate(24, currentFocusNoteIndex = -1);
+      $$invalidate(25, searchResults = []);
+      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, endTime, startTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, backupDurationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(QuickAdd, _SvelteComponent);
@@ -29397,13 +29511,13 @@
         _classCallCheck$1(this, QuickAdd);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$8, create_fragment$8, safe_not_equal, {
-          action: 41,
-          requestToken: 42,
-          clients: 43,
-          projects: 44,
-          tasks: 45,
-          latestSearchEntries: 46,
-          settings: 47
+          action: 42,
+          requestToken: 43,
+          clients: 44,
+          projects: 45,
+          tasks: 46,
+          latestSearchEntries: 47,
+          settings: 48
         }, null, [-1, -1, -1, -1]);
         return _this;
       }
