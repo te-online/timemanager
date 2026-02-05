@@ -105,7 +105,7 @@ OC.L10N.register(
 		"Filter by": "Filtern",
 		"No options": "Keine Elemente",
 		"Select...": "Auswählen...",
-		Reports: "Reporte",
+		Reports: "Berichte",
 		Yesterday: "Gestern",
 		"This Week": "Diese Woche",
 		"Last week": "Letzte Woche",
