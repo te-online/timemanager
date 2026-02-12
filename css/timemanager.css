@@ -201,92 +201,6 @@ body {
   display: block;
 }
 
-
-/* Navigation - Nextcloud 30+ Standard Style */
-#app-navigation {
-    width: 300px;
-    z-index: 500;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-color: var(--color-main-background);
-    border-right: 1px solid var(--color-border);
-}
-
-#app-navigation ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#app-navigation .app-navigation-list {
-    padding: var(--app-navigation-padding, 8px);
-    display: flex;
-    flex-direction: column;
-    gap: var(--default-grid-baseline, 4px);
-}
-
-#app-navigation .app-navigation-entry {
-    position: relative;
-    margin: 0;
-    padding: 0;
-}
-
-#app-navigation .app-navigation-entry-link {
-    display: flex;
-    align-items: center;
-    min-height: var(--default-clickable-area, 34px);
-    padding: 0 8px 0 0;
-    margin: 0;
-    border-radius: var(--border-radius-element, 8px);
-    color: var(--color-main-text);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: normal;
-    transition: background-color 0.1s ease-in-out;
-}
-
-#app-navigation .app-navigation-entry-link:hover {
-    background-color: var(--color-background-hover);
-}
-
-#app-navigation .app-navigation-entry-link.active {
-    color: #fff;
-    background-color: var(--color-primary-element);
-
-}
-
-#app-navigation .app-navigation-entry-link.active .app-navigation-entry-icon img {
-    filter: brightness(0) invert(1);
-}
-
-#app-navigation .app-navigation-entry-icon {
-    width: var(--default-clickable-area, 34px);
-    height: var(--default-clickable-area, 34px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin: 0;
-    padding: 0;
-}
-
-#app-navigation .app-navigation-entry-icon img {
-    width: 20px;
-    height: 20px;
-    filter: var(--background-invert-if-dark);
-}
-
-#app-navigation .app-navigation-entry-title {
-    flex: 1;
-    padding: 0;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
 /* For some reason this is needed to fix the icon position in the nav */
 #app-navigation img {
   margin-bottom: -3px;
@@ -353,10 +267,7 @@ label.space-top {
 }
 
 #content.app-timemanager {
-  /**
-   * 	Missing legacy navigation styling
-   * 	Starting v28.0.0rc2
-   */
+  /* Navigation - Nextcloud 30+ Standard Style */
 }
 #content.app-timemanager h2.list-title {
   display: inline-block;
@@ -841,6 +752,82 @@ label.space-top {
 }
 #content.app-timemanager input[type=date] {
   min-width: 150px;
+}
+#content.app-timemanager #app-navigation {
+  width: 300px;
+  z-index: 500;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--color-main-background);
+  border-right: 1px solid var(--color-border);
+}
+#content.app-timemanager #app-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#content.app-timemanager #app-navigation .app-navigation-list {
+  padding: var(--app-navigation-padding, 8px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--default-grid-baseline, 4px);
+}
+#content.app-timemanager #app-navigation .app-navigation-entry {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-link {
+  display: flex;
+  align-items: center;
+  min-height: var(--default-clickable-area, 34px);
+  padding: 0 8px 0 0;
+  margin: 0;
+  border-radius: var(--border-radius-element, 8px);
+  color: var(--color-main-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: normal;
+  transition: background-color 0.1s ease-in-out;
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-link:hover {
+  background-color: var(--color-background-hover);
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-link.active {
+  color: var(--color-primary-element-text);
+  background-color: var(--color-primary-element);
+}
+[data-theme-light] #content.app-timemanager #app-navigation .app-navigation-entry-link.active .app-navigation-entry-icon img {
+  filter: invert(100%);
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-link.active .app-navigation-entry-icon img {
+  filter: none;
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-icon {
+  width: var(--default-clickable-area, 34px);
+  height: var(--default-clickable-area, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-icon img {
+  width: 20px;
+  height: 20px;
+  filter: var(--background-invert-if-dark);
+  margin-top: -4px;
+}
+#content.app-timemanager #app-navigation .app-navigation-entry-title {
+  flex: 1;
+  padding: 0 0 1px 0;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .flex-fields {
