@@ -82,5 +82,18 @@ $l = Util::getL10N('timemanager');
         </span>
       </a>
     </li>
+		<li class="app-navigation-entry">
+			<a
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.settings'); ?>"
+				class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'settings' ? ' active' : ''; ?>"
+			>
+				<span class="app-navigation-entry-icon">
+					<img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/settings-dark.svg')); ?>">
+				</span>
+				<span class="app-navigation-entry-title">
+					<?php p($l->t('Settings')); ?>
+				</span>
+			</a>
+		</li>
   </ul>
 </div>
