@@ -9,7 +9,7 @@ $l = Util::getL10N('timemanager');
 <div id="app-navigation">
   <ul class="app-navigation-list">
     <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/monitoring.svg')); ?>" />
         </span>
@@ -19,7 +19,7 @@ $l = Util::getL10N('timemanager');
       </a>
     </li>
     <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/details.svg')); ?>" />
         </span>
@@ -28,8 +28,8 @@ $l = Util::getL10N('timemanager');
         </span>
       </a>
     </li>
-	    <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>">
+		<li class="app-navigation-entry">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.clients'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'clients' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'places/contacts.svg')); ?>" />
         </span>
@@ -38,8 +38,8 @@ $l = Util::getL10N('timemanager');
         </span>
       </a>
     </li>
-	    <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'projects' ? ' active' : ''; ?>">
+		<li class="app-navigation-entry">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.projects'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'projects' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/office.svg')); ?>" />
         </span>
@@ -48,18 +48,18 @@ $l = Util::getL10N('timemanager');
         </span>
       </a>
     </li>
-	    <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'tasks' ? ' active' : ''; ?>">
+		<li class="app-navigation-entry">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tasks'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'tasks' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
-          <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/organization.svg')); ?>" />
+          <img alt="" style="width: 18px; height: auto;" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/organization.svg')); ?>" />
         </span>
         <span class="app-navigation-entry-title">
           <?php p($l->t('Tasks')); ?>
         </span>
       </a>
     </li>
-	    <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'times' ? ' active' : ''; ?>">
+		<li class="app-navigation-entry">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.times'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'times' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/quota.svg')); ?>" />
         </span>
@@ -68,8 +68,8 @@ $l = Util::getL10N('timemanager');
         </span>
       </a>
     </li>
-	    <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tools'); ?>" class="app-navigation-entry-link<?php echo $_['page'] === 'tools' ? ' active' : ''; ?>">
+		<li class="app-navigation-entry">
+      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.tools'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'tools' ? ' active' : ''; ?>">
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/integration.svg')); ?>" />
         </span>
