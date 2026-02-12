@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.22 Beta, 12. February 2026
+
+### Added
+- Support for Nextcloud 33; Cypress tests run manually
+
+### Changed
+- Navigation design adjusted to Nextcloud 30+ styling (thanks to @ole-am)
+
 ## 0.3.21 Beta, 2. February 2026
 
 ### Fixed
