@@ -9,7 +9,11 @@ $l = Util::getL10N('timemanager');
 <div id="app-navigation">
   <ul class="app-navigation-list">
     <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>">
+      <a
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.index'); ?>"
+				class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'index' ? ' active' : ''; ?>"
+				<?php echo $_['page'] === 'index' ? ' data-current-link' : ''; ?>
+			>
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'categories/monitoring.svg')); ?>" />
         </span>
