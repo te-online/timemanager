@@ -62,12 +62,12 @@
     function _defineProperties$1(e, r) {
       for (var t = 0; t < r.length; t++) {
         var o = r[t];
-        o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
+        o.enumerable = o.enumerable || false, o.configurable = true, "value" in o && (o.writable = true), Object.defineProperty(e, _toPropertyKey(o.key), o);
       }
     }
     function _createClass$1(e, r, t) {
       return r && _defineProperties$1(e.prototype, r), t && _defineProperties$1(e, t), Object.defineProperty(e, "prototype", {
-        writable: !1
+        writable: false
       }), e;
     }
     function _createForOfIteratorHelper$1(r, e) {
@@ -81,9 +81,9 @@
             s: F,
             n: function () {
               return n >= r.length ? {
-                done: !0
+                done: true
               } : {
-                done: !1,
+                done: false,
                 value: r[n++]
               };
             },
@@ -96,8 +96,8 @@
         throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
       }
       var o,
-        a = !0,
-        u = !1;
+        a = true,
+        u = false;
       return {
         s: function () {
           t = t.call(r);
@@ -107,7 +107,7 @@
           return a = r.done, r;
         },
         e: function (r) {
-          u = !0, o = r;
+          u = true, o = r;
         },
         f: function () {
           try {
@@ -133,9 +133,9 @@
     function _defineProperty$1(e, r, t) {
       return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
         value: t,
-        enumerable: !0,
-        configurable: !0,
-        writable: !0
+        enumerable: true,
+        configurable: true,
+        writable: true
       }) : e[r] = t, e;
     }
     function _getPrototypeOf$1(t) {
@@ -148,11 +148,11 @@
       t.prototype = Object.create(e && e.prototype, {
         constructor: {
           value: t,
-          writable: !0,
-          configurable: !0
+          writable: true,
+          configurable: true
         }
       }), Object.defineProperty(t, "prototype", {
-        writable: !1
+        writable: false
       }), e && _setPrototypeOf$1(t, e);
     }
     function _isNativeReflectConstruct$1() {
@@ -174,15 +174,15 @@
           i,
           u,
           a = [],
-          f = !0,
-          o = !1;
+          f = true,
+          o = false;
         try {
           if (i = (t = t.call(r)).next, 0 === l) {
             if (Object(t) !== t) return;
             f = !1;
           } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
         } catch (r) {
-          o = !0, n = r;
+          o = true, n = r;
         } finally {
           try {
             if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
@@ -212,7 +212,7 @@
     function _objectSpread2(e) {
       for (var r = 1; r < arguments.length; r++) {
         var t = null != arguments[r] ? arguments[r] : {};
-        r % 2 ? ownKeys$1(Object(t), !0).forEach(function (r) {
+        r % 2 ? ownKeys$1(Object(t), true).forEach(function (r) {
           _defineProperty$1(e, r, t[r]);
         }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$1(Object(t)).forEach(function (r) {
           Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
@@ -241,7 +241,7 @@
             u,
             f = 0,
             p = o || [],
-            y = !1,
+            y = false,
             G = {
               p: 0,
               n: 0,
@@ -261,7 +261,7 @@
               r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0));
             }
             if (o || r > 1) return a;
-            throw y = !0, n;
+            throw y = true, n;
           }
           return function (o, p, l) {
             if (f > 1) throw TypeError("Generator is already running");
@@ -287,7 +287,7 @@
               done: y
             };
           };
-        }(r, o, i), !0), u;
+        }(r, o, i), true), u;
       }
       var a = {};
       function Generator() {}
@@ -349,7 +349,7 @@
           });
         }
         return r = r ? r.then(f, f) : f();
-      }, !0);
+      }, true);
     }
     function _regeneratorDefine(e, r, n, t) {
       var i = Object.defineProperty;
@@ -379,8 +379,8 @@
         r = [];
       for (var t in n) r.unshift(t);
       return function e() {
-        for (; r.length;) if ((t = r.pop()) in n) return e.value = t, e.done = !1, e;
-        return e.done = !0, e;
+        for (; r.length;) if ((t = r.pop()) in n) return e.value = t, e.done = false, e;
+        return e.done = true, e;
       };
     }
     function _regeneratorValues(e) {
@@ -415,7 +415,7 @@
       if ("object" != typeof t || !t) return t;
       var e = t[Symbol.toPrimitive];
       if (void 0 !== e) {
-        var i = e.call(t, r || "default");
+        var i = e.call(t, r);
         if ("object" != typeof i) return i;
         throw new TypeError("@@toPrimitive must return a primitive value.");
       }
@@ -961,7 +961,6 @@
     var PROPER = EXISTS && function something() {/* empty */}.name === 'something';
     var CONFIGURABLE = EXISTS && (!descriptors || descriptors && getDescriptor(FunctionPrototype$1, 'name').configurable);
     var functionName = {
-      EXISTS: EXISTS,
       PROPER: PROPER,
       CONFIGURABLE: CONFIGURABLE
     };
@@ -1250,7 +1249,7 @@
       var getOwnPropertyDescriptor = objectGetOwnPropertyDescriptor.f;
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (!hasOwnProperty_1(target, key) && !(exceptions)) {
+        if (!hasOwnProperty_1(target, key) && true) {
           defineProperty(target, key, getOwnPropertyDescriptor(source, key));
         }
       }
@@ -1588,22 +1587,9 @@
       // `Array.prototype.filter` method
       // https://tc39.es/ecma262/#sec-array.prototype.filter
       filter: createMethod$3(2),
-      // `Array.prototype.some` method
-      // https://tc39.es/ecma262/#sec-array.prototype.some
-      some: createMethod$3(3),
-      // `Array.prototype.every` method
-      // https://tc39.es/ecma262/#sec-array.prototype.every
-      every: createMethod$3(4),
       // `Array.prototype.find` method
       // https://tc39.es/ecma262/#sec-array.prototype.find
-      find: createMethod$3(5),
-      // `Array.prototype.findIndex` method
-      // https://tc39.es/ecma262/#sec-array.prototype.findIndex
-      findIndex: createMethod$3(6),
-      // `Array.prototype.filterReject` method
-      // https://github.com/tc39/proposal-array-filtering
-      filterReject: createMethod$3(7)
-    };
+      find: createMethod$3(5)};
 
     var arrayMethodIsStrict = function (METHOD_NAME, argument) {
       var method = [][METHOD_NAME];
@@ -2049,9 +2035,6 @@
       };
     };
     var stringMultibyte = {
-      // `String.prototype.codePointAt` method
-      // https://tc39.es/ecma262/#sec-string.prototype.codepointat
-      codeAt: createMethod$2(false),
       // `String.prototype.at` method
       // https://github.com/mathiasbynens/String.prototype.at
       charAt: createMethod$2(true)
@@ -2141,7 +2124,7 @@
     var iteratorCreateConstructor = function (IteratorConstructor, NAME, next, ENUMERABLE_NEXT) {
       var TO_STRING_TAG = NAME + ' Iterator';
       IteratorConstructor.prototype = objectCreate(IteratorPrototype$1, {
-        next: createPropertyDescriptor(+!ENUMERABLE_NEXT, next)
+        next: createPropertyDescriptor(1, next)
       });
       setToStringTag(IteratorConstructor, TO_STRING_TAG, false);
       iterators[TO_STRING_TAG] = returnThis$1;
@@ -2865,9 +2848,7 @@
       }
     }
     var task$1 = {
-      set: set,
-      clear: clear
-    };
+      set: set};
 
     var Queue = function () {
       this.head = null;
@@ -5511,7 +5492,7 @@
 
     var defaultRoundingMethod = 'trunc';
     function getRoundingMethod(method) {
-      return method ? roundingMap[method] : roundingMap[defaultRoundingMethod];
+      return roundingMap[defaultRoundingMethod];
     }
 
     /**
@@ -5548,7 +5529,7 @@
     function differenceInMinutes(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInMilliseconds(dateLeft, dateRight) / millisecondsInMinute;
-      return getRoundingMethod(void 0 )(diff);
+      return getRoundingMethod()(diff);
     }
 
     /**
@@ -5722,7 +5703,7 @@
     function differenceInWeeks(dateLeft, dateRight, options) {
       requiredArgs(2, arguments);
       var diff = differenceInDays(dateLeft, dateRight) / 7;
-      return getRoundingMethod(void 0 )(diff);
+      return getRoundingMethod()(diff);
     }
 
     /**
@@ -6139,8 +6120,6 @@
     };
 
     var dayPeriodEnum = {
-      am: 'am',
-      pm: 'pm',
       midnight: 'midnight',
       noon: 'noon',
       morning: 'morning',
@@ -8082,9 +8061,9 @@
             s: F,
             n: function n() {
               return _n >= r.length ? {
-                done: !0
+                done: true
               } : {
-                done: !1,
+                done: false,
                 value: r[_n++]
               };
             },
@@ -8097,8 +8076,8 @@
         throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
       }
       var o,
-        a = !0,
-        u = !1;
+        a = true,
+        u = false;
       return {
         s: function s() {
           t = t.call(r);
@@ -8108,7 +8087,7 @@
           return a = r.done, r;
         },
         e: function e(r) {
-          u = !0, o = r;
+          u = true, o = r;
         },
         f: function f() {
           try {
@@ -8136,11 +8115,11 @@
       t.prototype = Object.create(e && e.prototype, {
         constructor: {
           value: t,
-          writable: !0,
-          configurable: !0
+          writable: true,
+          configurable: true
         }
       }), Object.defineProperty(t, "prototype", {
-        writable: !1
+        writable: false
       }), e && _setPrototypeOf(t, e);
     }
 
@@ -8186,7 +8165,7 @@
       if ("object" != _typeof(t) || !t) return t;
       var e = t[Symbol.toPrimitive];
       if (void 0 !== e) {
-        var i = e.call(t, r || "default");
+        var i = e.call(t, r);
         if ("object" != _typeof(i)) return i;
         throw new TypeError("@@toPrimitive must return a primitive value.");
       }
@@ -8201,21 +8180,21 @@
     function _defineProperties(e, r) {
       for (var t = 0; t < r.length; t++) {
         var o = r[t];
-        o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, toPropertyKey(o.key), o);
+        o.enumerable = o.enumerable || false, o.configurable = true, "value" in o && (o.writable = true), Object.defineProperty(e, toPropertyKey(o.key), o);
       }
     }
     function _createClass(e, r, t) {
       return r && _defineProperties(e.prototype, r), Object.defineProperty(e, "prototype", {
-        writable: !1
+        writable: false
       }), e;
     }
 
     function _defineProperty(e, r, t) {
       return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
         value: t,
-        enumerable: !0,
-        configurable: !0,
-        writable: !0
+        enumerable: true,
+        configurable: true,
+        writable: true
       }) : e[r] = t, e;
     }
 
@@ -11495,20 +11474,11 @@
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
     const NODE_TYPE = {
       element: 1,
-      attribute: 2,
       text: 3,
-      cdataSection: 4,
-      entityReference: 5,
-      // Deprecated
-      entityNode: 6,
       // Deprecated
       progressingInstruction: 7,
       comment: 8,
-      document: 9,
-      documentType: 10,
-      documentFragment: 11,
-      notation: 12 // Deprecated
-    };
+      document: 9};
     const getGlobal = function getGlobal() {
       return typeof window === 'undefined' ? null : window;
     };
@@ -12791,7 +12761,7 @@
 
     // UC Browser bug
     // https://github.com/zloirock/core-js/issues/1008
-    var MISSED_STICKY = UNSUPPORTED_Y$1 || fails(function () {
+    UNSUPPORTED_Y$1 || fails(function () {
       return !$RegExp$2('a', 'y').sticky;
     });
     var BROKEN_CARET = UNSUPPORTED_Y$1 || fails(function () {
@@ -12801,10 +12771,7 @@
       return re.exec('str') != null;
     });
     var regexpStickyHelpers = {
-      BROKEN_CARET: BROKEN_CARET,
-      MISSED_STICKY: MISSED_STICKY,
-      UNSUPPORTED_Y: UNSUPPORTED_Y$1
-    };
+      BROKEN_CARET: BROKEN_CARET};
 
     // babel-minify and Closure Compiler transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
     var $RegExp$1 = global_1.RegExp;
@@ -13372,12 +13339,6 @@
       };
     };
     var stringTrim = {
-      // `String.prototype.{ trimLeft, trimStart }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-      start: createMethod$1(1),
-      // `String.prototype.{ trimRight, trimEnd }` methods
-      // https://tc39.es/ecma262/#sec-string.prototype.trimend
-      end: createMethod$1(2),
       // `String.prototype.trim` method
       // https://tc39.es/ecma262/#sec-string.prototype.trim
       trim: createMethod$1(3)
@@ -22378,15 +22339,15 @@
       }
     }
 
-    var dist = createCommonjsModule(function (module, exports) {
+    var dist = createCommonjsModule(function (module, exports$1) {
 
-    Object.defineProperty(exports, "__esModule", {
+    Object.defineProperty(exports$1, "__esModule", {
       value: true
     });
-    exports.generateUrl = exports.generateRemoteUrl = exports.generateOcsUrl = exports.generateFilePath = void 0;
-    exports.getAppRootUrl = getAppRootUrl;
-    exports.getRootUrl = getRootUrl;
-    exports.linkTo = exports.imagePath = void 0;
+    exports$1.generateUrl = exports$1.generateRemoteUrl = exports$1.generateOcsUrl = exports$1.generateFilePath = void 0;
+    exports$1.getAppRootUrl = getAppRootUrl;
+    exports$1.getRootUrl = getRootUrl;
+    exports$1.linkTo = exports$1.imagePath = void 0;
 
     /**
      * Get an url with webroot to a file in an app
@@ -22403,7 +22364,7 @@
      * @param {string} service id
      * @return {string} the url
      */
-    exports.linkTo = linkTo;
+    exports$1.linkTo = linkTo;
     const linkToRemoteBase = service => getRootUrl() + '/remote.php/' + service;
 
     /**
@@ -22423,7 +22384,7 @@
      * @param {Number} options.ocsVersion OCS version to use (defaults to 2)
      * @return {string} Absolute path for the OCS URL
      */
-    exports.generateRemoteUrl = generateRemoteUrl;
+    exports$1.generateRemoteUrl = generateRemoteUrl;
     const generateOcsUrl = (url, params, options) => {
       const allOptions = Object.assign({
         ocsVersion: 2
@@ -22431,7 +22392,7 @@
       const version = allOptions.ocsVersion === 1 ? 1 : 2;
       return window.location.protocol + '//' + window.location.host + getRootUrl() + '/ocs/v' + version + '.php' + _generateUrlPath(url, params, options);
     };
-    exports.generateOcsUrl = generateOcsUrl;
+    exports$1.generateOcsUrl = generateOcsUrl;
     /**
      * Generate a url path, which can contain parameters
      *
@@ -22495,7 +22456,7 @@
      * @param {string} file the name of the image file
      * @return {string}
      */
-    exports.generateUrl = generateUrl;
+    exports$1.generateUrl = generateUrl;
     const imagePath = (app, file) => {
       if (file.indexOf('.') === -1) {
         //if no extension is given, use svg
@@ -22512,7 +22473,7 @@
      * @param {string} file the filename
      * @return {string} URL with webroot for a file in an app
      */
-    exports.imagePath = imagePath;
+    exports$1.imagePath = imagePath;
     const generateFilePath = (app, type, file) => {
       var _window2;
       const isCore = ((_window2 = window) === null || _window2 === void 0 || (_window2 = _window2.OC) === null || _window2 === void 0 || (_window2 = _window2.coreApps) === null || _window2 === void 0 ? void 0 : _window2.indexOf(app)) !== -1;
@@ -22563,7 +22524,7 @@
      *
      * @return {string} web root path
      */
-    exports.generateFilePath = generateFilePath;
+    exports$1.generateFilePath = generateFilePath;
     function getRootUrl() {
       let webroot = window._oc_webroot;
       if (typeof webroot === 'undefined') {
@@ -25033,7 +24994,6 @@
       var popperOffsets = computeOffsets({
         reference: referenceClientRect,
         element: popperRect,
-        strategy: 'absolute',
         placement: placement
       });
       var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
@@ -25326,7 +25286,6 @@
       state.modifiersData[name] = computeOffsets({
         reference: state.rects.reference,
         element: state.rects.popper,
-        strategy: 'absolute',
         placement: state.placement
       });
     } // eslint-disable-next-line import/no-unused-modules
@@ -25841,16 +25800,13 @@
     function isArray$2(value) {
       return !Array.isArray ? getTag(value) === '[object Array]' : Array.isArray(value);
     }
-
-    // Adapted from: https://github.com/lodash/lodash/blob/master/.internal/baseToString.js
-    const INFINITY = 1 / 0;
     function baseToString(value) {
       // Exit early for strings to avoid a performance hit in some environments.
       if (typeof value == 'string') {
         return value;
       }
       let result = value + '';
-      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+      return result == '0' && 1 / value == -Infinity ? '-0' : result;
     }
     function toString$1(value) {
       return value == null ? '' : baseToString(value);
@@ -25886,7 +25842,6 @@
     function getTag(value) {
       return value == null ? value === undefined ? '[object Undefined]' : '[object Null]' : Object.prototype.toString.call(value);
     }
-    const EXTENDED_SEARCH_UNAVAILABLE = 'Extended search is not available';
     const INCORRECT_INDEX_TYPE = "Incorrect 'index' type";
     const LOGICAL_SEARCH_INVALID_QUERY_FOR_KEY = key => `Invalid value for key ${key}`;
     const PATTERN_LENGTH_TOO_LARGE = max => `Pattern length exceeds max of ${max}.`;
@@ -27149,9 +27104,7 @@
           ...Config,
           ...options
         };
-        if (this.options.useExtendedSearch && !true) {
-          throw new Error(EXTENDED_SEARCH_UNAVAILABLE);
-        }
+        if (this.options.useExtendedSearch && false) ;
         this._keyStore = new KeyStore(this.options.keys);
         this.setCollection(docs, index);
       }
@@ -31696,8 +31649,8 @@
         byteOffset = 0;
       } else if (byteOffset > 0x7fffffff) {
         byteOffset = 0x7fffffff;
-      } else if (byteOffset < -0x80000000) {
-        byteOffset = -0x80000000;
+      } else if (byteOffset < -2147483648) {
+        byteOffset = -2147483648;
       }
       byteOffset = +byteOffset;  // Coerce to Number.
       if (isNaN(byteOffset)) {
@@ -32456,7 +32409,7 @@
     Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
-      if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80);
+      if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -128);
       if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value);
       if (value < 0) value = 0xff + value + 1;
       this[offset] = (value & 0xff);
@@ -32466,7 +32419,7 @@
     Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
-      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
+      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -32768);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         this[offset] = (value & 0xff);
         this[offset + 1] = (value >>> 8);
@@ -32479,7 +32432,7 @@
     Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
-      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000);
+      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -32768);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         this[offset] = (value >>> 8);
         this[offset + 1] = (value & 0xff);
@@ -32492,7 +32445,7 @@
     Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
-      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
+      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -2147483648);
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         this[offset] = (value & 0xff);
         this[offset + 1] = (value >>> 8);
@@ -32507,7 +32460,7 @@
     Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
       value = +value;
       offset = offset | 0;
-      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000);
+      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -2147483648);
       if (value < 0) value = 0xffffffff + value + 1;
       if (Buffer.TYPED_ARRAY_SUPPORT) {
         this[offset] = (value >>> 24);
@@ -32865,7 +32818,9 @@
       this.domain = null;
       if (EventEmitter.usingDomains) {
         // if there is an active domain, then attach to it.
-        if (domain.active) ;
+        if (domain.active && !(this instanceof domain.Domain)) {
+          this.domain = domain.active;
+        }
       }
 
       if (!this._events || this._events === Object.getPrototypeOf(this)._events) {
@@ -37049,7 +37004,7 @@
     };
 
     function v4(options, buf, offset) {
-      if (native.randomUUID && !buf && !options) {
+      if (native.randomUUID && true && !options) {
         return native.randomUUID();
       }
       options = options || {};
@@ -39853,9 +39808,6 @@
     const debug = typeof browser$1 === 'object' && browser$1.env && browser$1.env.NODE_DEBUG && /\bsemver\b/i.test(browser$1.env.NODE_DEBUG) ? (...args) => console.error('SEMVER', ...args) : () => {};
     var debug_1 = debug;
 
-    // Note: this is the semver.org version of the spec that it implements
-    // Not necessarily the package version of this code.
-    const SEMVER_SPEC_VERSION = '2.0.0';
     const MAX_LENGTH$1 = 256;
     const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */9007199254740991;
 
@@ -39865,32 +39817,26 @@
     // Max safe length for a build identifier. The max length minus 6 characters for
     // the shortest version with a build 0.0.0+BUILD.
     const MAX_SAFE_BUILD_LENGTH = MAX_LENGTH$1 - 6;
-    const RELEASE_TYPES = ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'];
     var constants = {
       MAX_LENGTH: MAX_LENGTH$1,
       MAX_SAFE_COMPONENT_LENGTH,
       MAX_SAFE_BUILD_LENGTH,
-      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1,
-      RELEASE_TYPES,
-      SEMVER_SPEC_VERSION,
-      FLAG_INCLUDE_PRERELEASE: 0b001,
-      FLAG_LOOSE: 0b010
-    };
+      MAX_SAFE_INTEGER: MAX_SAFE_INTEGER$1};
 
-    var re_1 = createCommonjsModule(function (module, exports) {
+    var re_1 = createCommonjsModule(function (module, exports$1) {
     const {
       MAX_SAFE_COMPONENT_LENGTH,
       MAX_SAFE_BUILD_LENGTH,
       MAX_LENGTH
     } = constants;
 
-    exports = module.exports = {};
+    exports$1 = module.exports = {};
 
     // The actual regexps go on exports.re
-    const re = exports.re = [];
-    const safeRe = exports.safeRe = [];
-    const src = exports.src = [];
-    const t = exports.t = {};
+    const re = exports$1.re = [];
+    const safeRe = exports$1.safeRe = [];
+    const src = exports$1.src = [];
+    const t = exports$1.t = {};
     let R = 0;
     const LETTERDASHNUMBER = '[a-zA-Z0-9-]';
 
@@ -40003,7 +39949,7 @@
     // Meaning is "reasonably at or greater than"
     createToken('LONETILDE', '(?:~>?)');
     createToken('TILDETRIM', `(\\s*)${src[t.LONETILDE]}\\s+`, true);
-    exports.tildeTrimReplace = '$1~';
+    exports$1.tildeTrimReplace = '$1~';
     createToken('TILDE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
     createToken('TILDELOOSE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
 
@@ -40011,7 +39957,7 @@
     // Meaning is "at least and backwards compatible with"
     createToken('LONECARET', '(?:\\^)');
     createToken('CARETTRIM', `(\\s*)${src[t.LONECARET]}\\s+`, true);
-    exports.caretTrimReplace = '$1^';
+    exports$1.caretTrimReplace = '$1^';
     createToken('CARET', `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
     createToken('CARETLOOSE', `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
 
@@ -40022,7 +39968,7 @@
     // An expression to strip any whitespace between the gtlt and the thing
     // it modifies, so that `> 1.2.3` ==> `>1.2.3`
     createToken('COMPARATORTRIM', `(\\s*)${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
-    exports.comparatorTrimReplace = '$1$2$3';
+    exports$1.comparatorTrimReplace = '$1$2$3';
 
     // Something like `1.2.3 - 1.2.4`
     // Note that these all use the loose form, because they'll be
@@ -40071,11 +40017,8 @@
       }
       return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
     };
-    const rcompareIdentifiers = (a, b) => compareIdentifiers$1(b, a);
     var identifiers = {
-      compareIdentifiers: compareIdentifiers$1,
-      rcompareIdentifiers
-    };
+      compareIdentifiers: compareIdentifiers$1};
 
     const {
       MAX_LENGTH,
