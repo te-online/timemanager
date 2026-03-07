@@ -28,7 +28,7 @@ class Version2006Date20211113102317 extends SimpleMigrationStep {
 		$query_duplicates->from($table_name);
 		$query_duplicates->groupBy($column_name);
 		$query_duplicates->having("COUNT(`$column_name`) > 1");
-		$cursor = $query_duplicates->execute();
+		$cursor = $query_duplicates->executeQuery();
 		$rows = $cursor->fetchAll();
 		$cursor->closeCursor();
 		$duplicate_uuids = array_map(static function (array $row) use ($column_name): string {
@@ -42,7 +42,7 @@ class Version2006Date20211113102317 extends SimpleMigrationStep {
 			$query_rows_to_update->where(
 				$query_rows_to_update->expr()->eq($column_name, $query_rows_to_update->createNamedParameter($uuid))
 			);
-			$cursor = $query_rows_to_update->execute();
+			$cursor = $query_rows_to_update->executeQuery();
 			$rows_to_update = $cursor->fetchAll();
 			$cursor->closeCursor();
 
@@ -55,7 +55,7 @@ class Version2006Date20211113102317 extends SimpleMigrationStep {
 				$query->update($table_name);
 				$query->set($column_name, $query->createNamedParameter(UUID::v4()));
 				$query->where($query->expr()->eq("id", $query->createNamedParameter($update_row["id"])));
-				$query->execute();
+				$query->executeStatement();
 			}
 		}
 	}
