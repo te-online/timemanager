@@ -9,6 +9,9 @@ x-logging-config: &logging_config
       max-file: "10"
       max-size: "50m"
 
+#volumes:
+#  postgres:
+
 services:
   nextcloud-dev:
     <<: [*restart_policy, *logging_config]
@@ -18,7 +21,21 @@ services:
     volumes:
       - ${PWD}/../:/var/www/html/apps-extra/timemanager:ro
     environment:
-      - SERVER_BRANCH=${SERVER_BRANCH}
+      SERVER_BRANCH: ${SERVER_BRANCH}
+#      SQL: ${SQL:-mysql}
+#    depends_on:
+#      - database-pgsql
+
+#  database-pgsql:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_DB: nextcloud
+#      POSTGRES_PASSWORD: postgres
+#    ports:
+#      - "${IP_BIND:-127.0.0.1}:${PORTBASE:-800}2:5432"
+#    volumes:
+#      - postgres:/var/lib/postgresql
+
 #
 # Useful commands:
 # - docker-compose up
