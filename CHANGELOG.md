@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.23 Beta, 7. March 2026
+
+### Fixed
+- Migrations: Replace `execute` method, which was removed from QueryBuilder. This was causing activating the app to fail for some users.
+
 ## 0.3.22 Beta, 12. February 2026
 
 ### Added
