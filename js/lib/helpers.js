@@ -1,6 +1,6 @@
 import { de, fr, pt } from "date-fns/locale";
 import { getFirstDay, getLocale } from "@nextcloud/l10n";
-import { addMinutes, differenceInMinutes, parse, subMinutes } from "date-fns";
+import { addMinutes, differenceInMinutes, isBefore, parse, subMinutes, addDays } from "date-fns";
 
 export class Helpers {
 	// Helps to replace an SSR node with a Svelte component
@@ -61,11 +61,19 @@ export class Helpers {
 
 	static calculateDuration(startTime, endTime) {
 		const start = parse(startTime, "HH:mm", new Date(), this.getDateLocaleOptions());
-		const end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+		let end = parse(endTime, "HH:mm", new Date(), this.getDateLocaleOptions());
+
+		// Account for end being on the next day
+		if (isBefore(end, start)) {
+			end = addDays(end, 1);
+		}
+
 		const duration = Math.max(0, this.simpleRounding(differenceInMinutes(end, start) / 60));
+
 		if (isNaN(duration)) {
 			return 0;
 		}
+
 		return duration;
 	}
 
