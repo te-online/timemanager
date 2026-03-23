@@ -576,7 +576,10 @@
 							placeholder="--:--"
 							class="time-input"
 							bind:value={startTime}
-							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+							on:input={() => {
+								duration = Helpers.calculateDuration(startTime, endTime);
+								durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+							}}
 							pattern="[0-9]{2}:[0-9]{2}"
 							required
 							data-hideEvent="skip"
@@ -591,7 +594,10 @@
 							class="time-input"
 							pattern="[0-9]{2}:[0-9]{2}"
 							bind:value={endTime}
-							on:input={() => (duration = Helpers.calculateDuration(startTime, endTime))}
+							on:input={() => {
+								duration = Helpers.calculateDuration(startTime, endTime);
+								durationTimeString = Helpers.convertDecimalsToTimeDuration(duration);
+							}}
 							required
 							data-hideEvent="skip"
 						/>
