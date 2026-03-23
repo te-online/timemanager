@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.24 Beta, tba
+
+### Fixed
+- Don't set duration to `0` if the end time overflows into the next day (@thanks to @wargreen for reporting)
+- Quick add: The duration input value updates when in minutes input mode and changing start or end time
+
 ## 0.3.23 Beta, 7. March 2026
 
 ### Fixed
