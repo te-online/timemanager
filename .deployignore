@@ -1,5 +1,4 @@
 .git
-.eslintrc
 .gitignore
 .prettierrc
 .babelrc
