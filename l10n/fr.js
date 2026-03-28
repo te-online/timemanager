@@ -186,6 +186,10 @@ OC.L10N.register(
 		"End time": "Heure de fin",
 		"{duration} hrs. on {date}": "{duration} heures, le {date}",
 		"Print report": "Imprimer le rapport",
+		"Time field settings": "Format de durée",
+		"Input hours and minutes (02:30 hrs.)": "Durée en heures et minutes (02:30)",
+		"Input decimals (2.5 hrs.)": "Durée en heures (2,5 h.)",
+		"Settings": "Paramètres"
 	},
 	"nplurals=2; plural=(n != 1);",
 );
