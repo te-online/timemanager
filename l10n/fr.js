@@ -20,7 +20,7 @@ OC.L10N.register(
 		"Duration (in hrs.) & Date": "Durée (en heures) et Date",
 		Add: "Ajouter",
 		"Current week": "Semaine en cours",
-		"Next week": "Semaine prochaine",
+		"Next week": "Semaine suivante",
 		"Previous week": "Semaine précédente",
 		Week: "Semaine",
 		"When you add entries for this week graphs will appear here.":
@@ -180,7 +180,7 @@ OC.L10N.register(
 		"Filter by person": "Filtrer par utilisateur",
 		"Type to search for client, project or task": "Type de client, projet ou tâche à rechercher",
 		"Client, project or task": "Client, projet ou tâche",
-		"Last used": "Dernier usage",
+		"Last used": "Dernier utilisation",
 		"Nothing found": "Pas de résultat",
 		"Start time": "Heure de départ",
 		"End time": "Heure de fin",
