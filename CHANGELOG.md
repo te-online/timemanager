@@ -2,6 +2,12 @@
 
 ## 0.3.24 Beta, tba
 
+### Added
+- Start-to-end time display for time entries in "Latest" section of Dashboard (thanks to @JamieMcNaught for implementing the first version)
+
+### Changed
+- Update French translations (thanks to @punkyard)
+
 ### Fixed
 - Don't set duration to `0` if the end time overflows into the next day (@thanks to @wargreen for reporting)
 - Quick add: The duration input value updates when in minutes input mode and changing start or end time
