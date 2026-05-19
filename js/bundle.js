@@ -24262,7 +24262,7 @@
 
     // and applies them to the HTMLElements such as popper and arrow
 
-    function applyStyles(_ref) {
+    function applyStyles$1(_ref) {
       var state = _ref.state;
       Object.keys(state.elements).forEach(function (name) {
         var style = state.styles[name] || {};
@@ -24327,11 +24327,11 @@
       };
     } // eslint-disable-next-line import/no-unused-modules
 
-    var applyStyles$1 = {
+    var applyStyles = {
       name: 'applyStyles',
       enabled: true,
       phase: 'write',
-      fn: applyStyles,
+      fn: applyStyles$1,
       effect: effect$2,
       requires: ['computeStyles']
     };
@@ -24556,7 +24556,7 @@
       })) : padding;
       return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
     };
-    function arrow(_ref) {
+    function arrow$1(_ref) {
       var _state$modifiersData$;
       var state = _ref.state,
         name = _ref.name,
@@ -24610,11 +24610,11 @@
       state.elements.arrow = arrowElement;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var arrow$1 = {
+    var arrow = {
       name: 'arrow',
       enabled: true,
       phase: 'main',
-      fn: arrow,
+      fn: arrow$1,
       effect: effect$1,
       requires: ['popperOffsets'],
       requiresIfExists: ['preventOverflow']
@@ -24720,7 +24720,7 @@
       }
       return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
     }
-    function computeStyles(_ref5) {
+    function computeStyles$1(_ref5) {
       var state = _ref5.state,
         options = _ref5.options;
       var _options$gpuAccelerat = options.gpuAcceleration,
@@ -24758,11 +24758,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var computeStyles$1 = {
+    var computeStyles = {
       name: 'computeStyles',
       enabled: true,
       phase: 'beforeWrite',
-      fn: computeStyles,
+      fn: computeStyles$1,
       data: {}
     };
 
@@ -25152,7 +25152,7 @@
       var oppositePlacement = getOppositePlacement(placement);
       return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
     }
-    function flip(_ref) {
+    function flip$1(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -25253,11 +25253,11 @@
       }
     } // eslint-disable-next-line import/no-unused-modules
 
-    var flip$1 = {
+    var flip = {
       name: 'flip',
       enabled: true,
       phase: 'main',
-      fn: flip,
+      fn: flip$1,
       requiresIfExists: ['offset'],
       data: {
         _skip: false
@@ -25283,7 +25283,7 @@
         return overflow[side] >= 0;
       });
     }
-    function hide(_ref) {
+    function hide$1(_ref) {
       var state = _ref.state,
         name = _ref.name;
       var referenceRect = state.rects.reference;
@@ -25311,12 +25311,12 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var hide$1 = {
+    var hide = {
       name: 'hide',
       enabled: true,
       phase: 'main',
       requiresIfExists: ['preventOverflow'],
-      fn: hide
+      fn: hide$1
     };
 
     function distanceAndSkiddingToXY(placement, rects, offset) {
@@ -25337,7 +25337,7 @@
         y: distance
       };
     }
-    function offset(_ref2) {
+    function offset$1(_ref2) {
       var state = _ref2.state,
         options = _ref2.options,
         name = _ref2.name;
@@ -25357,15 +25357,15 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var offset$1 = {
+    var offset = {
       name: 'offset',
       enabled: true,
       phase: 'main',
       requires: ['popperOffsets'],
-      fn: offset
+      fn: offset$1
     };
 
-    function popperOffsets(_ref) {
+    function popperOffsets$1(_ref) {
       var state = _ref.state,
         name = _ref.name;
       // Offsets are the actual position the popper needs to have to be
@@ -25379,11 +25379,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var popperOffsets$1 = {
+    var popperOffsets = {
       name: 'popperOffsets',
       enabled: true,
       phase: 'read',
-      fn: popperOffsets,
+      fn: popperOffsets$1,
       data: {}
     };
 
@@ -25391,7 +25391,7 @@
       return axis === 'x' ? 'y' : 'x';
     }
 
-    function preventOverflow(_ref) {
+    function preventOverflow$1(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -25496,11 +25496,11 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var preventOverflow$1 = {
+    var preventOverflow = {
       name: 'preventOverflow',
       enabled: true,
       phase: 'main',
-      fn: preventOverflow,
+      fn: preventOverflow$1,
       requiresIfExists: ['offset']
     };
 
@@ -25806,7 +25806,7 @@
       };
     }
 
-    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
+    var defaultModifiers = [eventListeners, popperOffsets, computeStyles, applyStyles, offset, flip, preventOverflow, arrow, hide];
     var createPopper = /*#__PURE__*/popperGenerator({
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
@@ -40686,7 +40686,11 @@
           if (!datetime) {
             return;
           }
-          element.innerText = format$2(parseISO(datetime), (_store$settings$fullD = (_store = store) === null || _store === void 0 || (_store = _store.settings) === null || _store === void 0 ? void 0 : _store.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat, localeOptions);
+          var dateFormat = (_store$settings$fullD = (_store = store) === null || _store === void 0 || (_store = _store.settings) === null || _store === void 0 ? void 0 : _store.fullDateFormat) !== null && _store$settings$fullD !== void 0 ? _store$settings$fullD : defaultDateFormat;
+          if (element.getAttribute('data-format') === 'time') {
+            dateFormat = 'HH:mm';
+          }
+          element.innerText = format$2(parseISO(datetime), dateFormat, localeOptions);
         });
       }
       var addTimezoneLinkElements = document.querySelectorAll("[data-add-timezone-link]");

@@ -268,9 +268,15 @@ const init = () => {
 			if (!datetime) {
 				return;
 			}
+
+			let dateFormat = store?.settings?.fullDateFormat ?? defaultDateFormat
+			if (element.getAttribute('data-format') === 'time') {
+				dateFormat = 'HH:mm';
+			}
+
 			element.innerText = format(
 				parseISO(datetime),
-				store?.settings?.fullDateFormat ?? defaultDateFormat,
+				dateFormat,
 				localeOptions,
 			);
 		});
