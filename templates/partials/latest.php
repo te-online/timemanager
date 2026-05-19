@@ -5,6 +5,21 @@ use \OCP\Util;
 
 $urlGenerator = \OC::$server->getURLGenerator();
 $l = Util::getL10N('timemanager');
+
+$user = \OC::$server->getUserSession()->getUser();
+$userId = $user ? $user->getUID() : null;
+
+$timezone = 'UTC';
+
+if ($userId) {
+    $timezone = \OC::$server->getConfig()->getUserValue(
+        $userId,
+        'core',
+        'timezone',
+        'UTC'
+    );
+}
+
 ?>
 
 <h2 class="latest-headline">
@@ -29,6 +44,7 @@ $l = Util::getL10N('timemanager');
 					<span data-duration="<?php p($entry->time->getDurationInHours()); ?>">
 						<?php p(DurationHelper::format_duration($entry->time->getDurationInHours(), $_["store"])); ?>
 					</span>&nbsp;<?php p($l->t('hrs.')); ?>
+					<?php echo " &nbsp; ".$entry->time->getStartFormatted("H:i",$timezone)."-".$entry->time->getEndFormatted("H:i", $timezone);?>
 				</span>
 				<?php if (isset($entry->time->author_display_name) && !$entry->time->current_user_is_author) { ?>
 					&nbsp;&middot;&nbsp;
