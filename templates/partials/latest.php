@@ -5,21 +5,6 @@ use \OCP\Util;
 
 $urlGenerator = \OC::$server->getURLGenerator();
 $l = Util::getL10N('timemanager');
-
-$user = \OC::$server->getUserSession()->getUser();
-$userId = $user ? $user->getUID() : null;
-
-$timezone = 'UTC';
-
-if ($userId) {
-    $timezone = \OC::$server->getConfig()->getUserValue(
-        $userId,
-        'core',
-        'timezone',
-        'UTC'
-    );
-}
-
 ?>
 
 <h2 class="latest-headline">
