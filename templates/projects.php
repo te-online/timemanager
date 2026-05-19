@@ -124,7 +124,7 @@ $l = Util::getL10N('timemanager');
 										<span><?php p($l->t('%s tasks', [$project->task_count])); ?></span>&nbsp;&middot;&nbsp;<span>
 											<span data-duration="<?php p($project->hours); ?>">
 												<?php p(DurationHelper::format_duration($project->hours, $_["store"])); ?>
-											</span><?php p($l->t('hrs.')); ?>
+											</span>&nbsp;<?php p($l->t('hrs.')); ?>
 										</span>
 									</div>
 								</a>

@@ -117,7 +117,7 @@ $l = Util::getL10N('timemanager');
 										<span>
 											<span data-duration="<?php p($task->hours); ?>">
 												<?php p(DurationHelper::format_duration($task->hours, $_["store"])); ?>
-											</span><?php p($l->t('hrs.')); ?>
+											</span>&nbsp;<?php p($l->t('hrs.')); ?>
 										</span>
 									</div>
 								</a>

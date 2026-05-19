@@ -30,7 +30,7 @@ $l = Util::getL10N('timemanager');
 								<span>
 									<span data-duration="<?php p($client->hours); ?>">
 										<?php p(DurationHelper::format_duration($client->hours, $_["store"])); ?>
-									</span><?php p($l->t('hrs.')); ?>
+									</span>&nbsp;<?php p($l->t('hrs.')); ?>
 								</span>&nbsp;&middot;&nbsp;
 								<span>
 									<?php p($l->t('since %s', [$client->getCreatedYear()])); ?>
