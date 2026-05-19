@@ -43,8 +43,9 @@ if ($userId) {
 				&nbsp;&middot;&nbsp;<span>
 					<span data-duration="<?php p($entry->time->getDurationInHours()); ?>">
 						<?php p(DurationHelper::format_duration($entry->time->getDurationInHours(), $_["store"])); ?>
-					</span>&nbsp;<?php p($l->t('hrs.')); ?>
-					<?php echo " &nbsp; ".$entry->time->getStartFormatted("H:i",$timezone)."-".$entry->time->getEndFormatted("H:i", $timezone);?>
+					</span>&nbsp;<?php p($l->t('hrs.')); ?>&nbsp;&middot;&nbsp;
+					<span data-datetime="<?php p($entry->time->getStartFormatted("c")); ?>" data-format="time"><?php p($entry->time->getStartFormatted('H:i')); ?></span>
+					&ndash;<span data-datetime="<?php p($entry->time->getEndFormatted("c")); ?>" data-format="time"><?php p($entry->time->getEndFormatted('H:i')); ?></span>
 				</span>
 				<?php if (isset($entry->time->author_display_name) && !$entry->time->current_user_is_author) { ?>
 					&nbsp;&middot;&nbsp;
