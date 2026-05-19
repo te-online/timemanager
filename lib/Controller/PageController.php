@@ -22,6 +22,7 @@ use OCA\TimeManager\Helper\ArrayToCSV;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Services\IAppConfig;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
@@ -49,6 +50,8 @@ class PageController extends Controller {
 	protected $userId;
 	/** @var IAppConfig */
 	private $config;
+    /** @var IConfig */
+    private $serverConfig;
 	/** @var IUserManager */
 	private $userManager;
 	/** @var IGroupManager */
@@ -91,6 +94,7 @@ class PageController extends Controller {
 		CommitMapper $commitMapper,
 		ShareMapper $shareMapper,
 		IAppConfig $config,
+		IConfig $serverConfig,
 		IUserManager $userManager,
 		IGroupManager $groupManager,
 		IURLGenerator $urlGenerator,
@@ -107,6 +111,7 @@ class PageController extends Controller {
 		$this->shareMapper = $shareMapper;
 		$this->userId = $userId;
 		$this->config = $config;
+        $this->serverConfig = $serverConfig;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->logger = $logger;
@@ -155,6 +160,14 @@ class PageController extends Controller {
 		});
 		$hasSharedTimeEntries = count($sharedTimeEntries) > 0;
 
+        $default_timezone = 'UTC';
+        $user_server_timezone = $this->serverConfig->getUserValue(
+            $this->userId,
+            'core',
+            'timezone',
+            $default_timezone
+        );
+
 		return new TemplateResponse("timemanager", "index", [
 			"page" => "index",
 			"templates" => [
@@ -162,6 +175,7 @@ class PageController extends Controller {
 			],
 			"latestEntries" => $latestEntries,
 			"hasSharedTimeEntries" => $hasSharedTimeEntries,
+            "user_server_timezone" => $user_server_timezone,
 			"store" => json_encode([
 				"clients" => array_map(function ($oneClient) {
 					$oneClient = $oneClient->toArray();

@@ -5,6 +5,8 @@ use \OCP\Util;
 
 $urlGenerator = \OC::$server->getURLGenerator();
 $l = Util::getL10N('timemanager');
+
+$timezone = $_['user_server_timezone'];
 ?>
 
 <h2 class="latest-headline">
