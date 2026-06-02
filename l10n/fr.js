@@ -112,7 +112,7 @@ OC.L10N.register(
 		Reports: "Rapports",
 		Yesterday: "Hier",
 		"This Week": "Cette semaine",
-		"Last week": "Semaine passée",
+		"Last week": "Semaine précédente",
 		"This month": "Ce mois-ci",
 		"Last month": "Mois passé",
 		"This year": "Cette année",
