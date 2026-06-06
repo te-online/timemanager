@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.24 Beta, tba
+## 0.3.24 Beta, 6. June 2026
 
 ### Added
 - Start-to-end time display for time entries in "Latest" section of Dashboard (thanks to @JamieMcNaught for implementing the first version)
