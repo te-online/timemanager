@@ -10,8 +10,8 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"cypress": "^15.9.0",
-		"date-fns": "^2.29.3",
-		"typescript": "^5.0.4"
+		"cypress": "^15.16.0",
+		"date-fns": "^4.4.0",
+		"typescript": "^5.9.3"
 	}
 }
