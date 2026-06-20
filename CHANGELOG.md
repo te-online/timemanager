@@ -9,6 +9,7 @@
 ### Fixed
 - Replace removed `OC\Server::getURLGenerator()`
 - Duration Helper: Remove warning for accessing undefined array key when converting zero-minutes durations from decimal to hours-format (thanks to @punkyard for reporting, #254)
+- Dashboard: Guess timezone from user server settings to skip client-side updates in most cases
 
 ## 0.3.24 Beta, 6. June 2026
 
