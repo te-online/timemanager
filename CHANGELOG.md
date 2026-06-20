@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.25 Beta, 20. June 2026
+
+### Added
+- Custom .tm-oc-dialog styling, since .oc-dialog styling got removed from the global stylesheets
+- Support for Nextcloud 34; Cypress tests run manually
+
+### Fixed
+- Replace removed `OC\Server::getURLGenerator()`
+- Duration Helper: Remove warning for accessing undefined array key when converting zero-minutes durations from decimal to hours-format (thanks to @punkyard for reporting, #254)
+
 ## 0.3.24 Beta, 6. June 2026
 
 ### Added
