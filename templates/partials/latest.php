@@ -6,7 +6,7 @@ use \OCP\Util;
 $urlGenerator = \OCP\Server::get(\OCP\IURLGenerator::class);
 $l = Util::getL10N('timemanager');
 
-$timezone = $_['user_server_timezone'];
+$timezone = $_['user_server_timezone'] ?? 'UTC';
 ?>
 
 <h2 class="latest-headline">
@@ -31,8 +31,8 @@ $timezone = $_['user_server_timezone'];
 					<span data-duration="<?php p($entry->time->getDurationInHours()); ?>">
 						<?php p(DurationHelper::format_duration($entry->time->getDurationInHours(), $_["store"])); ?>
 					</span>&nbsp;<?php p($l->t('hrs.')); ?>&nbsp;&middot;&nbsp;
-					<span data-datetime="<?php p($entry->time->getStartFormatted("c")); ?>" data-format="time"><?php p($entry->time->getStartFormatted('H:i')); ?></span>
-					&ndash;<span data-datetime="<?php p($entry->time->getEndFormatted("c")); ?>" data-format="time"><?php p($entry->time->getEndFormatted('H:i')); ?></span>
+					<span data-datetime="<?php p($entry->time->getStartFormatted("c")); ?>" data-format="time"><?php p($entry->time->getStartFormatted('H:i', $timezone)); ?></span>
+					&ndash;<span data-datetime="<?php p($entry->time->getEndFormatted("c")); ?>" data-format="time"><?php p($entry->time->getEndFormatted('H:i', $timezone)); ?></span>
 				</span>
 				<?php if (isset($entry->time->author_display_name) && !$entry->time->current_user_is_author) { ?>
 					&nbsp;&middot;&nbsp;
