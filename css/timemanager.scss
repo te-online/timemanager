@@ -292,11 +292,17 @@ body.loading-error #content.app-timemanager:before {
 }
 
 .tm-oc-dialog .inner {
-	padding: 12px 24px;
+	padding: 16px 24px;
 	min-width: 380px;
 	max-width: 480px;
 	background-color: var(--color-main-background);
 	border-radius: var(--border-radius-container);
+}
+
+.tm-oc-dialog-buttonrow {
+	padding-top: 16px;
+	display: flex;
+	justify-content: space-between;
 }
 
 label {
