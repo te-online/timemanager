@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/te-online/timemanager#readme",
   "devDependencies": {
-    "@babel/core": "^7.22.6",
+    "@babel/core": "^7.29.6",
     "@babel/plugin-transform-async-to-generator": "^7.22.5",
     "@babel/plugin-transform-classes": "^7.22.6",
     "@babel/preset-env": "^7.22.6",
