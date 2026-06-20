@@ -265,11 +265,38 @@ body.loading-error #content.app-timemanager:before {
 	}
 }
 
-.app-timemanager .oc-dialog .inner {
-	padding-left: 10px;
-	padding-right: 10px;
+.tm-oc-dialog-dim {
+	position: fixed;
+	z-index: 9998;
+	top: 0;
+	inset-inline-start: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	--backdrop-color: 0, 0, 0;
+	background-color: rgba(var(--backdrop-color), 0.5);
+}
+
+.tm-oc-dialog {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	flex-flow: column;
+	padding: 0;
+}
+
+.tm-oc-dialog .inner {
+	padding: 12px 24px;
 	min-width: 380px;
 	max-width: 480px;
+	background-color: var(--color-main-background);
+	border-radius: var(--border-radius-container);
 }
 
 label {
@@ -931,7 +958,7 @@ label {
 	margin-bottom: 6px;
 }
 
-.oc-dialog-buttonrow.reverse {
+.tm-oc-dialog-buttonrow.reverse {
 	flex-flow: row-reverse;
 }
 

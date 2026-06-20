@@ -46,7 +46,7 @@
 				on:input={(e) => (note = e.target.value)}>{note}</textarea>
 		</label>
 		<input type="hidden" name="requesttoken" value={requestToken} />
-		<div class="oc-dialog-buttonrow twobuttons reverse">
+		<div class="tm-oc-dialog-buttonrow twobuttons reverse">
 			<button type="submit" class="button primary">{clientEditorButtonCaption}</button>
 			{#if !isServer}
 				<button type="reset" class="button" on:click|preventDefault={onCancel}>

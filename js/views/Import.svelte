@@ -231,7 +231,7 @@
 		<div class="inner">
 			<h3>{translate('timemanager', 'Error reading CSV file')}</h3>
 			<div class="error">{translate('timemanager', 'CSV parse error:')} {parseError}</div>
-			<div class="oc-dialog-buttonrow onebutton">
+			<div class="tm-oc-dialog-buttonrow onebutton">
 				<button
 					class="button"
 					on:click|preventDefault={() => {
@@ -249,7 +249,7 @@
 		<div class="inner">
 			<h3>{translate('timemanager', 'Error importing entries')}</h3>
 			<div class="error">{translate('timemanager', 'Import API error:')} {importError}</div>
-			<div class="oc-dialog-buttonrow onebutton">
+			<div class="tm-oc-dialog-buttonrow onebutton">
 				<button
 					class="button"
 					on:click|preventDefault={() => {
@@ -267,7 +267,7 @@
 		<div class="inner">
 			<h3>{translate('timemanager', 'Import successful')}</h3>
 			<div class="error">{translate('timemanager', 'Done:')} {successMessage}</div>
-			<div class="oc-dialog-buttonrow onebutton">
+			<div class="tm-oc-dialog-buttonrow onebutton">
 				<button
 					class="button"
 					on:click|preventDefault={() => {

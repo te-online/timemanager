@@ -60,7 +60,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Import now").click();
 
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Import successful").scrollIntoView().should("be.visible");
+		cy.contains(".tm-oc-dialog", "Import successful").scrollIntoView().should("be.visible");
 		cy.contains("Done:").scrollIntoView().should("be.visible");
 		cy.contains("button", "Close").click();
 		waitForOcDialog();
@@ -100,13 +100,13 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		cy.contains("button", "Generate preview from file").click();
 
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Error reading CSV file").scrollIntoView().should("be.visible");
+		cy.contains(".tm-oc-dialog", "Error reading CSV file").scrollIntoView().should("be.visible");
 		cy.contains("It looks like this file is not a CSV file or doesn't contain any clients, projects or tasks.").should(
 			"be.visible",
 		);
 		cy.contains("button", "Close").click();
 		waitForOcDialog();
-		cy.contains(".oc-dialog", "Error reading CSV file").should("not.exist");
+		cy.contains(".tm-oc-dialog", "Error reading CSV file").should("not.exist");
 	});
 
 	it("can import CSV file with semicolon delimiter", () => {
@@ -136,7 +136,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 			cy.contains("a", "Add client").click();
 			cy.get('input[name="name"]').type(client.Name);
 			cy.get('textarea[name="note"]').type("Some client note");
-			cy.get(".oc-dialog form").submit();
+			cy.get(".tm-oc-dialog form").submit();
 			cy.contains(".list-title", "Clients");
 			cy.contains("div.tm_item-row", client.Name).scrollIntoView().should("be.visible");
 			cy.get("div.tm_item-row").should("have.length", index + 1);
@@ -153,7 +153,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 
 		waitForOcDialog();
 		cy.contains("a", "Edit client").click();
-		cy.contains(".oc-dialog", "Edit client").scrollIntoView().should("be.visible");
+		cy.contains(".tm-oc-dialog", "Edit client").scrollIntoView().should("be.visible");
 		cy.get('input[name="name"]').type(" (changed)");
 		cy.get('textarea[name="note"]').type(" (note updated)");
 		cy.contains("button", "Edit client").click();
@@ -186,7 +186,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		for (const username of testusers.slice(1)) {
 			waitForOcDialog();
 			cy.contains("button", "Share client").click();
-			cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
+			cy.contains(".tm-oc-dialog", "Share with").scrollIntoView().should("be.visible");
 			cy.get("input#sharee-select").type(username);
 			cy.get("label.sharees .item.first").click();
 			cy.contains("button", "Add").click();
@@ -195,7 +195,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 
 		// share with group
 		cy.contains("button", "Share client").click();
-		cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
+		cy.contains(".tm-oc-dialog", "Share with").scrollIntoView().should("be.visible");
 		cy.get("input#sharee-select").type("testgroup-1");
 		cy.get("label.sharees .item.first").click();
 		cy.contains("button", "Add").click();
@@ -209,7 +209,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		for (const username of testusers.slice(1)) {
 			waitForOcDialog();
 			cy.contains("button", "Share client").click();
-			cy.contains(".oc-dialog", "Share with").scrollIntoView().should("be.visible");
+			cy.contains(".tm-oc-dialog", "Share with").scrollIntoView().should("be.visible");
 			cy.get("input#sharee-select").type(username);
 			cy.get("label.sharees .item.first").click();
 			cy.contains("button", "Add").click();
@@ -244,7 +244,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 				waitForOcDialog();
 				cy.contains("a", "Add project").click();
 				cy.get('input[name="name"]').type(project.Name);
-				cy.get(".oc-dialog form").submit();
+				cy.get(".tm-oc-dialog form").submit();
 				waitForPjax();
 				cy.contains("div.tm_item-row", project.Name).scrollIntoView().should("be.visible");
 				cy.get("div.tm_item-row").should("have.length", index + 1);
@@ -345,7 +345,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 					waitForOcDialog();
 					cy.contains("a", "Add task").click();
 					cy.get('input[name="name"]').type(task.Name);
-					cy.get(".oc-dialog form").submit();
+					cy.get(".tm-oc-dialog form").submit();
 					waitForPjax();
 					cy.contains("div.tm_item-row", task.Name).scrollIntoView().should("be.visible");
 					cy.get("div.tm_item-row").should("have.length", numTasks);
@@ -437,7 +437,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('input[name="duration"]').type(timeEntry.time);
 			cy.get('input[name="date"]').type(timeEntry.date);
 			cy.get('textarea[name="note"]').type(timeEntry.note);
-			cy.get(".oc-dialog form").submit();
+			cy.get(".tm-oc-dialog form").submit();
 			waitForPjax();
 			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
 			cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
@@ -469,7 +469,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('input[name="duration"]').type(timeEntry.time);
 			cy.get('input[name="date"]').type(timeEntry.date);
 			cy.get('textarea[name="note"]').type(timeEntry.note);
-			cy.get(".oc-dialog form").submit();
+			cy.get(".tm-oc-dialog form").submit();
 			waitForPjax();
 			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
 			cy.contains("div.tm_item-row", timeEntry.note).scrollIntoView().should("be.visible");
@@ -504,7 +504,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="duration"]').clear().type("5.75");
 		cy.get('input[name="date"]').clear().type("2021-03-26");
 		cy.get('textarea[name="note"]').type(" (changed)");
-		cy.get(".oc-dialog form").submit();
+		cy.get(".tm-oc-dialog form").submit();
 
 		waitForPjax();
 		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).scrollIntoView().should("be.visible");
@@ -582,7 +582,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 			.contains("button", "Delete")
 			// Button is only visible on hover, force needed
 			.click({ force: true });
-		cy.contains(".oc-dialog button", "Delete").click();
+		cy.contains(".tm-oc-dialog button", "Delete").click();
 
 		waitForPjax();
 		cy.contains("div.tm_item-row", `${secondTimeEntry.note} (changed)`).should("not.exist");
@@ -594,7 +594,7 @@ describe("TimeManager General", { defaultCommandTimeout: 5000 }, () => {
 		cy.get('input[name="duration"]').type(secondTimeEntry.time);
 		cy.get('input[name="date"]').type(secondTimeEntry.date);
 		cy.get('textarea[name="note"]').type(secondTimeEntry.note);
-		cy.get(".oc-dialog form").submit();
+		cy.get(".tm-oc-dialog form").submit();
 		waitForPjax();
 		cy.contains("div.tm_item-row", secondTimeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
 		cy.contains("div.tm_item-row", secondTimeEntry.note).scrollIntoView().should("be.visible");
@@ -789,7 +789,7 @@ describe("TimeManager Sharing and API", { defaultCommandTimeout: 5000 }, () => {
 			cy.get('input[name="duration"]').type(timeEntry.time);
 			cy.get('input[name="date"]').type(timeEntry.date);
 			cy.get('textarea[name="note"]').type(`[Sharee entry]: ${timeEntry.note}`);
-			cy.get(".oc-dialog form").submit();
+			cy.get(".tm-oc-dialog form").submit();
 			waitForPjax();
 			cy.contains("div.tm_item-row", timeEntry.time.replace(",", ".")).scrollIntoView().should("be.visible");
 			cy.contains("div.tm_item-row", `[Sharee entry]: ${timeEntry.note}`).scrollIntoView().should("be.visible");

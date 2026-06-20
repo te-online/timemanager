@@ -16,16 +16,16 @@
     function _OverloadYield(e, d) {
       this.v = e, this.k = d;
     }
-    function _arrayLikeToArray$1(r, a) {
+    function _arrayLikeToArray$2(r, a) {
       (null == a || a > r.length) && (a = r.length);
       for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
       return n;
     }
-    function _arrayWithHoles(r) {
+    function _arrayWithHoles$1(r) {
       if (Array.isArray(r)) return r;
     }
     function _arrayWithoutHoles(r) {
-      if (Array.isArray(r)) return _arrayLikeToArray$1(r);
+      if (Array.isArray(r)) return _arrayLikeToArray$2(r);
     }
     function _assertThisInitialized$1(e) {
       if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -73,7 +73,7 @@
     function _createForOfIteratorHelper$1(r, e) {
       var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
       if (!t) {
-        if (Array.isArray(r) || (t = _unsupportedIterableToArray$1(r)) || e) {
+        if (Array.isArray(r) || (t = _unsupportedIterableToArray$2(r)) || e) {
           t && (r = t);
           var n = 0,
             F = function () {};
@@ -166,7 +166,7 @@
     function _iterableToArray(r) {
       if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r);
     }
-    function _iterableToArrayLimit(r, l) {
+    function _iterableToArrayLimit$1(r, l) {
       var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
       if (null != t) {
         var e,
@@ -193,7 +193,7 @@
         return a;
       }
     }
-    function _nonIterableRest() {
+    function _nonIterableRest$1() {
       throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
     }
     function _nonIterableSpread() {
@@ -359,19 +359,17 @@
         i = 0;
       }
       _regeneratorDefine = function (e, r, n, t) {
-        if (r) i ? i(e, r, {
+        function o(r, n) {
+          _regeneratorDefine(e, r, function (e) {
+            return this._invoke(r, n, e);
+          });
+        }
+        r ? i ? i(e, r, {
           value: n,
           enumerable: !t,
           configurable: !t,
           writable: !t
-        }) : e[r] = n;else {
-          function o(r, n) {
-            _regeneratorDefine(e, r, function (e) {
-              return this._invoke(r, n, e);
-            });
-          }
-          o("next", 0), o("throw", 1), o("return", 2);
-        }
+        }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2));
       }, _regeneratorDefine(e, r, n, t);
     }
     function _regeneratorKeys(e) {
@@ -405,11 +403,11 @@
         return t.__proto__ = e, t;
       }, _setPrototypeOf$1(t, e);
     }
-    function _slicedToArray(r, e) {
-      return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray$1(r, e) || _nonIterableRest();
+    function _slicedToArray$1(r, e) {
+      return _arrayWithHoles$1(r) || _iterableToArrayLimit$1(r, e) || _unsupportedIterableToArray$2(r, e) || _nonIterableRest$1();
     }
     function _toConsumableArray(r) {
-      return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray$1(r) || _nonIterableSpread();
+      return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray$2(r) || _nonIterableSpread();
     }
     function _toPrimitive(t, r) {
       if ("object" != typeof t || !t) return t;
@@ -425,11 +423,11 @@
       var i = _toPrimitive(t, "string");
       return "symbol" == typeof i ? i : i + "";
     }
-    function _unsupportedIterableToArray$1(r, a) {
+    function _unsupportedIterableToArray$2(r, a) {
       if (r) {
-        if ("string" == typeof r) return _arrayLikeToArray$1(r, a);
+        if ("string" == typeof r) return _arrayLikeToArray$2(r, a);
         var t = {}.toString.call(r).slice(8, -1);
-        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray$1(r, a) : void 0;
+        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray$2(r, a) : void 0;
       }
     }
     function _regeneratorRuntime() {
@@ -1379,14 +1377,14 @@
 
     // `Object.prototype.toString` method implementation
     // https://tc39.es/ecma262/#sec-object.prototype.tostring
-    var objectToString$1 = toStringTagSupport ? {}.toString : function toString() {
+    var objectToString$2 = toStringTagSupport ? {}.toString : function toString() {
       return '[object ' + classof(this) + ']';
     };
 
     // `Object.prototype.toString` method
     // https://tc39.es/ecma262/#sec-object.prototype.tostring
     if (!toStringTagSupport) {
-      defineBuiltIn(Object.prototype, 'toString', objectToString$1, {
+      defineBuiltIn(Object.prototype, 'toString', objectToString$2, {
         unsafe: true
       });
     }
@@ -1573,7 +1571,6 @@
             }
           }
         }
-
         return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
       };
     };
@@ -3487,8 +3484,7 @@
     function assign$1(tar, src) {
       // @ts-ignore
       for (const k in src) tar[k] = src[k];
-      return (/** @type {T & S} */tar
-      );
+      return /** @type {T & S} */tar;
     }
     function run(fn) {
       return fn();
@@ -3660,8 +3656,7 @@
       if (!node) return document;
       const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
       if (root && /** @type {ShadowRoot} */root.host) {
-        return (/** @type {ShadowRoot} */root
-        );
+        return /** @type {ShadowRoot} */root;
       }
       return node.ownerDocument;
     }
@@ -3672,7 +3667,7 @@
      * @returns {CSSStyleSheet}
      */
     function append_stylesheet(node, style) {
-      append( /** @type {Document} */node.head || node, style);
+      append(/** @type {Document} */node.head || node, style);
       return style.sheet;
     }
 
@@ -3999,8 +3994,8 @@
        */
       m(html, target, anchor = null) {
         if (!this.e) {
-          if (this.is_svg) this.e = svg_element( /** @type {keyof SVGElementTagNameMap} */target.nodeName);
-          /** #7364  target for <template> may be provided as #document-fragment(11) */else this.e = element( /** @type {keyof HTMLElementTagNameMap} */
+          if (this.is_svg) this.e = svg_element(/** @type {keyof SVGElementTagNameMap} */target.nodeName);
+          /** #7364  target for <template> may be provided as #document-fragment(11) */else this.e = element(/** @type {keyof HTMLElementTagNameMap} */
           target.nodeType === 11 ? 'TEMPLATE' : target.nodeName);
           this.t = target.tagName !== 'TEMPLATE' ? target : /** @type {HTMLTemplateElement} */target.content;
           this.c(html);
@@ -4155,7 +4150,7 @@
         if (callbacks) {
           // TODO are there situations where events could be dispatched
           // in a server (non-DOM) environment?
-          const event = custom_event( /** @type {string} */type, detail, {
+          const event = custom_event(/** @type {string} */type, detail, {
             cancelable
           });
           callbacks.slice().forEach(fn => {
@@ -5489,7 +5484,6 @@
         return value < 0 ? Math.ceil(value) : Math.floor(value);
       } // Math.trunc is not supported by IE
     };
-
     var defaultRoundingMethod = 'trunc';
     function getRoundingMethod(method) {
       return roundingMap[defaultRoundingMethod];
@@ -8061,24 +8055,24 @@
       return date.getTime() < dateToCompare.getTime();
     }
 
-    function _arrayLikeToArray(r, a) {
+    function _arrayLikeToArray$1(r, a) {
       (null == a || a > r.length) && (a = r.length);
       for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
       return n;
     }
 
-    function _unsupportedIterableToArray(r, a) {
+    function _unsupportedIterableToArray$1(r, a) {
       if (r) {
-        if ("string" == typeof r) return _arrayLikeToArray(r, a);
+        if ("string" == typeof r) return _arrayLikeToArray$1(r, a);
         var t = {}.toString.call(r).slice(8, -1);
-        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray$1(r, a) : void 0;
       }
     }
 
     function _createForOfIteratorHelper(r, e) {
       var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
       if (!t) {
-        if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e) {
+        if (Array.isArray(r) || (t = _unsupportedIterableToArray$1(r)) || e) {
           t && (r = t);
           var _n = 0,
             F = function F() {};
@@ -8420,7 +8414,6 @@
       // 0 to 999, -0 to -999
       fourDigitsSigned: /^-?\d{1,4}/ // 0 to 9999, -0 to -9999
     };
-
     var timezonePatterns = {
       basicOptionalMinutes: /^([+-])(\d{2})(\d{2})?|Z/,
       basic: /^([+-])(\d{2})(\d{2})|Z/,
@@ -11272,24 +11265,65 @@
       return addWeeks(dirtyDate, -amount);
     }
 
-    /*! @license DOMPurify 3.3.2 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.2/LICENSE */
+    /*! @license DOMPurify 3.4.11 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.11/LICENSE */
 
-    const {
-      entries,
-      setPrototypeOf,
-      isFrozen,
-      getPrototypeOf,
-      getOwnPropertyDescriptor: getOwnPropertyDescriptor$1
-    } = Object;
-    let {
-      freeze,
-      seal,
-      create
-    } = Object; // eslint-disable-line import/no-mutable-exports
-    let {
-      apply,
-      construct
-    } = typeof Reflect !== 'undefined' && Reflect;
+    function _arrayLikeToArray(r, a) {
+      (null == a || a > r.length) && (a = r.length);
+      for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+      return n;
+    }
+    function _arrayWithHoles(r) {
+      if (Array.isArray(r)) return r;
+    }
+    function _iterableToArrayLimit(r, l) {
+      var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+      if (null != t) {
+        var e,
+          n,
+          i,
+          u,
+          a = [],
+          f = true,
+          o = false;
+        try {
+          if (i = (t = t.call(r)).next, 0 === l) ; else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+        } catch (r) {
+          o = true, n = r;
+        } finally {
+          try {
+            if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+          } finally {
+            if (o) throw n;
+          }
+        }
+        return a;
+      }
+    }
+    function _nonIterableRest() {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+    function _slicedToArray(r, e) {
+      return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
+    }
+    function _unsupportedIterableToArray(r, a) {
+      if (r) {
+        if ("string" == typeof r) return _arrayLikeToArray(r, a);
+        var t = {}.toString.call(r).slice(8, -1);
+        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+      }
+    }
+
+    const entries = Object.entries,
+      setPrototypeOf = Object.setPrototypeOf,
+      isFrozen = Object.isFrozen,
+      getPrototypeOf = Object.getPrototypeOf,
+      getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor;
+    let freeze = Object.freeze,
+      seal = Object.seal,
+      create = Object.create; // eslint-disable-line import/no-mutable-exports
+    let _ref = typeof Reflect !== 'undefined' && Reflect,
+      apply = _ref.apply,
+      construct = _ref.construct;
     if (!freeze) {
       freeze = function freeze(x) {
         return x;
@@ -11321,13 +11355,19 @@
     const arrayPop = unapply(Array.prototype.pop);
     const arrayPush = unapply(Array.prototype.push);
     const arraySplice = unapply(Array.prototype.splice);
+    const arrayIsArray = Array.isArray;
     const stringToLowerCase = unapply(String.prototype.toLowerCase);
     const stringToString = unapply(String.prototype.toString);
     const stringMatch = unapply(String.prototype.match);
     const stringReplace = unapply(String.prototype.replace);
     const stringIndexOf$2 = unapply(String.prototype.indexOf);
     const stringTrim$1 = unapply(String.prototype.trim);
+    const numberToString = unapply(Number.prototype.toString);
+    const booleanToString = unapply(Boolean.prototype.toString);
+    const bigintToString = typeof BigInt === 'undefined' ? null : unapply(BigInt.prototype.toString);
+    const symbolToString = typeof Symbol === 'undefined' ? null : unapply(Symbol.prototype.toString);
     const objectHasOwnProperty = unapply(Object.prototype.hasOwnProperty);
+    const objectToString$1 = unapply(Object.prototype.toString);
     const regExpTest = unapply(RegExp.prototype.test);
     const typeErrorCreate = unconstruct(TypeError);
     /**
@@ -11377,6 +11417,9 @@
         // Prevent prototype setters from intercepting set as a this value.
         setPrototypeOf(set, null);
       }
+      if (!arrayIsArray(array)) {
+        return set;
+      }
       let l = array.length;
       while (l--) {
         let element = array[l];
@@ -11417,10 +11460,13 @@
      */
     function clone$1(object) {
       const newObject = create(null);
-      for (const [property, value] of entries(object)) {
+      for (const _ref2 of entries(object)) {
+        var _ref3 = _slicedToArray(_ref2, 2);
+        const property = _ref3[0];
+        const value = _ref3[1];
         const isPropertyExist = objectHasOwnProperty(object, property);
         if (isPropertyExist) {
-          if (Array.isArray(value)) {
+          if (arrayIsArray(value)) {
             newObject[property] = cleanArray(value);
           } else if (value && typeof value === 'object' && value.constructor === Object) {
             newObject[property] = clone$1(value);
@@ -11430,6 +11476,58 @@
         }
       }
       return newObject;
+    }
+    /**
+     * Convert non-node values into strings without depending on direct property access.
+     *
+     * @param value - The value to stringify.
+     * @returns A string representation of the provided value.
+     */
+    function stringifyValue(value) {
+      switch (typeof value) {
+        case 'string':
+          {
+            return value;
+          }
+        case 'number':
+          {
+            return numberToString(value);
+          }
+        case 'boolean':
+          {
+            return booleanToString(value);
+          }
+        case 'bigint':
+          {
+            return bigintToString ? bigintToString(value) : '0';
+          }
+        case 'symbol':
+          {
+            return symbolToString ? symbolToString(value) : 'Symbol()';
+          }
+        case 'undefined':
+          {
+            return objectToString$1(value);
+          }
+        case 'function':
+        case 'object':
+          {
+            if (value === null) {
+              return objectToString$1(value);
+            }
+            const valueAsRecord = value;
+            const valueToString = lookupGetter(valueAsRecord, 'toString');
+            if (typeof valueToString === 'function') {
+              const stringified = valueToString(valueAsRecord);
+              return typeof stringified === 'string' ? stringified : objectToString$1(stringified);
+            }
+            return objectToString$1(value);
+          }
+        default:
+          {
+            return objectToString$1(value);
+          }
+      }
     }
     /**
      * This method automatically checks if the prop is function or getter and behaves accordingly.
@@ -11456,6 +11554,14 @@
       }
       return fallbackValue;
     }
+    function isRegex(value) {
+      try {
+        regExpTest(value, '');
+        return true;
+      } catch (_unused) {
+        return false;
+      }
+    }
 
     const html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'search', 'section', 'select', 'shadow', 'slot', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']);
     const svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'enterkeyhint', 'exportparts', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'inputmode', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'part', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
@@ -11471,15 +11577,14 @@
     const mathMlDisallowed = freeze(['maction', 'maligngroup', 'malignmark', 'mlongdiv', 'mscarries', 'mscarry', 'msgroup', 'mstack', 'msline', 'msrow', 'semantics', 'annotation', 'annotation-xml', 'mprescripts', 'none']);
     const text = freeze(['#text']);
 
-    const html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'exportparts', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inert', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'part', 'pattern', 'placeholder', 'playsinline', 'popover', 'popovertarget', 'popovertargetaction', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'slot', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'wrap', 'xmlns', 'slot']);
+    const html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'command', 'commandfor', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'exportparts', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inert', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'part', 'pattern', 'placeholder', 'playsinline', 'popover', 'popovertarget', 'popovertargetaction', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'slot', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'wrap', 'xmlns']);
     const svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'amplitude', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'exponent', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'mask-type', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'slope', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'tablevalues', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
-    const mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnsalign', 'columnlines', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lspace', 'lquote', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
+    const mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnalign', 'columnlines', 'columnspacing', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lquote', 'lspace', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
     const xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
 
-    // eslint-disable-next-line unicorn/better-regex
-    const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
-    const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-    const TMPLIT_EXPR = seal(/\$\{[\w\W]*/gm); // eslint-disable-line unicorn/better-regex
+    const MUSTACHE_EXPR = seal(/{{[\w\W]*|^[\w\W]*}}/g);
+    const ERB_EXPR = seal(/<%[\w\W]*|^[\w\W]*%>/g);
+    const TMPLIT_EXPR = seal(/\${[\w\W]*/g);
     const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/); // eslint-disable-line no-useless-escape
     const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
     const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|matrix):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
@@ -11489,30 +11594,31 @@
     );
     const DOCTYPE_NAME = seal(/^html$/i);
     const CUSTOM_ELEMENT = seal(/^[a-z][.\w]*(-[.\w]+)+$/i);
+    // Markup-significant character probes used by _sanitizeElements.
+    // Shared module-level instances are safe despite the sticky /g flags:
+    // unapply() resets lastIndex for RegExp receivers before every call.
+    const ELEMENT_MARKUP_PROBE = seal(/<[/\w!]/g);
+    const COMMENT_MARKUP_PROBE = seal(/<[/\w]/g);
+    const FALLBACK_TAG_CLOSE = seal(/<\/no(script|embed|frames)/i);
+    const SELF_CLOSING_TAG = seal(/\/>/i);
 
-    var EXPRESSIONS = /*#__PURE__*/Object.freeze({
-      __proto__: null,
-      ARIA_ATTR: ARIA_ATTR,
-      ATTR_WHITESPACE: ATTR_WHITESPACE,
-      CUSTOM_ELEMENT: CUSTOM_ELEMENT,
-      DATA_ATTR: DATA_ATTR,
-      DOCTYPE_NAME: DOCTYPE_NAME,
-      ERB_EXPR: ERB_EXPR,
-      IS_ALLOWED_URI: IS_ALLOWED_URI,
-      IS_SCRIPT_OR_DATA: IS_SCRIPT_OR_DATA,
-      MUSTACHE_EXPR: MUSTACHE_EXPR,
-      TMPLIT_EXPR: TMPLIT_EXPR
-    });
-
-    /* eslint-disable @typescript-eslint/indent */
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
     const NODE_TYPE = {
       element: 1,
+      attribute: 2,
       text: 3,
+      cdataSection: 4,
+      entityReference: 5,
       // Deprecated
-      progressingInstruction: 7,
+      entityNode: 6,
+      // Deprecated
+      processingInstruction: 7,
       comment: 8,
-      document: 9};
+      document: 9,
+      documentType: 10,
+      documentFragment: 11,
+      notation: 12 // Deprecated
+    };
     const getGlobal = function getGlobal() {
       return typeof window === 'undefined' ? null : window;
     };
@@ -11567,10 +11673,25 @@
         uponSanitizeShadowNode: []
       };
     };
+    /**
+     * Resolve a set-valued configuration option: a fresh set built from
+     * cfg[key] when it is an own array property (seeded with a clone of
+     * options.base when given, case-normalized via options.transform),
+     * the fallback set otherwise.
+     *
+     * @param cfg the cloned, prototype-free configuration object
+     * @param key the configuration property to read
+     * @param fallback the set to use when the option is absent or not an array
+     * @param options transform and optional base set to merge into
+     * @returns the resolved set
+     */
+    const _resolveSetOption = function _resolveSetOption(cfg, key, fallback, options) {
+      return objectHasOwnProperty(cfg, key) && arrayIsArray(cfg[key]) ? addToSet(options.base ? clone$1(options.base) : {}, cfg[key], options.transform) : fallback;
+    };
     function createDOMPurify() {
       let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
       const DOMPurify = root => createDOMPurify(root);
-      DOMPurify.version = '3.3.2';
+      DOMPurify.version = '3.4.11';
       DOMPurify.removed = [];
       if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document || !window.Element) {
         // Not running in a browser, provide a factory function
@@ -11578,28 +11699,29 @@
         DOMPurify.isSupported = false;
         return DOMPurify;
       }
-      let {
-        document
-      } = window;
+      let document = window.document;
       const originalDocument = document;
       const currentScript = originalDocument.currentScript;
-      const {
-        DocumentFragment,
-        HTMLTemplateElement,
-        Node,
-        Element,
-        NodeFilter,
-        NamedNodeMap = window.NamedNodeMap || window.MozNamedAttrMap,
-        HTMLFormElement,
-        DOMParser,
-        trustedTypes
-      } = window;
+      window.DocumentFragment;
+        const HTMLTemplateElement = window.HTMLTemplateElement,
+        Node = window.Node,
+        Element = window.Element,
+        NodeFilter = window.NodeFilter,
+        _window$NamedNodeMap = window.NamedNodeMap;
+        _window$NamedNodeMap === void 0 ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap;
+        window.HTMLFormElement;
+        const DOMParser = window.DOMParser,
+        trustedTypes = window.trustedTypes;
       const ElementPrototype = Element.prototype;
       const cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
       const remove = lookupGetter(ElementPrototype, 'remove');
       const getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
       const getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
       const getParentNode = lookupGetter(ElementPrototype, 'parentNode');
+      const getShadowRoot = lookupGetter(ElementPrototype, 'shadowRoot');
+      const getAttributes = lookupGetter(ElementPrototype, 'attributes');
+      const getNodeType = Node && Node.prototype ? lookupGetter(Node.prototype, 'nodeType') : null;
+      const getNodeName = Node && Node.prototype ? lookupGetter(Node.prototype, 'nodeName') : null;
       // As per issue #47, the web-components registry is inherited by a
       // new document created via createHTMLDocument. As per the spec
       // (http://w3c.github.io/webcomponents/spec/custom/#creating-and-passing-registries)
@@ -11614,33 +11736,74 @@
       }
       let trustedTypesPolicy;
       let emptyHTML = '';
-      const {
-        implementation,
-        createNodeIterator,
-        createDocumentFragment,
-        getElementsByTagName
-      } = document;
-      const {
-        importNode
-      } = originalDocument;
+      // The instance's own internal Trusted Types policy. Unlike a caller-supplied
+      // `TRUSTED_TYPES_POLICY`, this is created at most once — Trusted Types throws
+      // on duplicate policy names — and is the only policy allowed to persist
+      // across configurations and survive `clearConfig()`.
+      let defaultTrustedTypesPolicy;
+      let defaultTrustedTypesPolicyResolved = false;
+      // Tracks whether we are already inside a call to the configured Trusted Types
+      // policy (`createHTML` or `createScriptURL`). If a supplied policy callback
+      // itself calls `DOMPurify.sanitize` (the cause of #1422), `sanitize` would
+      // re-enter the policy and recurse until the stack overflows. We detect that
+      // re-entry and throw a clear, actionable error instead. The guard is shared
+      // across both callbacks, because either one re-entering `sanitize` triggers
+      // the same unbounded recursion.
+      let IN_TRUSTED_TYPES_POLICY = 0;
+      const _assertNotInTrustedTypesPolicy = function _assertNotInTrustedTypesPolicy() {
+        if (IN_TRUSTED_TYPES_POLICY > 0) {
+          throw typeErrorCreate('A configured TRUSTED_TYPES_POLICY callback (createHTML or ' + 'createScriptURL) must not call DOMPurify.sanitize, as that causes ' + 'infinite recursion. Do not pass a policy whose callbacks wrap ' + 'DOMPurify as TRUSTED_TYPES_POLICY; see the "DOMPurify and Trusted ' + 'Types" section of the README.');
+        }
+      };
+      const _createTrustedHTML = function _createTrustedHTML(html) {
+        _assertNotInTrustedTypesPolicy();
+        IN_TRUSTED_TYPES_POLICY++;
+        try {
+          return trustedTypesPolicy.createHTML(html);
+        } finally {
+          IN_TRUSTED_TYPES_POLICY--;
+        }
+      };
+      const _createTrustedScriptURL = function _createTrustedScriptURL(scriptUrl) {
+        _assertNotInTrustedTypesPolicy();
+        IN_TRUSTED_TYPES_POLICY++;
+        try {
+          return trustedTypesPolicy.createScriptURL(scriptUrl);
+        } finally {
+          IN_TRUSTED_TYPES_POLICY--;
+        }
+      };
+      // Lazily resolve (and cache) the instance's internal default policy.
+      // Resolution is attempted at most once: a successful `createPolicy` cannot be
+      // repeated (Trusted Types throws on duplicate names), and a failed or
+      // unsupported attempt must not be retried on every parse.
+      const _getDefaultTrustedTypesPolicy = function _getDefaultTrustedTypesPolicy() {
+        if (!defaultTrustedTypesPolicyResolved) {
+          defaultTrustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+          defaultTrustedTypesPolicyResolved = true;
+        }
+        return defaultTrustedTypesPolicy;
+      };
+      const _document = document,
+        implementation = _document.implementation,
+        createNodeIterator = _document.createNodeIterator,
+        createDocumentFragment = _document.createDocumentFragment,
+        getElementsByTagName = _document.getElementsByTagName;
+      const importNode = originalDocument.importNode;
       let hooks = _createHooksMap();
       /**
        * Expose whether this browser supports running the full DOMPurify.
        */
       DOMPurify.isSupported = typeof entries === 'function' && typeof getParentNode === 'function' && implementation && implementation.createHTMLDocument !== undefined;
-      const {
-        MUSTACHE_EXPR,
-        ERB_EXPR,
-        TMPLIT_EXPR,
-        DATA_ATTR,
-        ARIA_ATTR,
-        IS_SCRIPT_OR_DATA,
-        ATTR_WHITESPACE,
-        CUSTOM_ELEMENT
-      } = EXPRESSIONS;
-      let {
-        IS_ALLOWED_URI: IS_ALLOWED_URI$1
-      } = EXPRESSIONS;
+      const MUSTACHE_EXPR$1 = MUSTACHE_EXPR,
+        ERB_EXPR$1 = ERB_EXPR,
+        TMPLIT_EXPR$1 = TMPLIT_EXPR,
+        DATA_ATTR$1 = DATA_ATTR,
+        ARIA_ATTR$1 = ARIA_ATTR,
+        IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA,
+        ATTR_WHITESPACE$1 = ATTR_WHITESPACE,
+        CUSTOM_ELEMENT$1 = CUSTOM_ELEMENT;
+      let IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
       /**
        * We consider the elements and attributes below to be safe. Ideally
        * don't add any new ones but feel free to remove unwanted ones.
@@ -11717,6 +11880,13 @@
       let WHOLE_DOCUMENT = false;
       /* Track whether config is already set on this instance of DOMPurify. */
       let SET_CONFIG = false;
+      /* Pristine allowlist bindings captured at setConfig() time. On the
+       * persistent-config path sanitize() restores the sets from these before
+       * the per-walk hook clone-guard, so a hook's in-call widening cannot
+       * carry across calls. Null until setConfig() is called; reset by
+       * clearConfig(). */
+      let SET_CONFIG_ALLOWED_TAGS = null;
+      let SET_CONFIG_ALLOWED_ATTR = null;
       /* Decide if all elements (e.g. style, script) must be children of
        * document.body. By default, browsers might move them to document.head */
       let FORCE_BODY = false;
@@ -11759,7 +11929,17 @@
       let USE_PROFILES = {};
       /* Tags to ignore content of when KEEP_CONTENT is true */
       let FORBID_CONTENTS = null;
-      const DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
+      const DEFAULT_FORBID_CONTENTS = addToSet({}, ['annotation-xml', 'audio', 'colgroup', 'desc', 'foreignobject', 'head', 'iframe', 'math', 'mi', 'mn', 'mo', 'ms', 'mtext', 'noembed', 'noframes', 'noscript', 'plaintext', 'script',
+      // <selectedcontent> mirrors the selected <option>'s subtree, cloned by
+      // the UA (customizable <select>) — including any on* handlers — and the
+      // engine re-mirrors synchronously whenever a removal changes which
+      // option/selectedcontent is current, even inside DOMPurify's inert
+      // DOMParser document. Hoisting its children on removal re-inserts a fresh
+      // mirror target ahead of the walk, which the engine refills, looping
+      // forever (DoS) and amplifying output. Dropping its content on removal
+      // (rather than hoisting) breaks that cascade; the content is a duplicate
+      // of the option, which is sanitized on its own. See campaign-3 F1/F6.
+      'selectedcontent', 'style', 'svg', 'template', 'thead', 'title', 'video', 'xmp']);
       /* Tags that are safe for data: URIs */
       let DATA_URI_TAGS = null;
       const DEFAULT_DATA_URI_TAGS = addToSet({}, ['audio', 'video', 'img', 'source', 'image', 'track']);
@@ -11775,8 +11955,10 @@
       /* Allowed XHTML+XML namespaces */
       let ALLOWED_NAMESPACES = null;
       const DEFAULT_ALLOWED_NAMESPACES = addToSet({}, [MATHML_NAMESPACE, SVG_NAMESPACE, HTML_NAMESPACE], stringToString);
-      let MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
-      let HTML_INTEGRATION_POINTS = addToSet({}, ['annotation-xml']);
+      const DEFAULT_MATHML_TEXT_INTEGRATION_POINTS = freeze(['mi', 'mo', 'mn', 'ms', 'mtext']);
+      let MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, DEFAULT_MATHML_TEXT_INTEGRATION_POINTS);
+      const DEFAULT_HTML_INTEGRATION_POINTS = freeze(['annotation-xml']);
+      let HTML_INTEGRATION_POINTS = addToSet({}, DEFAULT_HTML_INTEGRATION_POINTS);
       // Certain elements are allowed in both SVG and HTML
       // namespace. We need to specify them explicitly
       // so that they don't get erroneously deleted from
@@ -11818,15 +12000,33 @@
         // HTML tags and attributes are not case-sensitive, converting to lowercase. Keeping XHTML as is.
         transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? stringToString : stringToLowerCase;
         /* Set configuration parameters */
-        ALLOWED_TAGS = objectHasOwnProperty(cfg, 'ALLOWED_TAGS') ? addToSet({}, cfg.ALLOWED_TAGS, transformCaseFunc) : DEFAULT_ALLOWED_TAGS;
-        ALLOWED_ATTR = objectHasOwnProperty(cfg, 'ALLOWED_ATTR') ? addToSet({}, cfg.ALLOWED_ATTR, transformCaseFunc) : DEFAULT_ALLOWED_ATTR;
-        ALLOWED_NAMESPACES = objectHasOwnProperty(cfg, 'ALLOWED_NAMESPACES') ? addToSet({}, cfg.ALLOWED_NAMESPACES, stringToString) : DEFAULT_ALLOWED_NAMESPACES;
-        URI_SAFE_ATTRIBUTES = objectHasOwnProperty(cfg, 'ADD_URI_SAFE_ATTR') ? addToSet(clone$1(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR, transformCaseFunc) : DEFAULT_URI_SAFE_ATTRIBUTES;
-        DATA_URI_TAGS = objectHasOwnProperty(cfg, 'ADD_DATA_URI_TAGS') ? addToSet(clone$1(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS, transformCaseFunc) : DEFAULT_DATA_URI_TAGS;
-        FORBID_CONTENTS = objectHasOwnProperty(cfg, 'FORBID_CONTENTS') ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
-        FORBID_TAGS = objectHasOwnProperty(cfg, 'FORBID_TAGS') ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : clone$1({});
-        FORBID_ATTR = objectHasOwnProperty(cfg, 'FORBID_ATTR') ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : clone$1({});
-        USE_PROFILES = objectHasOwnProperty(cfg, 'USE_PROFILES') ? cfg.USE_PROFILES : false;
+        ALLOWED_TAGS = _resolveSetOption(cfg, 'ALLOWED_TAGS', DEFAULT_ALLOWED_TAGS, {
+          transform: transformCaseFunc
+        });
+        ALLOWED_ATTR = _resolveSetOption(cfg, 'ALLOWED_ATTR', DEFAULT_ALLOWED_ATTR, {
+          transform: transformCaseFunc
+        });
+        ALLOWED_NAMESPACES = _resolveSetOption(cfg, 'ALLOWED_NAMESPACES', DEFAULT_ALLOWED_NAMESPACES, {
+          transform: stringToString
+        });
+        URI_SAFE_ATTRIBUTES = _resolveSetOption(cfg, 'ADD_URI_SAFE_ATTR', DEFAULT_URI_SAFE_ATTRIBUTES, {
+          transform: transformCaseFunc,
+          base: DEFAULT_URI_SAFE_ATTRIBUTES
+        });
+        DATA_URI_TAGS = _resolveSetOption(cfg, 'ADD_DATA_URI_TAGS', DEFAULT_DATA_URI_TAGS, {
+          transform: transformCaseFunc,
+          base: DEFAULT_DATA_URI_TAGS
+        });
+        FORBID_CONTENTS = _resolveSetOption(cfg, 'FORBID_CONTENTS', DEFAULT_FORBID_CONTENTS, {
+          transform: transformCaseFunc
+        });
+        FORBID_TAGS = _resolveSetOption(cfg, 'FORBID_TAGS', clone$1({}), {
+          transform: transformCaseFunc
+        });
+        FORBID_ATTR = _resolveSetOption(cfg, 'FORBID_ATTR', clone$1({}), {
+          transform: transformCaseFunc
+        });
+        USE_PROFILES = objectHasOwnProperty(cfg, 'USE_PROFILES') ? cfg.USE_PROFILES && typeof cfg.USE_PROFILES === 'object' ? clone$1(cfg.USE_PROFILES) : cfg.USE_PROFILES : false;
         ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false; // Default true
         ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false; // Default true
         ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false; // Default false
@@ -11842,20 +12042,22 @@
         SANITIZE_NAMED_PROPS = cfg.SANITIZE_NAMED_PROPS || false; // Default false
         KEEP_CONTENT = cfg.KEEP_CONTENT !== false; // Default true
         IN_PLACE = cfg.IN_PLACE || false; // Default false
-        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI;
-        NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
-        MATHML_TEXT_INTEGRATION_POINTS = cfg.MATHML_TEXT_INTEGRATION_POINTS || MATHML_TEXT_INTEGRATION_POINTS;
-        HTML_INTEGRATION_POINTS = cfg.HTML_INTEGRATION_POINTS || HTML_INTEGRATION_POINTS;
-        CUSTOM_ELEMENT_HANDLING = cfg.CUSTOM_ELEMENT_HANDLING || {};
-        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
-          CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
+        IS_ALLOWED_URI$1 = isRegex(cfg.ALLOWED_URI_REGEXP) ? cfg.ALLOWED_URI_REGEXP : IS_ALLOWED_URI; // Default regexp
+        NAMESPACE = typeof cfg.NAMESPACE === 'string' ? cfg.NAMESPACE : HTML_NAMESPACE; // Default HTML namespace
+        MATHML_TEXT_INTEGRATION_POINTS = objectHasOwnProperty(cfg, 'MATHML_TEXT_INTEGRATION_POINTS') && cfg.MATHML_TEXT_INTEGRATION_POINTS && typeof cfg.MATHML_TEXT_INTEGRATION_POINTS === 'object' ? clone$1(cfg.MATHML_TEXT_INTEGRATION_POINTS) : addToSet({}, DEFAULT_MATHML_TEXT_INTEGRATION_POINTS); // Default built-in map
+        HTML_INTEGRATION_POINTS = objectHasOwnProperty(cfg, 'HTML_INTEGRATION_POINTS') && cfg.HTML_INTEGRATION_POINTS && typeof cfg.HTML_INTEGRATION_POINTS === 'object' ? clone$1(cfg.HTML_INTEGRATION_POINTS) : addToSet({}, DEFAULT_HTML_INTEGRATION_POINTS); // Default built-in map
+        const customElementHandling = objectHasOwnProperty(cfg, 'CUSTOM_ELEMENT_HANDLING') && cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING === 'object' ? clone$1(cfg.CUSTOM_ELEMENT_HANDLING) : create(null);
+        CUSTOM_ELEMENT_HANDLING = create(null);
+        if (objectHasOwnProperty(customElementHandling, 'tagNameCheck') && isRegexOrFunction(customElementHandling.tagNameCheck)) {
+          CUSTOM_ELEMENT_HANDLING.tagNameCheck = customElementHandling.tagNameCheck; // Default undefined
         }
-        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
-          CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
+        if (objectHasOwnProperty(customElementHandling, 'attributeNameCheck') && isRegexOrFunction(customElementHandling.attributeNameCheck)) {
+          CUSTOM_ELEMENT_HANDLING.attributeNameCheck = customElementHandling.attributeNameCheck; // Default undefined
         }
-        if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
-          CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
+        if (objectHasOwnProperty(customElementHandling, 'allowCustomizedBuiltInElements') && typeof customElementHandling.allowCustomizedBuiltInElements === 'boolean') {
+          CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = customElementHandling.allowCustomizedBuiltInElements; // Default undefined
         }
+        seal(CUSTOM_ELEMENT_HANDLING);
         if (SAFE_FOR_TEMPLATES) {
           ALLOW_DATA_ATTR = false;
         }
@@ -11886,44 +12088,41 @@
             addToSet(ALLOWED_ATTR, xml);
           }
         }
-        /* Prevent function-based ADD_ATTR / ADD_TAGS from leaking across calls */
-        if (!objectHasOwnProperty(cfg, 'ADD_TAGS')) {
-          EXTRA_ELEMENT_HANDLING.tagCheck = null;
-        }
-        if (!objectHasOwnProperty(cfg, 'ADD_ATTR')) {
-          EXTRA_ELEMENT_HANDLING.attributeCheck = null;
-        }
+        /* Always reset function-based ADD_TAGS / ADD_ATTR checks to prevent
+         * leaking across calls when switching from function to array config */
+        EXTRA_ELEMENT_HANDLING.tagCheck = null;
+        EXTRA_ELEMENT_HANDLING.attributeCheck = null;
         /* Merge configuration parameters */
-        if (cfg.ADD_TAGS) {
+        if (objectHasOwnProperty(cfg, 'ADD_TAGS')) {
           if (typeof cfg.ADD_TAGS === 'function') {
             EXTRA_ELEMENT_HANDLING.tagCheck = cfg.ADD_TAGS;
-          } else {
+          } else if (arrayIsArray(cfg.ADD_TAGS)) {
             if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
               ALLOWED_TAGS = clone$1(ALLOWED_TAGS);
             }
             addToSet(ALLOWED_TAGS, cfg.ADD_TAGS, transformCaseFunc);
           }
         }
-        if (cfg.ADD_ATTR) {
+        if (objectHasOwnProperty(cfg, 'ADD_ATTR')) {
           if (typeof cfg.ADD_ATTR === 'function') {
             EXTRA_ELEMENT_HANDLING.attributeCheck = cfg.ADD_ATTR;
-          } else {
+          } else if (arrayIsArray(cfg.ADD_ATTR)) {
             if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
               ALLOWED_ATTR = clone$1(ALLOWED_ATTR);
             }
             addToSet(ALLOWED_ATTR, cfg.ADD_ATTR, transformCaseFunc);
           }
         }
-        if (cfg.ADD_URI_SAFE_ATTR) {
+        if (objectHasOwnProperty(cfg, 'ADD_URI_SAFE_ATTR') && arrayIsArray(cfg.ADD_URI_SAFE_ATTR)) {
           addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR, transformCaseFunc);
         }
-        if (cfg.FORBID_CONTENTS) {
+        if (objectHasOwnProperty(cfg, 'FORBID_CONTENTS') && arrayIsArray(cfg.FORBID_CONTENTS)) {
           if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
             FORBID_CONTENTS = clone$1(FORBID_CONTENTS);
           }
           addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
         }
-        if (cfg.ADD_FORBID_CONTENTS) {
+        if (objectHasOwnProperty(cfg, 'ADD_FORBID_CONTENTS') && arrayIsArray(cfg.ADD_FORBID_CONTENTS)) {
           if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
             FORBID_CONTENTS = clone$1(FORBID_CONTENTS);
           }
@@ -11942,6 +12141,13 @@
           addToSet(ALLOWED_TAGS, ['tbody']);
           delete FORBID_TAGS.tbody;
         }
+        // Re-derive the active Trusted Types policy from this configuration on
+        // every parse. The active policy must never be sticky closure state that
+        // outlives the config that set it: a caller-supplied policy left in place
+        // after `clearConfig()` — or after a later call that supplied none, or
+        // `TRUSTED_TYPES_POLICY: null` — could sign a subsequent "default"
+        // `RETURN_TRUSTED_TYPE` result with a foreign, possibly unsafe policy.
+        // See GHSA-vxr8-fq34-vvx9.
         if (cfg.TRUSTED_TYPES_POLICY) {
           if (typeof cfg.TRUSTED_TYPES_POLICY.createHTML !== 'function') {
             throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createHTML" hook.');
@@ -11949,18 +12155,45 @@
           if (typeof cfg.TRUSTED_TYPES_POLICY.createScriptURL !== 'function') {
             throw typeErrorCreate('TRUSTED_TYPES_POLICY configuration option must provide a "createScriptURL" hook.');
           }
-          // Overwrite existing TrustedTypes policy.
+          // A caller-supplied policy applies to this configuration only.
+          const previousTrustedTypesPolicy = trustedTypesPolicy;
           trustedTypesPolicy = cfg.TRUSTED_TYPES_POLICY;
-          // Sign local variables required by `sanitize`.
-          emptyHTML = trustedTypesPolicy.createHTML('');
-        } else {
-          // Uninitialized policy, attempt to initialize the internal dompurify policy.
-          if (trustedTypesPolicy === undefined) {
-            trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, currentScript);
+          // Sign local variables required by `sanitize`. If the supplied policy's
+          // `createHTML` is circular (i.e. it calls `DOMPurify.sanitize`), this
+          // throws via the re-entrancy guard. Restore the previous policy first so
+          // the instance is not left in a poisoned state. See #1422.
+          try {
+            emptyHTML = _createTrustedHTML('');
+          } catch (error) {
+            trustedTypesPolicy = previousTrustedTypesPolicy;
+            throw error;
           }
-          // If creating the internal policy succeeded sign internal variables.
-          if (trustedTypesPolicy !== null && typeof emptyHTML === 'string') {
-            emptyHTML = trustedTypesPolicy.createHTML('');
+        } else if (cfg.TRUSTED_TYPES_POLICY === null) {
+          // Explicit opt-out for this call: perform no Trusted Types signing and
+          // create nothing (so a strict `trusted-types` CSP that disallows a
+          // `dompurify` policy can still call `sanitize` from inside its own
+          // policy — see #1422). Resetting to `undefined` rather than a sticky
+          // `null` also drops any previously retained caller policy, so it cannot
+          // resurface on a later call, while still allowing the next config-less
+          // call to restore the internal default policy. See GHSA-vxr8-fq34-vvx9.
+          trustedTypesPolicy = undefined;
+          emptyHTML = '';
+        } else {
+          // No policy supplied: keep the currently active policy if one is set — a
+          // previously supplied policy is intentionally sticky across config-less
+          // calls — otherwise fall back to the instance's own internal policy,
+          // created at most once. (A policy supplied for a *single* call still
+          // lingers by design; what must not linger is a policy whose configuration
+          // has been torn down via `clearConfig()`, which restores the default.)
+          if (trustedTypesPolicy === undefined) {
+            trustedTypesPolicy = _getDefaultTrustedTypesPolicy();
+          }
+          // Sign internal variables only when a policy is active. A falsy policy
+          // (Trusted Types unsupported, creation failed, or an explicit opt-out)
+          // leaves `emptyHTML` as a plain string, so we never call `.createHTML` on
+          // a non-policy and throw. See #1422.
+          if (trustedTypesPolicy && typeof emptyHTML === 'string') {
+            emptyHTML = _createTrustedHTML('');
           }
         }
         // Prevent further manipulation of configuration.
@@ -11975,6 +12208,77 @@
        * correctly. */
       const ALL_SVG_TAGS = addToSet({}, [...svg$1, ...svgFilters, ...svgDisallowed]);
       const ALL_MATHML_TAGS = addToSet({}, [...mathMl$1, ...mathMlDisallowed]);
+      /**
+       * Namespace rules for an element in the SVG namespace.
+       *
+       * @param tagName the element's lowercase tag name
+       * @param parent the (possibly simulated) parent node
+       * @param parentTagName the parent's lowercase tag name
+       * @returns true if a spec-compliant parser could produce this element
+       */
+      const _checkSvgNamespace = function _checkSvgNamespace(tagName, parent, parentTagName) {
+        // The only way to switch from HTML namespace to SVG
+        // is via <svg>. If it happens via any other tag, then
+        // it should be killed.
+        if (parent.namespaceURI === HTML_NAMESPACE) {
+          return tagName === 'svg';
+        }
+        // The only way to switch from MathML to SVG is via <svg>
+        // if the parent is either <annotation-xml> or a MathML
+        // text integration point.
+        if (parent.namespaceURI === MATHML_NAMESPACE) {
+          return tagName === 'svg' && (parentTagName === 'annotation-xml' || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+        }
+        // We only allow elements that are defined in SVG
+        // spec. All others are disallowed in SVG namespace.
+        return Boolean(ALL_SVG_TAGS[tagName]);
+      };
+      /**
+       * Namespace rules for an element in the MathML namespace.
+       *
+       * @param tagName the element's lowercase tag name
+       * @param parent the (possibly simulated) parent node
+       * @param parentTagName the parent's lowercase tag name
+       * @returns true if a spec-compliant parser could produce this element
+       */
+      const _checkMathMlNamespace = function _checkMathMlNamespace(tagName, parent, parentTagName) {
+        // The only way to switch from HTML namespace to MathML
+        // is via <math>. If it happens via any other tag, then
+        // it should be killed.
+        if (parent.namespaceURI === HTML_NAMESPACE) {
+          return tagName === 'math';
+        }
+        // The only way to switch from SVG to MathML is via
+        // <math> and HTML integration points
+        if (parent.namespaceURI === SVG_NAMESPACE) {
+          return tagName === 'math' && HTML_INTEGRATION_POINTS[parentTagName];
+        }
+        // We only allow elements that are defined in MathML
+        // spec. All others are disallowed in MathML namespace.
+        return Boolean(ALL_MATHML_TAGS[tagName]);
+      };
+      /**
+       * Namespace rules for an element in the HTML namespace.
+       *
+       * @param tagName the element's lowercase tag name
+       * @param parent the (possibly simulated) parent node
+       * @param parentTagName the parent's lowercase tag name
+       * @returns true if a spec-compliant parser could produce this element
+       */
+      const _checkHtmlNamespace = function _checkHtmlNamespace(tagName, parent, parentTagName) {
+        // The only way to switch from SVG to HTML is via
+        // HTML integration points, and from MathML to HTML
+        // is via MathML text integration points
+        if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+          return false;
+        }
+        if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+          return false;
+        }
+        // We disallow tags that are specific for MathML
+        // or SVG and should never appear in HTML namespace
+        return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+      };
       /**
        * @param element a DOM element whose namespace is being checked
        * @returns Return false if the element has a
@@ -11997,51 +12301,13 @@
           return false;
         }
         if (element.namespaceURI === SVG_NAMESPACE) {
-          // The only way to switch from HTML namespace to SVG
-          // is via <svg>. If it happens via any other tag, then
-          // it should be killed.
-          if (parent.namespaceURI === HTML_NAMESPACE) {
-            return tagName === 'svg';
-          }
-          // The only way to switch from MathML to SVG is via`
-          // svg if parent is either <annotation-xml> or MathML
-          // text integration points.
-          if (parent.namespaceURI === MATHML_NAMESPACE) {
-            return tagName === 'svg' && (parentTagName === 'annotation-xml' || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
-          }
-          // We only allow elements that are defined in SVG
-          // spec. All others are disallowed in SVG namespace.
-          return Boolean(ALL_SVG_TAGS[tagName]);
+          return _checkSvgNamespace(tagName, parent, parentTagName);
         }
         if (element.namespaceURI === MATHML_NAMESPACE) {
-          // The only way to switch from HTML namespace to MathML
-          // is via <math>. If it happens via any other tag, then
-          // it should be killed.
-          if (parent.namespaceURI === HTML_NAMESPACE) {
-            return tagName === 'math';
-          }
-          // The only way to switch from SVG to MathML is via
-          // <math> and HTML integration points
-          if (parent.namespaceURI === SVG_NAMESPACE) {
-            return tagName === 'math' && HTML_INTEGRATION_POINTS[parentTagName];
-          }
-          // We only allow elements that are defined in MathML
-          // spec. All others are disallowed in MathML namespace.
-          return Boolean(ALL_MATHML_TAGS[tagName]);
+          return _checkMathMlNamespace(tagName, parent, parentTagName);
         }
         if (element.namespaceURI === HTML_NAMESPACE) {
-          // The only way to switch from SVG to HTML is via
-          // HTML integration points, and from MathML to HTML
-          // is via MathML text integration points
-          if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
-            return false;
-          }
-          if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
-            return false;
-          }
-          // We disallow tags that are specific for MathML
-          // or SVG and should never appear in HTML namespace
-          return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+          return _checkHtmlNamespace(tagName, parent, parentTagName);
         }
         // For XHTML and XML documents that support custom namespaces
         if (PARSER_MEDIA_TYPE === 'application/xhtml+xml' && ALLOWED_NAMESPACES[element.namespaceURI]) {
@@ -12066,7 +12332,74 @@
           // eslint-disable-next-line unicorn/prefer-dom-node-remove
           getParentNode(node).removeChild(node);
         } catch (_) {
+          /* The normal detach failed — this is reached for a parentless node
+             (getParentNode() is null, so .removeChild throws). Element.prototype
+             .remove() is itself a spec no-op on a parentless node, so a recorded
+             "removal" would otherwise hand the caller back an intact,
+             payload-bearing node (e.g. a detached IN_PLACE root the mXSS canary or
+             the style-with-element-child rule decided to kill). Fail closed by
+             throwing — exactly as a clobbered root does at the IN_PLACE entry —
+             rather than trying to "neutralize" the node via its own methods.
+             Neutralizing would mean calling getAttributeNames()/removeAttribute()
+             on the node, both of which a <form> root can clobber via a named child
+             (and _isClobbered does not even probe getAttributeNames), so the
+             neutralize step could itself be silently defeated, leaving the payload
+             intact. A throw touches only the cached, clobber-safe remove() and
+             getParentNode(). Generalizes GHSA-r47g-fvhr-h676 (clobbered-form root)
+             to every root-kill reason. REPORT-3.
+                    This lives inside the catch, so it never fires for a normally-removed
+             in-tree node: those have a parent, removeChild() succeeds, and the
+             catch is not entered. Only a kept (parentless) root reaches here. */
           remove(node);
+          if (!getParentNode(node)) {
+            throw typeErrorCreate('a node selected for removal could not be detached from its tree ' + 'and cannot be safely returned; refusing to sanitize in place');
+          }
+        }
+      };
+      /**
+       * _neutralizeRoot
+       *
+       * Fail-closed teardown of an in-place root after the sanitize walk aborts
+       * (campaign-3 F2). An internal throw mid-walk — e.g. a page-registered
+       * custom element's reaction detaches a node so `_forceRemove`'s deliberate
+       * parentless guard throws, or any other re-entrant engine mutation — would
+       * otherwise leave the caller's *live* tree half-sanitized, with everything
+       * after the abort point still carrying its handlers. There is no safe way
+       * to resume the walk (the tree mutated under us), so we strip the root bare:
+       * remove every child and every attribute, then let the caller's catch see
+       * the original error. Clobber-safe (cached `remove`/`childNodes`/`attributes`
+       * getters; the root was already clobber-pre-flighted at the IN_PLACE entry).
+       *
+       * @param root the in-place root to empty
+       */
+      const _neutralizeRoot = function _neutralizeRoot(root) {
+        const childNodes = getChildNodes(root);
+        if (childNodes) {
+          const snapshot = [];
+          arrayForEach(childNodes, child => {
+            arrayPush(snapshot, child);
+          });
+          arrayForEach(snapshot, child => {
+            try {
+              remove(child);
+            } catch (_) {
+              /* Best-effort teardown; a still-attached child is handled below */
+            }
+          });
+        }
+        const attributes = getAttributes(root);
+        if (attributes) {
+          for (let i = attributes.length - 1; i >= 0; --i) {
+            const attribute = attributes[i];
+            const name = attribute && attribute.name;
+            if (typeof name === 'string') {
+              try {
+                root.removeAttribute(name);
+              } catch (_) {
+                /* Clobbered removeAttribute — ignore (fail-closed best effort) */
+              }
+            }
+          }
         }
       };
       /**
@@ -12102,6 +12435,72 @@
         }
       };
       /**
+       * _stripDisallowedAttributes
+       *
+       * Removes every attribute the active configuration does not allow from a
+       * single element, using the same allowlist as the main attribute pass (so
+       * `on*` handlers go, but no `/^on/` blocklist is introduced). Used only to
+       * neutralise nodes that are being discarded from an in-place tree.
+       *
+       * @param element the element to strip
+       */
+      const _stripDisallowedAttributes = function _stripDisallowedAttributes(element) {
+        const attributes = getAttributes(element);
+        if (!attributes) {
+          return;
+        }
+        for (let i = attributes.length - 1; i >= 0; --i) {
+          const attribute = attributes[i];
+          const name = attribute && attribute.name;
+          if (typeof name !== 'string' || ALLOWED_ATTR[transformCaseFunc(name)]) {
+            continue;
+          }
+          try {
+            element.removeAttribute(name);
+          } catch (_) {
+            /* Clobbered removeAttribute on a doomed node — ignore */
+          }
+        }
+      };
+      /**
+       * _neutralizeSubtree
+       *
+       * Completes the audit-5 F1 fix across every removal path. The KEEP_CONTENT
+       * move-hoist neutralises only disallowed-tag removals; clobber, mXSS-canary,
+       * namespace, comment, processing-instruction and KEEP_CONTENT:false removals
+       * all drop their subtree wholesale via `_forceRemove`. On the IN_PLACE path
+       * those dropped nodes are detached from the caller's LIVE tree but a
+       * handler-bearing original among them (an `<img onerror>`/`<video>` that was
+       * loading) keeps its queued resource event, which fires in page scope after
+       * sanitize returns. This walks a removed subtree and strips every attribute
+       * the active configuration does not allow — so `on*` handlers are cancelled
+       * through the SAME allowlist that governs kept nodes, not a separate `/^on/`
+       * blocklist. Run synchronously before sanitize returns, i.e. before any
+       * queued event can fire. Hook-free by design: these nodes leave the output,
+       * so firing attribute hooks for them would be surprising. Clobber-safe reads;
+       * a doomed clobbered node may shadow `removeAttribute` (its own attributes are
+       * irrelevant — it is discarded — while its non-clobbered descendants, e.g.
+       * the `<img>`, are reached and scrubbed).
+       *
+       * @param root the root of a removed subtree to neutralise
+       */
+      const _neutralizeSubtree = function _neutralizeSubtree(root) {
+        const stack = [root];
+        while (stack.length > 0) {
+          const node = stack.pop();
+          const nodeType = getNodeType ? getNodeType(node) : node.nodeType;
+          if (nodeType === NODE_TYPE.element) {
+            _stripDisallowedAttributes(node);
+          }
+          const childNodes = getChildNodes(node);
+          if (childNodes) {
+            for (let i = childNodes.length - 1; i >= 0; --i) {
+              stack.push(childNodes[i]);
+            }
+          }
+        }
+      };
+      /**
        * _initDocument
        *
        * @param dirty - a string of dirty markup
@@ -12122,7 +12521,7 @@
           // Root of XHTML doc must contain xmlns declaration (see https://www.w3.org/TR/xhtml1/normative.html#strict)
           dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
         }
-        const dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+        const dirtyPayload = trustedTypesPolicy ? _createTrustedHTML(dirty) : dirty;
         /*
          * Use the DOMParser API by default, fallback later if needs be
          * DOMParser not work for svg when has multiple root element.
@@ -12163,28 +12562,253 @@
         NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_PROCESSING_INSTRUCTION | NodeFilter.SHOW_CDATA_SECTION, null);
       };
       /**
+       * Replace template expression syntax (mustache, ERB, template
+       * literal) with a space; shared by all SAFE_FOR_TEMPLATES scrub
+       * sites. Order matters: mustache, then ERB, then template literal.
+       *
+       * @param value the string to scrub
+       * @returns the scrubbed string
+       */
+      const _stripTemplateExpressions = function _stripTemplateExpressions(value) {
+        value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
+        value = stringReplace(value, ERB_EXPR$1, ' ');
+        value = stringReplace(value, TMPLIT_EXPR$1, ' ');
+        return value;
+      };
+      /**
+       * Strip template-engine expressions ({{...}}, ${...}, <%...%>) from the
+       * character data of an element subtree. Used as the final safety net for
+       * SAFE_FOR_TEMPLATES on every DOM-returning code path so that expressions
+       * which only form after text-node normalization (e.g. fragments split across
+       * stripped elements) cannot survive into a template-evaluating framework.
+       *
+       * Walks text/comment/CDATA/processing-instruction nodes and mutates `.data`
+       * in place rather than round-tripping through innerHTML. This preserves
+       * descendant node references (important for IN_PLACE callers), avoids a
+       * serialize/reparse cycle, and reads literal character data — which means
+       * `<%...%>` in text content matches the ERB regex against its real bytes
+       * instead of the HTML-entity-escaped form innerHTML would produce.
+       *
+       * Attribute values are not visited here; SAFE_FOR_TEMPLATES handling for
+       * attributes is performed during the per-node `_sanitizeAttributes` pass.
+       *
+       * @param node The root element whose character data should be scrubbed.
+       */
+      const _scrubTemplateExpressions2 = function _scrubTemplateExpressions(node) {
+        var _node$querySelectorAl;
+        node.normalize();
+        const walker = createNodeIterator.call(node.ownerDocument || node, node,
+        // eslint-disable-next-line no-bitwise
+        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_PROCESSING_INSTRUCTION, null);
+        let currentNode = walker.nextNode();
+        while (currentNode) {
+          currentNode.data = _stripTemplateExpressions(currentNode.data);
+          currentNode = walker.nextNode();
+        }
+        // NodeIterator does not descend into <template>.content per the DOM spec,
+        // so we must explicitly recurse into each template's content fragment,
+        // mirroring the approach used by _sanitizeShadowDOM.
+        const templates = (_node$querySelectorAl = node.querySelectorAll) === null || _node$querySelectorAl === void 0 ? void 0 : _node$querySelectorAl.call(node, 'template');
+        if (templates) {
+          arrayForEach(templates, tmpl => {
+            if (_isDocumentFragment(tmpl.content)) {
+              _scrubTemplateExpressions2(tmpl.content);
+            }
+          });
+        }
+      };
+      /**
        * _isClobbered
+       *
+       * Detect DOM-clobbering on HTMLFormElement nodes. Form is the only HTML
+       * interface with [LegacyOverrideBuiltIns]; a descendant element with a
+       * `name` attribute matching a prototype property shadows that property
+       * on direct reads. We use this check at the IN_PLACE entry-point and
+       * during attribute sanitization to refuse clobbered forms.
        *
        * @param element element to check for clobbering attacks
        * @return true if clobbered, false if safe
        */
       const _isClobbered = function _isClobbered(element) {
-        return element instanceof HTMLFormElement && (typeof element.nodeName !== 'string' || typeof element.textContent !== 'string' || typeof element.removeChild !== 'function' || !(element.attributes instanceof NamedNodeMap) || typeof element.removeAttribute !== 'function' || typeof element.setAttribute !== 'function' || typeof element.namespaceURI !== 'string' || typeof element.insertBefore !== 'function' || typeof element.hasChildNodes !== 'function');
+        // Realm-independent tag-name probe. If we can't determine the tag
+        // name at all, we can't reason about clobbering — return false
+        // (the caller's other defences still apply).
+        const realTagName = getNodeName ? getNodeName(element) : null;
+        if (typeof realTagName !== 'string') {
+          return false;
+        }
+        if (transformCaseFunc(realTagName) !== 'form') {
+          return false;
+        }
+        return typeof element.nodeName !== 'string' || typeof element.textContent !== 'string' || typeof element.removeChild !== 'function' ||
+        // Realm-safe NamedNodeMap detection: equality against the cached
+        // prototype getter. Clobbered .attributes (e.g. <input name="attributes">)
+        // makes the direct read diverge from the cached read; a clean form
+        // (same-realm OR foreign-realm) has both reads pointing at the same
+        // canonical NamedNodeMap.
+        element.attributes !== getAttributes(element) || typeof element.removeAttribute !== 'function' || typeof element.setAttribute !== 'function' || typeof element.namespaceURI !== 'string' || typeof element.insertBefore !== 'function' || typeof element.hasChildNodes !== 'function' ||
+        // NodeType clobbering probe. Cached Node.prototype.nodeType getter
+        // returns the integer 1 for any Element regardless of realm; direct
+        // read on a clobbered form (e.g. <input name="nodeType">) returns
+        // the named child element. Cheap addition — nodeType is read from
+        // an internal slot, no serialization cost — and removes a residual
+        // clobbering surface used by several mXSS / PI / comment branches
+        // in _sanitizeElements that compare currentNode.nodeType directly.
+        element.nodeType !== getNodeType(element) ||
+        // HTMLFormElement has [LegacyOverrideBuiltIns]: a descendant named
+        // "childNodes" shadows the prototype getter. Direct reads of
+        // form.childNodes from a clobbered form return the named child
+        // instead of the real NodeList, so any walk that reads it directly
+        // skips the form's real children. Compare the direct read to the
+        // cached Node.prototype getter — when the form's named-property
+        // getter intercepts the read, the two values differ and we flag
+        // the form. This catches every clobbering child type (input,
+        // select, etc.) regardless of whether the named child happens to
+        // carry a numeric .length, which a typeof-based probe would miss
+        // (e.g. HTMLSelectElement.length is a defined unsigned-long).
+        element.childNodes !== getChildNodes(element);
       };
       /**
-       * Checks whether the given object is a DOM node.
+       * Checks whether the given value is a DocumentFragment from any realm.
+       *
+       * The realm-independent replacement reads `nodeType` through the cached
+       * Node.prototype getter and compares to the DOCUMENT_FRAGMENT_NODE
+       * constant (11). nodeType is a numeric value resolved from the node's
+       * internal slot, identical across realms for the same kind of node.
+       *
+       * @param value object to check
+       * @return true if value is a DocumentFragment-shaped node from any realm
+       */
+      const _isDocumentFragment = function _isDocumentFragment(value) {
+        if (!getNodeType || typeof value !== 'object' || value === null) {
+          return false;
+        }
+        try {
+          return getNodeType(value) === NODE_TYPE.documentFragment;
+        } catch (_) {
+          return false;
+        }
+      };
+      /**
+       * Checks whether the given object is a DOM node, including nodes that
+       * originate from a different window/realm (e.g. an iframe's
+       * contentDocument). The previous `value instanceof Node` check was
+       * realm-bound: nodes from a different window failed it, causing
+       * sanitize() to silently stringify them and reset IN_PLACE to false,
+       * returning the original node unsanitized. See GHSA-4w3q-35jp-p934.
        *
        * @param value object to check whether it's a DOM node
-       * @return true is object is a DOM node
+       * @return true if value is a DOM node from any realm
        */
       const _isNode = function _isNode(value) {
-        return typeof Node === 'function' && value instanceof Node;
+        if (!getNodeType || typeof value !== 'object' || value === null) {
+          return false;
+        }
+        try {
+          return typeof getNodeType(value) === 'number';
+        } catch (_) {
+          return false;
+        }
       };
       function _executeHooks(hooks, currentNode, data) {
+        if (hooks.length === 0) {
+          return;
+        }
         arrayForEach(hooks, hook => {
           hook.call(DOMPurify, currentNode, data, CONFIG);
         });
       }
+      /**
+       * Structural-threat checks that condemn a node regardless of the
+       * allowlists: mXSS via namespace confusion, risky CSS construction,
+       * processing instructions, markup-bearing comments. Pure predicate;
+       * the caller removes. Check order is load-bearing.
+       *
+       * @param currentNode the node to inspect
+       * @param tagName the node's transformCaseFunc'd tag name
+       * @return true if the node must be removed
+       */
+      const _isUnsafeNode = function _isUnsafeNode(currentNode, tagName) {
+        /* Detect mXSS attempts abusing namespace confusion */
+        if (SAFE_FOR_XML && currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(ELEMENT_MARKUP_PROBE, currentNode.textContent) && regExpTest(ELEMENT_MARKUP_PROBE, currentNode.innerHTML)) {
+          return true;
+        }
+        /* Remove risky CSS construction leading to mXSS */
+        if (SAFE_FOR_XML && currentNode.namespaceURI === HTML_NAMESPACE && tagName === 'style' && _isNode(currentNode.firstElementChild)) {
+          return true;
+        }
+        /* Remove any occurrence of processing instructions */
+        if (currentNode.nodeType === NODE_TYPE.processingInstruction) {
+          return true;
+        }
+        /* Remove any kind of possibly harmful comments */
+        if (SAFE_FOR_XML && currentNode.nodeType === NODE_TYPE.comment && regExpTest(COMMENT_MARKUP_PROBE, currentNode.data)) {
+          return true;
+        }
+        return false;
+      };
+      /**
+       * Handle a node whose tag is forbidden or not allowlisted: keep
+       * allowed custom elements (false return exits _sanitizeElements
+       * early - namespace/fallback checks and the afterSanitizeElements
+       * hook are intentionally skipped for kept custom elements), else
+       * hoist content per KEEP_CONTENT and remove.
+       *
+       * @param currentNode the disallowed node
+       * @param tagName the node's transformCaseFunc'd tag name
+       * @return true if the node was removed, false if kept
+       */
+      const _sanitizeDisallowedNode = function _sanitizeDisallowedNode(currentNode, tagName) {
+        /* Check if we have a custom element to handle */
+        if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
+          if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
+            return false;
+          }
+          if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) {
+            return false;
+          }
+        }
+        /* Keep content except for bad-listed elements.
+             Use the cached prototype getters exclusively — the previous code
+             had `|| currentNode.parentNode` / `|| currentNode.childNodes`
+             fallbacks, but the cached getters always return the canonical
+             value (or null for a real parent-less node), so the fallback
+             path was dead in safe cases and a clobbering surface in unsafe
+             ones. Falsy cached results stay falsy; the `if (childNodes &&
+             parentNode)` check already gates correctly. */
+        if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+          const parentNode = getParentNode(currentNode);
+          const childNodes = getChildNodes(currentNode);
+          if (childNodes && parentNode) {
+            const childCount = childNodes.length;
+            /* In-place: hoist the *original* children so the iterator visits
+                 and sanitises them through the same allowlist pass as every other
+                 node. The caller built the tree in the live document, so the
+                 originals carry already-queued resource events (`<img onerror>`,
+                 `<video>`/`<audio>` error, lazy/`onload`, …); cloning would leave
+                 those originals detached but still armed, firing in page scope
+                 while the returned tree looked clean. Moving is safe in-place: the
+                 root is pre-validated as an allowed tag and so is never the node
+                 being removed, which keeps `parentNode` inside the iterator root
+                 and the relocated child inside the serialised tree.
+                          Otherwise (string / DOM-copy paths): clone. The iterator is rooted
+                 at — and the result serialised from — `body`, so a restrictive
+                 ALLOWED_TAGS that removes `body` itself must leave its content in
+                 place, which only cloning does; and those paths parse into an
+                 inert document, so their discarded originals never had a queued
+                 event to neutralise.
+                          `childNodes` is live; a tail-to-head walk keeps `childNodes[i]`
+                 valid whether we move (drops the trailing entry) or clone (leaves
+                 the list intact). */
+            for (let i = childCount - 1; i >= 0; --i) {
+              const hoisted = IN_PLACE ? childNodes[i] : cloneNode(childNodes[i], true);
+              parentNode.insertBefore(hoisted, getNextSibling(currentNode));
+            }
+          }
+        }
+        _forceRemove(currentNode);
+        return true;
+      };
       /**
        * _sanitizeElements
        *
@@ -12195,7 +12819,6 @@
        * @return true if node was killed, false if left alive
        */
       const _sanitizeElements = function _sanitizeElements(currentNode) {
-        let content = null;
         /* Execute a hook if present */
         _executeHooks(hooks.beforeSanitizeElements, currentNode, null);
         /* Check if element is clobbered or can clobber */
@@ -12204,71 +12827,41 @@
           return true;
         }
         /* Now let's check the element's type and name */
-        const tagName = transformCaseFunc(currentNode.nodeName);
+        const tagName = transformCaseFunc(getNodeName ? getNodeName(currentNode) : currentNode.nodeName);
         /* Execute a hook if present */
         _executeHooks(hooks.uponSanitizeElement, currentNode, {
           tagName,
           allowedTags: ALLOWED_TAGS
         });
-        /* Detect mXSS attempts abusing namespace confusion */
-        if (SAFE_FOR_XML && currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w!]/g, currentNode.innerHTML) && regExpTest(/<[/\w!]/g, currentNode.textContent)) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Remove any occurrence of processing instructions */
-        if (currentNode.nodeType === NODE_TYPE.progressingInstruction) {
-          _forceRemove(currentNode);
-          return true;
-        }
-        /* Remove any kind of possibly harmful comments */
-        if (SAFE_FOR_XML && currentNode.nodeType === NODE_TYPE.comment && regExpTest(/<[/\w]/g, currentNode.data)) {
+        /* Remove mXSS vectors, processing instructions and risky comments */
+        if (_isUnsafeNode(currentNode, tagName)) {
           _forceRemove(currentNode);
           return true;
         }
         /* Remove element if anything forbids its presence */
-        if (!(EXTRA_ELEMENT_HANDLING.tagCheck instanceof Function && EXTRA_ELEMENT_HANDLING.tagCheck(tagName)) && (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName])) {
-          /* Check if we have a custom element to handle */
-          if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
-            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
-              return false;
-            }
-            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName)) {
-              return false;
-            }
-          }
-          /* Keep content except for bad-listed elements */
-          if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
-            const parentNode = getParentNode(currentNode) || currentNode.parentNode;
-            const childNodes = getChildNodes(currentNode) || currentNode.childNodes;
-            if (childNodes && parentNode) {
-              const childCount = childNodes.length;
-              for (let i = childCount - 1; i >= 0; --i) {
-                const childClone = cloneNode(childNodes[i], true);
-                childClone.__removalCount = (currentNode.__removalCount || 0) + 1;
-                parentNode.insertBefore(childClone, getNextSibling(currentNode));
-              }
-            }
-          }
-          _forceRemove(currentNode);
-          return true;
+        if (FORBID_TAGS[tagName] || !(EXTRA_ELEMENT_HANDLING.tagCheck instanceof Function && EXTRA_ELEMENT_HANDLING.tagCheck(tagName)) && !ALLOWED_TAGS[tagName]) {
+          return _sanitizeDisallowedNode(currentNode, tagName);
         }
-        /* Check whether element has a valid namespace */
-        if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
+        /* Check whether element has a valid namespace.
+           Realm-safe check (GHSA-hpcv-96wg-7vj8): use the cached Node.prototype
+           nodeType getter rather than `instanceof Element`, which is realm-
+           bound and short-circuits to false for any node minted in a different
+           realm — letting a foreign-realm element with a forbidden namespace
+           slip past the namespace check entirely. */
+        const nt = getNodeType ? getNodeType(currentNode) : currentNode.nodeType;
+        if (nt === NODE_TYPE.element && !_checkValidNamespace(currentNode)) {
           _forceRemove(currentNode);
           return true;
         }
         /* Make sure that older browsers don't get fallback-tag mXSS */
-        if ((tagName === 'noscript' || tagName === 'noembed' || tagName === 'noframes') && regExpTest(/<\/no(script|embed|frames)/i, currentNode.innerHTML)) {
+        if ((tagName === 'noscript' || tagName === 'noembed' || tagName === 'noframes') && regExpTest(FALLBACK_TAG_CLOSE, currentNode.innerHTML)) {
           _forceRemove(currentNode);
           return true;
         }
         /* Sanitize element content to be template-safe */
         if (SAFE_FOR_TEMPLATES && currentNode.nodeType === NODE_TYPE.text) {
           /* Get the element's text content */
-          content = currentNode.textContent;
-          arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
-            content = stringReplace(content, expr, ' ');
-          });
+          const content = _stripTemplateExpressions(currentNode.textContent);
           if (currentNode.textContent !== content) {
             arrayPush(DOMPurify.removed, {
               element: currentNode.cloneNode()
@@ -12298,11 +12891,12 @@
         if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
           return false;
         }
+        const nameIsPermitted = ALLOWED_ATTR[lcName] || EXTRA_ELEMENT_HANDLING.attributeCheck instanceof Function && EXTRA_ELEMENT_HANDLING.attributeCheck(lcName, lcTag);
         /* Allow valid data-* attributes: At least one character after "-"
             (https://html.spec.whatwg.org/multipage/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes)
             XML-compatible (https://html.spec.whatwg.org/multipage/infrastructure.html#xml-compatible and http://www.w3.org/TR/xml/#d0e804)
             We don't need to check the value; it's always URI safe. */
-        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR, lcName)) ; else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR, lcName)) ; else if (EXTRA_ELEMENT_HANDLING.attributeCheck instanceof Function && EXTRA_ELEMENT_HANDLING.attributeCheck(lcName, lcTag)) ; else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+        if (ALLOW_DATA_ATTR && regExpTest(DATA_ATTR$1, lcName)) ; else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName)) ; else if (!nameIsPermitted) {
           if (
           // First condition does a very basic check if a) it's basically a valid custom element tagname AND
           // b) if the tagName passes whatever the user has configured for CUSTOM_ELEMENT_HANDLING.tagNameCheck
@@ -12314,11 +12908,15 @@
             return false;
           }
           /* Check value is safe. First, is attr inert? If so, is safe */
-        } else if (URI_SAFE_ATTRIBUTES[lcName]) ; else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$2(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ; else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA, stringReplace(value, ATTR_WHITESPACE, ''))) ; else if (value) {
+        } else if (URI_SAFE_ATTRIBUTES[lcName]) ; else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ; else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf$2(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]) ; else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, ''))) ; else if (value) {
           return false;
         } else ;
         return true;
       };
+      /* Names the HTML spec reserves from valid-custom-element-name; these must
+       * never be treated as basic custom elements even when a permissive
+       * CUSTOM_ELEMENT_HANDLING.tagNameCheck is configured. */
+      const RESERVED_CUSTOM_ELEMENT_NAMES = addToSet({}, ['annotation-xml', 'color-profile', 'font-face', 'font-face-format', 'font-face-name', 'font-face-src', 'font-face-uri', 'missing-glyph']);
       /**
        * _isBasicCustomElement
        * checks if at least one dash is included in tagName, and it's not the first char
@@ -12328,7 +12926,64 @@
        * @returns Returns true if the tag name meets the basic criteria for a custom element, otherwise false.
        */
       const _isBasicCustomElement = function _isBasicCustomElement(tagName) {
-        return tagName !== 'annotation-xml' && stringMatch(tagName, CUSTOM_ELEMENT);
+        return !RESERVED_CUSTOM_ELEMENT_NAMES[stringToLowerCase(tagName)] && regExpTest(CUSTOM_ELEMENT$1, tagName);
+      };
+      /**
+       * Wrap an attribute value in the matching Trusted Types object when
+       * the active policy requires it. Namespaced attributes pass through
+       * unchanged (no TT support yet, see
+       * https://bugs.chromium.org/p/chromium/issues/detail?id=1305293).
+       *
+       * @param lcTag lowercase tag name of the containing element
+       * @param lcName lowercase attribute name
+       * @param namespaceURI the attribute's namespace, if any
+       * @param value the attribute value to wrap
+       * @return the value, wrapped when Trusted Types demand it
+       */
+      const _applyTrustedTypesToAttribute = function _applyTrustedTypesToAttribute(lcTag, lcName, namespaceURI, value) {
+        if (trustedTypesPolicy && typeof trustedTypes === 'object' && typeof trustedTypes.getAttributeType === 'function' && !namespaceURI) {
+          switch (trustedTypes.getAttributeType(lcTag, lcName)) {
+            case 'TrustedHTML':
+              {
+                return _createTrustedHTML(value);
+              }
+            case 'TrustedScriptURL':
+              {
+                return _createTrustedScriptURL(value);
+              }
+          }
+        }
+        return value;
+      };
+      /**
+       * Write a modified attribute value back onto the element. On
+       * success, re-probe for clobbering introduced by the new value and
+       * remove the element when found; otherwise pop the removal entry
+       * recorded by the earlier _removeAttribute (long-standing pairing
+       * with the SANITIZE_NAMED_PROPS path - do not "fix" casually). On
+       * failure, remove the attribute instead.
+       *
+       * @param currentNode the element carrying the attribute
+       * @param name the attribute name as present on the element
+       * @param namespaceURI the attribute's namespace, if any
+       * @param value the new attribute value
+       */
+      const _setAttributeValue = function _setAttributeValue(currentNode, name, namespaceURI, value) {
+        try {
+          if (namespaceURI) {
+            currentNode.setAttributeNS(namespaceURI, name, value);
+          } else {
+            /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
+            currentNode.setAttribute(name, value);
+          }
+          if (_isClobbered(currentNode)) {
+            _forceRemove(currentNode);
+          } else {
+            arrayPop(DOMPurify.removed);
+          }
+        } catch (_) {
+          _removeAttribute(name, currentNode);
+        }
       };
       /**
        * _sanitizeAttributes
@@ -12343,9 +12998,7 @@
       const _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
         /* Execute a hook if present */
         _executeHooks(hooks.beforeSanitizeAttributes, currentNode, null);
-        const {
-          attributes
-        } = currentNode;
+        const attributes = currentNode.attributes;
         /* Check if we have attributes; if not we might have a text node */
         if (!attributes || _isClobbered(currentNode)) {
           return;
@@ -12358,14 +13011,13 @@
           forceKeepAttr: undefined
         };
         let l = attributes.length;
+        const lcTag = transformCaseFunc(currentNode.nodeName);
         /* Go backwards over all attributes; safely remove bad ones */
         while (l--) {
           const attr = attributes[l];
-          const {
-            name,
-            namespaceURI,
-            value: attrValue
-          } = attr;
+          const name = attr.name,
+            namespaceURI = attr.namespaceURI,
+            attrValue = attr.value;
           const lcName = transformCaseFunc(name);
           const initValue = attrValue;
           let value = name === 'value' ? initValue : stringTrim$1(initValue);
@@ -12379,12 +13031,14 @@
           /* Full DOM Clobbering protection via namespace isolation,
            * Prefix id and name attributes with `user-content-`
            */
-          if (SANITIZE_NAMED_PROPS && (lcName === 'id' || lcName === 'name')) {
+          if (SANITIZE_NAMED_PROPS && (lcName === 'id' || lcName === 'name') && stringIndexOf$2(value, SANITIZE_NAMED_PROPS_PREFIX) !== 0) {
             // Remove the attribute with this value
             _removeAttribute(name, currentNode);
             // Prefix the value and later re-create the attribute with the sanitized value
             value = SANITIZE_NAMED_PROPS_PREFIX + value;
           }
+          // Else: already prefixed, leave the attribute alone — the prefix is
+          // itself the clobbering protection, and re-applying it is incorrect.
           /* Work around a security issue with comments inside attributes */
           if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|script|title|xmp|textarea|noscript|iframe|noembed|noframes)/i, value)) {
             _removeAttribute(name, currentNode);
@@ -12395,7 +13049,7 @@
             _removeAttribute(name, currentNode);
             continue;
           }
-          /* Did the hooks approve of the attribute? */
+          /* Did the hooks force-keep the attribute? */
           if (hookEvent.forceKeepAttr) {
             continue;
           }
@@ -12405,56 +13059,24 @@
             continue;
           }
           /* Work around a security issue in jQuery 3.0 */
-          if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(/\/>/i, value)) {
+          if (!ALLOW_SELF_CLOSE_IN_ATTR && regExpTest(SELF_CLOSING_TAG, value)) {
             _removeAttribute(name, currentNode);
             continue;
           }
           /* Sanitize attribute content to be template-safe */
           if (SAFE_FOR_TEMPLATES) {
-            arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
-              value = stringReplace(value, expr, ' ');
-            });
+            value = _stripTemplateExpressions(value);
           }
           /* Is `value` valid for this attribute? */
-          const lcTag = transformCaseFunc(currentNode.nodeName);
           if (!_isValidAttribute(lcTag, lcName, value)) {
             _removeAttribute(name, currentNode);
             continue;
           }
           /* Handle attributes that require Trusted Types */
-          if (trustedTypesPolicy && typeof trustedTypes === 'object' && typeof trustedTypes.getAttributeType === 'function') {
-            if (namespaceURI) ; else {
-              switch (trustedTypes.getAttributeType(lcTag, lcName)) {
-                case 'TrustedHTML':
-                  {
-                    value = trustedTypesPolicy.createHTML(value);
-                    break;
-                  }
-                case 'TrustedScriptURL':
-                  {
-                    value = trustedTypesPolicy.createScriptURL(value);
-                    break;
-                  }
-              }
-            }
-          }
+          value = _applyTrustedTypesToAttribute(lcTag, lcName, namespaceURI, value);
           /* Handle invalid data-* attribute set by try-catching it */
           if (value !== initValue) {
-            try {
-              if (namespaceURI) {
-                currentNode.setAttributeNS(namespaceURI, name, value);
-              } else {
-                /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
-                currentNode.setAttribute(name, value);
-              }
-              if (_isClobbered(currentNode)) {
-                _forceRemove(currentNode);
-              } else {
-                arrayPop(DOMPurify.removed);
-              }
-            } catch (_) {
-              _removeAttribute(name, currentNode);
-            }
+            _setAttributeValue(currentNode, name, namespaceURI, value);
           }
         }
         /* Execute a hook if present */
@@ -12465,7 +13087,7 @@
        *
        * @param fragment to iterate over recursively
        */
-      const _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
+      const _sanitizeShadowDOM2 = function _sanitizeShadowDOM(fragment) {
         let shadowNode = null;
         const shadowIterator = _createNodeIterator(fragment);
         /* Execute a hook if present */
@@ -12477,13 +13099,132 @@
           _sanitizeElements(shadowNode);
           /* Check attributes next */
           _sanitizeAttributes(shadowNode);
-          /* Deep shadow DOM detected */
-          if (shadowNode.content instanceof DocumentFragment) {
-            _sanitizeShadowDOM(shadowNode.content);
+          /* Deep shadow DOM detected.
+             Realm-safe check (GHSA-hpcv-96wg-7vj8): use nodeType against the
+             DOCUMENT_FRAGMENT_NODE constant rather than instanceof, so we
+             recurse into <template>.content from foreign realms too. */
+          if (_isDocumentFragment(shadowNode.content)) {
+            _sanitizeShadowDOM2(shadowNode.content);
+          }
+          /* An element iterated here may itself host an attached
+             shadow root. The default NodeIterator does not enter shadow
+             trees, so a shadow root nested inside template.content was
+             previously reached by no walk at all (the pre-pass at
+             _sanitizeAttachedShadowRoots descends via childNodes, which
+             doesn't enter template.content; the template-content recursion
+             above iterates the content but never inspected shadowRoot).
+             Walk it explicitly. The nodeType guard avoids reading
+             shadowRoot off text / comment / CDATA / PI nodes that the
+             iterator also surfaces. */
+          const shadowNodeType = getNodeType ? getNodeType(shadowNode) : shadowNode.nodeType;
+          if (shadowNodeType === NODE_TYPE.element) {
+            const innerSr = getShadowRoot(shadowNode);
+            if (_isDocumentFragment(innerSr)) {
+              _sanitizeAttachedShadowRoots(innerSr);
+              _sanitizeShadowDOM2(innerSr);
+            }
           }
         }
         /* Execute a hook if present */
         _executeHooks(hooks.afterSanitizeShadowDOM, fragment, null);
+      };
+      /**
+       * _sanitizeAttachedShadowRoots
+       *
+       * Walks `root` and feeds every attached shadow root we encounter into
+       * the existing _sanitizeShadowDOM pipeline. The default node iterator
+       * does not descend into shadow trees, so nodes inside an attached
+       * shadow root would otherwise be skipped entirely.
+       *
+       * Two real input paths put attached shadow roots in front of us:
+       *   1. IN_PLACE on a DOM node that already has shadow roots attached.
+       *   2. DOM-node input where importNode(dirty, true) deep-clones the
+       *      shadow root because it was created with `clonable: true`.
+       *
+       * This pass runs once, up front, so the main iteration loop (and the
+       * existing _sanitizeShadowDOM template-content recursion) stay
+       * untouched — string-input paths are not affected.
+       *
+       * @param root the subtree root to walk for attached shadow roots
+       */
+      const _sanitizeAttachedShadowRoots = function _sanitizeAttachedShadowRoots(root) {
+        /* Iterative (explicit stack) rather than per-child recursion. DOM APIs
+           impose no depth cap, so an attacker-shaped tree (JSON/CRDT/editor data
+           built straight into the DOM — the IN_PLACE surface) deeper than the JS
+           call-stack budget would otherwise overflow native recursion here and
+           throw at the IN_PLACE entry pre-pass, before a single node is
+           sanitized, leaving the caller's live tree untouched (fail-open). See
+           campaign-3 F4. A heap stack keeps depth off the call stack.
+                Each work item is either a node to descend into, or a deferred
+           `_sanitizeShadowDOM` for an already-walked shadow root. The deferred
+           form preserves the original post-order discipline: a shadow root's
+           nested shadow roots are discovered before the outer shadow is
+           sanitized (which may remove hosts). Pushes are in reverse of the
+           desired processing order (LIFO): template content, then children, then
+           the shadow-sanitize, then the shadow walk — so the order matches the
+           previous recursion exactly. */
+        const stack = [{
+          node: root,
+          shadow: null
+        }];
+        while (stack.length > 0) {
+          const item = stack.pop();
+          /* Deferred shadow-DOM sanitisation: runs after its subtree was walked. */
+          if (item.shadow) {
+            _sanitizeShadowDOM2(item.shadow);
+            continue;
+          }
+          const node = item.node;
+          const nodeType = getNodeType ? getNodeType(node) : node.nodeType;
+          const isElement = nodeType === NODE_TYPE.element;
+          /* (pushed last → processed first) Children, snapshotted in reverse so
+             the first child is processed first. Snapshotting matters because a
+             hook may detach siblings mid-walk. */
+          const childNodes = getChildNodes(node);
+          if (childNodes) {
+            for (let i = childNodes.length - 1; i >= 0; --i) {
+              stack.push({
+                node: childNodes[i],
+                shadow: null
+              });
+            }
+          }
+          /* (pushed before children → processed after them, matching the old
+             "template content last" order) When the node is a <template>,
+             descend into its content. */
+          if (isElement) {
+            const rootName = getNodeName ? getNodeName(node) : null;
+            if (typeof rootName === 'string' && transformCaseFunc(rootName) === 'template') {
+              const content = node.content;
+              if (_isDocumentFragment(content)) {
+                stack.push({
+                  node: content,
+                  shadow: null
+                });
+              }
+            }
+          }
+          /* Shadow root (processed first): walk its subtree, then sanitise it.
+             Realm-safe check (GHSA-hpcv-96wg-7vj8): nodeType-based detection
+             rather than `instanceof DocumentFragment`, which is realm-bound and
+             silently skipped foreign-realm shadow roots (e.g.
+             iframe.contentDocument attachShadow). */
+          if (isElement) {
+            const sr = getShadowRoot(node);
+            if (_isDocumentFragment(sr)) {
+              /* Push the deferred sanitise first so it pops after the shadow
+                 walk we push next, i.e. nested shadow roots are discovered
+                 before this one is sanitised. */
+              stack.push({
+                node: null,
+                shadow: sr
+              }, {
+                node: sr,
+                shadow: null
+              });
+            }
+          }
+        }
       };
       // eslint-disable-next-line complexity
       DOMPurify.sanitize = function (dirty) {
@@ -12501,13 +13242,9 @@
         }
         /* Stringify, in case dirty is an object */
         if (typeof dirty !== 'string' && !_isNode(dirty)) {
-          if (typeof dirty.toString === 'function') {
-            dirty = dirty.toString();
-            if (typeof dirty !== 'string') {
-              throw typeErrorCreate('dirty is not a string, aborting');
-            }
-          } else {
-            throw typeErrorCreate('toString is not a function');
+          dirty = stringifyValue(dirty);
+          if (typeof dirty !== 'string') {
+            throw typeErrorCreate('dirty is not a string, aborting');
           }
         }
         /* Return dirty HTML if DOMPurify cannot run */
@@ -12515,24 +13252,78 @@
           return dirty;
         }
         /* Assign config vars */
-        if (!SET_CONFIG) {
+        if (SET_CONFIG) {
+          /* Persistent setConfig() path: _parseConfig is skipped, so the sets are
+           * not re-derived per call. Restore them from the pristine bindings
+           * captured at setConfig() time so a previous call's hook clone (mutated
+           * below) does not carry over. */
+          ALLOWED_TAGS = SET_CONFIG_ALLOWED_TAGS;
+          ALLOWED_ATTR = SET_CONFIG_ALLOWED_ATTR;
+        } else {
           _parseConfig(cfg);
+        }
+        /* Clone the hook-mutable allowlists before the walk whenever an
+         * uponSanitize* hook is registered. The hook event exposes ALLOWED_TAGS
+         * and ALLOWED_ATTR by reference (as allowedTags / allowedAttributes), so
+         * a hook that widens them would otherwise mutate the shared set
+         * permanently: across later calls and across every element. Cloning per
+         * walk keeps documented in-call widening working while scoping it to the
+         * call. A single guard for both config paths - the per-call path rebinds
+         * the sets in _parseConfig each call, the persistent path restores them
+         * from the captured bindings just above - so the two cannot diverge. */
+        if (hooks.uponSanitizeElement.length > 0 || hooks.uponSanitizeAttribute.length > 0) {
+          ALLOWED_TAGS = clone$1(ALLOWED_TAGS);
+        }
+        if (hooks.uponSanitizeAttribute.length > 0) {
+          ALLOWED_ATTR = clone$1(ALLOWED_ATTR);
         }
         /* Clean up removed elements */
         DOMPurify.removed = [];
-        /* Check if dirty is correctly typed for IN_PLACE */
-        if (typeof dirty === 'string') {
-          IN_PLACE = false;
-        }
-        if (IN_PLACE) {
-          /* Do some early pre-sanitization to avoid unsafe root nodes */
-          if (dirty.nodeName) {
-            const tagName = transformCaseFunc(dirty.nodeName);
+        /* Resolve IN_PLACE for this call without mutating persistent config.
+           Writing the IN_PLACE closure variable here leaks under setConfig(),
+           where _parseConfig is skipped on later calls: a single string call would
+           disable in-place mode for every subsequent node call, returning a
+           sanitized copy while leaving the caller's node — which in-place callers
+           keep using and whose return value they ignore — unsanitized. REPORT-2. */
+        const inPlace = IN_PLACE && typeof dirty !== 'string' && _isNode(dirty);
+        if (inPlace) {
+          /* Do some early pre-sanitization to avoid unsafe root nodes.
+             Read nodeName through the cached prototype getter — a clobbering
+             child named "nodeName" on the form root would otherwise shadow
+             the property and let this check skip the root-allowlist
+             validation entirely. */
+          const nn = getNodeName ? getNodeName(dirty) : dirty.nodeName;
+          if (typeof nn === 'string') {
+            const tagName = transformCaseFunc(nn);
             if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
               throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
             }
           }
-        } else if (dirty instanceof Node) {
+          /* Pre-flight the root through _isClobbered. The iterator-driven
+             removal path can not detach a parent-less root: _forceRemove
+             falls through to Element.prototype.remove(), which per spec
+             is a no-op on a node with no parent. A clobbered root would
+             then survive the main loop with its attributes uninspected,
+             because _sanitizeAttributes early-returns on _isClobbered. The
+             result would be an attacker-controlled form, complete with any
+             event-handler attributes the caller passed in, handed back to
+             the application unsanitized. Refuse to sanitize such a root
+             the same way we refuse a forbidden tag. GHSA-r47g-fvhr-h676. */
+          if (_isClobbered(dirty)) {
+            throw typeErrorCreate('root node is clobbered and cannot be sanitized in-place');
+          }
+          /* Sanitize attached shadow roots before the main iterator runs.
+             The iterator does not descend into shadow trees. Same fail-closed
+             barrier as the main walk (campaign-3 F2): a custom-element reaction
+             inside a shadow root could abort this pre-pass before the walk runs,
+             which would otherwise leave the entire live tree unsanitized. */
+          try {
+            _sanitizeAttachedShadowRoots(dirty);
+          } catch (error) {
+            _neutralizeRoot(dirty);
+            throw error;
+          }
+        } else if (_isNode(dirty)) {
           /* If dirty is a DOM element, append to an empty document to avoid
              elements being stripped by the parser */
           body = _initDocument('<!---->');
@@ -12546,12 +13337,18 @@
             // eslint-disable-next-line unicorn/prefer-dom-node-append
             body.appendChild(importedNode);
           }
+          /* Clonable shadow roots are deep-cloned by importNode(); sanitize
+             them before the main iterator runs, since the iterator does not
+             descend into shadow trees. The walk routes every read through a
+             cached prototype getter so clobbering descendants on a form root
+             cannot hide a shadow host from this pass. */
+          _sanitizeAttachedShadowRoots(importedNode);
         } else {
           /* Exit directly if we have nothing to do */
           if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT &&
           // eslint-disable-next-line unicorn/prefer-includes
           dirty.indexOf('<') === -1) {
-            return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+            return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? _createTrustedHTML(dirty) : dirty;
           }
           /* Initialize the document to work on */
           body = _initDocument(dirty);
@@ -12565,24 +13362,60 @@
           _forceRemove(body.firstChild);
         }
         /* Get node iterator */
-        const nodeIterator = _createNodeIterator(IN_PLACE ? dirty : body);
-        /* Now start iterating over the created document */
-        while (currentNode = nodeIterator.nextNode()) {
-          /* Sanitize tags and elements */
-          _sanitizeElements(currentNode);
-          /* Check attributes next */
-          _sanitizeAttributes(currentNode);
-          /* Shadow DOM detected, sanitize it */
-          if (currentNode.content instanceof DocumentFragment) {
-            _sanitizeShadowDOM(currentNode.content);
+        const nodeIterator = _createNodeIterator(inPlace ? dirty : body);
+        /* Now start iterating over the created document.
+           The walk runs inside an exception barrier (campaign-3 F2): a re-entrant
+           engine/custom-element mutation can detach a node mid-walk so
+           `_forceRemove`'s parentless guard throws, aborting the loop. Without the
+           barrier the caller's in-place tree would be left half-sanitized with the
+           unvisited tail still armed. On any throw we fail closed — strip the
+           in-place root bare — then rethrow so the existing throw contract is
+           preserved. (String/DOM-copy paths never return the partial body, so the
+           propagating throw is already fail-closed there.) */
+        try {
+          while (currentNode = nodeIterator.nextNode()) {
+            /* Sanitize tags and elements */
+            _sanitizeElements(currentNode);
+            /* Check attributes next */
+            _sanitizeAttributes(currentNode);
+            /* Shadow DOM detected, sanitize it.
+               Realm-safe check (GHSA-hpcv-96wg-7vj8): nodeType-based detection
+               instead of instanceof, so foreign-realm <template>.content is
+               walked correctly. */
+            if (_isDocumentFragment(currentNode.content)) {
+              _sanitizeShadowDOM2(currentNode.content);
+            }
           }
+        } catch (error) {
+          if (inPlace) {
+            _neutralizeRoot(dirty);
+          }
+          throw error;
         }
         /* If we sanitized `dirty` in-place, return it. */
-        if (IN_PLACE) {
+        if (inPlace) {
+          /* Fail-closed completion of the audit-5 F1 fix: every node removed from
+             the caller's live tree is detached but may still hold a queued
+             resource-event handler that fires in page scope after we return. The
+             move-hoist covers only disallowed-tag KEEP_CONTENT removals; strip the
+             non-allow-listed attributes off every other removed subtree (clobber,
+             mXSS, namespace, comments, KEEP_CONTENT:false, …) so those handlers are
+             cancelled before any event can fire. Runs synchronously, pre-return. */
+          arrayForEach(DOMPurify.removed, entry => {
+            if (entry.element) {
+              _neutralizeSubtree(entry.element);
+            }
+          });
+          if (SAFE_FOR_TEMPLATES) {
+            _scrubTemplateExpressions2(dirty);
+          }
           return dirty;
         }
         /* Return sanitized string or DOM */
         if (RETURN_DOM) {
+          if (SAFE_FOR_TEMPLATES) {
+            _scrubTemplateExpressions2(body);
+          }
           if (RETURN_DOM_FRAGMENT) {
             returnNode = createDocumentFragment.call(body.ownerDocument);
             while (body.firstChild) {
@@ -12611,20 +13444,28 @@
         }
         /* Sanitize final string template-safe */
         if (SAFE_FOR_TEMPLATES) {
-          arrayForEach([MUSTACHE_EXPR, ERB_EXPR, TMPLIT_EXPR], expr => {
-            serializedHTML = stringReplace(serializedHTML, expr, ' ');
-          });
+          serializedHTML = _stripTemplateExpressions(serializedHTML);
         }
-        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
+        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? _createTrustedHTML(serializedHTML) : serializedHTML;
       };
       DOMPurify.setConfig = function () {
         let cfg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         _parseConfig(cfg);
         SET_CONFIG = true;
+        SET_CONFIG_ALLOWED_TAGS = ALLOWED_TAGS;
+        SET_CONFIG_ALLOWED_ATTR = ALLOWED_ATTR;
       };
       DOMPurify.clearConfig = function () {
         CONFIG = null;
         SET_CONFIG = false;
+        SET_CONFIG_ALLOWED_TAGS = null;
+        SET_CONFIG_ALLOWED_ATTR = null;
+        // Drop any caller-supplied Trusted Types policy so it cannot poison later
+        // `RETURN_TRUSTED_TYPE` output. The internal default policy (cached, and
+        // never recreated — Trusted Types throws on duplicate names) is restored by
+        // the next `_parseConfig`. See GHSA-vxr8-fq34-vvx9.
+        trustedTypesPolicy = defaultTrustedTypesPolicy;
+        emptyHTML = '';
       };
       DOMPurify.isValidAttribute = function (tag, attr, value) {
         /* Initialize shared config vars if necessary. */
@@ -12639,9 +13480,19 @@
         if (typeof hookFunction !== 'function') {
           return;
         }
+        /* Reject unknown entry points. Without this, a non-hook key (e.g.
+         * '__proto__') indexes off the prototype chain rather than a real
+         * hook array, and arrayPush then writes to Object.prototype. Guard
+         * with an own-property check against the known hook names. */
+        if (!objectHasOwnProperty(hooks, entryPoint)) {
+          return;
+        }
         arrayPush(hooks[entryPoint], hookFunction);
       };
       DOMPurify.removeHook = function (entryPoint, hookFunction) {
+        if (!objectHasOwnProperty(hooks, entryPoint)) {
+          return undefined;
+        }
         if (hookFunction !== undefined) {
           const index = arrayLastIndexOf(hooks[entryPoint], hookFunction);
           return index === -1 ? undefined : arraySplice(hooks[entryPoint], index, 1)[0];
@@ -12649,6 +13500,9 @@
         return arrayPop(hooks[entryPoint]);
       };
       DOMPurify.removeHooks = function (entryPoint) {
+        if (!objectHasOwnProperty(hooks, entryPoint)) {
+          return;
+        }
         hooks[entryPoint] = [];
       };
       DOMPurify.removeAllHooks = function () {
@@ -13643,7 +14497,6 @@
       // 7. Jan. 2018
       short: 'dd.MM.y' // 07.01.2018
     };
-
     var timeFormats$2 = {
       full: 'HH:mm:ss zzzz',
       long: 'HH:mm:ss z',
@@ -13870,7 +14723,6 @@
         night: /nachts/i // will never be matched. Night is matched by `pm`
       }
     };
-
     var match$2 = {
       ordinalNumber: buildMatchPatternFn({
         matchPattern: matchOrdinalNumberPattern$2,
@@ -14755,7 +15607,7 @@
           // Remove duplicate decimal dots
           if (normalizedValue.includes(".")) {
             var partsArray = normalizedValue.split(".");
-            var _partsArray = _slicedToArray(partsArray, 1),
+            var _partsArray = _slicedToArray$1(partsArray, 1),
               wholeNumber = _partsArray[0];
             partsArray.shift();
             normalizedValue = "".concat(wholeNumber, ".").concat(partsArray.join(""));
@@ -14773,7 +15625,7 @@
           }
           var value = "".concat(duration);
           var _value$split = value.split(":"),
-            _value$split2 = _slicedToArray(_value$split, 2),
+            _value$split2 = _slicedToArray$1(_value$split, 2),
             hours = _value$split2[0],
             minutes = _value$split2[1];
           var decimal = +hours;
@@ -14789,7 +15641,7 @@
             return timeDuration;
           }
           var _split = (timeDuration + "").split('.'),
-            _split2 = _slicedToArray(_split, 2),
+            _split2 = _slicedToArray$1(_split, 2),
             hoursDecimal = _split2[0],
             minutesDecimal = _split2[1];
           var minutesMultiplier = parseFloat("0.".concat(minutesDecimal)).toFixed(2);
@@ -14876,7 +15728,7 @@
       var figure0;
       var figcaption0;
       var t1;
-      var t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "";
+      var t2_value = /*getFormattedTotal*/ctx[12](/*simpleRounding*/ctx[8](/*todayTotal*/ctx[4])) + "";
       var t2;
       var t3;
       var t4_value = translate("timemanager", "hrs.") + "";
@@ -14885,7 +15737,7 @@
       var figure1;
       var figcaption1;
       var t7;
-      var t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "";
+      var t8_value = /*getFormattedTotal*/ctx[12](/*simpleRounding*/ctx[8](/*weekTotal*/ctx[5])) + "";
       var t8;
       var t9;
       var t10_value = translate("timemanager", "hrs.") + "";
@@ -14929,8 +15781,8 @@
           append(figure1, t10);
         },
         p(ctx, dirty) {
-          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*todayTotal*/ctx[4])) + "")) set_data(t2, t2_value);
-          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*getFormattedTotal*/ctx[12]( /*simpleRounding*/ctx[8]( /*weekTotal*/ctx[5])) + "")) set_data(t8, t8_value);
+          if (dirty & /*todayTotal*/16 && t2_value !== (t2_value = /*getFormattedTotal*/ctx[12](/*simpleRounding*/ctx[8](/*todayTotal*/ctx[4])) + "")) set_data(t2, t2_value);
+          if (dirty & /*weekTotal*/32 && t8_value !== (t8_value = /*getFormattedTotal*/ctx[12](/*simpleRounding*/ctx[8](/*weekTotal*/ctx[5])) + "")) set_data(t8, t8_value);
         },
         d(detaching) {
           if (detaching) {
@@ -14943,7 +15795,7 @@
     // (262:3) {#if !loading && weekTotal > 0}
     function create_if_block_3$3(ctx) {
       var each_1_anchor;
-      var each_value = ensure_array_like( /*points*/ctx[3]);
+      var each_value = ensure_array_like(/*points*/ctx[3]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$8(get_each_context$8(ctx, each_value, i));
@@ -14965,7 +15817,7 @@
         },
         p(ctx, dirty) {
           if (dirty & /*formatDateForScale, points, highest, getFormattedTotal*/6216) {
-            each_value = ensure_array_like( /*points*/ctx[3]);
+            each_value = ensure_array_like(/*points*/ctx[3]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$8(ctx, each_value, _i3);
@@ -14997,11 +15849,11 @@
       var t0;
       var div;
       var span0;
-      var t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "primary") + "";
+      var t1_value = /*formatDateForScale*/ctx[11](/*point*/ctx[28].date, "primary") + "";
       var t1;
       var t2;
       var span1;
-      var t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "secondary") + "";
+      var t3_value = /*formatDateForScale*/ctx[11](/*point*/ctx[28].date, "secondary") + "";
       var t3;
       var if_block = /*point*/ctx[28].stats.total > 0 && create_if_block_5$3(ctx);
       return {
@@ -15029,7 +15881,7 @@
           append(span1, t3);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[28].stats.total > 0) {
+          if (/*point*/ctx[28].stats.total > 0) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -15041,8 +15893,8 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "primary") + "")) set_data(t1, t1_value);
-          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11]( /*point*/ctx[28].date, "secondary") + "")) set_data(t3, t3_value);
+          if (dirty & /*points*/8 && t1_value !== (t1_value = /*formatDateForScale*/ctx[11](/*point*/ctx[28].date, "primary") + "")) set_data(t1, t1_value);
+          if (dirty & /*points*/8 && t3_value !== (t3_value = /*formatDateForScale*/ctx[11](/*point*/ctx[28].date, "secondary") + "")) set_data(t3, t3_value);
         },
         d(detaching) {
           if (detaching) {
@@ -15057,7 +15909,7 @@
     // (266:7) {#if point.stats.total > 0}
     function create_if_block_5$3(ctx) {
       var span;
-      var t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[28].stats.total) + "";
+      var t0_value = /*getFormattedTotal*/ctx[12](/*point*/ctx[28].stats.total) + "";
       var t0;
       var t1;
       var t2_value = translate("timemanager", "hrs.") + "";
@@ -15075,7 +15927,7 @@
           div = element("div");
           attr(span, "class", "hours-label");
           attr(div, "class", "column-inner");
-          attr(div, "style", div_style_value = "height: ".concat( /*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"));
+          attr(div, "style", div_style_value = "height: ".concat(/*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"));
         },
         m(target, anchor) {
           insert(target, span, anchor);
@@ -15086,8 +15938,8 @@
           insert(target, div, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*points*/8 && t0_value !== (t0_value = /*getFormattedTotal*/ctx[12]( /*point*/ctx[28].stats.total) + "")) set_data(t0, t0_value);
-          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat( /*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"))) {
+          if (dirty & /*points*/8 && t0_value !== (t0_value = /*getFormattedTotal*/ctx[12](/*point*/ctx[28].stats.total) + "")) set_data(t0, t0_value);
+          if (dirty & /*points, highest*/72 && div_style_value !== (div_style_value = "height: ".concat(/*point*/ctx[28].stats.total / /*highest*/ctx[6] * 100, "%"))) {
             attr(div, "style", div_style_value);
           }
         },
@@ -15119,7 +15971,7 @@
           append(div, t);
         },
         p(ctx, dirty) {
-          if ( /*point*/ctx[28] && /*point*/ctx[28].stats) {
+          if (/*point*/ctx[28] && /*point*/ctx[28].stats) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -15174,10 +16026,10 @@
       var t5;
       var span0;
       var t6;
-      var t7_value = format$2(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
+      var t7_value = format$2(startOfWeek(/*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
       var t7;
       var t8;
-      var t9_value = format$2(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
+      var t9_value = format$2(endOfWeek(/*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "";
       var t9;
       var t10;
       var t11;
@@ -15197,7 +16049,7 @@
           span1 = element("span");
           t2 = text$1(t2_value);
           t3 = space$1();
-          t4 = text$1( /*currentWeek*/ctx[7]);
+          t4 = text$1(/*currentWeek*/ctx[7]);
           t5 = space$1();
           span0 = element("span");
           t6 = text$1("(");
@@ -15237,14 +16089,14 @@
           append(span2, t12);
           append(span2, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*click_handler*/ctx[19])), listen(button1, "click", prevent_default( /*click_handler_2*/ctx[21]))];
+            dispose = [listen(button0, "click", prevent_default(/*click_handler*/ctx[19])), listen(button1, "click", prevent_default(/*click_handler_2*/ctx[21]))];
             mounted = true;
           }
         },
         p(ctx, dirty) {
           if (dirty & /*currentWeek*/128) set_data(t4, /*currentWeek*/ctx[7]);
-          if (dirty & /*startCursor*/2 && t7_value !== (t7_value = format$2(startOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t7, t7_value);
-          if (dirty & /*startCursor*/2 && t9_value !== (t9_value = format$2(endOfWeek( /*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t9, t9_value);
+          if (dirty & /*startCursor*/2 && t7_value !== (t7_value = format$2(startOfWeek(/*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t7, t7_value);
+          if (dirty & /*startCursor*/2 && t9_value !== (t9_value = format$2(endOfWeek(/*startCursor*/ctx[1], /*localeOptions*/ctx[9]), "iiiiii d.MM.Y", /*localeOptions*/ctx[9]) + "")) set_data(t9, t9_value);
           if (dirty & /*startCursor*/2) show_if = !isSameDay(startOfWeek(startOfToday(), /*localeOptions*/ctx[9]), /*startCursor*/ctx[1]);
           if (show_if) {
             if (if_block) {
@@ -15284,7 +16136,7 @@
         m(target, anchor) {
           insert(target, button, anchor);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[20]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[20]));
             mounted = true;
           }
         },
@@ -15327,9 +16179,9 @@
           if (if_block3) if_block3.c();
           t3 = space$1();
           if (if_block4) if_block4.c();
-          attr(div0, "class", div0_class_value = "hours-per-week ".concat( /*points*/ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"));
+          attr(div0, "class", div0_class_value = "hours-per-week ".concat(/*points*/ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"));
           attr(div1, "class", "graphs");
-          attr(div2, "class", div2_class_value = "".concat( /*loading*/ctx[2] ? "icon-loading" : ""));
+          attr(div2, "class", div2_class_value = "".concat(/*loading*/ctx[2] ? "icon-loading" : ""));
         },
         m(target, anchor) {
           if (if_block0) if_block0.m(target, anchor);
@@ -15346,9 +16198,9 @@
           if (if_block4) if_block4.m(div1, null);
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*controls*/ctx[0]) {
+          if (/*controls*/ctx[0]) {
             if (if_block0) ; else {
               if_block0 = create_if_block_7$2();
               if_block0.c();
@@ -15358,7 +16210,7 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if ( /*controls*/ctx[0]) {
+          if (/*controls*/ctx[0]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
@@ -15382,7 +16234,7 @@
             if_block2.d(1);
             if_block2 = null;
           }
-          if ( /*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0) {
+          if (/*controls*/ctx[0] && ! /*loading*/ctx[2] && /*weekTotal*/ctx[5] === 0) {
             if (if_block3) ; else {
               if_block3 = create_if_block_2$7();
               if_block3.c();
@@ -15392,10 +16244,10 @@
             if_block3.d(1);
             if_block3 = null;
           }
-          if (dirty & /*points*/8 && div0_class_value !== (div0_class_value = "hours-per-week ".concat( /*points*/ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"))) {
+          if (dirty & /*points*/8 && div0_class_value !== (div0_class_value = "hours-per-week ".concat(/*points*/ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"))) {
             attr(div0, "class", div0_class_value);
           }
-          if ( /*controls*/ctx[0]) {
+          if (/*controls*/ctx[0]) {
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
@@ -15407,7 +16259,7 @@
             if_block4.d(1);
             if_block4 = null;
           }
-          if (dirty & /*loading*/4 && div2_class_value !== (div2_class_value = "".concat( /*loading*/ctx[2] ? "icon-loading" : ""))) {
+          if (dirty & /*loading*/4 && div2_class_value !== (div2_class_value = "".concat(/*loading*/ctx[2] ? "icon-loading" : ""))) {
             attr(div2, "class", div2_class_value);
           }
         },
@@ -15461,7 +16313,7 @@
         $$invalidate(6, highest = 0);
         $$invalidate(7, currentWeek = getWeek(startCursor, localeOptions));
       };
-      onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      onMount(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -15474,7 +16326,7 @@
         }, _callee);
       })));
       var loadData = /*#__PURE__*/function () {
-        var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           var durationDays, durationMonths, durationWeeks, durationYears, _yield$loadStats, grouped, js_date_format;
           return _regeneratorRuntime().wrap(function _callee2$(_context2) {
             while (1) switch (_context2.prev = _context2.next) {
@@ -15563,7 +16415,7 @@
         };
       }();
       var loadStats = /*#__PURE__*/function () {
-        var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
           var start, end, statUrl, urlParts, queryString, queryStringParts, stats;
           return _regeneratorRuntime().wrap(function _callee3$(_context3) {
             while (1) switch (_context3.prev = _context3.next) {
@@ -15581,7 +16433,7 @@
                   queryStringParts.forEach(function (part) {
                     // Split query params
                     var partParts = part.split("=");
-                    var _partParts = _slicedToArray(partParts, 2),
+                    var _partParts = _slicedToArray$1(partParts, 2),
                       name = _partParts[0],
                       value = _partParts[1];
 
@@ -15744,8 +16596,8 @@
           t = space$1();
           div1 = element("div");
           if (default_slot) default_slot.c();
-          attr(div0, "class", "oc-dialog-dim");
-          attr(div1, "class", div1_class_value = "oc-dialog ".concat( /*loading*/ctx[0] ? 'icon-loading' : ''));
+          attr(div0, "class", "tm-oc-dialog-dim");
+          attr(div1, "class", div1_class_value = "tm-oc-dialog ".concat(/*loading*/ctx[0] ? 'icon-loading' : ''));
           set_style(div1, "position", "fixed");
         },
         m(target, anchor) {
@@ -15758,14 +16610,14 @@
           current = true;
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (default_slot) {
             if (default_slot.p && (!current || dirty & /*$$scope*/2)) {
-              update_slot_base(default_slot, default_slot_template, ctx, /*$$scope*/ctx[1], !current ? get_all_dirty_from_scope( /*$$scope*/ctx[1]) : get_slot_changes(default_slot_template, /*$$scope*/ctx[1], dirty, null), null);
+              update_slot_base(default_slot, default_slot_template, ctx, /*$$scope*/ctx[1], !current ? get_all_dirty_from_scope(/*$$scope*/ctx[1]) : get_slot_changes(default_slot_template, /*$$scope*/ctx[1], dirty, null), null);
             }
           }
-          if (!current || dirty & /*loading*/1 && div1_class_value !== (div1_class_value = "oc-dialog ".concat( /*loading*/ctx[0] ? 'icon-loading' : ''))) {
+          if (!current || dirty & /*loading*/1 && div1_class_value !== (div1_class_value = "tm-oc-dialog ".concat(/*loading*/ctx[0] ? 'icon-loading' : ''))) {
             attr(div1, "class", div1_class_value);
           }
         },
@@ -15830,7 +16682,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function( /*onCancel*/ctx[3])) /*onCancel*/ctx[3].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[3])) /*onCancel*/ctx[3].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -15882,7 +16734,7 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*clientEditorCaption*/ctx[5]);
+          t0 = text$1(/*clientEditorCaption*/ctx[5]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -15903,7 +16755,7 @@
           t10 = space$1();
           div0 = element("div");
           button = element("button");
-          t11 = text$1( /*clientEditorButtonCaption*/ctx[4]);
+          t11 = text$1(/*clientEditorButtonCaption*/ctx[4]);
           t12 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -15925,7 +16777,7 @@
           input1.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(form, "action", /*action*/ctx[0]);
           attr(form, "method", "post");
           attr(div1, "class", "inner tm_new-item");
@@ -15960,12 +16812,12 @@
           if (if_block) if_block.m(div0, null);
           input0.focus();
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[11]), listen(textarea, "input", /*input_handler*/ctx[12]), listen(form, "submit", prevent_default( /*submit*/ctx[8]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[11]), listen(textarea, "input", /*input_handler*/ctx[12]), listen(form, "submit", prevent_default(/*submit*/ctx[8]))];
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (dirty & /*clientEditorCaption*/32) set_data(t0, /*clientEditorCaption*/ctx[5]);
           if (dirty & /*name*/64 && input0.value !== /*name*/ctx[6]) {
@@ -16173,7 +17025,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*clientEditorButtonCaption*/ctx[2]);
+          t0 = text$1(/*clientEditorButtonCaption*/ctx[2]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -16189,15 +17041,15 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[10]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[10]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (!current || dirty & /*clientEditorButtonCaption*/4) set_data(t0, /*clientEditorButtonCaption*/ctx[2]);
-          if ( /*show*/ctx[6]) {
+          if (/*show*/ctx[6]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*show*/64) {
@@ -16364,7 +17216,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function( /*onCancel*/ctx[4])) /*onCancel*/ctx[4].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[4])) /*onCancel*/ctx[4].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -16419,7 +17271,7 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*projectEditorCaption*/ctx[6]);
+          t0 = text$1(/*projectEditorCaption*/ctx[6]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -16435,7 +17287,7 @@
           br1 = element("br");
           t8 = space$1();
           strong = element("strong");
-          t9 = text$1( /*clientName*/ctx[2]);
+          t9 = text$1(/*clientName*/ctx[2]);
           t10 = space$1();
           br2 = element("br");
           t11 = space$1();
@@ -16443,7 +17295,7 @@
           t12 = space$1();
           div0 = element("div");
           button = element("button");
-          t13 = text$1( /*projectEditorButtonCaption*/ctx[5]);
+          t13 = text$1(/*projectEditorButtonCaption*/ctx[5]);
           t14 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -16460,7 +17312,7 @@
           input1.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(form, "action", /*action*/ctx[0]);
           attr(form, "method", "post");
           attr(div1, "class", "inner tm_new-item");
@@ -16498,12 +17350,12 @@
           if (if_block) if_block.m(div0, null);
           input0.focus();
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[11]), listen(form, "submit", prevent_default( /*submit*/ctx[8]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[11]), listen(form, "submit", prevent_default(/*submit*/ctx[8]))];
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (dirty & /*projectEditorCaption*/64) set_data(t0, /*projectEditorCaption*/ctx[6]);
           if (dirty & /*name*/128 && input0.value !== /*name*/ctx[7]) {
@@ -16711,7 +17563,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*projectEditorButtonCaption*/ctx[4]);
+          t0 = text$1(/*projectEditorButtonCaption*/ctx[4]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -16727,15 +17579,15 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[12]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[12]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (!current || dirty & /*projectEditorButtonCaption*/16) set_data(t0, /*projectEditorButtonCaption*/ctx[4]);
-          if ( /*show*/ctx[8]) {
+          if (/*show*/ctx[8]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*show*/256) {
@@ -16902,7 +17754,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function( /*onCancel*/ctx[5])) /*onCancel*/ctx[5].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[5])) /*onCancel*/ctx[5].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -16966,7 +17818,7 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*taskEditorCaption*/ctx[7]);
+          t0 = text$1(/*taskEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -16982,7 +17834,7 @@
           br1 = element("br");
           t8 = space$1();
           strong0 = element("strong");
-          t9 = text$1( /*projectName*/ctx[3]);
+          t9 = text$1(/*projectName*/ctx[3]);
           t10 = space$1();
           label2 = element("label");
           t11 = text$1(t11_value);
@@ -16990,7 +17842,7 @@
           br2 = element("br");
           t13 = space$1();
           strong1 = element("strong");
-          t14 = text$1( /*clientName*/ctx[2]);
+          t14 = text$1(/*clientName*/ctx[2]);
           t15 = space$1();
           br3 = element("br");
           t16 = space$1();
@@ -16998,7 +17850,7 @@
           t17 = space$1();
           div0 = element("div");
           button = element("button");
-          t18 = text$1( /*taskEditorButtonCaption*/ctx[6]);
+          t18 = text$1(/*taskEditorButtonCaption*/ctx[6]);
           t19 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -17016,7 +17868,7 @@
           input1.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(form, "action", /*action*/ctx[0]);
           attr(form, "method", "post");
           attr(div1, "class", "inner tm_new-item");
@@ -17062,12 +17914,12 @@
           if (if_block) if_block.m(div0, null);
           input0.focus();
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[12]), listen(form, "submit", prevent_default( /*submit*/ctx[9]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[12]), listen(form, "submit", prevent_default(/*submit*/ctx[9]))];
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (dirty & /*taskEditorCaption*/128) set_data(t0, /*taskEditorCaption*/ctx[7]);
           if (dirty & /*name*/256 && input0.value !== /*name*/ctx[8]) {
@@ -17281,7 +18133,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1( /*taskEditorButtonCaption*/ctx[5]);
+          t0 = text$1(/*taskEditorButtonCaption*/ctx[5]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -17297,15 +18149,15 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[13]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[13]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (!current || dirty & /*taskEditorButtonCaption*/32) set_data(t0, /*taskEditorButtonCaption*/ctx[5]);
-          if ( /*show*/ctx[9]) {
+          if (/*show*/ctx[9]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*show*/512) {
@@ -17557,7 +18409,7 @@
     function create_if_block_1$7(ctx) {
       var span;
       function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[17] === InputMethods.decimal) return create_if_block_2$6;
+        if (/*inputMethod*/ctx[17] === InputMethods.decimal) return create_if_block_2$6;
         return create_else_block$6;
       }
       var current_block_type = select_block_type(ctx);
@@ -17709,7 +18561,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function( /*onCancel*/ctx[6])) /*onCancel*/ctx[6].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[6])) /*onCancel*/ctx[6].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -17816,7 +18668,7 @@
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1( /*timeEditorCaption*/ctx[7]);
+          t0 = text$1(/*timeEditorCaption*/ctx[7]);
           t1 = space$1();
           form = element("form");
           span1 = element("span");
@@ -17863,7 +18715,7 @@
           br7 = element("br");
           t24 = space$1();
           strong0 = element("strong");
-          t25 = text$1( /*taskName*/ctx[4]);
+          t25 = text$1(/*taskName*/ctx[4]);
           t26 = space$1();
           label5 = element("label");
           t27 = text$1(t27_value);
@@ -17871,7 +18723,7 @@
           br8 = element("br");
           t29 = space$1();
           strong1 = element("strong");
-          t30 = text$1( /*projectName*/ctx[3]);
+          t30 = text$1(/*projectName*/ctx[3]);
           t31 = space$1();
           label6 = element("label");
           t32 = text$1(t32_value);
@@ -17879,7 +18731,7 @@
           br9 = element("br");
           t34 = space$1();
           strong2 = element("strong");
-          t35 = text$1( /*clientName*/ctx[2]);
+          t35 = text$1(/*clientName*/ctx[2]);
           t36 = space$1();
           br10 = element("br");
           t37 = space$1();
@@ -17887,7 +18739,7 @@
           t38 = space$1();
           div0 = element("div");
           button = element("button");
-          t39 = text$1( /*timeEditorButtonCaption*/ctx[8]);
+          t39 = text$1(/*timeEditorButtonCaption*/ctx[8]);
           t40 = space$1();
           if (if_block1) if_block1.c();
           attr(input0, "type", "time");
@@ -17921,7 +18773,7 @@
           input3.value = /*requestToken*/ctx[1];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(form, "action", /*action*/ctx[0]);
           attr(form, "method", "post");
           attr(div1, "class", "inner tm_new-item");
@@ -18007,7 +18859,7 @@
           append(div0, t40);
           if (if_block1) if_block1.m(div0, null);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[26]), listen(input0, "input", /*input_handler_2*/ctx[27]), listen(input1, "input", /*input1_input_handler*/ctx[28]), listen(input1, "input", /*input_handler_3*/ctx[29]), listen(input2, "input", /*input2_input_handler*/ctx[30]), listen(textarea, "input", /*input_handler_4*/ctx[31]), listen(form, "submit", prevent_default( /*submit*/ctx[18]))];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[26]), listen(input0, "input", /*input_handler_2*/ctx[27]), listen(input1, "input", /*input1_input_handler*/ctx[28]), listen(input1, "input", /*input_handler_3*/ctx[29]), listen(input2, "input", /*input2_input_handler*/ctx[30]), listen(textarea, "input", /*input_handler_4*/ctx[31]), listen(form, "submit", prevent_default(/*submit*/ctx[18]))];
             mounted = true;
           }
         },
@@ -18224,7 +19076,7 @@
         c() {
           div = element("div");
           button = element("button");
-          t = text$1( /*timeEditorButtonCaption*/ctx[6]);
+          t = text$1(/*timeEditorButtonCaption*/ctx[6]);
           attr(button, "type", "button");
           attr(button, "class", "btn");
           attr(div, "class", "tm_inline-hover-form");
@@ -18234,7 +19086,7 @@
           append(div, button);
           append(button, t);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[16]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[16]));
             mounted = true;
           }
         },
@@ -18262,7 +19114,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t = text$1( /*timeEditorButtonCaption*/ctx[6]);
+          t = text$1(/*timeEditorButtonCaption*/ctx[6]);
           attr(a, "href", "#/");
           attr(a, "class", "button primary new");
         },
@@ -18271,7 +19123,7 @@
           append(a, span);
           append(span, t);
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default( /*click_handler*/ctx[15]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[15]));
             mounted = true;
           }
         },
@@ -18420,7 +19272,7 @@
           current = true;
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
             if_block0.p(ctx, dirty);
@@ -18432,7 +19284,7 @@
               if_block0.m(t.parentNode, t);
             }
           }
-          if ( /*show*/ctx[12]) {
+          if (/*show*/ctx[12]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
               if (dirty & /*show*/4096) {
@@ -18661,7 +19513,7 @@
       return {
         c() {
           div1 = element("div");
-          t0 = text$1( /*deleteQuestion*/ctx[3]);
+          t0 = text$1(/*deleteQuestion*/ctx[3]);
           t1 = space$1();
           div0 = element("div");
           button0 = element("button");
@@ -18671,7 +19523,7 @@
           button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(div1, "class", "inner tm_new-item");
         },
         m(target, anchor) {
@@ -18683,7 +19535,7 @@
           append(div0, t3);
           append(div0, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*doDelete*/ctx[7])), listen(button1, "click", prevent_default( /*cancelDelete*/ctx[8]))];
+            dispose = [listen(button0, "click", prevent_default(/*doDelete*/ctx[7])), listen(button1, "click", prevent_default(/*cancelDelete*/ctx[8]))];
             mounted = true;
           }
         },
@@ -18720,7 +19572,7 @@
           input1 = element("input");
           t2 = space$1();
           button = element("button");
-          t3 = text$1( /*deleteButtonCaption*/ctx[2]);
+          t3 = text$1(/*deleteButtonCaption*/ctx[2]);
           attr(input0, "type", "hidden");
           attr(input0, "name", "uuid");
           input0.value = /*deleteUuid*/ctx[1];
@@ -18749,9 +19601,9 @@
           current = true;
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*confirmation*/ctx[6]) {
+          if (/*confirmation*/ctx[6]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*confirmation*/64) {
@@ -18894,7 +19746,7 @@
     }
     function create_fragment$i(ctx) {
       let div;
-      let raw_value = /*getOptionLabel*/ctx[0]( /*item*/ctx[1], /*filterText*/ctx[2]) + "";
+      let raw_value = /*getOptionLabel*/ctx[0](/*item*/ctx[1], /*filterText*/ctx[2]) + "";
       let div_class_value;
       return {
         c() {
@@ -18906,7 +19758,7 @@
           div.innerHTML = raw_value;
         },
         p(ctx, [dirty]) {
-          if (dirty & /*getOptionLabel, item, filterText*/7 && raw_value !== (raw_value = /*getOptionLabel*/ctx[0]( /*item*/ctx[1], /*filterText*/ctx[2]) + "")) div.innerHTML = raw_value;
+          if (dirty & /*getOptionLabel, item, filterText*/7 && raw_value !== (raw_value = /*getOptionLabel*/ctx[0](/*item*/ctx[1], /*filterText*/ctx[2]) + "")) div.innerHTML = raw_value;
           if (dirty & /*itemClasses*/8 && div_class_value !== (div_class_value = "item " + /*itemClasses*/ctx[3] + " svelte-3e0qet")) {
             attr(div, "class", div_class_value);
           }
@@ -19009,7 +19861,7 @@
     function create_else_block$4(ctx) {
       let each_1_anchor;
       let current;
-      let each_value = ensure_array_like( /*items*/ctx[1]);
+      let each_value = ensure_array_like(/*items*/ctx[1]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$7(get_each_context$7(ctx, each_value, i));
@@ -19045,7 +19897,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*getGroupHeaderLabel, items, handleHover, handleClick, Item, filterText, getOptionLabel, value, optionIdentifier, hoverItemIndex, noOptionsMessage, hideEmptyState*/114390) {
-            each_value = ensure_array_like( /*items*/ctx[1]);
+            each_value = ensure_array_like(/*items*/ctx[1]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$7(ctx, each_value, i);
@@ -19234,7 +20086,7 @@
       return {
         c() {
           div = element("div");
-          t = text$1( /*noOptionsMessage*/ctx[12]);
+          t = text$1(/*noOptionsMessage*/ctx[12]);
           attr(div, "class", "empty svelte-1uyqfml");
         },
         m(target, anchor) {
@@ -19267,10 +20119,10 @@
             item: /*item*/ctx[41],
             filterText: /*filterText*/ctx[13],
             getOptionLabel: /*getOptionLabel*/ctx[6],
-            isFirst: isItemFirst( /*i*/ctx[42]),
-            isActive: isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]),
-            isHover: isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]),
-            isSelectable: isItemSelectable( /*item*/ctx[41])
+            isFirst: isItemFirst(/*i*/ctx[42]),
+            isActive: isItemActive(/*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]),
+            isHover: isItemHover(/*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]),
+            isSelectable: isItemSelectable(/*item*/ctx[41])
           }
         };
       }
@@ -19278,16 +20130,13 @@
         switch_instance = construct_svelte_component(switch_value, switch_props(ctx));
       }
       function mouseover_handler_1() {
-        return (/*mouseover_handler_1*/ctx[29]( /*i*/ctx[42])
-        );
+        return /*mouseover_handler_1*/ctx[29](/*i*/ctx[42]);
       }
       function focus_handler_1() {
-        return (/*focus_handler_1*/ctx[30]( /*i*/ctx[42])
-        );
+        return /*focus_handler_1*/ctx[30](/*i*/ctx[42]);
       }
       function click_handler_1(...args) {
-        return (/*click_handler_1*/ctx[31]( /*item*/ctx[41], /*i*/ctx[42], ...args)
-        );
+        return /*click_handler_1*/ctx[31](/*item*/ctx[41], /*i*/ctx[42], ...args);
       }
       return {
         c() {
@@ -19331,9 +20180,9 @@
             if (dirty[0] & /*items*/2) switch_instance_changes.item = /*item*/ctx[41];
             if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
             if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
-            if (dirty[0] & /*items, value, optionIdentifier*/1538) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
-            if (dirty[0] & /*hoverItemIndex, items*/6) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
-            if (dirty[0] & /*items*/2) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
+            if (dirty[0] & /*items, value, optionIdentifier*/1538) switch_instance_changes.isActive = isItemActive(/*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
+            if (dirty[0] & /*hoverItemIndex, items*/6) switch_instance_changes.isHover = isItemHover(/*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
+            if (dirty[0] & /*items*/2) switch_instance_changes.isSelectable = isItemSelectable(/*item*/ctx[41]);
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -19360,7 +20209,7 @@
     // (311:12) {#if item.isGroupHeader && !item.isSelectable}
     function create_if_block_1$5(ctx) {
       let div;
-      let t_value = /*getGroupHeaderLabel*/ctx[7]( /*item*/ctx[41]) + "";
+      let t_value = /*getGroupHeaderLabel*/ctx[7](/*item*/ctx[41]) + "";
       let t;
       return {
         c() {
@@ -19373,7 +20222,7 @@
           append(div, t);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*getGroupHeaderLabel, items*/130 && t_value !== (t_value = /*getGroupHeaderLabel*/ctx[7]( /*item*/ctx[41]) + "")) set_data(t, t_value);
+          if (dirty[0] & /*getGroupHeaderLabel, items*/130 && t_value !== (t_value = /*getGroupHeaderLabel*/ctx[7](/*item*/ctx[41]) + "")) set_data(t, t_value);
         },
         i: noop$1,
         o: noop$1,
@@ -19394,7 +20243,7 @@
       const if_block_creators = [create_if_block_1$5, create_else_block_1$1];
       const if_blocks = [];
       function select_block_type_1(ctx, dirty) {
-        if ( /*item*/ctx[41].isGroupHeader && ! /*item*/ctx[41].isSelectable) return 0;
+        if (/*item*/ctx[41].isGroupHeader && ! /*item*/ctx[41].isSelectable) return 0;
         return 1;
       }
       current_block_type_index = select_block_type_1(ctx);
@@ -19463,10 +20312,10 @@
             item: /*item*/ctx[41],
             filterText: /*filterText*/ctx[13],
             getOptionLabel: /*getOptionLabel*/ctx[6],
-            isFirst: isItemFirst( /*i*/ctx[42]),
-            isActive: isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]),
-            isHover: isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]),
-            isSelectable: isItemSelectable( /*item*/ctx[41])
+            isFirst: isItemFirst(/*i*/ctx[42]),
+            isActive: isItemActive(/*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]),
+            isHover: isItemHover(/*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]),
+            isSelectable: isItemSelectable(/*item*/ctx[41])
           }
         };
       }
@@ -19474,16 +20323,13 @@
         switch_instance = construct_svelte_component(switch_value, switch_props(ctx));
       }
       function mouseover_handler() {
-        return (/*mouseover_handler*/ctx[26]( /*i*/ctx[42])
-        );
+        return /*mouseover_handler*/ctx[26](/*i*/ctx[42]);
       }
       function focus_handler() {
-        return (/*focus_handler*/ctx[27]( /*i*/ctx[42])
-        );
+        return /*focus_handler*/ctx[27](/*i*/ctx[42]);
       }
       function click_handler(...args) {
-        return (/*click_handler*/ctx[28]( /*item*/ctx[41], /*i*/ctx[42], ...args)
-        );
+        return /*click_handler*/ctx[28](/*item*/ctx[41], /*i*/ctx[42], ...args);
       }
       return {
         c() {
@@ -19524,10 +20370,10 @@
             if (dirty[1] & /*item*/1024) switch_instance_changes.item = /*item*/ctx[41];
             if (dirty[0] & /*filterText*/8192) switch_instance_changes.filterText = /*filterText*/ctx[13];
             if (dirty[0] & /*getOptionLabel*/64) switch_instance_changes.getOptionLabel = /*getOptionLabel*/ctx[6];
-            if (dirty[1] & /*i*/2048) switch_instance_changes.isFirst = isItemFirst( /*i*/ctx[42]);
-            if (dirty[0] & /*value, optionIdentifier*/1536 | dirty[1] & /*item*/1024) switch_instance_changes.isActive = isItemActive( /*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
-            if (dirty[0] & /*hoverItemIndex, items*/6 | dirty[1] & /*item, i*/3072) switch_instance_changes.isHover = isItemHover( /*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
-            if (dirty[1] & /*item*/1024) switch_instance_changes.isSelectable = isItemSelectable( /*item*/ctx[41]);
+            if (dirty[1] & /*i*/2048) switch_instance_changes.isFirst = isItemFirst(/*i*/ctx[42]);
+            if (dirty[0] & /*value, optionIdentifier*/1536 | dirty[1] & /*item*/1024) switch_instance_changes.isActive = isItemActive(/*item*/ctx[41], /*value*/ctx[9], /*optionIdentifier*/ctx[10]);
+            if (dirty[0] & /*hoverItemIndex, items*/6 | dirty[1] & /*item, i*/3072) switch_instance_changes.isHover = isItemHover(/*hoverItemIndex*/ctx[2], /*item*/ctx[41], /*i*/ctx[42], /*items*/ctx[1]);
+            if (dirty[1] & /*item*/1024) switch_instance_changes.isSelectable = isItemSelectable(/*item*/ctx[41]);
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -19560,7 +20406,7 @@
       const if_block_creators = [create_if_block$a, create_else_block$4];
       const if_blocks = [];
       function select_block_type(ctx, dirty) {
-        if ( /*isVirtualList*/ctx[5]) return 0;
+        if (/*isVirtualList*/ctx[5]) return 0;
         return 1;
       }
       current_block_type_index = select_block_type(ctx);
@@ -19645,7 +20491,6 @@
     function isItemSelectable(item) {
       return item.isGroupHeader && item.isSelectable || item.selectable || !item.hasOwnProperty('selectable'); // Default; if `selectable` was not specified, the object is selectable
     }
-
     function instance$g($$self, $$props, $$invalidate) {
       const dispatch = createEventDispatcher();
       let {
@@ -19930,7 +20775,7 @@
     }
     function create_fragment$g(ctx) {
       let div;
-      let raw_value = /*getSelectionLabel*/ctx[0]( /*item*/ctx[1]) + "";
+      let raw_value = /*getSelectionLabel*/ctx[0](/*item*/ctx[1]) + "";
       return {
         c() {
           div = element("div");
@@ -19941,7 +20786,7 @@
           div.innerHTML = raw_value;
         },
         p(ctx, [dirty]) {
-          if (dirty & /*getSelectionLabel, item*/3 && raw_value !== (raw_value = /*getSelectionLabel*/ctx[0]( /*item*/ctx[1]) + "")) div.innerHTML = raw_value;
+          if (dirty & /*getSelectionLabel, item*/3 && raw_value !== (raw_value = /*getSelectionLabel*/ctx[0](/*item*/ctx[1]) + "")) div.innerHTML = raw_value;
         },
         i: noop$1,
         o: noop$1,
@@ -19991,8 +20836,7 @@
       let mounted;
       let dispose;
       function click_handler(...args) {
-        return (/*click_handler*/ctx[6]( /*i*/ctx[11], ...args)
-        );
+        return /*click_handler*/ctx[6](/*i*/ctx[11], ...args);
       }
       return {
         c() {
@@ -20024,7 +20868,7 @@
     function create_each_block$6(ctx) {
       let div1;
       let div0;
-      let raw_value = /*getSelectionLabel*/ctx[4]( /*item*/ctx[9]) + "";
+      let raw_value = /*getSelectionLabel*/ctx[4](/*item*/ctx[9]) + "";
       let t0;
       let t1;
       let div1_class_value;
@@ -20032,8 +20876,7 @@
       let dispose;
       let if_block = ! /*isDisabled*/ctx[2] && ! /*multiFullItemClearable*/ctx[3] && create_if_block$9(ctx);
       function click_handler_1(...args) {
-        return (/*click_handler_1*/ctx[7]( /*i*/ctx[11], ...args)
-        );
+        return /*click_handler_1*/ctx[7](/*i*/ctx[11], ...args);
       }
       return {
         c() {
@@ -20043,7 +20886,7 @@
           if (if_block) if_block.c();
           t1 = space$1();
           attr(div0, "class", "multiSelectItem_label svelte-liu9pa");
-          attr(div1, "class", div1_class_value = "multiSelectItem " + ( /*activeValue*/ctx[1] === /*i*/ctx[11] ? 'active' : '') + " " + ( /*isDisabled*/ctx[2] ? 'disabled' : '') + " svelte-liu9pa");
+          attr(div1, "class", div1_class_value = "multiSelectItem " + (/*activeValue*/ctx[1] === /*i*/ctx[11] ? 'active' : '') + " " + (/*isDisabled*/ctx[2] ? 'disabled' : '') + " svelte-liu9pa");
         },
         m(target, anchor) {
           insert(target, div1, anchor);
@@ -20059,7 +20902,7 @@
         },
         p(new_ctx, dirty) {
           ctx = new_ctx;
-          if (dirty & /*getSelectionLabel, value*/17 && raw_value !== (raw_value = /*getSelectionLabel*/ctx[4]( /*item*/ctx[9]) + "")) div0.innerHTML = raw_value;
+          if (dirty & /*getSelectionLabel, value*/17 && raw_value !== (raw_value = /*getSelectionLabel*/ctx[4](/*item*/ctx[9]) + "")) div0.innerHTML = raw_value;
           if (! /*isDisabled*/ctx[2] && ! /*multiFullItemClearable*/ctx[3]) {
             if (if_block) {
               if_block.p(ctx, dirty);
@@ -20072,7 +20915,7 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*activeValue, isDisabled*/6 && div1_class_value !== (div1_class_value = "multiSelectItem " + ( /*activeValue*/ctx[1] === /*i*/ctx[11] ? 'active' : '') + " " + ( /*isDisabled*/ctx[2] ? 'disabled' : '') + " svelte-liu9pa")) {
+          if (dirty & /*activeValue, isDisabled*/6 && div1_class_value !== (div1_class_value = "multiSelectItem " + (/*activeValue*/ctx[1] === /*i*/ctx[11] ? 'active' : '') + " " + (/*isDisabled*/ctx[2] ? 'disabled' : '') + " svelte-liu9pa")) {
             attr(div1, "class", div1_class_value);
           }
         },
@@ -20088,7 +20931,7 @@
     }
     function create_fragment$f(ctx) {
       let each_1_anchor;
-      let each_value = ensure_array_like( /*value*/ctx[0]);
+      let each_value = ensure_array_like(/*value*/ctx[0]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$6(get_each_context$6(ctx, each_value, i));
@@ -20110,7 +20953,7 @@
         },
         p(ctx, [dirty]) {
           if (dirty & /*activeValue, isDisabled, multiFullItemClearable, handleClear, getSelectionLabel, value*/63) {
-            each_value = ensure_array_like( /*value*/ctx[0]);
+            each_value = ensure_array_like(/*value*/ctx[0]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$6(ctx, each_value, i);
@@ -20252,7 +21095,7 @@
           ctx = new_ctx;
           if (default_slot) {
             if (default_slot.p && (!current || dirty & /*$$scope, visible, hoverItemIndex*/16418)) {
-              update_slot_base(default_slot, default_slot_template, ctx, /*$$scope*/ctx[14], !current ? get_all_dirty_from_scope( /*$$scope*/ctx[14]) : get_slot_changes(default_slot_template, /*$$scope*/ctx[14], dirty, get_default_slot_changes), get_default_slot_context);
+              update_slot_base(default_slot, default_slot_template, ctx, /*$$scope*/ctx[14], !current ? get_all_dirty_from_scope(/*$$scope*/ctx[14]) : get_slot_changes(default_slot_template, /*$$scope*/ctx[14], dirty, get_default_slot_changes), get_default_slot_context);
             }
           }
         },
@@ -20282,7 +21125,7 @@
       let current;
       let mounted;
       let dispose;
-      let each_value = ensure_array_like( /*visible*/ctx[5]);
+      let each_value = ensure_array_like(/*visible*/ctx[5]);
       const get_key = ctx => /*row*/ctx[23].index;
       for (let i = 0; i < each_value.length; i += 1) {
         let child_ctx = get_each_context$5(ctx, each_value, i);
@@ -20325,7 +21168,7 @@
         },
         p(ctx, [dirty]) {
           if (dirty & /*$$scope, visible, hoverItemIndex*/16418) {
-            each_value = ensure_array_like( /*visible*/ctx[5]);
+            each_value = ensure_array_like(/*visible*/ctx[5]);
             group_outros();
             each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, svelte_virtual_list_contents, outro_and_destroy_block, create_each_block$5, null, get_each_context$5);
             check_outros();
@@ -20601,10 +21444,10 @@
       return {
         c() {
           span0 = element("span");
-          t0 = text$1( /*ariaSelection*/ctx[33]);
+          t0 = text$1(/*ariaSelection*/ctx[33]);
           t1 = space$1();
           span1 = element("span");
-          t2 = text$1( /*ariaContext*/ctx[32]);
+          t2 = text$1(/*ariaContext*/ctx[32]);
           attr(span0, "id", "aria-selection");
           attr(span1, "id", "aria-context");
         },
@@ -20642,7 +21485,7 @@
           switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
         }
         if (dirty !== undefined && dirty[0] & /*iconProps*/262144) {
-          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object( /*iconProps*/ctx[18])]));
+          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object(/*iconProps*/ctx[18])]));
         }
         return {
           props: switch_instance_props
@@ -20680,7 +21523,7 @@
               switch_instance = null;
             }
           } else if (switch_value) {
-            const switch_instance_changes = dirty[0] & /*iconProps*/262144 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*iconProps*/ctx[18])]) : {};
+            const switch_instance_changes = dirty[0] & /*iconProps*/262144 ? get_spread_update(switch_instance_spread_levels, [get_spread_object(/*iconProps*/ctx[18])]) : {};
             switch_instance.$set(switch_instance_changes);
           }
         },
@@ -20887,7 +21730,7 @@
           if (switch_instance) mount_component(switch_instance, div, null);
           current = true;
           if (!mounted) {
-            dispose = listen(div, "click", prevent_default( /*handleClear*/ctx[27]));
+            dispose = listen(div, "click", prevent_default(/*handleClear*/ctx[27]));
             mounted = true;
           }
         },
@@ -20935,7 +21778,7 @@
     function create_if_block_4$2(ctx) {
       let div;
       function select_block_type(ctx, dirty) {
-        if ( /*indicatorSvg*/ctx[22]) return create_if_block_5$2;
+        if (/*indicatorSvg*/ctx[22]) return create_if_block_5$2;
         return create_else_block$3;
       }
       let current_block_type = select_block_type(ctx);
@@ -21012,11 +21855,11 @@
           html_tag.a = html_anchor;
         },
         m(target, anchor) {
-          html_tag.m( /*indicatorSvg*/ctx[22], target, anchor);
+          html_tag.m(/*indicatorSvg*/ctx[22], target, anchor);
           insert(target, html_anchor, anchor);
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*indicatorSvg*/4194304) html_tag.p( /*indicatorSvg*/ctx[22]);
+          if (dirty[0] & /*indicatorSvg*/4194304) html_tag.p(/*indicatorSvg*/ctx[22]);
         },
         d(detaching) {
           if (detaching) {
@@ -21064,9 +21907,9 @@
           switch_instance_props = assign$1(switch_instance_props, switch_instance_spread_levels[i]);
         }
         if (dirty !== undefined && dirty[1] & /*listProps*/8) {
-          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object( /*listProps*/ctx[34])]));
+          switch_instance_props = assign$1(switch_instance_props, get_spread_update(switch_instance_spread_levels, [get_spread_object(/*listProps*/ctx[34])]));
         }
-        if ( /*hoverItemIndex*/ctx[28] !== void 0) {
+        if (/*hoverItemIndex*/ctx[28] !== void 0) {
           switch_instance_props.hoverItemIndex = /*hoverItemIndex*/ctx[28];
         }
         return {
@@ -21113,7 +21956,7 @@
               switch_instance = null;
             }
           } else if (switch_value) {
-            const switch_instance_changes = dirty[1] & /*listProps*/8 ? get_spread_update(switch_instance_spread_levels, [get_spread_object( /*listProps*/ctx[34])]) : {};
+            const switch_instance_changes = dirty[1] & /*listProps*/8 ? get_spread_update(switch_instance_spread_levels, [get_spread_object(/*listProps*/ctx[34])]) : {};
             if (!updating_hoverItemIndex && dirty[0] & /*hoverItemIndex*/268435456) {
               updating_hoverItemIndex = true;
               switch_instance_changes.hoverItemIndex = /*hoverItemIndex*/ctx[28];
@@ -21150,7 +21993,7 @@
           input_1 = element("input");
           attr(input_1, "name", input_1_name_value = /*inputAttributes*/ctx[16].name);
           attr(input_1, "type", "hidden");
-          input_1.value = input_1_value_value = /*value*/ctx[2] ? /*getSelectionLabel*/ctx[12]( /*value*/ctx[2]) : null;
+          input_1.value = input_1_value_value = /*value*/ctx[2] ? /*getSelectionLabel*/ctx[12](/*value*/ctx[2]) : null;
           attr(input_1, "class", "svelte-17l1npl");
         },
         m(target, anchor) {
@@ -21160,7 +22003,7 @@
           if (dirty[0] & /*inputAttributes*/65536 && input_1_name_value !== (input_1_name_value = /*inputAttributes*/ctx[16].name)) {
             attr(input_1, "name", input_1_name_value);
           }
-          if (dirty[0] & /*value, getSelectionLabel*/4100 && input_1_value_value !== (input_1_value_value = /*value*/ctx[2] ? /*getSelectionLabel*/ctx[12]( /*value*/ctx[2]) : null)) {
+          if (dirty[0] & /*value, getSelectionLabel*/4100 && input_1_value_value !== (input_1_value_value = /*value*/ctx[2] ? /*getSelectionLabel*/ctx[12](/*value*/ctx[2]) : null)) {
             input_1.value = input_1_value_value;
           }
         },
@@ -21175,7 +22018,7 @@
     // (983:4) {#if isMulti && showMultiSelect}
     function create_if_block$8(ctx) {
       let each_1_anchor;
-      let each_value = ensure_array_like( /*value*/ctx[2]);
+      let each_value = ensure_array_like(/*value*/ctx[2]);
       let each_blocks = [];
       for (let i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$4(get_each_context$4(ctx, each_value, i));
@@ -21197,7 +22040,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*inputAttributes, value, getSelectionLabel*/69636) {
-            each_value = ensure_array_like( /*value*/ctx[2]);
+            each_value = ensure_array_like(/*value*/ctx[2]);
             let i;
             for (i = 0; i < each_value.length; i += 1) {
               const child_ctx = get_each_context$4(ctx, each_value, i);
@@ -21234,7 +22077,7 @@
           input_1 = element("input");
           attr(input_1, "name", input_1_name_value = /*inputAttributes*/ctx[16].name);
           attr(input_1, "type", "hidden");
-          input_1.value = input_1_value_value = /*item*/ctx[103] ? /*getSelectionLabel*/ctx[12]( /*item*/ctx[103]) : null;
+          input_1.value = input_1_value_value = /*item*/ctx[103] ? /*getSelectionLabel*/ctx[12](/*item*/ctx[103]) : null;
           attr(input_1, "class", "svelte-17l1npl");
         },
         m(target, anchor) {
@@ -21244,7 +22087,7 @@
           if (dirty[0] & /*inputAttributes*/65536 && input_1_name_value !== (input_1_name_value = /*inputAttributes*/ctx[16].name)) {
             attr(input_1, "name", input_1_name_value);
           }
-          if (dirty[0] & /*value, getSelectionLabel*/4100 && input_1_value_value !== (input_1_value_value = /*item*/ctx[103] ? /*getSelectionLabel*/ctx[12]( /*item*/ctx[103]) : null)) {
+          if (dirty[0] & /*value, getSelectionLabel*/4100 && input_1_value_value !== (input_1_value_value = /*item*/ctx[103] ? /*getSelectionLabel*/ctx[12](/*item*/ctx[103]) : null)) {
             input_1.value = input_1_value_value;
           }
         },
@@ -21292,7 +22135,7 @@
       }
       let if_block3 = ! /*isMulti*/ctx[7] && /*showSelectedItem*/ctx[29] && create_if_block_7$1(ctx);
       let if_block4 = /*showClearIcon*/ctx[37] && create_if_block_6$2(ctx);
-      let if_block5 = ! /*showClearIcon*/ctx[37] && ( /*showIndicator*/ctx[20] || /*showChevron*/ctx[19] && ! /*value*/ctx[2] || ! /*isSearchable*/ctx[13] && ! /*isDisabled*/ctx[9] && ! /*isWaiting*/ctx[4] && ( /*showSelectedItem*/ctx[29] && ! /*isClearable*/ctx[15] || ! /*showSelectedItem*/ctx[29])) && create_if_block_4$2(ctx);
+      let if_block5 = ! /*showClearIcon*/ctx[37] && (/*showIndicator*/ctx[20] || /*showChevron*/ctx[19] && ! /*value*/ctx[2] || ! /*isSearchable*/ctx[13] && ! /*isDisabled*/ctx[9] && ! /*isWaiting*/ctx[4] && (/*showSelectedItem*/ctx[29] && ! /*isClearable*/ctx[15] || ! /*showSelectedItem*/ctx[29])) && create_if_block_4$2(ctx);
       let if_block6 = /*isWaiting*/ctx[4] && create_if_block_3$2();
       let if_block7 = /*listOpen*/ctx[5] && create_if_block_2$4(ctx);
       let if_block8 = (! /*isMulti*/ctx[7] || /*isMulti*/ctx[7] && ! /*showMultiSelect*/ctx[35]) && create_if_block_1$4(ctx);
@@ -21372,7 +22215,7 @@
           }
         },
         p(ctx, dirty) {
-          if ( /*isFocused*/ctx[1]) {
+          if (/*isFocused*/ctx[1]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -21384,7 +22227,7 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if ( /*Icon*/ctx[17]) {
+          if (/*Icon*/ctx[17]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
               if (dirty[0] & /*Icon*/131072) {
@@ -21403,7 +22246,7 @@
             });
             check_outros();
           }
-          if ( /*showMultiSelect*/ctx[35]) {
+          if (/*showMultiSelect*/ctx[35]) {
             if (if_block2) {
               if_block2.p(ctx, dirty);
               if (dirty[1] & /*showMultiSelect*/16) {
@@ -21454,7 +22297,7 @@
             });
             check_outros();
           }
-          if ( /*showClearIcon*/ctx[37]) {
+          if (/*showClearIcon*/ctx[37]) {
             if (if_block4) {
               if_block4.p(ctx, dirty);
               if (dirty[1] & /*showClearIcon*/64) {
@@ -21473,7 +22316,7 @@
             });
             check_outros();
           }
-          if (! /*showClearIcon*/ctx[37] && ( /*showIndicator*/ctx[20] || /*showChevron*/ctx[19] && ! /*value*/ctx[2] || ! /*isSearchable*/ctx[13] && ! /*isDisabled*/ctx[9] && ! /*isWaiting*/ctx[4] && ( /*showSelectedItem*/ctx[29] && ! /*isClearable*/ctx[15] || ! /*showSelectedItem*/ctx[29]))) {
+          if (! /*showClearIcon*/ctx[37] && (/*showIndicator*/ctx[20] || /*showChevron*/ctx[19] && ! /*value*/ctx[2] || ! /*isSearchable*/ctx[13] && ! /*isDisabled*/ctx[9] && ! /*isWaiting*/ctx[4] && (/*showSelectedItem*/ctx[29] && ! /*isClearable*/ctx[15] || ! /*showSelectedItem*/ctx[29]))) {
             if (if_block5) {
               if_block5.p(ctx, dirty);
             } else {
@@ -21485,7 +22328,7 @@
             if_block5.d(1);
             if_block5 = null;
           }
-          if ( /*isWaiting*/ctx[4]) {
+          if (/*isWaiting*/ctx[4]) {
             if (if_block6) ; else {
               if_block6 = create_if_block_3$2();
               if_block6.c();
@@ -21495,7 +22338,7 @@
             if_block6.d(1);
             if_block6 = null;
           }
-          if ( /*listOpen*/ctx[5]) {
+          if (/*listOpen*/ctx[5]) {
             if (if_block7) {
               if_block7.p(ctx, dirty);
               if (dirty[0] & /*listOpen*/32) {
@@ -21526,7 +22369,7 @@
             if_block8.d(1);
             if_block8 = null;
           }
-          if ( /*isMulti*/ctx[7] && /*showMultiSelect*/ctx[35]) {
+          if (/*isMulti*/ctx[7] && /*showMultiSelect*/ctx[35]) {
             if (if_block9) {
               if_block9.p(ctx, dirty);
             } else {
@@ -22732,18 +23575,18 @@
       return {
         c() {
           img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) attr(img, "src", img_src_value);
-          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
         },
         m(target, anchor) {
           insert(target, img, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")))) {
+          if (dirty & /*sharees*/4 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) {
+          if (dirty & /*sharees*/4 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharee*/ctx[16].recipient_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
         },
@@ -22784,7 +23627,7 @@
       var figure;
       var t0;
       var figcaption;
-      var t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "";
+      var t1_value = (/*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "";
       var t1;
       var t2;
       var form_1;
@@ -22798,7 +23641,7 @@
       var button;
       var t7;
       function select_block_type(ctx, dirty) {
-        if ( /*sharee*/ctx[16].recipient_type === "group") return create_if_block_1$3;
+        if (/*sharee*/ctx[16].recipient_type === "group") return create_if_block_1$3;
         return create_else_block$2;
       }
       var current_block_type = select_block_type(ctx);
@@ -22867,7 +23710,7 @@
               if_block.m(figure, t0);
             }
           }
-          if (dirty & /*sharees*/4 && t1_value !== (t1_value = ( /*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "")) set_data(t1, t1_value);
+          if (dirty & /*sharees*/4 && t1_value !== (t1_value = (/*sharee*/ctx[16].recipient_display_name || /*sharee*/ctx[16].recipient_id) + "")) set_data(t1, t1_value);
           if (dirty & /*clientUuid*/8) {
             input0.value = /*clientUuid*/ctx[3];
           }
@@ -22932,7 +23775,7 @@
       });
       select.$on("select", /*handleSelectSharee*/ctx[12]);
       var if_block = (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) && create_if_block_2$3();
-      var each_value = ensure_array_like( /*sharees*/ctx[2]);
+      var each_value = ensure_array_like(/*sharees*/ctx[2]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
@@ -22978,7 +23821,7 @@
           attr(div0, "class", "sharee-list");
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
-          attr(div1, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div1, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(div2, "class", "inner tm_new-item sharing-dialog");
         },
         m(target, anchor) {
@@ -23013,7 +23856,7 @@
           append(div1, button1);
           current = true;
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*addShare*/ctx[9])), listen(button1, "click", prevent_default( /*closeDialog*/ctx[11]))];
+            dispose = [listen(button0, "click", prevent_default(/*addShare*/ctx[9])), listen(button1, "click", prevent_default(/*closeDialog*/ctx[11]))];
             mounted = true;
           }
         },
@@ -23033,7 +23876,7 @@
             if_block = null;
           }
           if (dirty & /*deleteShareAction, requestToken, sharees, clientUuid*/30) {
-            each_value = ensure_array_like( /*sharees*/ctx[2]);
+            each_value = ensure_array_like(/*sharees*/ctx[2]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$3(ctx, each_value, _i3);
@@ -23140,9 +23983,9 @@
           current = true;
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*dialogVisible*/ctx[7]) {
+          if (/*dialogVisible*/ctx[7]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*dialogVisible*/128) {
@@ -23225,7 +24068,7 @@
         form.submit();
       };
       var search = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
+        var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
           var response, _yield$response$json$, users, exact, groups, existing_users, existing_groups, adjustGroupLabel, result;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -23345,7 +24188,7 @@
       var span;
       var t1;
       var ul;
-      var each_value = ensure_array_like( /*sharees*/ctx[0]);
+      var each_value = ensure_array_like(/*sharees*/ctx[0]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
@@ -23374,7 +24217,7 @@
         },
         p(ctx, dirty) {
           if (dirty & /*sharees*/1) {
-            each_value = ensure_array_like( /*sharees*/ctx[0]);
+            each_value = ensure_array_like(/*sharees*/ctx[0]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
               var child_ctx = get_each_context$2(ctx, each_value, _i3);
@@ -23411,18 +24254,18 @@
       return {
         c() {
           img = element("img");
-          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) attr(img, "src", img_src_value);
-          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
         },
         m(target, anchor) {
           insert(target, img, anchor);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")))) {
+          if (dirty & /*sharees*/1 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) {
+          if (dirty & /*sharees*/1 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharee*/ctx[2].recipient_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
         },
@@ -23461,11 +24304,11 @@
     function create_each_block$2(ctx) {
       var li;
       var t0;
-      var t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "";
+      var t1_value = (/*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "";
       var t1;
       var t2;
       function select_block_type(ctx, dirty) {
-        if ( /*sharee*/ctx[2].recipient_type === "group") return create_if_block_2$2;
+        if (/*sharee*/ctx[2].recipient_type === "group") return create_if_block_2$2;
         return create_else_block$1;
       }
       var current_block_type = select_block_type(ctx);
@@ -23496,7 +24339,7 @@
               if_block.m(li, t0);
             }
           }
-          if (dirty & /*sharees*/1 && t1_value !== (t1_value = ( /*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "")) set_data(t1, t1_value);
+          if (dirty & /*sharees*/1 && t1_value !== (t1_value = (/*sharee*/ctx[2].recipient_display_name || /*sharee*/ctx[2].recipient_id) + "")) set_data(t1, t1_value);
         },
         d(detaching) {
           if (detaching) {
@@ -23517,7 +24360,7 @@
       var img_src_value;
       var img_srcset_value;
       var t2;
-      var t3_value = ( /*sharedBy*/ctx[1].author_display_name || /*sharedBy*/ctx[1].author_user_id) + "";
+      var t3_value = (/*sharedBy*/ctx[1].author_display_name || /*sharedBy*/ctx[1].author_user_id) + "";
       var t3;
       return {
         c() {
@@ -23530,8 +24373,8 @@
           t2 = space$1();
           t3 = text$1(t3_value);
           attr(span, "class", "tm_label");
-          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
-          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
+          if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
+          if (!srcset_url_equal(img, img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) attr(img, "srcset", img_srcset_value);
           attr(img, "alt", "");
           attr(ul, "class", "existing-sharees");
         },
@@ -23545,13 +24388,13 @@
           append(li, t3);
         },
         p(ctx, dirty) {
-          if (dirty & /*sharedBy*/2 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")))) {
+          if (dirty & /*sharedBy*/2 && !src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/32")))) {
             attr(img, "src", img_src_value);
           }
-          if (dirty & /*sharedBy*/2 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat( /*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) {
+          if (dirty & /*sharedBy*/2 && img_srcset_value !== (img_srcset_value = "".concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/32")), " 1x, ").concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/64")), " 2x,\n\t\t\t\t\t").concat(dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/128")), " 4x"))) {
             attr(img, "srcset", img_srcset_value);
           }
-          if (dirty & /*sharedBy*/2 && t3_value !== (t3_value = ( /*sharedBy*/ctx[1].author_display_name || /*sharedBy*/ctx[1].author_user_id) + "")) set_data(t3, t3_value);
+          if (dirty & /*sharedBy*/2 && t3_value !== (t3_value = (/*sharedBy*/ctx[1].author_display_name || /*sharedBy*/ctx[1].author_user_id) + "")) set_data(t3, t3_value);
         },
         d(detaching) {
           if (detaching) {
@@ -23581,9 +24424,9 @@
           insert(target, if_block1_anchor, anchor);
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*sharees*/ctx[0] && /*sharees*/ctx[0].length) {
+          if (/*sharees*/ctx[0] && /*sharees*/ctx[0].length) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -23595,7 +24438,7 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if ( /*sharedBy*/ctx[1]) {
+          if (/*sharedBy*/ctx[1]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
@@ -23719,7 +24562,7 @@
           button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
           attr(button1, "class", "button");
-          attr(div0, "class", "oc-dialog-buttonrow twobuttons reverse");
+          attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
           attr(div1, "class", "inner tm_new-item");
         },
         m(target, anchor) {
@@ -23731,7 +24574,7 @@
           append(div0, t3);
           append(div0, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*doDelete*/ctx[5])), listen(button1, "click", prevent_default( /*cancelDelete*/ctx[6]))];
+            dispose = [listen(button0, "click", prevent_default(/*doDelete*/ctx[5])), listen(button1, "click", prevent_default(/*cancelDelete*/ctx[6]))];
             mounted = true;
           }
         },
@@ -23798,9 +24641,9 @@
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*confirmation*/ctx[3]) {
+          if (/*confirmation*/ctx[3]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*confirmation*/8) {
@@ -23862,7 +24705,7 @@
         $$invalidate(3, confirmation = true);
       };
       var doDelete = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var _element, response;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -24262,7 +25105,7 @@
 
     // and applies them to the HTMLElements such as popper and arrow
 
-    function applyStyles$1(_ref) {
+    function applyStyles(_ref) {
       var state = _ref.state;
       Object.keys(state.elements).forEach(function (name) {
         var style = state.styles[name] || {};
@@ -24327,11 +25170,11 @@
       };
     } // eslint-disable-next-line import/no-unused-modules
 
-    var applyStyles = {
+    var applyStyles$1 = {
       name: 'applyStyles',
       enabled: true,
       phase: 'write',
-      fn: applyStyles$1,
+      fn: applyStyles,
       effect: effect$2,
       requires: ['computeStyles']
     };
@@ -24556,7 +25399,7 @@
       })) : padding;
       return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
     };
-    function arrow$1(_ref) {
+    function arrow(_ref) {
       var _state$modifiersData$;
       var state = _ref.state,
         name = _ref.name,
@@ -24610,11 +25453,11 @@
       state.elements.arrow = arrowElement;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var arrow = {
+    var arrow$1 = {
       name: 'arrow',
       enabled: true,
       phase: 'main',
-      fn: arrow$1,
+      fn: arrow,
       effect: effect$1,
       requires: ['popperOffsets'],
       requiresIfExists: ['preventOverflow']
@@ -24720,7 +25563,7 @@
       }
       return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
     }
-    function computeStyles$1(_ref5) {
+    function computeStyles(_ref5) {
       var state = _ref5.state,
         options = _ref5.options;
       var _options$gpuAccelerat = options.gpuAcceleration,
@@ -24758,11 +25601,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var computeStyles = {
+    var computeStyles$1 = {
       name: 'computeStyles',
       enabled: true,
       phase: 'beforeWrite',
-      fn: computeStyles$1,
+      fn: computeStyles,
       data: {}
     };
 
@@ -25152,7 +25995,7 @@
       var oppositePlacement = getOppositePlacement(placement);
       return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
     }
-    function flip$1(_ref) {
+    function flip(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -25253,11 +26096,11 @@
       }
     } // eslint-disable-next-line import/no-unused-modules
 
-    var flip = {
+    var flip$1 = {
       name: 'flip',
       enabled: true,
       phase: 'main',
-      fn: flip$1,
+      fn: flip,
       requiresIfExists: ['offset'],
       data: {
         _skip: false
@@ -25283,7 +26126,7 @@
         return overflow[side] >= 0;
       });
     }
-    function hide$1(_ref) {
+    function hide(_ref) {
       var state = _ref.state,
         name = _ref.name;
       var referenceRect = state.rects.reference;
@@ -25311,12 +26154,12 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var hide = {
+    var hide$1 = {
       name: 'hide',
       enabled: true,
       phase: 'main',
       requiresIfExists: ['preventOverflow'],
-      fn: hide$1
+      fn: hide
     };
 
     function distanceAndSkiddingToXY(placement, rects, offset) {
@@ -25337,7 +26180,7 @@
         y: distance
       };
     }
-    function offset$1(_ref2) {
+    function offset(_ref2) {
       var state = _ref2.state,
         options = _ref2.options,
         name = _ref2.name;
@@ -25357,15 +26200,15 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var offset = {
+    var offset$1 = {
       name: 'offset',
       enabled: true,
       phase: 'main',
       requires: ['popperOffsets'],
-      fn: offset$1
+      fn: offset
     };
 
-    function popperOffsets$1(_ref) {
+    function popperOffsets(_ref) {
       var state = _ref.state,
         name = _ref.name;
       // Offsets are the actual position the popper needs to have to be
@@ -25379,11 +26222,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var popperOffsets = {
+    var popperOffsets$1 = {
       name: 'popperOffsets',
       enabled: true,
       phase: 'read',
-      fn: popperOffsets$1,
+      fn: popperOffsets,
       data: {}
     };
 
@@ -25391,7 +26234,7 @@
       return axis === 'x' ? 'y' : 'x';
     }
 
-    function preventOverflow$1(_ref) {
+    function preventOverflow(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -25496,11 +26339,11 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var preventOverflow = {
+    var preventOverflow$1 = {
       name: 'preventOverflow',
       enabled: true,
       phase: 'main',
-      fn: preventOverflow$1,
+      fn: preventOverflow,
       requiresIfExists: ['offset']
     };
 
@@ -25806,7 +26649,7 @@
       };
     }
 
-    var defaultModifiers = [eventListeners, popperOffsets, computeStyles, applyStyles, offset, flip, preventOverflow, arrow, hide];
+    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
     var createPopper = /*#__PURE__*/popperGenerator({
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
@@ -26632,7 +27475,7 @@
       static isSingleMatch(pattern) {
         return getMatch(pattern, this.singleRegex);
       }
-      search( /*text*/) {}
+      search(/*text*/) {}
     }
     function getMatch(pattern, exp) {
       const matches = pattern.match(exp);
@@ -27214,7 +28057,7 @@
         this._docs.push(doc);
         this._myIndex.add(doc);
       }
-      remove(predicate = ( /* doc, idx */) => false) {
+      remove(predicate = (/* doc, idx */) => false) {
         const results = [];
         for (let i = 0, len = this._docs.length; i < len; i += 1) {
           const doc = this._docs[i];
@@ -27500,7 +28343,7 @@
       var ul;
       var mounted;
       var dispose;
-      var each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
+      var each_value_4 = ensure_array_like(/*noteAutosuggestList*/ctx[5]);
       var each_blocks = [];
       for (var i = 0; i < each_value_4.length; i += 1) {
         each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
@@ -27530,7 +28373,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*noteAutosuggestButtons, noteAutosuggestList, note, duration, selected, showNoteAutosuggest, currentFocusNoteIndex*/17828066) {
-            each_value_4 = ensure_array_like( /*noteAutosuggestList*/ctx[5]);
+            each_value_4 = ensure_array_like(/*noteAutosuggestList*/ctx[5]);
             var _i3;
             for (_i3 = 0; _i3 < each_value_4.length; _i3 += 1) {
               var child_ctx = get_each_context_4(ctx, each_value_4, _i3);
@@ -27564,16 +28407,16 @@
       var _ctx$102$time$note, _ctx$, _ctx$102$client$name, _ctx$2, _ctx$102$project$name, _ctx$3, _ctx$102$task$name, _ctx$4;
       var li;
       var a;
-      var t0_value = ( /*suggestion*/(_ctx$102$time$note = (_ctx$ = ctx[102]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$102$time$note !== void 0 ? _ctx$102$time$note : "") + "";
+      var t0_value = (/*suggestion*/(_ctx$102$time$note = (_ctx$ = ctx[102]) === null || _ctx$ === void 0 || (_ctx$ = _ctx$.time) === null || _ctx$ === void 0 ? void 0 : _ctx$.note) !== null && _ctx$102$time$note !== void 0 ? _ctx$102$time$note : "") + "";
       var t0;
       var t1;
-      var t2_value = ( /*suggestion*/(_ctx$102$client$name = (_ctx$2 = ctx[102]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$102$client$name !== void 0 ? _ctx$102$client$name : "") + "";
+      var t2_value = (/*suggestion*/(_ctx$102$client$name = (_ctx$2 = ctx[102]) === null || _ctx$2 === void 0 || (_ctx$2 = _ctx$2.client) === null || _ctx$2 === void 0 ? void 0 : _ctx$2.name) !== null && _ctx$102$client$name !== void 0 ? _ctx$102$client$name : "") + "";
       var t2;
       var t3;
-      var t4_value = ( /*suggestion*/(_ctx$102$project$name = (_ctx$3 = ctx[102]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$102$project$name !== void 0 ? _ctx$102$project$name : "") + "";
+      var t4_value = (/*suggestion*/(_ctx$102$project$name = (_ctx$3 = ctx[102]) === null || _ctx$3 === void 0 || (_ctx$3 = _ctx$3.project) === null || _ctx$3 === void 0 ? void 0 : _ctx$3.name) !== null && _ctx$102$project$name !== void 0 ? _ctx$102$project$name : "") + "";
       var t4;
       var t5;
-      var t6_value = ( /*suggestion*/(_ctx$102$task$name = (_ctx$4 = ctx[102]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$102$task$name !== void 0 ? _ctx$102$task$name : "") + "";
+      var t6_value = (/*suggestion*/(_ctx$102$task$name = (_ctx$4 = ctx[102]) === null || _ctx$4 === void 0 || (_ctx$4 = _ctx$4.task) === null || _ctx$4 === void 0 ? void 0 : _ctx$4.name) !== null && _ctx$102$task$name !== void 0 ? _ctx$102$task$name : "") + "";
       var t6;
       var t7;
       var index = /*index*/ctx[101];
@@ -27581,24 +28424,20 @@
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding*/ctx[53](a, index)
-        );
+        return /*a_binding*/ctx[53](a, index);
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding*/ctx[53](null, index)
-        );
+        return /*a_binding*/ctx[53](null, index);
       };
       function click_handler_1() {
         var _ctx;
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
-        return (/*click_handler_1*/(_ctx = ctx)[54].apply(_ctx, [/*suggestion*/ctx[102]].concat(args))
-        );
+        return /*click_handler_1*/(_ctx = ctx)[54].apply(_ctx, [/*suggestion*/ctx[102]].concat(args));
       }
       function focus_handler_1() {
-        return (/*focus_handler_1*/ctx[55]( /*index*/ctx[101])
-        );
+        return /*focus_handler_1*/ctx[55](/*index*/ctx[101]);
       }
       return {
         c() {
@@ -27638,10 +28477,10 @@
         p(new_ctx, dirty) {
           var _ctx$102$time$note2, _ctx$5, _ctx$102$client$name2, _ctx$6, _ctx$102$project$name2, _ctx$7, _ctx$102$task$name2, _ctx$8;
           ctx = new_ctx;
-          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = ( /*suggestion*/(_ctx$102$time$note2 = (_ctx$5 = ctx[102]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$102$time$note2 !== void 0 ? _ctx$102$time$note2 : "") + "")) set_data(t0, t0_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = ( /*suggestion*/(_ctx$102$client$name2 = (_ctx$6 = ctx[102]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$102$client$name2 !== void 0 ? _ctx$102$client$name2 : "") + "")) set_data(t2, t2_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = ( /*suggestion*/(_ctx$102$project$name2 = (_ctx$7 = ctx[102]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$102$project$name2 !== void 0 ? _ctx$102$project$name2 : "") + "")) set_data(t4, t4_value);
-          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = ( /*suggestion*/(_ctx$102$task$name2 = (_ctx$8 = ctx[102]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$102$task$name2 !== void 0 ? _ctx$102$task$name2 : "") + "")) set_data(t6, t6_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t0_value !== (t0_value = (/*suggestion*/(_ctx$102$time$note2 = (_ctx$5 = ctx[102]) === null || _ctx$5 === void 0 || (_ctx$5 = _ctx$5.time) === null || _ctx$5 === void 0 ? void 0 : _ctx$5.note) !== null && _ctx$102$time$note2 !== void 0 ? _ctx$102$time$note2 : "") + "")) set_data(t0, t0_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t2_value !== (t2_value = (/*suggestion*/(_ctx$102$client$name2 = (_ctx$6 = ctx[102]) === null || _ctx$6 === void 0 || (_ctx$6 = _ctx$6.client) === null || _ctx$6 === void 0 ? void 0 : _ctx$6.name) !== null && _ctx$102$client$name2 !== void 0 ? _ctx$102$client$name2 : "") + "")) set_data(t2, t2_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t4_value !== (t4_value = (/*suggestion*/(_ctx$102$project$name2 = (_ctx$7 = ctx[102]) === null || _ctx$7 === void 0 || (_ctx$7 = _ctx$7.project) === null || _ctx$7 === void 0 ? void 0 : _ctx$7.name) !== null && _ctx$102$project$name2 !== void 0 ? _ctx$102$project$name2 : "") + "")) set_data(t4, t4_value);
+          if (dirty[0] & /*noteAutosuggestList*/32 && t6_value !== (t6_value = (/*suggestion*/(_ctx$102$task$name2 = (_ctx$8 = ctx[102]) === null || _ctx$8 === void 0 || (_ctx$8 = _ctx$8.task) === null || _ctx$8 === void 0 ? void 0 : _ctx$8.name) !== null && _ctx$102$task$name2 !== void 0 ? _ctx$102$task$name2 : "") + "")) set_data(t6, t6_value);
           if (index !== /*index*/ctx[101]) {
             unassign_a();
             index = /*index*/ctx[101];
@@ -27689,7 +28528,7 @@
       var mounted;
       var dispose;
       function select_block_type(ctx, dirty) {
-        if ( /*inputMethod*/ctx[41] === InputMethods.decimal) return create_if_block_7;
+        if (/*inputMethod*/ctx[41] === InputMethods.decimal) return create_if_block_7;
         return create_else_block_1;
       }
       var current_block_type = select_block_type(ctx);
@@ -27903,8 +28742,8 @@
           attr(input, "type", "text");
           attr(input, "placeholder", translate("timemanager", "Select..."));
           input.disabled = /*showTaskSelector*/ctx[0];
-          input.value = input_value_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "";
-          attr(input, "title", input_title_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "");
+          input.value = input_value_value = /*selected*/ctx[20] ? "".concat(/*selected*/ctx[20].client.label, " \u203A ").concat(/*selected*/ctx[20].project.label, " \u203A ").concat(/*selected*/ctx[20].task.label) : "";
+          attr(input, "title", input_title_value = /*selected*/ctx[20] ? "".concat(/*selected*/ctx[20].client.label, " \u203A ").concat(/*selected*/ctx[20].project.label, " \u203A ").concat(/*selected*/ctx[20].task.label) : "");
         },
         m(target, anchor) {
           insert(target, t0, anchor);
@@ -27919,10 +28758,10 @@
           if (dirty[0] & /*showTaskSelector*/1) {
             input.disabled = /*showTaskSelector*/ctx[0];
           }
-          if (dirty[0] & /*selected*/1048576 && input_value_value !== (input_value_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "") && input.value !== input_value_value) {
+          if (dirty[0] & /*selected*/1048576 && input_value_value !== (input_value_value = /*selected*/ctx[20] ? "".concat(/*selected*/ctx[20].client.label, " \u203A ").concat(/*selected*/ctx[20].project.label, " \u203A ").concat(/*selected*/ctx[20].task.label) : "") && input.value !== input_value_value) {
             input.value = input_value_value;
           }
-          if (dirty[0] & /*selected*/1048576 && input_title_value !== (input_title_value = /*selected*/ctx[20] ? "".concat( /*selected*/ctx[20].client.label, " \u203A ").concat( /*selected*/ctx[20].project.label, " \u203A ").concat( /*selected*/ctx[20].task.label) : "")) {
+          if (dirty[0] & /*selected*/1048576 && input_title_value !== (input_title_value = /*selected*/ctx[20] ? "".concat(/*selected*/ctx[20].client.label, " \u203A ").concat(/*selected*/ctx[20].project.label, " \u203A ").concat(/*selected*/ctx[20].task.label) : "")) {
             attr(input, "title", input_title_value);
           }
         },
@@ -28065,9 +28904,9 @@
       var dispose;
       var if_block0 = /*lastUsed*/((_ctx$9 = ctx[34]) === null || _ctx$9 === void 0 ? void 0 : _ctx$9.length) && ! /*searchValue*/ctx[14] && create_if_block_3$1(ctx);
       function select_block_type_2(ctx, dirty) {
-        var _ctx$10, _ctx$11;
-        if ( /*searchResults*/(_ctx$10 = ctx[25]) !== null && _ctx$10 !== void 0 && _ctx$10.length) return create_if_block_1$1;
-        if ( /*searchValue*/(_ctx$11 = ctx[14]) !== null && _ctx$11 !== void 0 && _ctx$11.length) return create_if_block_2$1;
+        var _ctx$0, _ctx$1;
+        if (/*searchResults*/(_ctx$0 = ctx[25]) !== null && _ctx$0 !== void 0 && _ctx$0.length) return create_if_block_1$1;
+        if (/*searchValue*/(_ctx$1 = ctx[14]) !== null && _ctx$1 !== void 0 && _ctx$1.length) return create_if_block_2$1;
       }
       var current_block_type = select_block_type_2(ctx);
       var if_block1 = current_block_type && current_block_type(ctx);
@@ -28129,11 +28968,11 @@
           }
         },
         p(ctx, dirty) {
-          var _ctx$12;
+          var _ctx$10;
           if (dirty[0] & /*searchValue*/16384 && input.value !== /*searchValue*/ctx[14]) {
             set_input_value(input, /*searchValue*/ctx[14]);
           }
-          if ( /*lastUsed*/(_ctx$12 = ctx[34]) !== null && _ctx$12 !== void 0 && _ctx$12.length && ! /*searchValue*/ctx[14]) {
+          if (/*lastUsed*/(_ctx$10 = ctx[34]) !== null && _ctx$10 !== void 0 && _ctx$10.length && ! /*searchValue*/ctx[14]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -28176,7 +29015,7 @@
     // (694:4) {#if lastUsed?.length && !searchValue}
     function create_if_block_3$1(ctx) {
       var ul;
-      var each_value_3 = ensure_array_like( /*lastUsed*/ctx[34]);
+      var each_value_3 = ensure_array_like(/*lastUsed*/ctx[34]);
       var each_blocks = [];
       for (var i = 0; i < each_value_3.length; i += 1) {
         each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
@@ -28199,7 +29038,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*lastUsedTasksButtons, selected, showTaskSelector, currentLastestFocusTaskIndex*/5242897 | dirty[1] & /*lastUsed*/8) {
-            each_value_3 = ensure_array_like( /*lastUsed*/ctx[34]);
+            each_value_3 = ensure_array_like(/*lastUsed*/ctx[34]);
             var _i6;
             for (_i6 = 0; _i6 < each_value_3.length; _i6 += 1) {
               var child_ctx = get_each_context_3(ctx, each_value_3, _i6);
@@ -28272,24 +29111,20 @@
       var dispose;
       var if_block = /*index*/ctx[101] === 0 && create_if_block_4$1();
       var assign_a = function assign_a() {
-        return (/*a_binding_1*/ctx[72](a, index)
-        );
+        return /*a_binding_1*/ctx[72](a, index);
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_1*/ctx[72](null, index)
-        );
+        return /*a_binding_1*/ctx[72](null, index);
       };
       function click_handler_3() {
         var _ctx2;
         for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
           args[_key2] = arguments[_key2];
         }
-        return (/*click_handler_3*/(_ctx2 = ctx)[73].apply(_ctx2, [/*entry*/ctx[99]].concat(args))
-        );
+        return /*click_handler_3*/(_ctx2 = ctx)[73].apply(_ctx2, [/*entry*/ctx[99]].concat(args));
       }
       function focus_handler_2() {
-        return (/*focus_handler_2*/ctx[74]( /*index*/ctx[101])
-        );
+        return /*focus_handler_2*/ctx[74](/*index*/ctx[101]);
       }
       return {
         c() {
@@ -28303,21 +29138,21 @@
           span0.textContent = "".concat(translate("timemanager", "Client"));
           t2 = space$1();
           span1 = element("span");
-          span1.textContent = "".concat( /*entry*/ctx[99].client.name);
+          span1.textContent = "".concat(/*entry*/ctx[99].client.name);
           t4 = space$1();
           li1 = element("li");
           span2 = element("span");
           span2.textContent = "".concat(translate("timemanager", "Project"));
           t6 = space$1();
           span3 = element("span");
-          span3.textContent = "".concat( /*entry*/ctx[99].project.name);
+          span3.textContent = "".concat(/*entry*/ctx[99].project.name);
           t8 = space$1();
           li2 = element("li");
           span4 = element("span");
           span4.textContent = "".concat(translate("timemanager", "Task"));
           t10 = space$1();
           span5 = element("span");
-          span5.textContent = "".concat( /*entry*/ctx[99].task.name);
+          span5.textContent = "".concat(/*entry*/ctx[99].task.name);
           t12 = space$1();
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
@@ -28400,7 +29235,7 @@
     // (741:4) {#if searchResults?.length}
     function create_if_block_1$1(ctx) {
       var each_1_anchor;
-      var each_value = ensure_array_like( /*searchResults*/ctx[25]);
+      var each_value = ensure_array_like(/*searchResults*/ctx[25]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
@@ -28422,7 +29257,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
-            each_value = ensure_array_like( /*searchResults*/ctx[25]);
+            each_value = ensure_array_like(/*searchResults*/ctx[25]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context$1(ctx, each_value, _i9);
@@ -28460,24 +29295,20 @@
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return (/*a_binding_2*/ctx[75](a, task)
-        );
+        return /*a_binding_2*/ctx[75](a, task);
       };
       var unassign_a = function unassign_a() {
-        return (/*a_binding_2*/ctx[75](null, task)
-        );
+        return /*a_binding_2*/ctx[75](null, task);
       };
       function click_handler_4() {
         var _ctx3;
         for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
           args[_key3] = arguments[_key3];
         }
-        return (/*click_handler_4*/(_ctx3 = ctx)[76].apply(_ctx3, [/*client*/ctx[90], /*project*/ctx[93], /*task*/ctx[96]].concat(args))
-        );
+        return /*click_handler_4*/(_ctx3 = ctx)[76].apply(_ctx3, [/*client*/ctx[90], /*project*/ctx[93], /*task*/ctx[96]].concat(args));
       }
       function focus_handler_3() {
-        return (/*focus_handler_3*/ctx[77]( /*task*/ctx[96])
-        );
+        return /*focus_handler_3*/ctx[77](/*task*/ctx[96]);
       }
       return {
         c() {
@@ -28529,7 +29360,7 @@
       var t1;
       var ul;
       var t2;
-      var each_value_2 = ensure_array_like( /*project*/ctx[93].tasks);
+      var each_value_2 = ensure_array_like(/*project*/ctx[93].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2$1(get_each_context_2$1(ctx, each_value_2, i));
@@ -28541,8 +29372,8 @@
           t0 = text$1(t0_value);
           t1 = space$1();
           ul = element("ul");
-          for (var _i10 = 0; _i10 < each_blocks.length; _i10 += 1) {
-            each_blocks[_i10].c();
+          for (var _i0 = 0; _i0 < each_blocks.length; _i0 += 1) {
+            each_blocks[_i0].c();
           }
           t2 = space$1();
           attr(span, "class", "project");
@@ -28553,9 +29384,9 @@
           append(span, t0);
           append(li, t1);
           append(li, ul);
-          for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
-            if (each_blocks[_i11]) {
-              each_blocks[_i11].m(ul, null);
+          for (var _i1 = 0; _i1 < each_blocks.length; _i1 += 1) {
+            if (each_blocks[_i1]) {
+              each_blocks[_i1].m(ul, null);
             }
           }
           append(li, t2);
@@ -28563,20 +29394,20 @@
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults*/33554432 && t0_value !== (t0_value = /*project*/ctx[93].label + "")) set_data(t0, t0_value);
           if (dirty[0] & /*tasksButtons, searchResults, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
-            each_value_2 = ensure_array_like( /*project*/ctx[93].tasks);
-            var _i12;
-            for (_i12 = 0; _i12 < each_value_2.length; _i12 += 1) {
-              var child_ctx = get_each_context_2$1(ctx, each_value_2, _i12);
-              if (each_blocks[_i12]) {
-                each_blocks[_i12].p(child_ctx, dirty);
+            each_value_2 = ensure_array_like(/*project*/ctx[93].tasks);
+            var _i10;
+            for (_i10 = 0; _i10 < each_value_2.length; _i10 += 1) {
+              var child_ctx = get_each_context_2$1(ctx, each_value_2, _i10);
+              if (each_blocks[_i10]) {
+                each_blocks[_i10].p(child_ctx, dirty);
               } else {
-                each_blocks[_i12] = create_each_block_2$1(child_ctx);
-                each_blocks[_i12].c();
-                each_blocks[_i12].m(ul, null);
+                each_blocks[_i10] = create_each_block_2$1(child_ctx);
+                each_blocks[_i10].c();
+                each_blocks[_i10].m(ul, null);
               }
             }
-            for (; _i12 < each_blocks.length; _i12 += 1) {
-              each_blocks[_i12].d(1);
+            for (; _i10 < each_blocks.length; _i10 += 1) {
+              each_blocks[_i10].d(1);
             }
             each_blocks.length = each_value_2.length;
           }
@@ -28600,7 +29431,7 @@
       var t1;
       var ul0;
       var t2;
-      var each_value_1 = ensure_array_like( /*client*/ctx[90].projects);
+      var each_value_1 = ensure_array_like(/*client*/ctx[90].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
@@ -28613,8 +29444,8 @@
           t0 = text$1(t0_value);
           t1 = space$1();
           ul0 = element("ul");
-          for (var _i13 = 0; _i13 < each_blocks.length; _i13 += 1) {
-            each_blocks[_i13].c();
+          for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
+            each_blocks[_i11].c();
           }
           t2 = space$1();
           attr(span, "class", "client");
@@ -28627,9 +29458,9 @@
           append(span, t0);
           append(li, t1);
           append(li, ul0);
-          for (var _i14 = 0; _i14 < each_blocks.length; _i14 += 1) {
-            if (each_blocks[_i14]) {
-              each_blocks[_i14].m(ul0, null);
+          for (var _i12 = 0; _i12 < each_blocks.length; _i12 += 1) {
+            if (each_blocks[_i12]) {
+              each_blocks[_i12].m(ul0, null);
             }
           }
           append(ul1, t2);
@@ -28637,20 +29468,20 @@
         p(ctx, dirty) {
           if (dirty[0] & /*searchResults*/33554432 && t0_value !== (t0_value = /*client*/ctx[90].label + "")) set_data(t0, t0_value);
           if (dirty[0] & /*searchResults, tasksButtons, selected, showTaskSelector, currentFocusTaskIndex*/42991625) {
-            each_value_1 = ensure_array_like( /*client*/ctx[90].projects);
-            var _i15;
-            for (_i15 = 0; _i15 < each_value_1.length; _i15 += 1) {
-              var child_ctx = get_each_context_1$1(ctx, each_value_1, _i15);
-              if (each_blocks[_i15]) {
-                each_blocks[_i15].p(child_ctx, dirty);
+            each_value_1 = ensure_array_like(/*client*/ctx[90].projects);
+            var _i13;
+            for (_i13 = 0; _i13 < each_value_1.length; _i13 += 1) {
+              var child_ctx = get_each_context_1$1(ctx, each_value_1, _i13);
+              if (each_blocks[_i13]) {
+                each_blocks[_i13].p(child_ctx, dirty);
               } else {
-                each_blocks[_i15] = create_each_block_1$1(child_ctx);
-                each_blocks[_i15].c();
-                each_blocks[_i15].m(ul0, null);
+                each_blocks[_i13] = create_each_block_1$1(child_ctx);
+                each_blocks[_i13].c();
+                each_blocks[_i13].m(ul0, null);
               }
             }
-            for (; _i15 < each_blocks.length; _i15 += 1) {
-              each_blocks[_i15].d(1);
+            for (; _i13 < each_blocks.length; _i13 += 1) {
+              each_blocks[_i13].d(1);
             }
             each_blocks.length = each_value_1.length;
           }
@@ -28664,7 +29495,7 @@
       };
     }
     function create_fragment$8(ctx) {
-      var _ctx$13;
+      var _ctx$11;
       var form;
       var label0;
       var t0_value = translate("timemanager", "Note") + "";
@@ -28694,10 +29525,10 @@
       var form_class_value;
       var mounted;
       var dispose;
-      var if_block0 = /*showNoteAutosuggest*/ctx[1] && ( /*noteAutosuggestList*/(_ctx$13 = ctx[5]) === null || _ctx$13 === void 0 ? void 0 : _ctx$13.length) && create_if_block_8(ctx);
+      var if_block0 = /*showNoteAutosuggest*/ctx[1] && (/*noteAutosuggestList*/(_ctx$11 = ctx[5]) === null || _ctx$11 === void 0 ? void 0 : _ctx$11.length) && create_if_block_8(ctx);
       var if_block1 = /*showDurationSelector*/ctx[2] && create_if_block_6$1(ctx);
       function select_block_type_1(ctx, dirty) {
-        if ( /*selected*/ctx[20] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
+        if (/*selected*/ctx[20] && ! /*showTaskSelector*/ctx[0]) return create_if_block_5$1;
         return create_else_block;
       }
       var current_block_type = select_block_type_1(ctx);
@@ -28705,7 +29536,7 @@
       var if_block3 = /*showTaskSelector*/ctx[0] && create_if_block$4(ctx);
       return {
         c() {
-          var _ctx$14, _ctx$15;
+          var _ctx$12, _ctx$13;
           form = element("form");
           label0 = element("label");
           t0 = text$1(t0_value);
@@ -28745,20 +29576,20 @@
           attr(input1, "class", "duration-trigger");
           attr(input1, "type", "text");
           input1.value = input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$14 = ctx[7]) !== null && _ctx$14 !== void 0 ? _ctx$14 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$15 = ctx[7]) !== null && _ctx$15 !== void 0 ? _ctx$15 : 0),
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
+            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$12 = ctx[7]) !== null && _ctx$12 !== void 0 ? _ctx$12 : 0 : Helpers.convertDecimalsToTimeDuration(/*duration*/(_ctx$13 = ctx[7]) !== null && _ctx$13 !== void 0 ? _ctx$13 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3(/*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3(/*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
           });
           input1.disabled = /*showDurationSelector*/ctx[2];
           attr(input1, "data-cy", "quick-add-duration");
           attr(input1, "data-hideevent", "skip");
           attr(input2, "type", "hidden");
-          attr(label2, "class", label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[21] ? " error" : ""));
+          attr(label2, "class", label2_class_value = "task-selector-trigger".concat(/*taskError*/ctx[21] ? " error" : ""));
           attr(label2, "data-cy", "task-selector-trigger");
           button.disabled = /*loading*/ctx[19];
           attr(button, "type", "submit");
           attr(button, "class", "button primary button-w-icon icon-add");
           attr(span, "class", "actions");
-          attr(form, "class", form_class_value = "quick-add".concat( /*loading*/ctx[19] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "quick-add".concat(/*loading*/ctx[19] ? " icon-loading" : ""));
           attr(form, "data-cy", "quick-add-form");
         },
         m(target, anchor) {
@@ -28798,11 +29629,11 @@
           }
         },
         p(ctx, dirty) {
-          var _ctx$16, _ctx$17, _ctx$18;
+          var _ctx$14, _ctx$15, _ctx$16;
           if (dirty[0] & /*note*/2048 && input0.value !== /*note*/ctx[11]) {
             set_input_value(input0, /*note*/ctx[11]);
           }
-          if ( /*showNoteAutosuggest*/ctx[1] && /*noteAutosuggestList*/(_ctx$16 = ctx[5]) !== null && _ctx$16 !== void 0 && _ctx$16.length) {
+          if (/*showNoteAutosuggest*/ctx[1] && /*noteAutosuggestList*/(_ctx$14 = ctx[5]) !== null && _ctx$14 !== void 0 && _ctx$14.length) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -28815,15 +29646,15 @@
             if_block0 = null;
           }
           if (dirty[0] & /*duration, date*/1152 && input1_value_value !== (input1_value_value = translate("timemanager", "{duration} hrs. on {date}", {
-            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$17 = ctx[7]) !== null && _ctx$17 !== void 0 ? _ctx$17 : 0 : Helpers.convertDecimalsToTimeDuration( /*duration*/(_ctx$18 = ctx[7]) !== null && _ctx$18 !== void 0 ? _ctx$18 : 0),
-            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3( /*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
+            duration: /*inputMethod*/ctx[41] === InputMethods.decimal ? /*duration*/(_ctx$15 = ctx[7]) !== null && _ctx$15 !== void 0 ? _ctx$15 : 0 : Helpers.convertDecimalsToTimeDuration(/*duration*/(_ctx$16 = ctx[7]) !== null && _ctx$16 !== void 0 ? _ctx$16 : 0),
+            date: /*date*/ctx[10] && isDate$1(startOfDay(parse$3(/*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26])) ? format$2(startOfDay(parse$3(/*date*/ctx[10], dateFormat$1, new Date()), /*localeOptions*/ctx[26]), "PP", /*localeOptions*/ctx[26]) : "?"
           })) && input1.value !== input1_value_value) {
             input1.value = input1_value_value;
           }
           if (dirty[0] & /*showDurationSelector*/4) {
             input1.disabled = /*showDurationSelector*/ctx[2];
           }
-          if ( /*showDurationSelector*/ctx[2]) {
+          if (/*showDurationSelector*/ctx[2]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
@@ -28845,10 +29676,10 @@
               if_block2.m(label2, null);
             }
           }
-          if (dirty[0] & /*taskError*/2097152 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat( /*taskError*/ctx[21] ? " error" : ""))) {
+          if (dirty[0] & /*taskError*/2097152 && label2_class_value !== (label2_class_value = "task-selector-trigger".concat(/*taskError*/ctx[21] ? " error" : ""))) {
             attr(label2, "class", label2_class_value);
           }
-          if ( /*showTaskSelector*/ctx[0]) {
+          if (/*showTaskSelector*/ctx[0]) {
             if (if_block3) {
               if_block3.p(ctx, dirty);
             } else {
@@ -28863,7 +29694,7 @@
           if (dirty[0] & /*loading*/524288) {
             button.disabled = /*loading*/ctx[19];
           }
-          if (dirty[0] & /*loading*/524288 && form_class_value !== (form_class_value = "quick-add".concat( /*loading*/ctx[19] ? " icon-loading" : ""))) {
+          if (dirty[0] & /*loading*/524288 && form_class_value !== (form_class_value = "quick-add".concat(/*loading*/ctx[19] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
         },
@@ -28942,21 +29773,21 @@
           placement: "bottom-end",
           strategy: "fixed"
         }),
-        _createPopperActions2 = _slicedToArray(_createPopperActions, 2),
+        _createPopperActions2 = _slicedToArray$1(_createPopperActions, 2),
         taskSelectorPopperRef = _createPopperActions2[0],
         taskSelectorPopperContent = _createPopperActions2[1];
       var _createPopperActions3 = createPopperActions({
           placement: "bottom-start",
           strategy: "fixed"
         }),
-        _createPopperActions4 = _slicedToArray(_createPopperActions3, 2),
+        _createPopperActions4 = _slicedToArray$1(_createPopperActions3, 2),
         noteSuggestPopperRef = _createPopperActions4[0],
         noteSuggestPopperContent = _createPopperActions4[1];
       var _createPopperActions5 = createPopperActions({
           placement: "bottom-end",
           strategy: "fixed"
         }),
-        _createPopperActions6 = _slicedToArray(_createPopperActions5, 2),
+        _createPopperActions6 = _slicedToArray$1(_createPopperActions5, 2),
         durationSelectorPopperRef = _createPopperActions6[0],
         durationSelectorPopperContent = _createPopperActions6[1];
       var showTaskSelector = false;
@@ -29248,7 +30079,7 @@
         };
       });
       var save = /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var _selected;
           var startDateFormat, startDate, entry, response;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -29590,13 +30421,13 @@
           t1 = space$1();
           span1 = element("span");
           attr(input, "type", "checkbox");
-          attr(input, "id", input_id_value = "check_".concat( /*uuid*/ctx[0]));
+          attr(input, "id", input_id_value = "check_".concat(/*uuid*/ctx[0]));
           attr(input, "class", "checkbox");
           input.checked = input_checked_value = /*initialState*/ctx[1] === 'paid';
           input.disabled = /*loading*/ctx[3];
-          attr(label, "for", label_for_value = "check_".concat( /*uuid*/ctx[0]));
+          attr(label, "for", label_for_value = "check_".concat(/*uuid*/ctx[0]));
           attr(span0, "class", "checkbox-action");
-          attr(span1, "class", span1_class_value = "checkbox-action-loading".concat( /*loading*/ctx[3] ? ' icon-loading' : ''));
+          attr(span1, "class", span1_class_value = "checkbox-action-loading".concat(/*loading*/ctx[3] ? ' icon-loading' : ''));
         },
         m(target, anchor) {
           insert(target, span0, anchor);
@@ -29606,14 +30437,14 @@
           insert(target, t1, anchor);
           insert(target, span1, anchor);
           if (!mounted) {
-            dispose = listen(input, "change", prevent_default( /*change_handler*/ctx[7]));
+            dispose = listen(input, "change", prevent_default(/*change_handler*/ctx[7]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (dirty & /*uuid*/1 && input_id_value !== (input_id_value = "check_".concat( /*uuid*/ctx[0]))) {
+          if (dirty & /*uuid*/1 && input_id_value !== (input_id_value = "check_".concat(/*uuid*/ctx[0]))) {
             attr(input, "id", input_id_value);
           }
           if (dirty & /*initialState*/2 && input_checked_value !== (input_checked_value = /*initialState*/ctx[1] === 'paid')) {
@@ -29622,10 +30453,10 @@
           if (dirty & /*loading*/8) {
             input.disabled = /*loading*/ctx[3];
           }
-          if (dirty & /*uuid*/1 && label_for_value !== (label_for_value = "check_".concat( /*uuid*/ctx[0]))) {
+          if (dirty & /*uuid*/1 && label_for_value !== (label_for_value = "check_".concat(/*uuid*/ctx[0]))) {
             attr(label, "for", label_for_value);
           }
-          if (dirty & /*loading*/8 && span1_class_value !== (span1_class_value = "checkbox-action-loading".concat( /*loading*/ctx[3] ? ' icon-loading' : ''))) {
+          if (dirty & /*loading*/8 && span1_class_value !== (span1_class_value = "checkbox-action-loading".concat(/*loading*/ctx[3] ? ' icon-loading' : ''))) {
             attr(span1, "class", span1_class_value);
           }
         },
@@ -29653,7 +30484,7 @@
         Helpers.hideFallbacks("Checkmark.svelte");
       });
       var save = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var response;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -29882,9 +30713,9 @@
           current = true;
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if ( /*isVisible*/ctx[0]) {
+          if (/*isVisible*/ctx[0]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*isVisible*/1) {
@@ -29962,7 +30793,7 @@
         isFilterSet.set(false);
       };
       var search = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
+        var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
           var response, _yield$response$json$, users, exact;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -30005,7 +30836,7 @@
           return _ref3.apply(this, arguments);
         };
       }();
-      onMount( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      onMount(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var urlParts, queryString, queryStringParts, _iterator, _step, part, partParts, _partParts, name, value, result;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
@@ -30029,7 +30860,7 @@
               part = _step.value;
               // Split query params
               partParts = part.split("=");
-              _partParts = _slicedToArray(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
+              _partParts = _slicedToArray$1(partParts, 2), name = _partParts[0], value = _partParts[1]; // Apply filters from query params
               if (!(name === "userFilter" && value)) {
                 _context2.next = 16;
                 break;
@@ -30177,7 +31008,7 @@
           attr(button, "class", "button primary");
           attr(button, "form", "filters-form");
           attr(span, "class", "actions");
-          attr(div, "class", div_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? " icon-loading" : ""));
+          attr(div, "class", div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""));
         },
         m(target, anchor) {
           insert(target, div, anchor);
@@ -30210,7 +31041,7 @@
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           var userfilterselect_changes = {};
           if (dirty & /*requestToken*/1) userfilterselect_changes.requestToken = /*requestToken*/ctx[0];
@@ -30224,7 +31055,7 @@
           if (!current || dirty & /*loading*/8) {
             button.disabled = /*loading*/ctx[3];
           }
-          if (!current || dirty & /*loading*/8 && div_class_value !== (div_class_value = "reports-timerange".concat( /*loading*/ctx[3] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/8 && div_class_value !== (div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""))) {
             attr(div, "class", div_class_value);
           }
         },
@@ -30362,7 +31193,7 @@
           queryStringParts.map(function (part) {
             // Split query params
             var partParts = part.split("=");
-            var _partParts = _slicedToArray(partParts, 2),
+            var _partParts = _slicedToArray$1(partParts, 2),
               name = _partParts[0],
               value = _partParts[1];
 
@@ -30540,7 +31371,7 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          attr(form, "class", form_class_value = "reports-filters".concat( /*loading*/ctx[8] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""));
           attr(form, "id", "filters-form");
         },
         m(target, anchor) {
@@ -30568,12 +31399,12 @@
           mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default( /*apply*/ctx[11]));
+            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[11]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           var select0_changes = {};
           if (dirty & /*clients*/1) select0_changes.items = /*clients*/ctx[0];
@@ -30590,7 +31421,7 @@
           var select3_changes = {};
           if (dirty & /*selectedStatus*/32) select3_changes.value = /*selectedStatus*/ctx[5];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat( /*loading*/ctx[8] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
           var timerange_changes = {};
@@ -30739,7 +31570,7 @@
           queryStringParts.map(function (part) {
             // Split query params
             var partParts = part.split("=");
-            var _partParts = _slicedToArray(partParts, 2),
+            var _partParts = _slicedToArray$1(partParts, 2),
               name = _partParts[0],
               value = _partParts[1];
 
@@ -36805,7 +37636,6 @@
         __isFloat: function (value) {
           return value - parseFloat(value) + 1 >= 0; // Borrowed from jquery
         },
-
         __compareBytes: function (sourceBuf, targetBuf, targetPos, firstByte) {
           if (sourceBuf[0] !== firstByte) return 0;
           const sourceLength = sourceBuf.length;
@@ -37193,14 +38023,14 @@
           div0 = element("div");
           t2 = text$1(t2_value);
           t3 = space$1();
-          t4 = text$1( /*parseError*/ctx[9]);
+          t4 = text$1(/*parseError*/ctx[9]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
-          attr(div1, "class", "oc-dialog-buttonrow onebutton");
+          attr(div1, "class", "tm-oc-dialog-buttonrow onebutton");
           attr(div2, "class", "inner");
         },
         m(target, anchor) {
@@ -37215,7 +38045,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler*/ctx[17]));
+            dispose = listen(button, "click", prevent_default(/*click_handler*/ctx[17]));
             mounted = true;
           }
         },
@@ -37303,14 +38133,14 @@
           div0 = element("div");
           t2 = text$1(t2_value);
           t3 = space$1();
-          t4 = text$1( /*importError*/ctx[6]);
+          t4 = text$1(/*importError*/ctx[6]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
-          attr(div1, "class", "oc-dialog-buttonrow onebutton");
+          attr(div1, "class", "tm-oc-dialog-buttonrow onebutton");
           attr(div2, "class", "inner");
         },
         m(target, anchor) {
@@ -37325,7 +38155,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_1*/ctx[18]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[18]));
             mounted = true;
           }
         },
@@ -37413,14 +38243,14 @@
           div0 = element("div");
           t2 = text$1(t2_value);
           t3 = space$1();
-          t4 = text$1( /*successMessage*/ctx[7]);
+          t4 = text$1(/*successMessage*/ctx[7]);
           t5 = space$1();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
           attr(div0, "class", "error");
           attr(button, "class", "button");
-          attr(div1, "class", "oc-dialog-buttonrow onebutton");
+          attr(div1, "class", "tm-oc-dialog-buttonrow onebutton");
           attr(div2, "class", "inner");
         },
         m(target, anchor) {
@@ -37435,7 +38265,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default( /*click_handler_2*/ctx[19]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_2*/ctx[19]));
             mounted = true;
           }
         },
@@ -37531,7 +38361,7 @@
           append(dl, dd2);
           append(dd2, t11);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default( /*click_handler_3*/ctx[20])), listen(button1, "click", prevent_default( /*click_handler_4*/ctx[21]))];
+            dispose = [listen(button0, "click", prevent_default(/*click_handler_3*/ctx[20])), listen(button1, "click", prevent_default(/*click_handler_4*/ctx[21]))];
             mounted = true;
           }
         },
@@ -37557,7 +38387,7 @@
       var details;
       var summary;
       var t1;
-      var each_value_1 = ensure_array_like( /*client*/ctx[24].projects);
+      var each_value_1 = ensure_array_like(/*client*/ctx[24].projects);
       var each_blocks = [];
       for (var i = 0; i < each_value_1.length; i += 1) {
         each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
@@ -37585,7 +38415,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*allOpen, importPreviewData*/1280) {
-            each_value_1 = ensure_array_like( /*client*/ctx[24].projects);
+            each_value_1 = ensure_array_like(/*client*/ctx[24].projects);
             var _i3;
             for (_i3 = 0; _i3 < each_value_1.length; _i3 += 1) {
               var child_ctx = get_each_context_1(ctx, each_value_1, _i3);
@@ -37620,7 +38450,7 @@
       var details;
       var summary;
       var t1;
-      var each_value_2 = ensure_array_like( /*project*/ctx[27].tasks);
+      var each_value_2 = ensure_array_like(/*project*/ctx[27].tasks);
       var each_blocks = [];
       for (var i = 0; i < each_value_2.length; i += 1) {
         each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
@@ -37648,7 +38478,7 @@
         },
         p(ctx, dirty) {
           if (dirty[0] & /*importPreviewData*/256) {
-            each_value_2 = ensure_array_like( /*project*/ctx[27].tasks);
+            each_value_2 = ensure_array_like(/*project*/ctx[27].tasks);
             var _i6;
             for (_i6 = 0; _i6 < each_value_2.length; _i6 += 1) {
               var child_ctx = get_each_context_2(ctx, each_value_2, _i6);
@@ -37793,7 +38623,7 @@
         p(ctx, dirty) {
           if (dirty[0] & /*importPreviewData*/256 && t2_value !== (t2_value = /*project*/ctx[27].name + "")) set_data(t2, t2_value);
           if (dirty[0] & /*importPreviewData*/256 && t6_value !== (t6_value = /*project*/ctx[27].note + "")) set_data(t6, t6_value);
-          if ( /*project*/ctx[27].tasks) {
+          if (/*project*/ctx[27].tasks) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -37871,7 +38701,7 @@
         p(ctx, dirty) {
           if (dirty[0] & /*importPreviewData*/256 && t2_value !== (t2_value = /*client*/ctx[24].name + "")) set_data(t2, t2_value);
           if (dirty[0] & /*importPreviewData*/256 && t6_value !== (t6_value = /*client*/ctx[24].note + "")) set_data(t6, t6_value);
-          if ( /*client*/ctx[24].projects) {
+          if (/*client*/ctx[24].projects) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -37917,7 +38747,7 @@
           append(form, button);
           append(button, t);
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default( /*doImport*/ctx[12]));
+            dispose = listen(form, "submit", prevent_default(/*doImport*/ctx[12]));
             mounted = true;
           }
         },
@@ -37971,7 +38801,7 @@
       var if_block1 = /*importError*/ctx[6] && create_if_block_5(ctx);
       var if_block2 = /*successMessage*/ctx[7] && create_if_block_4(ctx);
       var if_block3 = /*importPreviewData*/ctx[8].length && create_if_block_3(ctx);
-      var each_value = ensure_array_like( /*importPreviewData*/ctx[8]);
+      var each_value = ensure_array_like(/*importPreviewData*/ctx[8]);
       var each_blocks = [];
       for (var i = 0; i < each_value.length; i += 1) {
         each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
@@ -38062,12 +38892,12 @@
           insert(target, if_block4_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default( /*previewFile*/ctx[11]));
+            dispose = listen(form, "submit", prevent_default(/*previewFile*/ctx[11]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if ( /*parseError*/ctx[9]) {
+          if (/*parseError*/ctx[9]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
               if (dirty[0] & /*parseError*/512) {
@@ -38086,7 +38916,7 @@
             });
             check_outros();
           }
-          if ( /*importError*/ctx[6]) {
+          if (/*importError*/ctx[6]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
               if (dirty[0] & /*importError*/64) {
@@ -38105,7 +38935,7 @@
             });
             check_outros();
           }
-          if ( /*successMessage*/ctx[7]) {
+          if (/*successMessage*/ctx[7]) {
             if (if_block2) {
               if_block2.p(ctx, dirty);
               if (dirty[0] & /*successMessage*/128) {
@@ -38124,7 +38954,7 @@
             });
             check_outros();
           }
-          if ( /*importPreviewData*/ctx[8].length) {
+          if (/*importPreviewData*/ctx[8].length) {
             if (if_block3) {
               if_block3.p(ctx, dirty);
             } else {
@@ -38137,7 +38967,7 @@
             if_block3 = null;
           }
           if (dirty[0] & /*allOpen, importPreviewData*/1280) {
-            each_value = ensure_array_like( /*importPreviewData*/ctx[8]);
+            each_value = ensure_array_like(/*importPreviewData*/ctx[8]);
             var _i9;
             for (_i9 = 0; _i9 < each_value.length; _i9 += 1) {
               var child_ctx = get_each_context(ctx, each_value, _i9);
@@ -38154,7 +38984,7 @@
             }
             each_blocks.length = each_value.length;
           }
-          if ( /*importPreviewData*/ctx[8].length) {
+          if (/*importPreviewData*/ctx[8].length) {
             if (if_block4) {
               if_block4.p(ctx, dirty);
             } else {
@@ -38228,8 +39058,8 @@
       var keysToLowerCase = function keysToLowerCase(object) {
         var result = {};
         if (object) {
-          for (var _i10 = 0, _Object$entries = Object.entries(object); _i10 < _Object$entries.length; _i10++) {
-            var _Object$entries$_i = _slicedToArray(_Object$entries[_i10], 2),
+          for (var _i0 = 0, _Object$entries = Object.entries(object); _i0 < _Object$entries.length; _i0++) {
+            var _Object$entries$_i = _slicedToArray$1(_Object$entries[_i0], 2),
               key = _Object$entries$_i[0],
               value = _Object$entries$_i[1];
             result[key.toLowerCase()] = value;
@@ -38251,7 +39081,7 @@
 
       // Previews a given file
       var previewFile = /*#__PURE__*/function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
           var _fileInput$files, file, fileReader, contents, clients, projects, tasks, associated;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -38262,7 +39092,7 @@
                 }
                 $$invalidate(8, importPreviewData = []);
                 $$invalidate(9, parseError = "");
-                _fileInput$files = _slicedToArray(fileInput.files, 1), file = _fileInput$files[0];
+                _fileInput$files = _slicedToArray$1(fileInput.files, 1), file = _fileInput$files[0];
                 fileReader = new FileReader();
                 fileReader.readAsText(file);
                 _context.next = 8;
@@ -38381,7 +39211,7 @@
 
       // Post data to JSON API
       var doImport = /*#__PURE__*/function () {
-        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var _ref2 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           var convertedImportData, response;
           return _regeneratorRuntime().wrap(function _callee2$(_context2) {
             while (1) switch (_context2.prev = _context2.next) {
@@ -38587,7 +39417,7 @@
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat( /*$isFilterSet*/ctx[2] ? 'active' : ''));
+          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''));
         },
         m(target, anchor) {
           insert(target, button, anchor);
@@ -38602,12 +39432,12 @@
           }
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*$isFilterSet*/4 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat( /*$isFilterSet*/ctx[2] ? 'active' : ''))) {
+          if (!current || dirty & /*$isFilterSet*/4 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''))) {
             attr(button, "class", button_class_value);
           }
-          if ( /*showTooltip*/ctx[1]) {
+          if (/*showTooltip*/ctx[1]) {
             if (if_block) {
               if_block.p(ctx, dirty);
               if (dirty & /*showTooltip*/2) {
@@ -38658,7 +39488,7 @@
           placement: "bottom",
           strategy: "fixed"
         }),
-        _createPopperActions2 = _slicedToArray(_createPopperActions, 2),
+        _createPopperActions2 = _slicedToArray$1(_createPopperActions, 2),
         popperRef = _createPopperActions2[0],
         popperContent = _createPopperActions2[1];
       var extraOpts = {
@@ -38693,7 +39523,7 @@
               var part = _step.value;
               // Split query params
               var partParts = part.split("=");
-              var _partParts = _slicedToArray(partParts, 2),
+              var _partParts = _slicedToArray$1(partParts, 2),
                 name = _partParts[0],
                 value = _partParts[1];
 
@@ -38754,7 +39584,7 @@
       var binding_group;
       var mounted;
       var dispose;
-      binding_group = init_binding_group( /*$$binding_groups*/ctx[7][0]);
+      binding_group = init_binding_group(/*$$binding_groups*/ctx[7][0]);
       return {
         c() {
           details = element("details");
@@ -38834,7 +39664,7 @@
           insert(target, if_block_anchor, anchor);
         },
         p(ctx, _ref) {
-          var _ref2 = _slicedToArray(_ref, 1),
+          var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
           if (! /*isServer*/ctx[0]) {
             if (if_block) {
@@ -38870,7 +39700,7 @@
       var requestToken = $$props.requestToken;
       var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
       var changeInputMethod = /*#__PURE__*/function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(newInputMethod) {
+        var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(newInputMethod) {
           var previousInputMethod, response;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
@@ -38974,7 +39804,6 @@
         script.src = src;
         script.async = false; // force synchronous loading of peripheral JS
       }
-
       if (code !== "") {
         try {
           script.appendChild(document.createTextNode(code));
@@ -39745,7 +40574,6 @@
             document.activeElement.blur();
           } catch (e) {} // eslint-disable-line no-empty
         }
-
         this.switchSelectors(this.options.selectors, tmpEl, document, options);
       },
       abortRequest: abortRequest,

@@ -56,7 +56,7 @@
 	<Overlay>
 		<div class="inner tm_new-item">
 			{translate('timemanager', 'Do you want to delete this time entry?')}
-			<div class="oc-dialog-buttonrow twobuttons reverse">
+			<div class="tm-oc-dialog-buttonrow twobuttons reverse">
 				<button class="button primary" on:click|preventDefault={doDelete}>{translate('timemanager', 'Delete')}</button>
 				<button class="button" on:click|preventDefault={cancelDelete}>{translate('timemanager', 'Cancel')}</button>
 			</div>
