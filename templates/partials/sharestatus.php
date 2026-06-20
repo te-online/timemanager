@@ -10,7 +10,7 @@
 
 use \OCP\Util;
 
-$urlGenerator = \OC::$server->getURLGenerator();
+$urlGenerator = \OCP\Server::get(\OCP\IURLGenerator::class);
 $l = Util::getL10N('timemanager');
 ?>
 <?php if (isset($_['entity']->sharees) && count($_['entity']->sharees) > 0) { ?>

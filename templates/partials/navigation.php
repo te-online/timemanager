@@ -2,7 +2,7 @@
 
 use \OCP\Util;
 
-$urlGenerator = \OC::$server->getURLGenerator();
+$urlGenerator = \OCP\Server::get(\OCP\IURLGenerator::class);
 $l = Util::getL10N('timemanager');
 ?>
 

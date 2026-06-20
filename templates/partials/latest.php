@@ -3,7 +3,7 @@
 use OCA\TimeManager\Helper\DurationHelper;
 use \OCP\Util;
 
-$urlGenerator = \OC::$server->getURLGenerator();
+$urlGenerator = \OCP\Server::get(\OCP\IURLGenerator::class);
 $l = Util::getL10N('timemanager');
 
 $timezone = $_['user_server_timezone'];
