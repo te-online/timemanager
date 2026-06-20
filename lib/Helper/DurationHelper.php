@@ -18,9 +18,14 @@ class DurationHelper {
             return $decimal_duration;
         }
 
-        $duration_parts = explode(".", (string) $decimal_duration);
-        $hours_decimal = $duration_parts[0];
-        $minutes_decimal = $duration_parts[1];
+        $hours_decimal = "00";
+        $minutes_decimal = "00";
+        $decimal_string = (string) $decimal_duration;
+        if (str_contains($decimal_string, ".")) {
+            $duration_parts = explode(".", $decimal_string);
+            $hours_decimal = $duration_parts[0];
+            $minutes_decimal = $duration_parts[1];
+        }
 
         $minutes_multiplier = round((float) ("0." . $minutes_decimal), 2);
         $minutes = round($minutes_multiplier * 60);
