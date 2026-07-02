@@ -1114,5 +1114,73 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
+	 * @NoCSRFRequired
 	 */
-	function p
+	function exportTaskXlsx(string $task_uuid, string $timezone = "UTC"): DataDownloadResponse {
+		$task = $this->taskMapper->getActiveObjectById($task_uuid, true);
+		if (!$task) {
+			throw new NotFoundException("Task could not be found");
+		}
+
+		$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+		if (!$project) {
+			throw new NotFoundException("Project could not be found");
+		}
+
+		$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+		if (!$client) {
+			throw new NotFoundException("Client could not be found");
+		}
+
+		$times = $this->timeMapper->getActiveObjectsByAttributeValue(
+			"task_uuid",
+			$task_uuid,
+			"start",
+			true,
+			"DESC"
+		);
+		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
+
+		$rows = [];
+		$date_time_zone = new \DateTimeZone($timezone);
+
+		foreach ($times as $time) {
+			$hours = $time->getDurationInHours();
+
+			$start_date_time = new \DateTime($time->getStart(), new \DateTimeZone("UTC"));
+			$start_date_time->setTimezone($date_time_zone);
+
+			$end_date_time = new \DateTime($time->getEnd(), new \DateTimeZone("UTC"));
+			$end_date_time->setTimezone($date_time_zone);
+
+			$duration = $this->config->getAppValueString(
+				self::INPUT_METHOD_SETTING_NAME,
+				InputMethods::Decimal
+			) == InputMethods::Minutes
+				? DurationHelper::format_decimal_duration_as_time($hours)
+				: $hours;
+
+			$rows[] = [
+				"date" => $start_date_time->format("Y-m-d"),
+				"start" => $start_date_time->format("H:i"),
+				"end" => $end_date_time->format("H:i"),
+				"duration" => $duration,
+				"note" => $time->getNote(),
+				"status" => strtolower($time->getPaymentStatus()) === "paid" ? "paid" : "unpaid",
+				"author" => $time->author_display_name,
+				"task" => $task->getName(),
+				"project" => $project->getName(),
+				"client" => $client->getName(),
+			];
+		}
+
+		$safeTitle = preg_replace('/[^a-z0-9]/i', '_', $task->getName());
+		$filename = "timemanager_" . $safeTitle . ".xlsx";
+
+		return new DataDownloadResponse(
+			ArrayToXLSX::convert($rows, $task->getName()),
+			$filename,
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		);
+	}
+}
