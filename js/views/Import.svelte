@@ -1,11 +1,11 @@
 <script>
 	export let syncApiUrl;
-	export let requestToken;
 
 	import { parse } from "csv-parse";
 	import { v4 as uuidv4 } from "uuid";
 	import { translate } from "@nextcloud/l10n";
 	import Overlay from "./Overlay.svelte";
+	import { requestToken } from "../lib/stores";
 
 	let fileInput;
 	let delimiterInput;
@@ -186,7 +186,7 @@
 			const response = await fetch(syncApiUrl, {
 				method: "POST",
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json"
 				},
 				body: JSON.stringify(convertedImportData)

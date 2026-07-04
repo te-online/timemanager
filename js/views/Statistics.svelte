@@ -2,7 +2,6 @@
 	import { InputMethods } from "../lib/constants";
 
 	export let statsApiUrl;
-	export let requestToken;
 	export let controls = true;
 	export let includeShared = false;
 	export let settings = {
@@ -33,6 +32,7 @@
 	} from "date-fns";
 	import { translate } from "@nextcloud/l10n";
 	import { Helpers } from "../lib/helpers";
+	import { requestToken } from "../lib/stores";
 
 	const simpleRounding = Helpers.simpleRounding;
 
@@ -176,7 +176,7 @@
 		const stats = await fetch(statUrl, {
 			method: "GET",
 			headers: {
-				requesttoken: requestToken,
+				requesttoken: $requestToken,
 				"content-type": "application/json",
 			},
 		});

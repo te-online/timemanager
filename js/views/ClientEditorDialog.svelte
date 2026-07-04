@@ -1,7 +1,6 @@
 <script>
 	export let action;
 	export let editAction;
-	export let requestToken;
 	export let clientEditorButtonCaption;
 	export let clientEditorCaption;
 	export let clientUuid;
@@ -11,6 +10,7 @@
 	import ClientEditor from "./ClientEditor.svelte";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
+	import { requestToken } from "../lib/stores";
 
 	$: show = false;
 	$: loading = false;
@@ -30,7 +30,7 @@
 				method: clientUuid ? "PATCH" : "POST",
 				body: JSON.stringify(client),
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			});
@@ -56,7 +56,6 @@
 	<Overlay {loading}>
 		<ClientEditor
 			{action}
-			{requestToken}
 			onCancel={() => (show = false)}
 			onSubmit={save}
 			{clientEditorButtonCaption}

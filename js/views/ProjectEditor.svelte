@@ -1,6 +1,5 @@
 <script>
 	export let action;
-	export let requestToken;
 	export let clientName;
 	export let isServer;
 	export let onCancel;
@@ -10,6 +9,7 @@
 	export let editProjectData;
 
 	import { translate } from "@nextcloud/l10n";
+	import { requestToken } from "../lib/stores";
 
 	let name = editProjectData ? editProjectData.name : "";
 
@@ -40,7 +40,7 @@
 			<strong>{clientName}</strong>
 		</label>
 		<br />
-		<input type="hidden" name="requesttoken" value={requestToken} />
+		<input type="hidden" name="requesttoken" value={$requestToken} />
 		<div class="tm-oc-dialog-buttonrow twobuttons reverse">
 			<button type="submit" class="button primary">{projectEditorButtonCaption}</button>
 			{#if !isServer}

@@ -3,12 +3,12 @@
 	export let deleteUuid;
 	export let deleteButtonCaption;
 	export let deleteQuestion;
-	export let requestToken;
 
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import Overlay from "./Overlay.svelte";
 	import { translate } from "@nextcloud/l10n";
+	import { requestToken } from "../lib/stores";
 
 	$: confirmation = false;
 	let form;
@@ -48,6 +48,6 @@
 
 <form action={deleteAction} bind:this={form} method="post">
 	<input type="hidden" name="uuid" value={deleteUuid} />
-	<input type="hidden" name="requesttoken" value={requestToken} />
+	<input type="hidden" name="requesttoken" value={$requestToken} />
 	<button type="submit" name="action" value="delete" class="btn">{deleteButtonCaption}</button>
 </form>

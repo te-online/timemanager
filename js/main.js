@@ -18,9 +18,16 @@ import { Helpers } from "./lib/helpers";
 import { PagePjax } from "./lib/pjax";
 import { translate } from "@nextcloud/l10n";
 import { format, parseISO } from "date-fns";
+import { requestToken } from "./lib/stores";
 import * as auth from "@nextcloud/auth";
 import "../css/timemanager.scss";
+
 const token = auth.getRequestToken();
+requestToken.set(token);
+auth.onRequestTokenUpdate((token) => {
+	requestToken.set(token)
+});
+
 const components = [];
 let pjax;
 
@@ -82,7 +89,6 @@ const init = () => {
 			props: {
 				...store,
 				action: "",
-				requestToken: token,
 			},
 		}),
 	);
@@ -93,7 +99,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -104,7 +109,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -115,7 +119,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -126,7 +129,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -137,7 +139,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -148,7 +149,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='ShareStatus.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -164,7 +164,6 @@ const init = () => {
 					props: {
 						...store,
 						deleteTimeEntryUuid: button.getAttribute("data-uuid"),
-						requestToken: token,
 					},
 				}),
 			);
@@ -185,7 +184,6 @@ const init = () => {
 						editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
 						timeEditorButtonCaption: translate("timemanager", "Edit"),
 						timeEditorCaption: translate("timemanager", "Edit time entry"),
-						requestToken: token,
 					},
 				}),
 			);
@@ -198,7 +196,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -214,7 +211,6 @@ const init = () => {
 						uuid: button.getAttribute("data-uuid"),
 						action: button.getAttribute("data-action"),
 						initialState: button.getAttribute("data-initialState"),
-						requestToken: token,
 					},
 				}),
 			);
@@ -234,7 +230,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='Import.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -245,7 +240,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='UserFilterButton.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		}),
 	);
@@ -256,7 +250,6 @@ const init = () => {
 			selector: "#content.app-timemanager [data-svelte='Settings.svelte']",
 			props: {
 				...store,
-				requestToken: token,
 			},
 		})
 	);

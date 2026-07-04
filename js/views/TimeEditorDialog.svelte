@@ -4,7 +4,6 @@
 	export let action;
 	export let editTimeEntryAction;
 	export let timeUuid;
-	export let requestToken;
 	export let clientName;
 	export let projectName;
 	export let taskName;
@@ -21,6 +20,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { parseISO, format } from "date-fns";
+	import { requestToken } from "../lib/stores";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -47,7 +47,7 @@
 				method: timeUuid ? "PATCH" : "POST",
 				body: JSON.stringify(entry),
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			});
@@ -75,7 +75,6 @@
 	<Overlay {loading}>
 		<TimeEditor
 			{action}
-			{requestToken}
 			onCancel={() => (show = false)}
 			onSubmit={save}
 			{clientName}

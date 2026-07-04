@@ -2,8 +2,8 @@
 	export let uuid;
 	export let initialState;
 	export let action;
-	export let requestToken;
 
+	import { requestToken } from "../lib/stores";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 
@@ -21,7 +21,7 @@
 				method: "POST",
 				body: JSON.stringify({ uuid }),
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			});

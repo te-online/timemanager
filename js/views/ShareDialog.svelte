@@ -3,7 +3,6 @@
 	export let deleteShareAction;
 	export let sharees;
 	export let clientUuid;
-	export let requestToken;
 	export let userId;
 
 	import Select from "svelte-select";
@@ -12,6 +11,7 @@
 	import Overlay from "./Overlay.svelte";
 	import { translate } from "@nextcloud/l10n";
 	import { generateOcsUrl, generateUrl } from "@nextcloud/router";
+	import { requestToken } from "../lib/stores";
 
 	$: dialogVisible = false;
 	$: loading = false;
@@ -49,7 +49,7 @@
 			generateOcsUrl(`apps/files_sharing/api/v1/sharees?search=${query}&format=json&perPage=20&itemType=[0]`),
 			{
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			},
@@ -138,7 +138,7 @@
 							<form action={deleteShareAction} method="post">
 								<input type="hidden" name="client_uuid" value={clientUuid} />
 								<input type="hidden" name="uuid" value={sharee.uuid} />
-								<input type="hidden" name="requesttoken" value={requestToken} />
+								<input type="hidden" name="requesttoken" value={$requestToken} />
 								<button type="submit" name="action" value="delete" class="btn small">
 									{translate("timemanager", "Delete")}
 								</button>
@@ -179,6 +179,6 @@
 		name="group_id"
 		value={selectedSharee && selectedSharee.value.shareType === 1 ? selectedSharee.value.shareWith : ""}
 	/>
-	<input type="hidden" name="requesttoken" value={requestToken} />
+	<input type="hidden" name="requesttoken" value={$requestToken} />
 	<button type="submit" name="action" value="share" class="btn">{translate("timemanager", "Share client")}</button>
 </form>

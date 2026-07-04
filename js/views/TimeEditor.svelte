@@ -1,6 +1,5 @@
 <script>
 	export let action;
-	export let requestToken;
 	export let clientName;
 	export let projectName;
 	export let taskName;
@@ -18,6 +17,7 @@
 	import { Helpers } from "../lib/helpers";
 	import { InputMethods } from "../lib/constants";
 	import { format, parseISO } from "date-fns";
+	import { requestToken } from "../lib/stores";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const timeFormat = "HH:mm";
@@ -183,7 +183,7 @@
 		</label>
 
 		<br />
-		<input type="hidden" name="requesttoken" value={requestToken} />
+		<input type="hidden" name="requesttoken" value={$requestToken} />
 		<div class="tm-oc-dialog-buttonrow twobuttons reverse">
 			<button type="submit" class="button primary">{timeEditorButtonCaption}</button>
 			{#if !isServer}

@@ -2,7 +2,6 @@
 	import { InputMethods } from "../lib/constants";
 
 	export let action;
-	export let requestToken;
 	export let clients;
 	export let projects;
 	export let tasks;
@@ -18,6 +17,7 @@
 	import { format, isDate, parse, parseISO, startOfDay } from "date-fns";
 	import { generateUrl } from "@nextcloud/router";
 	import { Helpers } from "../lib/helpers";
+	import { requestToken } from "../lib/stores";
 
 	const localeOptions = Helpers.getDateLocaleOptions();
 	const dateFormat = "yyyy-MM-dd";
@@ -356,7 +356,7 @@
 				method: "POST",
 				body: JSON.stringify(entry),
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			});

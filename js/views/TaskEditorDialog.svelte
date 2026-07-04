@@ -1,7 +1,6 @@
 <script>
 	export let action;
 	export let editAction;
-	export let requestToken;
 	export let clientName;
 	export let projectName;
 	export let isServer;
@@ -14,6 +13,7 @@
 	import TaskEditor from "./TaskEditor.svelte";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
+	import { requestToken } from "../lib/stores";
 
 	$: show = false;
 	$: loading = false;
@@ -33,7 +33,7 @@
 				method: taskUuid ? "PATCH" : "POST",
 				body: JSON.stringify(task),
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			});
@@ -55,7 +55,6 @@
 	<Overlay {loading}>
 		<TaskEditor
 			{action}
-			{requestToken}
 			onCancel={() => (show = false)}
 			onSubmit={save}
 			{clientName}

@@ -1,13 +1,13 @@
 <script>
 	import { translate } from "@nextcloud/l10n";
 	import { InputMethods } from "../lib/constants";
+	import { requestToken } from "../lib/stores";
 
 	export let isServer;
 	export let settings = {
 		timemanager_input_method: InputMethods.decimal,
 	};
 	export let settingsAction;
-	export let requestToken;
 
 	let inputMethod = settings.timemanager_input_method ?? InputMethods.decimal;
 
@@ -20,7 +20,7 @@
 			{
 				method: 'POST',
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 				body: JSON.stringify({

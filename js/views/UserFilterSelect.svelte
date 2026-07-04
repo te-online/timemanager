@@ -1,5 +1,4 @@
 <script>
-	export let requestToken;
 	export let isVisible = true;
 	export let form = undefined;
 
@@ -9,6 +8,7 @@
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { isFilterSet } from "../lib/stores";
+	import { requestToken } from "../lib/stores";
 
 	let selectedSharee;
 	$: loading = false;
@@ -46,7 +46,7 @@
 			generateOcsUrl(`apps/files_sharing/api/v1/sharees?search=${query}&format=json&perPage=20&itemType=[0]`),
 			{
 				headers: {
-					requesttoken: requestToken,
+					requesttoken: $requestToken,
 					"content-type": "application/json",
 				},
 			},

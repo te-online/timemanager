@@ -1,5 +1,4 @@
 <script>
-	export let requestToken;
 	export let startOfMonth;
 	export let endOfMonth;
 	export let updateUrlWithTimerange;
@@ -109,7 +108,7 @@
 </script>
 
 <div class={`reports-timerange${loading ? " icon-loading" : ""}`}>
-	<UserFilterSelect {requestToken} form="filters-form" />
+	<UserFilterSelect form="filters-form" />
 
 	<label for="start" class="start">
 		{translate("timemanager", "From")}

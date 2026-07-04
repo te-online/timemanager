@@ -1,6 +1,4 @@
 <script>
-	export let requestToken;
-
 	import { onMount } from "svelte";
 	import { isFilterSet } from "../lib/stores";
 	import { translate } from "@nextcloud/l10n";
@@ -62,6 +60,6 @@
 </button>
 {#if showTooltip}
 	<div class="popover" use:popperContent={extraOpts}>
-		<UserFilterSelect isVisible={showTooltip} {requestToken} />
+		<UserFilterSelect isVisible={showTooltip} />
 	</div>
 {/if}

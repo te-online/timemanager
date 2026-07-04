@@ -1,6 +1,5 @@
 <script>
 	export let action;
-	export let requestToken;
 	export let isServer;
 	export let onCancel;
 	export let onSubmit;
@@ -9,6 +8,7 @@
 	export let editClientData;
 
 	import { translate } from "@nextcloud/l10n";
+	import { requestToken } from "../lib/stores";
 
 	let name = editClientData ? editClientData.name : "";
 	let note = editClientData ? editClientData.note : "";
@@ -45,7 +45,7 @@
 				placeholder=""
 				on:input={(e) => (note = e.target.value)}>{note}</textarea>
 		</label>
-		<input type="hidden" name="requesttoken" value={requestToken} />
+		<input type="hidden" name="requesttoken" value={$requestToken} />
 		<div class="tm-oc-dialog-buttonrow twobuttons reverse">
 			<button type="submit" class="button primary">{clientEditorButtonCaption}</button>
 			{#if !isServer}

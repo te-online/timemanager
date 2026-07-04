@@ -2,13 +2,13 @@
 	export let clients;
 	export let projects;
 	export let tasks;
-	export let requestToken;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
 	import { Helpers } from "../lib/helpers";
 	import { translate } from "@nextcloud/l10n";
 	import Timerange from "./Timerange.svelte";
+	import { requestToken } from "../lib/stores";
 
 	$: loading = false;
 	$: availableProjects = projects;
@@ -186,4 +186,4 @@
 		/>
 	</label>
 </form>
-<Timerange {updateUrlWithTimerange} {requestToken} />
+<Timerange {updateUrlWithTimerange} />
