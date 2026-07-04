@@ -15697,6 +15697,84 @@
       return Helpers;
     }();
 
+    const subscriber_queue = [];
+
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     *
+     * https://svelte.dev/docs/svelte-store#writable
+     * @template T
+     * @param {T} [value] initial value
+     * @param {import('./public.js').StartStopNotifier<T>} [start]
+     * @returns {import('./public.js').Writable<T>}
+     */
+    function writable(value, start = noop$1) {
+      /** @type {import('./public.js').Unsubscriber} */
+      let stop;
+      /** @type {Set<import('./private.js').SubscribeInvalidateTuple<T>>} */
+      const subscribers = new Set();
+      /** @param {T} new_value
+       * @returns {void}
+       */
+      function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+          value = new_value;
+          if (stop) {
+            // store is ready
+            const run_queue = !subscriber_queue.length;
+            for (const subscriber of subscribers) {
+              subscriber[1]();
+              subscriber_queue.push(subscriber, value);
+            }
+            if (run_queue) {
+              for (let i = 0; i < subscriber_queue.length; i += 2) {
+                subscriber_queue[i][0](subscriber_queue[i + 1]);
+              }
+              subscriber_queue.length = 0;
+            }
+          }
+        }
+      }
+
+      /**
+       * @param {import('./public.js').Updater<T>} fn
+       * @returns {void}
+       */
+      function update(fn) {
+        set(fn(value));
+      }
+
+      /**
+       * @param {import('./public.js').Subscriber<T>} run
+       * @param {import('./private.js').Invalidator<T>} [invalidate]
+       * @returns {import('./public.js').Unsubscriber}
+       */
+      function subscribe(run, invalidate = noop$1) {
+        /** @type {import('./private.js').SubscribeInvalidateTuple<T>} */
+        const subscriber = [run, invalidate];
+        subscribers.add(subscriber);
+        if (subscribers.size === 1) {
+          stop = start(set, update) || noop$1;
+        }
+        run(value);
+        return () => {
+          subscribers.delete(subscriber);
+          if (subscribers.size === 0 && stop) {
+            stop();
+            stop = null;
+          }
+        };
+      }
+      return {
+        set,
+        update,
+        subscribe
+      };
+    }
+
+    var isFilterSet = writable(false);
+    var requestToken = writable('');
+
     function get_each_context$8(ctx, list, i) {
       var child_ctx = ctx.slice();
       child_ctx[28] = list[i];
@@ -16089,7 +16167,7 @@
           append(span2, t12);
           append(span2, button1);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default(/*click_handler*/ctx[19])), listen(button1, "click", prevent_default(/*click_handler_2*/ctx[21]))];
+            dispose = [listen(button0, "click", prevent_default(/*click_handler*/ctx[18])), listen(button1, "click", prevent_default(/*click_handler_2*/ctx[20]))];
             mounted = true;
           }
         },
@@ -16136,7 +16214,7 @@
         m(target, anchor) {
           insert(target, button, anchor);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[20]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[19]));
             mounted = true;
           }
         },
@@ -16291,8 +16369,11 @@
       var startCursor;
       var endCursor;
       var currentWeek;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(23, $requestToken = $$value);
+      });
       var statsApiUrl = $$props.statsApiUrl;
-      var requestToken = $$props.requestToken;
       var _$$props$controls = $$props.controls,
         controls = _$$props$controls === void 0 ? true : _$$props$controls;
       var _$$props$includeShare = $$props.includeShared,
@@ -16459,7 +16540,7 @@
                 return fetch(statUrl, {
                   method: "GET",
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
@@ -16537,18 +16618,17 @@
       };
       $$self.$$set = function ($$props) {
         if ('statsApiUrl' in $$props) $$invalidate(13, statsApiUrl = $$props.statsApiUrl);
-        if ('requestToken' in $$props) $$invalidate(14, requestToken = $$props.requestToken);
         if ('controls' in $$props) $$invalidate(0, controls = $$props.controls);
-        if ('includeShared' in $$props) $$invalidate(15, includeShared = $$props.includeShared);
-        if ('settings' in $$props) $$invalidate(16, settings = $$props.settings);
-        if ('start' in $$props) $$invalidate(17, start = $$props.start);
-        if ('end' in $$props) $$invalidate(18, end = $$props.end);
+        if ('includeShared' in $$props) $$invalidate(14, includeShared = $$props.includeShared);
+        if ('settings' in $$props) $$invalidate(15, settings = $$props.settings);
+        if ('start' in $$props) $$invalidate(16, start = $$props.start);
+        if ('end' in $$props) $$invalidate(17, end = $$props.end);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*start*/131072) {
+        if ($$self.$$.dirty & /*start*/65536) {
           $$invalidate(1, startCursor = isDate$1(parse$3(start, dateFormat$4, new Date())) ? parse$3(start, dateFormat$4, new Date()) : startOfWeek(new Date(), localeOptions));
         }
-        if ($$self.$$.dirty & /*end*/262144) {
+        if ($$self.$$.dirty & /*end*/131072) {
           endCursor = isDate$1(parse$3(end, dateFormat$4, new Date())) ? parse$3(end, dateFormat$4, new Date()) : endOfWeek(new Date(), localeOptions);
         }
       };
@@ -16559,7 +16639,7 @@
       $$invalidate(4, todayTotal = 0);
       $$invalidate(6, highest = 0);
       $$invalidate(7, currentWeek = null);
-      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, getFormattedTotal, statsApiUrl, requestToken, includeShared, settings, start, end, click_handler, click_handler_1, click_handler_2];
+      return [controls, startCursor, loading, points, todayTotal, weekTotal, highest, currentWeek, simpleRounding, localeOptions, weekNavigation, formatDateForScale, getFormattedTotal, statsApiUrl, includeShared, settings, start, end, click_handler, click_handler_1, click_handler_2];
     }
     var Statistics = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Statistics, _SvelteComponent);
@@ -16570,12 +16650,11 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$s, create_fragment$t, safe_not_equal, {
           statsApiUrl: 13,
-          requestToken: 14,
           controls: 0,
-          includeShared: 15,
-          settings: 16,
-          start: 17,
-          end: 18
+          includeShared: 14,
+          settings: 15,
+          start: 16,
+          end: 17
         });
         return _this;
       }
@@ -16682,7 +16761,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function(/*onCancel*/ctx[3])) /*onCancel*/ctx[3].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[2])) /*onCancel*/ctx[2].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -16729,12 +16808,12 @@
       var t12;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[2] && create_if_block$j(ctx);
+      var if_block = ! /*isServer*/ctx[1] && create_if_block$j(ctx);
       return {
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1(/*clientEditorCaption*/ctx[5]);
+          t0 = text$1(/*clientEditorCaption*/ctx[4]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -16755,7 +16834,7 @@
           t10 = space$1();
           div0 = element("div");
           button = element("button");
-          t11 = text$1(/*clientEditorButtonCaption*/ctx[4]);
+          t11 = text$1(/*clientEditorButtonCaption*/ctx[3]);
           t12 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -16770,11 +16849,11 @@
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
           attr(textarea, "placeholder", "");
-          textarea.value = /*note*/ctx[7];
+          textarea.value = /*note*/ctx[6];
           attr(label1, "class", "space-top");
           attr(input1, "type", "hidden");
           attr(input1, "name", "requesttoken");
-          input1.value = /*requestToken*/ctx[1];
+          input1.value = /*$requestToken*/ctx[7];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
@@ -16794,7 +16873,7 @@
           append(label0, br0);
           append(label0, t4);
           append(label0, input0);
-          set_input_value(input0, /*name*/ctx[6]);
+          set_input_value(input0, /*name*/ctx[5]);
           append(form, t5);
           append(form, label1);
           append(label1, t6);
@@ -16819,18 +16898,18 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (dirty & /*clientEditorCaption*/32) set_data(t0, /*clientEditorCaption*/ctx[5]);
-          if (dirty & /*name*/64 && input0.value !== /*name*/ctx[6]) {
-            set_input_value(input0, /*name*/ctx[6]);
+          if (dirty & /*clientEditorCaption*/16) set_data(t0, /*clientEditorCaption*/ctx[4]);
+          if (dirty & /*name*/32 && input0.value !== /*name*/ctx[5]) {
+            set_input_value(input0, /*name*/ctx[5]);
           }
-          if (dirty & /*note*/128) {
-            textarea.value = /*note*/ctx[7];
+          if (dirty & /*note*/64) {
+            textarea.value = /*note*/ctx[6];
           }
-          if (dirty & /*requestToken*/2) {
-            input1.value = /*requestToken*/ctx[1];
+          if (dirty & /*$requestToken*/128) {
+            input1.value = /*$requestToken*/ctx[7];
           }
-          if (dirty & /*clientEditorButtonCaption*/16) set_data(t11, /*clientEditorButtonCaption*/ctx[4]);
-          if (! /*isServer*/ctx[2]) {
+          if (dirty & /*clientEditorButtonCaption*/8) set_data(t11, /*clientEditorButtonCaption*/ctx[3]);
+          if (! /*isServer*/ctx[1]) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -16859,8 +16938,11 @@
       };
     }
     function instance$q($$self, $$props, $$invalidate) {
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(7, $requestToken = $$value);
+      });
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var isServer = $$props.isServer;
       var onCancel = $$props.onCancel;
       var onSubmit = $$props.onSubmit;
@@ -16877,22 +16959,21 @@
       };
       function input0_input_handler() {
         name = this.value;
-        $$invalidate(6, name);
+        $$invalidate(5, name);
       }
       var input_handler = function input_handler(e) {
-        return $$invalidate(7, note = e.target.value);
+        return $$invalidate(6, note = e.target.value);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('isServer' in $$props) $$invalidate(2, isServer = $$props.isServer);
-        if ('onCancel' in $$props) $$invalidate(3, onCancel = $$props.onCancel);
+        if ('isServer' in $$props) $$invalidate(1, isServer = $$props.isServer);
+        if ('onCancel' in $$props) $$invalidate(2, onCancel = $$props.onCancel);
         if ('onSubmit' in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
-        if ('clientEditorButtonCaption' in $$props) $$invalidate(4, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
-        if ('clientEditorCaption' in $$props) $$invalidate(5, clientEditorCaption = $$props.clientEditorCaption);
+        if ('clientEditorButtonCaption' in $$props) $$invalidate(3, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
+        if ('clientEditorCaption' in $$props) $$invalidate(4, clientEditorCaption = $$props.clientEditorCaption);
         if ('editClientData' in $$props) $$invalidate(10, editClientData = $$props.editClientData);
       };
-      return [action, requestToken, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, submit, onSubmit, editClientData, input0_input_handler, input_handler];
+      return [action, isServer, onCancel, clientEditorButtonCaption, clientEditorCaption, name, note, $requestToken, submit, onSubmit, editClientData, input0_input_handler, input_handler];
     }
     var ClientEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(ClientEditor, _SvelteComponent);
@@ -16903,12 +16984,11 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$q, create_fragment$r, safe_not_equal, {
           action: 0,
-          requestToken: 1,
-          isServer: 2,
-          onCancel: 3,
+          isServer: 1,
+          onCancel: 2,
           onSubmit: 9,
-          clientEditorButtonCaption: 4,
-          clientEditorCaption: 5,
+          clientEditorButtonCaption: 3,
+          clientEditorCaption: 4,
           editClientData: 10
         });
         return _this;
@@ -16921,7 +17001,7 @@
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[5],
+          loading: /*loading*/ctx[4],
           $$slots: {
             default: [create_default_slot$8]
           },
@@ -16940,8 +17020,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/32) overlay_changes.loading = /*loading*/ctx[5];
-          if (dirty & /*$$scope, action, requestToken, show, clientEditorButtonCaption, clientEditorCaption, editClientData*/4191) {
+          if (dirty & /*loading*/16) overlay_changes.loading = /*loading*/ctx[4];
+          if (dirty & /*$$scope, action, show, clientEditorButtonCaption, clientEditorCaption, editClientData*/4143) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -16971,12 +17051,11 @@
       clienteditor = new ClientEditor({
         props: {
           action: /*action*/ctx[0],
-          requestToken: /*requestToken*/ctx[1],
-          onCancel: /*func*/ctx[11],
-          onSubmit: /*save*/ctx[7],
-          clientEditorButtonCaption: /*clientEditorButtonCaption*/ctx[2],
-          clientEditorCaption: /*clientEditorCaption*/ctx[3],
-          editClientData: /*editClientData*/ctx[4]
+          onCancel: /*func*/ctx[10],
+          onSubmit: /*save*/ctx[6],
+          clientEditorButtonCaption: /*clientEditorButtonCaption*/ctx[1],
+          clientEditorCaption: /*clientEditorCaption*/ctx[2],
+          editClientData: /*editClientData*/ctx[3]
         }
       });
       return {
@@ -16990,11 +17069,10 @@
         p(ctx, dirty) {
           var clienteditor_changes = {};
           if (dirty & /*action*/1) clienteditor_changes.action = /*action*/ctx[0];
-          if (dirty & /*requestToken*/2) clienteditor_changes.requestToken = /*requestToken*/ctx[1];
-          if (dirty & /*show*/64) clienteditor_changes.onCancel = /*func*/ctx[11];
-          if (dirty & /*clientEditorButtonCaption*/4) clienteditor_changes.clientEditorButtonCaption = /*clientEditorButtonCaption*/ctx[2];
-          if (dirty & /*clientEditorCaption*/8) clienteditor_changes.clientEditorCaption = /*clientEditorCaption*/ctx[3];
-          if (dirty & /*editClientData*/16) clienteditor_changes.editClientData = /*editClientData*/ctx[4];
+          if (dirty & /*show*/32) clienteditor_changes.onCancel = /*func*/ctx[10];
+          if (dirty & /*clientEditorButtonCaption*/2) clienteditor_changes.clientEditorButtonCaption = /*clientEditorButtonCaption*/ctx[1];
+          if (dirty & /*clientEditorCaption*/4) clienteditor_changes.clientEditorCaption = /*clientEditorCaption*/ctx[2];
+          if (dirty & /*editClientData*/8) clienteditor_changes.editClientData = /*editClientData*/ctx[3];
           clienteditor.$set(clienteditor_changes);
         },
         i(local) {
@@ -17020,12 +17098,12 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[6] && create_if_block$i(ctx);
+      var if_block = /*show*/ctx[5] && create_if_block$i(ctx);
       return {
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1(/*clientEditorButtonCaption*/ctx[2]);
+          t0 = text$1(/*clientEditorButtonCaption*/ctx[1]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -17041,18 +17119,18 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[10]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[9]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*clientEditorButtonCaption*/4) set_data(t0, /*clientEditorButtonCaption*/ctx[2]);
-          if (/*show*/ctx[6]) {
+          if (!current || dirty & /*clientEditorButtonCaption*/2) set_data(t0, /*clientEditorButtonCaption*/ctx[1]);
+          if (/*show*/ctx[5]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*show*/64) {
+              if (dirty & /*show*/32) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -17093,9 +17171,12 @@
     function instance$p($$self, $$props, $$invalidate) {
       var show;
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(11, $requestToken = $$value);
+      });
       var action = $$props.action;
       var editAction = $$props.editAction;
-      var requestToken = $$props.requestToken;
       var clientEditorButtonCaption = $$props.clientEditorButtonCaption;
       var clientEditorCaption = $$props.clientEditorCaption;
       var clientUuid = $$props.clientUuid;
@@ -17112,7 +17193,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(5, loading = true);
+                  $$invalidate(4, loading = true);
                   _context.prev = 1;
                   client = {
                     name,
@@ -17128,14 +17209,14 @@
                     method: clientUuid ? "PATCH" : "POST",
                     body: JSON.stringify(client),
                     headers: {
-                      requesttoken: requestToken,
+                      requesttoken: $requestToken,
                       "content-type": "application/json"
                     }
                   });
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(6, show = false);
+                    $$invalidate(5, show = false);
                     if (clientUuid) {
                       document.querySelector(".app-timemanager [data-current-link]").click();
                     } else {
@@ -17149,7 +17230,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(5, loading = false);
+                  $$invalidate(4, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -17162,23 +17243,22 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(6, show = !show);
+        return $$invalidate(5, show = !show);
       };
       var func = function func() {
-        return $$invalidate(6, show = false);
+        return $$invalidate(5, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editAction' in $$props) $$invalidate(8, editAction = $$props.editAction);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientEditorButtonCaption' in $$props) $$invalidate(2, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
-        if ('clientEditorCaption' in $$props) $$invalidate(3, clientEditorCaption = $$props.clientEditorCaption);
-        if ('clientUuid' in $$props) $$invalidate(9, clientUuid = $$props.clientUuid);
-        if ('editClientData' in $$props) $$invalidate(4, editClientData = $$props.editClientData);
+        if ('editAction' in $$props) $$invalidate(7, editAction = $$props.editAction);
+        if ('clientEditorButtonCaption' in $$props) $$invalidate(1, clientEditorButtonCaption = $$props.clientEditorButtonCaption);
+        if ('clientEditorCaption' in $$props) $$invalidate(2, clientEditorCaption = $$props.clientEditorCaption);
+        if ('clientUuid' in $$props) $$invalidate(8, clientUuid = $$props.clientUuid);
+        if ('editClientData' in $$props) $$invalidate(3, editClientData = $$props.editClientData);
       };
-      $$invalidate(6, show = false);
-      $$invalidate(5, loading = false);
-      return [action, requestToken, clientEditorButtonCaption, clientEditorCaption, editClientData, loading, show, save, editAction, clientUuid, click_handler, func];
+      $$invalidate(5, show = false);
+      $$invalidate(4, loading = false);
+      return [action, clientEditorButtonCaption, clientEditorCaption, editClientData, loading, show, save, editAction, clientUuid, click_handler, func];
     }
     var ClientEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(ClientEditorDialog, _SvelteComponent);
@@ -17189,12 +17269,11 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$p, create_fragment$q, safe_not_equal, {
           action: 0,
-          editAction: 8,
-          requestToken: 1,
-          clientEditorButtonCaption: 2,
-          clientEditorCaption: 3,
-          clientUuid: 9,
-          editClientData: 4
+          editAction: 7,
+          clientEditorButtonCaption: 1,
+          clientEditorCaption: 2,
+          clientUuid: 8,
+          editClientData: 3
         });
         return _this;
       }
@@ -17216,7 +17295,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function(/*onCancel*/ctx[4])) /*onCancel*/ctx[4].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[3])) /*onCancel*/ctx[3].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -17266,12 +17345,12 @@
       var t14;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[3] && create_if_block$h(ctx);
+      var if_block = ! /*isServer*/ctx[2] && create_if_block$h(ctx);
       return {
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1(/*projectEditorCaption*/ctx[6]);
+          t0 = text$1(/*projectEditorCaption*/ctx[5]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -17287,7 +17366,7 @@
           br1 = element("br");
           t8 = space$1();
           strong = element("strong");
-          t9 = text$1(/*clientName*/ctx[2]);
+          t9 = text$1(/*clientName*/ctx[1]);
           t10 = space$1();
           br2 = element("br");
           t11 = space$1();
@@ -17295,7 +17374,7 @@
           t12 = space$1();
           div0 = element("div");
           button = element("button");
-          t13 = text$1(/*projectEditorButtonCaption*/ctx[5]);
+          t13 = text$1(/*projectEditorButtonCaption*/ctx[4]);
           t14 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -17309,7 +17388,7 @@
           attr(label1, "class", "space-top");
           attr(input1, "type", "hidden");
           attr(input1, "name", "requesttoken");
-          input1.value = /*requestToken*/ctx[1];
+          input1.value = /*$requestToken*/ctx[7];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
@@ -17329,7 +17408,7 @@
           append(label0, br0);
           append(label0, t4);
           append(label0, input0);
-          set_input_value(input0, /*name*/ctx[7]);
+          set_input_value(input0, /*name*/ctx[6]);
           append(form, t5);
           append(form, label1);
           append(label1, t6);
@@ -17357,16 +17436,16 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (dirty & /*projectEditorCaption*/64) set_data(t0, /*projectEditorCaption*/ctx[6]);
-          if (dirty & /*name*/128 && input0.value !== /*name*/ctx[7]) {
-            set_input_value(input0, /*name*/ctx[7]);
+          if (dirty & /*projectEditorCaption*/32) set_data(t0, /*projectEditorCaption*/ctx[5]);
+          if (dirty & /*name*/64 && input0.value !== /*name*/ctx[6]) {
+            set_input_value(input0, /*name*/ctx[6]);
           }
-          if (dirty & /*clientName*/4) set_data(t9, /*clientName*/ctx[2]);
-          if (dirty & /*requestToken*/2) {
-            input1.value = /*requestToken*/ctx[1];
+          if (dirty & /*clientName*/2) set_data(t9, /*clientName*/ctx[1]);
+          if (dirty & /*$requestToken*/128) {
+            input1.value = /*$requestToken*/ctx[7];
           }
-          if (dirty & /*projectEditorButtonCaption*/32) set_data(t13, /*projectEditorButtonCaption*/ctx[5]);
-          if (! /*isServer*/ctx[3]) {
+          if (dirty & /*projectEditorButtonCaption*/16) set_data(t13, /*projectEditorButtonCaption*/ctx[4]);
+          if (! /*isServer*/ctx[2]) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -17395,8 +17474,11 @@
       };
     }
     function instance$o($$self, $$props, $$invalidate) {
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(7, $requestToken = $$value);
+      });
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var isServer = $$props.isServer;
       var onCancel = $$props.onCancel;
@@ -17412,20 +17494,19 @@
       };
       function input0_input_handler() {
         name = this.value;
-        $$invalidate(7, name);
+        $$invalidate(6, name);
       }
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
-        if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
-        if ('onCancel' in $$props) $$invalidate(4, onCancel = $$props.onCancel);
+        if ('clientName' in $$props) $$invalidate(1, clientName = $$props.clientName);
+        if ('isServer' in $$props) $$invalidate(2, isServer = $$props.isServer);
+        if ('onCancel' in $$props) $$invalidate(3, onCancel = $$props.onCancel);
         if ('onSubmit' in $$props) $$invalidate(9, onSubmit = $$props.onSubmit);
-        if ('projectEditorButtonCaption' in $$props) $$invalidate(5, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
-        if ('projectEditorCaption' in $$props) $$invalidate(6, projectEditorCaption = $$props.projectEditorCaption);
+        if ('projectEditorButtonCaption' in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+        if ('projectEditorCaption' in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
         if ('editProjectData' in $$props) $$invalidate(10, editProjectData = $$props.editProjectData);
       };
-      return [action, requestToken, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, submit, onSubmit, editProjectData, input0_input_handler];
+      return [action, clientName, isServer, onCancel, projectEditorButtonCaption, projectEditorCaption, name, $requestToken, submit, onSubmit, editProjectData, input0_input_handler];
     }
     var ProjectEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(ProjectEditor, _SvelteComponent);
@@ -17436,13 +17517,12 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$o, create_fragment$p, safe_not_equal, {
           action: 0,
-          requestToken: 1,
-          clientName: 2,
-          isServer: 3,
-          onCancel: 4,
+          clientName: 1,
+          isServer: 2,
+          onCancel: 3,
           onSubmit: 9,
-          projectEditorButtonCaption: 5,
-          projectEditorCaption: 6,
+          projectEditorButtonCaption: 4,
+          projectEditorCaption: 5,
           editProjectData: 10
         });
         return _this;
@@ -17455,7 +17535,7 @@
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[7],
+          loading: /*loading*/ctx[6],
           $$slots: {
             default: [create_default_slot$7]
           },
@@ -17474,8 +17554,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/128) overlay_changes.loading = /*loading*/ctx[7];
-          if (dirty & /*$$scope, action, requestToken, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData*/16767) {
+          if (dirty & /*loading*/64) overlay_changes.loading = /*loading*/ctx[6];
+          if (dirty & /*$$scope, action, show, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData*/16575) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -17505,14 +17585,13 @@
       projecteditor = new ProjectEditor({
         props: {
           action: /*action*/ctx[0],
-          requestToken: /*requestToken*/ctx[1],
-          onCancel: /*func*/ctx[13],
-          onSubmit: /*save*/ctx[9],
-          clientName: /*clientName*/ctx[2],
-          isServer: /*isServer*/ctx[3],
-          projectEditorButtonCaption: /*projectEditorButtonCaption*/ctx[4],
-          projectEditorCaption: /*projectEditorCaption*/ctx[5],
-          editProjectData: /*editProjectData*/ctx[6]
+          onCancel: /*func*/ctx[12],
+          onSubmit: /*save*/ctx[8],
+          clientName: /*clientName*/ctx[1],
+          isServer: /*isServer*/ctx[2],
+          projectEditorButtonCaption: /*projectEditorButtonCaption*/ctx[3],
+          projectEditorCaption: /*projectEditorCaption*/ctx[4],
+          editProjectData: /*editProjectData*/ctx[5]
         }
       });
       return {
@@ -17526,13 +17605,12 @@
         p(ctx, dirty) {
           var projecteditor_changes = {};
           if (dirty & /*action*/1) projecteditor_changes.action = /*action*/ctx[0];
-          if (dirty & /*requestToken*/2) projecteditor_changes.requestToken = /*requestToken*/ctx[1];
-          if (dirty & /*show*/256) projecteditor_changes.onCancel = /*func*/ctx[13];
-          if (dirty & /*clientName*/4) projecteditor_changes.clientName = /*clientName*/ctx[2];
-          if (dirty & /*isServer*/8) projecteditor_changes.isServer = /*isServer*/ctx[3];
-          if (dirty & /*projectEditorButtonCaption*/16) projecteditor_changes.projectEditorButtonCaption = /*projectEditorButtonCaption*/ctx[4];
-          if (dirty & /*projectEditorCaption*/32) projecteditor_changes.projectEditorCaption = /*projectEditorCaption*/ctx[5];
-          if (dirty & /*editProjectData*/64) projecteditor_changes.editProjectData = /*editProjectData*/ctx[6];
+          if (dirty & /*show*/128) projecteditor_changes.onCancel = /*func*/ctx[12];
+          if (dirty & /*clientName*/2) projecteditor_changes.clientName = /*clientName*/ctx[1];
+          if (dirty & /*isServer*/4) projecteditor_changes.isServer = /*isServer*/ctx[2];
+          if (dirty & /*projectEditorButtonCaption*/8) projecteditor_changes.projectEditorButtonCaption = /*projectEditorButtonCaption*/ctx[3];
+          if (dirty & /*projectEditorCaption*/16) projecteditor_changes.projectEditorCaption = /*projectEditorCaption*/ctx[4];
+          if (dirty & /*editProjectData*/32) projecteditor_changes.editProjectData = /*editProjectData*/ctx[5];
           projecteditor.$set(projecteditor_changes);
         },
         i(local) {
@@ -17558,12 +17636,12 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[8] && create_if_block$g(ctx);
+      var if_block = /*show*/ctx[7] && create_if_block$g(ctx);
       return {
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1(/*projectEditorButtonCaption*/ctx[4]);
+          t0 = text$1(/*projectEditorButtonCaption*/ctx[3]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -17579,18 +17657,18 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[12]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[11]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*projectEditorButtonCaption*/16) set_data(t0, /*projectEditorButtonCaption*/ctx[4]);
-          if (/*show*/ctx[8]) {
+          if (!current || dirty & /*projectEditorButtonCaption*/8) set_data(t0, /*projectEditorButtonCaption*/ctx[3]);
+          if (/*show*/ctx[7]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*show*/256) {
+              if (dirty & /*show*/128) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -17631,9 +17709,12 @@
     function instance$n($$self, $$props, $$invalidate) {
       var show;
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(13, $requestToken = $$value);
+      });
       var action = $$props.action;
       var editAction = $$props.editAction;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var isServer = $$props.isServer;
       var projectEditorButtonCaption = $$props.projectEditorButtonCaption;
@@ -17651,7 +17732,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(7, loading = true);
+                  $$invalidate(6, loading = true);
                   _context.prev = 1;
                   project = {
                     name
@@ -17666,14 +17747,14 @@
                     method: projectUuid ? "PATCH" : "POST",
                     body: JSON.stringify(project),
                     headers: {
-                      requesttoken: requestToken,
+                      requesttoken: $requestToken,
                       "content-type": "application/json"
                     }
                   });
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(8, show = false);
+                    $$invalidate(7, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
                   _context.next = 13;
@@ -17683,7 +17764,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(7, loading = false);
+                  $$invalidate(6, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -17696,25 +17777,24 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(8, show = !show);
+        return $$invalidate(7, show = !show);
       };
       var func = function func() {
-        return $$invalidate(8, show = false);
+        return $$invalidate(7, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editAction' in $$props) $$invalidate(10, editAction = $$props.editAction);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
-        if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
-        if ('projectEditorButtonCaption' in $$props) $$invalidate(4, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
-        if ('projectEditorCaption' in $$props) $$invalidate(5, projectEditorCaption = $$props.projectEditorCaption);
-        if ('projectUuid' in $$props) $$invalidate(11, projectUuid = $$props.projectUuid);
-        if ('editProjectData' in $$props) $$invalidate(6, editProjectData = $$props.editProjectData);
+        if ('editAction' in $$props) $$invalidate(9, editAction = $$props.editAction);
+        if ('clientName' in $$props) $$invalidate(1, clientName = $$props.clientName);
+        if ('isServer' in $$props) $$invalidate(2, isServer = $$props.isServer);
+        if ('projectEditorButtonCaption' in $$props) $$invalidate(3, projectEditorButtonCaption = $$props.projectEditorButtonCaption);
+        if ('projectEditorCaption' in $$props) $$invalidate(4, projectEditorCaption = $$props.projectEditorCaption);
+        if ('projectUuid' in $$props) $$invalidate(10, projectUuid = $$props.projectUuid);
+        if ('editProjectData' in $$props) $$invalidate(5, editProjectData = $$props.editProjectData);
       };
-      $$invalidate(8, show = false);
-      $$invalidate(7, loading = false);
-      return [action, requestToken, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, loading, show, save, editAction, projectUuid, click_handler, func];
+      $$invalidate(7, show = false);
+      $$invalidate(6, loading = false);
+      return [action, clientName, isServer, projectEditorButtonCaption, projectEditorCaption, editProjectData, loading, show, save, editAction, projectUuid, click_handler, func];
     }
     var ProjectEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(ProjectEditorDialog, _SvelteComponent);
@@ -17725,14 +17805,13 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$n, create_fragment$o, safe_not_equal, {
           action: 0,
-          editAction: 10,
-          requestToken: 1,
-          clientName: 2,
-          isServer: 3,
-          projectEditorButtonCaption: 4,
-          projectEditorCaption: 5,
-          projectUuid: 11,
-          editProjectData: 6
+          editAction: 9,
+          clientName: 1,
+          isServer: 2,
+          projectEditorButtonCaption: 3,
+          projectEditorCaption: 4,
+          projectUuid: 10,
+          editProjectData: 5
         });
         return _this;
       }
@@ -17754,7 +17833,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function(/*onCancel*/ctx[5])) /*onCancel*/ctx[5].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[4])) /*onCancel*/ctx[4].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -17813,12 +17892,12 @@
       var t19;
       var mounted;
       var dispose;
-      var if_block = ! /*isServer*/ctx[4] && create_if_block$f(ctx);
+      var if_block = ! /*isServer*/ctx[3] && create_if_block$f(ctx);
       return {
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1(/*taskEditorCaption*/ctx[7]);
+          t0 = text$1(/*taskEditorCaption*/ctx[6]);
           t1 = space$1();
           form = element("form");
           label0 = element("label");
@@ -17834,7 +17913,7 @@
           br1 = element("br");
           t8 = space$1();
           strong0 = element("strong");
-          t9 = text$1(/*projectName*/ctx[3]);
+          t9 = text$1(/*projectName*/ctx[2]);
           t10 = space$1();
           label2 = element("label");
           t11 = text$1(t11_value);
@@ -17842,7 +17921,7 @@
           br2 = element("br");
           t13 = space$1();
           strong1 = element("strong");
-          t14 = text$1(/*clientName*/ctx[2]);
+          t14 = text$1(/*clientName*/ctx[1]);
           t15 = space$1();
           br3 = element("br");
           t16 = space$1();
@@ -17850,7 +17929,7 @@
           t17 = space$1();
           div0 = element("div");
           button = element("button");
-          t18 = text$1(/*taskEditorButtonCaption*/ctx[6]);
+          t18 = text$1(/*taskEditorButtonCaption*/ctx[5]);
           t19 = space$1();
           if (if_block) if_block.c();
           input0.autofocus = true;
@@ -17865,7 +17944,7 @@
           attr(label2, "class", "space-top");
           attr(input1, "type", "hidden");
           attr(input1, "name", "requesttoken");
-          input1.value = /*requestToken*/ctx[1];
+          input1.value = /*$requestToken*/ctx[8];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
@@ -17885,7 +17964,7 @@
           append(label0, br0);
           append(label0, t4);
           append(label0, input0);
-          set_input_value(input0, /*name*/ctx[8]);
+          set_input_value(input0, /*name*/ctx[7]);
           append(form, t5);
           append(form, label1);
           append(label1, t6);
@@ -17921,17 +18000,17 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (dirty & /*taskEditorCaption*/128) set_data(t0, /*taskEditorCaption*/ctx[7]);
-          if (dirty & /*name*/256 && input0.value !== /*name*/ctx[8]) {
-            set_input_value(input0, /*name*/ctx[8]);
+          if (dirty & /*taskEditorCaption*/64) set_data(t0, /*taskEditorCaption*/ctx[6]);
+          if (dirty & /*name*/128 && input0.value !== /*name*/ctx[7]) {
+            set_input_value(input0, /*name*/ctx[7]);
           }
-          if (dirty & /*projectName*/8) set_data(t9, /*projectName*/ctx[3]);
-          if (dirty & /*clientName*/4) set_data(t14, /*clientName*/ctx[2]);
-          if (dirty & /*requestToken*/2) {
-            input1.value = /*requestToken*/ctx[1];
+          if (dirty & /*projectName*/4) set_data(t9, /*projectName*/ctx[2]);
+          if (dirty & /*clientName*/2) set_data(t14, /*clientName*/ctx[1]);
+          if (dirty & /*$requestToken*/256) {
+            input1.value = /*$requestToken*/ctx[8];
           }
-          if (dirty & /*taskEditorButtonCaption*/64) set_data(t18, /*taskEditorButtonCaption*/ctx[6]);
-          if (! /*isServer*/ctx[4]) {
+          if (dirty & /*taskEditorButtonCaption*/32) set_data(t18, /*taskEditorButtonCaption*/ctx[5]);
+          if (! /*isServer*/ctx[3]) {
             if (if_block) {
               if_block.p(ctx, dirty);
             } else {
@@ -17960,8 +18039,11 @@
       };
     }
     function instance$m($$self, $$props, $$invalidate) {
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(8, $requestToken = $$value);
+      });
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var isServer = $$props.isServer;
@@ -17978,21 +18060,20 @@
       };
       function input0_input_handler() {
         name = this.value;
-        $$invalidate(8, name);
+        $$invalidate(7, name);
       }
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
-        if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
-        if ('isServer' in $$props) $$invalidate(4, isServer = $$props.isServer);
-        if ('onCancel' in $$props) $$invalidate(5, onCancel = $$props.onCancel);
+        if ('clientName' in $$props) $$invalidate(1, clientName = $$props.clientName);
+        if ('projectName' in $$props) $$invalidate(2, projectName = $$props.projectName);
+        if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
+        if ('onCancel' in $$props) $$invalidate(4, onCancel = $$props.onCancel);
         if ('onSubmit' in $$props) $$invalidate(10, onSubmit = $$props.onSubmit);
-        if ('taskEditorButtonCaption' in $$props) $$invalidate(6, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
-        if ('taskEditorCaption' in $$props) $$invalidate(7, taskEditorCaption = $$props.taskEditorCaption);
+        if ('taskEditorButtonCaption' in $$props) $$invalidate(5, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
+        if ('taskEditorCaption' in $$props) $$invalidate(6, taskEditorCaption = $$props.taskEditorCaption);
         if ('editTaskData' in $$props) $$invalidate(11, editTaskData = $$props.editTaskData);
       };
-      return [action, requestToken, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, submit, onSubmit, editTaskData, input0_input_handler];
+      return [action, clientName, projectName, isServer, onCancel, taskEditorButtonCaption, taskEditorCaption, name, $requestToken, submit, onSubmit, editTaskData, input0_input_handler];
     }
     var TaskEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TaskEditor, _SvelteComponent);
@@ -18003,14 +18084,13 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$m, create_fragment$n, safe_not_equal, {
           action: 0,
-          requestToken: 1,
-          clientName: 2,
-          projectName: 3,
-          isServer: 4,
-          onCancel: 5,
+          clientName: 1,
+          projectName: 2,
+          isServer: 3,
+          onCancel: 4,
           onSubmit: 10,
-          taskEditorButtonCaption: 6,
-          taskEditorCaption: 7,
+          taskEditorButtonCaption: 5,
+          taskEditorCaption: 6,
           editTaskData: 11
         });
         return _this;
@@ -18023,7 +18103,7 @@
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[8],
+          loading: /*loading*/ctx[7],
           $$slots: {
             default: [create_default_slot$6]
           },
@@ -18042,8 +18122,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/256) overlay_changes.loading = /*loading*/ctx[8];
-          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData*/33535) {
+          if (dirty & /*loading*/128) overlay_changes.loading = /*loading*/ctx[7];
+          if (dirty & /*$$scope, action, show, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData*/33151) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -18073,15 +18153,14 @@
       taskeditor = new TaskEditor({
         props: {
           action: /*action*/ctx[0],
-          requestToken: /*requestToken*/ctx[1],
-          onCancel: /*func*/ctx[14],
-          onSubmit: /*save*/ctx[10],
-          clientName: /*clientName*/ctx[2],
-          projectName: /*projectName*/ctx[3],
-          isServer: /*isServer*/ctx[4],
-          taskEditorButtonCaption: /*taskEditorButtonCaption*/ctx[5],
-          taskEditorCaption: /*taskEditorCaption*/ctx[6],
-          editTaskData: /*editTaskData*/ctx[7]
+          onCancel: /*func*/ctx[13],
+          onSubmit: /*save*/ctx[9],
+          clientName: /*clientName*/ctx[1],
+          projectName: /*projectName*/ctx[2],
+          isServer: /*isServer*/ctx[3],
+          taskEditorButtonCaption: /*taskEditorButtonCaption*/ctx[4],
+          taskEditorCaption: /*taskEditorCaption*/ctx[5],
+          editTaskData: /*editTaskData*/ctx[6]
         }
       });
       return {
@@ -18095,14 +18174,13 @@
         p(ctx, dirty) {
           var taskeditor_changes = {};
           if (dirty & /*action*/1) taskeditor_changes.action = /*action*/ctx[0];
-          if (dirty & /*requestToken*/2) taskeditor_changes.requestToken = /*requestToken*/ctx[1];
-          if (dirty & /*show*/512) taskeditor_changes.onCancel = /*func*/ctx[14];
-          if (dirty & /*clientName*/4) taskeditor_changes.clientName = /*clientName*/ctx[2];
-          if (dirty & /*projectName*/8) taskeditor_changes.projectName = /*projectName*/ctx[3];
-          if (dirty & /*isServer*/16) taskeditor_changes.isServer = /*isServer*/ctx[4];
-          if (dirty & /*taskEditorButtonCaption*/32) taskeditor_changes.taskEditorButtonCaption = /*taskEditorButtonCaption*/ctx[5];
-          if (dirty & /*taskEditorCaption*/64) taskeditor_changes.taskEditorCaption = /*taskEditorCaption*/ctx[6];
-          if (dirty & /*editTaskData*/128) taskeditor_changes.editTaskData = /*editTaskData*/ctx[7];
+          if (dirty & /*show*/256) taskeditor_changes.onCancel = /*func*/ctx[13];
+          if (dirty & /*clientName*/2) taskeditor_changes.clientName = /*clientName*/ctx[1];
+          if (dirty & /*projectName*/4) taskeditor_changes.projectName = /*projectName*/ctx[2];
+          if (dirty & /*isServer*/8) taskeditor_changes.isServer = /*isServer*/ctx[3];
+          if (dirty & /*taskEditorButtonCaption*/16) taskeditor_changes.taskEditorButtonCaption = /*taskEditorButtonCaption*/ctx[4];
+          if (dirty & /*taskEditorCaption*/32) taskeditor_changes.taskEditorCaption = /*taskEditorCaption*/ctx[5];
+          if (dirty & /*editTaskData*/64) taskeditor_changes.editTaskData = /*editTaskData*/ctx[6];
           taskeditor.$set(taskeditor_changes);
         },
         i(local) {
@@ -18128,12 +18206,12 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*show*/ctx[9] && create_if_block$e(ctx);
+      var if_block = /*show*/ctx[8] && create_if_block$e(ctx);
       return {
         c() {
           a = element("a");
           span = element("span");
-          t0 = text$1(/*taskEditorButtonCaption*/ctx[5]);
+          t0 = text$1(/*taskEditorButtonCaption*/ctx[4]);
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
@@ -18149,18 +18227,18 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[13]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[12]));
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*taskEditorButtonCaption*/32) set_data(t0, /*taskEditorButtonCaption*/ctx[5]);
-          if (/*show*/ctx[9]) {
+          if (!current || dirty & /*taskEditorButtonCaption*/16) set_data(t0, /*taskEditorButtonCaption*/ctx[4]);
+          if (/*show*/ctx[8]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*show*/512) {
+              if (dirty & /*show*/256) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -18201,9 +18279,12 @@
     function instance$l($$self, $$props, $$invalidate) {
       var show;
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(14, $requestToken = $$value);
+      });
       var action = $$props.action;
       var editAction = $$props.editAction;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var isServer = $$props.isServer;
@@ -18222,7 +18303,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(8, loading = true);
+                  $$invalidate(7, loading = true);
                   _context.prev = 1;
                   task = {
                     name
@@ -18237,14 +18318,14 @@
                     method: taskUuid ? "PATCH" : "POST",
                     body: JSON.stringify(task),
                     headers: {
-                      requesttoken: requestToken,
+                      requesttoken: $requestToken,
                       "content-type": "application/json"
                     }
                   });
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(9, show = false);
+                    $$invalidate(8, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
                   _context.next = 13;
@@ -18254,7 +18335,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(8, loading = false);
+                  $$invalidate(7, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -18267,26 +18348,25 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(9, show = !show);
+        return $$invalidate(8, show = !show);
       };
       var func = function func() {
-        return $$invalidate(9, show = false);
+        return $$invalidate(8, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editAction' in $$props) $$invalidate(11, editAction = $$props.editAction);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
-        if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
-        if ('isServer' in $$props) $$invalidate(4, isServer = $$props.isServer);
-        if ('taskEditorButtonCaption' in $$props) $$invalidate(5, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
-        if ('taskEditorCaption' in $$props) $$invalidate(6, taskEditorCaption = $$props.taskEditorCaption);
-        if ('taskUuid' in $$props) $$invalidate(12, taskUuid = $$props.taskUuid);
-        if ('editTaskData' in $$props) $$invalidate(7, editTaskData = $$props.editTaskData);
+        if ('editAction' in $$props) $$invalidate(10, editAction = $$props.editAction);
+        if ('clientName' in $$props) $$invalidate(1, clientName = $$props.clientName);
+        if ('projectName' in $$props) $$invalidate(2, projectName = $$props.projectName);
+        if ('isServer' in $$props) $$invalidate(3, isServer = $$props.isServer);
+        if ('taskEditorButtonCaption' in $$props) $$invalidate(4, taskEditorButtonCaption = $$props.taskEditorButtonCaption);
+        if ('taskEditorCaption' in $$props) $$invalidate(5, taskEditorCaption = $$props.taskEditorCaption);
+        if ('taskUuid' in $$props) $$invalidate(11, taskUuid = $$props.taskUuid);
+        if ('editTaskData' in $$props) $$invalidate(6, editTaskData = $$props.editTaskData);
       };
-      $$invalidate(9, show = false);
-      $$invalidate(8, loading = false);
-      return [action, requestToken, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, loading, show, save, editAction, taskUuid, click_handler, func];
+      $$invalidate(8, show = false);
+      $$invalidate(7, loading = false);
+      return [action, clientName, projectName, isServer, taskEditorButtonCaption, taskEditorCaption, editTaskData, loading, show, save, editAction, taskUuid, click_handler, func];
     }
     var TaskEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TaskEditorDialog, _SvelteComponent);
@@ -18297,15 +18377,14 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$l, create_fragment$m, safe_not_equal, {
           action: 0,
-          editAction: 11,
-          requestToken: 1,
-          clientName: 2,
-          projectName: 3,
-          isServer: 4,
-          taskEditorButtonCaption: 5,
-          taskEditorCaption: 6,
-          taskUuid: 12,
-          editTaskData: 7
+          editAction: 10,
+          clientName: 1,
+          projectName: 2,
+          isServer: 3,
+          taskEditorButtonCaption: 4,
+          taskEditorCaption: 5,
+          taskUuid: 11,
+          editTaskData: 6
         });
         return _this;
       }
@@ -18468,7 +18547,7 @@
           append(label, br);
           append(label, t2);
           append(label, input);
-          set_input_value(input, /*durationTimeString*/ctx[14]);
+          set_input_value(input, /*durationTimeString*/ctx[13]);
           input.focus();
           if (!mounted) {
             dispose = [listen(input, "input", /*input_input_handler_1*/ctx[24]), listen(input, "input", /*input_handler_1*/ctx[25])];
@@ -18476,8 +18555,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*durationTimeString*/16384 && input.value !== /*durationTimeString*/ctx[14]) {
-            set_input_value(input, /*durationTimeString*/ctx[14]);
+          if (dirty[0] & /*durationTimeString*/8192 && input.value !== /*durationTimeString*/ctx[13]) {
+            set_input_value(input, /*durationTimeString*/ctx[13]);
           }
         },
         d(detaching) {
@@ -18523,7 +18602,7 @@
           append(label, br);
           append(label, t2);
           append(label, input);
-          set_input_value(input, /*duration*/ctx[10]);
+          set_input_value(input, /*duration*/ctx[9]);
           input.focus();
           if (!mounted) {
             dispose = [listen(input, "input", /*input_input_handler*/ctx[22]), listen(input, "input", /*input_handler*/ctx[23])];
@@ -18531,8 +18610,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*duration*/1024 && input.value !== /*duration*/ctx[10]) {
-            set_input_value(input, /*duration*/ctx[10]);
+          if (dirty[0] & /*duration*/512 && input.value !== /*duration*/ctx[9]) {
+            set_input_value(input, /*duration*/ctx[9]);
           }
         },
         d(detaching) {
@@ -18561,7 +18640,7 @@
           insert(target, button, anchor);
           if (!mounted) {
             dispose = listen(button, "click", prevent_default(function () {
-              if (is_function(/*onCancel*/ctx[6])) /*onCancel*/ctx[6].apply(this, arguments);
+              if (is_function(/*onCancel*/ctx[5])) /*onCancel*/ctx[5].apply(this, arguments);
             }));
             mounted = true;
           }
@@ -18662,13 +18741,13 @@
       var t40;
       var mounted;
       var dispose;
-      var if_block0 = ! /*isServer*/ctx[5] && create_if_block_1$7(ctx);
-      var if_block1 = ! /*isServer*/ctx[5] && create_if_block$d(ctx);
+      var if_block0 = ! /*isServer*/ctx[4] && create_if_block_1$7(ctx);
+      var if_block1 = ! /*isServer*/ctx[4] && create_if_block$d(ctx);
       return {
         c() {
           div1 = element("div");
           h3 = element("h3");
-          t0 = text$1(/*timeEditorCaption*/ctx[7]);
+          t0 = text$1(/*timeEditorCaption*/ctx[6]);
           t1 = space$1();
           form = element("form");
           span1 = element("span");
@@ -18715,7 +18794,7 @@
           br7 = element("br");
           t24 = space$1();
           strong0 = element("strong");
-          t25 = text$1(/*taskName*/ctx[4]);
+          t25 = text$1(/*taskName*/ctx[3]);
           t26 = space$1();
           label5 = element("label");
           t27 = text$1(t27_value);
@@ -18723,7 +18802,7 @@
           br8 = element("br");
           t29 = space$1();
           strong1 = element("strong");
-          t30 = text$1(/*projectName*/ctx[3]);
+          t30 = text$1(/*projectName*/ctx[2]);
           t31 = space$1();
           label6 = element("label");
           t32 = text$1(t32_value);
@@ -18731,7 +18810,7 @@
           br9 = element("br");
           t34 = space$1();
           strong2 = element("strong");
-          t35 = text$1(/*clientName*/ctx[2]);
+          t35 = text$1(/*clientName*/ctx[1]);
           t36 = space$1();
           br10 = element("br");
           t37 = space$1();
@@ -18739,7 +18818,7 @@
           t38 = space$1();
           div0 = element("div");
           button = element("button");
-          t39 = text$1(/*timeEditorButtonCaption*/ctx[8]);
+          t39 = text$1(/*timeEditorButtonCaption*/ctx[7]);
           t40 = space$1();
           if (if_block1) if_block1.c();
           attr(input0, "type", "time");
@@ -18764,13 +18843,13 @@
           attr(textarea, "class", "input-wide");
           attr(textarea, "name", "note");
           attr(textarea, "placeholder", translate('timemanager', 'Describe what you did...'));
-          textarea.value = /*note*/ctx[13];
+          textarea.value = /*note*/ctx[12];
           attr(label4, "class", "space-top");
           attr(label5, "class", "space-top");
           attr(label6, "class", "space-top");
           attr(input3, "type", "hidden");
           attr(input3, "name", "requesttoken");
-          input3.value = /*requestToken*/ctx[1];
+          input3.value = /*$requestToken*/ctx[15];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(div0, "class", "tm-oc-dialog-buttonrow twobuttons reverse");
@@ -18794,7 +18873,7 @@
           append(label0, br0);
           append(label0, t5);
           append(label0, input0);
-          set_input_value(input0, /*startTime*/ctx[11]);
+          set_input_value(input0, /*startTime*/ctx[10]);
           append(span0, t6);
           append(span0, label1);
           append(label1, t7);
@@ -18802,7 +18881,7 @@
           append(label1, br1);
           append(label1, t9);
           append(label1, input1);
-          set_input_value(input1, /*endTime*/ctx[12]);
+          set_input_value(input1, /*endTime*/ctx[11]);
           append(form, t10);
           append(form, br2);
           append(form, t11);
@@ -18812,7 +18891,7 @@
           append(label2, br3);
           append(label2, t14);
           append(label2, input2);
-          set_input_value(input2, /*date*/ctx[9]);
+          set_input_value(input2, /*date*/ctx[8]);
           append(form, t15);
           append(form, br4);
           append(form, t16);
@@ -18864,8 +18943,8 @@
           }
         },
         p(ctx, dirty) {
-          if (dirty[0] & /*timeEditorCaption*/128) set_data(t0, /*timeEditorCaption*/ctx[7]);
-          if (! /*isServer*/ctx[5]) {
+          if (dirty[0] & /*timeEditorCaption*/64) set_data(t0, /*timeEditorCaption*/ctx[6]);
+          if (! /*isServer*/ctx[4]) {
             if (if_block0) {
               if_block0.p(ctx, dirty);
             } else {
@@ -18877,26 +18956,26 @@
             if_block0.d(1);
             if_block0 = null;
           }
-          if (dirty[0] & /*startTime*/2048) {
-            set_input_value(input0, /*startTime*/ctx[11]);
+          if (dirty[0] & /*startTime*/1024) {
+            set_input_value(input0, /*startTime*/ctx[10]);
           }
-          if (dirty[0] & /*endTime*/4096) {
-            set_input_value(input1, /*endTime*/ctx[12]);
+          if (dirty[0] & /*endTime*/2048) {
+            set_input_value(input1, /*endTime*/ctx[11]);
           }
-          if (dirty[0] & /*date*/512) {
-            set_input_value(input2, /*date*/ctx[9]);
+          if (dirty[0] & /*date*/256) {
+            set_input_value(input2, /*date*/ctx[8]);
           }
-          if (dirty[0] & /*note*/8192) {
-            textarea.value = /*note*/ctx[13];
+          if (dirty[0] & /*note*/4096) {
+            textarea.value = /*note*/ctx[12];
           }
-          if (dirty[0] & /*taskName*/16) set_data(t25, /*taskName*/ctx[4]);
-          if (dirty[0] & /*projectName*/8) set_data(t30, /*projectName*/ctx[3]);
-          if (dirty[0] & /*clientName*/4) set_data(t35, /*clientName*/ctx[2]);
-          if (dirty[0] & /*requestToken*/2) {
-            input3.value = /*requestToken*/ctx[1];
+          if (dirty[0] & /*taskName*/8) set_data(t25, /*taskName*/ctx[3]);
+          if (dirty[0] & /*projectName*/4) set_data(t30, /*projectName*/ctx[2]);
+          if (dirty[0] & /*clientName*/2) set_data(t35, /*clientName*/ctx[1]);
+          if (dirty[0] & /*$requestToken*/32768) {
+            input3.value = /*$requestToken*/ctx[15];
           }
-          if (dirty[0] & /*timeEditorButtonCaption*/256) set_data(t39, /*timeEditorButtonCaption*/ctx[8]);
-          if (! /*isServer*/ctx[5]) {
+          if (dirty[0] & /*timeEditorButtonCaption*/128) set_data(t39, /*timeEditorButtonCaption*/ctx[7]);
+          if (! /*isServer*/ctx[4]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
             } else {
@@ -18929,8 +19008,11 @@
     var dateFormat$3 = "yyyy-MM-dd";
     function instance$k($$self, $$props, $$invalidate) {
       var _settings$timemanager;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(15, $requestToken = $$value);
+      });
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var taskName = $$props.taskName;
@@ -18969,76 +19051,75 @@
       };
       function input_input_handler() {
         duration = this.value;
-        $$invalidate(10, duration);
+        $$invalidate(9, duration);
       }
       var input_handler = function input_handler() {
-        $$invalidate(10, duration = Helpers.normalizeDuration(duration));
-        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
+        $$invalidate(9, duration = Helpers.normalizeDuration(duration));
+        $$invalidate(13, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
         if (hasDate) {
-          $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+          $$invalidate(11, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
         } else {
-          $$invalidate(11, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
+          $$invalidate(10, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
         }
       };
       function input_input_handler_1() {
         durationTimeString = this.value;
-        $$invalidate(14, durationTimeString);
+        $$invalidate(13, durationTimeString);
       }
       var input_handler_1 = function input_handler_1() {
         var computedDuration = Helpers.convertTimeDurationToDecimals(durationTimeString);
         if (durationTimeString.match(/[^0-9:]/)) {
-          $$invalidate(14, durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, ''));
+          $$invalidate(13, durationTimeString = durationTimeString.replaceAll(/[^0-9:]/g, ''));
         }
         if (isNaN(computedDuration) || computedDuration > 24) {
-          $$invalidate(14, durationTimeString = backupDurationTimeString);
+          $$invalidate(13, durationTimeString = backupDurationTimeString);
           return;
         }
-        $$invalidate(10, duration = computedDuration);
-        $$invalidate(15, backupDurationTimeString = durationTimeString);
+        $$invalidate(9, duration = computedDuration);
+        $$invalidate(14, backupDurationTimeString = durationTimeString);
         if (hasDate) {
-          $$invalidate(12, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
+          $$invalidate(11, endTime = Helpers.calculateEndTime(startTime, parseFloat(duration)));
         } else {
-          $$invalidate(11, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
+          $$invalidate(10, startTime = Helpers.calculateStartTime(endTime, parseFloat(duration)));
         }
       };
       function input0_input_handler() {
         startTime = this.value;
-        $$invalidate(11, startTime);
+        $$invalidate(10, startTime);
       }
       var input_handler_2 = function input_handler_2() {
-        $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
-        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
+        $$invalidate(9, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(13, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
       };
       function input1_input_handler() {
         endTime = this.value;
-        $$invalidate(12, endTime);
+        $$invalidate(11, endTime);
       }
       var input_handler_3 = function input_handler_3() {
-        $$invalidate(10, duration = Helpers.calculateDuration(startTime, endTime));
-        $$invalidate(14, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
+        $$invalidate(9, duration = Helpers.calculateDuration(startTime, endTime));
+        $$invalidate(13, durationTimeString = Helpers.convertDecimalsToTimeDuration(duration));
       };
       function input2_input_handler() {
         date = this.value;
-        $$invalidate(9, date);
+        $$invalidate(8, date);
       }
       var input_handler_4 = function input_handler_4(e) {
-        return $$invalidate(13, note = e.target.value);
+        return $$invalidate(12, note = e.target.value);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
-        if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
-        if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
-        if ('isServer' in $$props) $$invalidate(5, isServer = $$props.isServer);
-        if ('onCancel' in $$props) $$invalidate(6, onCancel = $$props.onCancel);
+        if ('clientName' in $$props) $$invalidate(1, clientName = $$props.clientName);
+        if ('projectName' in $$props) $$invalidate(2, projectName = $$props.projectName);
+        if ('taskName' in $$props) $$invalidate(3, taskName = $$props.taskName);
+        if ('isServer' in $$props) $$invalidate(4, isServer = $$props.isServer);
+        if ('onCancel' in $$props) $$invalidate(5, onCancel = $$props.onCancel);
         if ('onSubmit' in $$props) $$invalidate(19, onSubmit = $$props.onSubmit);
         if ('editTimeEntryData' in $$props) $$invalidate(20, editTimeEntryData = $$props.editTimeEntryData);
-        if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
-        if ('timeEditorButtonCaption' in $$props) $$invalidate(8, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+        if ('timeEditorCaption' in $$props) $$invalidate(6, timeEditorCaption = $$props.timeEditorCaption);
+        if ('timeEditorButtonCaption' in $$props) $$invalidate(7, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
         if ('settings' in $$props) $$invalidate(21, settings = $$props.settings);
       };
-      return [action, requestToken, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, backupDurationTimeString, hasDate, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
+      return [action, clientName, projectName, taskName, isServer, onCancel, timeEditorCaption, timeEditorButtonCaption, date, duration, startTime, endTime, note, durationTimeString, backupDurationTimeString, $requestToken, hasDate, inputMethod, submit, onSubmit, editTimeEntryData, settings, input_input_handler, input_handler, input_input_handler_1, input_handler_1, input0_input_handler, input_handler_2, input1_input_handler, input_handler_3, input2_input_handler, input_handler_4];
     }
     var TimeEditor = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditor, _SvelteComponent);
@@ -19049,16 +19130,15 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$k, create_fragment$l, safe_not_equal, {
           action: 0,
-          requestToken: 1,
-          clientName: 2,
-          projectName: 3,
-          taskName: 4,
-          isServer: 5,
-          onCancel: 6,
+          clientName: 1,
+          projectName: 2,
+          taskName: 3,
+          isServer: 4,
+          onCancel: 5,
           onSubmit: 19,
           editTimeEntryData: 20,
-          timeEditorCaption: 7,
-          timeEditorButtonCaption: 8,
+          timeEditorCaption: 6,
+          timeEditorButtonCaption: 7,
           settings: 21
         }, null, [-1, -1]);
         return _this;
@@ -19076,7 +19156,7 @@
         c() {
           div = element("div");
           button = element("button");
-          t = text$1(/*timeEditorButtonCaption*/ctx[6]);
+          t = text$1(/*timeEditorButtonCaption*/ctx[5]);
           attr(button, "type", "button");
           attr(button, "class", "btn");
           attr(div, "class", "tm_inline-hover-form");
@@ -19086,12 +19166,12 @@
           append(div, button);
           append(button, t);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[16]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[15]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty & /*timeEditorButtonCaption*/64) set_data(t, /*timeEditorButtonCaption*/ctx[6]);
+          if (dirty & /*timeEditorButtonCaption*/32) set_data(t, /*timeEditorButtonCaption*/ctx[5]);
         },
         d(detaching) {
           if (detaching) {
@@ -19114,7 +19194,7 @@
         c() {
           a = element("a");
           span = element("span");
-          t = text$1(/*timeEditorButtonCaption*/ctx[6]);
+          t = text$1(/*timeEditorButtonCaption*/ctx[5]);
           attr(a, "href", "#/");
           attr(a, "class", "button primary new");
         },
@@ -19123,12 +19203,12 @@
           append(a, span);
           append(span, t);
           if (!mounted) {
-            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[15]));
+            dispose = listen(a, "click", prevent_default(/*click_handler*/ctx[14]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
-          if (dirty & /*timeEditorButtonCaption*/64) set_data(t, /*timeEditorButtonCaption*/ctx[6]);
+          if (dirty & /*timeEditorButtonCaption*/32) set_data(t, /*timeEditorButtonCaption*/ctx[5]);
         },
         d(detaching) {
           if (detaching) {
@@ -19146,7 +19226,7 @@
       var current;
       overlay = new Overlay({
         props: {
-          loading: /*loading*/ctx[11],
+          loading: /*loading*/ctx[10],
           $$slots: {
             default: [create_default_slot$5]
           },
@@ -19165,8 +19245,8 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*loading*/2048) overlay_changes.loading = /*loading*/ctx[11];
-          if (dirty & /*$$scope, action, requestToken, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings*/530429) {
+          if (dirty & /*loading*/1024) overlay_changes.loading = /*loading*/ctx[10];
+          if (dirty & /*$$scope, action, show, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings*/527357) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -19196,17 +19276,16 @@
       timeeditor = new TimeEditor({
         props: {
           action: /*action*/ctx[0],
-          requestToken: /*requestToken*/ctx[2],
-          onCancel: /*func*/ctx[17],
-          onSubmit: /*save*/ctx[13],
-          clientName: /*clientName*/ctx[3],
-          projectName: /*projectName*/ctx[4],
-          taskName: /*taskName*/ctx[5],
-          timeEditorButtonCaption: /*timeEditorButtonCaption*/ctx[6],
-          timeEditorCaption: /*timeEditorCaption*/ctx[7],
-          editTimeEntryData: /*editTimeEntryData*/ctx[8],
-          isServer: /*isServer*/ctx[9],
-          settings: /*settings*/ctx[10]
+          onCancel: /*func*/ctx[16],
+          onSubmit: /*save*/ctx[12],
+          clientName: /*clientName*/ctx[2],
+          projectName: /*projectName*/ctx[3],
+          taskName: /*taskName*/ctx[4],
+          timeEditorButtonCaption: /*timeEditorButtonCaption*/ctx[5],
+          timeEditorCaption: /*timeEditorCaption*/ctx[6],
+          editTimeEntryData: /*editTimeEntryData*/ctx[7],
+          isServer: /*isServer*/ctx[8],
+          settings: /*settings*/ctx[9]
         }
       });
       return {
@@ -19220,16 +19299,15 @@
         p(ctx, dirty) {
           var timeeditor_changes = {};
           if (dirty & /*action*/1) timeeditor_changes.action = /*action*/ctx[0];
-          if (dirty & /*requestToken*/4) timeeditor_changes.requestToken = /*requestToken*/ctx[2];
-          if (dirty & /*show*/4096) timeeditor_changes.onCancel = /*func*/ctx[17];
-          if (dirty & /*clientName*/8) timeeditor_changes.clientName = /*clientName*/ctx[3];
-          if (dirty & /*projectName*/16) timeeditor_changes.projectName = /*projectName*/ctx[4];
-          if (dirty & /*taskName*/32) timeeditor_changes.taskName = /*taskName*/ctx[5];
-          if (dirty & /*timeEditorButtonCaption*/64) timeeditor_changes.timeEditorButtonCaption = /*timeEditorButtonCaption*/ctx[6];
-          if (dirty & /*timeEditorCaption*/128) timeeditor_changes.timeEditorCaption = /*timeEditorCaption*/ctx[7];
-          if (dirty & /*editTimeEntryData*/256) timeeditor_changes.editTimeEntryData = /*editTimeEntryData*/ctx[8];
-          if (dirty & /*isServer*/512) timeeditor_changes.isServer = /*isServer*/ctx[9];
-          if (dirty & /*settings*/1024) timeeditor_changes.settings = /*settings*/ctx[10];
+          if (dirty & /*show*/2048) timeeditor_changes.onCancel = /*func*/ctx[16];
+          if (dirty & /*clientName*/4) timeeditor_changes.clientName = /*clientName*/ctx[2];
+          if (dirty & /*projectName*/8) timeeditor_changes.projectName = /*projectName*/ctx[3];
+          if (dirty & /*taskName*/16) timeeditor_changes.taskName = /*taskName*/ctx[4];
+          if (dirty & /*timeEditorButtonCaption*/32) timeeditor_changes.timeEditorButtonCaption = /*timeEditorButtonCaption*/ctx[5];
+          if (dirty & /*timeEditorCaption*/64) timeeditor_changes.timeEditorCaption = /*timeEditorCaption*/ctx[6];
+          if (dirty & /*editTimeEntryData*/128) timeeditor_changes.editTimeEntryData = /*editTimeEntryData*/ctx[7];
+          if (dirty & /*isServer*/256) timeeditor_changes.isServer = /*isServer*/ctx[8];
+          if (dirty & /*settings*/512) timeeditor_changes.settings = /*settings*/ctx[9];
           timeeditor.$set(timeeditor_changes);
         },
         i(local) {
@@ -19256,7 +19334,7 @@
       }
       var current_block_type = select_block_type(ctx);
       var if_block0 = current_block_type(ctx);
-      var if_block1 = /*show*/ctx[12] && create_if_block$c(ctx);
+      var if_block1 = /*show*/ctx[11] && create_if_block$c(ctx);
       return {
         c() {
           if_block0.c();
@@ -19284,10 +19362,10 @@
               if_block0.m(t.parentNode, t);
             }
           }
-          if (/*show*/ctx[12]) {
+          if (/*show*/ctx[11]) {
             if (if_block1) {
               if_block1.p(ctx, dirty);
-              if (dirty & /*show*/4096) {
+              if (dirty & /*show*/2048) {
                 transition_in(if_block1, 1);
               }
             } else {
@@ -19327,10 +19405,13 @@
     function instance$j($$self, $$props, $$invalidate) {
       var show;
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(17, $requestToken = $$value);
+      });
       var action = $$props.action;
       var editTimeEntryAction = $$props.editTimeEntryAction;
       var timeUuid = $$props.timeUuid;
-      var requestToken = $$props.requestToken;
       var clientName = $$props.clientName;
       var projectName = $$props.projectName;
       var taskName = $$props.taskName;
@@ -19356,7 +19437,7 @@
             return _regeneratorRuntime().wrap(function _callee$(_context) {
               while (1) switch (_context.prev = _context.next) {
                 case 0:
-                  $$invalidate(11, loading = true);
+                  $$invalidate(10, loading = true);
                   _context.prev = 1;
                   entry = {
                     duration,
@@ -19371,14 +19452,14 @@
                     method: timeUuid ? "PATCH" : "POST",
                     body: JSON.stringify(entry),
                     headers: {
-                      requesttoken: requestToken,
+                      requesttoken: $requestToken,
                       "content-type": "application/json"
                     }
                   });
                 case 6:
                   response = _context.sent;
                   if (response && response.ok) {
-                    $$invalidate(12, show = false);
+                    $$invalidate(11, show = false);
                     document.querySelector(".app-timemanager [data-current-link]").click();
                   }
                   _context.next = 13;
@@ -19388,7 +19469,7 @@
                   _context.t0 = _context["catch"](1);
                   console.error(_context.t0);
                 case 13:
-                  $$invalidate(11, loading = false);
+                  $$invalidate(10, loading = false);
                 case 14:
                 case "end":
                   return _context.stop();
@@ -19401,31 +19482,30 @@
         };
       }();
       var click_handler = function click_handler() {
-        return $$invalidate(12, show = !show);
+        return $$invalidate(11, show = !show);
       };
       var click_handler_1 = function click_handler_1() {
-        return $$invalidate(12, show = !show);
+        return $$invalidate(11, show = !show);
       };
       var func = function func() {
-        return $$invalidate(12, show = false);
+        return $$invalidate(11, show = false);
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(0, action = $$props.action);
-        if ('editTimeEntryAction' in $$props) $$invalidate(14, editTimeEntryAction = $$props.editTimeEntryAction);
+        if ('editTimeEntryAction' in $$props) $$invalidate(13, editTimeEntryAction = $$props.editTimeEntryAction);
         if ('timeUuid' in $$props) $$invalidate(1, timeUuid = $$props.timeUuid);
-        if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
-        if ('clientName' in $$props) $$invalidate(3, clientName = $$props.clientName);
-        if ('projectName' in $$props) $$invalidate(4, projectName = $$props.projectName);
-        if ('taskName' in $$props) $$invalidate(5, taskName = $$props.taskName);
-        if ('timeEditorButtonCaption' in $$props) $$invalidate(6, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
-        if ('timeEditorCaption' in $$props) $$invalidate(7, timeEditorCaption = $$props.timeEditorCaption);
-        if ('editTimeEntryData' in $$props) $$invalidate(8, editTimeEntryData = $$props.editTimeEntryData);
-        if ('isServer' in $$props) $$invalidate(9, isServer = $$props.isServer);
-        if ('settings' in $$props) $$invalidate(10, settings = $$props.settings);
+        if ('clientName' in $$props) $$invalidate(2, clientName = $$props.clientName);
+        if ('projectName' in $$props) $$invalidate(3, projectName = $$props.projectName);
+        if ('taskName' in $$props) $$invalidate(4, taskName = $$props.taskName);
+        if ('timeEditorButtonCaption' in $$props) $$invalidate(5, timeEditorButtonCaption = $$props.timeEditorButtonCaption);
+        if ('timeEditorCaption' in $$props) $$invalidate(6, timeEditorCaption = $$props.timeEditorCaption);
+        if ('editTimeEntryData' in $$props) $$invalidate(7, editTimeEntryData = $$props.editTimeEntryData);
+        if ('isServer' in $$props) $$invalidate(8, isServer = $$props.isServer);
+        if ('settings' in $$props) $$invalidate(9, settings = $$props.settings);
       };
-      $$invalidate(12, show = false);
-      $$invalidate(11, loading = false);
-      return [action, timeUuid, requestToken, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
+      $$invalidate(11, show = false);
+      $$invalidate(10, loading = false);
+      return [action, timeUuid, clientName, projectName, taskName, timeEditorButtonCaption, timeEditorCaption, editTimeEntryData, isServer, settings, loading, show, save, editTimeEntryAction, click_handler, click_handler_1, func];
     }
     var TimeEditorDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(TimeEditorDialog, _SvelteComponent);
@@ -19436,17 +19516,16 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$j, create_fragment$k, safe_not_equal, {
           action: 0,
-          editTimeEntryAction: 14,
+          editTimeEntryAction: 13,
           timeUuid: 1,
-          requestToken: 2,
-          clientName: 3,
-          projectName: 4,
-          taskName: 5,
-          timeEditorButtonCaption: 6,
-          timeEditorCaption: 7,
-          editTimeEntryData: 8,
-          isServer: 9,
-          settings: 10
+          clientName: 2,
+          projectName: 3,
+          taskName: 4,
+          timeEditorButtonCaption: 5,
+          timeEditorCaption: 6,
+          editTimeEntryData: 7,
+          isServer: 8,
+          settings: 9
         });
         return _this;
       }
@@ -19561,7 +19640,7 @@
       var button;
       var t3;
       var current;
-      var if_block = /*confirmation*/ctx[6] && create_if_block$b(ctx);
+      var if_block = /*confirmation*/ctx[5] && create_if_block$b(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -19578,7 +19657,7 @@
           input0.value = /*deleteUuid*/ctx[1];
           attr(input1, "type", "hidden");
           attr(input1, "name", "requesttoken");
-          input1.value = /*requestToken*/ctx[4];
+          input1.value = /*$requestToken*/ctx[6];
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "delete";
@@ -19603,10 +19682,10 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (/*confirmation*/ctx[6]) {
+          if (/*confirmation*/ctx[5]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*confirmation*/64) {
+              if (dirty & /*confirmation*/32) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -19625,8 +19704,8 @@
           if (!current || dirty & /*deleteUuid*/2) {
             input0.value = /*deleteUuid*/ctx[1];
           }
-          if (!current || dirty & /*requestToken*/16) {
-            input1.value = /*requestToken*/ctx[4];
+          if (!current || dirty & /*$requestToken*/64) {
+            input1.value = /*$requestToken*/ctx[6];
           }
           if (!current || dirty & /*deleteButtonCaption*/4) set_data(t3, /*deleteButtonCaption*/ctx[2]);
           if (!current || dirty & /*deleteAction*/1) {
@@ -19655,11 +19734,14 @@
     }
     function instance$i($$self, $$props, $$invalidate) {
       var confirmation;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(6, $requestToken = $$value);
+      });
       var deleteAction = $$props.deleteAction;
       var deleteUuid = $$props.deleteUuid;
       var deleteButtonCaption = $$props.deleteButtonCaption;
       var deleteQuestion = $$props.deleteQuestion;
-      var requestToken = $$props.requestToken;
       var form;
       onMount(function () {
         Helpers.hideFallbacks("DeleteButton.svelte");
@@ -19667,20 +19749,20 @@
       });
       var submit = function submit(e) {
         e.preventDefault();
-        $$invalidate(6, confirmation = true);
+        $$invalidate(5, confirmation = true);
       };
       var doDelete = function doDelete() {
-        $$invalidate(6, confirmation = false);
+        $$invalidate(5, confirmation = false);
         form.removeEventListener("submit", submit);
         form.submit();
       };
       var cancelDelete = function cancelDelete() {
-        $$invalidate(6, confirmation = false);
+        $$invalidate(5, confirmation = false);
       };
       function form_1_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           form = $$value;
-          $$invalidate(5, form);
+          $$invalidate(4, form);
         });
       }
       $$self.$$set = function ($$props) {
@@ -19688,10 +19770,9 @@
         if ('deleteUuid' in $$props) $$invalidate(1, deleteUuid = $$props.deleteUuid);
         if ('deleteButtonCaption' in $$props) $$invalidate(2, deleteButtonCaption = $$props.deleteButtonCaption);
         if ('deleteQuestion' in $$props) $$invalidate(3, deleteQuestion = $$props.deleteQuestion);
-        if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
       };
-      $$invalidate(6, confirmation = false);
-      return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, requestToken, form, confirmation, doDelete, cancelDelete, form_1_binding];
+      $$invalidate(5, confirmation = false);
+      return [deleteAction, deleteUuid, deleteButtonCaption, deleteQuestion, form, confirmation, $requestToken, doDelete, cancelDelete, form_1_binding];
     }
     var DeleteButton = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(DeleteButton, _SvelteComponent);
@@ -19704,8 +19785,7 @@
           deleteAction: 0,
           deleteUuid: 1,
           deleteButtonCaption: 2,
-          deleteQuestion: 3,
-          requestToken: 4
+          deleteQuestion: 3
         });
         return _this;
       }
@@ -23522,7 +23602,7 @@
         },
         p(ctx, dirty) {
           var overlay_changes = {};
-          if (dirty & /*$$scope, sharees, deleteShareAction, requestToken, clientUuid, loading, selectedSharee*/524638) {
+          if (dirty & /*$$scope, sharees, deleteShareAction, $requestToken, clientUuid, loading, selectedSharee*/524718) {
             overlay_changes.$$scope = {
               dirty,
               ctx
@@ -23673,7 +23753,7 @@
           input1.value = input1_value_value = /*sharee*/ctx[16].uuid;
           attr(input2, "type", "hidden");
           attr(input2, "name", "requesttoken");
-          input2.value = /*requestToken*/ctx[4];
+          input2.value = /*$requestToken*/ctx[8];
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "delete";
@@ -23717,8 +23797,8 @@
           if (dirty & /*sharees*/4 && input1_value_value !== (input1_value_value = /*sharee*/ctx[16].uuid)) {
             input1.value = input1_value_value;
           }
-          if (dirty & /*requestToken*/16) {
-            input2.value = /*requestToken*/ctx[4];
+          if (dirty & /*$requestToken*/256) {
+            input2.value = /*$requestToken*/ctx[8];
           }
           if (dirty & /*deleteShareAction*/2) {
             attr(form_1, "action", /*deleteShareAction*/ctx[1]);
@@ -23764,13 +23844,13 @@
       var dispose;
       select = new Select({
         props: {
-          noOptionsMessage: /*loading*/ctx[8] ? translate("timemanager", "Loading...") : translate("timemanager", "No options"),
+          noOptionsMessage: /*loading*/ctx[7] ? translate("timemanager", "Loading...") : translate("timemanager", "No options"),
           placeholder: translate("timemanager", "Search..."),
           inputAttributes: {
             id: "sharee-select"
           },
           loadOptions: /*search*/ctx[10],
-          value: /*selectedSharee*/ctx[6]
+          value: /*selectedSharee*/ctx[5]
         }
       });
       select.$on("select", /*handleSelectSharee*/ctx[12]);
@@ -23862,8 +23942,8 @@
         },
         p(ctx, dirty) {
           var select_changes = {};
-          if (dirty & /*loading*/256) select_changes.noOptionsMessage = /*loading*/ctx[8] ? translate("timemanager", "Loading...") : translate("timemanager", "No options");
-          if (dirty & /*selectedSharee*/64) select_changes.value = /*selectedSharee*/ctx[6];
+          if (dirty & /*loading*/128) select_changes.noOptionsMessage = /*loading*/ctx[7] ? translate("timemanager", "Loading...") : translate("timemanager", "No options");
+          if (dirty & /*selectedSharee*/32) select_changes.value = /*selectedSharee*/ctx[5];
           select.$set(select_changes);
           if (! /*sharees*/ctx[2] || ! /*sharees*/ctx[2].length) {
             if (if_block) ; else {
@@ -23875,7 +23955,7 @@
             if_block.d(1);
             if_block = null;
           }
-          if (dirty & /*deleteShareAction, requestToken, sharees, clientUuid*/30) {
+          if (dirty & /*deleteShareAction, $requestToken, sharees, clientUuid*/270) {
             each_value = ensure_array_like(/*sharees*/ctx[2]);
             var _i3;
             for (_i3 = 0; _i3 < each_value.length; _i3 += 1) {
@@ -23930,7 +24010,7 @@
       var t4;
       var button;
       var current;
-      var if_block = /*dialogVisible*/ctx[7] && create_if_block$7(ctx);
+      var if_block = /*dialogVisible*/ctx[6] && create_if_block$7(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -23951,13 +24031,13 @@
           input0.value = /*clientUuid*/ctx[3];
           attr(input1, "type", "hidden");
           attr(input1, "name", "user_id");
-          input1.value = input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 0 ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          input1.value = input1_value_value = /*selectedSharee*/ctx[5] && /*selectedSharee*/ctx[5].value.shareType === 0 ? /*selectedSharee*/ctx[5].value.shareWith : "";
           attr(input2, "type", "hidden");
           attr(input2, "name", "group_id");
-          input2.value = input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 1 ? /*selectedSharee*/ctx[6].value.shareWith : "";
+          input2.value = input2_value_value = /*selectedSharee*/ctx[5] && /*selectedSharee*/ctx[5].value.shareType === 1 ? /*selectedSharee*/ctx[5].value.shareWith : "";
           attr(input3, "type", "hidden");
           attr(input3, "name", "requesttoken");
-          input3.value = /*requestToken*/ctx[4];
+          input3.value = /*$requestToken*/ctx[8];
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "share";
@@ -23985,10 +24065,10 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (/*dialogVisible*/ctx[7]) {
+          if (/*dialogVisible*/ctx[6]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*dialogVisible*/128) {
+              if (dirty & /*dialogVisible*/64) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -24007,14 +24087,14 @@
           if (!current || dirty & /*clientUuid*/8) {
             input0.value = /*clientUuid*/ctx[3];
           }
-          if (!current || dirty & /*selectedSharee*/64 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 0 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+          if (!current || dirty & /*selectedSharee*/32 && input1_value_value !== (input1_value_value = /*selectedSharee*/ctx[5] && /*selectedSharee*/ctx[5].value.shareType === 0 ? /*selectedSharee*/ctx[5].value.shareWith : "")) {
             input1.value = input1_value_value;
           }
-          if (!current || dirty & /*selectedSharee*/64 && input2_value_value !== (input2_value_value = /*selectedSharee*/ctx[6] && /*selectedSharee*/ctx[6].value.shareType === 1 ? /*selectedSharee*/ctx[6].value.shareWith : "")) {
+          if (!current || dirty & /*selectedSharee*/32 && input2_value_value !== (input2_value_value = /*selectedSharee*/ctx[5] && /*selectedSharee*/ctx[5].value.shareType === 1 ? /*selectedSharee*/ctx[5].value.shareWith : "")) {
             input2.value = input2_value_value;
           }
-          if (!current || dirty & /*requestToken*/16) {
-            input3.value = /*requestToken*/ctx[4];
+          if (!current || dirty & /*$requestToken*/256) {
+            input3.value = /*$requestToken*/ctx[8];
           }
           if (!current || dirty & /*shareAction*/1) {
             attr(form_1, "action", /*shareAction*/ctx[0]);
@@ -24043,11 +24123,14 @@
     function instance$b($$self, $$props, $$invalidate) {
       var dialogVisible;
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(8, $requestToken = $$value);
+      });
       var shareAction = $$props.shareAction;
       var deleteShareAction = $$props.deleteShareAction;
       var sharees = $$props.sharees;
       var clientUuid = $$props.clientUuid;
-      var requestToken = $$props.requestToken;
       var userId = $$props.userId;
       var form;
       var selectedSharee;
@@ -24062,7 +24145,7 @@
       });
       var submit = function submit(e) {
         e.preventDefault();
-        $$invalidate(7, dialogVisible = true);
+        $$invalidate(6, dialogVisible = true);
       };
       var addShare = function addShare() {
         form.submit();
@@ -24079,17 +24162,17 @@
                 }
                 return _context.abrupt("return");
               case 2:
-                $$invalidate(8, loading = true);
+                $$invalidate(7, loading = true);
                 _context.next = 5;
                 return fetch(dist_3("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
               case 5:
                 response = _context.sent;
-                $$invalidate(8, loading = false);
+                $$invalidate(7, loading = false);
                 if (!response.ok) {
                   _context.next = 19;
                   break;
@@ -24134,15 +24217,15 @@
         };
       }();
       var closeDialog = function closeDialog() {
-        $$invalidate(7, dialogVisible = false);
+        $$invalidate(6, dialogVisible = false);
       };
       var handleSelectSharee = function handleSelectSharee(event) {
-        $$invalidate(6, selectedSharee = event.detail);
+        $$invalidate(5, selectedSharee = event.detail);
       };
       function form_1_binding($$value) {
         binding_callbacks[$$value ? 'unshift' : 'push'](function () {
           form = $$value;
-          $$invalidate(5, form);
+          $$invalidate(4, form);
         });
       }
       $$self.$$set = function ($$props) {
@@ -24150,12 +24233,11 @@
         if ('deleteShareAction' in $$props) $$invalidate(1, deleteShareAction = $$props.deleteShareAction);
         if ('sharees' in $$props) $$invalidate(2, sharees = $$props.sharees);
         if ('clientUuid' in $$props) $$invalidate(3, clientUuid = $$props.clientUuid);
-        if ('requestToken' in $$props) $$invalidate(4, requestToken = $$props.requestToken);
         if ('userId' in $$props) $$invalidate(13, userId = $$props.userId);
       };
-      $$invalidate(7, dialogVisible = false);
-      $$invalidate(8, loading = false);
-      return [shareAction, deleteShareAction, sharees, clientUuid, requestToken, form, selectedSharee, dialogVisible, loading, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
+      $$invalidate(6, dialogVisible = false);
+      $$invalidate(7, loading = false);
+      return [shareAction, deleteShareAction, sharees, clientUuid, form, selectedSharee, dialogVisible, loading, $requestToken, addShare, search, closeDialog, handleSelectSharee, userId, form_1_binding];
     }
     var ShareDialog = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(ShareDialog, _SvelteComponent);
@@ -24169,7 +24251,6 @@
           deleteShareAction: 1,
           sharees: 2,
           clientUuid: 3,
-          requestToken: 4,
           userId: 13
         });
         return _this;
@@ -24599,7 +24680,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*confirmation*/ctx[3] && create_if_block$5(ctx);
+      var if_block = /*confirmation*/ctx[2] && create_if_block$5(ctx);
       return {
         c() {
           if (if_block) if_block.c();
@@ -24616,7 +24697,7 @@
           input0.value = /*deleteTimeEntryUuid*/ctx[1];
           attr(input1, "type", "hidden");
           attr(input1, "name", "requesttoken");
-          input1.value = /*requestToken*/ctx[2];
+          input1.value = /*$requestToken*/ctx[3];
           attr(button, "type", "submit");
           attr(button, "name", "action");
           button.value = "delete";
@@ -24643,10 +24724,10 @@
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (/*confirmation*/ctx[3]) {
+          if (/*confirmation*/ctx[2]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*confirmation*/8) {
+              if (dirty & /*confirmation*/4) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -24665,8 +24746,8 @@
           if (!current || dirty & /*deleteTimeEntryUuid*/2) {
             input0.value = /*deleteTimeEntryUuid*/ctx[1];
           }
-          if (!current || dirty & /*requestToken*/4) {
-            input1.value = /*requestToken*/ctx[2];
+          if (!current || dirty & /*$requestToken*/8) {
+            input1.value = /*$requestToken*/ctx[3];
           }
           if (!current || dirty & /*deleteTimeEntryAction*/1) {
             attr(form, "action", /*deleteTimeEntryAction*/ctx[0]);
@@ -24694,15 +24775,18 @@
     }
     function instance$9($$self, $$props, $$invalidate) {
       var confirmation;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(3, $requestToken = $$value);
+      });
       var deleteTimeEntryAction = $$props.deleteTimeEntryAction;
       var deleteTimeEntryUuid = $$props.deleteTimeEntryUuid;
-      var requestToken = $$props.requestToken;
       onMount(function () {
         Helpers.hideFallbacks("DeleteTimeEntryButton.svelte@".concat(deleteTimeEntryUuid));
       });
       var submit = function submit(e) {
         e.preventDefault();
-        $$invalidate(3, confirmation = true);
+        $$invalidate(2, confirmation = true);
       };
       var doDelete = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -24710,7 +24794,7 @@
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
-                $$invalidate(3, confirmation = false);
+                $$invalidate(2, confirmation = false);
                 _context.prev = 1;
                 _element = document.querySelector("#content.app-timemanager [data-remove-on-delete='".concat(deleteTimeEntryUuid, "']"));
                 if (_element) {
@@ -24723,7 +24807,7 @@
                     uuid: deleteTimeEntryUuid
                   }),
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
@@ -24750,15 +24834,14 @@
         };
       }();
       var cancelDelete = function cancelDelete() {
-        $$invalidate(3, confirmation = false);
+        $$invalidate(2, confirmation = false);
       };
       $$self.$$set = function ($$props) {
         if ('deleteTimeEntryAction' in $$props) $$invalidate(0, deleteTimeEntryAction = $$props.deleteTimeEntryAction);
         if ('deleteTimeEntryUuid' in $$props) $$invalidate(1, deleteTimeEntryUuid = $$props.deleteTimeEntryUuid);
-        if ('requestToken' in $$props) $$invalidate(2, requestToken = $$props.requestToken);
       };
-      $$invalidate(3, confirmation = false);
-      return [deleteTimeEntryAction, deleteTimeEntryUuid, requestToken, confirmation, submit, doDelete, cancelDelete];
+      $$invalidate(2, confirmation = false);
+      return [deleteTimeEntryAction, deleteTimeEntryUuid, confirmation, $requestToken, submit, doDelete, cancelDelete];
     }
     var DeleteTimeEntryButton = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(DeleteTimeEntryButton, _SvelteComponent);
@@ -24769,8 +24852,7 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$9, create_fragment$9, safe_not_equal, {
           deleteTimeEntryAction: 0,
-          deleteTimeEntryUuid: 1,
-          requestToken: 2
+          deleteTimeEntryUuid: 1
         });
         return _this;
       }
@@ -28424,20 +28506,20 @@
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return /*a_binding*/ctx[53](a, index);
+        return /*a_binding*/ctx[52](a, index);
       };
       var unassign_a = function unassign_a() {
-        return /*a_binding*/ctx[53](null, index);
+        return /*a_binding*/ctx[52](null, index);
       };
       function click_handler_1() {
         var _ctx;
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
-        return /*click_handler_1*/(_ctx = ctx)[54].apply(_ctx, [/*suggestion*/ctx[102]].concat(args));
+        return /*click_handler_1*/(_ctx = ctx)[53].apply(_ctx, [/*suggestion*/ctx[102]].concat(args));
       }
       function focus_handler_1() {
-        return /*focus_handler_1*/ctx[55](/*index*/ctx[101]);
+        return /*focus_handler_1*/ctx[54](/*index*/ctx[101]);
       }
       return {
         c() {
@@ -28612,7 +28694,7 @@
           append(label3, input2);
           set_input_value(input2, /*date*/ctx[10]);
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[63]), listen(input0, "input", /*input_handler_3*/ctx[64]), listen(input1, "input", /*input1_input_handler*/ctx[65]), listen(input1, "input", /*input_handler_4*/ctx[66]), listen(input2, "input", /*input2_input_handler*/ctx[67]), listen(input2, "blur", /*blur_handler*/ctx[68]), action_destroyer(/*durationSelectorPopperContent*/ctx[33].call(null, div, /*extraOpts*/ctx[27])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
+            dispose = [listen(input0, "input", /*input0_input_handler_1*/ctx[62]), listen(input0, "input", /*input_handler_3*/ctx[63]), listen(input1, "input", /*input1_input_handler*/ctx[64]), listen(input1, "input", /*input_handler_4*/ctx[65]), listen(input2, "input", /*input2_input_handler*/ctx[66]), listen(input2, "blur", /*blur_handler*/ctx[67]), action_destroyer(/*durationSelectorPopperContent*/ctx[33].call(null, div, /*extraOpts*/ctx[27])), listen(div, "click", click_handler_2), listen(div, "keypress", keypress_handler)];
             mounted = true;
           }
         },
@@ -28657,9 +28739,9 @@
           insert(target, input, anchor);
           set_input_value(input, /*durationTimeString*/ctx[17]);
           /*input_binding_1*/
-          ctx[62](input);
+          ctx[61](input);
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[60]), listen(input, "input", /*input_handler_2*/ctx[61])];
+            dispose = [listen(input, "input", /*input_input_handler_1*/ctx[59]), listen(input, "input", /*input_handler_2*/ctx[60])];
             mounted = true;
           }
         },
@@ -28674,7 +28756,7 @@
           }
 
           /*input_binding_1*/
-          ctx[62](null);
+          ctx[61](null);
           mounted = false;
           run_all(dispose);
         }
@@ -28699,9 +28781,9 @@
           insert(target, input, anchor);
           set_input_value(input, /*duration*/ctx[7]);
           /*input_binding*/
-          ctx[59](input);
+          ctx[58](input);
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler*/ctx[57]), listen(input, "input", /*input_handler_1*/ctx[58])];
+            dispose = [listen(input, "input", /*input_input_handler*/ctx[56]), listen(input, "input", /*input_handler_1*/ctx[57])];
             mounted = true;
           }
         },
@@ -28716,7 +28798,7 @@
           }
 
           /*input_binding*/
-          ctx[59](null);
+          ctx[58](null);
           mounted = false;
           run_all(dispose);
         }
@@ -28951,7 +29033,7 @@
           append(label, t1);
           append(label, input);
           /*input_binding_2*/
-          ctx[69](input);
+          ctx[68](input);
           set_input_value(input, /*searchValue*/ctx[14]);
           append(div3, t2);
           append(div3, div0);
@@ -28963,7 +29045,7 @@
           append(div3, div2);
           input.focus();
           if (!mounted) {
-            dispose = [listen(input, "input", /*input_input_handler_2*/ctx[70]), listen(input, "input", /*input_handler_5*/ctx[71]), action_destroyer(/*taskSelectorPopperContent*/ctx[29].call(null, div3, /*extraOpts*/ctx[27])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
+            dispose = [listen(input, "input", /*input_input_handler_2*/ctx[69]), listen(input, "input", /*input_handler_5*/ctx[70]), action_destroyer(/*taskSelectorPopperContent*/ctx[29].call(null, div3, /*extraOpts*/ctx[27])), listen(div3, "click", click_handler_5), listen(div3, "keypress", keypress_handler_1)];
             mounted = true;
           }
         },
@@ -29001,7 +29083,7 @@
           }
 
           /*input_binding_2*/
-          ctx[69](null);
+          ctx[68](null);
           if (if_block0) if_block0.d();
           if (if_block1) {
             if_block1.d();
@@ -29111,20 +29193,20 @@
       var dispose;
       var if_block = /*index*/ctx[101] === 0 && create_if_block_4$1();
       var assign_a = function assign_a() {
-        return /*a_binding_1*/ctx[72](a, index);
+        return /*a_binding_1*/ctx[71](a, index);
       };
       var unassign_a = function unassign_a() {
-        return /*a_binding_1*/ctx[72](null, index);
+        return /*a_binding_1*/ctx[71](null, index);
       };
       function click_handler_3() {
         var _ctx2;
         for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
           args[_key2] = arguments[_key2];
         }
-        return /*click_handler_3*/(_ctx2 = ctx)[73].apply(_ctx2, [/*entry*/ctx[99]].concat(args));
+        return /*click_handler_3*/(_ctx2 = ctx)[72].apply(_ctx2, [/*entry*/ctx[99]].concat(args));
       }
       function focus_handler_2() {
-        return /*focus_handler_2*/ctx[74](/*index*/ctx[101]);
+        return /*focus_handler_2*/ctx[73](/*index*/ctx[101]);
       }
       return {
         c() {
@@ -29295,20 +29377,20 @@
       var mounted;
       var dispose;
       var assign_a = function assign_a() {
-        return /*a_binding_2*/ctx[75](a, task);
+        return /*a_binding_2*/ctx[74](a, task);
       };
       var unassign_a = function unassign_a() {
-        return /*a_binding_2*/ctx[75](null, task);
+        return /*a_binding_2*/ctx[74](null, task);
       };
       function click_handler_4() {
         var _ctx3;
         for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
           args[_key3] = arguments[_key3];
         }
-        return /*click_handler_4*/(_ctx3 = ctx)[76].apply(_ctx3, [/*client*/ctx[90], /*project*/ctx[93], /*task*/ctx[96]].concat(args));
+        return /*click_handler_4*/(_ctx3 = ctx)[75].apply(_ctx3, [/*client*/ctx[90], /*project*/ctx[93], /*task*/ctx[96]].concat(args));
       }
       function focus_handler_3() {
-        return /*focus_handler_3*/ctx[77](/*task*/ctx[96]);
+        return /*focus_handler_3*/ctx[76](/*task*/ctx[96]);
       }
       return {
         c() {
@@ -29600,7 +29682,7 @@
           append(label0, input0);
           set_input_value(input0, /*note*/ctx[11]);
           /*input0_binding*/
-          ctx[50](input0);
+          ctx[49](input0);
           append(label0, t2);
           if (if_block0) if_block0.m(label0, null);
           append(form, t3);
@@ -29609,7 +29691,7 @@
           append(label1, t4);
           append(label1, input1);
           /*input1_binding*/
-          ctx[56](input1);
+          ctx[55](input1);
           append(form, t5);
           if (if_block1) if_block1.m(form, null);
           append(form, t6);
@@ -29624,7 +29706,7 @@
           append(span, button);
           append(button, t10);
           if (!mounted) {
-            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[35]), action_destroyer(/*noteSuggestPopperRef*/ctx[30].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[49]), listen(input0, "input", /*input_handler*/ctx[51]), listen(input0, "focus", /*focus_handler*/ctx[52]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[32].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[39]), listen(input1, "click", /*handleShowDurationSelector*/ctx[39]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[78])];
+            dispose = [listen(window, "keydown", /*handleKeyDown*/ctx[35]), action_destroyer(/*noteSuggestPopperRef*/ctx[30].call(null, input0)), listen(input0, "input", /*input0_input_handler*/ctx[48]), listen(input0, "input", /*input_handler*/ctx[50]), listen(input0, "focus", /*focus_handler*/ctx[51]), listen(input0, "click", click_handler), action_destroyer(/*durationSelectorPopperRef*/ctx[32].call(null, input1)), listen(input1, "focus", /*handleShowDurationSelector*/ctx[39]), listen(input1, "click", /*handleShowDurationSelector*/ctx[39]), listen(input1, "change", change_handler), listen(form, "submit", /*submit_handler*/ctx[77])];
             mounted = true;
           }
         },
@@ -29706,10 +29788,10 @@
           }
 
           /*input0_binding*/
-          ctx[50](null);
+          ctx[49](null);
           if (if_block0) if_block0.d();
           /*input1_binding*/
-          ctx[56](null);
+          ctx[55](null);
           if (if_block1) if_block1.d();
           if_block2.d();
           if (if_block3) if_block3.d();
@@ -29749,8 +29831,11 @@
       var currentLastestFocusTaskIndex;
       var currentFocusNoteIndex;
       var searchResults;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(80, $requestToken = $$value);
+      });
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
@@ -30109,7 +30194,7 @@
                   method: "POST",
                   body: JSON.stringify(entry),
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
@@ -30361,12 +30446,11 @@
       };
       $$self.$$set = function ($$props) {
         if ('action' in $$props) $$invalidate(42, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(43, requestToken = $$props.requestToken);
-        if ('clients' in $$props) $$invalidate(44, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(45, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(46, tasks = $$props.tasks);
-        if ('latestSearchEntries' in $$props) $$invalidate(47, latestSearchEntries = $$props.latestSearchEntries);
-        if ('settings' in $$props) $$invalidate(48, settings = $$props.settings);
+        if ('clients' in $$props) $$invalidate(43, clients = $$props.clients);
+        if ('projects' in $$props) $$invalidate(44, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(45, tasks = $$props.tasks);
+        if ('latestSearchEntries' in $$props) $$invalidate(46, latestSearchEntries = $$props.latestSearchEntries);
+        if ('settings' in $$props) $$invalidate(47, settings = $$props.settings);
       };
       $$invalidate(19, loading = false);
       $$invalidate(21, taskError = false);
@@ -30376,7 +30460,7 @@
       $$invalidate(22, currentLastestFocusTaskIndex = -1);
       $$invalidate(24, currentFocusNoteIndex = -1);
       $$invalidate(25, searchResults = []);
-      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, endTime, startTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, backupDurationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, requestToken, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
+      return [showTaskSelector, showNoteAutosuggest, showDurationSelector, tasksButtons, lastUsedTasksButtons, noteAutosuggestList, noteAutosuggestButtons, duration, endTime, startTime, date, note, noteInput, searchInput, searchValue, durationInput, durationTrigger, durationTimeString, backupDurationTimeString, loading, selected, taskError, currentLastestFocusTaskIndex, currentFocusTaskIndex, currentFocusNoteIndex, searchResults, localeOptions, extraOpts, taskSelectorPopperRef, taskSelectorPopperContent, noteSuggestPopperRef, noteSuggestPopperContent, durationSelectorPopperRef, durationSelectorPopperContent, lastUsed, handleKeyDown, latestEntriesFuse, search, handleShowTaskSelector, handleShowDurationSelector, save, inputMethod, action, clients, projects, tasks, latestSearchEntries, settings, input0_input_handler, input0_binding, input_handler, focus_handler, a_binding, click_handler_1, focus_handler_1, input1_binding, input_input_handler, input_handler_1, input_binding, input_input_handler_1, input_handler_2, input_binding_1, input0_input_handler_1, input_handler_3, input1_input_handler, input_handler_4, input2_input_handler, blur_handler, input_binding_2, input_input_handler_2, input_handler_5, a_binding_1, click_handler_3, focus_handler_2, a_binding_2, click_handler_4, focus_handler_3, submit_handler];
     }
     var QuickAdd = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(QuickAdd, _SvelteComponent);
@@ -30387,12 +30471,11 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$8, create_fragment$8, safe_not_equal, {
           action: 42,
-          requestToken: 43,
-          clients: 44,
-          projects: 45,
-          tasks: 46,
-          latestSearchEntries: 47,
-          settings: 48
+          clients: 43,
+          projects: 44,
+          tasks: 45,
+          latestSearchEntries: 46,
+          settings: 47
         }, null, [-1, -1, -1, -1]);
         return _this;
       }
@@ -30437,7 +30520,7 @@
           insert(target, t1, anchor);
           insert(target, span1, anchor);
           if (!mounted) {
-            dispose = listen(input, "change", prevent_default(/*change_handler*/ctx[7]));
+            dispose = listen(input, "change", prevent_default(/*change_handler*/ctx[6]));
             mounted = true;
           }
         },
@@ -30475,10 +30558,13 @@
     }
     function instance$7($$self, $$props, $$invalidate) {
       var loading;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(7, $requestToken = $$value);
+      });
       var uuid = $$props.uuid;
       var initialState = $$props.initialState;
       var action = $$props.action;
-      var requestToken = $$props.requestToken;
       var state = initialState;
       onMount(function () {
         Helpers.hideFallbacks("Checkmark.svelte");
@@ -30498,7 +30584,7 @@
                     uuid
                   }),
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
@@ -30534,10 +30620,9 @@
         if ('uuid' in $$props) $$invalidate(0, uuid = $$props.uuid);
         if ('initialState' in $$props) $$invalidate(1, initialState = $$props.initialState);
         if ('action' in $$props) $$invalidate(5, action = $$props.action);
-        if ('requestToken' in $$props) $$invalidate(6, requestToken = $$props.requestToken);
       };
       $$invalidate(3, loading = false);
-      return [uuid, initialState, state, loading, save, action, requestToken, change_handler];
+      return [uuid, initialState, state, loading, save, action, change_handler];
     }
     var Checkmark = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Checkmark, _SvelteComponent);
@@ -30549,90 +30634,12 @@
         init$2(_assertThisInitialized$1(_this), options, instance$7, create_fragment$7, safe_not_equal, {
           uuid: 0,
           initialState: 1,
-          action: 5,
-          requestToken: 6
+          action: 5
         });
         return _this;
       }
       return _createClass$1(Checkmark);
     }(SvelteComponent);
-
-    const subscriber_queue = [];
-
-    /**
-     * Create a `Writable` store that allows both updating and reading by subscription.
-     *
-     * https://svelte.dev/docs/svelte-store#writable
-     * @template T
-     * @param {T} [value] initial value
-     * @param {import('./public.js').StartStopNotifier<T>} [start]
-     * @returns {import('./public.js').Writable<T>}
-     */
-    function writable(value, start = noop$1) {
-      /** @type {import('./public.js').Unsubscriber} */
-      let stop;
-      /** @type {Set<import('./private.js').SubscribeInvalidateTuple<T>>} */
-      const subscribers = new Set();
-      /** @param {T} new_value
-       * @returns {void}
-       */
-      function set(new_value) {
-        if (safe_not_equal(value, new_value)) {
-          value = new_value;
-          if (stop) {
-            // store is ready
-            const run_queue = !subscriber_queue.length;
-            for (const subscriber of subscribers) {
-              subscriber[1]();
-              subscriber_queue.push(subscriber, value);
-            }
-            if (run_queue) {
-              for (let i = 0; i < subscriber_queue.length; i += 2) {
-                subscriber_queue[i][0](subscriber_queue[i + 1]);
-              }
-              subscriber_queue.length = 0;
-            }
-          }
-        }
-      }
-
-      /**
-       * @param {import('./public.js').Updater<T>} fn
-       * @returns {void}
-       */
-      function update(fn) {
-        set(fn(value));
-      }
-
-      /**
-       * @param {import('./public.js').Subscriber<T>} run
-       * @param {import('./private.js').Invalidator<T>} [invalidate]
-       * @returns {import('./public.js').Unsubscriber}
-       */
-      function subscribe(run, invalidate = noop$1) {
-        /** @type {import('./private.js').SubscribeInvalidateTuple<T>} */
-        const subscriber = [run, invalidate];
-        subscribers.add(subscriber);
-        if (subscribers.size === 1) {
-          stop = start(set, update) || noop$1;
-        }
-        run(value);
-        return () => {
-          subscribers.delete(subscriber);
-          if (subscribers.size === 0 && stop) {
-            stop();
-            stop = null;
-          }
-        };
-      }
-      return {
-        set,
-        update,
-        subscribe
-      };
-    }
-
-    var isFilterSet = writable(false);
 
     function create_if_block$3(ctx) {
       var label;
@@ -30754,7 +30761,10 @@
     }
     function instance$6($$self, $$props, $$invalidate) {
       var loading;
-      var requestToken = $$props.requestToken;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(7, $requestToken = $$value);
+      });
       var _$$props$isVisible = $$props.isVisible,
         isVisible = _$$props$isVisible === void 0 ? true : _$$props$isVisible;
       var _$$props$form = $$props.form,
@@ -30808,7 +30818,7 @@
                 _context.next = 5;
                 return fetch(dist_3("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
@@ -30894,12 +30904,11 @@
         }, _callee2, null, [[5, 20, 23, 26]]);
       })));
       $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(7, requestToken = $$props.requestToken);
         if ('isVisible' in $$props) $$invalidate(0, isVisible = $$props.isVisible);
         if ('form' in $$props) $$invalidate(1, form = $$props.form);
       };
       $$invalidate(3, loading = false);
-      return [isVisible, form, selectedSharee, loading, handleSelectSharee, handleClearSharee, search, requestToken];
+      return [isVisible, form, selectedSharee, loading, handleSelectSharee, handleClearSharee, search];
     }
     var UserFilterSelect = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(UserFilterSelect, _SvelteComponent);
@@ -30909,7 +30918,6 @@
         _classCallCheck$1(this, UserFilterSelect);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$6, create_fragment$6, safe_not_equal, {
-          requestToken: 7,
           isVisible: 0,
           form: 1
         });
@@ -30950,7 +30958,6 @@
       var dispose;
       userfilterselect = new UserFilterSelect({
         props: {
-          requestToken: /*requestToken*/ctx[0],
           form: "filters-form"
         }
       });
@@ -30962,10 +30969,10 @@
             id: "preset-select",
             form: "filters-form"
           },
-          items: /*presets*/ctx[4]
+          items: /*presets*/ctx[3]
         }
       });
-      select.$on("select", /*handleSelectPreset*/ctx[6]);
+      select.$on("select", /*handleSelectPreset*/ctx[5]);
       return {
         c() {
           div = element("div");
@@ -31003,12 +31010,12 @@
           attr(label1, "class", "end");
           attr(label2, "for", "preset-select");
           attr(label2, "class", "status");
-          button.disabled = /*loading*/ctx[3];
+          button.disabled = /*loading*/ctx[2];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(button, "form", "filters-form");
           attr(span, "class", "actions");
-          attr(div, "class", div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""));
+          attr(div, "class", div_class_value = "reports-timerange".concat(/*loading*/ctx[2] ? " icon-loading" : ""));
         },
         m(target, anchor) {
           insert(target, div, anchor);
@@ -31018,13 +31025,13 @@
           append(label0, t1);
           append(label0, t2);
           append(label0, input0);
-          set_input_value(input0, /*start*/ctx[2]);
+          set_input_value(input0, /*start*/ctx[1]);
           append(div, t3);
           append(div, label1);
           append(label1, t4);
           append(label1, t5);
           append(label1, input1);
-          set_input_value(input1, /*end*/ctx[1]);
+          set_input_value(input1, /*end*/ctx[0]);
           append(div, t6);
           append(div, label2);
           append(label2, t7);
@@ -31036,26 +31043,23 @@
           append(button, t10);
           current = true;
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[10]), listen(input0, "change", /*setUrlWithTimerange*/ctx[5]), listen(input1, "input", /*input1_input_handler*/ctx[11]), listen(input1, "change", /*setUrlWithTimerange*/ctx[5])];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[9]), listen(input0, "change", /*setUrlWithTimerange*/ctx[4]), listen(input1, "input", /*input1_input_handler*/ctx[10]), listen(input1, "change", /*setUrlWithTimerange*/ctx[4])];
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          var userfilterselect_changes = {};
-          if (dirty & /*requestToken*/1) userfilterselect_changes.requestToken = /*requestToken*/ctx[0];
-          userfilterselect.$set(userfilterselect_changes);
-          if (dirty & /*start*/4) {
-            set_input_value(input0, /*start*/ctx[2]);
+          if (dirty & /*start*/2) {
+            set_input_value(input0, /*start*/ctx[1]);
           }
-          if (dirty & /*end*/2) {
-            set_input_value(input1, /*end*/ctx[1]);
+          if (dirty & /*end*/1) {
+            set_input_value(input1, /*end*/ctx[0]);
           }
-          if (!current || dirty & /*loading*/8) {
-            button.disabled = /*loading*/ctx[3];
+          if (!current || dirty & /*loading*/4) {
+            button.disabled = /*loading*/ctx[2];
           }
-          if (!current || dirty & /*loading*/8 && div_class_value !== (div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/4 && div_class_value !== (div_class_value = "reports-timerange".concat(/*loading*/ctx[2] ? " icon-loading" : ""))) {
             attr(div, "class", div_class_value);
           }
         },
@@ -31086,7 +31090,6 @@
       var loading;
       var start;
       var end;
-      var requestToken = $$props.requestToken;
       var startOfMonth$1 = $$props.startOfMonth;
       var endOfMonth$1 = $$props.endOfMonth;
       var updateUrlWithTimerange = $$props.updateUrlWithTimerange;
@@ -31128,54 +31131,54 @@
         var preset = selectedValue.detail.value;
         switch (preset) {
           case "today":
-            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
+            $$invalidate(1, start = format$2(startOfToday(), dateFormat));
+            $$invalidate(0, end = format$2(startOfToday(), dateFormat));
             break;
           case "yesterday":
-            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
-            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(1, start = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(0, end = format$2(startOfYesterday(), dateFormat));
             break;
           case "week":
-            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
+            $$invalidate(1, start = format$2(startOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
+            $$invalidate(0, end = format$2(endOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "week-1":
-            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
+            $$invalidate(1, start = format$2(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
-            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
+            $$invalidate(0, end = format$2(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "month":
-            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
+            $$invalidate(1, start = format$2(startOfMonth(startOfToday()), dateFormat));
+            $$invalidate(0, end = format$2(endOfMonth(startOfToday()), dateFormat));
             break;
           case "month-1":
-            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
+            $$invalidate(1, start = format$2(startOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
+            $$invalidate(0, end = format$2(endOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
             break;
           case "year":
-            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
+            $$invalidate(1, start = format$2(startOfYear(startOfToday()), dateFormat));
+            $$invalidate(0, end = format$2(endOfYear(startOfToday()), dateFormat));
             break;
           case "year-1":
-            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
+            $$invalidate(1, start = format$2(startOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
-            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
+            $$invalidate(0, end = format$2(endOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
             break;
@@ -31199,38 +31202,37 @@
 
             // Apply filters from query params
             if (name === "start" && value) {
-              $$invalidate(2, start = value);
+              $$invalidate(1, start = value);
             }
             if (name === "end" && value) {
-              $$invalidate(1, end = value);
+              $$invalidate(0, end = value);
             }
           });
         }
       });
       function input0_input_handler() {
         start = this.value;
-        $$invalidate(2, start), $$invalidate(7, startOfMonth$1);
+        $$invalidate(1, start), $$invalidate(6, startOfMonth$1);
       }
       function input1_input_handler() {
         end = this.value;
-        $$invalidate(1, end), $$invalidate(8, endOfMonth$1);
+        $$invalidate(0, end), $$invalidate(7, endOfMonth$1);
       }
       $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
-        if ('startOfMonth' in $$props) $$invalidate(7, startOfMonth$1 = $$props.startOfMonth);
-        if ('endOfMonth' in $$props) $$invalidate(8, endOfMonth$1 = $$props.endOfMonth);
-        if ('updateUrlWithTimerange' in $$props) $$invalidate(9, updateUrlWithTimerange = $$props.updateUrlWithTimerange);
+        if ('startOfMonth' in $$props) $$invalidate(6, startOfMonth$1 = $$props.startOfMonth);
+        if ('endOfMonth' in $$props) $$invalidate(7, endOfMonth$1 = $$props.endOfMonth);
+        if ('updateUrlWithTimerange' in $$props) $$invalidate(8, updateUrlWithTimerange = $$props.updateUrlWithTimerange);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*startOfMonth*/128) {
-          $$invalidate(2, start = startOfMonth$1);
+        if ($$self.$$.dirty & /*startOfMonth*/64) {
+          $$invalidate(1, start = startOfMonth$1);
         }
-        if ($$self.$$.dirty & /*endOfMonth*/256) {
-          $$invalidate(1, end = endOfMonth$1);
+        if ($$self.$$.dirty & /*endOfMonth*/128) {
+          $$invalidate(0, end = endOfMonth$1);
         }
       };
-      $$invalidate(3, loading = false);
-      return [requestToken, end, start, loading, presets, setUrlWithTimerange, handleSelectPreset, startOfMonth$1, endOfMonth$1, updateUrlWithTimerange, input0_input_handler, input1_input_handler];
+      $$invalidate(2, loading = false);
+      return [end, start, loading, presets, setUrlWithTimerange, handleSelectPreset, startOfMonth$1, endOfMonth$1, updateUrlWithTimerange, input0_input_handler, input1_input_handler];
     }
     var Timerange = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Timerange, _SvelteComponent);
@@ -31240,10 +31242,9 @@
         _classCallCheck$1(this, Timerange);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
-          requestToken: 0,
-          startOfMonth: 7,
-          endOfMonth: 8,
-          updateUrlWithTimerange: 9
+          startOfMonth: 6,
+          endOfMonth: 7,
+          updateUrlWithTimerange: 8
         });
         return _this;
       }
@@ -31289,11 +31290,11 @@
             id: "client-select"
           },
           items: /*clients*/ctx[0],
-          value: /*selectedClients*/ctx[2],
+          value: /*selectedClients*/ctx[1],
           isMulti: true
         }
       });
-      select0.$on("select", /*handleSelectClients*/ctx[12]);
+      select0.$on("select", /*handleSelectClients*/ctx[11]);
       select1 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31301,12 +31302,12 @@
           inputAttributes: {
             id: "projects-select"
           },
-          items: /*availableProjects*/ctx[7],
-          value: /*selectedProjects*/ctx[3],
+          items: /*availableProjects*/ctx[6],
+          value: /*selectedProjects*/ctx[2],
           isMulti: true
         }
       });
-      select1.$on("select", /*handleSelectProjects*/ctx[13]);
+      select1.$on("select", /*handleSelectProjects*/ctx[12]);
       select2 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31314,12 +31315,12 @@
           inputAttributes: {
             id: "tasks-select"
           },
-          items: /*availableTasks*/ctx[6],
-          value: /*selectedTasks*/ctx[4],
+          items: /*availableTasks*/ctx[5],
+          value: /*selectedTasks*/ctx[3],
           isMulti: true
         }
       });
-      select2.$on("select", /*handleSelectTasks*/ctx[14]);
+      select2.$on("select", /*handleSelectTasks*/ctx[13]);
       select3 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31327,16 +31328,15 @@
           inputAttributes: {
             id: "status-select"
           },
-          items: /*availableStatus*/ctx[10],
-          value: /*selectedStatus*/ctx[5]
+          items: /*availableStatus*/ctx[9],
+          value: /*selectedStatus*/ctx[4]
         }
       });
-      select3.$on("select", /*handleSelectStatus*/ctx[15]);
-      select3.$on("clear", /*handleClearStatus*/ctx[16]);
+      select3.$on("select", /*handleSelectStatus*/ctx[14]);
+      select3.$on("clear", /*handleClearStatus*/ctx[15]);
       timerange = new Timerange({
         props: {
-          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[9],
-          requestToken: /*requestToken*/ctx[1]
+          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[8]
         }
       });
       return {
@@ -31371,7 +31371,7 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[7] ? " icon-loading" : ""));
           attr(form, "id", "filters-form");
         },
         m(target, anchor) {
@@ -31399,7 +31399,7 @@
           mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[11]));
+            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[10]));
             mounted = true;
           }
         },
@@ -31408,25 +31408,22 @@
             dirty = _ref2[0];
           var select0_changes = {};
           if (dirty & /*clients*/1) select0_changes.items = /*clients*/ctx[0];
-          if (dirty & /*selectedClients*/4) select0_changes.value = /*selectedClients*/ctx[2];
+          if (dirty & /*selectedClients*/2) select0_changes.value = /*selectedClients*/ctx[1];
           select0.$set(select0_changes);
           var select1_changes = {};
-          if (dirty & /*availableProjects*/128) select1_changes.items = /*availableProjects*/ctx[7];
-          if (dirty & /*selectedProjects*/8) select1_changes.value = /*selectedProjects*/ctx[3];
+          if (dirty & /*availableProjects*/64) select1_changes.items = /*availableProjects*/ctx[6];
+          if (dirty & /*selectedProjects*/4) select1_changes.value = /*selectedProjects*/ctx[2];
           select1.$set(select1_changes);
           var select2_changes = {};
-          if (dirty & /*availableTasks*/64) select2_changes.items = /*availableTasks*/ctx[6];
-          if (dirty & /*selectedTasks*/16) select2_changes.value = /*selectedTasks*/ctx[4];
+          if (dirty & /*availableTasks*/32) select2_changes.items = /*availableTasks*/ctx[5];
+          if (dirty & /*selectedTasks*/8) select2_changes.value = /*selectedTasks*/ctx[3];
           select2.$set(select2_changes);
           var select3_changes = {};
-          if (dirty & /*selectedStatus*/32) select3_changes.value = /*selectedStatus*/ctx[5];
+          if (dirty & /*selectedStatus*/16) select3_changes.value = /*selectedStatus*/ctx[4];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/128 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[7] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
-          var timerange_changes = {};
-          if (dirty & /*requestToken*/2) timerange_changes.requestToken = /*requestToken*/ctx[1];
-          timerange.$set(timerange_changes);
         },
         i(local) {
           if (current) return;
@@ -31467,7 +31464,6 @@
       var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
-      var requestToken = $$props.requestToken;
       var selectedClients;
       var selectedProjects;
       var selectedTasks;
@@ -31509,55 +31505,55 @@
         filterLinkElement.click();
       };
       var handleSelectClients = function handleSelectClients(event) {
-        $$invalidate(2, selectedClients = event.detail);
+        $$invalidate(1, selectedClients = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(7, availableProjects = projects.filter(function (project) {
+          $$invalidate(6, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(7, availableProjects = projects);
+          $$invalidate(6, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(6, availableTasks = tasks.filter(function (task) {
+          $$invalidate(5, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(6, availableTasks = tasks);
+          $$invalidate(5, availableTasks = tasks);
         }
       };
       var handleSelectProjects = function handleSelectProjects(event) {
-        $$invalidate(3, selectedProjects = event.detail);
+        $$invalidate(2, selectedProjects = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(7, availableProjects = projects.filter(function (project) {
+          $$invalidate(6, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(7, availableProjects = projects);
+          $$invalidate(6, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(6, availableTasks = tasks.filter(function (task) {
+          $$invalidate(5, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(6, availableTasks = tasks);
+          $$invalidate(5, availableTasks = tasks);
         }
       };
       var handleSelectTasks = function handleSelectTasks(event) {
-        $$invalidate(4, selectedTasks = event.detail);
+        $$invalidate(3, selectedTasks = event.detail);
       };
       var handleSelectStatus = function handleSelectStatus(event) {
-        $$invalidate(5, selectedStatus = event.detail);
+        $$invalidate(4, selectedStatus = event.detail);
       };
       var handleClearStatus = function handleClearStatus() {
-        $$invalidate(5, selectedStatus = "");
+        $$invalidate(4, selectedStatus = "");
       };
       onMount(function () {
         // Parse current URL
@@ -31576,12 +31572,12 @@
 
             // Apply filters from query params
             if (name === "status" && value) {
-              $$invalidate(5, selectedStatus = availableStatus.find(function (status) {
+              $$invalidate(4, selectedStatus = availableStatus.find(function (status) {
                 return status.value === value;
               }));
             }
             if (name === "tasks" && value && value.length) {
-              $$invalidate(4, selectedTasks = value.split(",").map(function (taskId) {
+              $$invalidate(3, selectedTasks = value.split(",").map(function (taskId) {
                 return tasks.find(function (task) {
                   return task.value === taskId;
                 });
@@ -31614,20 +31610,19 @@
       });
       $$self.$$set = function ($$props) {
         if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(17, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(18, tasks = $$props.tasks);
-        if ('requestToken' in $$props) $$invalidate(1, requestToken = $$props.requestToken);
+        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*projects*/131072) {
-          $$invalidate(7, availableProjects = projects);
+        if ($$self.$$.dirty & /*projects*/65536) {
+          $$invalidate(6, availableProjects = projects);
         }
-        if ($$self.$$.dirty & /*tasks*/262144) {
-          $$invalidate(6, availableTasks = tasks);
+        if ($$self.$$.dirty & /*tasks*/131072) {
+          $$invalidate(5, availableTasks = tasks);
         }
       };
-      $$invalidate(8, loading = false);
-      return [clients, requestToken, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+      $$invalidate(7, loading = false);
+      return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Filters, _SvelteComponent);
@@ -31638,9 +31633,8 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           clients: 0,
-          projects: 17,
-          tasks: 18,
-          requestToken: 1
+          projects: 16,
+          tasks: 17
         });
         return _this;
       }
@@ -38045,7 +38039,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default(/*click_handler*/ctx[17]));
+            dispose = listen(button, "click", prevent_default(/*click_handler*/ctx[16]));
             mounted = true;
           }
         },
@@ -38155,7 +38149,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[18]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_1*/ctx[17]));
             mounted = true;
           }
         },
@@ -38265,7 +38259,7 @@
           append(div2, div1);
           append(div1, button);
           if (!mounted) {
-            dispose = listen(button, "click", prevent_default(/*click_handler_2*/ctx[19]));
+            dispose = listen(button, "click", prevent_default(/*click_handler_2*/ctx[18]));
             mounted = true;
           }
         },
@@ -38361,7 +38355,7 @@
           append(dl, dd2);
           append(dd2, t11);
           if (!mounted) {
-            dispose = [listen(button0, "click", prevent_default(/*click_handler_3*/ctx[20])), listen(button1, "click", prevent_default(/*click_handler_4*/ctx[21]))];
+            dispose = [listen(button0, "click", prevent_default(/*click_handler_3*/ctx[19])), listen(button1, "click", prevent_default(/*click_handler_4*/ctx[20]))];
             mounted = true;
           }
         },
@@ -38861,7 +38855,7 @@
           append(select, option0);
           append(select, option1);
           /*select_binding*/
-          ctx[15](select);
+          ctx[14](select);
           append(form, t4);
           append(form, label1);
           append(label1, t5);
@@ -38870,7 +38864,7 @@
           append(label1, t7);
           append(label1, input);
           /*input_binding*/
-          ctx[16](input);
+          ctx[15](input);
           append(form, t8);
           append(form, button);
           insert(target, t10, anchor);
@@ -39023,9 +39017,9 @@
           }
 
           /*select_binding*/
-          ctx[15](null);
+          ctx[14](null);
           /*input_binding*/
-          ctx[16](null);
+          ctx[15](null);
           if (if_block0) if_block0.d(detaching);
           if (if_block1) if_block1.d(detaching);
           if (if_block2) if_block2.d(detaching);
@@ -39044,8 +39038,11 @@
       var importPreviewData;
       var loading;
       var allOpen;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(21, $requestToken = $$value);
+      });
       var syncApiUrl = $$props.syncApiUrl;
-      var requestToken = $$props.requestToken;
       var fileInput;
       var delimiterInput;
 
@@ -39259,7 +39256,7 @@
                 return fetch(syncApiUrl, {
                   method: "POST",
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   },
                   body: JSON.stringify(convertedImportData)
@@ -39321,7 +39318,6 @@
       };
       $$self.$$set = function ($$props) {
         if ('syncApiUrl' in $$props) $$invalidate(13, syncApiUrl = $$props.syncApiUrl);
-        if ('requestToken' in $$props) $$invalidate(14, requestToken = $$props.requestToken);
       };
       $$invalidate(9, parseError = "");
       $$invalidate(6, importError = "");
@@ -39329,7 +39325,7 @@
       $$invalidate(8, importPreviewData = []);
       $$invalidate(5, loading = false);
       $$invalidate(10, allOpen = false);
-      return [fileInput, delimiterInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, requestToken, select_binding, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
+      return [fileInput, delimiterInput, preparedClients, preparedProjects, preparedTasks, loading, importError, successMessage, importPreviewData, parseError, allOpen, previewFile, doImport, syncApiUrl, select_binding, input_binding, click_handler, click_handler_1, click_handler_2, click_handler_3, click_handler_4];
     }
     var Import = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Import, _SvelteComponent);
@@ -39339,8 +39335,7 @@
         _classCallCheck$1(this, Import);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$2, create_fragment$2, safe_not_equal, {
-          syncApiUrl: 13,
-          requestToken: 14
+          syncApiUrl: 13
         }, null, [-1, -1]);
         return _this;
       }
@@ -39355,8 +39350,7 @@
       var dispose;
       userfilterselect = new UserFilterSelect({
         props: {
-          isVisible: /*showTooltip*/ctx[1],
-          requestToken: /*requestToken*/ctx[0]
+          isVisible: /*showTooltip*/ctx[0]
         }
       });
       return {
@@ -39370,14 +39364,13 @@
           mount_component(userfilterselect, div, null);
           current = true;
           if (!mounted) {
-            dispose = action_destroyer(/*popperContent*/ctx[4].call(null, div, /*extraOpts*/ctx[5]));
+            dispose = action_destroyer(/*popperContent*/ctx[3].call(null, div, /*extraOpts*/ctx[4]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
           var userfilterselect_changes = {};
-          if (dirty & /*showTooltip*/2) userfilterselect_changes.isVisible = /*showTooltip*/ctx[1];
-          if (dirty & /*requestToken*/1) userfilterselect_changes.requestToken = /*requestToken*/ctx[0];
+          if (dirty & /*showTooltip*/1) userfilterselect_changes.isVisible = /*showTooltip*/ctx[0];
           userfilterselect.$set(userfilterselect_changes);
         },
         i(local) {
@@ -39409,7 +39402,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*showTooltip*/ctx[1] && create_if_block$1(ctx);
+      var if_block = /*showTooltip*/ctx[0] && create_if_block$1(ctx);
       return {
         c() {
           button = element("button");
@@ -39417,7 +39410,7 @@
           t1 = space$1();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''));
+          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[1] ? 'active' : ''));
         },
         m(target, anchor) {
           insert(target, button, anchor);
@@ -39427,20 +39420,20 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = [action_destroyer(/*popperRef*/ctx[3].call(null, button)), listen(button, "click", /*click_handler*/ctx[6])];
+            dispose = [action_destroyer(/*popperRef*/ctx[2].call(null, button)), listen(button, "click", /*click_handler*/ctx[5])];
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*$isFilterSet*/4 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''))) {
+          if (!current || dirty & /*$isFilterSet*/2 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[1] ? 'active' : ''))) {
             attr(button, "class", button_class_value);
           }
-          if (/*showTooltip*/ctx[1]) {
+          if (/*showTooltip*/ctx[0]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*showTooltip*/2) {
+              if (dirty & /*showTooltip*/1) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -39481,9 +39474,8 @@
     function instance$1($$self, $$props, $$invalidate) {
       var $isFilterSet;
       component_subscribe($$self, isFilterSet, function ($$value) {
-        return $$invalidate(2, $isFilterSet = $$value);
+        return $$invalidate(1, $isFilterSet = $$value);
       });
-      var requestToken = $$props.requestToken;
       var _createPopperActions = createPopperActions({
           placement: "bottom",
           strategy: "fixed"
@@ -39503,7 +39495,7 @@
       onMount(function () {
         var hideTooltip = function hideTooltip(e) {
           if (e.key === "Escape") {
-            $$invalidate(1, showTooltip = false);
+            $$invalidate(0, showTooltip = false);
           }
         };
         document.addEventListener("keyup", hideTooltip);
@@ -39544,12 +39536,9 @@
         };
       });
       var click_handler = function click_handler() {
-        $$invalidate(1, showTooltip = !showTooltip);
+        $$invalidate(0, showTooltip = !showTooltip);
       };
-      $$self.$$set = function ($$props) {
-        if ('requestToken' in $$props) $$invalidate(0, requestToken = $$props.requestToken);
-      };
-      return [requestToken, showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
+      return [showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
     }
     var UserFilterButton = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(UserFilterButton, _SvelteComponent);
@@ -39558,9 +39547,7 @@
         var _this;
         _classCallCheck$1(this, UserFilterButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {
-          requestToken: 0
-        });
+        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {});
         return _this;
       }
       return _createClass$1(UserFilterButton);
@@ -39584,7 +39571,7 @@
       var binding_group;
       var mounted;
       var dispose;
-      binding_group = init_binding_group(/*$$binding_groups*/ctx[7][0]);
+      binding_group = init_binding_group(/*$$binding_groups*/ctx[6][0]);
       return {
         c() {
           details = element("details");
@@ -39629,7 +39616,7 @@
           append(label1, t5);
           append(label1, t6);
           if (!mounted) {
-            dispose = [listen(input0, "change", /*input0_change_handler*/ctx[6]), listen(input0, "click", /*click_handler*/ctx[8]), listen(input1, "change", /*input1_change_handler*/ctx[9]), listen(input1, "click", /*click_handler_1*/ctx[10])];
+            dispose = [listen(input0, "change", /*input0_change_handler*/ctx[5]), listen(input0, "click", /*click_handler*/ctx[7]), listen(input1, "change", /*input1_change_handler*/ctx[8]), listen(input1, "click", /*click_handler_1*/ctx[9])];
             mounted = true;
           }
         },
@@ -39691,13 +39678,16 @@
     }
     function instance($$self, $$props, $$invalidate) {
       var _settings$timemanager;
+      var $requestToken;
+      component_subscribe($$self, requestToken, function ($$value) {
+        return $$invalidate(10, $requestToken = $$value);
+      });
       var isServer = $$props.isServer;
       var _$$props$settings = $$props.settings,
         settings = _$$props$settings === void 0 ? {
           timemanager_input_method: InputMethods.decimal
         } : _$$props$settings;
       var settingsAction = $$props.settingsAction;
-      var requestToken = $$props.requestToken;
       var inputMethod = (_settings$timemanager = settings.timemanager_input_method) !== null && _settings$timemanager !== void 0 ? _settings$timemanager : InputMethods.decimal;
       var changeInputMethod = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(newInputMethod) {
@@ -39711,7 +39701,7 @@
                 return fetch(settingsAction, {
                   method: 'POST',
                   headers: {
-                    requesttoken: requestToken,
+                    requesttoken: $requestToken,
                     "content-type": "application/json"
                   },
                   body: JSON.stringify({
@@ -39753,9 +39743,8 @@
         if ('isServer' in $$props) $$invalidate(0, isServer = $$props.isServer);
         if ('settings' in $$props) $$invalidate(3, settings = $$props.settings);
         if ('settingsAction' in $$props) $$invalidate(4, settingsAction = $$props.settingsAction);
-        if ('requestToken' in $$props) $$invalidate(5, requestToken = $$props.requestToken);
       };
-      return [isServer, inputMethod, changeInputMethod, settings, settingsAction, requestToken, input0_change_handler, $$binding_groups, click_handler, input1_change_handler, click_handler_1];
+      return [isServer, inputMethod, changeInputMethod, settings, settingsAction, input0_change_handler, $$binding_groups, click_handler, input1_change_handler, click_handler_1];
     }
     var Settings = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Settings, _SvelteComponent);
@@ -39767,8 +39756,7 @@
         init$2(_assertThisInitialized$1(_this), options, instance, create_fragment, safe_not_equal, {
           isServer: 0,
           settings: 3,
-          settingsAction: 4,
-          requestToken: 5
+          settingsAction: 4
         });
         return _this;
       }
@@ -41310,6 +41298,9 @@
     function getRequestToken() {
       return token$1;
     }
+    function onRequestTokenUpdate(observer) {
+      observers.push(observer);
+    }
     // Listen to server event and keep token in sync
     subscribe('csrf-token-update', e => {
       token$1 = e.token;
@@ -41335,6 +41326,10 @@
     typeof OC === 'undefined' ? false : OC.isUserAdmin();
 
     var token = getRequestToken();
+    requestToken.set(token);
+    onRequestTokenUpdate(function (token) {
+      requestToken.set(token);
+    });
     var components = [];
     var defaultDateFormat = "EEEE, MMMM d, y";
     var localeOptions = Helpers.getDateLocaleOptions();
@@ -41387,51 +41382,38 @@
         component: ClientEditorDialog,
         selector: "#content.app-timemanager [data-svelte='ClientEditorDialog.svelte']",
         props: _objectSpread2(_objectSpread2({}, store), {}, {
-          action: "",
-          requestToken: token
+          action: ""
         })
       }));
       components.push(safelyCreateComponent({
         component: ProjectEditorDialog,
         selector: "#content.app-timemanager [data-svelte='ProjectEditorDialog.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: TaskEditorDialog,
         selector: "#content.app-timemanager [data-svelte='TaskEditorDialog.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: TimeEditorDialog,
         selector: "#content.app-timemanager [data-svelte='TimeEditorDialog.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: DeleteButton,
         selector: "#content.app-timemanager [data-svelte='DeleteButton.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: ShareDialog,
         selector: "#content.app-timemanager [data-svelte='ShareDialog.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: ShareStatus,
         selector: "#content.app-timemanager [data-svelte='ShareStatus.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       var deleteTimeEntryButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='DeleteTimeEntryButton.svelte']");
       if (deleteTimeEntryButtons && deleteTimeEntryButtons.length > 0) {
@@ -41439,8 +41421,7 @@
           components.push(new DeleteTimeEntryButton({
             target: Helpers.replaceNode(button),
             props: _objectSpread2(_objectSpread2({}, store), {}, {
-              deleteTimeEntryUuid: button.getAttribute("data-uuid"),
-              requestToken: token
+              deleteTimeEntryUuid: button.getAttribute("data-uuid")
             })
           }));
         });
@@ -41454,8 +41435,7 @@
               timeUuid: button.getAttribute("data-uuid"),
               editTimeEntryData: JSON.parse(button.getAttribute("data-edit-data")),
               timeEditorButtonCaption: translate("timemanager", "Edit"),
-              timeEditorCaption: translate("timemanager", "Edit time entry"),
-              requestToken: token
+              timeEditorCaption: translate("timemanager", "Edit time entry")
             })
           }));
         });
@@ -41463,9 +41443,7 @@
       components.push(safelyCreateComponent({
         component: QuickAdd,
         selector: "#content.app-timemanager [data-svelte='QuickAdd.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       var checkmarkButtons = document.querySelectorAll("#content.app-timemanager [data-svelte='Checkmark.svelte']");
       if (checkmarkButtons && checkmarkButtons.length > 0) {
@@ -41475,8 +41453,7 @@
             props: _objectSpread2(_objectSpread2({}, store), {}, {
               uuid: button.getAttribute("data-uuid"),
               action: button.getAttribute("data-action"),
-              initialState: button.getAttribute("data-initialState"),
-              requestToken: token
+              initialState: button.getAttribute("data-initialState")
             })
           }));
         });
@@ -41488,23 +41465,17 @@
       components.push(safelyCreateComponent({
         component: Import,
         selector: "#content.app-timemanager [data-svelte='Import.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: UserFilterButton,
         selector: "#content.app-timemanager [data-svelte='UserFilterButton.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       components.push(safelyCreateComponent({
         component: Settings,
         selector: "#content.app-timemanager [data-svelte='Settings.svelte']",
-        props: _objectSpread2(_objectSpread2({}, store), {}, {
-          requestToken: token
-        })
+        props: _objectSpread2({}, store)
       }));
       var dateTimeElements = document.querySelectorAll("[data-datetime]");
       if (dateTimeElements && dateTimeElements.length > 0) {
