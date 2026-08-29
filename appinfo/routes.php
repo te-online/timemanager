@@ -24,6 +24,7 @@ return [
 		["name" => "page#deleteTime", "url" => "/times/delete", "verb" => "POST"],
 		["name" => "page#payTime", "url" => "/times/paid", "verb" => "POST"],
 		["name" => "page#unpayTime", "url" => "/times/unpaid", "verb" => "POST"],
+		["name" => "page#exportTaskXlsx", "url" => "/times/export/xlsx", "verb" => "GET"],
 		["name" => "page#updateSettings", "url" => "/settings", "verb" => "POST"],
 		["name" => "page#tools", "url" => "/tools", "verb" => "GET"],
 		["name" => "page#settings", "url" => "/settings", "verb" => "GET"],

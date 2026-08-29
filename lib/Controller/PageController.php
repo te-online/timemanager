@@ -19,6 +19,7 @@ use OCA\TimeManager\Db\StorageHelper;
 use OCA\TimeManager\Helper\UUID;
 use OCA\TimeManager\Helper\PHP_Svelte;
 use OCA\TimeManager\Helper\ArrayToCSV;
+use OCA\TimeManager\Helper\ArrayToXLSX;
 use OCA\TimeManager\Helper\ISODate;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Services\IAppConfig;
@@ -287,8 +288,8 @@ class PageController extends Controller {
 				$hours = $time->getDurationInHours();
 				$times_grouped_by_client[$client->getUuid()]->totalHours += $hours;
 				$hours_total += $hours;
-				// Prepare a row for the CSV
-				if ($format === "csv") {
+				// Prepare a row for the CSV/XLSX export
+				if ($format === "csv" || $format === "xlsx") {
 					$date_time_zone = new \DateTimeZone($timezone);
 
 					$start_date_time = new \DateTime($time->getStart(), new \DateTimeZone("UTC"));
@@ -325,6 +326,15 @@ class PageController extends Controller {
 			$filename = $start === $end ? $this->l->t("report_%s.csv", [$start]) : $this->l->t("report_%s_%s.csv", [$start, $end]);
 			// Download as CSV
 			return new DataDownloadResponse(ArrayToCSV::convert($all_time_entries), $filename, "text/csv");
+		} elseif ($format === "xlsx") {
+			// Prepare filename with daterange
+			$filename = $start === $end ? $this->l->t("report_%s.xlsx", [$start]) : $this->l->t("report_%s_%s.xlsx", [$start, $end]);
+			// Download as XLSX
+			return new DataDownloadResponse(
+				ArrayToXLSX::convert($all_time_entries, "Time Report"),
+				$filename,
+				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+			);
 		} else {
 			$store = [
 				"clients" => array_map(function ($oneClient) {
@@ -956,6 +966,13 @@ class PageController extends Controller {
 		$task_uuid = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getUuid() : "";
 		$task_name = isset($task_data) && count($task_data) > 0 ? $task_data[0]->getName() : "";
 
+		$user_server_timezone = $this->serverConfig->getUserValue(
+			$this->userId,
+			'core',
+			'timezone',
+			'UTC'
+		);
+
 		$form_props = [
 			"action" => $this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $task_uuid,
 			"editAction" => $this->urlGenerator->linkToRoute("timemanager.page.tasks"),
@@ -1003,6 +1020,7 @@ class PageController extends Controller {
 			"canEdit" => $sharedBy === null,
 			"latestEntries" => $latestEntries,
 			"hasSharedTimeEntries" => $hasSharedTimeEntries,
+			"user_server_timezone" => $user_server_timezone,
 		]);
 	}
 
@@ -1096,118 +1114,73 @@ class PageController extends Controller {
 
 	/**
 	 * @NoAdminRequired
-	 */
-	function payTime($uuid) {
-		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
-		if ($time) {
-			$commit = UUID::v4();
-			$this->storageHelper->insertCommit($commit);
-			// Adjust payment status object
-			$time->setChanged(date("Y-m-d H:i:s"));
-			$time->setCommit($commit);
-			$time->setPaymentStatus("paid");
-			$this->timeMapper->update($time);
-
-			return new RedirectResponse(
-				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
-			);
-		}
-
-		return new NotFoundException("Time entry could not be found");
-	}
-
-	/**
-	 * @NoAdminRequired
-	 */
-	function unpayTime($uuid) {
-		$time = $this->storageHelper->getTimeEntryByIdForEditing($uuid);
-		if ($time) {
-			$commit = UUID::v4();
-			$this->storageHelper->insertCommit($commit);
-			// Adjust payment status
-			$time->setChanged(date("Y-m-d H:i:s"));
-			$time->setCommit($commit);
-			$time->setPaymentStatus("");
-			$this->timeMapper->update($time);
-
-			return new RedirectResponse(
-				$this->urlGenerator->linkToRoute("timemanager.page.times") . "?task=" . $time->getTaskUuid()
-			);
-		}
-
-		return new NotFoundException("Time entry could not be found");
-	}
-
-	/**
-	 * @NoAdminRequired
-	 */
-	function updateSettings($timemanager_input_method): RedirectResponse {
-        $input_method = InputMethods::Decimal;
-        if ($timemanager_input_method === InputMethods::Minutes) {
-            $input_method = InputMethods::Minutes;
-        }
-
-		$this->config->setAppValueString(
-            self::INPUT_METHOD_SETTING_NAME,
-			$input_method
-		);
-
-		return new RedirectResponse($this->urlGenerator->linkToRoute("timemanager.page.settings"));
-	}
-
-	/**
-	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	function tools() {
-		$all_clients = $this->clientMapper->findActiveForCurrentUser("name");
-		$all_projects = $this->projectMapper->findActiveForCurrentUser("name");
-		$all_tasks = $this->taskMapper->findActiveForCurrentUser("name");
-		$all_times = $this->timeMapper->findActiveForCurrentUser();
+	function exportTaskXlsx(string $task_uuid, string $timezone = "UTC"): DataDownloadResponse {
+		$task = $this->taskMapper->getActiveObjectById($task_uuid, true);
+		if (!$task) {
+			throw new NotFoundException("Task could not be found");
+		}
 
-		$store = [
-			"clients" => $all_clients,
-			"projects" => $all_projects,
-			"tasks" => $all_tasks,
-			"times" => $all_times,
-			"action" => $this->urlGenerator->linkToRoute("timemanager.page.tools"),
-			"syncApiUrl" => $this->urlGenerator->linkToRoute("timemanager.t_api.updateObjectsFromWeb"),
-			"requestToken" => $this->requestToken,
-			"isServer" => true,
-		];
+		$project = $this->projectMapper->getActiveObjectById($task->getProjectUuid(), true);
+		if (!$project) {
+			throw new NotFoundException("Project could not be found");
+		}
 
-		return new TemplateResponse("timemanager", "tools", [
-			"clients" => $all_clients,
-			"projects" => $all_projects,
-			"tasks" => $all_tasks,
-			"times" => $all_times,
-			"store" => json_encode($store),
-			"page" => "tools",
-		]);
+		$client = $this->clientMapper->getActiveObjectById($project->getClientUuid(), true);
+		if (!$client) {
+			throw new NotFoundException("Client could not be found");
+		}
+
+		$times = $this->timeMapper->getActiveObjectsByAttributeValue(
+			"task_uuid",
+			$task_uuid,
+			"start",
+			true,
+			"DESC"
+		);
+		$times = $this->storageHelper->resolveAuthorDisplayNamesForTimes($times, $this->userManager);
+
+		$rows = [];
+		$date_time_zone = new \DateTimeZone($timezone);
+
+		foreach ($times as $time) {
+			$hours = $time->getDurationInHours();
+
+			$start_date_time = new \DateTime($time->getStart(), new \DateTimeZone("UTC"));
+			$start_date_time->setTimezone($date_time_zone);
+
+			$end_date_time = new \DateTime($time->getEnd(), new \DateTimeZone("UTC"));
+			$end_date_time->setTimezone($date_time_zone);
+
+			$duration = $this->config->getAppValueString(
+				self::INPUT_METHOD_SETTING_NAME,
+				InputMethods::Decimal
+			) == InputMethods::Minutes
+				? DurationHelper::format_decimal_duration_as_time($hours)
+				: $hours;
+
+			$rows[] = [
+				"date" => $start_date_time->format("Y-m-d"),
+				"start" => $start_date_time->format("H:i"),
+				"end" => $end_date_time->format("H:i"),
+				"duration" => $duration,
+				"note" => $time->getNote(),
+				"status" => strtolower($time->getPaymentStatus()) === "paid" ? "paid" : "unpaid",
+				"author" => $time->author_display_name,
+				"task" => $task->getName(),
+				"project" => $project->getName(),
+				"client" => $client->getName(),
+			];
+		}
+
+		$safeTitle = preg_replace('/[^a-z0-9]/i', '_', $task->getName());
+		$filename = "timemanager_" . $safeTitle . ".xlsx";
+
+		return new DataDownloadResponse(
+			ArrayToXLSX::convert($rows, $task->getName()),
+			$filename,
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		);
 	}
-
-    /**
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     */
-    function settings(): TemplateResponse {
-        $store = [
-            "requestToken" => $this->requestToken,
-            "isServer" => false,
-            "settingsAction" => $this->urlGenerator->linkToRoute("timemanager.page.updateSettings"),
-            "settings" => $this->getSettings(),
-        ];
-
-        return new TemplateResponse("timemanager", "settings", [
-            "page" => "settings",
-            "store" => json_encode($store),
-        ]);
-    }
-
-    private function getSettings(): array {
-        return [
-            self::INPUT_METHOD_SETTING_NAME => $this->config->getAppValueString(self::INPUT_METHOD_SETTING_NAME, InputMethods::Decimal),
-            self::FULL_DATE_FORMAT_SETTING_NAME => $this->fullDateFormat,
-        ];
-    }
 }

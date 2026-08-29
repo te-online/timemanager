@@ -48,6 +48,23 @@ $l = Util::getL10N('timemanager');
 							<?php print_unescaped($_['templates']['DeleteButton.svelte']); ?>
 						</span>
 					<?php } ?>
+					<?php if ($_['task']) { ?>
+						<div class="tm_object-details-item">
+							<a
+								href="<?php echo $urlGenerator->linkToRoute(
+									'timemanager.page.exportTaskXlsx',
+									[
+										'task_uuid' => $_['task']->getUuid(),
+										'timezone'  => $_['user_server_timezone'] ?? 'UTC',
+									]
+								); ?>"
+								class="button"
+								download
+							>
+								<?php p($l->t('Export Excel')); ?>
+							</a>
+						</div>
+					<?php } ?>
 				</div>
 				<div class="tm_add" data-svelte-hide="TimeEditor.svelte">
 					<div id="new-item" class="tm_new-item">
