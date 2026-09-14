@@ -3727,7 +3727,7 @@
 
     /**
      * @returns {Text} */
-    function space$1() {
+    function space() {
       return text$1(' ');
     }
 
@@ -11265,7 +11265,7 @@
       return addWeeks(dirtyDate, -amount);
     }
 
-    /*! @license DOMPurify 3.4.11 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.11/LICENSE */
+    /*! @license DOMPurify 3.4.13 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.4.13/LICENSE */
 
     function _arrayLikeToArray(r, a) {
       (null == a || a > r.length) && (a = r.length);
@@ -11578,7 +11578,7 @@
     const text = freeze(['#text']);
 
     const html = freeze(['accept', 'action', 'align', 'alt', 'autocapitalize', 'autocomplete', 'autopictureinpicture', 'autoplay', 'background', 'bgcolor', 'border', 'capture', 'cellpadding', 'cellspacing', 'checked', 'cite', 'class', 'clear', 'color', 'cols', 'colspan', 'command', 'commandfor', 'controls', 'controlslist', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'dir', 'disabled', 'disablepictureinpicture', 'disableremoteplayback', 'download', 'draggable', 'enctype', 'enterkeyhint', 'exportparts', 'face', 'for', 'headers', 'height', 'hidden', 'high', 'href', 'hreflang', 'id', 'inert', 'inputmode', 'integrity', 'ismap', 'kind', 'label', 'lang', 'list', 'loading', 'loop', 'low', 'max', 'maxlength', 'media', 'method', 'min', 'minlength', 'multiple', 'muted', 'name', 'nonce', 'noshade', 'novalidate', 'nowrap', 'open', 'optimum', 'part', 'pattern', 'placeholder', 'playsinline', 'popover', 'popovertarget', 'popovertargetaction', 'poster', 'preload', 'pubdate', 'radiogroup', 'readonly', 'rel', 'required', 'rev', 'reversed', 'role', 'rows', 'rowspan', 'spellcheck', 'scope', 'selected', 'shape', 'size', 'sizes', 'slot', 'span', 'srclang', 'start', 'src', 'srcset', 'step', 'style', 'summary', 'tabindex', 'title', 'translate', 'type', 'usemap', 'valign', 'value', 'width', 'wrap', 'xmlns']);
-    const svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'amplitude', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dur', 'edgemode', 'elevation', 'end', 'exponent', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'mask-type', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'slope', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'tablevalues', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
+    const svg = freeze(['accent-height', 'accumulate', 'additive', 'alignment-baseline', 'amplitude', 'ascent', 'attributename', 'attributetype', 'azimuth', 'basefrequency', 'baseline-shift', 'begin', 'bias', 'by', 'class', 'clip', 'clippathunits', 'clip-path', 'clip-rule', 'color', 'color-interpolation', 'color-interpolation-filters', 'color-profile', 'color-rendering', 'cx', 'cy', 'd', 'dx', 'dy', 'diffuseconstant', 'direction', 'display', 'divisor', 'dominant-baseline', 'dur', 'edgemode', 'elevation', 'end', 'exponent', 'fill', 'fill-opacity', 'fill-rule', 'filter', 'filterunits', 'flood-color', 'flood-opacity', 'font-family', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-weight', 'fx', 'fy', 'g1', 'g2', 'glyph-name', 'glyphref', 'gradientunits', 'gradienttransform', 'height', 'href', 'id', 'image-rendering', 'in', 'in2', 'intercept', 'k', 'k1', 'k2', 'k3', 'k4', 'kerning', 'keypoints', 'keysplines', 'keytimes', 'lang', 'lengthadjust', 'letter-spacing', 'kernelmatrix', 'kernelunitlength', 'lighting-color', 'local', 'marker-end', 'marker-mid', 'marker-start', 'markerheight', 'markerunits', 'markerwidth', 'maskcontentunits', 'maskunits', 'max', 'mask', 'mask-type', 'media', 'method', 'mode', 'min', 'name', 'numoctaves', 'offset', 'operator', 'opacity', 'order', 'orient', 'orientation', 'origin', 'overflow', 'paint-order', 'path', 'pathlength', 'patterncontentunits', 'patterntransform', 'patternunits', 'points', 'preservealpha', 'preserveaspectratio', 'primitiveunits', 'r', 'rx', 'ry', 'radius', 'refx', 'refy', 'repeatcount', 'repeatdur', 'restart', 'result', 'rotate', 'scale', 'seed', 'shape-rendering', 'slope', 'specularconstant', 'specularexponent', 'spreadmethod', 'startoffset', 'stddeviation', 'stitchtiles', 'stop-color', 'stop-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'stroke', 'stroke-width', 'style', 'surfacescale', 'systemlanguage', 'tabindex', 'tablevalues', 'targetx', 'targety', 'transform', 'transform-origin', 'text-anchor', 'text-decoration', 'text-orientation', 'text-rendering', 'textlength', 'type', 'u1', 'u2', 'unicode', 'values', 'viewbox', 'visibility', 'version', 'vert-adv-y', 'vert-origin-x', 'vert-origin-y', 'width', 'word-spacing', 'wrap', 'writing-mode', 'xchannelselector', 'ychannelselector', 'x', 'x1', 'x2', 'xmlns', 'y', 'y1', 'y2', 'z', 'zoomandpan']);
     const mathMl = freeze(['accent', 'accentunder', 'align', 'bevelled', 'close', 'columnalign', 'columnlines', 'columnspacing', 'columnspan', 'denomalign', 'depth', 'dir', 'display', 'displaystyle', 'encoding', 'fence', 'frame', 'height', 'href', 'id', 'largeop', 'length', 'linethickness', 'lquote', 'lspace', 'mathbackground', 'mathcolor', 'mathsize', 'mathvariant', 'maxsize', 'minsize', 'movablelimits', 'notation', 'numalign', 'open', 'rowalign', 'rowlines', 'rowspacing', 'rowspan', 'rspace', 'rquote', 'scriptlevel', 'scriptminsize', 'scriptsizemultiplier', 'selection', 'separator', 'separators', 'stretchy', 'subscriptshift', 'supscriptshift', 'symmetric', 'voffset', 'width', 'xmlns']);
     const xml = freeze(['xlink:href', 'xml:id', 'xlink:title', 'xml:space', 'xmlns:xlink']);
 
@@ -11691,7 +11691,7 @@
     function createDOMPurify() {
       let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
       const DOMPurify = root => createDOMPurify(root);
-      DOMPurify.version = '3.4.11';
+      DOMPurify.version = '3.4.13';
       DOMPurify.removed = [];
       if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document || !window.Element) {
         // Not running in a browser, provide a factory function
@@ -11722,6 +11722,7 @@
       const getAttributes = lookupGetter(ElementPrototype, 'attributes');
       const getNodeType = Node && Node.prototype ? lookupGetter(Node.prototype, 'nodeType') : null;
       const getNodeName = Node && Node.prototype ? lookupGetter(Node.prototype, 'nodeName') : null;
+      const getOwnerDocument = Node && Node.prototype ? lookupGetter(Node.prototype, 'ownerDocument') : null;
       // As per issue #47, the web-components registry is inherited by a
       // new document created via createHTMLDocument. As per the spec
       // (http://w3c.github.io/webcomponents/spec/custom/#creating-and-passing-registries)
@@ -12373,6 +12374,13 @@
        * @param root the in-place root to empty
        */
       const _neutralizeRoot = function _neutralizeRoot(root) {
+        /* Strip every disallowed attribute (on* handlers included) off the whole
+           subtree BEFORE detaching anything. Detaching first would hand back
+           handler-bearing originals (e.g. an already-loading `<img onerror>`)
+           whose queued resource event still fires in page scope after we throw.
+           Clobber-safe reads; a doomed clobbered node's own attributes are
+           irrelevant while its non-clobbered descendants are reached and scrubbed. */
+        _neutralizeSubtree(root);
         const childNodes = getChildNodes(root);
         if (childNodes) {
           const snapshot = [];
@@ -12501,6 +12509,82 @@
         }
       };
       /**
+       * _neutralizePatchLinkage
+       *
+       * IN_PLACE entry pre-pass (declarative-partial-updates / streaming
+       * hardening, https://github.com/WICG/declarative-partial-updates).
+       *
+       * The main walk strips patch linkage (`for`/`patchsrc`) and removes range
+       * markers (PIs / markup comments) node-by-node, in document order, AS it
+       * reaches each node. On a live in-place root that leaves a window: from the
+       * moment the root is connected until the walk arrives at a given node, that
+       * node's linkage is live. A patch applied on connection/stream can fire as
+       * a microtask during the walk and inject or teleport an unsanitized DOM
+       * range into a region the iterator has already passed and will not revisit,
+       * so the post-return "tree is sanitized" contract is violated. Sweep the
+       * whole tree once up front and sever every linkage before the walk begins,
+       * closing that window.
+       *
+       * This CANNOT undo a patch that already fired before sanitize ran — that is
+       * the irreducible "do not IN_PLACE a live-connected attacker tree" caveat —
+       * but it closes everything from sanitize-start onward. Gated on SAFE_FOR_XML
+       * to group with the rest of the declarative-partial-updates handling and
+       * stay overridable, consistent with the codebase.
+       *
+       * Clobber-safe traversal (cached childNodes getter); per-node try/catch so a
+       * clobbered root cannot defeat the sweep of its non-clobbered descendants.
+       *
+       * NOTE (pending real-Chrome confirmation, see test/declarative-patch-probe
+       * .html Q1): this mirrors the existing policy of keeping `for` on
+       * <label>/<output>. If the shipping feature can drive a patch through a
+       * surviving `for`-on-label/output + `id` pair, this pre-pass and the
+       * attribute check at _isBasicCustomElement's caller must additionally drop
+       * that pair on the IN_PLACE path. Left as-is until the taxonomy is verified.
+       *
+       * @param root the in-place root to sweep
+       */
+      const _neutralizePatchLinkage = function _neutralizePatchLinkage(root) {
+        if (!SAFE_FOR_XML) {
+          return;
+        }
+        const stack = [root];
+        while (stack.length > 0) {
+          const node = stack.pop();
+          const nodeType = getNodeType ? getNodeType(node) : node.nodeType;
+          /* Remove range markers (the target side of a patch linkage): every
+             processing instruction, and any markup-bearing comment. */
+          if (nodeType === NODE_TYPE.processingInstruction || nodeType === NODE_TYPE.comment && regExpTest(COMMENT_MARKUP_PROBE, node.data)) {
+            try {
+              remove(node);
+            } catch (_) {
+              /* Best-effort */
+            }
+            continue;
+          }
+          /* Strip patch-source attributes (the source side) off elements. */
+          if (nodeType === NODE_TYPE.element) {
+            const element = node;
+            const lcTag = transformCaseFunc(getNodeName ? getNodeName(node) : node.nodeName);
+            try {
+              if (element.hasAttribute && element.hasAttribute('patchsrc')) {
+                element.removeAttribute('patchsrc');
+              }
+              if (element.hasAttribute && element.hasAttribute('for') && lcTag !== 'label' && lcTag !== 'output') {
+                element.removeAttribute('for');
+              }
+            } catch (_) {
+              /* Clobbered removeAttribute/hasAttribute on a doomed node — ignore */
+            }
+          }
+          const childNodes = getChildNodes(node);
+          if (childNodes) {
+            for (let i = childNodes.length - 1; i >= 0; --i) {
+              stack.push(childNodes[i]);
+            }
+          }
+        }
+      };
+      /**
        * _initDocument
        *
        * @param dirty - a string of dirty markup
@@ -12557,7 +12641,17 @@
        * @return The created NodeIterator
        */
       const _createNodeIterator = function _createNodeIterator(root) {
-        return createNodeIterator.call(root.ownerDocument || root, root,
+        /* Read ownerDocument through the cached Node.prototype getter, never the
+           direct property. HTMLFormElement has [LegacyOverrideBuiltIns], so a
+           clobbering child (<input name="ownerDocument"> or a form-associated
+           external input) shadows the prototype getter and makes a direct read
+           return that <input>. createNodeIterator.call(<input>, ...) then throws
+           "Illegal invocation", and on the IN_PLACE path that throw lands before
+           the walk's fail-closed barrier - leaving the caller's live tree, with
+           any already-armed handler in it, un-neutralized. The cached getter
+           returns the real Document regardless of the clobber. */
+        const doc = getOwnerDocument ? getOwnerDocument(root) : root.ownerDocument;
+        return createNodeIterator.call(doc || root, root,
         // eslint-disable-next-line no-bitwise
         NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT | NodeFilter.SHOW_PROCESSING_INSTRUCTION | NodeFilter.SHOW_CDATA_SECTION, null);
       };
@@ -12597,7 +12691,11 @@
       const _scrubTemplateExpressions2 = function _scrubTemplateExpressions(node) {
         var _node$querySelectorAl;
         node.normalize();
-        const walker = createNodeIterator.call(node.ownerDocument || node, node,
+        /* Clobber-safe ownerDocument read, same reasoning as _createNodeIterator:
+           under SAFE_FOR_TEMPLATES this runs on the live IN_PLACE root, which may
+           carry a form-named-getter override of ownerDocument. */
+        const doc = getOwnerDocument ? getOwnerDocument(node) : node.ownerDocument;
+        const walker = createNodeIterator.call(doc || node, node,
         // eslint-disable-next-line no-bitwise
         NodeFilter.SHOW_TEXT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_PROCESSING_INSTRUCTION, null);
         let currentNode = walker.nextNode();
@@ -12750,15 +12848,21 @@
       /**
        * Handle a node whose tag is forbidden or not allowlisted: keep
        * allowed custom elements (false return exits _sanitizeElements
-       * early - namespace/fallback checks and the afterSanitizeElements
-       * hook are intentionally skipped for kept custom elements), else
-       * hoist content per KEEP_CONTENT and remove.
+       * early - the namespace and fallback-tag removal checks are
+       * intentionally skipped for kept custom elements), else hoist
+       * content per KEEP_CONTENT and remove.
+       *
+       * A kept custom element is the ONLY case in which this function
+       * returns false, so the caller uses that return value to run the
+       * afterSanitizeElements hook on the kept element and keep the
+       * element-hook lifecycle consistent with normal allowlisted
+       * elements (GHSA-c2j3-45gr-mqc4).
        *
        * @param currentNode the disallowed node
        * @param tagName the node's transformCaseFunc'd tag name
        * @return true if the node was removed, false if kept
        */
-      const _sanitizeDisallowedNode = function _sanitizeDisallowedNode(currentNode, tagName) {
+      const _sanitizeDisallowedNode = function _sanitizeDisallowedNode(currentNode, tagName, root) {
         /* Check if we have a custom element to handle */
         if (!FORBID_TAGS[tagName] && _isBasicCustomElement(tagName)) {
           if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName)) {
@@ -12781,33 +12885,52 @@
           const childNodes = getChildNodes(currentNode);
           if (childNodes && parentNode) {
             const childCount = childNodes.length;
-            /* In-place: hoist the *original* children so the iterator visits
-                 and sanitises them through the same allowlist pass as every other
-                 node. The caller built the tree in the live document, so the
-                 originals carry already-queued resource events (`<img onerror>`,
-                 `<video>`/`<audio>` error, lazy/`onload`, …); cloning would leave
-                 those originals detached but still armed, firing in page scope
-                 while the returned tree looked clean. Moving is safe in-place: the
-                 root is pre-validated as an allowed tag and so is never the node
-                 being removed, which keeps `parentNode` inside the iterator root
-                 and the relocated child inside the serialised tree.
-                          Otherwise (string / DOM-copy paths): clone. The iterator is rooted
-                 at — and the result serialised from — `body`, so a restrictive
-                 ALLOWED_TAGS that removes `body` itself must leave its content in
-                 place, which only cloning does; and those paths parse into an
-                 inert document, so their discarded originals never had a queued
-                 event to neutralise.
+            /* Hoist by moving each child up one level rather than deep-cloning
+                 it. Moving transfers every descendant exactly once, so a chain of
+                 nested disallowed elements costs O(n) instead of the O(n^2) that
+                 re-cloning the shrinking subtree at each level produced; it also
+                 empties the removed original, so `DOMPurify.removed` no longer
+                 pins whole subtrees. Moving preserves the in-place guarantee too:
+                 an original carrying already-queued resource events (`<img
+                 onerror>`, `<video>`/`<audio>` error, lazy/`onload`, …) is
+                 relocated and sanitised rather than left detached but still armed.
+                          The sole case that must clone is removing the walk root itself.
+                 The result is serialised from the root's subtree, so a restrictive
+                 ALLOWED_TAGS that strips the root (`body` on the string path) must
+                 leave the content inside it, which only cloning does. In IN_PLACE
+                 the root is pre-validated as an allowed tag and so is never removed
+                 here, so that path always takes the move branch.
                           `childNodes` is live; a tail-to-head walk keeps `childNodes[i]`
                  valid whether we move (drops the trailing entry) or clone (leaves
                  the list intact). */
             for (let i = childCount - 1; i >= 0; --i) {
-              const hoisted = IN_PLACE ? childNodes[i] : cloneNode(childNodes[i], true);
+              const hoisted = currentNode === root ? cloneNode(childNodes[i], true) : childNodes[i];
               parentNode.insertBefore(hoisted, getNextSibling(currentNode));
             }
           }
         }
         _forceRemove(currentNode);
         return true;
+      };
+      /**
+       * Fork a hook-mutable allowlist off its shared binding the first time a
+       * (possibly lazily-installed) uponSanitize* hook is about to see it, so the
+       * hook cannot widen the per-instance default or the setConfig binding by
+       * reference and leak past the call. Returns the set unchanged once it is
+       * already call-local, so repeated calls across elements are idempotent.
+       *
+       * @param hookList the uponSanitize* hook array for this event
+       * @param set the current ALLOWED_TAGS / ALLOWED_ATTR binding
+       * @param defaultSet the per-instance DEFAULT_ALLOWED_* constant
+       * @param setConfigSet the captured setConfig() binding, or null
+       * @return a call-local clone if a hook is present and set is still shared,
+       *   else set unchanged
+       */
+      const _forkSharedAllowlist = function _forkSharedAllowlist(hookList, set, defaultSet, setConfigSet) {
+        if (hookList.length === 0) {
+          return set;
+        }
+        return set === defaultSet || set === setConfigSet ? clone$1(set) : set;
       };
       /**
        * _sanitizeElements
@@ -12818,9 +12941,20 @@
        * @param currentNode to check for permission to exist
        * @return true if node was killed, false if left alive
        */
-      const _sanitizeElements = function _sanitizeElements(currentNode) {
+      // eslint-disable-next-line complexity
+      const _sanitizeElements = function _sanitizeElements(currentNode, root) {
         /* Execute a hook if present */
         _executeHooks(hooks.beforeSanitizeElements, currentNode, null);
+        /* A hook may have detached the node - treat it as removed (see the
+           detached-node comment after the uponSanitizeElement hook below). On
+           the IN_PLACE path, neutralize the detached subtree first so a queued
+           resource handler on it cannot fire in page scope after we return. */
+        if (currentNode !== root && getParentNode(currentNode) === null) {
+          if (IN_PLACE) {
+            _neutralizeSubtree(currentNode);
+          }
+          return true;
+        }
         /* Check if element is clobbered or can clobber */
         if (_isClobbered(currentNode)) {
           _forceRemove(currentNode);
@@ -12828,11 +12962,47 @@
         }
         /* Now let's check the element's type and name */
         const tagName = transformCaseFunc(getNodeName ? getNodeName(currentNode) : currentNode.nodeName);
+        /* Close the pre-walk clone-guard's timing gap: an uponSanitizeElement
+           hook may have been installed after that guard sampled the hook arrays
+           (e.g. lazily from beforeSanitizeElements), leaving ALLOWED_TAGS still
+           aliasing a shared binding that a widening hook would mutate by
+           reference. Fork it before exposing it to the hook. */
+        ALLOWED_TAGS = _forkSharedAllowlist(hooks.uponSanitizeElement, ALLOWED_TAGS, DEFAULT_ALLOWED_TAGS, SET_CONFIG_ALLOWED_TAGS);
         /* Execute a hook if present */
         _executeHooks(hooks.uponSanitizeElement, currentNode, {
           tagName,
           allowedTags: ALLOWED_TAGS
         });
+        /* A hook may have detached the node from the tree — a long-standing
+           user pattern (issue #469; draw.io-style foreignObject filtering).
+           Per the cached, unclobberable parentNode getter the node is
+           genuinely out of the tree, so it can reach neither the serialized
+           output nor an IN_PLACE live tree; treat it as removed and stop
+           processing it. Without this guard, the unsafe-node / namespace
+           checks below would call _forceRemove on a parentless node and hit
+           the REPORT-3 fail-closed throw — which exists for nodes DOMPurify
+           wants gone but *cannot* detach (clobbered / parentless roots), the
+           opposite of a node that is already safely gone. The walk root is
+           exempt: a detached IN_PLACE root is legitimate input and must still
+           be fully sanitized, and a kill-decision on it must keep hitting the
+           REPORT-3 throw. Nodes detached by hooks stay the hook's
+           responsibility for placement: they are not recorded in
+           DOMPurify.removed, so the post-walk IN_PLACE pass (which iterates
+           DOMPurify.removed) does not reach them. But a hook-detached subtree
+           can still hold a queued resource-event handler - e.g. an <img onload>
+           that began loading when the caller built the live tree - which fires
+           in page scope after sanitize returns even though the handler never
+           reached the returned tree. That is the audit-5 F1 hazard, and the
+           documented node.remove() hook pattern walks straight into it. So on
+           the IN_PLACE path we neutralize the detached subtree inline here,
+           stripping its non-allow-listed attributes before returning, exactly
+           as the post-walk pass does for _forceRemove'd subtrees. */
+        if (currentNode !== root && getParentNode(currentNode) === null) {
+          if (IN_PLACE) {
+            _neutralizeSubtree(currentNode);
+          }
+          return true;
+        }
         /* Remove mXSS vectors, processing instructions and risky comments */
         if (_isUnsafeNode(currentNode, tagName)) {
           _forceRemove(currentNode);
@@ -12840,7 +13010,22 @@
         }
         /* Remove element if anything forbids its presence */
         if (FORBID_TAGS[tagName] || !(EXTRA_ELEMENT_HANDLING.tagCheck instanceof Function && EXTRA_ELEMENT_HANDLING.tagCheck(tagName)) && !ALLOWED_TAGS[tagName]) {
-          return _sanitizeDisallowedNode(currentNode, tagName);
+          const removed = _sanitizeDisallowedNode(currentNode, tagName, root);
+          /* A false return means the node is a custom element kept via
+             CUSTOM_ELEMENT_HANDLING - the only keep path through
+             _sanitizeDisallowedNode. Run afterSanitizeElements on it so the
+             element-hook lifecycle matches normal allowlisted elements: a
+             security policy applied in this hook (e.g. stripping an attribute
+             from every surviving element) must not silently skip kept custom
+             elements (GHSA-c2j3-45gr-mqc4). This mirrors the normal-element
+             tail below - the hook runs, then the walker's subsequent
+             _sanitizeAttributes pass sanitizes the element's attributes. The
+             deliberately skipped namespace and fallback-tag removal checks stay
+             skipped; they are removal decisions, not the hook contract. */
+          if (removed === false) {
+            _executeHooks(hooks.afterSanitizeElements, currentNode, null);
+          }
+          return removed;
         }
         /* Check whether element has a valid namespace.
            Realm-safe check (GHSA-hpcv-96wg-7vj8): use the cached Node.prototype
@@ -12885,6 +13070,33 @@
       const _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
         /* FORBID_ATTR must always win, even if ADD_ATTR predicate would allow it */
         if (FORBID_ATTR[lcName]) {
+          return false;
+        }
+        /* Reject declarative-partial-updates patch-linkage attributes
+           (https://github.com/WICG/declarative-partial-updates).
+                Empirical note (Chrome 150, verified — see
+           test/declarative-patch-probe-v3.html): expansion is NOT applied after
+           sanitization. For the string path it fires during sanitize()'s own
+           parse, so the walk sees and sanitizes the fully materialized expanded
+           tree — teleports into MathML/SVG integration points included; a
+           weaponized `<template for>`->`<img onerror>` comes back with the handler
+           stripped. For the IN_PLACE path it fires on connection, before the walk.
+           Either way DOMPurify is NOT blind to the patch.
+                This removal is therefore defense-in-depth rather than the sole barrier:
+           it prevents live linkage from surviving into the OUTPUT and re-expanding
+           in the caller's context, and keeps behaviour deterministic if a future
+           engine defers expansion. `for` is legitimate only on <label>/<output>;
+           anywhere else (notably <template for>) it links the element to a patch
+           target and teleports or removes an arbitrary DOM range by id/marker name.
+           `patchsrc` fetches remote markup and is treated as a script-loading
+           mechanism (CSP). Gated on SAFE_FOR_XML so the removal groups with the
+           other structural-threat checks and stays overridable, consistent with
+           the rest of the codebase. PI range markers are already removed by
+           _isUnsafeNode. */
+        if (SAFE_FOR_XML && lcName === 'patchsrc') {
+          return false;
+        }
+        if (SAFE_FOR_XML && lcName === 'for' && lcTag !== 'label' && lcTag !== 'output') {
           return false;
         }
         /* Make sure attribute cannot clobber */
@@ -13003,6 +13215,9 @@
         if (!attributes || _isClobbered(currentNode)) {
           return;
         }
+        /* Same lazy-install guard as uponSanitizeElement (see there): fork the
+           attribute allowlist off its shared binding before a hook can see it. */
+        ALLOWED_ATTR = _forkSharedAllowlist(hooks.uponSanitizeAttribute, ALLOWED_ATTR, DEFAULT_ALLOWED_ATTR, SET_CONFIG_ALLOWED_ATTR);
         const hookEvent = {
           attrName: '',
           attrValue: '',
@@ -13096,7 +13311,7 @@
           /* Execute a hook if present */
           _executeHooks(hooks.uponSanitizeShadowNode, shadowNode, null);
           /* Sanitize tags and elements */
-          _sanitizeElements(shadowNode);
+          _sanitizeElements(shadowNode, fragment);
           /* Check attributes next */
           _sanitizeAttributes(shadowNode);
           /* Deep shadow DOM detected.
@@ -13287,6 +13502,11 @@
            keep using and whose return value they ignore — unsanitized. REPORT-2. */
         const inPlace = IN_PLACE && typeof dirty !== 'string' && _isNode(dirty);
         if (inPlace) {
+          /* Declarative-partial-updates / streaming pre-pass: sever every patch
+             linkage across the live tree BEFORE the walk, so no patch can fire
+             mid-walk and inject into an already-processed region. Runs first, so
+             it also covers the forbidden/clobbered roots that throw below. */
+          _neutralizePatchLinkage(dirty);
           /* Do some early pre-sanitization to avoid unsafe root nodes.
              Read nodeName through the cached prototype getter — a clobbering
              child named "nodeName" on the form root would otherwise shadow
@@ -13296,6 +13516,9 @@
           if (typeof nn === 'string') {
             const tagName = transformCaseFunc(nn);
             if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+              /* Fail closed on a live root: neutralize handlers/children before
+                 throwing, exactly as the mid-walk abort path does. */
+              _neutralizeRoot(dirty);
               throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
             }
           }
@@ -13310,6 +13533,10 @@
              the application unsanitized. Refuse to sanitize such a root
              the same way we refuse a forbidden tag. GHSA-r47g-fvhr-h676. */
           if (_isClobbered(dirty)) {
+            /* Fail closed on a live clobbered root before throwing.
+               _neutralizeRoot's reads are clobber-safe (cached getters); the
+               form's non-clobbered descendants, e.g. an armed <img>, are scrubbed. */
+            _neutralizeRoot(dirty);
             throw typeErrorCreate('root node is clobbered and cannot be sanitized in-place');
           }
           /* Sanitize attached shadow roots before the main iterator runs.
@@ -13362,20 +13589,24 @@
           _forceRemove(body.firstChild);
         }
         /* Get node iterator */
-        const nodeIterator = _createNodeIterator(inPlace ? dirty : body);
+        const walkRoot = inPlace ? dirty : body;
         /* Now start iterating over the created document.
            The walk runs inside an exception barrier (campaign-3 F2): a re-entrant
            engine/custom-element mutation can detach a node mid-walk so
            `_forceRemove`'s parentless guard throws, aborting the loop. Without the
            barrier the caller's in-place tree would be left half-sanitized with the
-           unvisited tail still armed. On any throw we fail closed — strip the
-           in-place root bare — then rethrow so the existing throw contract is
-           preserved. (String/DOM-copy paths never return the partial body, so the
-           propagating throw is already fail-closed there.) */
+           unvisited tail still armed. _createNodeIterator itself is inside the
+           barrier too: constructing the iterator dereferences the root's document,
+           and any failure there (e.g. an exotic/clobbered root) must still fail
+           closed rather than skip the neutralize. On any throw we fail closed -
+           strip the in-place root bare - then rethrow so the existing throw
+           contract is preserved. (String/DOM-copy paths never return the partial
+           body, so the propagating throw is already fail-closed there.) */
         try {
+          const nodeIterator = _createNodeIterator(walkRoot);
           while (currentNode = nodeIterator.nextNode()) {
             /* Sanitize tags and elements */
-            _sanitizeElements(currentNode);
+            _sanitizeElements(currentNode, walkRoot);
             /* Check attributes next */
             _sanitizeAttributes(currentNode);
             /* Shadow DOM detected, sanitize it.
@@ -13389,6 +13620,14 @@
         } catch (error) {
           if (inPlace) {
             _neutralizeRoot(dirty);
+            /* Nodes _forceRemove'd earlier in the aborted walk are already
+               detached from the root, so _neutralizeRoot's subtree pass does not
+               reach them. Defuse them too, mirroring the success-path loop below. */
+            arrayForEach(DOMPurify.removed, entry => {
+              if (entry.element) {
+                _neutralizeSubtree(entry.element);
+              }
+            });
           }
           throw error;
         }
@@ -15826,17 +16065,17 @@
           figure0 = element("figure");
           figcaption0 = element("figcaption");
           figcaption0.textContent = "".concat(translate("timemanager", "Today"));
-          t1 = space$1();
+          t1 = space();
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           t4 = text$1(t4_value);
-          t5 = space$1();
+          t5 = space();
           figure1 = element("figure");
           figcaption1 = element("figcaption");
           figcaption1.textContent = "".concat(translate("timemanager", "Week"));
-          t7 = space$1();
+          t7 = space();
           t8 = text$1(t8_value);
-          t9 = space$1();
+          t9 = space();
           t10 = text$1(t10_value);
           attr(figcaption0, "class", "tm_label");
           attr(figcaption1, "class", "tm_label");
@@ -15937,11 +16176,11 @@
       return {
         c() {
           if (if_block) if_block.c();
-          t0 = space$1();
+          t0 = space();
           div = element("div");
           span0 = element("span");
           t1 = text$1(t1_value);
-          t2 = space$1();
+          t2 = space();
           span1 = element("span");
           t3 = text$1(t3_value);
           attr(span0, "class", "day");
@@ -16001,7 +16240,7 @@
           t0 = text$1(t0_value);
           t1 = text$1(" ");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           div = element("div");
           attr(span, "class", "hours-label");
           attr(div, "class", "column-inner");
@@ -16040,7 +16279,7 @@
         c() {
           div = element("div");
           if (if_block) if_block.c();
-          t = space$1();
+          t = space();
           attr(div, "class", "column");
         },
         m(target, anchor) {
@@ -16123,22 +16362,22 @@
           nav = element("nav");
           button0 = element("button");
           button0.textContent = "".concat(translate("timemanager", "Previous week"));
-          t1 = space$1();
+          t1 = space();
           span1 = element("span");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           t4 = text$1(/*currentWeek*/ctx[7]);
-          t5 = space$1();
+          t5 = space();
           span0 = element("span");
           t6 = text$1("(");
           t7 = text$1(t7_value);
           t8 = text$1(" – ");
           t9 = text$1(t9_value);
           t10 = text$1(")");
-          t11 = space$1();
+          t11 = space();
           span2 = element("span");
           if (if_block) if_block.c();
-          t12 = space$1();
+          t12 = space();
           button1 = element("button");
           button1.textContent = "".concat(translate("timemanager", "Next week"));
           attr(button0, "class", "previous");
@@ -16246,16 +16485,16 @@
       return {
         c() {
           if (if_block0) if_block0.c();
-          t0 = space$1();
+          t0 = space();
           div2 = element("div");
           if (if_block1) if_block1.c();
-          t1 = space$1();
+          t1 = space();
           div1 = element("div");
           div0 = element("div");
           if (if_block2) if_block2.c();
-          t2 = space$1();
+          t2 = space();
           if (if_block3) if_block3.c();
-          t3 = space$1();
+          t3 = space();
           if (if_block4) if_block4.c();
           attr(div0, "class", div0_class_value = "hours-per-week ".concat(/*points*/ctx[3].length > 12 || window.clientWidth < 768 ? "many" : "few"));
           attr(div1, "class", "graphs");
@@ -16672,7 +16911,7 @@
       return {
         c() {
           div0 = element("div");
-          t = space$1();
+          t = space();
           div1 = element("div");
           if (default_slot) default_slot.c();
           attr(div0, "class", "tm-oc-dialog-dim");
@@ -16814,28 +17053,28 @@
           div1 = element("div");
           h3 = element("h3");
           t0 = text$1(/*clientEditorCaption*/ctx[4]);
-          t1 = space$1();
+          t1 = space();
           form = element("form");
           label0 = element("label");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           br0 = element("br");
-          t4 = space$1();
+          t4 = space();
           input0 = element("input");
-          t5 = space$1();
+          t5 = space();
           label1 = element("label");
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           br1 = element("br");
-          t8 = space$1();
+          t8 = space();
           textarea = element("textarea");
-          t9 = space$1();
+          t9 = space();
           input1 = element("input");
-          t10 = space$1();
+          t10 = space();
           div0 = element("div");
           button = element("button");
           t11 = text$1(/*clientEditorButtonCaption*/ctx[3]);
-          t12 = space$1();
+          t12 = space();
           if (if_block) if_block.c();
           input0.autofocus = true;
           attr(input0, "type", "text");
@@ -17104,7 +17343,7 @@
           a = element("a");
           span = element("span");
           t0 = text$1(/*clientEditorButtonCaption*/ctx[1]);
-          t1 = space$1();
+          t1 = space();
           if (if_block) if_block.c();
           if_block_anchor = empty();
           attr(a, "href", "#/");
@@ -17351,31 +17590,31 @@
           div1 = element("div");
           h3 = element("h3");
           t0 = text$1(/*projectEditorCaption*/ctx[5]);
-          t1 = space$1();
+          t1 = space();
           form = element("form");
           label0 = element("label");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           br0 = element("br");
-          t4 = space$1();
+          t4 = space();
           input0 = element("input");
-          t5 = space$1();
+          t5 = space();
           label1 = element("label");
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           br1 = element("br");
-          t8 = space$1();
+          t8 = space();
           strong = element("strong");
           t9 = text$1(/*clientName*/ctx[1]);
-          t10 = space$1();
+          t10 = space();
           br2 = element("br");
-          t11 = space$1();
+          t11 = space();
           input1 = element("input");
-          t12 = space$1();
+          t12 = space();
           div0 = element("div");
           button = element("button");
           t13 = text$1(/*projectEditorButtonCaption*/ctx[4]);
-          t14 = space$1();
+          t14 = space();
           if (if_block) if_block.c();
           input0.autofocus = true;
           attr(input0, "type", "text");
@@ -17642,7 +17881,7 @@
           a = element("a");
           span = element("span");
           t0 = text$1(/*projectEditorButtonCaption*/ctx[3]);
-          t1 = space$1();
+          t1 = space();
           if (if_block) if_block.c();
           if_block_anchor = empty();
           attr(a, "href", "#/");
@@ -17898,39 +18137,39 @@
           div1 = element("div");
           h3 = element("h3");
           t0 = text$1(/*taskEditorCaption*/ctx[6]);
-          t1 = space$1();
+          t1 = space();
           form = element("form");
           label0 = element("label");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           br0 = element("br");
-          t4 = space$1();
+          t4 = space();
           input0 = element("input");
-          t5 = space$1();
+          t5 = space();
           label1 = element("label");
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           br1 = element("br");
-          t8 = space$1();
+          t8 = space();
           strong0 = element("strong");
           t9 = text$1(/*projectName*/ctx[2]);
-          t10 = space$1();
+          t10 = space();
           label2 = element("label");
           t11 = text$1(t11_value);
-          t12 = space$1();
+          t12 = space();
           br2 = element("br");
-          t13 = space$1();
+          t13 = space();
           strong1 = element("strong");
           t14 = text$1(/*clientName*/ctx[1]);
-          t15 = space$1();
+          t15 = space();
           br3 = element("br");
-          t16 = space$1();
+          t16 = space();
           input1 = element("input");
-          t17 = space$1();
+          t17 = space();
           div0 = element("div");
           button = element("button");
           t18 = text$1(/*taskEditorButtonCaption*/ctx[5]);
-          t19 = space$1();
+          t19 = space();
           if (if_block) if_block.c();
           input0.autofocus = true;
           attr(input0, "type", "text");
@@ -18212,7 +18451,7 @@
           a = element("a");
           span = element("span");
           t0 = text$1(/*taskEditorButtonCaption*/ctx[4]);
-          t1 = space$1();
+          t1 = space();
           if (if_block) if_block.c();
           if_block_anchor = empty();
           attr(a, "href", "#/");
@@ -18529,9 +18768,9 @@
         c() {
           label = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           br = element("br");
-          t2 = space$1();
+          t2 = space();
           input = element("input");
           input.autofocus = true;
           attr(input, "type", "text");
@@ -18584,9 +18823,9 @@
         c() {
           label = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           br = element("br");
-          t2 = space$1();
+          t2 = space();
           input = element("input");
           input.autofocus = true;
           attr(input, "type", "text");
@@ -18748,78 +18987,78 @@
           div1 = element("div");
           h3 = element("h3");
           t0 = text$1(/*timeEditorCaption*/ctx[6]);
-          t1 = space$1();
+          t1 = space();
           form = element("form");
           span1 = element("span");
           if (if_block0) if_block0.c();
-          t2 = space$1();
+          t2 = space();
           span0 = element("span");
           label0 = element("label");
           t3 = text$1(t3_value);
-          t4 = space$1();
+          t4 = space();
           br0 = element("br");
-          t5 = space$1();
+          t5 = space();
           input0 = element("input");
-          t6 = space$1();
+          t6 = space();
           label1 = element("label");
           t7 = text$1(t7_value);
-          t8 = space$1();
+          t8 = space();
           br1 = element("br");
-          t9 = space$1();
+          t9 = space();
           input1 = element("input");
-          t10 = space$1();
+          t10 = space();
           br2 = element("br");
-          t11 = space$1();
+          t11 = space();
           label2 = element("label");
           t12 = text$1(t12_value);
-          t13 = space$1();
+          t13 = space();
           br3 = element("br");
-          t14 = space$1();
+          t14 = space();
           input2 = element("input");
-          t15 = space$1();
+          t15 = space();
           br4 = element("br");
-          t16 = space$1();
+          t16 = space();
           label3 = element("label");
           t17 = text$1(t17_value);
-          t18 = space$1();
+          t18 = space();
           br5 = element("br");
-          t19 = space$1();
+          t19 = space();
           textarea = element("textarea");
-          t20 = space$1();
+          t20 = space();
           br6 = element("br");
-          t21 = space$1();
+          t21 = space();
           label4 = element("label");
           t22 = text$1(t22_value);
-          t23 = space$1();
+          t23 = space();
           br7 = element("br");
-          t24 = space$1();
+          t24 = space();
           strong0 = element("strong");
           t25 = text$1(/*taskName*/ctx[3]);
-          t26 = space$1();
+          t26 = space();
           label5 = element("label");
           t27 = text$1(t27_value);
-          t28 = space$1();
+          t28 = space();
           br8 = element("br");
-          t29 = space$1();
+          t29 = space();
           strong1 = element("strong");
           t30 = text$1(/*projectName*/ctx[2]);
-          t31 = space$1();
+          t31 = space();
           label6 = element("label");
           t32 = text$1(t32_value);
-          t33 = space$1();
+          t33 = space();
           br9 = element("br");
-          t34 = space$1();
+          t34 = space();
           strong2 = element("strong");
           t35 = text$1(/*clientName*/ctx[1]);
-          t36 = space$1();
+          t36 = space();
           br10 = element("br");
-          t37 = space$1();
+          t37 = space();
           input3 = element("input");
-          t38 = space$1();
+          t38 = space();
           div0 = element("div");
           button = element("button");
           t39 = text$1(/*timeEditorButtonCaption*/ctx[7]);
-          t40 = space$1();
+          t40 = space();
           if (if_block1) if_block1.c();
           attr(input0, "type", "time");
           attr(input0, "name", "startTime");
@@ -19338,7 +19577,7 @@
       return {
         c() {
           if_block0.c();
-          t = space$1();
+          t = space();
           if (if_block1) if_block1.c();
           if_block1_anchor = empty();
         },
@@ -19593,11 +19832,11 @@
         c() {
           div1 = element("div");
           t0 = text$1(/*deleteQuestion*/ctx[3]);
-          t1 = space$1();
+          t1 = space();
           div0 = element("div");
           button0 = element("button");
           button0.textContent = "".concat(translate('timemanager', 'Delete'));
-          t3 = space$1();
+          t3 = space();
           button1 = element("button");
           button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
@@ -19644,12 +19883,12 @@
       return {
         c() {
           if (if_block) if_block.c();
-          t0 = space$1();
+          t0 = space();
           form_1 = element("form");
           input0 = element("input");
-          t1 = space$1();
+          t1 = space();
           input1 = element("input");
-          t2 = space$1();
+          t2 = space();
           button = element("button");
           t3 = text$1(/*deleteButtonCaption*/ctx[2]);
           attr(input0, "type", "hidden");
@@ -20222,7 +20461,7 @@
         c() {
           div = element("div");
           if (switch_instance) create_component(switch_instance.$$.fragment);
-          t = space$1();
+          t = space();
           attr(div, "class", "listItem");
           attr(div, "tabindex", "-1");
         },
@@ -20962,9 +21201,9 @@
         c() {
           div1 = element("div");
           div0 = element("div");
-          t0 = space$1();
+          t0 = space();
           if (if_block) if_block.c();
-          t1 = space$1();
+          t1 = space();
           attr(div0, "class", "multiSelectItem_label svelte-liu9pa");
           attr(div1, "class", div1_class_value = "multiSelectItem " + (/*activeValue*/ctx[1] === /*i*/ctx[11] ? 'active' : '') + " " + (/*isDisabled*/ctx[2] ? 'disabled' : '') + " svelte-liu9pa");
         },
@@ -21159,7 +21398,7 @@
         c() {
           svelte_virtual_list_row = element("svelte-virtual-list-row");
           if (default_slot_or_fallback) default_slot_or_fallback.c();
-          t = space$1();
+          t = space();
           set_custom_element_data(svelte_virtual_list_row, "class", "svelte-g2cagw");
           this.first = svelte_virtual_list_row;
         },
@@ -21525,7 +21764,7 @@
         c() {
           span0 = element("span");
           t0 = text$1(/*ariaSelection*/ctx[33]);
-          t1 = space$1();
+          t1 = space();
           span1 = element("span");
           t2 = text$1(/*ariaContext*/ctx[32]);
           attr(span0, "id", "aria-selection");
@@ -22225,25 +22464,25 @@
           div = element("div");
           span = element("span");
           if (if_block0) if_block0.c();
-          t0 = space$1();
+          t0 = space();
           if (if_block1) if_block1.c();
-          t1 = space$1();
+          t1 = space();
           if (if_block2) if_block2.c();
-          t2 = space$1();
+          t2 = space();
           input_1 = element("input");
-          t3 = space$1();
+          t3 = space();
           if (if_block3) if_block3.c();
-          t4 = space$1();
+          t4 = space();
           if (if_block4) if_block4.c();
-          t5 = space$1();
+          t5 = space();
           if (if_block5) if_block5.c();
-          t6 = space$1();
+          t6 = space();
           if (if_block6) if_block6.c();
-          t7 = space$1();
+          t7 = space();
           if (if_block7) if_block7.c();
-          t8 = space$1();
+          t8 = space();
           if (if_block8) if_block8.c();
-          t9 = space$1();
+          t9 = space();
           if (if_block9) if_block9.c();
           attr(span, "aria-live", "polite");
           attr(span, "aria-atomic", "false");
@@ -23731,20 +23970,20 @@
           li = element("li");
           figure = element("figure");
           if_block.c();
-          t0 = space$1();
+          t0 = space();
           figcaption = element("figcaption");
           t1 = text$1(t1_value);
-          t2 = space$1();
+          t2 = space();
           form_1 = element("form");
           input0 = element("input");
-          t3 = space$1();
+          t3 = space();
           input1 = element("input");
-          t4 = space$1();
+          t4 = space();
           input2 = element("input");
-          t5 = space$1();
+          t5 = space();
           button = element("button");
           button.textContent = "".concat(translate("timemanager", "Delete"));
-          t7 = space$1();
+          t7 = space();
           attr(input0, "type", "hidden");
           attr(input0, "name", "client_uuid");
           input0.value = /*clientUuid*/ctx[3];
@@ -23865,34 +24104,34 @@
           div2 = element("div");
           label = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           create_component(select.$$.fragment);
-          t2 = space$1();
+          t2 = space();
           div0 = element("div");
           h4 = element("h4");
           h4.textContent = "".concat(translate("timemanager", "Existing shares"));
-          t4 = space$1();
+          t4 = space();
           if (if_block) if_block.c();
-          t5 = space$1();
+          t5 = space();
           ul = element("ul");
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
             each_blocks[_i].c();
           }
-          t6 = space$1();
+          t6 = space();
           aside = element("aside");
           p0 = element("p");
           p0.textContent = "".concat(translate("timemanager", "You automatically grant read-only access to projects and tasks by sharing."));
-          t8 = space$1();
+          t8 = space();
           p1 = element("p");
           p1.textContent = "".concat(translate("timemanager", "Users you share with can create time entries."));
-          t10 = space$1();
+          t10 = space();
           p2 = element("p");
           p2.textContent = "".concat(translate("timemanager", "You can see all time entries, while others can only see and edit their own time entries."));
-          t12 = space$1();
+          t12 = space();
           div1 = element("div");
           button0 = element("button");
           button0.textContent = "".concat(translate("timemanager", "Add"));
-          t14 = space$1();
+          t14 = space();
           button1 = element("button");
           button1.textContent = "".concat(translate("timemanager", "Cancel"));
           attr(label, "for", "sharee-select");
@@ -24014,16 +24253,16 @@
       return {
         c() {
           if (if_block) if_block.c();
-          t0 = space$1();
+          t0 = space();
           form_1 = element("form");
           input0 = element("input");
-          t1 = space$1();
+          t1 = space();
           input1 = element("input");
-          t2 = space$1();
+          t2 = space();
           input2 = element("input");
-          t3 = space$1();
+          t3 = space();
           input3 = element("input");
-          t4 = space$1();
+          t4 = space();
           button = element("button");
           button.textContent = "".concat(translate("timemanager", "Share client"));
           attr(input0, "type", "hidden");
@@ -24278,7 +24517,7 @@
         c() {
           span = element("span");
           span.textContent = "".concat(translate("timemanager", "Shared with"));
-          t1 = space$1();
+          t1 = space();
           ul = element("ul");
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
             each_blocks[_i].c();
@@ -24398,9 +24637,9 @@
         c() {
           li = element("li");
           if_block.c();
-          t0 = space$1();
+          t0 = space();
           t1 = text$1(t1_value);
-          t2 = space$1();
+          t2 = space();
         },
         m(target, anchor) {
           insert(target, li, anchor);
@@ -24447,11 +24686,11 @@
         c() {
           span = element("span");
           span.textContent = "".concat(translate("timemanager", "Shared with you by"));
-          t1 = space$1();
+          t1 = space();
           ul = element("ul");
           li = element("li");
           img = element("img");
-          t2 = space$1();
+          t2 = space();
           t3 = text$1(t3_value);
           attr(span, "class", "tm_label");
           if (!src_url_equal(img.src, img_src_value = dist_1("avatar/".concat(/*sharedBy*/ctx[1].author_user_id, "/32")))) attr(img, "src", img_src_value);
@@ -24494,7 +24733,7 @@
       return {
         c() {
           if (if_block0) if_block0.c();
-          t = space$1();
+          t = space();
           if (if_block1) if_block1.c();
           if_block1_anchor = empty();
         },
@@ -24634,11 +24873,11 @@
         c() {
           div1 = element("div");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           div0 = element("div");
           button0 = element("button");
           button0.textContent = "".concat(translate('timemanager', 'Delete'));
-          t3 = space$1();
+          t3 = space();
           button1 = element("button");
           button1.textContent = "".concat(translate('timemanager', 'Cancel'));
           attr(button0, "class", "button primary");
@@ -24684,12 +24923,12 @@
       return {
         c() {
           if (if_block) if_block.c();
-          t0 = space$1();
+          t0 = space();
           form = element("form");
           input0 = element("input");
-          t1 = space$1();
+          t1 = space();
           input1 = element("input");
-          t2 = space$1();
+          t2 = space();
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Delete'));
           attr(input0, "type", "hidden");
@@ -28533,7 +28772,7 @@
           t5 = text$1(" › ");
           t6 = text$1(t6_value);
           t7 = text$1(")");
-          t8 = space$1();
+          t8 = space();
           attr(a, "class", "task");
           attr(a, "href", "?");
           attr(a, "tabindex", -1);
@@ -28621,23 +28860,23 @@
           span1 = element("span");
           label0 = element("label");
           html_tag = new HtmlTag(false);
-          t0 = space$1();
+          t0 = space();
           if_block.c();
-          t1 = space$1();
+          t1 = space();
           span0 = element("span");
           label1 = element("label");
           html_tag_1 = new HtmlTag(false);
-          t2 = space$1();
+          t2 = space();
           input0 = element("input");
-          t3 = space$1();
+          t3 = space();
           label2 = element("label");
           html_tag_2 = new HtmlTag(false);
-          t4 = space$1();
+          t4 = space();
           input1 = element("input");
-          t5 = space$1();
+          t5 = space();
           label3 = element("label");
           html_tag_3 = new HtmlTag(false);
-          t6 = space$1();
+          t6 = space();
           input2 = element("input");
           html_tag.a = t0;
           html_tag_1.a = t2;
@@ -28818,7 +29057,7 @@
       return {
         c() {
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           input = element("input");
           attr(input, "data-hideevent", "skip");
           attr(input, "type", "text");
@@ -28894,24 +29133,24 @@
           li0 = element("li");
           span0 = element("span");
           span0.textContent = "".concat(translate("timemanager", "Client"));
-          t1 = space$1();
+          t1 = space();
           span1 = element("span");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           li1 = element("li");
           span2 = element("span");
           span2.textContent = "".concat(translate("timemanager", "Project"));
-          t5 = space$1();
+          t5 = space();
           span3 = element("span");
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           li2 = element("li");
           span4 = element("span");
           span4.textContent = "".concat(translate("timemanager", "Task"));
-          t9 = space$1();
+          t9 = space();
           span5 = element("span");
           t10 = text$1(t10_value);
-          t11 = space$1();
+          t11 = space();
           input = element("input");
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
@@ -28998,15 +29237,15 @@
           label = element("label");
           span = element("span");
           span.textContent = "".concat(translate("timemanager", "Type to search for client, project or task"));
-          t1 = space$1();
+          t1 = space();
           input = element("input");
-          t2 = space$1();
+          t2 = space();
           div0 = element("div");
           if (if_block0) if_block0.c();
-          t3 = space$1();
+          t3 = space();
           div1 = element("div");
           if (if_block1) if_block1.c();
-          t4 = space$1();
+          t4 = space();
           div2 = element("div");
           attr(span, "class", "hidden-visually");
           attr(input, "class", "search-input icon-search button-w-icon");
@@ -29212,30 +29451,30 @@
         c() {
           li3 = element("li");
           if (if_block) if_block.c();
-          t0 = space$1();
+          t0 = space();
           a = element("a");
           ul = element("ul");
           li0 = element("li");
           span0 = element("span");
           span0.textContent = "".concat(translate("timemanager", "Client"));
-          t2 = space$1();
+          t2 = space();
           span1 = element("span");
           span1.textContent = "".concat(/*entry*/ctx[99].client.name);
-          t4 = space$1();
+          t4 = space();
           li1 = element("li");
           span2 = element("span");
           span2.textContent = "".concat(translate("timemanager", "Project"));
-          t6 = space$1();
+          t6 = space();
           span3 = element("span");
           span3.textContent = "".concat(/*entry*/ctx[99].project.name);
-          t8 = space$1();
+          t8 = space();
           li2 = element("li");
           span4 = element("span");
           span4.textContent = "".concat(translate("timemanager", "Task"));
-          t10 = space$1();
+          t10 = space();
           span5 = element("span");
           span5.textContent = "".concat(/*entry*/ctx[99].task.name);
-          t12 = space$1();
+          t12 = space();
           attr(span0, "class", "label muted");
           attr(span1, "class", "value muted");
           attr(span2, "class", "label muted");
@@ -29397,7 +29636,7 @@
           li = element("li");
           a = element("a");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           attr(a, "href", dist_1("apps/timemanager/404"));
           attr(a, "class", "task");
           attr(a, "tabindex", -1);
@@ -29452,12 +29691,12 @@
           li = element("li");
           span = element("span");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           ul = element("ul");
           for (var _i0 = 0; _i0 < each_blocks.length; _i0 += 1) {
             each_blocks[_i0].c();
           }
-          t2 = space$1();
+          t2 = space();
           attr(span, "class", "project");
         },
         m(target, anchor) {
@@ -29524,12 +29763,12 @@
           li = element("li");
           span = element("span");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           ul0 = element("ul");
           for (var _i11 = 0; _i11 < each_blocks.length; _i11 += 1) {
             each_blocks[_i11].c();
           }
-          t2 = space$1();
+          t2 = space();
           attr(span, "class", "client");
           attr(ul1, "class", "result");
         },
@@ -29622,25 +29861,25 @@
           form = element("form");
           label0 = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           input0 = element("input");
-          t2 = space$1();
+          t2 = space();
           if (if_block0) if_block0.c();
-          t3 = space$1();
+          t3 = space();
           label1 = element("label");
           html_tag = new HtmlTag(false);
-          t4 = space$1();
+          t4 = space();
           input1 = element("input");
-          t5 = space$1();
+          t5 = space();
           if (if_block1) if_block1.c();
-          t6 = space$1();
+          t6 = space();
           label2 = element("label");
           input2 = element("input");
-          t7 = space$1();
+          t7 = space();
           if_block2.c();
-          t8 = space$1();
+          t8 = space();
           if (if_block3) if_block3.c();
-          t9 = space$1();
+          t9 = space();
           span = element("span");
           button = element("button");
           t10 = text$1(t10_value);
@@ -30499,9 +30738,9 @@
         c() {
           span0 = element("span");
           input = element("input");
-          t0 = space$1();
+          t0 = space();
           label = element("label");
-          t1 = space$1();
+          t1 = space();
           span1 = element("span");
           attr(input, "type", "checkbox");
           attr(input, "id", input_id_value = "check_".concat(/*uuid*/ctx[0]));
@@ -30666,7 +30905,7 @@
         c() {
           label = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           create_component(select.$$.fragment);
           attr(label, "for", "sharee-filter-select");
           attr(label, "class", "sharee-filter-label");
@@ -30977,22 +31216,22 @@
         c() {
           div = element("div");
           create_component(userfilterselect.$$.fragment);
-          t0 = space$1();
+          t0 = space();
           label0 = element("label");
           t1 = text$1(t1_value);
-          t2 = space$1();
+          t2 = space();
           input0 = element("input");
-          t3 = space$1();
+          t3 = space();
           label1 = element("label");
           t4 = text$1(t4_value);
-          t5 = space$1();
+          t5 = space();
           input1 = element("input");
-          t6 = space$1();
+          t6 = space();
           label2 = element("label");
           t7 = text$1(t7_value);
-          t8 = space$1();
+          t8 = space();
           create_component(select.$$.fragment);
-          t9 = space$1();
+          t9 = space();
           span = element("span");
           button = element("button");
           t10 = text$1(t10_value);
@@ -31344,24 +31583,24 @@
           form = element("form");
           label0 = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           create_component(select0.$$.fragment);
-          t2 = space$1();
+          t2 = space();
           label1 = element("label");
           t3 = text$1(t3_value);
-          t4 = space$1();
+          t4 = space();
           create_component(select1.$$.fragment);
-          t5 = space$1();
+          t5 = space();
           label2 = element("label");
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           create_component(select2.$$.fragment);
-          t8 = space$1();
+          t8 = space();
           label3 = element("label");
           t9 = text$1(t9_value);
-          t10 = space$1();
+          t10 = space();
           create_component(select3.$$.fragment);
-          t11 = space$1();
+          t11 = space();
           create_component(timerange.$$.fragment);
           attr(label0, "for", "client-select");
           attr(label0, "class", "clients");
@@ -36533,12 +36772,12 @@
     }
 
     const is_object = function (obj) {
-      return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
+      return typeof obj === "object" && obj !== null && !Array.isArray(obj);
     };
 
     class CsvError extends Error {
       constructor(code, message, options, ...contexts) {
-        if (Array.isArray(message)) message = message.join(' ').trim();
+        if (Array.isArray(message)) message = message.join(" ").trim();
         super(message);
         if (Error.captureStackTrace !== undefined) {
           Error.captureStackTrace(this, CsvError);
@@ -36561,17 +36800,17 @@
           normalizedColumns[i] = {
             disabled: true
           };
-        } else if (typeof column === 'string') {
+        } else if (typeof column === "string" || typeof column === "number") {
           normalizedColumns[i] = {
-            name: column
+            name: `${column}`
           };
         } else if (is_object(column)) {
-          if (typeof column.name !== 'string') {
-            throw new CsvError('CSV_OPTION_COLUMNS_MISSING_NAME', ['Option columns missing name:', `property "name" is required at position ${i}`, 'when column is an object literal']);
+          if (typeof column.name !== "string") {
+            throw new CsvError("CSV_OPTION_COLUMNS_MISSING_NAME", ["Option columns missing name:", `property "name" is required at position ${i}`, "when column is an object literal"]);
           }
           normalizedColumns[i] = column;
         } else {
-          throw new CsvError('CSV_INVALID_COLUMN_DEFINITION', ['Invalid column definition:', 'expect a string or a literal object,', `got ${JSON.stringify(column)} at position ${i}`]);
+          throw new CsvError("CSV_INVALID_COLUMN_DEFINITION", ["Invalid column definition:", "expect a string or a literal object,", `got ${JSON.stringify(column)} at position ${i}`]);
         }
       }
       return normalizedColumns;
@@ -36589,7 +36828,7 @@
           if (length >= this.size) {
             this.resize();
             if (length >= this.size) {
-              throw Error('INVALID_BUFFER_STATE');
+              throw Error("INVALID_BUFFER_STATE");
             }
           }
           const buf = this.buf;
@@ -36626,34 +36865,101 @@
       }
       toString(encoding) {
         if (encoding) {
-          return this.buf.slice(0, this.length).toString(encoding);
+          return this.buf.toString(encoding, 0, this.length);
         } else {
           return Uint8Array.prototype.slice.call(this.buf.slice(0, this.length));
         }
       }
       toJSON() {
-        return this.toString('utf8');
+        return this.toString("utf8");
       }
       reset() {
         this.length = 0;
       }
     }
 
-    // white space characters
-    // https://en.wikipedia.org/wiki/Whitespace_character
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes#Types
-    // \f\n\r\t\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff
-    const np = 12;
-    const cr$1 = 13; // `\r`, carriage return, 0x0D in hexadécimal, 13 in decimal
-    const nl$1 = 10; // `\n`, newline, 0x0A in hexadecimal, 10 in decimal
-    const space = 32;
-    const tab = 9;
     const init_state = function (options) {
+      // ECMAScript WhiteSpace + LineTerminator codepoints, encoded under
+      // `options.encoding`. Aligns trimming with `String.prototype.trim()`.
+      // https://tc39.es/ecma262/#sec-white-space
+      // https://tc39.es/ecma262/#sec-line-terminators
+      //
+      // Codepoints unrepresentable in the target encoding are dropped: Node's
+      // Buffer substitutes them with `?` (0x3F), and including those would cause
+      // literal `?` bytes in the input to be trimmed under `latin1`/`ascii`.
+      const timchars = [
+      // Basic Latin
+      0x0020,
+      // [Space](https://www.fileformat.info/info/unicode/char/0020/index.htm)
+      0x0009,
+      // [CHARACTER TABULATION (HT)](https://www.fileformat.info/info/unicode/char/0009/index.htm)
+      0x000a,
+      // [LINE FEED (LF)](https://www.fileformat.info/info/unicode/char/000a/index.htm)
+      0x000d,
+      // [CARRIAGE RETURN (CR)](https://www.fileformat.info/info/unicode/char/000d/index.htm)
+      0x000c,
+      // [FORM FEED (FF)](https://www.fileformat.info/info/unicode/char/000c/index.htm)
+      0x000b,
+      // [LINE TABULATION (VT)](https://www.fileformat.info/info/unicode/char/000b/index.htm)
+      // Latin-1 Supplement
+      0x00a0,
+      // [NO-BREAK SPACE (NBSP)](https://www.fileformat.info/info/unicode/char/00a0/index.htm)
+      // Ogham
+      0x1680,
+      // [OGHAM SPACE MARK](https://www.fileformat.info/info/unicode/char/1680/index.htm)
+      // General Punctuation
+      0x2000,
+      // [EN QUAD](https://www.fileformat.info/info/unicode/char/2000/index.htm)
+      0x2001,
+      // [EM QUAD](https://www.fileformat.info/info/unicode/char/2001/index.htm)
+      0x2002,
+      // [EN SPACE](https://www.fileformat.info/info/unicode/char/2002/index.htm)
+      0x2003,
+      // [EM SPACE](https://www.fileformat.info/info/unicode/char/2003/index.htm)
+      0x2004,
+      // [THREE-PER-EM SPACE](https://www.fileformat.info/info/unicode/char/2004/index.htm)
+      0x2005,
+      // [FOUR-PER-EM SPACE](https://www.fileformat.info/info/unicode/char/2005/index.htm)
+      0x2006,
+      // [SIX-PER-EM SPACE](https://www.fileformat.info/info/unicode/char/2006/index.htm)
+      0x2007,
+      // [FIGURE SPACE](https://www.fileformat.info/info/unicode/char/2007/index.htm)
+      0x2008,
+      // [PUNCTUATION SPACE](https://www.fileformat.info/info/unicode/char/2008/index.htm)
+      0x2009,
+      // [THIN SPACE](https://www.fileformat.info/info/unicode/char/2009/index.htm)
+      0x200a,
+      // [HAIR SPACE](https://www.fileformat.info/info/unicode/char/200a/index.htm)
+      0x2028,
+      // [LINE SEPARATOR](https://www.fileformat.info/info/unicode/char/2028/index.htm)
+      0x2029,
+      // [PARAGRAPH SEPARATOR](https://www.fileformat.info/info/unicode/char/2029/index.htm)
+      0x202f,
+      // [NARROW NO-BREAK SPACE (NNBSP)](https://www.fileformat.info/info/unicode/char/202f/index.htm)
+      0x205f,
+      // [MEDIUM MATHEMATICAL SPACE (MMSP)](https://www.fileformat.info/info/unicode/char/205f/index.htm)
+      0x3000,
+      // [IDEOGRAPHIC SPACE](https://www.fileformat.info/info/unicode/char/3000/index.htm)
+      0xfeff // [ZERO WIDTH NO-BREAK SPACE (BOM)](https://www.fileformat.info/info/unicode/char/feff/index.htm)
+      ].reduce((acc, codepoint) => {
+        const encoded = Buffer.from(String.fromCharCode(codepoint), options.encoding);
+        if (codepoint !== 0x3f && encoded.length === 1 && encoded[0] === 0x3f) {
+          return acc;
+        }
+        acc.push(encoded);
+        return acc;
+      }, []);
+      // First-byte lookup table for `__isCharTrimable`. Non-whitespace bytes
+      // (the common case) bail out in O(1) without scanning every timchar.
+      const timcharFirstBytes = new Uint8Array(256);
+      for (const t of timchars) timcharFirstBytes[t[0]] = 1;
       return {
         bomSkipped: false,
         bufBytesStart: 0,
         castField: options.cast_function,
         commenting: false,
+        delimiterBufPrevious: undefined,
+        delimiterDiscovered: false,
         // Current error encountered by a record
         error: undefined,
         enabled: options.from_line === 1,
@@ -36667,9 +36973,13 @@
         // Skip if the remaining buffer smaller than comment
         options.comment !== null ? options.comment.length : 0,
         // Skip if the remaining buffer can be delimiter
-        ...options.delimiter.map(delimiter => delimiter.length),
+        ...(options.delimiter ? options.delimiter.map(delimiter => delimiter.length) : []),
+        // Auto discovery of delimiter is limited to 1 character
+        options.delimiter_auto ? 1 : 0,
         // Skip if the remaining buffer can be escape sequence
-        options.quote !== null ? options.quote.length : 0),
+        options.quote !== null ? options.quote.length : 0,
+        // Skip if the remaining buffer can be a multi-byte trim character
+        ...timchars.map(t => t.length)),
         previousBuf: undefined,
         quoting: false,
         stop: false,
@@ -36678,16 +36988,17 @@
         recordHasError: false,
         record_length: 0,
         recordDelimiterMaxLength: options.record_delimiter.length === 0 ? 0 : Math.max(...options.record_delimiter.map(v => v.length)),
-        trimChars: [Buffer.from(' ', options.encoding)[0], Buffer.from('\t', options.encoding)[0]],
+        trimChars: [Buffer.from(" ", options.encoding)[0], Buffer.from("\t", options.encoding)[0]],
         wasQuoting: false,
         wasRowDelimiter: false,
-        timchars: [Buffer.from(Buffer.from([cr$1], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([nl$1], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([np], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([space], 'utf8').toString(), options.encoding), Buffer.from(Buffer.from([tab], 'utf8').toString(), options.encoding)]
+        timchars: timchars,
+        timcharFirstBytes: timcharFirstBytes
       };
     };
 
     const underscore = function (str) {
       return str.replace(/([A-Z])/g, function (_, match) {
-        return '_' + match.toLowerCase();
+        return "_" + match.toLowerCase();
       });
     };
 
@@ -36701,45 +37012,45 @@
       // Note: defined first because other options depends on it
       // to convert chars/strings into buffers.
       if (options.encoding === undefined || options.encoding === true) {
-        options.encoding = 'utf8';
+        options.encoding = "utf8";
       } else if (options.encoding === null || options.encoding === false) {
         options.encoding = null;
-      } else if (typeof options.encoding !== 'string' && options.encoding !== null) {
-        throw new CsvError('CSV_INVALID_OPTION_ENCODING', ['Invalid option encoding:', 'encoding must be a string or null to return a buffer,', `got ${JSON.stringify(options.encoding)}`], options);
+      } else if (typeof options.encoding !== "string" && options.encoding !== null) {
+        throw new CsvError("CSV_INVALID_OPTION_ENCODING", ["Invalid option encoding:", "encoding must be a string or null to return a buffer,", `got ${JSON.stringify(options.encoding)}`], options);
       }
       // Normalize option `bom`
       if (options.bom === undefined || options.bom === null || options.bom === false) {
         options.bom = false;
       } else if (options.bom !== true) {
-        throw new CsvError('CSV_INVALID_OPTION_BOM', ['Invalid option bom:', 'bom must be true,', `got ${JSON.stringify(options.bom)}`], options);
+        throw new CsvError("CSV_INVALID_OPTION_BOM", ["Invalid option bom:", "bom must be true,", `got ${JSON.stringify(options.bom)}`], options);
       }
       // Normalize option `cast`
       options.cast_function = null;
-      if (options.cast === undefined || options.cast === null || options.cast === false || options.cast === '') {
+      if (options.cast === undefined || options.cast === null || options.cast === false || options.cast === "") {
         options.cast = undefined;
-      } else if (typeof options.cast === 'function') {
+      } else if (typeof options.cast === "function") {
         options.cast_function = options.cast;
         options.cast = true;
       } else if (options.cast !== true) {
-        throw new CsvError('CSV_INVALID_OPTION_CAST', ['Invalid option cast:', 'cast must be true or a function,', `got ${JSON.stringify(options.cast)}`], options);
+        throw new CsvError("CSV_INVALID_OPTION_CAST", ["Invalid option cast:", "cast must be true or a function,", `got ${JSON.stringify(options.cast)}`], options);
       }
       // Normalize option `cast_date`
-      if (options.cast_date === undefined || options.cast_date === null || options.cast_date === false || options.cast_date === '') {
+      if (options.cast_date === undefined || options.cast_date === null || options.cast_date === false || options.cast_date === "") {
         options.cast_date = false;
       } else if (options.cast_date === true) {
         options.cast_date = function (value) {
           const date = Date.parse(value);
           return !isNaN(date) ? new Date(date) : value;
         };
-      } else if (typeof options.cast_date !== 'function') {
-        throw new CsvError('CSV_INVALID_OPTION_CAST_DATE', ['Invalid option cast_date:', 'cast_date must be true or a function,', `got ${JSON.stringify(options.cast_date)}`], options);
+      } else if (typeof options.cast_date !== "function") {
+        throw new CsvError("CSV_INVALID_OPTION_CAST_DATE", ["Invalid option cast_date:", "cast_date must be true or a function,", `got ${JSON.stringify(options.cast_date)}`], options);
       }
       // Normalize option `columns`
-      options.cast_first_line_to_header = null;
+      options.cast_first_line_to_header = undefined;
       if (options.columns === true) {
         // Fields in the first line are converted as-is to columns
         options.cast_first_line_to_header = undefined;
-      } else if (typeof options.columns === 'function') {
+      } else if (typeof options.columns === "function") {
         options.cast_first_line_to_header = options.columns;
         options.columns = true;
       } else if (Array.isArray(options.columns)) {
@@ -36747,49 +37058,86 @@
       } else if (options.columns === undefined || options.columns === null || options.columns === false) {
         options.columns = false;
       } else {
-        throw new CsvError('CSV_INVALID_OPTION_COLUMNS', ['Invalid option columns:', 'expect an array, a function or true,', `got ${JSON.stringify(options.columns)}`], options);
+        throw new CsvError("CSV_INVALID_OPTION_COLUMNS", ["Invalid option columns:", "expect an array, a function or true,", `got ${JSON.stringify(options.columns)}`], options);
       }
       // Normalize option `group_columns_by_name`
       if (options.group_columns_by_name === undefined || options.group_columns_by_name === null || options.group_columns_by_name === false) {
         options.group_columns_by_name = false;
       } else if (options.group_columns_by_name !== true) {
-        throw new CsvError('CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME', ['Invalid option group_columns_by_name:', 'expect an boolean,', `got ${JSON.stringify(options.group_columns_by_name)}`], options);
+        throw new CsvError("CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME", ["Invalid option group_columns_by_name:", "expect an boolean,", `got ${JSON.stringify(options.group_columns_by_name)}`], options);
       } else if (options.columns === false) {
-        throw new CsvError('CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME', ['Invalid option group_columns_by_name:', 'the `columns` mode must be activated.'], options);
+        throw new CsvError("CSV_INVALID_OPTION_GROUP_COLUMNS_BY_NAME", ["Invalid option group_columns_by_name:", "the `columns` mode must be activated."], options);
       }
       // Normalize option `comment`
-      if (options.comment === undefined || options.comment === null || options.comment === false || options.comment === '') {
+      if (options.comment === undefined || options.comment === null || options.comment === false || options.comment === "") {
         options.comment = null;
       } else {
-        if (typeof options.comment === 'string') {
+        if (typeof options.comment === "string") {
           options.comment = Buffer.from(options.comment, options.encoding);
         }
         if (!Buffer.isBuffer(options.comment)) {
-          throw new CsvError('CSV_INVALID_OPTION_COMMENT', ['Invalid option comment:', 'comment must be a buffer or a string,', `got ${JSON.stringify(options.comment)}`], options);
+          throw new CsvError("CSV_INVALID_OPTION_COMMENT", ["Invalid option comment:", "comment must be a buffer or a string,", `got ${JSON.stringify(options.comment)}`], options);
+        }
+      }
+      // Normalize option `comment_no_infix`
+      if (options.comment_no_infix === undefined || options.comment_no_infix === null || options.comment_no_infix === false) {
+        options.comment_no_infix = false;
+      } else if (options.comment_no_infix !== true) {
+        throw new CsvError("CSV_INVALID_OPTION_COMMENT", ["Invalid option comment_no_infix:", "value must be a boolean,", `got ${JSON.stringify(options.comment_no_infix)}`], options);
+      }
+      // Normalize option `delimiter_auto`
+      if (options.delimiter_auto === undefined || options.delimiter_auto === null || options.delimiter_auto === false) {
+        options.delimiter_auto = false;
+      } else if (options.delimiter_auto === true) {
+        options.delimiter_auto = {};
+      } else if (!is_object(options.delimiter_auto)) {
+        throw new CsvError("CSV_INVALID_OPTION_DELIMITER_AUTO", ["Invalid option delimiter_auto:", "delimiter_auto must be a boolean or a configuration object,", `got ${JSON.stringify(options.delimiter_auto)}`], options);
+      }
+      if (options.delimiter_auto) {
+        if (options.delimiter_auto.preferred === undefined) options.delimiter_auto.preferred = {
+          [",".charCodeAt(0)]: 1.8,
+          ["\t".charCodeAt(0)]: 1.8,
+          [";".charCodeAt(0)]: 1.6,
+          [" ".charCodeAt(0)]: 1.6,
+          [":".charCodeAt(0)]: 1.5,
+          [".".charCodeAt(0)]: 1.4,
+          ["/".charCodeAt(0)]: 1.4
+        };else if (!is_object(options.delimiter_auto.preferred)) {
+          throw new CsvError("CSV_INVALID_OPTION_DELIMITER_AUTO", ["Invalid option delimiter_auto:", "preferred must be an object,", `got ${JSON.stringify(options.delimiter_auto.preferred)}`], options);
+        }
+        if (options.delimiter_auto.score === undefined) options.delimiter_auto.score = (info, options) => {
+          return (info.total - info.std) * (options.preferred[info.char_code] || 1);
+        };else if (typeof options.delimiter_auto.score !== "function") {
+          throw new CsvError("CSV_INVALID_OPTION_DELIMITER_AUTO", ["Invalid option delimiter_auto:", "score must be a function,", `got ${JSON.stringify(options.delimiter_auto.score)}`], options);
+        }
+        if (options.delimiter_auto.size === undefined) options.delimiter_auto.size = 2048;else if (typeof options.delimiter_auto.size !== "number") {
+          throw new CsvError("CSV_INVALID_OPTION_DELIMITER_AUTO", ["Invalid option delimiter_auto:", "size must be a number,", `got ${JSON.stringify(options.delimiter_auto.size)}`], options);
         }
       }
       // Normalize option `delimiter`
       const delimiter_json = JSON.stringify(options.delimiter);
-      if (!Array.isArray(options.delimiter)) options.delimiter = [options.delimiter];
-      if (options.delimiter.length === 0) {
-        throw new CsvError('CSV_INVALID_OPTION_DELIMITER', ['Invalid option delimiter:', 'delimiter must be a non empty string or buffer or array of string|buffer,', `got ${delimiter_json}`], options);
+      if (options.delimiter_auto !== false) {
+        options.delimiter = [];
+      }
+      if (!Array.isArray(options.delimiter)) {
+        if (options.delimiter === undefined || options.delimiter === null || options.delimiter === false) {
+          options.delimiter = Buffer.from(",", options.encoding);
+        }
+        options.delimiter = [options.delimiter];
       }
       options.delimiter = options.delimiter.map(function (delimiter) {
-        if (delimiter === undefined || delimiter === null || delimiter === false) {
-          return Buffer.from(',', options.encoding);
-        }
-        if (typeof delimiter === 'string') {
+        if (typeof delimiter === "string") {
           delimiter = Buffer.from(delimiter, options.encoding);
         }
         if (!Buffer.isBuffer(delimiter) || delimiter.length === 0) {
-          throw new CsvError('CSV_INVALID_OPTION_DELIMITER', ['Invalid option delimiter:', 'delimiter must be a non empty string or buffer or array of string|buffer,', `got ${delimiter_json}`], options);
+          throw new CsvError("CSV_INVALID_OPTION_DELIMITER", ["Invalid option delimiter:", "delimiter must be a non empty string or buffer or array of string|buffer,", `got ${delimiter_json}`], options);
         }
         return delimiter;
       });
       // Normalize option `escape`
       if (options.escape === undefined || options.escape === true) {
         options.escape = Buffer.from('"', options.encoding);
-      } else if (typeof options.escape === 'string') {
+      } else if (typeof options.escape === "string") {
         options.escape = Buffer.from(options.escape, options.encoding);
       } else if (options.escape === null || options.escape === false) {
         options.escape = null;
@@ -36803,7 +37151,7 @@
       if (options.from === undefined || options.from === null) {
         options.from = 1;
       } else {
-        if (typeof options.from === 'string' && /\d+/.test(options.from)) {
+        if (typeof options.from === "string" && /\d+/.test(options.from)) {
           options.from = parseInt(options.from);
         }
         if (Number.isInteger(options.from)) {
@@ -36818,7 +37166,7 @@
       if (options.from_line === undefined || options.from_line === null) {
         options.from_line = 1;
       } else {
-        if (typeof options.from_line === 'string' && /\d+/.test(options.from_line)) {
+        if (typeof options.from_line === "string" && /\d+/.test(options.from_line)) {
           options.from_line = parseInt(options.from_line);
         }
         if (Number.isInteger(options.from_line)) {
@@ -36832,16 +37180,16 @@
       // Normalize options `ignore_last_delimiters`
       if (options.ignore_last_delimiters === undefined || options.ignore_last_delimiters === null) {
         options.ignore_last_delimiters = false;
-      } else if (typeof options.ignore_last_delimiters === 'number') {
+      } else if (typeof options.ignore_last_delimiters === "number") {
         options.ignore_last_delimiters = Math.floor(options.ignore_last_delimiters);
         if (options.ignore_last_delimiters === 0) {
           options.ignore_last_delimiters = false;
         }
-      } else if (typeof options.ignore_last_delimiters !== 'boolean') {
-        throw new CsvError('CSV_INVALID_OPTION_IGNORE_LAST_DELIMITERS', ['Invalid option `ignore_last_delimiters`:', 'the value must be a boolean value or an integer,', `got ${JSON.stringify(options.ignore_last_delimiters)}`], options);
+      } else if (typeof options.ignore_last_delimiters !== "boolean") {
+        throw new CsvError("CSV_INVALID_OPTION_IGNORE_LAST_DELIMITERS", ["Invalid option `ignore_last_delimiters`:", "the value must be a boolean value or an integer,", `got ${JSON.stringify(options.ignore_last_delimiters)}`], options);
       }
       if (options.ignore_last_delimiters === true && options.columns === false) {
-        throw new CsvError('CSV_IGNORE_LAST_DELIMITERS_REQUIRES_COLUMNS', ['The option `ignore_last_delimiters`', 'requires the activation of the `columns` option'], options);
+        throw new CsvError("CSV_IGNORE_LAST_DELIMITERS_REQUIRES_COLUMNS", ["The option `ignore_last_delimiters`", "requires the activation of the `columns` option"], options);
       }
       // Normalize option `info`
       if (options.info === undefined || options.info === null || options.info === false) {
@@ -36852,7 +37200,7 @@
       // Normalize option `max_record_size`
       if (options.max_record_size === undefined || options.max_record_size === null || options.max_record_size === false) {
         options.max_record_size = 0;
-      } else if (Number.isInteger(options.max_record_size) && options.max_record_size >= 0) ; else if (typeof options.max_record_size === 'string' && /\d+/.test(options.max_record_size)) {
+      } else if (Number.isInteger(options.max_record_size) && options.max_record_size >= 0) ; else if (typeof options.max_record_size === "string" && /\d+/.test(options.max_record_size)) {
         options.max_record_size = parseInt(options.max_record_size);
       } else {
         throw new Error(`Invalid Option: max_record_size must be a positive integer, got ${JSON.stringify(options.max_record_size)}`);
@@ -36867,39 +37215,46 @@
         if (options.encoding === null) ; else {
           options.objname = options.objname.toString(options.encoding);
         }
-      } else if (typeof options.objname === 'string') {
+      } else if (typeof options.objname === "string") {
         if (options.objname.length === 0) {
           throw new Error(`Invalid Option: objname must be a non empty string`);
         }
         // Great, nothing to do
-      } else if (typeof options.objname === 'number') ; else {
+      } else if (typeof options.objname === "number") ; else {
         throw new Error(`Invalid Option: objname must be a string or a buffer, got ${options.objname}`);
       }
       if (options.objname !== undefined) {
-        if (typeof options.objname === 'number') {
+        if (typeof options.objname === "number") {
           if (options.columns !== false) {
-            throw Error('Invalid Option: objname index cannot be combined with columns or be defined as a field');
+            throw Error("Invalid Option: objname index cannot be combined with columns or be defined as a field");
           }
         } else {
           // A string or a buffer
           if (options.columns === false) {
-            throw Error('Invalid Option: objname field must be combined with columns or be defined as an index');
+            throw Error("Invalid Option: objname field must be combined with columns or be defined as an index");
           }
         }
       }
       // Normalize option `on_record`
       if (options.on_record === undefined || options.on_record === null) {
         options.on_record = undefined;
-      } else if (typeof options.on_record !== 'function') {
-        throw new CsvError('CSV_INVALID_OPTION_ON_RECORD', ['Invalid option `on_record`:', 'expect a function,', `got ${JSON.stringify(options.on_record)}`], options);
+      } else if (typeof options.on_record !== "function") {
+        throw new CsvError("CSV_INVALID_OPTION_ON_RECORD", ["Invalid option `on_record`:", "expect a function,", `got ${JSON.stringify(options.on_record)}`], options);
+      }
+      // Normalize option `on_skip`
+      // options.on_skip ??= (err, chunk) => {
+      //   this.emit('skip', err, chunk);
+      // };
+      if (options.on_skip !== undefined && options.on_skip !== null && typeof options.on_skip !== "function") {
+        throw new Error(`Invalid Option: on_skip must be a function, got ${JSON.stringify(options.on_skip)}`);
       }
       // Normalize option `quote`
-      if (options.quote === null || options.quote === false || options.quote === '') {
+      if (options.quote === null || options.quote === false || options.quote === "") {
         options.quote = null;
       } else {
         if (options.quote === undefined || options.quote === true) {
           options.quote = Buffer.from('"', options.encoding);
-        } else if (typeof options.quote === 'string') {
+        } else if (typeof options.quote === "string") {
           options.quote = Buffer.from(options.quote, options.encoding);
         }
         if (!Buffer.isBuffer(options.quote)) {
@@ -36915,61 +37270,61 @@
       // Normalize option `record_delimiter`
       if (options.record_delimiter === undefined) {
         options.record_delimiter = [];
-      } else if (typeof options.record_delimiter === 'string' || Buffer.isBuffer(options.record_delimiter)) {
+      } else if (typeof options.record_delimiter === "string" || Buffer.isBuffer(options.record_delimiter)) {
         if (options.record_delimiter.length === 0) {
-          throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a non empty string or buffer,', `got ${JSON.stringify(options.record_delimiter)}`], options);
+          throw new CsvError("CSV_INVALID_OPTION_RECORD_DELIMITER", ["Invalid option `record_delimiter`:", "value must be a non empty string or buffer,", `got ${JSON.stringify(options.record_delimiter)}`], options);
         }
         options.record_delimiter = [options.record_delimiter];
       } else if (!Array.isArray(options.record_delimiter)) {
-        throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a string, a buffer or array of string|buffer,', `got ${JSON.stringify(options.record_delimiter)}`], options);
+        throw new CsvError("CSV_INVALID_OPTION_RECORD_DELIMITER", ["Invalid option `record_delimiter`:", "value must be a string, a buffer or array of string|buffer,", `got ${JSON.stringify(options.record_delimiter)}`], options);
       }
       options.record_delimiter = options.record_delimiter.map(function (rd, i) {
-        if (typeof rd !== 'string' && !Buffer.isBuffer(rd)) {
-          throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a string, a buffer or array of string|buffer', `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
+        if (typeof rd !== "string" && !Buffer.isBuffer(rd)) {
+          throw new CsvError("CSV_INVALID_OPTION_RECORD_DELIMITER", ["Invalid option `record_delimiter`:", "value must be a string, a buffer or array of string|buffer", `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
         } else if (rd.length === 0) {
-          throw new CsvError('CSV_INVALID_OPTION_RECORD_DELIMITER', ['Invalid option `record_delimiter`:', 'value must be a non empty string or buffer', `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
+          throw new CsvError("CSV_INVALID_OPTION_RECORD_DELIMITER", ["Invalid option `record_delimiter`:", "value must be a non empty string or buffer", `at index ${i},`, `got ${JSON.stringify(rd)}`], options);
         }
-        if (typeof rd === 'string') {
+        if (typeof rd === "string") {
           rd = Buffer.from(rd, options.encoding);
         }
         return rd;
       });
       // Normalize option `relax_column_count`
-      if (typeof options.relax_column_count === 'boolean') ; else if (options.relax_column_count === undefined || options.relax_column_count === null) {
+      if (typeof options.relax_column_count === "boolean") ; else if (options.relax_column_count === undefined || options.relax_column_count === null) {
         options.relax_column_count = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count must be a boolean, got ${JSON.stringify(options.relax_column_count)}`);
       }
-      if (typeof options.relax_column_count_less === 'boolean') ; else if (options.relax_column_count_less === undefined || options.relax_column_count_less === null) {
+      if (typeof options.relax_column_count_less === "boolean") ; else if (options.relax_column_count_less === undefined || options.relax_column_count_less === null) {
         options.relax_column_count_less = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count_less must be a boolean, got ${JSON.stringify(options.relax_column_count_less)}`);
       }
-      if (typeof options.relax_column_count_more === 'boolean') ; else if (options.relax_column_count_more === undefined || options.relax_column_count_more === null) {
+      if (typeof options.relax_column_count_more === "boolean") ; else if (options.relax_column_count_more === undefined || options.relax_column_count_more === null) {
         options.relax_column_count_more = false;
       } else {
         throw new Error(`Invalid Option: relax_column_count_more must be a boolean, got ${JSON.stringify(options.relax_column_count_more)}`);
       }
       // Normalize option `relax_quotes`
-      if (typeof options.relax_quotes === 'boolean') ; else if (options.relax_quotes === undefined || options.relax_quotes === null) {
+      if (typeof options.relax_quotes === "boolean") ; else if (options.relax_quotes === undefined || options.relax_quotes === null) {
         options.relax_quotes = false;
       } else {
         throw new Error(`Invalid Option: relax_quotes must be a boolean, got ${JSON.stringify(options.relax_quotes)}`);
       }
       // Normalize option `skip_empty_lines`
-      if (typeof options.skip_empty_lines === 'boolean') ; else if (options.skip_empty_lines === undefined || options.skip_empty_lines === null) {
+      if (typeof options.skip_empty_lines === "boolean") ; else if (options.skip_empty_lines === undefined || options.skip_empty_lines === null) {
         options.skip_empty_lines = false;
       } else {
         throw new Error(`Invalid Option: skip_empty_lines must be a boolean, got ${JSON.stringify(options.skip_empty_lines)}`);
       }
       // Normalize option `skip_records_with_empty_values`
-      if (typeof options.skip_records_with_empty_values === 'boolean') ; else if (options.skip_records_with_empty_values === undefined || options.skip_records_with_empty_values === null) {
+      if (typeof options.skip_records_with_empty_values === "boolean") ; else if (options.skip_records_with_empty_values === undefined || options.skip_records_with_empty_values === null) {
         options.skip_records_with_empty_values = false;
       } else {
         throw new Error(`Invalid Option: skip_records_with_empty_values must be a boolean, got ${JSON.stringify(options.skip_records_with_empty_values)}`);
       }
       // Normalize option `skip_records_with_error`
-      if (typeof options.skip_records_with_error === 'boolean') ; else if (options.skip_records_with_error === undefined || options.skip_records_with_error === null) {
+      if (typeof options.skip_records_with_error === "boolean") ; else if (options.skip_records_with_error === undefined || options.skip_records_with_error === null) {
         options.skip_records_with_error = false;
       } else {
         throw new Error(`Invalid Option: skip_records_with_error must be a boolean, got ${JSON.stringify(options.skip_records_with_error)}`);
@@ -37006,8 +37361,8 @@
       // Normalize option `to`
       if (options.to === undefined || options.to === null) {
         options.to = -1;
-      } else {
-        if (typeof options.to === 'string' && /\d+/.test(options.to)) {
+      } else if (options.to !== -1) {
+        if (typeof options.to === "string" && /\d+/.test(options.to)) {
           options.to = parseInt(options.to);
         }
         if (Number.isInteger(options.to)) {
@@ -37021,8 +37376,8 @@
       // Normalize option `to_line`
       if (options.to_line === undefined || options.to_line === null) {
         options.to_line = -1;
-      } else {
-        if (typeof options.to_line === 'string' && /\d+/.test(options.to_line)) {
+      } else if (options.to_line !== -1) {
+        if (typeof options.to_line === "string" && /\d+/.test(options.to_line)) {
           options.to_line = parseInt(options.to_line);
         }
         if (Number.isInteger(options.to_line)) {
@@ -37036,8 +37391,69 @@
       return options;
     };
 
+    // Discussed in [issue #400](https://github.com/adaltas/node-csv/issues/400)
+    // See https://github.com/python/cpython/blob/ea1b1c579f600cc85d145c60862b2e6b98701b24/Lib/csv.py#L349
+    const delimiter_discover = function (records, options) {
+      // Normalize the configuration
+      if (!options) {
+        ({
+          delimiter_auto: options
+        } = normalize_options({
+          delimiter_auto: true
+        }));
+      }
+      // Convert String to Buffer
+      if (typeof records === "string") {
+        records = Buffer.from(records);
+      }
+      // Convert Buffer to an array of records
+      if (Buffer.isBuffer(records)) {
+        records = (data => {
+          const records = [];
+          const parser = transform({
+            delimiter: []
+          });
+          const push = record => records.push(record);
+          const close = () => {};
+          const error = parser.parse(data, true, push, close);
+          if (error !== undefined) throw error;
+          return records;
+        })(records);
+      }
+      // Info array initialization, 127 entries, one per char code
+      const info = Array(127).fill().map(() => ({
+        lines: []
+      }));
+      // Traverse each records, count occurences per char code
+      records.map(([record], line) => {
+        for (let i = 0, l = record.length; i < l; i++) {
+          // Count the character frequency
+          const code = record.charCodeAt(i);
+          if (info[code].lines[line] === undefined) info[code].lines[line] = 0;
+          info[code].lines[line]++;
+        }
+      });
+      // Traverse each char code, compute the score
+      info.map((info, i) => {
+        info.char_code = i;
+        info.std = std(info.lines);
+        info.total = info.lines.reduce((acc, val) => acc + val, 0);
+        info.preferred = !!options.preferred[i];
+        info.score = options.score(info, options);
+      });
+      // Extract the dominant character
+      const result = info.reduce((acc, info) => acc.score > info.score ? acc : info, {});
+      return String.fromCharCode(result.char_code);
+    };
+    const std = function (array) {
+      const n = array.length;
+      if (n === 0) return 0;
+      const mean = array.reduce((a, b) => a + b) / n;
+      return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
+    };
+
     const isRecordEmpty = function (record) {
-      return record.every(field => field == null || field.toString && field.toString().trim() === '');
+      return record.every(field => field == null || field.toString && field.toString().trim() === "");
     };
     const cr = 13; // `\r`, carriage return, 0x0D in hexadécimal, 13 in decimal
     const nl = 10; // `\n`, newline, 0x0A in hexadecimal, 10 in decimal
@@ -37047,15 +37463,16 @@
       // Buffer.from("\ufeff")
       // Buffer.from([239, 187, 191])
       // Buffer.from('EFBBBF', 'hex')
-      'utf8': Buffer.from([239, 187, 191]),
+      utf8: Buffer.from([239, 187, 191]),
       // Note, the following are equals:
       // Buffer.from "\ufeff", 'utf16le
       // Buffer.from([255, 254])
-      'utf16le': Buffer.from([255, 254])
+      utf16le: Buffer.from([255, 254])
     };
     const transform = function (original_options = {}) {
       const info = {
         bytes: 0,
+        bytes_records: 0,
         comment_lines: 0,
         empty_lines: 0,
         invalid_field_length: 0,
@@ -37088,7 +37505,7 @@
           // 2. We set the length to windows line ending in the current encoding
           // Note, that encoding is known from user or bom discovery at that point
           // recordDelimiterMaxLength,
-          recordDelimiterMaxLength === 0 ? Buffer.from('\r\n', encoding).length : recordDelimiterMaxLength,
+          recordDelimiterMaxLength === 0 ? Buffer.from("\r\n", encoding).length : recordDelimiterMaxLength,
           // Skip if remaining buffer can be an escaped quote
           quoting ? (escape === null ? 0 : escape.length) + quote.length : 0,
           // Skip if remaining buffer can be record delimiter following the closing quote
@@ -37099,6 +37516,8 @@
         parse: function (nextBuf, end, push, close) {
           const {
             bom,
+            comment_no_infix,
+            delimiter_auto,
             encoding,
             from_line,
             ltrim,
@@ -37118,9 +37537,37 @@
           } = this.options;
           const {
             bomSkipped,
-            previousBuf,
+            delimiterDiscovered,
+            delimiterBufPrevious,
             rawBuffer,
             escapeIsQuote
+          } = this.state;
+          // Automatic delimiter discovery
+          if (!delimiterDiscovered && delimiter_auto) {
+            let delimiterBuf;
+            if (delimiterBufPrevious === undefined) {
+              delimiterBuf = nextBuf;
+            } else if (delimiterBufPrevious !== undefined && nextBuf === undefined) {
+              delimiterBuf = delimiterBufPrevious;
+            } else {
+              delimiterBuf = Buffer.concat([delimiterBufPrevious, nextBuf]);
+            }
+            // Ensure that nextBuf is not concatenated a second time during buffer reconciliation
+            nextBuf = undefined;
+            // this.delimiterBufPrevious = delimiterBuf;
+            if (end || delimiterBuf.length > delimiter_auto.size) {
+              this.options.delimiter = [Buffer.from(delimiter_discover(delimiterBuf, this.options.delimiter_auto))];
+              this.state.previousBuf = delimiterBuf;
+              this.state.delimiterBufPrevious = undefined;
+              this.state.delimiterDiscovered = true;
+            } else {
+              this.state.delimiterBufPrevious = delimiterBuf;
+              return;
+            }
+          }
+          // Previous buffers reconciliation
+          const {
+            previousBuf
           } = this.state;
           let buf;
           if (previousBuf === undefined) {
@@ -37155,10 +37602,14 @@
                   this.state.bufBytesStart += bomLength;
                   buf = buf.slice(bomLength);
                   // Renormalize original options with the new encoding
-                  this.options = normalize_options({
+                  const options = normalize_options({
                     ...this.original_options,
                     encoding: encoding
                   });
+                  // Properties are merged with the existing options instance
+                  for (const key in options) {
+                    this.options[key] = options[key];
+                  }
                   // Options will re-evaluate the Buffer with the new encoding
                   ({
                     comment,
@@ -37242,7 +37693,7 @@
                     pos += quote.length - 1;
                     continue;
                   } else if (relax_quotes === false) {
-                    const err = this.__error(new CsvError('CSV_INVALID_CLOSING_QUOTE', ['Invalid Closing Quote:', `got "${String.fromCharCode(nextChr)}"`, `at line ${this.info.lines}`, 'instead of delimiter, record delimiter, trimable character', '(if activated) or comment'], this.options, this.__infoField()));
+                    const err = this.__error(new CsvError("CSV_INVALID_CLOSING_QUOTE", ["Invalid Closing Quote:", `got "${String.fromCharCode(nextChr)}"`, `at line ${this.info.lines}`, "instead of delimiter, record delimiter, trimable character", "(if activated) or comment"], this.options, this.__infoField()));
                     if (err !== undefined) return err;
                   } else {
                     this.state.quoting = false;
@@ -37256,7 +37707,7 @@
                     if (relax_quotes === false) {
                       const info = this.__infoField();
                       const bom = Object.keys(boms).map(b => boms[b].equals(this.state.field.toString()) ? b : false).filter(Boolean)[0];
-                      const err = this.__error(new CsvError('INVALID_OPENING_QUOTE', ['Invalid Opening Quote:', `a quote is found on field ${JSON.stringify(info.column)} at line ${info.lines}, value is ${JSON.stringify(this.state.field.toString(encoding))}`, bom ? `(${bom} bom)` : undefined], this.options, info, {
+                      const err = this.__error(new CsvError("INVALID_OPENING_QUOTE", ["Invalid Opening Quote:", `a quote is found on field ${JSON.stringify(info.column)} at line ${info.lines}, value is ${JSON.stringify(this.state.field.toString(encoding))}`, bom ? `(${bom} bom)` : undefined], this.options, info, {
                         field: this.state.field
                       }));
                       if (err !== undefined) return err;
@@ -37277,7 +37728,7 @@
                     this.info.comment_lines++;
                     // Skip full comment line
                   } else {
-                    // Activate records emition if above from_line
+                    // Activate records emission if above from_line
                     if (this.state.enabled === false && this.info.lines + (this.state.wasRowDelimiter === true ? 1 : 0) >= from_line) {
                       this.state.enabled = true;
                       this.__resetField();
@@ -37310,10 +37761,12 @@
                 if (this.state.commenting) {
                   continue;
                 }
-                const commentCount = comment === null ? 0 : this.__compareBytes(comment, buf, pos, chr);
-                if (commentCount !== 0) {
-                  this.state.commenting = true;
-                  continue;
+                if (comment !== null && (comment_no_infix === false || this.state.record.length === 0 && this.state.field.length === 0)) {
+                  const commentCount = this.__compareBytes(comment, buf, pos, chr);
+                  if (commentCount !== 0) {
+                    this.state.commenting = true;
+                    continue;
+                  }
                 }
                 const delimiterLength = this.__isDelimiter(buf, pos, chr);
                 if (delimiterLength !== 0) {
@@ -37327,7 +37780,7 @@
             }
             if (this.state.commenting === false) {
               if (max_record_size !== 0 && this.state.record_length + this.state.field.length > max_record_size) {
-                return this.__error(new CsvError('CSV_MAX_RECORD_SIZE', ['Max Record Size:', 'record exceed the maximum number of tolerated bytes', `of ${max_record_size}`, `at line ${this.info.lines}`], this.options, this.__infoField()));
+                return this.__error(new CsvError("CSV_MAX_RECORD_SIZE", ["Max Record Size:", "record exceed the maximum number of tolerated bytes", `of ${max_record_size}`, `at line ${this.info.lines}`], this.options, this.__infoField()));
               }
             }
             const lappend = ltrim === false || this.state.quoting === true || this.state.field.length !== 0 || !this.__isCharTrimable(buf, pos);
@@ -37336,7 +37789,7 @@
             if (lappend === true && rappend === true) {
               this.state.field.append(chr);
             } else if (rtrim === true && !this.__isCharTrimable(buf, pos)) {
-              return this.__error(new CsvError('CSV_NON_TRIMABLE_CHAR_AFTER_CLOSING_QUOTE', ['Invalid Closing Quote:', 'found non trimable byte after quote', `at line ${this.info.lines}`], this.options, this.__infoField()));
+              return this.__error(new CsvError("CSV_NON_TRIMABLE_CHAR_AFTER_CLOSING_QUOTE", ["Invalid Closing Quote:", "found non trimable byte after quote", `at line ${this.info.lines}`], this.options, this.__infoField()));
             } else {
               if (lappend === false) {
                 pos += this.__isCharTrimable(buf, pos) - 1;
@@ -37347,7 +37800,7 @@
           if (end === true) {
             // Ensure we are not ending in a quoting state
             if (this.state.quoting === true) {
-              const err = this.__error(new CsvError('CSV_QUOTE_NOT_CLOSED', ['Quote Not Closed:', `the parsing is finished with an opening quote at line ${this.info.lines}`], this.options, this.__infoField()));
+              const err = this.__error(new CsvError("CSV_QUOTE_NOT_CLOSED", ["Quote Not Closed:", `the parsing is finished with an opening quote at line ${this.info.lines}`], this.options, this.__infoField()));
               if (err !== undefined) return err;
             } else {
               // Skip last line if it has no characters
@@ -37405,9 +37858,9 @@
             this.state.expectedRecordLength = recordLength;
           }
           if (recordLength !== this.state.expectedRecordLength) {
-            const err = columns === false ? new CsvError('CSV_RECORD_INCONSISTENT_FIELDS_LENGTH', ['Invalid Record Length:', `expect ${this.state.expectedRecordLength},`, `got ${recordLength} on line ${this.info.lines}`], this.options, this.__infoField(), {
+            const err = columns === false ? new CsvError("CSV_RECORD_INCONSISTENT_FIELDS_LENGTH", ["Invalid Record Length:", `expect ${this.state.expectedRecordLength},`, `got ${recordLength} on line ${this.info.lines}`], this.options, this.__infoField(), {
               record: record
-            }) : new CsvError('CSV_RECORD_INCONSISTENT_COLUMNS', ['Invalid Record Length:', `columns length is ${columns.length},`,
+            }) : new CsvError("CSV_RECORD_INCONSISTENT_COLUMNS", ["Invalid Record Length:", `columns length is ${columns.length},`,
             // rename columns
             `got ${recordLength} on line ${this.info.lines}`], this.options, this.__infoField(), {
               record: record
@@ -37442,14 +37895,19 @@
               for (let i = 0, l = record.length; i < l; i++) {
                 if (columns[i] === undefined || columns[i].disabled) continue;
                 // Turn duplicate columns into an array
-                if (group_columns_by_name === true && obj[columns[i].name] !== undefined) {
+                if (group_columns_by_name === true && Object.hasOwn(obj, columns[i].name)) {
                   if (Array.isArray(obj[columns[i].name])) {
                     obj[columns[i].name] = obj[columns[i].name].concat(record[i]);
                   } else {
                     obj[columns[i].name] = [obj[columns[i].name], record[i]];
                   }
                 } else {
-                  obj[columns[i].name] = record[i];
+                  Object.defineProperty(obj, columns[i].name, {
+                    value: record[i],
+                    enumerable: true,
+                    writable: true,
+                    configurable: true
+                  });
                 }
               }
               // Without objname (default)
@@ -37502,7 +37960,7 @@
           try {
             const headers = firstLineToHeaders === undefined ? record : firstLineToHeaders.call(null, record);
             if (!Array.isArray(headers)) {
-              return this.__error(new CsvError('CSV_INVALID_COLUMN_MAPPING', ['Invalid Column Mapping:', 'expect an array from column function,', `got ${JSON.stringify(headers)}`], this.options, this.__infoField(), {
+              return this.__error(new CsvError("CSV_INVALID_COLUMN_MAPPING", ["Invalid Column Mapping:", "expect an array from column function,", `got ${JSON.stringify(headers)}`], this.options, this.__infoField(), {
                 headers: headers
               }));
             }
@@ -37549,7 +38007,7 @@
           }
           this.state.record.push(field);
           // Increment record length if record size must not exceed a limit
-          if (max_record_size !== 0 && typeof field === 'string') {
+          if (max_record_size !== 0 && typeof field === "string") {
             this.state.record_length += field.length;
           }
           this.__resetField();
@@ -37573,6 +38031,7 @@
               return;
             }
           }
+          this.info.bytes_records += this.info.bytes;
           push(record);
         },
         // Return a tuple with the error and the casted value
@@ -37604,32 +38063,6 @@
           }
           return [undefined, field];
         },
-        // Helper to test if a character is a space or a line delimiter
-        __isCharTrimable: function (buf, pos) {
-          const isTrim = (buf, pos) => {
-            const {
-              timchars
-            } = this.state;
-            loop1: for (let i = 0; i < timchars.length; i++) {
-              const timchar = timchars[i];
-              for (let j = 0; j < timchar.length; j++) {
-                if (timchar[j] !== buf[pos + j]) continue loop1;
-              }
-              return timchar.length;
-            }
-            return 0;
-          };
-          return isTrim(buf, pos);
-        },
-        // Keep it in case we implement the `cast_int` option
-        // __isInt(value){
-        //   // return Number.isInteger(parseInt(value))
-        //   // return !isNaN( parseInt( obj ) );
-        //   return /^(\-|\+)?[1-9][0-9]*$/.test(value)
-        // }
-        __isFloat: function (value) {
-          return value - parseFloat(value) + 1 >= 0; // Borrowed from jquery
-        },
         __compareBytes: function (sourceBuf, targetBuf, targetPos, firstByte) {
           if (sourceBuf[0] !== firstByte) return 0;
           const sourceLength = sourceBuf.length;
@@ -37638,6 +38071,25 @@
           }
           return sourceLength;
         },
+        // Helper to test if a character is trimable
+        __isCharTrimable: function (buf, pos) {
+          const {
+            timchars,
+            timcharFirstBytes
+          } = this.state;
+          // Fast bail-out: non-whitespace bytes (the common case) are rejected
+          // without scanning the full timchar list.
+          const first = buf[pos];
+          if (first === undefined || timcharFirstBytes[first] === 0) return 0;
+          loop1: for (let i = 0; i < timchars.length; i++) {
+            const timchar = timchars[i];
+            for (let j = 0; j < timchar.length; j++) {
+              if (timchar[j] !== buf[pos + j]) continue loop1;
+            }
+            return timchar.length;
+          }
+          return 0;
+        },
         __isDelimiter: function (buf, pos, chr) {
           const {
             delimiter,
@@ -37645,7 +38097,7 @@
           } = this.options;
           if (ignore_last_delimiters === true && this.state.record.length === this.options.columns.length - 1) {
             return 0;
-          } else if (ignore_last_delimiters !== false && typeof ignore_last_delimiters === 'number' && this.state.record.length === ignore_last_delimiters - 1) {
+          } else if (ignore_last_delimiters !== false && typeof ignore_last_delimiters === "number" && this.state.record.length === ignore_last_delimiters - 1) {
             return 0;
           }
           loop1: for (let i = 0; i < delimiter.length; i++) {
@@ -37658,6 +38110,44 @@
             }
           }
           return 0;
+        },
+        __isEscape: function (buf, pos, chr) {
+          const {
+            escape
+          } = this.options;
+          if (escape === null) return false;
+          const l = escape.length;
+          if (escape[0] === chr) {
+            for (let i = 0; i < l; i++) {
+              if (escape[i] !== buf[pos + i]) {
+                return false;
+              }
+            }
+            return true;
+          }
+          return false;
+        },
+        __isFloat: function (value) {
+          return value - parseFloat(value) + 1 >= 0; // Borrowed from jquery
+        },
+        // Keep it in case we implement the `cast_int` option
+        // __isInt(value){
+        //   // return Number.isInteger(parseInt(value))
+        //   // return !isNaN( parseInt( obj ) );
+        //   return /^(\-|\+)?[1-9][0-9]*$/.test(value)
+        // }
+        __isQuote: function (buf, pos) {
+          const {
+            quote
+          } = this.options;
+          if (quote === null) return false;
+          const l = quote.length;
+          for (let i = 0; i < l; i++) {
+            if (quote[i] !== buf[pos + i]) {
+              return false;
+            }
+          }
+          return true;
         },
         __isRecordDelimiter: function (chr, buf, pos) {
           const {
@@ -37679,35 +38169,6 @@
           }
           return 0;
         },
-        __isEscape: function (buf, pos, chr) {
-          const {
-            escape
-          } = this.options;
-          if (escape === null) return false;
-          const l = escape.length;
-          if (escape[0] === chr) {
-            for (let i = 0; i < l; i++) {
-              if (escape[i] !== buf[pos + i]) {
-                return false;
-              }
-            }
-            return true;
-          }
-          return false;
-        },
-        __isQuote: function (buf, pos) {
-          const {
-            quote
-          } = this.options;
-          if (quote === null) return false;
-          const l = quote.length;
-          for (let i = 0; i < l; i++) {
-            if (quote[i] !== buf[pos + i]) {
-              return false;
-            }
-          }
-          return true;
-        },
         __autoDiscoverRecordDelimiter: function (buf, pos) {
           const {
             encoding
@@ -37717,7 +38178,7 @@
           // record delimiter.
           const rds = [
           // Important, the windows line ending must be before mac os 9
-          Buffer.from('\r\n', encoding), Buffer.from('\n', encoding), Buffer.from('\r', encoding)];
+          Buffer.from("\r\n", encoding), Buffer.from("\n", encoding), Buffer.from("\r", encoding)];
           loop: for (let i = 0; i < rds.length; i++) {
             const l = rds[i].length;
             for (let j = 0; j < l; j++) {
@@ -37737,11 +38198,15 @@
             raw,
             skip_records_with_error
           } = this.options;
-          const err = typeof msg === 'string' ? new Error(msg) : msg;
+          const err = typeof msg === "string" ? new Error(msg) : msg;
           if (skip_records_with_error) {
             this.state.recordHasError = true;
             if (this.options.on_skip !== undefined) {
-              this.options.on_skip(err, raw ? this.state.rawBuffer.toString(encoding) : undefined);
+              try {
+                this.options.on_skip(err, raw ? this.state.rawBuffer.toString(encoding) : undefined);
+              } catch (err) {
+                return err;
+              }
             }
             // this.emit('skip', err, raw ? this.state.rawBuffer.toString(encoding) : undefined);
             return undefined;
@@ -37763,6 +38228,7 @@
           } = this.options;
           return {
             ...this.__infoDataSet(),
+            bytes_records: this.info.bytes,
             error: this.state.error,
             header: columns === true,
             index: this.state.record.length,
@@ -37774,8 +38240,11 @@
             columns
           } = this.options;
           const isColumns = Array.isArray(columns);
+          // Bytes records are only incremented when all records'fields are parsed
+          const bytes_records = this.info.bytes_records;
           return {
             ...this.__infoRecord(),
+            bytes_records: bytes_records,
             column: isColumns === true ? columns.length > this.state.record.length ? columns[this.state.record.length].name : null : this.state.record.length,
             quoting: this.state.wasQuoting
           };
@@ -37792,17 +38261,19 @@
           ...opts,
           encoding: null
         });
-        this.api = transform(opts);
-        this.api.options.on_skip = (err, chunk) => {
-          this.emit('skip', err, chunk);
-        };
+        this.api = transform({
+          on_skip: (err, chunk) => {
+            this.emit("skip", err, chunk);
+          },
+          ...opts
+        });
         // Backward compatibility
         this.state = this.api.state;
         this.options = this.api.options;
         this.info = this.api.info;
       }
       // Implementation of `Transform._transform`
-      _transform(buf, encoding, callback) {
+      _transform(buf, _, callback) {
         if (this.state.stop === true) {
           return;
         }
@@ -37810,7 +38281,17 @@
           this.push(record);
         }, () => {
           this.push(null);
-          this.on('end', this.destroy);
+          this.end();
+          // Fix #333 and break #410
+          //   ko: api.stream.iterator.coffee
+          //   ko with v21.4.0, ok with node v20.5.1: api.stream.finished # aborted (with generate())
+          //   ko: api.stream.finished # aborted (with Readable)
+          // this.destroy()
+          // Fix #410 and partially break #333
+          //   ok: api.stream.iterator.coffee
+          //   ok: api.stream.finished # aborted (with generate())
+          //   broken: api.stream.finished # aborted (with Readable)
+          this.on("end", this.destroy);
         });
         if (err !== undefined) {
           this.state.stop = true;
@@ -37826,7 +38307,7 @@
           this.push(record);
         }, () => {
           this.push(null);
-          this.on('end', this.destroy);
+          this.on("end", this.destroy);
         });
         callback(err);
       }
@@ -37836,33 +38317,38 @@
       for (const i in arguments) {
         const argument = arguments[i];
         const type = typeof argument;
-        if (data === undefined && (typeof argument === 'string' || Buffer.isBuffer(argument))) {
+        if (data === undefined && (typeof argument === "string" || Buffer.isBuffer(argument))) {
           data = argument;
         } else if (options === undefined && is_object(argument)) {
           options = argument;
-        } else if (callback === undefined && type === 'function') {
+        } else if (callback === undefined && type === "function") {
           callback = argument;
         } else {
-          throw new CsvError('CSV_INVALID_ARGUMENT', ['Invalid argument:', `got ${JSON.stringify(argument)} at index ${i}`], options || {});
+          throw new CsvError("CSV_INVALID_ARGUMENT", ["Invalid argument:", `got ${JSON.stringify(argument)} at index ${i}`], options || {});
         }
       }
       const parser = new Parser(options);
       if (callback) {
-        const records = options === undefined || options.objname === undefined ? [] : {};
-        parser.on('readable', function () {
+        const records = options === undefined || options.objname === undefined ? [] : Object.create(null);
+        parser.on("readable", function () {
           let record;
           while ((record = this.read()) !== null) {
             if (options === undefined || options.objname === undefined) {
               records.push(record);
             } else {
-              records[record[0]] = record[1];
+              Object.assign(records, {
+                [record[0]]: record[1]
+                // writable: true,
+                // enumerable: true,
+                // configurable: true
+              });
             }
           }
         });
-        parser.on('error', function (err) {
+        parser.on("error", function (err) {
           callback(err, undefined, parser.api.__infoDataSet());
         });
-        parser.on('end', function () {
+        parser.on("end", function () {
           callback(undefined, records, parser.api.__infoDataSet());
         });
       }
@@ -37871,8 +38357,8 @@
           parser.write(data);
           parser.end();
         };
-        // Support Deno, Rollup doesnt provide a shim for setImmediate
-        if (typeof setImmediate === 'function') {
+        // Support Deno, Rollup doesn't provide a shim for setImmediate
+        if (typeof setImmediate === "function") {
           setImmediate(writer);
         } else {
           setTimeout(writer, 0);
@@ -38013,12 +38499,12 @@
           div2 = element("div");
           h3 = element("h3");
           h3.textContent = "".concat(translate('timemanager', 'Error reading CSV file'));
-          t1 = space$1();
+          t1 = space();
           div0 = element("div");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           t4 = text$1(/*parseError*/ctx[9]);
-          t5 = space$1();
+          t5 = space();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
@@ -38123,12 +38609,12 @@
           div2 = element("div");
           h3 = element("h3");
           h3.textContent = "".concat(translate('timemanager', 'Error importing entries'));
-          t1 = space$1();
+          t1 = space();
           div0 = element("div");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           t4 = text$1(/*importError*/ctx[6]);
-          t5 = space$1();
+          t5 = space();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
@@ -38233,12 +38719,12 @@
           div2 = element("div");
           h3 = element("h3");
           h3.textContent = "".concat(translate('timemanager', 'Import successful'));
-          t1 = space$1();
+          t1 = space();
           div0 = element("div");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           t4 = text$1(/*successMessage*/ctx[7]);
-          t5 = space$1();
+          t5 = space();
           div1 = element("div");
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Close'));
@@ -38308,13 +38794,13 @@
           p = element("p");
           strong = element("strong");
           strong.textContent = "".concat(translate('timemanager', 'Preview'));
-          t1 = space$1();
+          t1 = space();
           button0 = element("button");
           button0.textContent = "".concat(translate('timemanager', 'Collapse all'));
-          t3 = space$1();
+          t3 = space();
           button1 = element("button");
           button1.textContent = "".concat(translate('timemanager', 'Expand all'));
-          t5 = space$1();
+          t5 = space();
           div1 = element("div");
           dl = element("dl");
           dt0 = element("dt");
@@ -38391,7 +38877,7 @@
           details = element("details");
           summary = element("summary");
           summary.textContent = "".concat(translate('timemanager', 'Projects'));
-          t1 = space$1();
+          t1 = space();
           for (var _i = 0; _i < each_blocks.length; _i += 1) {
             each_blocks[_i].c();
           }
@@ -38454,7 +38940,7 @@
           details = element("details");
           summary = element("summary");
           summary.textContent = "".concat(translate('timemanager', 'Tasks'));
-          t1 = space$1();
+          t1 = space();
           for (var _i4 = 0; _i4 < each_blocks.length; _i4 += 1) {
             each_blocks[_i4].c();
           }
@@ -38523,14 +39009,14 @@
           div0 = element("div");
           span0 = element("span");
           span0.textContent = "".concat(translate('timemanager', 'Task name'));
-          t1 = space$1();
+          t1 = space();
           h3 = element("h3");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           div1 = element("div");
           span1 = element("span");
           span1.textContent = "".concat(translate('timemanager', 'Note'));
-          t5 = space$1();
+          t5 = space();
           t6 = text$1(t6_value);
           attr(span0, "class", "tm_label");
           attr(span1, "class", "tm_label");
@@ -38584,16 +39070,16 @@
           div0 = element("div");
           span0 = element("span");
           span0.textContent = "".concat(translate('timemanager', 'Project name'));
-          t1 = space$1();
+          t1 = space();
           h3 = element("h3");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           div1 = element("div");
           span1 = element("span");
           span1.textContent = "".concat(translate('timemanager', 'Note'));
-          t5 = space$1();
+          t5 = space();
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           if (if_block) if_block.c();
           attr(span0, "class", "tm_label");
           attr(span1, "class", "tm_label");
@@ -38662,16 +39148,16 @@
           div0 = element("div");
           span0 = element("span");
           span0.textContent = "".concat(translate('timemanager', 'Client'));
-          t1 = space$1();
+          t1 = space();
           h3 = element("h3");
           t2 = text$1(t2_value);
-          t3 = space$1();
+          t3 = space();
           div1 = element("div");
           span1 = element("span");
           span1.textContent = "".concat(translate('timemanager', 'Note'));
-          t5 = space$1();
+          t5 = space();
           t6 = text$1(t6_value);
-          t7 = space$1();
+          t7 = space();
           if (if_block) if_block.c();
           attr(span0, "class", "tm_label");
           attr(span1, "class", "tm_label");
@@ -38806,35 +39292,35 @@
           form = element("form");
           label0 = element("label");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           select = element("select");
           option0 = element("option");
           option0.textContent = ",";
           option1 = element("option");
           option1.textContent = ";";
-          t4 = space$1();
+          t4 = space();
           label1 = element("label");
           t5 = text$1(t5_value);
-          t6 = space$1();
+          t6 = space();
           br = element("br");
-          t7 = space$1();
+          t7 = space();
           input = element("input");
-          t8 = space$1();
+          t8 = space();
           button = element("button");
           button.textContent = "".concat(translate('timemanager', 'Generate preview from file'));
-          t10 = space$1();
+          t10 = space();
           if (if_block0) if_block0.c();
-          t11 = space$1();
+          t11 = space();
           if (if_block1) if_block1.c();
-          t12 = space$1();
+          t12 = space();
           if (if_block2) if_block2.c();
-          t13 = space$1();
+          t13 = space();
           if (if_block3) if_block3.c();
-          t14 = space$1();
+          t14 = space();
           for (var _i7 = 0; _i7 < each_blocks.length; _i7 += 1) {
             each_blocks[_i7].c();
           }
-          t15 = space$1();
+          t15 = space();
           if (if_block4) if_block4.c();
           if_block4_anchor = empty();
           option0.selected = true;
@@ -39407,7 +39893,7 @@
         c() {
           button = element("button");
           t0 = text$1(t0_value);
-          t1 = space$1();
+          t1 = space();
           if (if_block) if_block.c();
           if_block_anchor = empty();
           attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[1] ? 'active' : ''));
@@ -39577,15 +40063,15 @@
           details = element("details");
           summary = element("summary");
           summary.textContent = "".concat(translate("timemanager", "Time field settings"));
-          t1 = space$1();
+          t1 = space();
           label0 = element("label");
           input0 = element("input");
-          t2 = space$1();
+          t2 = space();
           t3 = text$1(t3_value);
-          t4 = space$1();
+          t4 = space();
           label1 = element("label");
           input1 = element("input");
-          t5 = space$1();
+          t5 = space();
           t6 = text$1(t6_value);
           attr(input0, "type", "radio");
           attr(input0, "name", "settings-input-method");
