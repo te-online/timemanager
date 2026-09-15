@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.26 Beta, 15. September 2026
+
+### Added
+
+- Support for Nextcloud 35; Cypress tests run manually
+- Note in quick-add component if user has no tasks created and tries to create a time entry
+
+### Fixed
+
+- Install JS dependency updates using npm audit
+- Mobile navigation button for small screens not showing since Nextcloud 34
+- Removed extra reload when navigating to reports page to add timezone to URL
+
 ## 0.3.25 Beta, 20. June 2026
 
 ### Added
