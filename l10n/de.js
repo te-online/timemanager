@@ -186,6 +186,8 @@ OC.L10N.register(
 		"Input hours and minutes (02:30 hrs.)": "Stunden und Minuten eingeben (02:30 Std.)",
 		"Input decimals (2.5 hrs.)": "Dezimalzahl eingeben (2,5 Std.)",
 		Settings: "Einstellungen",
+		"Are you trying to record your first time entry?": "Versuchst du deinen ersten Zeiteintrag zu erstellen?",
+		"You need to create at least one set of client, project and task to start creating time entries.": "Du musst zunächst ein Set aus Kunde, Projekt und Aufgabe erstellen, um Zeiteinträge anlegen zu können.",
 	},
 	"nplurals=2; plural=(n != 1);",
 );
