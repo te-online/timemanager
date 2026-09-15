@@ -786,6 +786,10 @@
 					<p class="no-result">{translate("timemanager", "Nothing found")}</p>
 				{/if}
 			</div>
+			{#if tasks.length === 0}
+				<h3>{translate("timemanager", "Are you trying to record your first time entry?")}</h3>
+				<p>{translate("timemanager", "You need to create at least one set of client, project and task to start creating time entries.")}</p>
+			{/if}
 			<!-- <button disabled={loading} type="button" class="icon-add button-w-icon button secondary task-add-button"
 				>{translate("timemanager", "Add task")}</button
 			> -->
