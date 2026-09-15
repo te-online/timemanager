@@ -333,6 +333,15 @@ const init = () => {
 		}
 	}
 
+	const timeZoneNavLinks = document.querySelectorAll('a[data-link="with-timezone"]');
+	timeZoneNavLinks.forEach(link => {
+		const href = link.getAttribute("href");
+		const updatedHref = Helpers.getUpdatedFilterUrl("timezone", Helpers.getTimezone(), href);
+		if (href !== updatedHref) {
+			link.setAttribute("href", updatedHref);
+		}
+	});
+
 	document.body.classList.add("tm_ready");
 };
 

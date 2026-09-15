@@ -24,7 +24,11 @@ $l = Util::getL10N('timemanager');
       </a>
     </li>
     <li class="app-navigation-entry">
-      <a href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>" class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>">
+      <a
+				href="<?php echo $urlGenerator->linkToRoute('timemanager.page.reports'); ?>"
+				class="timemanager-pjax-link app-navigation-entry-link<?php echo $_['page'] === 'reports' ? ' active' : ''; ?>"
+				data-link="with-timezone"
+			>
         <span class="app-navigation-entry-icon">
           <img alt="" src="<?php echo $urlGenerator->getAbsoluteURL($urlGenerator->imagePath('core', 'actions/details.svg')); ?>" />
         </span>
