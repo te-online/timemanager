@@ -6,6 +6,7 @@ $urlGenerator = \OCP\Server::get(\OCP\IURLGenerator::class);
 $l = Util::getL10N('timemanager');
 ?>
 
+<div id="app-navigation-toggle" class="icon-menu" tabindex="0" style="display: none;"></div>
 <div id="app-navigation">
   <ul class="app-navigation-list">
     <li class="app-navigation-entry">

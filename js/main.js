@@ -30,9 +30,12 @@ auth.onRequestTokenUpdate((token) => {
 
 const components = [];
 let pjax;
+let mobileNavAttached = false;
 
 const defaultDateFormat = "EEEE, MMMM d, y";
 const localeOptions = Helpers.getDateLocaleOptions();
+
+const version = Number.parseInt((window.OC?.config?.version ?? '0').split('.')[0])
 
 const safelyCreateComponent = ({ component: Component, selector, props = {} }) => {
 	const node = document.querySelector(selector);
@@ -284,6 +287,50 @@ const init = () => {
 				element.href += `?timezone=${Helpers.getTimezone()}`;
 			}
 		});
+	}
+
+	// Mobile menu support from NC 34 upwards
+	if (version >= 34) {
+		const navToggle = document.getElementById("app-navigation-toggle");
+		const appContent = document.getElementById("app-content");
+		const appNavigation = document.getElementById("app-navigation");
+
+		function toggleNav () {
+			if (appNavigation.getAttribute("aria-hidden") !== "false") {
+				appContent.style.transform = "translateX(300px)";
+				navToggle.style.transform = "translateX(300px)";
+				appNavigation.style.transform = "none";
+				appNavigation.setAttribute("aria-hidden", "false");
+			} else {
+				appContent.style.transform = "none";
+				navToggle.style.transform = "none";
+				appNavigation.style.transform = "translateX(-300px)";
+				appNavigation.setAttribute("aria-hidden", "true");
+			}
+		}
+
+		let resizeDebounce;
+		function hideOnResize() {
+			if (resizeDebounce) {
+				clearTimeout(resizeDebounce);
+			}
+			resizeDebounce = setTimeout(() => {
+				resizeDebounce = undefined;
+				if (window.visualViewport.width > 1024) {
+					appContent.style.transform = "none";
+					navToggle.style.transform = "none";
+					appNavigation.style.transform = "none";
+					navToggle.style.display = "none";
+					appNavigation.removeAttribute("aria-hidden");
+				}
+			}, 50);
+		}
+
+		if (!mobileNavAttached && navToggle && appContent && appNavigation) {
+			navToggle.addEventListener("click", toggleNav);
+			window.addEventListener("resize", hideOnResize);
+			mobileNavAttached = true;
+		}
 	}
 
 	document.body.classList.add("tm_ready");
