@@ -7,6 +7,7 @@ use OCA\TimeManager\Helper\DurationHelper;
 use OCA\TimeManager\Helper\InputMethods;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\Attribute\UseCSP;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCA\TimeManager\Db\ClientMapper;
 use OCA\TimeManager\Db\ProjectMapper;
@@ -168,7 +169,8 @@ class PageController extends Controller {
             $default_timezone
         );
 
-		return new TemplateResponse("timemanager", "index", [
+		\OCP\Util::addScript('timemanager', 'bundle');
+        $response =  new TemplateResponse("timemanager", "index", [
 			"page" => "index",
 			"templates" => [
 				"Statistics.svelte" => PHP_Svelte::render_template("Statistics.svelte", []),
@@ -208,6 +210,11 @@ class PageController extends Controller {
 				}, $latestSearchEntries),
 			]),
 		]);
+		$policy = new \OCP\AppFramework\Http\ContentSecurityPolicy();
+        $policy->addAllowedScriptDomain('\'self\'');
+        $response->setContentSecurityPolicy($policy);
+
+        return $response;
 	}
 
 	/**
