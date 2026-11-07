@@ -2346,7 +2346,7 @@
       return IteratorConstructor;
     };
 
-    var PROPER_FUNCTION_NAME = functionName.PROPER;
+    var PROPER_FUNCTION_NAME$1 = functionName.PROPER;
     var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
     var IteratorPrototype = iteratorsCore.IteratorPrototype;
     var BUGGY_SAFARI_ITERATORS = iteratorsCore.BUGGY_SAFARI_ITERATORS;
@@ -2405,7 +2405,7 @@
       }
 
       // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
-      if (PROPER_FUNCTION_NAME && DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
+      if (PROPER_FUNCTION_NAME$1 && DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
         if (CONFIGURABLE_FUNCTION_NAME) {
           createNonEnumerableProperty(IterablePrototype, 'name', VALUES);
         } else {
@@ -14260,7 +14260,7 @@
 
 
     var SPECIES = wellKnownSymbol('species');
-    var RegExpPrototype$1 = RegExp.prototype;
+    var RegExpPrototype$2 = RegExp.prototype;
     var fixRegexpWellKnownSymbolLogic = function (KEY, exec, FORCED, SHAM) {
       var SYMBOL = wellKnownSymbol(KEY);
       var DELEGATES_TO_SYMBOL = !fails(function () {
@@ -14301,7 +14301,7 @@
         var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
           var uncurriedNativeMethod = functionUncurryThisClause(nativeMethod);
           var $exec = regexp.exec;
-          if ($exec === regexpExec || $exec === RegExpPrototype$1.exec) {
+          if ($exec === regexpExec || $exec === RegExpPrototype$2.exec) {
             if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
               // The native String method already delegates to @@method (this
               // polyfilled function), leasing to infinite recursion.
@@ -14321,7 +14321,7 @@
           };
         });
         defineBuiltIn(String.prototype, KEY, methods[0]);
-        defineBuiltIn(RegExpPrototype$1, SYMBOL, methods[1]);
+        defineBuiltIn(RegExpPrototype$2, SYMBOL, methods[1]);
       }
     };
 
@@ -18812,10 +18812,10 @@
       }];
     });
 
-    var RegExpPrototype = RegExp.prototype;
+    var RegExpPrototype$1 = RegExp.prototype;
     var regexpGetFlags = function (R) {
       var flags = R.flags;
-      return flags === undefined && !('flags' in RegExpPrototype) && !hasOwnProperty_1(R, 'flags') && objectIsPrototypeOf(RegExpPrototype, R) ? functionCall(regexpFlags, R) : flags;
+      return flags === undefined && !('flags' in RegExpPrototype$1) && !hasOwnProperty_1(R, 'flags') && objectIsPrototypeOf(RegExpPrototype$1, R) ? functionCall(regexpFlags, R) : flags;
     };
 
     var REPLACE = wellKnownSymbol('replace');
@@ -25575,7 +25575,7 @@
 
     // and applies them to the HTMLElements such as popper and arrow
 
-    function applyStyles(_ref) {
+    function applyStyles$1(_ref) {
       var state = _ref.state;
       Object.keys(state.elements).forEach(function (name) {
         var style = state.styles[name] || {};
@@ -25640,11 +25640,11 @@
       };
     } // eslint-disable-next-line import/no-unused-modules
 
-    var applyStyles$1 = {
+    var applyStyles = {
       name: 'applyStyles',
       enabled: true,
       phase: 'write',
-      fn: applyStyles,
+      fn: applyStyles$1,
       effect: effect$2,
       requires: ['computeStyles']
     };
@@ -25869,7 +25869,7 @@
       })) : padding;
       return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
     };
-    function arrow(_ref) {
+    function arrow$1(_ref) {
       var _state$modifiersData$;
       var state = _ref.state,
         name = _ref.name,
@@ -25923,11 +25923,11 @@
       state.elements.arrow = arrowElement;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var arrow$1 = {
+    var arrow = {
       name: 'arrow',
       enabled: true,
       phase: 'main',
-      fn: arrow,
+      fn: arrow$1,
       effect: effect$1,
       requires: ['popperOffsets'],
       requiresIfExists: ['preventOverflow']
@@ -26033,7 +26033,7 @@
       }
       return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
     }
-    function computeStyles(_ref5) {
+    function computeStyles$1(_ref5) {
       var state = _ref5.state,
         options = _ref5.options;
       var _options$gpuAccelerat = options.gpuAcceleration,
@@ -26071,11 +26071,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var computeStyles$1 = {
+    var computeStyles = {
       name: 'computeStyles',
       enabled: true,
       phase: 'beforeWrite',
-      fn: computeStyles,
+      fn: computeStyles$1,
       data: {}
     };
 
@@ -26465,7 +26465,7 @@
       var oppositePlacement = getOppositePlacement(placement);
       return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
     }
-    function flip(_ref) {
+    function flip$1(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -26566,11 +26566,11 @@
       }
     } // eslint-disable-next-line import/no-unused-modules
 
-    var flip$1 = {
+    var flip = {
       name: 'flip',
       enabled: true,
       phase: 'main',
-      fn: flip,
+      fn: flip$1,
       requiresIfExists: ['offset'],
       data: {
         _skip: false
@@ -26596,7 +26596,7 @@
         return overflow[side] >= 0;
       });
     }
-    function hide(_ref) {
+    function hide$1(_ref) {
       var state = _ref.state,
         name = _ref.name;
       var referenceRect = state.rects.reference;
@@ -26624,12 +26624,12 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var hide$1 = {
+    var hide = {
       name: 'hide',
       enabled: true,
       phase: 'main',
       requiresIfExists: ['preventOverflow'],
-      fn: hide
+      fn: hide$1
     };
 
     function distanceAndSkiddingToXY(placement, rects, offset) {
@@ -26650,7 +26650,7 @@
         y: distance
       };
     }
-    function offset(_ref2) {
+    function offset$1(_ref2) {
       var state = _ref2.state,
         options = _ref2.options,
         name = _ref2.name;
@@ -26670,15 +26670,15 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var offset$1 = {
+    var offset = {
       name: 'offset',
       enabled: true,
       phase: 'main',
       requires: ['popperOffsets'],
-      fn: offset
+      fn: offset$1
     };
 
-    function popperOffsets(_ref) {
+    function popperOffsets$1(_ref) {
       var state = _ref.state,
         name = _ref.name;
       // Offsets are the actual position the popper needs to have to be
@@ -26692,11 +26692,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var popperOffsets$1 = {
+    var popperOffsets = {
       name: 'popperOffsets',
       enabled: true,
       phase: 'read',
-      fn: popperOffsets,
+      fn: popperOffsets$1,
       data: {}
     };
 
@@ -26704,7 +26704,7 @@
       return axis === 'x' ? 'y' : 'x';
     }
 
-    function preventOverflow(_ref) {
+    function preventOverflow$1(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -26809,11 +26809,11 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var preventOverflow$1 = {
+    var preventOverflow = {
       name: 'preventOverflow',
       enabled: true,
       phase: 'main',
-      fn: preventOverflow,
+      fn: preventOverflow$1,
       requiresIfExists: ['offset']
     };
 
@@ -27119,7 +27119,7 @@
       };
     }
 
-    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
+    var defaultModifiers = [eventListeners, popperOffsets, computeStyles, applyStyles, offset, flip, preventOverflow, arrow, hide];
     var createPopper = /*#__PURE__*/popperGenerator({
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
@@ -31074,7 +31074,39 @@
       return _createClass$1(Checkmark);
     }(SvelteComponent);
 
+    var PROPER_FUNCTION_NAME = functionName.PROPER;
+
+
+
+
+
+    var TO_STRING = 'toString';
+    var RegExpPrototype = RegExp.prototype;
+    var nativeToString = RegExpPrototype[TO_STRING];
+    var NOT_GENERIC = fails(function () {
+      return nativeToString.call({
+        source: 'a',
+        flags: 'b'
+      }) != '/a/b';
+    });
+    // FF44- RegExp#toString has a wrong name
+    var INCORRECT_NAME = PROPER_FUNCTION_NAME && nativeToString.name != TO_STRING;
+
+    // `RegExp.prototype.toString` method
+    // https://tc39.es/ecma262/#sec-regexp.prototype.tostring
+    if (NOT_GENERIC || INCORRECT_NAME) {
+      defineBuiltIn(RegExp.prototype, TO_STRING, function toString() {
+        var R = anObject(this);
+        var pattern = toString_1(R.source);
+        var flags = toString_1(regexpGetFlags(R));
+        return '/' + pattern + '/' + flags;
+      }, {
+        unsafe: true
+      });
+    }
+
     function create_if_block$3(ctx) {
+      var _ctx$;
       var label;
       var t0_value = translate("timemanager", "Created by") + "";
       var t0;
@@ -31083,18 +31115,18 @@
       var current;
       select = new Select({
         props: {
-          noOptionsMessage: /*loading*/ctx[3] ? translate("timemanager", "Loading...") : translate("timemanager", "No options"),
+          noOptionsMessage: /*loading*/ctx[3] ? translate("timemanager", "Loading...") : /*searchQuery*/(_ctx$ = ctx[4]) !== null && _ctx$ !== void 0 && _ctx$.length ? translate("timemanager", "No options") : translate("timemanager", "Type to search"),
           placeholder: translate("timemanager", "Search..."),
           inputAttributes: {
             id: "sharee-filter-select",
             form: /*form*/ctx[1]
           },
-          loadOptions: /*search*/ctx[6],
+          loadOptions: /*search*/ctx[7],
           value: /*selectedSharee*/ctx[2]
         }
       });
-      select.$on("select", /*handleSelectSharee*/ctx[4]);
-      select.$on("clear", /*handleClearSharee*/ctx[5]);
+      select.$on("select", /*handleSelectSharee*/ctx[5]);
+      select.$on("clear", /*handleClearSharee*/ctx[6]);
       return {
         c() {
           label = element("label");
@@ -31112,8 +31144,9 @@
           current = true;
         },
         p(ctx, dirty) {
+          var _ctx$2;
           var select_changes = {};
-          if (dirty & /*loading*/8) select_changes.noOptionsMessage = /*loading*/ctx[3] ? translate("timemanager", "Loading...") : translate("timemanager", "No options");
+          if (dirty & /*loading, searchQuery*/24) select_changes.noOptionsMessage = /*loading*/ctx[3] ? translate("timemanager", "Loading...") : /*searchQuery*/(_ctx$2 = ctx[4]) !== null && _ctx$2 !== void 0 && _ctx$2.length ? translate("timemanager", "No options") : translate("timemanager", "Type to search");
           if (dirty & /*form*/2) select_changes.inputAttributes = {
             id: "sharee-filter-select",
             form: /*form*/ctx[1]
@@ -31194,14 +31227,16 @@
     }
     function instance$6($$self, $$props, $$invalidate) {
       var loading;
+      var searchQuery;
       var $requestToken;
       component_subscribe($$self, requestToken, function ($$value) {
-        return $$invalidate(7, $requestToken = $$value);
+        return $$invalidate(9, $requestToken = $$value);
       });
       var _$$props$isVisible = $$props.isVisible,
         isVisible = _$$props$isVisible === void 0 ? true : _$$props$isVisible;
       var _$$props$form = $$props.form,
         form = _$$props$form === void 0 ? undefined : _$$props$form;
+      var userId = $$props.userId;
       var selectedSharee;
       var handleSelectSharee = function handleSelectSharee(event) {
         if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
@@ -31237,39 +31272,74 @@
       };
       var search = /*#__PURE__*/function () {
         var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(query) {
-          var response, _yield$response$json$, users, exact;
+          var response, ownUserResponse, _yield$response$json$, users, exact, _userData$displayname, _userData$id, userData;
           return _regeneratorRuntime().wrap(function _callee$(_context) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
+                $$invalidate(4, searchQuery = query);
                 if (!(typeof query === "undefined")) {
-                  _context.next = 2;
+                  _context.next = 3;
                   break;
                 }
                 return _context.abrupt("return");
-              case 2:
+              case 3:
                 $$invalidate(3, loading = true);
-                _context.next = 5;
+                _context.next = 6;
                 return fetch(dist_3("apps/files_sharing/api/v1/sharees?search=".concat(query, "&format=json&perPage=20&itemType=[0]")), {
                   headers: {
                     requesttoken: $requestToken,
                     "content-type": "application/json"
                   }
                 });
-              case 5:
+              case 6:
                 response = _context.sent;
+                _context.next = 9;
+                return fetch(dist_3("cloud/users/".concat(userId, "?format=json")), {
+                  headers: {
+                    requesttoken: $requestToken,
+                    "content-type": "application/json"
+                  }
+                });
+              case 9:
+                ownUserResponse = _context.sent;
                 $$invalidate(3, loading = false);
                 if (!response.ok) {
-                  _context.next = 14;
+                  _context.next = 23;
                   break;
                 }
-                _context.next = 10;
+                _context.next = 14;
                 return response.json();
-              case 10:
+              case 14:
                 _yield$response$json$ = _context.sent.ocs.data;
                 users = _yield$response$json$.users;
                 exact = _yield$response$json$.exact;
+                if (!ownUserResponse.ok) {
+                  _context.next = 22;
+                  break;
+                }
+                _context.next = 20;
+                return ownUserResponse.json();
+              case 20:
+                userData = _context.sent.ocs.data;
+                // See if query matches user
+                if (userData !== null && userData !== void 0 && (_userData$displayname = userData.displayname) !== null && _userData$displayname !== void 0 && (_userData$displayname = _userData$displayname.toString()) !== null && _userData$displayname !== void 0 && (_userData$displayname = _userData$displayname.toLocaleLowerCase()) !== null && _userData$displayname !== void 0 && _userData$displayname.includes(query) || userData !== null && userData !== void 0 && (_userData$id = userData.id) !== null && _userData$id !== void 0 && (_userData$id = _userData$id.toString()) !== null && _userData$id !== void 0 && (_userData$id = _userData$id.toLocaleLowerCase()) !== null && _userData$id !== void 0 && _userData$id.includes(query)) {
+                  // Add fake sharee object
+                  users.push({
+                    // Account for id being the same as displayname, otherwise show id in parentheses
+                    label: userData.id === userData.displayname ? userData.displayname : "".concat(userData.displayname, " (").concat(userData.id, ")"),
+                    subline: userData.id,
+                    icon: 'icon-user',
+                    value: {
+                      shareType: 0,
+                      shareWith: userData.displayname
+                    },
+                    shareWithDisplayNameUnique: userData.displayname,
+                    status: []
+                  });
+                }
+              case 22:
                 return _context.abrupt("return", [].concat(_toConsumableArray(users), _toConsumableArray(exact.users)));
-              case 14:
+              case 23:
               case "end":
                 return _context.stop();
             }
@@ -31339,9 +31409,11 @@
       $$self.$$set = function ($$props) {
         if ('isVisible' in $$props) $$invalidate(0, isVisible = $$props.isVisible);
         if ('form' in $$props) $$invalidate(1, form = $$props.form);
+        if ('userId' in $$props) $$invalidate(8, userId = $$props.userId);
       };
       $$invalidate(3, loading = false);
-      return [isVisible, form, selectedSharee, loading, handleSelectSharee, handleClearSharee, search];
+      $$invalidate(4, searchQuery = "");
+      return [isVisible, form, selectedSharee, loading, searchQuery, handleSelectSharee, handleClearSharee, search, userId];
     }
     var UserFilterSelect = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(UserFilterSelect, _SvelteComponent);
@@ -31352,7 +31424,8 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$6, create_fragment$6, safe_not_equal, {
           isVisible: 0,
-          form: 1
+          form: 1,
+          userId: 8
         });
         return _this;
       }
@@ -31391,7 +31464,8 @@
       var dispose;
       userfilterselect = new UserFilterSelect({
         props: {
-          form: "filters-form"
+          form: "filters-form",
+          userId: /*userId*/ctx[0]
         }
       });
       select = new Select({
@@ -31402,10 +31476,10 @@
             id: "preset-select",
             form: "filters-form"
           },
-          items: /*presets*/ctx[3]
+          items: /*presets*/ctx[4]
         }
       });
-      select.$on("select", /*handleSelectPreset*/ctx[5]);
+      select.$on("select", /*handleSelectPreset*/ctx[6]);
       return {
         c() {
           div = element("div");
@@ -31443,12 +31517,12 @@
           attr(label1, "class", "end");
           attr(label2, "for", "preset-select");
           attr(label2, "class", "status");
-          button.disabled = /*loading*/ctx[2];
+          button.disabled = /*loading*/ctx[3];
           attr(button, "type", "submit");
           attr(button, "class", "button primary");
           attr(button, "form", "filters-form");
           attr(span, "class", "actions");
-          attr(div, "class", div_class_value = "reports-timerange".concat(/*loading*/ctx[2] ? " icon-loading" : ""));
+          attr(div, "class", div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""));
         },
         m(target, anchor) {
           insert(target, div, anchor);
@@ -31458,13 +31532,13 @@
           append(label0, t1);
           append(label0, t2);
           append(label0, input0);
-          set_input_value(input0, /*start*/ctx[1]);
+          set_input_value(input0, /*start*/ctx[2]);
           append(div, t3);
           append(div, label1);
           append(label1, t4);
           append(label1, t5);
           append(label1, input1);
-          set_input_value(input1, /*end*/ctx[0]);
+          set_input_value(input1, /*end*/ctx[1]);
           append(div, t6);
           append(div, label2);
           append(label2, t7);
@@ -31476,23 +31550,26 @@
           append(button, t10);
           current = true;
           if (!mounted) {
-            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[9]), listen(input0, "change", /*setUrlWithTimerange*/ctx[4]), listen(input1, "input", /*input1_input_handler*/ctx[10]), listen(input1, "change", /*setUrlWithTimerange*/ctx[4])];
+            dispose = [listen(input0, "input", /*input0_input_handler*/ctx[10]), listen(input0, "change", /*setUrlWithTimerange*/ctx[5]), listen(input1, "input", /*input1_input_handler*/ctx[11]), listen(input1, "change", /*setUrlWithTimerange*/ctx[5])];
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (dirty & /*start*/2) {
-            set_input_value(input0, /*start*/ctx[1]);
+          var userfilterselect_changes = {};
+          if (dirty & /*userId*/1) userfilterselect_changes.userId = /*userId*/ctx[0];
+          userfilterselect.$set(userfilterselect_changes);
+          if (dirty & /*start*/4) {
+            set_input_value(input0, /*start*/ctx[2]);
           }
-          if (dirty & /*end*/1) {
-            set_input_value(input1, /*end*/ctx[0]);
+          if (dirty & /*end*/2) {
+            set_input_value(input1, /*end*/ctx[1]);
           }
-          if (!current || dirty & /*loading*/4) {
-            button.disabled = /*loading*/ctx[2];
+          if (!current || dirty & /*loading*/8) {
+            button.disabled = /*loading*/ctx[3];
           }
-          if (!current || dirty & /*loading*/4 && div_class_value !== (div_class_value = "reports-timerange".concat(/*loading*/ctx[2] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/8 && div_class_value !== (div_class_value = "reports-timerange".concat(/*loading*/ctx[3] ? " icon-loading" : ""))) {
             attr(div, "class", div_class_value);
           }
         },
@@ -31526,6 +31603,7 @@
       var startOfMonth$1 = $$props.startOfMonth;
       var endOfMonth$1 = $$props.endOfMonth;
       var updateUrlWithTimerange = $$props.updateUrlWithTimerange;
+      var userId = $$props.userId;
       var presets = [{
         label: translate("timemanager", "Today"),
         value: "today"
@@ -31564,54 +31642,54 @@
         var preset = selectedValue.detail.value;
         switch (preset) {
           case "today":
-            $$invalidate(1, start = format$2(startOfToday(), dateFormat));
-            $$invalidate(0, end = format$2(startOfToday(), dateFormat));
+            $$invalidate(2, start = format$2(startOfToday(), dateFormat));
+            $$invalidate(1, end = format$2(startOfToday(), dateFormat));
             break;
           case "yesterday":
-            $$invalidate(1, start = format$2(startOfYesterday(), dateFormat));
-            $$invalidate(0, end = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(2, start = format$2(startOfYesterday(), dateFormat));
+            $$invalidate(1, end = format$2(startOfYesterday(), dateFormat));
             break;
           case "week":
-            $$invalidate(1, start = format$2(startOfWeek(startOfToday(), {
+            $$invalidate(2, start = format$2(startOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
-            $$invalidate(0, end = format$2(endOfWeek(startOfToday(), {
+            $$invalidate(1, end = format$2(endOfWeek(startOfToday(), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "week-1":
-            $$invalidate(1, start = format$2(startOfWeek(sub(startOfToday(), {
+            $$invalidate(2, start = format$2(startOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
-            $$invalidate(0, end = format$2(endOfWeek(sub(startOfToday(), {
+            $$invalidate(1, end = format$2(endOfWeek(sub(startOfToday(), {
               weeks: 1
             }), {
               weekStartsOn: getFirstDay()
             }), dateFormat));
             break;
           case "month":
-            $$invalidate(1, start = format$2(startOfMonth(startOfToday()), dateFormat));
-            $$invalidate(0, end = format$2(endOfMonth(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$2(startOfMonth(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$2(endOfMonth(startOfToday()), dateFormat));
             break;
           case "month-1":
-            $$invalidate(1, start = format$2(startOfMonth(sub(startOfToday(), {
+            $$invalidate(2, start = format$2(startOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
-            $$invalidate(0, end = format$2(endOfMonth(sub(startOfToday(), {
+            $$invalidate(1, end = format$2(endOfMonth(sub(startOfToday(), {
               months: 1
             })), dateFormat));
             break;
           case "year":
-            $$invalidate(1, start = format$2(startOfYear(startOfToday()), dateFormat));
-            $$invalidate(0, end = format$2(endOfYear(startOfToday()), dateFormat));
+            $$invalidate(2, start = format$2(startOfYear(startOfToday()), dateFormat));
+            $$invalidate(1, end = format$2(endOfYear(startOfToday()), dateFormat));
             break;
           case "year-1":
-            $$invalidate(1, start = format$2(startOfYear(sub(startOfToday(), {
+            $$invalidate(2, start = format$2(startOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
-            $$invalidate(0, end = format$2(endOfYear(sub(startOfToday(), {
+            $$invalidate(1, end = format$2(endOfYear(sub(startOfToday(), {
               years: 1
             })), dateFormat));
             break;
@@ -31635,37 +31713,38 @@
 
             // Apply filters from query params
             if (name === "start" && value) {
-              $$invalidate(1, start = value);
+              $$invalidate(2, start = value);
             }
             if (name === "end" && value) {
-              $$invalidate(0, end = value);
+              $$invalidate(1, end = value);
             }
           });
         }
       });
       function input0_input_handler() {
         start = this.value;
-        $$invalidate(1, start), $$invalidate(6, startOfMonth$1);
+        $$invalidate(2, start), $$invalidate(7, startOfMonth$1);
       }
       function input1_input_handler() {
         end = this.value;
-        $$invalidate(0, end), $$invalidate(7, endOfMonth$1);
+        $$invalidate(1, end), $$invalidate(8, endOfMonth$1);
       }
       $$self.$$set = function ($$props) {
-        if ('startOfMonth' in $$props) $$invalidate(6, startOfMonth$1 = $$props.startOfMonth);
-        if ('endOfMonth' in $$props) $$invalidate(7, endOfMonth$1 = $$props.endOfMonth);
-        if ('updateUrlWithTimerange' in $$props) $$invalidate(8, updateUrlWithTimerange = $$props.updateUrlWithTimerange);
+        if ('startOfMonth' in $$props) $$invalidate(7, startOfMonth$1 = $$props.startOfMonth);
+        if ('endOfMonth' in $$props) $$invalidate(8, endOfMonth$1 = $$props.endOfMonth);
+        if ('updateUrlWithTimerange' in $$props) $$invalidate(9, updateUrlWithTimerange = $$props.updateUrlWithTimerange);
+        if ('userId' in $$props) $$invalidate(0, userId = $$props.userId);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*startOfMonth*/64) {
-          $$invalidate(1, start = startOfMonth$1);
+        if ($$self.$$.dirty & /*startOfMonth*/128) {
+          $$invalidate(2, start = startOfMonth$1);
         }
-        if ($$self.$$.dirty & /*endOfMonth*/128) {
-          $$invalidate(0, end = endOfMonth$1);
+        if ($$self.$$.dirty & /*endOfMonth*/256) {
+          $$invalidate(1, end = endOfMonth$1);
         }
       };
-      $$invalidate(2, loading = false);
-      return [end, start, loading, presets, setUrlWithTimerange, handleSelectPreset, startOfMonth$1, endOfMonth$1, updateUrlWithTimerange, input0_input_handler, input1_input_handler];
+      $$invalidate(3, loading = false);
+      return [userId, end, start, loading, presets, setUrlWithTimerange, handleSelectPreset, startOfMonth$1, endOfMonth$1, updateUrlWithTimerange, input0_input_handler, input1_input_handler];
     }
     var Timerange = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Timerange, _SvelteComponent);
@@ -31675,9 +31754,10 @@
         _classCallCheck$1(this, Timerange);
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$5, create_fragment$5, safe_not_equal, {
-          startOfMonth: 6,
-          endOfMonth: 7,
-          updateUrlWithTimerange: 8
+          startOfMonth: 7,
+          endOfMonth: 8,
+          updateUrlWithTimerange: 9,
+          userId: 0
         });
         return _this;
       }
@@ -31723,11 +31803,11 @@
             id: "client-select"
           },
           items: /*clients*/ctx[0],
-          value: /*selectedClients*/ctx[1],
+          value: /*selectedClients*/ctx[2],
           isMulti: true
         }
       });
-      select0.$on("select", /*handleSelectClients*/ctx[11]);
+      select0.$on("select", /*handleSelectClients*/ctx[12]);
       select1 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31735,12 +31815,12 @@
           inputAttributes: {
             id: "projects-select"
           },
-          items: /*availableProjects*/ctx[6],
-          value: /*selectedProjects*/ctx[2],
+          items: /*availableProjects*/ctx[7],
+          value: /*selectedProjects*/ctx[3],
           isMulti: true
         }
       });
-      select1.$on("select", /*handleSelectProjects*/ctx[12]);
+      select1.$on("select", /*handleSelectProjects*/ctx[13]);
       select2 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31748,12 +31828,12 @@
           inputAttributes: {
             id: "tasks-select"
           },
-          items: /*availableTasks*/ctx[5],
-          value: /*selectedTasks*/ctx[3],
+          items: /*availableTasks*/ctx[6],
+          value: /*selectedTasks*/ctx[4],
           isMulti: true
         }
       });
-      select2.$on("select", /*handleSelectTasks*/ctx[13]);
+      select2.$on("select", /*handleSelectTasks*/ctx[14]);
       select3 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31761,15 +31841,16 @@
           inputAttributes: {
             id: "status-select"
           },
-          items: /*availableStatus*/ctx[9],
-          value: /*selectedStatus*/ctx[4]
+          items: /*availableStatus*/ctx[10],
+          value: /*selectedStatus*/ctx[5]
         }
       });
-      select3.$on("select", /*handleSelectStatus*/ctx[14]);
-      select3.$on("clear", /*handleClearStatus*/ctx[15]);
+      select3.$on("select", /*handleSelectStatus*/ctx[15]);
+      select3.$on("clear", /*handleClearStatus*/ctx[16]);
       timerange = new Timerange({
         props: {
-          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[8]
+          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[9],
+          userId: /*userId*/ctx[1]
         }
       });
       return {
@@ -31804,7 +31885,7 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[7] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""));
           attr(form, "id", "filters-form");
         },
         m(target, anchor) {
@@ -31832,7 +31913,7 @@
           mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[10]));
+            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[11]));
             mounted = true;
           }
         },
@@ -31841,22 +31922,25 @@
             dirty = _ref2[0];
           var select0_changes = {};
           if (dirty & /*clients*/1) select0_changes.items = /*clients*/ctx[0];
-          if (dirty & /*selectedClients*/2) select0_changes.value = /*selectedClients*/ctx[1];
+          if (dirty & /*selectedClients*/4) select0_changes.value = /*selectedClients*/ctx[2];
           select0.$set(select0_changes);
           var select1_changes = {};
-          if (dirty & /*availableProjects*/64) select1_changes.items = /*availableProjects*/ctx[6];
-          if (dirty & /*selectedProjects*/4) select1_changes.value = /*selectedProjects*/ctx[2];
+          if (dirty & /*availableProjects*/128) select1_changes.items = /*availableProjects*/ctx[7];
+          if (dirty & /*selectedProjects*/8) select1_changes.value = /*selectedProjects*/ctx[3];
           select1.$set(select1_changes);
           var select2_changes = {};
-          if (dirty & /*availableTasks*/32) select2_changes.items = /*availableTasks*/ctx[5];
-          if (dirty & /*selectedTasks*/8) select2_changes.value = /*selectedTasks*/ctx[3];
+          if (dirty & /*availableTasks*/64) select2_changes.items = /*availableTasks*/ctx[6];
+          if (dirty & /*selectedTasks*/16) select2_changes.value = /*selectedTasks*/ctx[4];
           select2.$set(select2_changes);
           var select3_changes = {};
-          if (dirty & /*selectedStatus*/16) select3_changes.value = /*selectedStatus*/ctx[4];
+          if (dirty & /*selectedStatus*/32) select3_changes.value = /*selectedStatus*/ctx[5];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/128 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[7] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
+          var timerange_changes = {};
+          if (dirty & /*userId*/2) timerange_changes.userId = /*userId*/ctx[1];
+          timerange.$set(timerange_changes);
         },
         i(local) {
           if (current) return;
@@ -31897,6 +31981,7 @@
       var clients = $$props.clients;
       var projects = $$props.projects;
       var tasks = $$props.tasks;
+      var userId = $$props.userId;
       var selectedClients;
       var selectedProjects;
       var selectedTasks;
@@ -31938,55 +32023,55 @@
         filterLinkElement.click();
       };
       var handleSelectClients = function handleSelectClients(event) {
-        $$invalidate(1, selectedClients = event.detail);
+        $$invalidate(2, selectedClients = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(6, availableProjects = projects.filter(function (project) {
+          $$invalidate(7, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(6, availableProjects = projects);
+          $$invalidate(7, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(5, availableTasks = tasks.filter(function (task) {
+          $$invalidate(6, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(5, availableTasks = tasks);
+          $$invalidate(6, availableTasks = tasks);
         }
       };
       var handleSelectProjects = function handleSelectProjects(event) {
-        $$invalidate(2, selectedProjects = event.detail);
+        $$invalidate(3, selectedProjects = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(6, availableProjects = projects.filter(function (project) {
+          $$invalidate(7, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(6, availableProjects = projects);
+          $$invalidate(7, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(5, availableTasks = tasks.filter(function (task) {
+          $$invalidate(6, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(5, availableTasks = tasks);
+          $$invalidate(6, availableTasks = tasks);
         }
       };
       var handleSelectTasks = function handleSelectTasks(event) {
-        $$invalidate(3, selectedTasks = event.detail);
+        $$invalidate(4, selectedTasks = event.detail);
       };
       var handleSelectStatus = function handleSelectStatus(event) {
-        $$invalidate(4, selectedStatus = event.detail);
+        $$invalidate(5, selectedStatus = event.detail);
       };
       var handleClearStatus = function handleClearStatus() {
-        $$invalidate(4, selectedStatus = "");
+        $$invalidate(5, selectedStatus = "");
       };
       onMount(function () {
         // Parse current URL
@@ -32005,12 +32090,12 @@
 
             // Apply filters from query params
             if (name === "status" && value) {
-              $$invalidate(4, selectedStatus = availableStatus.find(function (status) {
+              $$invalidate(5, selectedStatus = availableStatus.find(function (status) {
                 return status.value === value;
               }));
             }
             if (name === "tasks" && value && value.length) {
-              $$invalidate(3, selectedTasks = value.split(",").map(function (taskId) {
+              $$invalidate(4, selectedTasks = value.split(",").map(function (taskId) {
                 return tasks.find(function (task) {
                   return task.value === taskId;
                 });
@@ -32043,19 +32128,20 @@
       });
       $$self.$$set = function ($$props) {
         if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(16, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(17, tasks = $$props.tasks);
+        if ('projects' in $$props) $$invalidate(17, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(18, tasks = $$props.tasks);
+        if ('userId' in $$props) $$invalidate(1, userId = $$props.userId);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*projects*/65536) {
-          $$invalidate(6, availableProjects = projects);
+        if ($$self.$$.dirty & /*projects*/131072) {
+          $$invalidate(7, availableProjects = projects);
         }
-        if ($$self.$$.dirty & /*tasks*/131072) {
-          $$invalidate(5, availableTasks = tasks);
+        if ($$self.$$.dirty & /*tasks*/262144) {
+          $$invalidate(6, availableTasks = tasks);
         }
       };
-      $$invalidate(7, loading = false);
-      return [clients, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+      $$invalidate(8, loading = false);
+      return [clients, userId, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Filters, _SvelteComponent);
@@ -32066,8 +32152,9 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           clients: 0,
-          projects: 16,
-          tasks: 17
+          projects: 17,
+          tasks: 18,
+          userId: 1
         });
         return _this;
       }
@@ -40011,7 +40098,8 @@
       var dispose;
       userfilterselect = new UserFilterSelect({
         props: {
-          isVisible: /*showTooltip*/ctx[0]
+          isVisible: /*showTooltip*/ctx[1],
+          userId: /*userId*/ctx[0]
         }
       });
       return {
@@ -40025,13 +40113,14 @@
           mount_component(userfilterselect, div, null);
           current = true;
           if (!mounted) {
-            dispose = action_destroyer(/*popperContent*/ctx[3].call(null, div, /*extraOpts*/ctx[4]));
+            dispose = action_destroyer(/*popperContent*/ctx[4].call(null, div, /*extraOpts*/ctx[5]));
             mounted = true;
           }
         },
         p(ctx, dirty) {
           var userfilterselect_changes = {};
-          if (dirty & /*showTooltip*/1) userfilterselect_changes.isVisible = /*showTooltip*/ctx[0];
+          if (dirty & /*showTooltip*/2) userfilterselect_changes.isVisible = /*showTooltip*/ctx[1];
+          if (dirty & /*userId*/1) userfilterselect_changes.userId = /*userId*/ctx[0];
           userfilterselect.$set(userfilterselect_changes);
         },
         i(local) {
@@ -40063,7 +40152,7 @@
       var current;
       var mounted;
       var dispose;
-      var if_block = /*showTooltip*/ctx[0] && create_if_block$1(ctx);
+      var if_block = /*showTooltip*/ctx[1] && create_if_block$1(ctx);
       return {
         c() {
           button = element("button");
@@ -40071,7 +40160,7 @@
           t1 = space();
           if (if_block) if_block.c();
           if_block_anchor = empty();
-          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[1] ? 'active' : ''));
+          attr(button, "class", button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''));
         },
         m(target, anchor) {
           insert(target, button, anchor);
@@ -40081,20 +40170,20 @@
           insert(target, if_block_anchor, anchor);
           current = true;
           if (!mounted) {
-            dispose = [action_destroyer(/*popperRef*/ctx[2].call(null, button)), listen(button, "click", /*click_handler*/ctx[5])];
+            dispose = [action_destroyer(/*popperRef*/ctx[3].call(null, button)), listen(button, "click", /*click_handler*/ctx[6])];
             mounted = true;
           }
         },
         p(ctx, _ref) {
           var _ref2 = _slicedToArray$1(_ref, 1),
             dirty = _ref2[0];
-          if (!current || dirty & /*$isFilterSet*/2 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[1] ? 'active' : ''))) {
+          if (!current || dirty & /*$isFilterSet*/4 && button_class_value !== (button_class_value = "filter-button icon-filter button-w-icon ".concat(/*$isFilterSet*/ctx[2] ? 'active' : ''))) {
             attr(button, "class", button_class_value);
           }
-          if (/*showTooltip*/ctx[0]) {
+          if (/*showTooltip*/ctx[1]) {
             if (if_block) {
               if_block.p(ctx, dirty);
-              if (dirty & /*showTooltip*/1) {
+              if (dirty & /*showTooltip*/2) {
                 transition_in(if_block, 1);
               }
             } else {
@@ -40135,8 +40224,9 @@
     function instance$1($$self, $$props, $$invalidate) {
       var $isFilterSet;
       component_subscribe($$self, isFilterSet, function ($$value) {
-        return $$invalidate(1, $isFilterSet = $$value);
+        return $$invalidate(2, $isFilterSet = $$value);
       });
+      var userId = $$props.userId;
       var _createPopperActions = createPopperActions({
           placement: "bottom",
           strategy: "fixed"
@@ -40156,7 +40246,7 @@
       onMount(function () {
         var hideTooltip = function hideTooltip(e) {
           if (e.key === "Escape") {
-            $$invalidate(0, showTooltip = false);
+            $$invalidate(1, showTooltip = false);
           }
         };
         document.addEventListener("keyup", hideTooltip);
@@ -40197,9 +40287,12 @@
         };
       });
       var click_handler = function click_handler() {
-        $$invalidate(0, showTooltip = !showTooltip);
+        $$invalidate(1, showTooltip = !showTooltip);
       };
-      return [showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
+      $$self.$$set = function ($$props) {
+        if ('userId' in $$props) $$invalidate(0, userId = $$props.userId);
+      };
+      return [userId, showTooltip, $isFilterSet, popperRef, popperContent, extraOpts, click_handler];
     }
     var UserFilterButton = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(UserFilterButton, _SvelteComponent);
@@ -40208,7 +40301,9 @@
         var _this;
         _classCallCheck$1(this, UserFilterButton);
         _this = _super.call(this);
-        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {});
+        init$2(_assertThisInitialized$1(_this), options, instance$1, create_fragment$1, safe_not_equal, {
+          userId: 0
+        });
         return _this;
       }
       return _createClass$1(UserFilterButton);

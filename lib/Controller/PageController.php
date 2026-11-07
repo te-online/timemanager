@@ -206,6 +206,7 @@ class PageController extends Controller {
 						"client" => $latestSearchEntry->client->toArray(),
 					];
 				}, $latestSearchEntries),
+                "userId" => $this->userId,
 			]),
 		]);
 	}
@@ -354,6 +355,7 @@ class PageController extends Controller {
 				"controls" => false,
                 "settings" => $this->getSettings(),
 				"includeShared" => true,
+                "userId" => $this->userId,
 			];
 
 			return new TemplateResponse("timemanager", "reports", [

@@ -2,6 +2,7 @@
 	export let startOfMonth;
 	export let endOfMonth;
 	export let updateUrlWithTimerange;
+	export let userId;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
@@ -108,7 +109,7 @@
 </script>
 
 <div class={`reports-timerange${loading ? " icon-loading" : ""}`}>
-	<UserFilterSelect form="filters-form" />
+	<UserFilterSelect form="filters-form" userId={userId} />
 
 	<label for="start" class="start">
 		{translate("timemanager", "From")}

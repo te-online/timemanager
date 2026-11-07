@@ -1,6 +1,7 @@
 <script>
 	export let isVisible = true;
 	export let form = undefined;
+	export let userId;
 
 	import Select from "svelte-select";
 	import { translate } from "@nextcloud/l10n";
@@ -12,6 +13,7 @@
 
 	let selectedSharee;
 	$: loading = false;
+	$: searchQuery = "";
 
 	const handleSelectSharee = (event) => {
 		if (selectedSharee && selectedSharee.value.shareWith === event.detail.value.shareWith) {
@@ -36,6 +38,7 @@
 	};
 
 	const search = async (query) => {
+		searchQuery = query;
 		if (typeof query === "undefined") {
 			return;
 		}
@@ -52,10 +55,45 @@
 			},
 		);
 
+		// Load the current user to add them to the search results
+		const ownUserResponse = await fetch(
+			generateOcsUrl(`cloud/users/${userId}?format=json`),
+			{
+				headers: {
+					requesttoken: $requestToken,
+					"content-type": "application/json",
+				},
+			}
+		);
+
 		loading = false;
 
 		if (response.ok) {
 			const { users, exact } = (await response.json()).ocs.data;
+
+			if (ownUserResponse.ok) {
+				const userData = (await ownUserResponse.json()).ocs.data;
+				// See if query matches user
+				if (
+					userData?.displayname?.toString()?.toLocaleLowerCase()?.includes(query) ||
+					userData?.id?.toString()?.toLocaleLowerCase()?.includes(query)
+				) {
+					// Add fake sharee object
+					users.push({
+						// Account for id being the same as displayname, otherwise show id in parentheses
+						label: userData.id === userData.displayname ? userData.displayname : `${userData.displayname} (${userData.id})`,
+						subline: userData.id,
+						icon: 'icon-user',
+						value: {
+							shareType: 0,
+							shareWith: userData.displayname,
+						},
+						shareWithDisplayNameUnique: userData.displayname,
+						status: [],
+					});
+				}
+			}
+
 			return [...users, ...exact.users];
 		}
 	};
@@ -88,7 +126,7 @@
 	<label for="sharee-filter-select" class="sharee-filter-label">
 		{translate("timemanager", "Created by")}
 		<Select
-			noOptionsMessage={loading ? translate("timemanager", "Loading...") : translate("timemanager", "No options")}
+			noOptionsMessage={loading ? translate("timemanager", "Loading...") : (searchQuery?.length ? translate("timemanager", "No options") : translate("timemanager", "Type to search"))}
 			placeholder={translate("timemanager", "Search...")}
 			inputAttributes={{ id: "sharee-filter-select", form }}
 			on:select={handleSelectSharee}
