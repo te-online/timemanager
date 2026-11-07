@@ -188,6 +188,7 @@ OC.L10N.register(
 		Settings: "Einstellungen",
 		"Are you trying to record your first time entry?": "Versuchst du deinen ersten Zeiteintrag zu erstellen?",
 		"You need to create at least one set of client, project and task to start creating time entries.": "Du musst zunächst ein Set aus Kunde, Projekt und Aufgabe erstellen, um Zeiteinträge anlegen zu können.",
+		"Type to search": "Suchbegriff eingeben",
 	},
 	"nplurals=2; plural=(n != 1);",
 );
