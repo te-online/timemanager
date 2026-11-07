@@ -31331,7 +31331,8 @@
                     icon: 'icon-user',
                     value: {
                       shareType: 0,
-                      shareWith: userData.displayname
+                      // This property is being used to filter the results
+                      shareWith: userData.id
                     },
                     shareWithDisplayNameUnique: userData.displayname,
                     status: []
