@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.27 Beta, 7. November 2026
+
+### Fixed
+
+- Reports & Dashboard: Searching and filtering by own your user should now work again
+- Reports: The default date range should now be populated in the "from" and "to" fields again when loading the page
+- Applied Dependabot security updates, ran npm install and re-built bundle
+
 ## 0.3.26 Beta, 15. September 2026
 
 ### Added
