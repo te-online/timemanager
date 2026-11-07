@@ -25575,7 +25575,7 @@
 
     // and applies them to the HTMLElements such as popper and arrow
 
-    function applyStyles$1(_ref) {
+    function applyStyles(_ref) {
       var state = _ref.state;
       Object.keys(state.elements).forEach(function (name) {
         var style = state.styles[name] || {};
@@ -25640,11 +25640,11 @@
       };
     } // eslint-disable-next-line import/no-unused-modules
 
-    var applyStyles = {
+    var applyStyles$1 = {
       name: 'applyStyles',
       enabled: true,
       phase: 'write',
-      fn: applyStyles$1,
+      fn: applyStyles,
       effect: effect$2,
       requires: ['computeStyles']
     };
@@ -25869,7 +25869,7 @@
       })) : padding;
       return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
     };
-    function arrow$1(_ref) {
+    function arrow(_ref) {
       var _state$modifiersData$;
       var state = _ref.state,
         name = _ref.name,
@@ -25923,11 +25923,11 @@
       state.elements.arrow = arrowElement;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var arrow = {
+    var arrow$1 = {
       name: 'arrow',
       enabled: true,
       phase: 'main',
-      fn: arrow$1,
+      fn: arrow,
       effect: effect$1,
       requires: ['popperOffsets'],
       requiresIfExists: ['preventOverflow']
@@ -26033,7 +26033,7 @@
       }
       return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
     }
-    function computeStyles$1(_ref5) {
+    function computeStyles(_ref5) {
       var state = _ref5.state,
         options = _ref5.options;
       var _options$gpuAccelerat = options.gpuAcceleration,
@@ -26071,11 +26071,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var computeStyles = {
+    var computeStyles$1 = {
       name: 'computeStyles',
       enabled: true,
       phase: 'beforeWrite',
-      fn: computeStyles$1,
+      fn: computeStyles,
       data: {}
     };
 
@@ -26465,7 +26465,7 @@
       var oppositePlacement = getOppositePlacement(placement);
       return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
     }
-    function flip$1(_ref) {
+    function flip(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -26566,11 +26566,11 @@
       }
     } // eslint-disable-next-line import/no-unused-modules
 
-    var flip = {
+    var flip$1 = {
       name: 'flip',
       enabled: true,
       phase: 'main',
-      fn: flip$1,
+      fn: flip,
       requiresIfExists: ['offset'],
       data: {
         _skip: false
@@ -26596,7 +26596,7 @@
         return overflow[side] >= 0;
       });
     }
-    function hide$1(_ref) {
+    function hide(_ref) {
       var state = _ref.state,
         name = _ref.name;
       var referenceRect = state.rects.reference;
@@ -26624,12 +26624,12 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var hide = {
+    var hide$1 = {
       name: 'hide',
       enabled: true,
       phase: 'main',
       requiresIfExists: ['preventOverflow'],
-      fn: hide$1
+      fn: hide
     };
 
     function distanceAndSkiddingToXY(placement, rects, offset) {
@@ -26650,7 +26650,7 @@
         y: distance
       };
     }
-    function offset$1(_ref2) {
+    function offset(_ref2) {
       var state = _ref2.state,
         options = _ref2.options,
         name = _ref2.name;
@@ -26670,15 +26670,15 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var offset = {
+    var offset$1 = {
       name: 'offset',
       enabled: true,
       phase: 'main',
       requires: ['popperOffsets'],
-      fn: offset$1
+      fn: offset
     };
 
-    function popperOffsets$1(_ref) {
+    function popperOffsets(_ref) {
       var state = _ref.state,
         name = _ref.name;
       // Offsets are the actual position the popper needs to have to be
@@ -26692,11 +26692,11 @@
       });
     } // eslint-disable-next-line import/no-unused-modules
 
-    var popperOffsets = {
+    var popperOffsets$1 = {
       name: 'popperOffsets',
       enabled: true,
       phase: 'read',
-      fn: popperOffsets$1,
+      fn: popperOffsets,
       data: {}
     };
 
@@ -26704,7 +26704,7 @@
       return axis === 'x' ? 'y' : 'x';
     }
 
-    function preventOverflow$1(_ref) {
+    function preventOverflow(_ref) {
       var state = _ref.state,
         options = _ref.options,
         name = _ref.name;
@@ -26809,11 +26809,11 @@
       state.modifiersData[name] = data;
     } // eslint-disable-next-line import/no-unused-modules
 
-    var preventOverflow = {
+    var preventOverflow$1 = {
       name: 'preventOverflow',
       enabled: true,
       phase: 'main',
-      fn: preventOverflow$1,
+      fn: preventOverflow,
       requiresIfExists: ['offset']
     };
 
@@ -27119,7 +27119,7 @@
       };
     }
 
-    var defaultModifiers = [eventListeners, popperOffsets, computeStyles, applyStyles, offset, flip, preventOverflow, arrow, hide];
+    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
     var createPopper = /*#__PURE__*/popperGenerator({
       defaultModifiers: defaultModifiers
     }); // eslint-disable-next-line import/no-unused-modules
@@ -31803,11 +31803,11 @@
             id: "client-select"
           },
           items: /*clients*/ctx[0],
-          value: /*selectedClients*/ctx[2],
+          value: /*selectedClients*/ctx[4],
           isMulti: true
         }
       });
-      select0.$on("select", /*handleSelectClients*/ctx[12]);
+      select0.$on("select", /*handleSelectClients*/ctx[14]);
       select1 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31815,12 +31815,12 @@
           inputAttributes: {
             id: "projects-select"
           },
-          items: /*availableProjects*/ctx[7],
-          value: /*selectedProjects*/ctx[3],
+          items: /*availableProjects*/ctx[9],
+          value: /*selectedProjects*/ctx[5],
           isMulti: true
         }
       });
-      select1.$on("select", /*handleSelectProjects*/ctx[13]);
+      select1.$on("select", /*handleSelectProjects*/ctx[15]);
       select2 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31828,12 +31828,12 @@
           inputAttributes: {
             id: "tasks-select"
           },
-          items: /*availableTasks*/ctx[6],
-          value: /*selectedTasks*/ctx[4],
+          items: /*availableTasks*/ctx[8],
+          value: /*selectedTasks*/ctx[6],
           isMulti: true
         }
       });
-      select2.$on("select", /*handleSelectTasks*/ctx[14]);
+      select2.$on("select", /*handleSelectTasks*/ctx[16]);
       select3 = new Select({
         props: {
           noOptionsMessage: translate("timemanager", "No options"),
@@ -31841,16 +31841,18 @@
           inputAttributes: {
             id: "status-select"
           },
-          items: /*availableStatus*/ctx[10],
-          value: /*selectedStatus*/ctx[5]
+          items: /*availableStatus*/ctx[12],
+          value: /*selectedStatus*/ctx[7]
         }
       });
-      select3.$on("select", /*handleSelectStatus*/ctx[15]);
-      select3.$on("clear", /*handleClearStatus*/ctx[16]);
+      select3.$on("select", /*handleSelectStatus*/ctx[17]);
+      select3.$on("clear", /*handleClearStatus*/ctx[18]);
       timerange = new Timerange({
         props: {
-          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[9],
-          userId: /*userId*/ctx[1]
+          updateUrlWithTimerange: /*updateUrlWithTimerange*/ctx[11],
+          userId: /*userId*/ctx[1],
+          startOfMonth: /*startOfMonth*/ctx[2],
+          endOfMonth: /*endOfMonth*/ctx[3]
         }
       });
       return {
@@ -31885,7 +31887,7 @@
           attr(label2, "class", "tasks");
           attr(label3, "for", "status-select");
           attr(label3, "class", "status");
-          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""));
+          attr(form, "class", form_class_value = "reports-filters".concat(/*loading*/ctx[10] ? " icon-loading" : ""));
           attr(form, "id", "filters-form");
         },
         m(target, anchor) {
@@ -31913,7 +31915,7 @@
           mount_component(timerange, target, anchor);
           current = true;
           if (!mounted) {
-            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[11]));
+            dispose = listen(form, "submit", prevent_default(/*apply*/ctx[13]));
             mounted = true;
           }
         },
@@ -31922,24 +31924,26 @@
             dirty = _ref2[0];
           var select0_changes = {};
           if (dirty & /*clients*/1) select0_changes.items = /*clients*/ctx[0];
-          if (dirty & /*selectedClients*/4) select0_changes.value = /*selectedClients*/ctx[2];
+          if (dirty & /*selectedClients*/16) select0_changes.value = /*selectedClients*/ctx[4];
           select0.$set(select0_changes);
           var select1_changes = {};
-          if (dirty & /*availableProjects*/128) select1_changes.items = /*availableProjects*/ctx[7];
-          if (dirty & /*selectedProjects*/8) select1_changes.value = /*selectedProjects*/ctx[3];
+          if (dirty & /*availableProjects*/512) select1_changes.items = /*availableProjects*/ctx[9];
+          if (dirty & /*selectedProjects*/32) select1_changes.value = /*selectedProjects*/ctx[5];
           select1.$set(select1_changes);
           var select2_changes = {};
-          if (dirty & /*availableTasks*/64) select2_changes.items = /*availableTasks*/ctx[6];
-          if (dirty & /*selectedTasks*/16) select2_changes.value = /*selectedTasks*/ctx[4];
+          if (dirty & /*availableTasks*/256) select2_changes.items = /*availableTasks*/ctx[8];
+          if (dirty & /*selectedTasks*/64) select2_changes.value = /*selectedTasks*/ctx[6];
           select2.$set(select2_changes);
           var select3_changes = {};
-          if (dirty & /*selectedStatus*/32) select3_changes.value = /*selectedStatus*/ctx[5];
+          if (dirty & /*selectedStatus*/128) select3_changes.value = /*selectedStatus*/ctx[7];
           select3.$set(select3_changes);
-          if (!current || dirty & /*loading*/256 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[8] ? " icon-loading" : ""))) {
+          if (!current || dirty & /*loading*/1024 && form_class_value !== (form_class_value = "reports-filters".concat(/*loading*/ctx[10] ? " icon-loading" : ""))) {
             attr(form, "class", form_class_value);
           }
           var timerange_changes = {};
           if (dirty & /*userId*/2) timerange_changes.userId = /*userId*/ctx[1];
+          if (dirty & /*startOfMonth*/4) timerange_changes.startOfMonth = /*startOfMonth*/ctx[2];
+          if (dirty & /*endOfMonth*/8) timerange_changes.endOfMonth = /*endOfMonth*/ctx[3];
           timerange.$set(timerange_changes);
         },
         i(local) {
@@ -31982,6 +31986,8 @@
       var projects = $$props.projects;
       var tasks = $$props.tasks;
       var userId = $$props.userId;
+      var startOfMonth = $$props.startOfMonth;
+      var endOfMonth = $$props.endOfMonth;
       var selectedClients;
       var selectedProjects;
       var selectedTasks;
@@ -32023,55 +32029,55 @@
         filterLinkElement.click();
       };
       var handleSelectClients = function handleSelectClients(event) {
-        $$invalidate(2, selectedClients = event.detail);
+        $$invalidate(4, selectedClients = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(7, availableProjects = projects.filter(function (project) {
+          $$invalidate(9, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(7, availableProjects = projects);
+          $$invalidate(9, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(6, availableTasks = tasks.filter(function (task) {
+          $$invalidate(8, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(6, availableTasks = tasks);
+          $$invalidate(8, availableTasks = tasks);
         }
       };
       var handleSelectProjects = function handleSelectProjects(event) {
-        $$invalidate(3, selectedProjects = event.detail);
+        $$invalidate(5, selectedProjects = event.detail);
         if (selectedClients && selectedClients.length) {
-          $$invalidate(7, availableProjects = projects.filter(function (project) {
+          $$invalidate(9, availableProjects = projects.filter(function (project) {
             return selectedClients.find(function (client) {
               return project.clientUuid === client.value;
             });
           }));
         } else {
-          $$invalidate(7, availableProjects = projects);
+          $$invalidate(9, availableProjects = projects);
         }
         if (selectedProjects && selectedProjects.length) {
-          $$invalidate(6, availableTasks = tasks.filter(function (task) {
+          $$invalidate(8, availableTasks = tasks.filter(function (task) {
             return selectedProjects.find(function (project) {
               return task.projectUuid === project.value;
             });
           }));
         } else {
-          $$invalidate(6, availableTasks = tasks);
+          $$invalidate(8, availableTasks = tasks);
         }
       };
       var handleSelectTasks = function handleSelectTasks(event) {
-        $$invalidate(4, selectedTasks = event.detail);
+        $$invalidate(6, selectedTasks = event.detail);
       };
       var handleSelectStatus = function handleSelectStatus(event) {
-        $$invalidate(5, selectedStatus = event.detail);
+        $$invalidate(7, selectedStatus = event.detail);
       };
       var handleClearStatus = function handleClearStatus() {
-        $$invalidate(5, selectedStatus = "");
+        $$invalidate(7, selectedStatus = "");
       };
       onMount(function () {
         // Parse current URL
@@ -32090,12 +32096,12 @@
 
             // Apply filters from query params
             if (name === "status" && value) {
-              $$invalidate(5, selectedStatus = availableStatus.find(function (status) {
+              $$invalidate(7, selectedStatus = availableStatus.find(function (status) {
                 return status.value === value;
               }));
             }
             if (name === "tasks" && value && value.length) {
-              $$invalidate(4, selectedTasks = value.split(",").map(function (taskId) {
+              $$invalidate(6, selectedTasks = value.split(",").map(function (taskId) {
                 return tasks.find(function (task) {
                   return task.value === taskId;
                 });
@@ -32128,20 +32134,22 @@
       });
       $$self.$$set = function ($$props) {
         if ('clients' in $$props) $$invalidate(0, clients = $$props.clients);
-        if ('projects' in $$props) $$invalidate(17, projects = $$props.projects);
-        if ('tasks' in $$props) $$invalidate(18, tasks = $$props.tasks);
+        if ('projects' in $$props) $$invalidate(19, projects = $$props.projects);
+        if ('tasks' in $$props) $$invalidate(20, tasks = $$props.tasks);
         if ('userId' in $$props) $$invalidate(1, userId = $$props.userId);
+        if ('startOfMonth' in $$props) $$invalidate(2, startOfMonth = $$props.startOfMonth);
+        if ('endOfMonth' in $$props) $$invalidate(3, endOfMonth = $$props.endOfMonth);
       };
       $$self.$$.update = function () {
-        if ($$self.$$.dirty & /*projects*/131072) {
-          $$invalidate(7, availableProjects = projects);
+        if ($$self.$$.dirty & /*projects*/524288) {
+          $$invalidate(9, availableProjects = projects);
         }
-        if ($$self.$$.dirty & /*tasks*/262144) {
-          $$invalidate(6, availableTasks = tasks);
+        if ($$self.$$.dirty & /*tasks*/1048576) {
+          $$invalidate(8, availableTasks = tasks);
         }
       };
-      $$invalidate(8, loading = false);
-      return [clients, userId, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
+      $$invalidate(10, loading = false);
+      return [clients, userId, startOfMonth, endOfMonth, selectedClients, selectedProjects, selectedTasks, selectedStatus, availableTasks, availableProjects, loading, updateUrlWithTimerange, availableStatus, apply, handleSelectClients, handleSelectProjects, handleSelectTasks, handleSelectStatus, handleClearStatus, projects, tasks];
     }
     var Filters = /*#__PURE__*/function (_SvelteComponent) {
       _inherits$1(Filters, _SvelteComponent);
@@ -32152,9 +32160,11 @@
         _this = _super.call(this);
         init$2(_assertThisInitialized$1(_this), options, instance$4, create_fragment$4, safe_not_equal, {
           clients: 0,
-          projects: 17,
-          tasks: 18,
-          userId: 1
+          projects: 19,
+          tasks: 20,
+          userId: 1,
+          startOfMonth: 2,
+          endOfMonth: 3
         });
         return _this;
       }

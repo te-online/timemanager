@@ -3,6 +3,8 @@
 	export let projects;
 	export let tasks;
 	export let userId;
+	export let startOfMonth;
+	export let endOfMonth;
 
 	import Select from "svelte-select";
 	import { onMount } from "svelte";
@@ -186,4 +188,4 @@
 		/>
 	</label>
 </form>
-<Timerange {updateUrlWithTimerange} userId={userId} />
+<Timerange {updateUrlWithTimerange} {userId} {startOfMonth} {endOfMonth} />
